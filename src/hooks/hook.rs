@@ -762,11 +762,10 @@ fn apply_training_builds(
     let config = build_config::load_cached();
     // Unique enforcement is not a property of the editor's builds - the stable
     // hook runs it over the engine's own `base_build` too - so an empty config
-    // is only a reason to skip the rewrite below, not a reason to return.
+    // is only a reason to skip the rewrite below, not a reason to return. Nor
+    // is the toggle being off: the in-match tactics panel is told every
+    // build this hands out, rewritten or not.
     let smart = build_config::smart_builds_enabled();
-    if config.is_empty() && !smart {
-        return;
-    }
 
     // `to_string` rather than a borrow: `ItemInfo::key` is reached through the
     // classic rlib, and this runs a few hundred times per training match - once
@@ -774,6 +773,7 @@ fn apply_training_builds(
     // over.
     let index_of = |key: &str| items.iter().position(|item| item.key().to_string() == key);
     let enemies: Vec<&str> = team2.iter().map(|(_, champion)| champion.as_str()).collect();
+    let allies: Vec<&str> = team1.iter().map(|(_, champion)| champion.as_str()).collect();
 
     for (position, route) in routes.iter_mut().enumerate() {
         let Some((_, champion)) = team1.get(position) else {
@@ -799,6 +799,19 @@ fn apply_training_builds(
             let boots = index_of(boots_key);
             let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
             enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
+        }
+
+        // For the in-match tactics panel (`crate::match_builds`), which shows
+        // both teams; the stable hook notes league matches the same way. The
+        // route's place is its lane only in a five-a-side lineup: a one-lane
+        // match has one route, whatever lane it is played in.
+        let keys = route
+            .iter()
+            .map(|&index| items.get(index).map(|item| item.key().to_string()))
+            .collect::<Option<Vec<String>>>();
+        if let Some(keys) = keys {
+            let lane = (team1.len() == 5).then_some(position);
+            crate::match_builds::note_decision(champion, lane, &allies, &enemies, keys, None);
         }
     }
 }

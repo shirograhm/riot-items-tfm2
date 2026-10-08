@@ -19,6 +19,7 @@
       "scope_own": "Apply To Your Players Only",
       "side_blue": "Blue Team",
       "side_red": "Red Team",
+      "planned": "Planned Builds",
       "save": "Save Item Builds",
       "ai_slot": "Let Player Decide",
       "no_champion": "(champion)"
@@ -68,6 +69,7 @@
       "scope_own": "내 선수에게만 적용",
       "side_blue": "블루 팀",
       "side_red": "레드 팀",
+      "planned": "예정 빌드",
       "save": "빌드 저장",
       "ai_slot": "선수에게 맡기기",
       "no_champion": "(챔피언)"
@@ -117,6 +119,7 @@
       "scope_own": "仅适用于己方选手",
       "side_blue": "蓝方",
       "side_red": "红方",
+      "planned": "装备构建计划",
       "save": "保存装备构建",
       "ai_slot": "交给选手决定",
       "no_champion": "(英雄)"
@@ -166,6 +169,7 @@
       "scope_own": "自分の選手のみに適用",
       "side_blue": "ブルー側",
       "side_red": "レッド側",
+      "planned": "予定ビルド",
       "save": "ビルドを保存",
       "ai_slot": "選手に任せる",
       "no_champion": "(チャンピオン)"
@@ -215,6 +219,7 @@
       "scope_own": "Vale só para os seus jogadores",
       "side_blue": "Azul",
       "side_red": "Vermelho",
+      "planned": "Builds Planejadas",
       "save": "Salvar Builds",
       "ai_slot": "Deixar o Jogador Decidir",
       "no_champion": "(campeão)"
@@ -264,6 +269,7 @@
       "scope_own": "Только для ваших игроков",
       "side_blue": "Синие",
       "side_red": "Красные",
+      "planned": "Планируемые сборки",
       "save": "Сохранить сборки",
       "ai_slot": "На усмотрение игрока",
       "no_champion": "(чемпион)"
@@ -313,6 +319,7 @@
       "scope_own": "Chỉ áp dụng cho tuyển thủ của bạn",
       "side_blue": "Đội Xanh",
       "side_red": "Đội Đỏ",
+      "planned": "Cách lên đồ dự kiến",
       "save": "Lưu cách lên đồ",
       "ai_slot": "Để tuyển thủ quyết định",
       "no_champion": "(tướng)"

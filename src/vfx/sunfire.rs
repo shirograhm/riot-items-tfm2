@@ -172,6 +172,9 @@ impl StableMatchHook for MatchHooks {
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         use crate::perf::{self, Section};
+        // Which match is on screen, for the Check Tactics panel's builds. One
+        // tick read and a return for every simulation but the client's own.
+        crate::match_builds::on_match_tick(sim);
         if perf::ENABLED {
             perf::sim_tick(sim.seed(), sim.tick(), sim.is_end());
         }
