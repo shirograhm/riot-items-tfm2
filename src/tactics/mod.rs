@@ -4242,7 +4242,6 @@ unsafe fn patch_result_row_floor(slots: u8) -> String {
 //   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
 //  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
 const GAME_EXE_SIZE_070_BETA: u64 = 91_006_464; // 0.7.0-beta, the exe that reports 0.7.0_beta1 (0.6.3 was 86_804_992, 0.6.2 86_674_944, 0.6.1 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
-static VERSION_OK: AtomicBool = AtomicBool::new(false);
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
 /// Decides whether this is the one game build this half is pinned to. Called once from init.
 fn check_game_version() -> bool {
