@@ -57,17 +57,19 @@ Pick any item for any champion, in-game:
 
 Use the [b]filter by champion[/b] box to find champions in a long list (separate several with commas). After a draft, [b]Blue Team[/b] and [b]Red Team[/b] under the Matchup card fill the box with that side's champions. Builds save automatically to [b]item-builds.json[/b] and carry across sessions. [b]Save Item Builds[/b] saves manually.  
 
+During a match, you can see both sides' planned builds using the [b]Check Tactics[/b] tab. Pinned items will render with a teal border.  
+
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] cleans up the AI's picks. The following items are swapped for another item of the same category:
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
-- support items (except Protoplasm Harness and Zeke's Convergence) outside the support role
+- support items (except Protoplasm Harness) outside the support role. tank supports and heal/shield/buff supports (the ones that build Dream Maker) are restricted to Tank/Support items, and the latter prefer Ardent Censer, Echoes of Helia and Staff of Flowing Water
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion (Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn only get built on marksmen).
-- additionally, supports get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest.  
+- additionally, supports get a World Atlas item in the first slot: Solstice Sleigh for tanks whose kit immobilizes for a second or more in total, Celestial Opposition for other tanks, Dream Maker for supports that heal, shield or buff allies, Zaz'Zak's Realmspike for mages and other AP supports, and Bloodsong for the rest.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 

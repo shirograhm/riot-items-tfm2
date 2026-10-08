@@ -477,6 +477,14 @@ const TAB_IDLE_TEXT: &str = "#a3a9b6ff";
 const TAB_HOVER_LINE: &str = "#a3a9b6ff";
 const TAB_HOVER_TEXT: &str = "#e0e2e7ff";
 
+// A footer toggle that does nothing on the screen it is on (see
+// [`scope_applies`]): the same two cells in greys, the saved setting still the
+// filled one. These are this mod's picks, not the game's: `strategy_option`
+// has no disabled state to lift them from.
+const TOGGLE_OFF_SELECTED_FILL: &str = "#3a3c44ff";
+const TOGGLE_OFF_SELECTED_TEXT: &str = "#7d828dff";
+const TOGGLE_OFF_IDLE_TEXT: &str = "#5a5e68ff";
+
 /// The editor's layout source, and the node name its root declares.
 ///
 /// There is no `EDITOR_PARENT` constant any more: the editor has two hosts and
@@ -1717,6 +1725,15 @@ fn paint_toggle(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) {
     ctx.ui_set_properties(dim_path, &toggle_style(false));
 }
 
+/// Paints a two-option footer toggle greyed out, for a screen its setting does
+/// nothing on: the saved setting's cell is still the filled one, and neither
+/// cell answers the cursor. The click is turned away where it is handled; this
+/// is only how the control looks.
+fn paint_toggle_off(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) {
+    ctx.ui_set_properties(lit_path, &toggle_off_style(true));
+    ctx.ui_set_properties(dim_path, &toggle_off_style(false));
+}
+
 /// One toggle cell's appearance, in the vanilla `strategy_option` colours the
 /// tabs and list rows already use.
 fn toggle_style(lit: bool) -> String {
@@ -1730,6 +1747,28 @@ fn toggle_style(lit: bool) -> String {
     } else {
         (TAB_HOVER_LINE, TAB_HOVER_TEXT)
     };
+    toggle_cell_style(fill, text, stroke, hover_line, hover_text)
+}
+
+/// One cell of a greyed-out toggle (see [`paint_toggle_off`]). Its hover
+/// colours are its resting ones, so it does not light up under the cursor.
+fn toggle_off_style(lit: bool) -> String {
+    let (fill, text, stroke) = if lit {
+        (TOGGLE_OFF_SELECTED_FILL, TOGGLE_OFF_SELECTED_TEXT, 0)
+    } else {
+        (TAB_IDLE_FILL, TOGGLE_OFF_IDLE_TEXT, 1)
+    };
+    toggle_cell_style(fill, text, stroke, fill, text)
+}
+
+/// The property blocks of one toggle cell in the given colours.
+fn toggle_cell_style(
+    fill: &str,
+    text: &str,
+    stroke: u32,
+    hover_line: &str,
+    hover_text: &str,
+) -> String {
     // `size` and `align_x` are restated rather than left to the `.ui`, because a
     // property write replaces the block it names: a `label` carrying only a
     // colour would drop the centring the layout gives these cells.
@@ -1778,12 +1817,33 @@ fn clear_saved(ctx: &mut StableClient<'_>) {
 /// honoured. The native team gate is back (see
 /// [`build_config::own_team_only_enabled`]), so it is shown and painted
 /// normally again.
+///
+/// Greyed out where the setting does nothing ([`scope_applies`]), with the
+/// saved setting still marked: it is what the next league match will use.
 fn refresh_scope(ctx: &mut StableClient<'_>) {
-    if build_config::own_team_only_enabled() {
-        paint_toggle(ctx, scope_own_path(), scope_all_path());
+    let (lit, dim) = if build_config::own_team_only_enabled() {
+        (scope_own_path(), scope_all_path())
     } else {
-        paint_toggle(ctx, scope_all_path(), scope_own_path());
+        (scope_all_path(), scope_own_path())
+    };
+    if scope_applies() {
+        paint_toggle(ctx, lit, dim);
+    } else {
+        paint_toggle_off(ctx, lit, dim);
     }
+}
+
+/// Whether the build-scope toggle does anything on the screen the editor is
+/// on.
+///
+/// Not on the 5v5 and lane tests. Both sides of a test are the player's, so
+/// every athlete of one is handed the pinned builds whatever the setting says
+/// (`is_training` in `tactics::buy_replace_ctx`), and the user asked for the
+/// control to be greyed out there (2026-10-08). The tests are the editor's
+/// second host, one panel for both, which is all this asks, the way
+/// [`sides_shown`] does.
+fn scope_applies() -> bool {
+    paths().parent == UI_ROOT
 }
 
 // -- side cells -----------------------------------------------------------
@@ -3635,7 +3695,9 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     }
 
     if path == scope_all_path() || path == scope_own_path() {
-        if build_config::set_own_team_only(path == scope_own_path()) {
+        // Greyed out on the tests (see `scope_applies`): a click there must
+        // not change a setting the screen says it has nothing to do with.
+        if scope_applies() && build_config::set_own_team_only(path == scope_own_path()) {
             refresh_scope(ctx);
         }
         return;
@@ -3868,6 +3930,11 @@ impl StableExtension for StrategyPicker {
         // that screen this is one failed lookup.
         perf::time(Section::FrameDraftWatch, || draft_watch::sync(ctx));
 
+        // The player's builds in the in-match Check Tactics panel. Unconditional
+        // because that screen is not this one; outside a match it is one failed
+        // lookup.
+        crate::match_builds::sync(ctx);
+
         // Everything from here to whichever return this frame takes.
         let _editor = perf::Probe::start(Section::FrameEditor);
 
@@ -3896,8 +3963,9 @@ impl StableExtension for StrategyPicker {
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
-            let stale = with_state(|state| {
+            let (stale, drafted) = with_state(|state| {
                 let stale = state.wired;
+                let drafted = state.side_ids.clone();
                 state.wired = false;
                 state.modal_ready = false;
                 state.spawned_rows.clear();
@@ -3913,15 +3981,18 @@ impl StableExtension for StrategyPicker {
                 state.info_probe_tick = 0;
                 state.info_showing = false;
                 state.showing = false;
-                stale
+                (stale, drafted)
             })
-            .unwrap_or(false);
+            .unwrap_or_default();
             if stale {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
                 forget_registrations();
-                // The lineup that screen was for has gone into its match. The
-                // next strategy screen gets the draft before it, or no cells.
+                // The lineup that screen was for has gone into its match, where
+                // the Check Tactics panel picks the player's builds out by it.
+                // The next strategy screen gets the draft before it, or no
+                // cells.
+                crate::match_builds::note_lineup(drafted);
                 draft_watch::forget();
             }
 

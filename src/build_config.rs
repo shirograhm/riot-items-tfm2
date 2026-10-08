@@ -605,7 +605,10 @@ pub fn has_pins(champion: &str) -> bool {
 /// [`remember_pinned_build`]). Both sides know the real lane — the hook is
 /// told it, the detours read it off the athlete ([`set_athlete_lane`]) — so
 /// they pick the same row. `role` is [`Role::Any`] when the host did not say,
-/// and then the lane is not known.
+/// and then the lane is not known. A pin is the row's as written, a jungle
+/// item pinned for a champion that is not jungling included: for a day
+/// (2026-10-07) such a pin was a blank slot, and the user had it put back
+/// (2026-10-08: "the mod should never overwrite pins").
 pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
     pins()
         .and_then(|pins| pin_entry(&pins, champion, role, role != Role::Any).cloned())

@@ -90,6 +90,11 @@ pub(crate) struct Immobilize {
     pub taunt: bool,
     /// Anything else: a stun, root, knock-up, knockback, pull, fear or charm.
     pub other: bool,
+    /// How long the kit immobilizes for in all, in ticks: every stun, root,
+    /// knock-up, knockback, pull, fear, charm and taunt of its abilities and
+    /// its ultimate, added up. An immobilize the source puts no figure on
+    /// adds nothing.
+    pub ticks: usize,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -146,6 +151,13 @@ impl ChampionTraits {
     pub(crate) fn can_immobilize(&self) -> bool {
         self.immobilize
             .map_or(self.cc, |immobilize| immobilize.taunt || immobilize.other)
+    }
+
+    /// Whether the kit immobilizes for at least `ticks` in all, where it is
+    /// known; else the `CC` tag, which also counts slows.
+    pub(crate) fn immobilizes_for(&self, ticks: usize) -> bool {
+        self.immobilize
+            .map_or(self.cc, |immobilize| immobilize.ticks >= ticks)
     }
 
     /// Whether the kit can set off the items that answer to healing, shielding
@@ -355,6 +367,54 @@ const VANILLA_IMMOBILIZERS: &[&str] = &[
     "wind_mage",
 ];
 
+/// How long each of the base game's champions immobilizes for in all, in
+/// ticks ([`Immobilize::ticks`]): every immobilizing parameter of its
+/// abilities and its ultimate added up, from `setting/champion_info` and the
+/// champions that are data kits of their own (0.6.3; the comment says which
+/// ability holds what). A champion not listed has none with a figure on it.
+/// Three have an immobilize the data gives no length for, which adds nothing:
+/// Archer's stun ("briefly"), Executioner's grab and Harpooner's pull. Knight's
+/// taunt is its skill's own `tick`. Sorted, for the binary search.
+const VANILLA_IMMOBILIZE_TICKS: &[(&str, usize)] = &[
+    ("android", 60),          // skill2 60
+    ("barrier_magician", 60), // ult 60
+    ("berserker", 30),        // skill2 30
+    ("bomber", 90),           // skill2 90
+    ("cavalry_knight", 60),   // skill 60
+    ("circus_blade", 12),     // ult 12
+    ("dark_mage", 60),        // skill 60
+    ("demon", 60),            // ult 60
+    ("dokkaebi", 60),         // ult 60
+    ("druid", 8),             // ult 8
+    ("dual_blader", 120),     // skill 60 + skill2 60
+    ("fighter", 120),         // skill 60 + ult 60
+    ("gambler", 36),          // ult 36
+    ("hammerer", 150),        // skill 60 + ult 90
+    ("hitman", 45),           // skill 45
+    ("ice_mage", 105),        // skill 30 + skill2 60 + ult 15
+    ("illusionist", 120),     // skill 60 + skill2 60
+    ("inquisitor", 60),       // ult 60
+    ("jiangshi", 60),         // skill 60
+    ("knight", 60),           // skill 60
+    ("lancer", 70),           // skill 30 + ult 40
+    ("lightning_mage", 30),   // skill2 30
+    ("magic_knight", 10),     // skill2 10
+    ("monk", 60),             // skill2 60
+    ("ogre", 60),             // skill2 60
+    ("pole_warrior", 60),     // ult 60
+    ("prisoner", 90),         // skill2 30 + ult 60
+    ("sand_mage", 12),        // ult 12
+    ("shadowmancer", 42),     // skill 42
+    ("shield_bearer", 120),   // ult 120
+    ("spellbreaker", 60),     // ult 60
+    ("spirit_caller", 45),    // ult 45
+    ("strongman", 132),       // skill 30 + skill2 12 + ult 90
+    ("werewolf", 15),         // skill2 15
+    ("whip_master", 10),      // skill2 10
+    ("white_mage", 60),       // ult 60
+    ("wind_mage", 40),        // ult 40
+];
+
 /// The base game's champions with a basic ability that heals, shields or
 /// buffs an ally ([`ChampionTraits::aids`]), read off each kit's skill text
 /// (0.6.2). Not the `Heal` and `Shield` tags: Vampire, Werewolf and Dokkaebi
@@ -439,6 +499,67 @@ fn kit_shows(kit: &serde_json::Value, sign: &KitSign) -> bool {
         }
         serde_json::Value::Array(items) => items.iter().any(|item| kit_shows(item, sign)),
         _ => false,
+    }
+}
+
+/// The parameters a kit names an immobilize's length by, in ticks, and the
+/// fields an immobilizing effect gives its own in. The signs' other
+/// parameters are speeds and switches.
+const TICK_PARAMS: &[&str] = &[
+    "airborne",
+    "airborne_tick",
+    "airborne_time",
+    "bind",
+    "bind_duration",
+    "bind_tick",
+    "charm_duration",
+    "fear_duration",
+    "fear_tick",
+    "knockback_tick",
+    "pull_time",
+    "stun",
+    "stun_duration",
+    "taunt_duration",
+];
+const TICK_FIELDS: &[&str] = &["duration", "tick"];
+
+/// How long everything in this part of a `.data_champion` kit immobilizes an
+/// enemy for, added up, in ticks ([`Immobilize::ticks`]). What a kit does to
+/// its own caster (`WithSelf`) holds no one.
+fn kit_ticks(kit: &serde_json::Value) -> usize {
+    let ticks = |value: &serde_json::Value| value.as_u64().unwrap_or(0) as usize;
+    match kit {
+        serde_json::Value::Object(fields) => {
+            let effect = fields.get("type").and_then(serde_json::Value::as_str);
+            if effect == Some("WithSelf") {
+                return 0;
+            }
+            let immobilizes = effect.is_some_and(|effect| {
+                TAUNT_SIGN.effects.contains(&effect) || IMMOBILIZE_SIGN.effects.contains(&effect)
+            });
+            let own = if immobilizes {
+                TICK_FIELDS
+                    .iter()
+                    .filter_map(|field| fields.get(*field))
+                    .map(ticks)
+                    .max()
+                    .unwrap_or(0)
+            } else {
+                0
+            };
+            own + fields
+                .iter()
+                .map(|(name, value)| {
+                    if TICK_PARAMS.contains(&name.as_str()) {
+                        ticks(value)
+                    } else {
+                        kit_ticks(value)
+                    }
+                })
+                .sum::<usize>()
+        }
+        serde_json::Value::Array(items) => items.iter().map(kit_ticks).sum(),
+        _ => 0,
     }
 }
 
@@ -594,6 +715,10 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
     let immobilize = (taunt || other || !native).then_some(Immobilize {
         taunt,
         other: other || native,
+        // What the file shows, added up. Native code may add to it with
+        // nothing to show; a kit that shows none at all and runs some is not
+        // known either way (`None`, above), and its `CC` tag decides.
+        ticks: file.rest.values().map(kit_ticks).sum(),
     });
     // Aiding allies takes both: a basic ability aimed at one, and a heal, shield
     // or buff in it. Aimed at an ally alone is not enough (another mod's Dummy
@@ -691,6 +816,9 @@ fn vanilla(champion: &str) -> Option<ChampionTraits> {
             let immobilize = Immobilize {
                 taunt: VANILLA_TAUNTERS.binary_search(&champion).is_ok(),
                 other: VANILLA_IMMOBILIZERS.binary_search(&champion).is_ok(),
+                ticks: VANILLA_IMMOBILIZE_TICKS
+                    .binary_search_by_key(&champion, |(key, _)| key)
+                    .map_or(0, |index| VANILLA_IMMOBILIZE_TICKS[index].1),
             };
             let aids = VANILLA_ALLY_AIDS.binary_search(&champion).is_ok();
             ChampionTraits::from_flags(

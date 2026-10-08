@@ -25,7 +25,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
-pub(crate) use ui::{solo_rank_ui, strategy_ui};
+pub(crate) use ui::{match_builds, solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
@@ -203,8 +203,10 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
 struct NativeTapExtension;
 
 impl StableServerExtension for NativeTapExtension {
-    fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
+    fn before_management_tick(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::before_management_tick();
+        // One atomic load once the server's item settings have been seen to.
+        item_stats::sync_server_items(ctx);
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
@@ -216,8 +218,12 @@ impl StableServerExtension for NativeTapExtension {
         // a match between.
     }
 
-    fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
+    fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
+        // The mod's numbers for the game's own thirty items, into this
+        // server's item settings, before it creates a match.
+        item_stats::server_started();
+        item_stats::sync_server_items(ctx);
 
         match hook::install_hook() {
             Ok(address) => {
@@ -251,6 +257,9 @@ fn init(host: &StableHost) -> StableMod {
     // Before any build path can ask: modded champions' AD/AP tags, from their
     // own files. See `champion_traits::MOD_CHAMPIONS`.
     champion_traits::load_mod_champions();
+    // And the game's own thirty items, from the mod's settings file: the
+    // Smart Builds rules know what each gives from here on.
+    item_stats::prime_game_items();
     let configs = config::load();
     record_lethality_table(&configs);
 
@@ -303,6 +312,7 @@ fn init(host: &StableHost) -> StableMod {
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
+            match_builds::note_mod_item($key, &item);
             perf::timed($key, item)
         }};
     }
@@ -334,6 +344,7 @@ fn init(host: &StableHost) -> StableMod {
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
+            match_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key);
             perf::timed($key, item)
         }};

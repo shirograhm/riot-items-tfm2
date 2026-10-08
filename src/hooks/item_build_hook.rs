@@ -11,6 +11,12 @@ const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
 /// scale nothing documents.
 const SUPPORT_ITEM_SCORE_BONUS: f32 = 1.0;
 
+/// What a heal, shield or buff item gets from a support that looks to those
+/// before its other support items (Smart Builds rule 17): half as much again
+/// as [`SUPPORT_ITEM_SCORE_BONUS`], as much of a guess on the same scale
+/// (2026-10-08).
+const ALLY_AID_ITEM_SCORE_BONUS: f32 = 1.5;
+
 pub struct ConfiguredBuilds;
 
 impl StableItemBuildHook for ConfiguredBuilds {
@@ -50,6 +56,9 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let fit = champion_fit(ctx);
         if smart_builds::Budget::empty(fit).rejects(key).is_some() {
             return StableDraftDecision::Pass;
+        }
+        if fit.is_preferred_aid_item(key) {
+            return StableDraftDecision::Add(ALLY_AID_ITEM_SCORE_BONUS);
         }
         // A support's World Atlas item is its one dedicated support item, and
         // past that it prefers support items without being held to one.
@@ -98,6 +107,9 @@ impl StableItemBuildHook for ConfiguredBuilds {
             reserved: Vec::new(),
         });
         let mut build = merged.items;
+        // What the player's athlete on this champion holds, where that is not
+        // `build`: the pin-aware twin `own_team_only` keeps back from the enemy.
+        let mut own = None;
 
         if build_config::smart_builds_enabled() {
             // Under `own_team_only` this build reaches both teams, so it must
@@ -113,9 +125,12 @@ impl StableItemBuildHook for ConfiguredBuilds {
                 ));
             enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved, later_open);
             if own_team_only {
-                remember_pinned_build(ctx, &build);
+                own = remember_pinned_build(ctx, &build);
             }
+        } else if own_team_only {
+            own = pins_over(ctx, &build);
         }
+        note_for_match_panel(ctx, &build, own.as_deref());
 
         if build.is_empty() || build == base {
             Vec::new()
@@ -195,14 +210,20 @@ fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
 /// `tactics::spawn_paste_pinned_build` to swap in — which it does only for the
 /// player's own athletes — and keyed by the pin row it was made from, the one
 /// the detours read ([`build_config::pin_row`]).
-fn remember_pinned_build(ctx: &StableItemBuildContext<'_>, unpinned: &[usize]) {
+///
+/// Returns the pin-aware build, for the in-match tactics panel to show; nothing
+/// when no pin applies and the athlete holds `unpinned` like anyone else.
+fn remember_pinned_build(
+    ctx: &StableItemBuildContext<'_>,
+    unpinned: &[usize],
+) -> Option<Vec<usize>> {
     // Publishes the pin snapshot `pin_row` reads.
     build_config::load_cached();
     let mut row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
     row.resize(build_config::picker_slots(), None);
     let merged = build_config::merge_pin_row(&row, |key| ctx.item_index(key), ctx.base_build());
     if !merged.pinned.contains(&true) && merged.reserved.is_empty() {
-        return;
+        return None;
     }
     let later_open = build_config::later_slot_open(&row);
     let mut pinned = merged.items;
@@ -227,6 +248,56 @@ fn remember_pinned_build(ctx: &StableItemBuildContext<'_>, unpinned: &[usize]) {
         });
         build_config::remember_pinned_build(ctx.champion_key(), row, from, to);
     }
+    Some(pinned)
+}
+
+/// The build the player's athlete holds under `own_team_only` with Smart
+/// Builds off, where nothing is recorded for the spawn injector to swap in:
+/// the detours lay each pin over its own slot of the build they find. Nothing
+/// when no pin applies.
+fn pins_over(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> Option<Vec<usize>> {
+    // Publishes the pin snapshot `pin_row` reads.
+    build_config::load_cached();
+    let row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
+    let mut own = build.to_vec();
+    let mut pinned = false;
+    for (slot, item) in own.iter_mut().enumerate() {
+        let pin = row
+            .get(slot)
+            .and_then(Option::as_ref)
+            .and_then(|key| ctx.item_index(key));
+        if let Some(index) = pin {
+            *item = index;
+            pinned = true;
+        }
+    }
+    pinned.then_some(own)
+}
+
+/// Hands the build this champion ends up with to the in-match tactics panel
+/// ([`crate::match_builds`]), which shows both teams. Every match's builds
+/// pass through here and this cannot tell whose a build is, so all of them
+/// are noted and the panel picks its match out by lineup: `build` is what
+/// anyone playing the champion is handed, and `own` what the player's athlete
+/// is, where `own_team_only` makes that another build.
+fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize], own: Option<&[usize]>) {
+    let keys = |build: &[usize]| {
+        build
+            .iter()
+            .map(|&index| ctx.item_key(index).map(str::to_string))
+            .collect::<Option<Vec<String>>>()
+    };
+    let Some(shared) = keys(build) else {
+        return;
+    };
+    crate::match_builds::note_decision(
+        ctx.champion_key(),
+        ctx.lane().map(|lane| lane.code() as usize),
+        &ctx.ally_champions(),
+        &ctx.enemy_champions(),
+        shared,
+        own.and_then(keys),
+    );
 }
 
 /// The Smart Builds pass over a build the host handed us, with the catalog seen

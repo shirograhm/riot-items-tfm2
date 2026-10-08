@@ -68,9 +68,10 @@ pub(crate) mod sim;
 pub(crate) mod toolbox_tab;
 pub(crate) mod ui;
 
+use std::borrow::Cow;
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
-use std::sync::Mutex;
+use std::sync::{Mutex, OnceLock};
 
 use mod_api_stable::*;
 use serde_json::Value;
@@ -700,6 +701,17 @@ pub(crate) fn catalog() -> BTreeMap<String, ItemInfo> {
         .unwrap_or_default()
 }
 
+/// One of the game's own thirty items, by its key in the settings document
+/// (the mod draws it as Radiant Luden's Tempest). A settings document that
+/// describes it has the game's items in it, not only the ones mods registered.
+pub(crate) const A_GAME_ITEM: &str = "prophet_of_the_abyss";
+
+/// The game's finals that give attack, attack speed or ability power (the
+/// mod draws them as Radiant Bloodthirster, Phantom Dancer and Luden's
+/// Tempest): what [`prime_item_traits`] reports its readings of in the test
+/// log, since the rules were found holding blank records of them.
+const GAME_DAMAGE_FINALS: [&str; 3] = ["warlords_final_judgement", "storm_sovereign", A_GAME_ITEM];
+
 /// Frames between two tries of [`prime_item_traits`] while the settings
 /// document cannot be read: half a second at 60 frames a second.
 const TRAITS_RETRY_FRAMES: u32 = 30;
@@ -733,38 +745,296 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     let Ok(Value::Object(root)) = serde_json::from_str::<Value>(&json) else {
         return;
     };
-    let mut described = 0;
+    let mut games = false;
+    // For the test log: every object read under the key of one of the game's
+    // three damage finals, in the order the document has them.
+    let mut read: Vec<String> = Vec::new();
     each_item(
         &root,
         0,
         &mut |key: &str, object: &serde_json::Map<String, Value>| {
-            let stat = |name: &str| {
-                object
-                    .get("stat")
-                    .and_then(|stat| stat.get(name))
-                    .and_then(Value::as_i64)
-                    .unwrap_or(0) as i32
-            };
-            crate::smart_builds::note_engine_item(
-                key,
+            // The document's own object, for the log, then the numbers the
+            // game runs with ([`merged_item`]).
+            let in_document = object;
+            let object = merged_item(key, object);
+            let stat = |name: &str| item_stat(&object, name) as i32;
+            let (crit, attack, speed, power) = (
                 stat("crit_chance"),
                 stat("attack"),
                 stat("attack_speed_mult"),
                 stat("magic_power"),
             );
-            described += 1;
+            crate::smart_builds::note_engine_item(key, crit, attack, speed, power);
+            if GAME_DAMAGE_FINALS.contains(&key) {
+                read.push(format!(
+                    "{key}(document: stat block={} stat={:?} price={:?}; merged: crit={crit} attack={attack} speed={speed} power={power} price={:?})",
+                    in_document.contains_key("stat"),
+                    in_document.get("stat").map(|stat| {
+                        ["crit_chance", "attack", "attack_speed_mult", "magic_power"]
+                            .map(|name| stat.get(name).cloned().unwrap_or(Value::Null))
+                    }),
+                    in_document.get("price"),
+                    object.get("price"),
+                ));
+            }
+            // Read, and read with what it gives, in the document's own words
+            // and not the merged ones: a pass that found it with no ability
+            // power there has only seen the placeholder (see below).
+            games |= key == A_GAME_ITEM && item_stat(in_document, "magic_power") > 0;
         },
     );
-    // Nothing described means the document was not ready, not that the game
-    // has no items: try again.
-    if described > 0 {
+    crate::match_builds::log_stats("traits", || {
+        let buckets = match root.get("mod_items") {
+            Some(Value::Object(mods)) => format!("{:?}", mods.keys().take(12).collect::<Vec<_>>()),
+            Some(Value::Array(mods)) => format!("an array of {}", mods.len()),
+            Some(_) => "neither an object nor an array".to_string(),
+            None => "absent".to_string(),
+        };
+        format!(
+            "settled={games}; {} keys at the root; mod_items: {buckets}; {} items in the mod's own file; read: {}",
+            root.len(),
+            game_item_overrides().len(),
+            read.join(" ")
+        )
+    });
+    // Settled only once the document describes the game's own items with
+    // real numbers, however long that takes. What it holds before that, as
+    // the stats log caught it (2026-10-08): all thirty keys from the first
+    // frame, each with a stat block of zeros and a price of 0, and an empty
+    // `mod_items` array. So the keys being there says nothing. Settling on
+    // "the key is in it" settled on those placeholders and recorded blanks,
+    // which is how rule 5 came to let Luden's Tempest be an AD champion's
+    // 6th item and Bloodthirster an AP one's; settling on "something was
+    // described", or after two minutes of tries, had done no better. The
+    // game's items no longer wait on this at all (`prime_game_items`). What
+    // still does is whatever else the document comes to hold, other mods'
+    // items among it, which is why the pass goes on until it is real.
+    if games {
         PRIMED.store(true, Ordering::Relaxed);
+    }
+}
+
+/// The mod's own copy of the game's thirty items as it is on disk:
+/// `setting/item_setting.item_setting` beside the DLL, which `apply_config.ps1`
+/// writes from the player's config and `mod.override_info` has the game merge
+/// over its own. By the name each item has in the settings document, which
+/// is not always its key (`iron_blade` calls itself `ironsword`). Read once:
+/// the game loads it once too. Empty where it cannot be read.
+fn game_item_file() -> &'static serde_json::Map<String, Value> {
+    static FILE: OnceLock<serde_json::Map<String, Value>> = OnceLock::new();
+    FILE.get_or_init(|| {
+        let path = crate::config::mod_dir()
+            .join("setting")
+            .join("item_setting.item_setting");
+        match std::fs::read_to_string(path)
+            .ok()
+            .and_then(|text| serde_json::from_str(text.trim_start_matches('\u{feff}')).ok())
+        {
+            Some(Value::Object(root)) => root,
+            _ => serde_json::Map::new(),
+        }
+    })
+}
+
+/// [`game_item_file`] by item key.
+fn game_item_overrides() -> &'static HashMap<String, serde_json::Map<String, Value>> {
+    static OVERRIDES: OnceLock<HashMap<String, serde_json::Map<String, Value>>> = OnceLock::new();
+    OVERRIDES.get_or_init(|| {
+        let mut items = HashMap::new();
+        let mut note = |key: &str, object: &serde_json::Map<String, Value>| {
+            items.insert(key.to_string(), object.clone());
+        };
+        each_item(game_item_file(), 0, &mut note);
+        items
+    })
+}
+
+/// Whether [`sync_server_items`] writes anything. Off, it still reads and
+/// reports.
+const SYNC_SERVER_ITEMS: bool = true;
+
+/// Whether the server of the save now loaded has been through
+/// [`sync_server_items`].
+static SERVER_ITEMS_SYNCED: AtomicBool = AtomicBool::new(false);
+
+/// A new server: its item settings have not been looked at.
+pub(crate) fn server_started() {
+    SERVER_ITEMS_SYNCED.store(false, Ordering::Relaxed);
+}
+
+/// Whether two settings values say the same thing, a number being the same
+/// whether the host wrote it `50` or `50.0`.
+fn same_setting(a: &Value, b: &Value) -> bool {
+    match (a, b) {
+        (Value::Number(a), Value::Number(b)) => a.as_f64() == b.as_f64(),
+        (Value::Object(a), Value::Object(b)) => {
+            a.len() == b.len()
+                && a.iter().all(|(name, value)| {
+                    b.get(name).is_some_and(|other| same_setting(value, other))
+                })
+        }
+        (Value::Array(a), Value::Array(b)) => {
+            a.len() == b.len() && a.iter().zip(b).all(|(a, b)| same_setting(a, b))
+        }
+        _ => a == b,
+    }
+}
+
+/// Makes the server's item settings hold the mod's numbers for the game's
+/// thirty items: each item of the mod's settings file ([`game_item_file`]) is
+/// merged over what the server holds for it and written back where that
+/// changes anything. Once for each server, from its start and then from its
+/// ticks until its settings could be read.
+///
+/// The server's settings are the authoritative ones: the stable API calls
+/// them the game rule settings, which "affect matches created afterwards",
+/// and the client's settings document is its read-only view of them. That
+/// view gave the base game's numbers (Radiant Bloodthirster at 2000 gold and
+/// 100 attack, where the mod's file says 1000 and 50), on the mod's own
+/// tooltip and then on the game's own on the match result screen (the user,
+/// 2026-10-08), so the `merge` in `mod.override_info` cannot be relied on to
+/// have reached them. Whether matches were run on those numbers too is not
+/// known; this says what the server held, in the stats log, and from here on
+/// it holds the mod's either way.
+///
+/// A write the server refuses changes nothing there (its document must still
+/// deserialize), and is counted.
+pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
+    if SERVER_ITEMS_SYNCED.load(Ordering::Relaxed) {
+        return;
+    }
+    let (mut read, mut differed, mut written, mut refused) = (0, 0, 0, 0);
+    let mut before: Vec<String> = Vec::new();
+    for (name, over) in game_item_file() {
+        let Some(over) = over.as_object() else {
+            continue;
+        };
+        let held = ctx
+            .setting_get_json(SettingTargetV1::ItemSetting, name)
+            .and_then(|json| serde_json::from_str::<Value>(&json).ok());
+        let Some(Value::Object(held)) = held else {
+            continue;
+        };
+        read += 1;
+        if GAME_DAMAGE_FINALS.contains(&name.as_str()) {
+            before.push(format!(
+                "{name}(price={:?} attack={} speed={} power={})",
+                held.get("price"),
+                item_stat(&held, "attack"),
+                item_stat(&held, "attack_speed_mult"),
+                item_stat(&held, "magic_power"),
+            ));
+        }
+        let mut merged = held.clone();
+        merge_over(&mut merged, over);
+        let merged = Value::Object(merged);
+        if same_setting(&merged, &Value::Object(held)) {
+            continue;
+        }
+        differed += 1;
+        if !SYNC_SERVER_ITEMS {
+            continue;
+        }
+        if ctx.setting_set_json(SettingTargetV1::ItemSetting, name, &merged.to_string()) {
+            written += 1;
+        } else {
+            refused += 1;
+        }
+    }
+    // Nothing read: the server has no item settings to show yet, or the
+    // mod's file could not be read. The next tick asks again, which costs a
+    // file's worth of lookups in an empty map in the second case.
+    if read == 0 {
+        return;
+    }
+    SERVER_ITEMS_SYNCED.store(true, Ordering::Relaxed);
+    crate::match_builds::log_stats("server items", || {
+        format!(
+            "{read} read, {differed} unlike the mod's file, {written} written, {refused} refused; held before: {}",
+            before.join(" ")
+        )
+    });
+}
+
+/// One of an item's stats from its settings object, as a whole number: the
+/// host is free to write `50.0`. Nothing where the object has no such stat.
+pub(crate) fn item_stat(object: &serde_json::Map<String, Value>, name: &str) -> i64 {
+    object
+        .get("stat")
+        .and_then(|stat| stat.get(name))
+        .and_then(|value| {
+            value
+                .as_i64()
+                .or_else(|| value.as_f64().map(|value| value as i64))
+        })
+        .unwrap_or(0)
+}
+
+/// Hands the Smart Builds rules the game's own thirty items at start-up,
+/// straight from the mod's settings file ([`game_item_overrides`]): all of
+/// them, with the numbers the game runs with and the player's config in
+/// them.
+///
+/// The rules used to wait for the client's settings document to describe
+/// those items ([`prime_item_traits`]), which it only does around a match,
+/// with the base game's numbers, and which twice left the rules holding
+/// nothing or blanks (Luden's Tempest on AD champions, Bloodthirster on an AP
+/// one, both 2026-10-08). The file is on disk from the start and is the one
+/// place those numbers are written down, so it is read instead of a list of
+/// them being kept in the code (the user asked for the list; this is it,
+/// without a second copy to fall behind). `smart_builds::GAME_ITEMS` is what
+/// is left for a file that cannot be read.
+pub(crate) fn prime_game_items() {
+    for (key, object) in game_item_overrides() {
+        let stat = |name: &str| item_stat(object, name) as i32;
+        crate::smart_builds::note_engine_item(
+            key,
+            stat("crit_chance"),
+            stat("attack"),
+            stat("attack_speed_mult"),
+            stat("magic_power"),
+        );
+    }
+}
+
+/// Writes `over` onto `base` the way a `merge` override does: field by field,
+/// objects merged in turn, anything else replaced.
+fn merge_over(base: &mut serde_json::Map<String, Value>, over: &serde_json::Map<String, Value>) {
+    for (name, value) in over {
+        if let (Some(Value::Object(below)), Value::Object(above)) = (base.get_mut(name), value) {
+            merge_over(below, above);
+            continue;
+        }
+        base.insert(name.clone(), value.clone());
+    }
+}
+
+/// One item's settings as the game holds them, from its `object` in the
+/// client's settings document.
+///
+/// For the game's own thirty items that document gives the base game's
+/// numbers, not what the mod's file makes of them: the Check Tactics tooltip
+/// showed Radiant Bloodthirster at 2000 gold and 100 attack, where the game
+/// charges 1000 for 50 (the user, 2026-10-08). So the mod's file is merged
+/// over the object here, as the game does it. An item the file does not
+/// have, which is every mod's own, comes back as it is.
+pub(crate) fn merged_item<'a>(
+    key: &str,
+    object: &'a serde_json::Map<String, Value>,
+) -> Cow<'a, serde_json::Map<String, Value>> {
+    match game_item_overrides().get(key) {
+        Some(over) => {
+            let mut merged = object.clone();
+            merge_over(&mut merged, over);
+            Cow::Owned(merged)
+        }
+        None => Cow::Borrowed(object),
     }
 }
 
 /// Calls `visit` with the key and the settings object of every item under
 /// `map`, the root of the settings document at `depth` 0.
-fn each_item(
+pub(crate) fn each_item(
     map: &serde_json::Map<String, Value>,
     depth: usize,
     visit: &mut dyn FnMut(&str, &serde_json::Map<String, Value>),
