@@ -784,35 +784,12 @@ fn with_state<T>(f: impl FnOnce(&mut EditorState) -> T) -> Option<T> {
 /// decides whether an item has art in the icon sheet.
 static MOD_FINALS: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
-/// Engine category per entry of [`MOD_FINALS`], as an `ItemCategoryV1` code.
-///
-/// Kept beside the keys rather than in `item_catalog`, whose classes are the
-/// mod's own finer grouping for the picker (`Marksman`, `Mage`, …) and not what
-/// the engine sorts items by. `tactics` needs the engine's answer, because that
-/// is the category the item-build hook de-duplicates within — matching it is
-/// what stops a de-duplicated 4th item changing what kind of item it is.
-static MOD_FINAL_CATEGORIES: Mutex<Vec<(String, u32)>> = Mutex::new(Vec::new());
-
-/// Records one of the mod's final (radiant) items and its engine category.
-/// Called from the registration macros in `lib.rs`.
-pub(crate) fn note_final_item(key: &str, category: ItemCategoryV1) {
+/// Records one of the mod's final (radiant) items. Called from the
+/// registration macros in `lib.rs`.
+pub(crate) fn note_final_item(key: &str) {
     if let Ok(mut finals) = MOD_FINALS.lock() {
         finals.push(key.to_string());
     }
-    if let Ok(mut categories) = MOD_FINAL_CATEGORIES.lock() {
-        categories.push((key.to_string(), category.code()));
-    }
-}
-
-/// The engine category of one of the mod's final items, or `None` for a key the
-/// mod did not register.
-pub(crate) fn mod_item_category(key: &str) -> Option<u32> {
-    MOD_FINAL_CATEGORIES
-        .lock()
-        .ok()?
-        .iter()
-        .find(|(candidate, _)| candidate == key)
-        .map(|(_, category)| *category)
 }
 
 /// Paths that already have a handler, so none is ever registered twice.

@@ -79,8 +79,9 @@ pub fn db_addr() -> usize {
 /// to look again — which is right within a session and wrong across one. The
 /// `Database` does not survive a return to the main menu, so without this the
 /// mod spent every session after the first holding the address of a freed
-/// object. It did not crash, because `itemnet_forward` re-checks the weight
-/// pointer on every call, but that check only *skips* the neural 4th-item pick
+/// object. It did not crash, because the scorer wrapper of the time re-checked
+/// the weight pointer on every call, but that check only *skipped* the neural
+/// 4th-item pick
 /// — so it silently fell back to the champion-hash vanilla choice for the whole
 /// second session, and every session after it.
 pub fn reset_session() {
@@ -127,8 +128,9 @@ pub unsafe fn ui_root() -> Option<&'static mut Node> {
 /// So the three addresses that path needs were re-derived against the
 /// release and this is `false` again. **Everything else stays inert**, and
 /// through gates that already existed rather than new ones: `slot_count()`
-/// is pinned at 3, which is what the four 3 -> 4 byte patches, the build
-/// extension, the slot-3 icon and `uinj::MODE4` are all keyed on;
+/// is pinned at 3, which is what the slot-3 icon is keyed on (the 3 -> 4
+/// byte patches it also gated were removed on 2026-10-07, and `tactics_init`
+/// pins `uinj::MODE4` off);
 /// `UI_INJECT_ENABLED` and `SPAWN_INJECT_ENABLED` are off in `super`, each
 /// with its reason recorded there.
 ///
