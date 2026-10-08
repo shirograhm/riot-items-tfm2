@@ -762,11 +762,9 @@ fn apply_training_builds(
     let config = build_config::load_cached();
     // Unique enforcement is not a property of the editor's builds - the stable
     // hook runs it over the engine's own `base_build` too - so an empty config
-    // is only a reason to skip the rewrite below, not a reason to return.
+    // is only a reason to skip the rewrite below, not a reason to return. Nor
+    // is the toggle being off: jungle items stay in the jungle either way.
     let smart = build_config::smart_builds_enabled();
-    if config.is_empty() && !smart {
-        return;
-    }
 
     // `to_string` rather than a borrow: `ItemInfo::key` is reached through the
     // classic rlib, and this runs a few hundred times per training match - once
@@ -774,6 +772,7 @@ fn apply_training_builds(
     // over.
     let index_of = |key: &str| items.iter().position(|item| item.key().to_string() == key);
     let enemies: Vec<&str> = team2.iter().map(|(_, champion)| champion.as_str()).collect();
+    let allies: Vec<&str> = team1.iter().map(|(_, champion)| champion.as_str()).collect();
 
     for (position, route) in routes.iter_mut().enumerate() {
         let Some((_, champion)) = team1.get(position) else {
@@ -799,6 +798,19 @@ fn apply_training_builds(
             let boots = index_of(boots_key);
             let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
             enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
+        } else {
+            let fit = crate::smart_builds::fit(champion, role);
+            keep_jungle_items_in_jungle(items, route, &pinned, &reserved, fit);
+        }
+
+        // For the in-match tactics panel (`crate::match_builds`), which shows
+        // the player's five; the stable hook notes league matches the same way.
+        let keys = route
+            .iter()
+            .map(|&index| items.get(index).map(|item| item.key().to_string()))
+            .collect::<Option<Vec<String>>>();
+        if let Some(keys) = keys {
+            crate::match_builds::note_decision(champion, position, &allies, &enemies, keys);
         }
     }
 }
@@ -858,6 +870,35 @@ fn enforce_smart_build(
         |index| {
             // Bound rather than chained: `base_slug` borrows the key, and only
             // the `&'static str` that `category_of` returns outlives this block.
+            let key = items.get(index)?.key().to_string();
+            crate::item_catalog::category_of(build_config::base_slug(&key))
+        },
+        |index| {
+            items
+                .get(index)
+                .is_some_and(|item| item.next_tier().is_empty())
+        },
+    );
+}
+
+/// The training-screen twin of the stable hook's pass of the same name: Smart
+/// Builds rule 8's role half, which holds with the toggle off. The catalog is
+/// seen the way [`enforce_smart_build`] sees it, for the reasons given there.
+fn keep_jungle_items_in_jungle(
+    items: &[Box<dyn ItemInfo>],
+    build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
+    fit: crate::smart_builds::Fit,
+) {
+    crate::smart_builds::keep_jungle_items_in_jungle(
+        items.len(),
+        build,
+        pinned,
+        reserved,
+        fit,
+        |index| items.get(index).map(|item| item.key().to_string()),
+        |index| {
             let key = items.get(index)?.key().to_string();
             crate::item_catalog::category_of(build_config::base_slug(&key))
         },

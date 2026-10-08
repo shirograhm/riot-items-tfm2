@@ -593,7 +593,7 @@ pub fn has_pins(champion: &str) -> bool {
     let (role, known) = lane_for_champion(champion);
     pins().is_some_and(|pins| {
         pin_entry(&pins, champion, role, known)
-            .is_some_and(|build| build.iter().any(Option::is_some))
+            .is_some_and(|build| build.iter().any(|pin| pin_in_role(pin, role).is_some()))
     })
 }
 
@@ -605,11 +605,35 @@ pub fn has_pins(champion: &str) -> bool {
 /// [`remember_pinned_build`]). Both sides know the real lane — the hook is
 /// told it, the detours read it off the athlete ([`set_athlete_lane`]) — so
 /// they pick the same row. `role` is [`Role::Any`] when the host did not say,
-/// and then the lane is not known.
+/// and then the lane is not known. A jungle item pinned off the jungle is
+/// blank here, as it is for the detours ([`pin_in_role`]).
 pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
     pins()
-        .and_then(|pins| pin_entry(&pins, champion, role, role != Role::Any).cloned())
+        .and_then(|pins| {
+            pin_entry(&pins, champion, role, role != Role::Any).map(|row| {
+                row.iter()
+                    .map(|pin| pin_in_role(pin, role).cloned())
+                    .collect::<Vec<_>>()
+            })
+        })
         .unwrap_or_default()
+}
+
+/// A pin as it applies to a champion played in `role`. A jungle item (Smart
+/// Builds rule 8) is pinned for the jungle only: it grows on monster kills,
+/// and a build written for a champion's jungle games otherwise follows the
+/// champion into every lane it is played in, on both teams wherever a build
+/// reaches both (every scrim and solo rank does). Anywhere else the slot is
+/// blank, the AI's to fill. A role nobody stated ([`Role::Any`]) is not the
+/// jungle, the same line `smart_builds::fit` draws.
+///
+/// Every reader of a pin goes through this: the stable hook and the
+/// training detour ([`build_for_champion`], [`pin_row`]) and the spawn and buy
+/// detours ([`pinned_key_raw`]). They must agree, or the pin-aware build the
+/// hook records would not be the one the spawn injector looks up.
+fn pin_in_role(pin: &Option<String>, role: Role) -> Option<&String> {
+    pin.as_ref()
+        .filter(|key| role == Role::Jungle || !crate::smart_builds::is_jungle_item(key.as_str()))
 }
 
 /// [`build_entry`] over the pin snapshot: the role's build first, `Any` second,
@@ -1022,7 +1046,7 @@ pub fn pinned_build(champion: &str, row: &[Option<String>], from: &[String]) -> 
 pub fn pinned_key_raw(champion: &str, slot: usize) -> Option<String> {
     let pins = pins()?;
     let (role, known) = lane_for_champion(champion);
-    pin_entry(&pins, champion, role, known)?.get(slot)?.clone()
+    pin_in_role(pin_entry(&pins, champion, role, known)?.get(slot)?, role).cloned()
 }
 
 /// The pinned item for one slot, normalized the way [`resolve_key`] normalizes
@@ -1230,7 +1254,11 @@ pub fn build_for_champion(
     ai_build: &[usize],
 ) -> Option<MergedBuild> {
     let build = build_entry(config, champion, role)?;
-    Some(merge_pin_row(build, resolve, ai_build))
+    let row: Vec<Option<String>> = build
+        .iter()
+        .map(|pin| pin_in_role(pin, role).cloned())
+        .collect();
+    Some(merge_pin_row(&row, resolve, ai_build))
 }
 
 /// A pin row merged into the engine's build: each pin in its slot, the

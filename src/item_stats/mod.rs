@@ -764,7 +764,7 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
 
 /// Calls `visit` with the key and the settings object of every item under
 /// `map`, the root of the settings document at `depth` 0.
-fn each_item(
+pub(crate) fn each_item(
     map: &serde_json::Map<String, Value>,
     depth: usize,
     visit: &mut dyn FnMut(&str, &serde_json::Map<String, Value>),

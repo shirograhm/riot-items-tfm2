@@ -57,6 +57,8 @@ Pick any item for any champion, in-game:
 
 Use the [b]filter by champion[/b] box to find champions in a long list (separate several with commas). After a draft, [b]Blue Team[/b] and [b]Red Team[/b] under the Matchup card fill the box with that side's champions. Builds save automatically to [b]item-builds.json[/b] and carry across sessions. [b]Save Item Builds[/b] saves manually.  
 
+During a match, [b]Check Tactics[/b] shows your players' builds as icons: a teal border for an item you pinned, a grey one for an item the AI picked. Hover an icon for its price, stats and effect. The 5th and 6th slots only show items you pinned, since the AI picks those during the match.  
+
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] cleans up the AI's picks. The following items are swapped for another item of the same category:
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
@@ -69,7 +71,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 - items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion (Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn only get built on marksmen).
 - additionally, supports get a World Atlas item in the first slot: Zaz'Zak's Realmspike for mages, Dream Maker for supports that heal, shield or buff allies, Celestial Opposition for tanks, Solstice Sleigh for others that immobilize, Zaz'Zak's Realmspike for other AP supports, and Bloodsong for the rest.  
 
-Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
+Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free. The one exception is jungle items, which only junglers build: a jungle item you pin is skipped when that champion plays another role, and the AI never builds one in a lane even with Allow Any Builds.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  

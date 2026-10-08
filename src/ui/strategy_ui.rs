@@ -3868,6 +3868,11 @@ impl StableExtension for StrategyPicker {
         // that screen this is one failed lookup.
         perf::time(Section::FrameDraftWatch, || draft_watch::sync(ctx));
 
+        // The player's builds in the in-match Check Tactics panel. Unconditional
+        // because that screen is not this one; outside a match it is one failed
+        // lookup.
+        crate::match_builds::sync(ctx);
+
         // Everything from here to whichever return this frame takes.
         let _editor = perf::Probe::start(Section::FrameEditor);
 
@@ -3896,8 +3901,9 @@ impl StableExtension for StrategyPicker {
         if !ctx.ui_exists(BUILDS_TAB) {
             // Not on the (patched) strategy screen: forget the spawned panel so
             // the next match reinstalls it into the fresh screen.
-            let stale = with_state(|state| {
+            let (stale, drafted) = with_state(|state| {
                 let stale = state.wired;
+                let drafted = state.side_ids.clone();
                 state.wired = false;
                 state.modal_ready = false;
                 state.spawned_rows.clear();
@@ -3913,15 +3919,18 @@ impl StableExtension for StrategyPicker {
                 state.info_probe_tick = 0;
                 state.info_showing = false;
                 state.showing = false;
-                stale
+                (stale, drafted)
             })
-            .unwrap_or(false);
+            .unwrap_or_default();
             if stale {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
                 forget_registrations();
-                // The lineup that screen was for has gone into its match. The
-                // next strategy screen gets the draft before it, or no cells.
+                // The lineup that screen was for has gone into its match, where
+                // the Check Tactics panel picks the player's builds out by it.
+                // The next strategy screen gets the draft before it, or no
+                // cells.
+                crate::match_builds::note_lineup(drafted);
                 draft_watch::forget();
             }
 

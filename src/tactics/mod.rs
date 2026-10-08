@@ -2924,9 +2924,14 @@ unsafe fn auto_extra_pick(
     };
     network_pick(ctx, buyer, champ, si, taken, &spoken, &allowed)
         .or_else(|| pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed))
-        // Last resort, deliberately unconstrained: a 5th item that breaks a rule
-        // still beats an empty slot.
-        .or_else(|| pick_candidate(ctx, u64::MAX, &spoken, champ, |_| true))
+        // Last resort, unconstrained but for the one rule that holds even
+        // here: a 5th item that breaks a rule still beats an empty slot, a
+        // jungle item on a champion that is not jungling does not.
+        .or_else(|| {
+            pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
+                !fit.off_role_jungle_item(candidate)
+            })
+        })
 }
 
 /// What the item network's lineup table holds for a seat nobody is in.

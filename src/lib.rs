@@ -25,7 +25,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
-pub(crate) use ui::{solo_rank_ui, strategy_ui};
+pub(crate) use ui::{match_builds, solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
@@ -303,6 +303,7 @@ fn init(host: &StableHost) -> StableMod {
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
+            match_builds::note_mod_item($key, &item);
             perf::timed($key, item)
         }};
     }
@@ -334,6 +335,7 @@ fn init(host: &StableHost) -> StableMod {
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
+            match_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key);
             perf::timed($key, item)
         }};

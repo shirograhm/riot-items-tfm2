@@ -43,7 +43,11 @@
 //! 8. **Jungle items stay in the jungle, one to a build** — Feral Flare,
 //!    Grez's Spectral Lantern and Philosopher's Stone ([`JUNGLE_ITEMS`]) grow
 //!    on monster kills, which only the jungle role gets, so only whoever plays
-//!    jungle keeps them. And a jungler is suggested one, the one for its
+//!    jungle keeps them. That half is not the toggle's to switch off, and no
+//!    pin's to override: off the jungle a pinned jungle item is a blank slot
+//!    (`build_config::pin_in_role`), an AI pick makes way with the toggle off
+//!    too ([`keep_jungle_items_in_jungle`]), and no automatic 5th or 6th item
+//!    is one. And a jungler is suggested one, the one for its
 //!    champion: Philosopher's Stone on a champion tagged `Tank`, else Feral
 //!    Flare or Grez's by damage type (rule 5). The AI's other jungle items
 //!    make way, all of them when the player pinned one: a pin is that build's
@@ -539,6 +543,12 @@ impl Fit {
         }
     }
 
+    /// Rule 8: whether `key` is a jungle item and this champion is not
+    /// jungling. The one test even a last-resort pick is held to.
+    pub(crate) fn off_role_jungle_item(&self, key: &str) -> bool {
+        !self.jungle_items && is_jungle_item(key)
+    }
+
     /// Rule 8, for a jungler: whether `key` is a jungle item other than the
     /// one its champion builds — a damage item on a tank, Philosopher's Stone
     /// on anyone else. Which of the two damage items is rule 5's to say.
@@ -862,7 +872,7 @@ const JUNGLE_ITEMS: [&str; 3] = [
 const PHILOSOPHERS_STONE: &str = "philosophers_stone";
 
 /// Whether `key` is one of [`JUNGLE_ITEMS`], base or radiant.
-fn is_jungle_item(key: &str) -> bool {
+pub(crate) fn is_jungle_item(key: &str) -> bool {
     JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
@@ -970,7 +980,7 @@ impl Budget {
         let traits = self.table.traits(key);
         if !self.fit.support_items && is_support_item(key) {
             Some(Reason::SupportOnly)
-        } else if !self.fit.jungle_items && is_jungle_item(key) {
+        } else if self.fit.off_role_jungle_item(key) {
             Some(Reason::JungleOnly)
         } else if self.fit.other_jungle_item(key) {
             Some(Reason::JungleMismatch)
@@ -1020,7 +1030,7 @@ impl Budget {
     /// guide to the build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
-            && !(!self.fit.jungle_items && is_jungle_item(key))
+            && !self.fit.off_role_jungle_item(key)
             && !self.fit.other_jungle_item(key)
             && !self.fit.other_atlas_item(key)
             && !(self.fit.no_mandate && is_mandate(key))
@@ -1052,6 +1062,68 @@ impl Budget {
     }
 }
 
+/// Rule 8's role half on its own, for a build the full pass is not run over
+/// because the toggle is off. Jungle items only grow on monster kills, so a
+/// laner holding one is not a matter of taste the way the other rules are.
+///
+/// A jungle item in an AI slot of a champion that is not jungling makes way
+/// for the next final of its category the champion may hold at all
+/// ([`Budget::empty`], the line the item-build hook's `score_item` draws with
+/// the toggle off), or failing that the next such final of any category.
+/// Nothing else about the build is judged. Pinned slots are skipped: a jungle
+/// item pinned off the jungle never reaches a build
+/// (`build_config::pin_in_role`). The arguments are [`enforce`]'s.
+pub(crate) fn keep_jungle_items_in_jungle<C, K, G, F>(
+    count: usize,
+    build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
+    fit: Fit,
+    key: K,
+    category: G,
+    is_final: F,
+) where
+    C: PartialEq,
+    K: Fn(usize) -> Option<String>,
+    G: Fn(usize) -> Option<C>,
+    F: Fn(usize) -> bool,
+{
+    if fit.jungle_items || count == 0 {
+        return;
+    }
+    let suits = Budget::empty(fit);
+    for position in 0..build.len() {
+        if pinned.get(position).copied().unwrap_or(false) {
+            continue;
+        }
+        let offender = build[position];
+        if !key(offender).is_some_and(|key| is_jungle_item(&key)) {
+            continue;
+        }
+        let stand_in = {
+            let wanted = category(offender);
+            let search = |same_category: bool| {
+                (1..count)
+                    .map(|step| (offender + step) % count)
+                    .find(|&candidate| {
+                        !build.contains(&candidate)
+                            && !reserved.contains(&candidate)
+                            && is_final(candidate)
+                            && (!same_category
+                                || (wanted.is_some() && category(candidate) == wanted))
+                            && key(candidate).is_some_and(|candidate| {
+                                !is_boots(&candidate) && suits.rejects(&candidate).is_none()
+                            })
+                    })
+            };
+            search(true).or_else(|| search(false))
+        };
+        if let Some(stand_in) = stand_in {
+            build[position] = stand_in;
+        }
+    }
+}
+
 /// Rewrites `build` in place so that it breaks none of the eight rules, as far as
 /// the catalog allows.
 ///
@@ -1060,7 +1132,9 @@ impl Budget {
 /// wraps the catalog from the offending index, which is the walk the unique-items
 /// rule has always used. A slot with no such stand-in — an unknown category, or a
 /// category with nothing left in it — is left alone and counted, because it is in
-/// the build either way.
+/// the build either way. A jungle item off the jungle is the exception (rule
+/// 8): with nothing in its own category it makes way for the build's style,
+/// then for anything the champion may hold.
 ///
 /// For the two rules about the champion ([`Reason::restyles`]) "the same
 /// category" is the build's, not the item's: the categories of the build's other
@@ -1244,13 +1318,32 @@ pub(crate) fn enforce<C, K, G, F>(
                     // The category must be known: matching `None` against
                     // `None` would swap the slot for any item the caller could
                     // not classify.
-                    match category(offender) {
-                        None => offender,
-                        Some(wanted) => {
-                            search(&|candidate| category(candidate).as_ref() == Some(&wanted))
-                                .unwrap_or(offender)
-                        }
-                    }
+                    let own_category = category(offender).and_then(|wanted| {
+                        search(&|candidate| category(candidate).as_ref() == Some(&wanted))
+                    });
+                    // A jungle item off the jungle goes even when its category
+                    // has nothing for the champion, which is every time it
+                    // also fails rule 5: all the attack speed finals give
+                    // attack speed, so Feral Flare on a mage in lane found no
+                    // stand-in and stayed (another mod's Ryze, top,
+                    // 2026-10-07), and Grez's on an AD laner the same among
+                    // the magic ones. It then follows the build's style, like
+                    // rule 5's, and only then any category.
+                    let elsewhere = || {
+                        (reason == Reason::JungleOnly)
+                            .then(|| {
+                                styles
+                                    .iter()
+                                    .find_map(|style| {
+                                        search(&|candidate| {
+                                            category(candidate).as_ref() == Some(style)
+                                        })
+                                    })
+                                    .or_else(|| search(&|_| true))
+                            })
+                            .flatten()
+                    };
+                    own_category.or_else(elsewhere).unwrap_or(offender)
                 }
             }
         };

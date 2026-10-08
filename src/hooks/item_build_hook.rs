@@ -98,6 +98,9 @@ impl StableItemBuildHook for ConfiguredBuilds {
             reserved: Vec::new(),
         });
         let mut build = merged.items;
+        // What the player's athlete on this champion holds, where that is not
+        // `build`: the pin-aware twin `own_team_only` keeps back from the enemy.
+        let mut own = None;
 
         if build_config::smart_builds_enabled() {
             // Under `own_team_only` this build reaches both teams, so it must
@@ -113,9 +116,16 @@ impl StableItemBuildHook for ConfiguredBuilds {
                 ));
             enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved, later_open);
             if own_team_only {
-                remember_pinned_build(ctx, &build);
+                own = remember_pinned_build(ctx, &build);
+            }
+        } else {
+            // The one rule the toggle does not switch off.
+            keep_jungle_items_in_jungle(ctx, &mut build, &merged.pinned, &merged.reserved);
+            if own_team_only {
+                own = pins_over(ctx, &build);
             }
         }
+        note_for_match_panel(ctx, own.as_deref().unwrap_or(&build));
 
         if build.is_empty() || build == base {
             Vec::new()
@@ -195,14 +205,20 @@ fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
 /// `tactics::spawn_paste_pinned_build` to swap in — which it does only for the
 /// player's own athletes — and keyed by the pin row it was made from, the one
 /// the detours read ([`build_config::pin_row`]).
-fn remember_pinned_build(ctx: &StableItemBuildContext<'_>, unpinned: &[usize]) {
+///
+/// Returns the pin-aware build, for the in-match tactics panel to show; nothing
+/// when no pin applies and the athlete holds `unpinned` like anyone else.
+fn remember_pinned_build(
+    ctx: &StableItemBuildContext<'_>,
+    unpinned: &[usize],
+) -> Option<Vec<usize>> {
     // Publishes the pin snapshot `pin_row` reads.
     build_config::load_cached();
     let mut row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
     row.resize(build_config::picker_slots(), None);
     let merged = build_config::merge_pin_row(&row, |key| ctx.item_index(key), ctx.base_build());
     if !merged.pinned.contains(&true) && merged.reserved.is_empty() {
-        return;
+        return None;
     }
     let later_open = build_config::later_slot_open(&row);
     let mut pinned = merged.items;
@@ -227,6 +243,75 @@ fn remember_pinned_build(ctx: &StableItemBuildContext<'_>, unpinned: &[usize]) {
         });
         build_config::remember_pinned_build(ctx.champion_key(), row, from, to);
     }
+    Some(pinned)
+}
+
+/// The build the player's athlete holds under `own_team_only` with Smart
+/// Builds off, where nothing is recorded for the spawn injector to swap in:
+/// the detours lay each pin over its own slot of the build they find. Nothing
+/// when no pin applies.
+fn pins_over(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> Option<Vec<usize>> {
+    // Publishes the pin snapshot `pin_row` reads.
+    build_config::load_cached();
+    let row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
+    let mut own = build.to_vec();
+    let mut pinned = false;
+    for (slot, item) in own.iter_mut().enumerate() {
+        let pin = row
+            .get(slot)
+            .and_then(Option::as_ref)
+            .and_then(|key| ctx.item_index(key));
+        if let Some(index) = pin {
+            *item = index;
+            pinned = true;
+        }
+    }
+    pinned.then_some(own)
+}
+
+/// Hands the build this champion ends up with to the in-match tactics panel
+/// ([`crate::match_builds`]), which shows the player's five. Every match's
+/// builds pass through here and this cannot tell which are the player's, so
+/// all of them are noted and the panel picks its match out by lineup.
+fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize]) {
+    let Some(lane) = ctx.lane() else {
+        return;
+    };
+    let keys = build
+        .iter()
+        .map(|&index| ctx.item_key(index).map(str::to_string))
+        .collect::<Option<Vec<String>>>();
+    let Some(keys) = keys else {
+        return;
+    };
+    crate::match_builds::note_decision(
+        ctx.champion_key(),
+        lane.code() as usize,
+        &ctx.ally_champions(),
+        &ctx.enemy_champions(),
+        keys,
+    );
+}
+
+/// Smart Builds rule 8's role half, which holds with the toggle off: an AI
+/// pick that is a jungle item makes way on a champion that is not jungling.
+/// See [`smart_builds::keep_jungle_items_in_jungle`].
+fn keep_jungle_items_in_jungle(
+    ctx: &StableItemBuildContext<'_>,
+    build: &mut [usize],
+    pinned: &[bool],
+    reserved: &[usize],
+) {
+    smart_builds::keep_jungle_items_in_jungle(
+        ctx.item_count(),
+        build,
+        pinned,
+        reserved,
+        champion_fit(ctx),
+        |index| ctx.item_key(index).map(str::to_string),
+        |index| ctx.item_category(index),
+        |index| is_selectable_final(ctx, index),
+    );
 }
 
 /// The Smart Builds pass over a build the host handed us, with the catalog seen
