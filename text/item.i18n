@@ -298,11 +298,11 @@
         },
         "unending_despair": {
             "name": "Unending Despair",
-            "option": "\n<#ff7a3eff>Anguish<>: Landing an Ability on an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>35<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "\n<#ff7a3eff>Anguish<>: Landing an Ability on an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>15<> + <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "radiant_unending_despair": {
             "name": "Radiant Unending Despair",
-            "option": "\n<#ff7a3eff>Anguish<>: Landing an Ability on an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>50<> + <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "\n<#ff7a3eff>Anguish<>: Landing an Ability on an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>20<> + <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
@@ -1416,11 +1416,11 @@
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
-            "option": "\n<#ff7a3eff>Thống khổ<>: Kĩ năng trúng bạn sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>35<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
+            "option": "\n<#ff7a3eff>Thống khổ<>: Kĩ năng trúng bạn sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>15<> + <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
         },
         "radiant_unending_despair": {
             "name": "Áo Choàng Diệt Vong Ánh Sáng",
-            "option": "\n<#ff7a3eff>Thống khổ<>: Kĩ năng trúng bạn sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>50<> + <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
+            "option": "\n<#ff7a3eff>Thống khổ<>: Kĩ năng trúng bạn sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>20<> + <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
         },
         "blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong",
@@ -2534,11 +2534,11 @@
         },
         "unending_despair": {
             "name": "无终恨意",
-            "option": "\n<#ff7a3eff>苦楚<>：技能命中时，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>35<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的生命值。"
+            "option": "\n<#ff7a3eff>苦楚<>：技能命中时，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的生命值。"
         },
         "radiant_unending_despair": {
             "name": "光明版无终恨意",
-            "option": "\n<#ff7a3eff>苦楚<>：技能命中时，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>50<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值。"
+            "option": "\n<#ff7a3eff>苦楚<>：技能命中时，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>20<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值。"
         },
         "blade_of_the_ruined_king": {
             "name": "破败王者之刃",
@@ -3652,11 +3652,11 @@
         },
         "unending_despair": {
             "name": "Desespero Eterno",
-            "option": "\n<#ff7a3eff>Angústia<>: Suas mágias <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te curam<> em <#60e84dff>35<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+            "option": "\n<#ff7a3eff>Angústia<>: Suas mágias <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te curam<> em <#60e84dff>15<> + <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "radiant_unending_despair": {
             "name": "Desespero Eterno Radiante",
-            "option": "\n<#ff7a3eff>Angústia<>: Suas mágias <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te curam<> em <#60e84dff>50<> + <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+            "option": "\n<#ff7a3eff>Angústia<>: Suas mágias <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te curam<> em <#60e84dff>20<> + <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído",
@@ -4770,11 +4770,11 @@
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",
-            "option": "\n<#ff7a3eff>Страдание<>: Попадания умениями <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают вам<> <#60e84dff>35<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+            "option": "\n<#ff7a3eff>Страдание<>: Попадания умениями <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают вам<> <#60e84dff>15<> + <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "radiant_unending_despair": {
             "name": "Лучезарное Бесконечное Отчаяние",
-            "option": "\n<#ff7a3eff>Страдание<>: Попадания умениями <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают вам<> <#60e84dff>50<> + <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+            "option": "\n<#ff7a3eff>Страдание<>: Попадания умениями <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают вам<> <#60e84dff>20<> + <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Клинок падшего короля",
@@ -5888,11 +5888,11 @@
         },
         "unending_despair": {
             "name": "끝없는 절망",
-            "option": "\n<#ff7a3eff>고뇌<>: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>35<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
+            "option": "\n<#ff7a3eff>고뇌<>: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
         },
         "radiant_unending_despair": {
             "name": "찬란한 끝없는 절망",
-            "option": "\n<#ff7a3eff>고뇌<>: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>50<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
+            "option": "\n<#ff7a3eff>고뇌<>: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>20<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
         },
         "blade_of_the_ruined_king": {
             "name": "몰락한 왕의 검",

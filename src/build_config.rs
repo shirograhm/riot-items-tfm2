@@ -494,6 +494,18 @@ pub fn champion_roster() -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// Where `champion` stands in the recorded roster, which is the id the game's
+/// item network knows it by: `get_item_builds_list` turns each lineup entry
+/// into its index in this same list before it scores anything. `None` until
+/// the first match simulates.
+pub fn champion_roster_index(champion: &str) -> Option<usize> {
+    CHAMPION_ROSTER
+        .lock()
+        .ok()?
+        .iter()
+        .position(|key| key == champion)
+}
+
 /// Size of the recorded roster, for a per-frame caller that only needs to
 /// know whether it grew and should not copy it to find out.
 pub fn champion_roster_len() -> usize {
