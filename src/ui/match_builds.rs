@@ -215,7 +215,14 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 /// Whether `match-builds.log` is written beside the DLL: how each match was
 /// identified, a line whenever an answer changes. On while this is being
 /// tried in game. Turn it off before a release.
-const LOG: bool = true;
+const LOG: bool = false;
+
+/// Whether the stats lines are written to the same file even so: `traits:`,
+/// what `item_stats::prime_item_traits` read of the game's damage items and
+/// what it made of them, and `server items:`, what the server's item
+/// settings held when the mod went over them. On at the user's word
+/// (2026-10-08) with the rest off. A few lines a session.
+const STATS_LOG: bool = true;
 
 /// Lines written in one session at most.
 const LOG_LINES: usize = 600;
@@ -230,11 +237,20 @@ struct TestLog {
 static TEST_LOG: Mutex<Option<TestLog>> = Mutex::new(None);
 
 /// Appends `text` under `key`, unless it is what that key last said.
-pub(crate) fn log(key: &str, text: impl FnOnce() -> String) {
-    if !LOG {
-        return;
+fn log(key: &str, text: impl FnOnce() -> String) {
+    if LOG {
+        write_log(key, text());
     }
-    let text = text();
+}
+
+/// A stats line, under its own switch ([`STATS_LOG`]).
+pub(crate) fn log_stats(key: &str, text: impl FnOnce() -> String) {
+    if STATS_LOG {
+        write_log(key, text());
+    }
+}
+
+fn write_log(key: &str, text: String) {
     let Ok(mut guard) = TEST_LOG.lock() else {
         return;
     };

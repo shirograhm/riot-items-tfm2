@@ -203,8 +203,10 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
 struct NativeTapExtension;
 
 impl StableServerExtension for NativeTapExtension {
-    fn before_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
+    fn before_management_tick(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::before_management_tick();
+        // One atomic load once the server's item settings have been seen to.
+        item_stats::sync_server_items(ctx);
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
@@ -216,8 +218,12 @@ impl StableServerExtension for NativeTapExtension {
         // a match between.
     }
 
-    fn on_server_start(&self, _ctx: &mut StableServerCtx<'_>) {
+    fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
+        // The mod's numbers for the game's own thirty items, into this
+        // server's item settings, before it creates a match.
+        item_stats::server_started();
+        item_stats::sync_server_items(ctx);
 
         match hook::install_hook() {
             Ok(address) => {
