@@ -64,14 +64,14 @@ During a match, you can see both sides' planned builds using the [b]Check Tactic
 - duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
 - 1 boots item per player in the second slot (unless pinned elsewhere in the build)
-- support items (except Protoplasm Harness) outside the support role. tank supports and heal/shield/buff supports (the ones that build Dream Maker) are restricted to Tank/Support items, and the latter prefer the heal, shield and buff items below
+- support items (except Protoplasm Harness) outside the support role. tank supports and heal/shield/buff supports (the ones that build Dream Maker) are restricted to Tank/Support items, and the latter prefer Ardent Censer, Echoes of Helia and Staff of Flowing Water
 - heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion (Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn only get built on marksmen).
-- additionally, supports get a World Atlas item in the first slot: Solstice Sleigh for tanks whose kit immobilizes for a second or more in total, Celestial Opposition for other tanks, Dream Maker for supports that heal, shield or buff allies, Zaz'Zak's Realmspike for mages and other AP supports, and Bloodsong for the rest. Chef and Monk are exceptions and get Dream Maker despite being tagged as Tank.  
+- additionally, supports get a World Atlas item in the first slot: Solstice Sleigh for tanks whose kit immobilizes for a second or more in total, Celestial Opposition for other tanks, Dream Maker for supports that heal, shield or buff allies, Zaz'Zak's Realmspike for mages and other AP supports, and Bloodsong for the rest.  
 
-Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free. The one exception is jungle items, which only junglers build: a jungle item you pin is skipped when that champion plays another role, and the AI never builds one in a lane even with Allow Any Builds.  
+Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  

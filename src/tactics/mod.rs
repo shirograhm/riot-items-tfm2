@@ -2964,11 +2964,12 @@ unsafe fn auto_extra_pick(
                 .inspect(|_| picked_by("first the rules allow"))
         })
         // Last resort, unconstrained but for the one rule that holds even
-        // here: a 5th item that breaks a rule still beats an empty slot, a
-        // jungle item on a champion that is not jungling does not.
+        // here while the toggle is on: a 5th item that breaks a rule still
+        // beats an empty slot, a jungle item on a champion that is not
+        // jungling does not. With the toggle off it is any final at all.
         .or_else(|| {
             pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
-                !fit.off_role_jungle_item(candidate)
+                budget.is_none() || !fit.off_role_jungle_item(candidate)
             })
             .inspect(|_| picked_by("last resort, no rule held"))
         })

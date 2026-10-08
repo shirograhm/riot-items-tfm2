@@ -44,12 +44,12 @@
 //! 8. **Jungle items stay in the jungle, one to a build** — Feral Flare,
 //!    Grez's Spectral Lantern and Philosopher's Stone ([`JUNGLE_ITEMS`]) grow
 //!    on monster kills, which only the jungle role gets, so only whoever plays
-//!    jungle keeps them. That half is not the toggle's to switch off, and no
-//!    pin's to override: off the jungle a pinned jungle item is a blank slot
-//!    (`build_config::pin_in_role`), an AI pick makes way with the toggle off
-//!    too ([`keep_jungle_items_in_jungle`]), and no automatic 5th or 6th item
-//!    is one. And a jungler is suggested one, the one for its
-//!    champion: Philosopher's Stone on a champion tagged `Tank`, else Feral
+//!    jungle keeps them. A rule like the others: it is the toggle's to
+//!    switch off, and it never touches a pin, so a jungle item the player
+//!    pinned stays wherever its champion is played. For a day (2026-10-07)
+//!    it held with the toggle off and blanked such a pin; the user had both
+//!    taken back out (2026-10-08). And a jungler is suggested one, the one
+//!    for its champion: Philosopher's Stone on a champion tagged `Tank`, else Feral
 //!    Flare or Grez's by damage type (rule 5). The AI's other jungle items
 //!    make way, all of them when the player pinned one: a pin is that build's
 //!    jungle item, and pins may hold as many as the player likes. Numbered
@@ -170,7 +170,8 @@
 //!    support whose World Atlas item is Dream Maker (rule 12) is held to the
 //!    same two classes (the user, 2026-10-08: "heal/shield/buff supports
 //!    (dream maker builders)"), and among them looks to the items that
-//!    answer to healing, shielding and buffing first ([`ALLY_AID_ITEMS`]):
+//!    answer to healing, shielding and buffing first, bar Moonstone
+//!    Renewer, which only answers to healing ([`PREFERRED_AID_ITEMS`]):
 //!    they are where a stand-in for any of its picks is looked for before
 //!    anywhere else, the AI buys them right after the Atlas item, the
 //!    item-build hook pushes them hardest, and the automatic 5th and 6th
@@ -583,10 +584,6 @@ pub(crate) struct Fit {
     /// Rule 16: whether this is a support with the `Tank` tag, which builds
     /// tank and support items and no others.
     tank_support: bool,
-    /// Rule 12: the World Atlas item the user named for this champion as a
-    /// support, where they named one ([`ATLAS_BY_CHAMPION`]). It is the
-    /// answer, whatever the tests would say.
-    atlas_named: Option<&'static str>,
     /// Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
     /// Realmspike without being a mage: an AP champion none of the tests
     /// before it took, so its abilities are there to deal damage.
@@ -630,10 +627,6 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
             && (mage || traits.is_some_and(|traits| !traits.aids_allies())),
         celestial: role == Role::Support && traits.is_some_and(|traits| traits.tank),
         tank_support: role == Role::Support && traits.is_some_and(|traits| traits.tank),
-        atlas_named: ATLAS_BY_CHAMPION
-            .iter()
-            .find(|(key, _)| role == Role::Support && *key == champion)
-            .map(|&(_, item)| item),
         realmspike: role == Role::Support
             && traits.is_some_and(|traits| traits.scaling == Some(Scaling::Ap)),
         ranged: traits.and_then(|traits| traits.ranged),
@@ -656,9 +649,9 @@ impl Fit {
 
     /// Rule 17: whether this is a heal, shield and buff support, which is one
     /// whose World Atlas item is Dream Maker: the user's own way of naming
-    /// them. Chef and Monk with the rest ([`ATLAS_BY_CHAMPION`]). Not a tank
-    /// whose kit aids allies but whose Atlas item is another (Shield Bearer):
-    /// rule 16 holds it to the two classes, without the preference.
+    /// them. Not a tank whose kit aids allies, whose Atlas item is another
+    /// (Shield Bearer, Monk, Chef): rule 16 holds it to the two classes,
+    /// without the preference.
     fn aid_support(&self) -> bool {
         self.support_items && self.atlas_item() == DREAM_MAKER
     }
@@ -669,10 +662,10 @@ impl Fit {
         self.aid_support()
     }
 
-    /// Rule 17: whether `key` is one of those items ([`ALLY_AID_ITEMS`]) and
-    /// this a support that looks to them first.
+    /// Rule 17: whether `key` is one of those items ([`PREFERRED_AID_ITEMS`])
+    /// and this a support that looks to them first.
     pub(crate) fn is_preferred_aid_item(&self, key: &str) -> bool {
-        self.aid_support() && is_ally_aid_item(key)
+        self.aid_support() && PREFERRED_AID_ITEMS.contains(&crate::build_config::base_slug(key))
     }
 
     /// Rule 5 for one item: whether an item with these traits gives a stat the
@@ -710,7 +703,8 @@ impl Fit {
     }
 
     /// Rule 8: whether `key` is a jungle item and this champion is not
-    /// jungling. The one test even a last-resort pick is held to.
+    /// jungling. The one test even a last-resort pick is held to, while the
+    /// toggle is on.
     pub(crate) fn off_role_jungle_item(&self, key: &str) -> bool {
         !self.jungle_items && is_jungle_item(key)
     }
@@ -763,12 +757,11 @@ impl Fit {
     /// second or more, else Celestial Opposition for any other tank, else
     /// Dream Maker when its kit aids allies, else Zaz'Zak's Realmspike for a
     /// mage, else Zaz'Zak's Realmspike for an AP champion, Bloodsong for the
-    /// rest and for a champion nothing is known about. A champion the user
-    /// named an item for has that one, ahead of all of it.
+    /// rest and for a champion nothing is known about. No champion is named
+    /// an item ahead of that: Chef and Monk were, for a day (Dream Maker,
+    /// 2026-10-08), and the user took the exception back out.
     fn atlas_item(&self) -> &'static str {
-        if let Some(named) = self.atlas_named {
-            named
-        } else if self.sleigh {
+        if self.sleigh {
             SOLSTICE_SLEIGH
         } else if self.celestial {
             CELESTIAL_OPPOSITION
@@ -992,6 +985,15 @@ fn is_ally_aid_item(key: &str) -> bool {
     ALLY_AID_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
+/// Rule 17: the ones of [`ALLY_AID_ITEMS`] a heal, shield and buff support
+/// looks to first. Moonstone Renewer is not one: Starlit Grace only chains a
+/// heal, so it does nothing for a kit that shields or buffs, and nothing
+/// here tells such a kit from one that heals (the user, 2026-10-08: "it only
+/// increases healing"). It is an ally-aid item in every other way: rule 13
+/// still goes by it, and such a support may hold it like any Support item.
+const PREFERRED_AID_ITEMS: [&str; 3] =
+    ["ardent_censer", "echoes_of_helia", "staff_of_flowing_water"];
+
 /// Rule 12: what World Atlas grows into, the support role's own item line. By
 /// base slug, so the radiant tier follows. Which of them a support builds is
 /// [`Fit::atlas_item`]'s to say: a new one needs a place there.
@@ -1011,15 +1013,6 @@ const CELESTIAL_OPPOSITION: &str = "celestial_opposition";
 
 /// Rule 12: the World Atlas item of a support that heals or shields.
 const DREAM_MAKER: &str = "dream_maker";
-
-/// Rule 12: champions whose World Atlas item the user named outright, ahead
-/// of the five tests in [`Fit::atlas_item`]. Both are tagged `Tank` and aid
-/// their allies, and the tests look at the tag first: Chef has no immobilize,
-/// which they answer with Celestial Opposition, and Monk immobilizes for a
-/// second, which they answer with Solstice Sleigh. The user wanted Dream
-/// Maker on the two, with the order of the tests left as it is (2026-10-08).
-/// Only the Atlas item follows: both are still tanks to rule 16.
-const ATLAS_BY_CHAMPION: [(&str, &str); 2] = [("chef", DREAM_MAKER), ("monk", DREAM_MAKER)];
 
 /// Rule 12: the World Atlas item of a tank that immobilizes.
 const SOLSTICE_SLEIGH: &str = "solstice_sleigh";
@@ -1254,68 +1247,6 @@ impl Budget {
     }
 }
 
-/// Rule 8's role half on its own, for a build the full pass is not run over
-/// because the toggle is off. Jungle items only grow on monster kills, so a
-/// laner holding one is not a matter of taste the way the other rules are.
-///
-/// A jungle item in an AI slot of a champion that is not jungling makes way
-/// for the next final of its category the champion may hold at all
-/// ([`Budget::empty`], the line the item-build hook's `score_item` draws with
-/// the toggle off), or failing that the next such final of any category.
-/// Nothing else about the build is judged. Pinned slots are skipped: a jungle
-/// item pinned off the jungle never reaches a build
-/// (`build_config::pin_in_role`). The arguments are [`enforce`]'s.
-pub(crate) fn keep_jungle_items_in_jungle<C, K, G, F>(
-    count: usize,
-    build: &mut [usize],
-    pinned: &[bool],
-    reserved: &[usize],
-    fit: Fit,
-    key: K,
-    category: G,
-    is_final: F,
-) where
-    C: PartialEq,
-    K: Fn(usize) -> Option<String>,
-    G: Fn(usize) -> Option<C>,
-    F: Fn(usize) -> bool,
-{
-    if fit.jungle_items || count == 0 {
-        return;
-    }
-    let suits = Budget::empty(fit);
-    for position in 0..build.len() {
-        if pinned.get(position).copied().unwrap_or(false) {
-            continue;
-        }
-        let offender = build[position];
-        if !key(offender).is_some_and(|key| is_jungle_item(&key)) {
-            continue;
-        }
-        let stand_in = {
-            let wanted = category(offender);
-            let search = |same_category: bool| {
-                (1..count)
-                    .map(|step| (offender + step) % count)
-                    .find(|&candidate| {
-                        !build.contains(&candidate)
-                            && !reserved.contains(&candidate)
-                            && is_final(candidate)
-                            && (!same_category
-                                || (wanted.is_some() && category(candidate) == wanted))
-                            && key(candidate).is_some_and(|candidate| {
-                                !is_boots(&candidate) && suits.rejects(&candidate).is_none()
-                            })
-                    })
-            };
-            search(true).or_else(|| search(false))
-        };
-        if let Some(stand_in) = stand_in {
-            build[position] = stand_in;
-        }
-    }
-}
-
 /// Rewrites `build` in place so that it breaks none of the eight rules, as far as
 /// the catalog allows.
 ///
@@ -1479,7 +1410,7 @@ pub(crate) fn enforce<C, K, G, F>(
                 let aid_item = (fit.prefers_aid_items() && reason != Reason::AtlasMismatch)
                     .then(|| {
                         search(&|candidate| {
-                            key(candidate).is_some_and(|key| is_ally_aid_item(&key))
+                            key(candidate).is_some_and(|key| fit.is_preferred_aid_item(&key))
                         })
                     })
                     .flatten();

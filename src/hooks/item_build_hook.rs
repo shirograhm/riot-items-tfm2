@@ -127,12 +127,8 @@ impl StableItemBuildHook for ConfiguredBuilds {
             if own_team_only {
                 own = remember_pinned_build(ctx, &build);
             }
-        } else {
-            // The one rule the toggle does not switch off.
-            keep_jungle_items_in_jungle(ctx, &mut build, &merged.pinned, &merged.reserved);
-            if own_team_only {
-                own = pins_over(ctx, &build);
-            }
+        } else if own_team_only {
+            own = pins_over(ctx, &build);
         }
         note_for_match_panel(ctx, &build, own.as_deref());
 
@@ -301,27 +297,6 @@ fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize], own: 
         &ctx.enemy_champions(),
         shared,
         own.and_then(keys),
-    );
-}
-
-/// Smart Builds rule 8's role half, which holds with the toggle off: an AI
-/// pick that is a jungle item makes way on a champion that is not jungling.
-/// See [`smart_builds::keep_jungle_items_in_jungle`].
-fn keep_jungle_items_in_jungle(
-    ctx: &StableItemBuildContext<'_>,
-    build: &mut [usize],
-    pinned: &[bool],
-    reserved: &[usize],
-) {
-    smart_builds::keep_jungle_items_in_jungle(
-        ctx.item_count(),
-        build,
-        pinned,
-        reserved,
-        champion_fit(ctx),
-        |index| ctx.item_key(index).map(str::to_string),
-        |index| ctx.item_category(index),
-        |index| is_selectable_final(ctx, index),
     );
 }
 
