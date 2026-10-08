@@ -162,10 +162,9 @@
 //!    game's `Tank` tag builds items of the editor's Tank and Support classes
 //!    and no others, whatever its damage type (the user, 2026-10-08, after a
 //!    Shield Bearer support was seen holding damage items). Boots are rule
-//!    7's. The game's own items have no class written down: its attack,
-//!    attack speed and magic power lines ([`GAME_ITEMS`]) are damage items
-//!    all the same and go, while its armor, magic resistance and health
-//!    lines stay. An offender makes way the way rule 5's does: for an item
+//!    7's. The game's own six finals have a class through the names the
+//!    mod gives them (`base_slug`: Luden's Tempest is a Mage item, Thornmail
+//!    a Tank one). An offender makes way the way rule 5's does: for an item
 //!    of the kind the rest of the build is made of.
 //! 17. **Tank and support items for heal, shield and buff supports** — a
 //!    support whose World Atlas item is Dream Maker (rule 12) is held to the
@@ -245,6 +244,11 @@ impl ItemTraits {
             magic: magic_power > 0,
         }
     }
+
+    /// Whether these say the item gives no offensive stat of any kind.
+    fn blank(&self) -> bool {
+        !self.physical && !self.magic && self.crit_chance == 0
+    }
 }
 
 /// Item traits by key, filled from the two places items are described.
@@ -253,24 +257,30 @@ struct Table {
     /// This mod's items, recorded as `init` registers them. Authoritative for
     /// its own keys, because the values there are the configured ones.
     mod_items: HashMap<String, ItemTraits>,
-    /// The game's items, from the settings document. No vanilla item cuts
-    /// healing; the stats are read rather than hardcoded because they are
-    /// config-editable through `item_setting`.
+    /// The game's items, from the mod's settings file at start-up
+    /// (`item_stats::prime_game_items`), and other mods' from the client's
+    /// settings document. No vanilla item cuts healing; the stats are read
+    /// rather than hardcoded because they are config-editable through
+    /// `item_setting`.
     engine_items: HashMap<String, ItemTraits>,
 }
 
 /// The game's own items that give attack, attack speed, crit or ability
 /// power, at the values this mod ships for them (`setting/item_setting`): key,
-/// crit chance, attack, attack speed, magic power. The other fifteen give
-/// none of the four.
+/// crit chance, attack, attack speed, magic power. The other fifteen (the
+/// armor, magic resistance and health lines) give none of the four, which
+/// are all the rules read off an item's stats, so a row for one would be
+/// four zeros and decide nothing: no row is what says so.
 ///
-/// What the rules go by for as long as the settings document has not
-/// described the game's items, which is most of the time: it only has them in
-/// it around a match (see `item_stats::prime_item_traits`), and the buy
-/// detour's first picks of a session can come before the client has read it.
-/// Once read, the document's values win, since a player can edit them.
-/// Without this the rules took Luden's Tempest for an item with no ability
-/// power, and handed it to AD champions as a 6th item (2026-10-08).
+/// The last resort. The rules learn all thirty at start-up from the mod's
+/// settings file itself (`item_stats::prime_game_items`), with whatever the
+/// player's config made of them, and this only answers when that file could
+/// not be read, or when a record of one of these comes out blank
+/// ([`Table::traits`]). Without it the rules once took Luden's Tempest for an
+/// item with no ability power, and handed it to AD champions as a 6th item
+/// (2026-10-08). Kept in step with the file by hand: it is fifteen numbers a
+/// balance pass rarely moves across zero, which is all that matters here
+/// outside the crit of the attack speed line.
 const GAME_ITEMS: [(&str, i32, i32, i32, i32); 15] = [
     ("ironsword", 0, 10, 0, 0),
     ("soldiers_longsword", 0, 20, 0, 0),
@@ -289,33 +299,35 @@ const GAME_ITEMS: [(&str, i32, i32, i32, i32); 15] = [
     ("prophet_of_the_abyss", 0, 0, 0, 100),
 ];
 
-/// Whether `key` is one of the game's own attack, attack speed or magic power
-/// items ([`GAME_ITEMS`]). Damage items, which no class says: the editor's
-/// classes are written down for this mod's items only, and rules 16 and 17
-/// go by the class.
-fn is_game_damage_item(key: &str) -> bool {
-    let slug = crate::build_config::base_slug(key);
-    GAME_ITEMS.iter().any(|(item, ..)| *item == slug)
+/// What [`GAME_ITEMS`] says of `key`, where it is one of them.
+fn game_item_traits(key: &str) -> Option<ItemTraits> {
+    let &(_, crit, attack, speed, power) = GAME_ITEMS.iter().find(|(item, ..)| *item == key)?;
+    Some(ItemTraits::from_stats(crit, attack, speed, power))
 }
 
 impl Table {
     /// This mod's own record of the item, then the settings document's, then
     /// [`GAME_ITEMS`]. An item none of them describes has no traits, which no
     /// rule rejects.
+    ///
+    /// A record that finds no offensive stat on one of the game's damage
+    /// items is taken for a failed reading, not for an item that lost them,
+    /// and [`GAME_ITEMS`] answers instead. The fallback alone was not enough:
+    /// with it in, the rules still held blank records of Radiant Bloodthirster
+    /// and Radiant Phantom Dancer (the test log, 2026-10-08), and rule 5 let
+    /// the first be an AP champion's 6th item. How a blank got recorded is
+    /// not known yet; `item_stats::prime_item_traits` now says what it reads.
     fn traits(&self, key: &str) -> ItemTraits {
-        self.mod_items
+        let recorded = self
+            .mod_items
             .get(key)
             .or_else(|| self.engine_items.get(key))
-            .copied()
-            .or_else(|| {
-                GAME_ITEMS
-                    .iter()
-                    .find(|(item, ..)| *item == key)
-                    .map(|&(_, crit, attack, speed, power)| {
-                        ItemTraits::from_stats(crit, attack, speed, power)
-                    })
-            })
-            .unwrap_or_default()
+            .copied();
+        match (recorded, game_item_traits(key)) {
+            (Some(recorded), Some(known)) if recorded.blank() => known,
+            (Some(recorded), _) => recorded,
+            (None, known) => known.unwrap_or_default(),
+        }
     }
 }
 
@@ -415,7 +427,12 @@ pub(crate) fn note_engine_item(
 ) {
     let traits = ItemTraits::from_stats(crit_chance, attack, attack_speed, magic_power);
     edit_table(|table| {
-        table.engine_items.insert(key.to_string(), traits);
+        // The document is walked in its own order, and a second object under
+        // the same key that carries no stats must not undo the first.
+        let known = table.engine_items.entry(key.to_string()).or_insert(traits);
+        if !traits.blank() {
+            *known = traits;
+        }
     });
 }
 
@@ -625,19 +642,16 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
 
 impl Fit {
     /// Rules 16 and 17 for one item: whether `key` is of a class this
-    /// support does not build. Boots are rule 7's. The game's own damage
-    /// items have no class written down and are turned away all the same
-    /// ([`is_game_damage_item`]): until 2026-10-08 they were let through, so
-    /// an AP tank support could keep the game's top magic power item. Any
-    /// other item without a class is left alone, like any item the rules
-    /// cannot place.
+    /// support does not build. Boots are rule 7's, and an item no class is
+    /// written down for is left alone, like any item the rules cannot place.
+    /// The game's six finals are not among those: `base_slug` gives them the
+    /// name the mod draws them under, and that has a class.
     fn off_support_classes(&self, key: &str) -> bool {
         (self.tank_support || self.aid_support())
-            && match crate::item_catalog::category_of(crate::build_config::base_slug(key)) {
-                Some("Tank" | "Support" | "Boots") => false,
-                Some(_) => true,
-                None => is_game_damage_item(key),
-            }
+            && !matches!(
+                crate::item_catalog::category_of(crate::build_config::base_slug(key)),
+                None | Some("Tank" | "Support" | "Boots")
+            )
     }
 
     /// Rule 17: whether this is a heal, shield and buff support, which is one

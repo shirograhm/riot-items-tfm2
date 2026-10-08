@@ -251,6 +251,9 @@ fn init(host: &StableHost) -> StableMod {
     // Before any build path can ask: modded champions' AD/AP tags, from their
     // own files. See `champion_traits::MOD_CHAMPIONS`.
     champion_traits::load_mod_champions();
+    // And the game's own thirty items, from the mod's settings file: the
+    // Smart Builds rules know what each gives from here on.
+    item_stats::prime_game_items();
     let configs = config::load();
     record_lethality_table(&configs);
 

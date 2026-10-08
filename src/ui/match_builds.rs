@@ -87,6 +87,13 @@ const PERSONAL: &str = "ingame.strategy_info.personal_panel";
 /// Vanilla's column headings and its rows, both hidden while the board is up.
 const HEADER: &str = "ingame.strategy_info.personal_panel.header";
 const ROWS_PATH: &str = "ingame.strategy_info.personal_panel.rows";
+/// The panel's heading, a label: "Personal Tactics" as the game has it, and
+/// while the board is up what the board shows instead (the user, 2026-10-08:
+/// "Planned Builds", in a lane test, a 5v5 test and a match alike, which are
+/// this one layout). The key is this mod's, the fallback its English.
+const TITLE: &str = "ingame.strategy_info.personal_panel.title";
+const TITLE_VANILLA: &str = "#asset/base/text/ui?strategy.personal";
+const TITLE_BOARD: (&str, &str) = ("builds.planned", "Planned Builds");
 /// The team the panel is about.
 const TEAM_NAME: &str = "ingame.strategy_info.team_panel.header.name";
 /// Where the layout names the two teams, blue then red: the match header,
@@ -223,7 +230,7 @@ struct TestLog {
 static TEST_LOG: Mutex<Option<TestLog>> = Mutex::new(None);
 
 /// Appends `text` under `key`, unless it is what that key last said.
-fn log(key: &str, text: impl FnOnce() -> String) {
+pub(crate) fn log(key: &str, text: impl FnOnce() -> String) {
     if !LOG {
         return;
     }
@@ -422,17 +429,10 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
         &root,
         0,
         &mut |key: &str, object: &serde_json::Map<String, Value>| {
-            let stat = |field: &str| {
-                object
-                    .get("stat")
-                    .and_then(|stat| stat.get(field))
-                    .and_then(|value| {
-                        value
-                            .as_i64()
-                            .or_else(|| value.as_f64().map(|value| value as i64))
-                    })
-                    .unwrap_or(0)
-            };
+            // The numbers the game runs with, not the document's: for the
+            // game's own items those are the base game's.
+            let object = crate::item_stats::merged_item(key, object);
+            let stat = |field: &str| crate::item_stats::item_stat(&object, field);
             let card = Card {
                 frame: object
                     .get("icon")
@@ -442,7 +442,7 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
                     .to_string(),
                 price: object.get("price").and_then(Value::as_u64).unwrap_or(0) as usize,
                 stats: stat_lines(stat),
-                fills: fills_of(object),
+                fills: fills_of(&object),
             };
             found.push((key.to_string(), card));
         },
@@ -1778,6 +1778,17 @@ fn spot_of(path: &str) -> Option<Spot> {
     ))
 }
 
+/// One of this mod's headings as a label takes it: the reference into the
+/// game's text where the mod's entry is there to resolve, which the label
+/// then shows in the game's language, else the English.
+fn heading(ctx: &StableClient<'_>, (key, fallback): (&str, &str)) -> String {
+    let reference = format!("#asset/base/text/ui?{key}");
+    match ctx.i18n(&reference) {
+        Some(text) if !text.is_empty() && !text.starts_with('#') => reference,
+        _ => fallback.to_string(),
+    }
+}
+
 /// Keeps the board in the panel and the vanilla table out of it. False while
 /// the board could not be spawned, and the vanilla table is left alone then.
 ///
@@ -1800,13 +1811,7 @@ fn paint(ctx: &mut StableClient<'_>, board: &Rows) -> bool {
         ctx.ui_remove_node(BOARD_PATH);
     }
     if !ctx.ui_exists(BOARD_PATH) {
-        let heads = SIDE_HEADS.map(|(key, fallback)| {
-            let reference = format!("#asset/base/text/ui?{key}");
-            match ctx.i18n(&reference) {
-                Some(text) if !text.is_empty() && !text.starts_with('#') => reference,
-                _ => fallback.to_string(),
-            }
-        });
+        let heads = SIDE_HEADS.map(|head| heading(ctx, head));
         let spawned = ctx.ui_spawn_source(PERSONAL, &board_source(board, &heads));
         log("paint", || {
             format!("board spawned={spawned} (game items described={cards})")
@@ -1814,6 +1819,10 @@ fn paint(ctx: &mut StableClient<'_>, board: &Rows) -> bool {
         if !spawned {
             return false;
         }
+        // With the board, not every frame: the heading is a plain label of
+        // the layout's, which nothing else writes.
+        let title = heading(ctx, TITLE_BOARD);
+        ctx.ui_set_text(TITLE, &title);
         for (lane, cells) in board.iter().enumerate() {
             for (side, cell) in cells.iter().enumerate() {
                 let Some(cell) = cell else {
@@ -1848,10 +1857,11 @@ fn paint(ctx: &mut StableClient<'_>, board: &Rows) -> bool {
 }
 
 /// Gives the panel back to vanilla: the board out, the game's headings and
-/// rows back in.
+/// rows back in, its own name over them.
 fn unpaint(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(TIP, false);
     ctx.ui_remove_node(BOARD_PATH);
+    ctx.ui_set_text(TITLE, TITLE_VANILLA);
     ctx.ui_set_visible(ROWS_PATH, true);
     ctx.ui_set_visible(HEADER, true);
 }
