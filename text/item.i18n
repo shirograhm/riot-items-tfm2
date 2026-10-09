@@ -370,11 +370,11 @@
         },
         "terminus": {
             "name": "Terminus",
-            "option": "\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\n<#ff7a3eff>Shadow<>: Basic attacks deal <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP)<> <#a974ffff>magic damage<> <#ffff99ff>on-hit<>.\n\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "radiant_terminus": {
             "name": "Radiant Terminus",
-            "option": "\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\n<#ff7a3eff>Shadow<>: Basic attacks deal <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP)<> <#a974ffff>magic damage<> <#ffff99ff>on-hit<>.\n\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "spirit_visage": {
             "name": "Spirit Visage",
@@ -1488,11 +1488,11 @@
         },
         "terminus": {
             "name": "Cung Chạng Vạng",
-            "option": "\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+            "option": "\n<#ff7a3eff>Bóng Tối<>: Đòn đánh thường gây <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT)<> <#a974ffff>sát thương phép<> <#ffff99ff>khi đánh trúng<>.\n\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
         },
         "radiant_terminus": {
             "name": "Cung Chạng Vạng Ánh Sáng",
-            "option": "\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+            "option": "\n<#ff7a3eff>Bóng Tối<>: Đòn đánh thường gây <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT)<> <#a974ffff>sát thương phép<> <#ffff99ff>khi đánh trúng<>.\n\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
         },
         "spirit_visage": {
             "name": "Giáp Tâm Linh",
@@ -2606,11 +2606,11 @@
         },
         "terminus": {
             "name": "界弓",
-            "option": "\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
+            "option": "\n<#ff7a3eff>晦影<>：普通攻击<#ffff99ff>命中时<>造成 <#a974ffff>30<> <#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<> <#a974ffff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度）<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
         },
         "radiant_terminus": {
             "name": "光明版界弓",
-            "option": "\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
+            "option": "\n<#ff7a3eff>晦影<>：普通攻击<#ffff99ff>命中时<>造成 <#a974ffff>30<> <#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<> <#a974ffff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度）<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
         },
         "spirit_visage": {
             "name": "振奋盔甲",
@@ -3724,11 +3724,11 @@
         },
         "terminus": {
             "name": "Terminus",
-            "option": "\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
+            "option": "\n<#ff7a3eff>Sombra<>: Ataques causam <#a974ffff>30<> <#ff9028ff>(+5% do<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <#a974ffff>(+10% do<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade)<> de <#a974ffff>dano mágico<> <#ffff99ff>ao contato<>.\n\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
         },
         "radiant_terminus": {
             "name": "Terminus Radiante",
-            "option": "\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
+            "option": "\n<#ff7a3eff>Sombra<>: Ataques causam <#a974ffff>30<> <#ff9028ff>(+5% do<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <#a974ffff>(+10% do<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade)<> de <#a974ffff>dano mágico<> <#ffff99ff>ao contato<>.\n\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
         },
         "spirit_visage": {
             "name": "Semblante Espiritual",
@@ -4842,11 +4842,11 @@
         },
         "terminus": {
             "name": "Светотень",
-            "option": "\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+            "option": "\n<#ff7a3eff>Тень<>: Базовые атаки наносят <#ffff99ff>при попадании<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений)<> <#a974ffff>магического урона<>.\n\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
         },
         "radiant_terminus": {
             "name": "Лучезарная Светотень",
-            "option": "\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+            "option": "\n<#ff7a3eff>Тень<>: Базовые атаки наносят <#ffff99ff>при попадании<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений)<> <#a974ffff>магического урона<>.\n\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
         },
         "spirit_visage": {
             "name": "Облачение Духов",
@@ -5960,11 +5960,11 @@
         },
         "terminus": {
             "name": "경계",
-            "option": "\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>그림자<>: 기본 공격 <#ffff99ff>적중 시<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력)<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
         },
         "radiant_terminus": {
             "name": "찬란한 경계",
-            "option": "\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>그림자<>: 기본 공격 <#ffff99ff>적중 시<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력)<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
         },
         "spirit_visage": {
             "name": "정령의 형상",
