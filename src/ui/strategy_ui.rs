@@ -1759,12 +1759,18 @@ pub(crate) fn toggle_style_sized(lit: bool, size: u32) -> String {
 /// One cell of a greyed-out toggle (see [`paint_toggle_off`]). Its hover
 /// colours are its resting ones, so it does not light up under the cursor.
 fn toggle_off_style(lit: bool) -> String {
+    toggle_off_style_sized(lit, 13)
+}
+
+/// [`toggle_off_style`] with the label at `size`, for the game's own option
+/// rows (`crate::options_row`).
+pub(crate) fn toggle_off_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TOGGLE_OFF_SELECTED_FILL, TOGGLE_OFF_SELECTED_TEXT, 0)
     } else {
         (TAB_IDLE_FILL, TOGGLE_OFF_IDLE_TEXT, 1)
     };
-    toggle_cell_style(fill, text, stroke, fill, text, 13)
+    toggle_cell_style(fill, text, stroke, fill, text, size)
 }
 
 /// The property blocks of one toggle cell in the given colours.

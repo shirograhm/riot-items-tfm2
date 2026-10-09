@@ -1,7 +1,7 @@
 //! The mod's row in the game's Options dialog, on the Competition tab:
-//! **Item Rules**, a two-cell control reading *All Radiants* and *First Item
-//! Radiant*. The setting is kept in the save, and where and what it does is
-//! [`crate::item_tiers`]'s to say.
+//! **Item Rules**, a three-cell control reading *All Radiants*, *First Item
+//! Radiant* and *No Radiants*. The setting is kept in the save, and where and
+//! what it does is [`crate::item_tiers`]'s to say.
 //!
 //! The user asked for it there (2026-10-08): "put the setting here in the
 //! escape menu as a toggle called \"Item Rules\"".
@@ -39,8 +39,18 @@
 //!   bundle's copy of the layout, but every other tab shows at least one of
 //!   the twenty.
 //!
-//! The row's own shape is the layout's two-cell rows over again
-//! (`#always_delegate_to_staff`), sizes and style included.
+//! The row's own shape is the layout's three-cell rows over again
+//! (`#difficulty`), sizes and style included.
+//!
+//! # Only between matches
+//!
+//! The row is greyed out, and its cells take no click, anywhere but on the
+//! management screens: through a draft, a match and everything else that is
+//! a client screen of its own ([`locked_now`]). The user's rule (2026-10-08:
+//! "we should not allow the setting to be flipped mid match. can we grey it
+//! out during matches, pick ban phases"). The saved side stays marked, the
+//! way the Builds tab greys its scope toggle on the test screens, and the
+//! cells' hint says why.
 //!
 //! # The setting applies on the click
 //!
@@ -52,14 +62,16 @@
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU8, Ordering};
 use std::sync::Mutex;
 
-use mod_api_stable::{StableClient, UiEventKindV1};
+use mod_api_stable::{ClientSceneKindV1, SceneKindV1, StableClient, UiEventKindV1};
+
+use crate::item_tiers::Rule;
 
 /// Whether `match-builds.log` gets a line whenever what this module makes of
 /// the dialog changes: where it found it, which tab it took to be showing,
-/// where its row landed, and for every event its cells are sent. On again
-/// while the cells' clicks are being chased (see [`register`]). Turn it off
-/// before a release.
-const LOG: bool = true;
+/// where its row landed, and for every event its cells are sent. Off since
+/// the row, its clicks and its lock were all seen working (2026-10-08); the
+/// first thing to turn on when a game update loses any of them.
+const LOG: bool = false;
 
 /// Where the dialog is in game 0.6.3, tried before any search.
 const KNOWN_DIALOG: &str = "pause_ui.option.option";
@@ -67,10 +79,9 @@ const KNOWN_DIALOG: &str = "pause_ui.option.option";
 /// The pause menu's layout root, up only while that menu is.
 const PAUSE_ROOT: &str = "pause_ui";
 
-/// The row's node, and how the paths of its two cells end.
+/// The row's node, and under it the box its cells are in.
 const ROW: &str = "riot_item_rules";
-const CELL_ALL: &str = ".options.all";
-const CELL_FIRST: &str = ".options.first";
+const CELLS_UNDER: &str = ".options.";
 
 /// The rows `option.ui` authors under `#contents`, every one of them on a tab
 /// other than Competition.
@@ -97,17 +108,52 @@ const AUTHORED_ROWS: [&str; 20] = [
     "current_database_edit",
 ];
 
-/// The row's text: this mod's key in the game's text, and the English.
+/// The row's title: this mod's key in the game's text, and the English.
 const TITLE: (&str, &str) = ("builds.item_rules", "Item Rules");
-const ALL: (&str, &str) = ("builds.item_rules_all", "All Radiants");
-const FIRST: (&str, &str) = ("builds.item_rules_first", "First Item Radiant");
-const ALL_HINT: (&str, &str) = (
-    "builds.item_rules_all_hint",
-    "Every item in a build is upgraded to its Radiant form.",
-);
-const FIRST_HINT: (&str, &str) = (
-    "builds.item_rules_first_hint",
-    "Only the first item in a build is upgraded to Radiant. Every other item stops at Legendary.",
+
+/// One cell: the side it asserts, its node's name, and its label and its hint
+/// the way [`TITLE`] is written.
+struct Cell {
+    rule: Rule,
+    node: &'static str,
+    label: (&'static str, &'static str),
+    hint: (&'static str, &'static str),
+}
+
+/// The cells, left to right.
+const CELLS: [Cell; 3] = [
+    Cell {
+        rule: Rule::AllRadiants,
+        node: "all",
+        label: ("builds.item_rules_all", "All Radiants"),
+        hint: (
+            "builds.item_rules_all_hint",
+            "Every item in a build is upgraded to its Radiant form.",
+        ),
+    },
+    Cell {
+        rule: Rule::FirstItemRadiant,
+        node: "first",
+        label: ("builds.item_rules_first", "First Item Radiant"),
+        hint: (
+            "builds.item_rules_first_hint",
+            "Only the first item in a build is upgraded to Radiant. Every other item stops at Legendary.",
+        ),
+    },
+    Cell {
+        rule: Rule::NoRadiants,
+        node: "none",
+        label: ("builds.item_rules_none", "No Radiants"),
+        hint: (
+            "builds.item_rules_none_hint",
+            "Every item in a build stops at Legendary. Nothing is upgraded to Radiant.",
+        ),
+    },
+];
+/// Both cells' hint while the row is greyed out.
+const LOCKED_HINT: (&str, &str) = (
+    "builds.item_rules_locked",
+    "Item Rules can only be changed between matches, not during a draft or a match.",
 );
 
 /// Frames between two looks for the dialog while the pause menu is up and it
@@ -129,9 +175,13 @@ static FOUND: Mutex<Option<String>> = Mutex::new(None);
 /// Whether the dialog was up on the last frame.
 static UP: AtomicBool = AtomicBool::new(false);
 
-/// The setting the row was last painted for: 0 none yet, 1 All Radiants, 2
-/// First Item Radiant.
+/// What the row was last painted as ([`look`]): 0 for not yet.
 static PAINTED: AtomicU8 = AtomicU8::new(0);
+
+/// Whether the setting may not be changed now. Worked out on the frame
+/// ([`locked_now`]) and kept here for the click handler, which is not a
+/// place the client can be asked what screen it is on.
+static LOCKED: AtomicBool = AtomicBool::new(false);
 
 fn log(key: &str, text: impl FnOnce() -> String) {
     if LOG {
@@ -157,23 +207,28 @@ fn escape(text: &str) -> String {
         .collect()
 }
 
-/// The row, shaped like the layout's own two-cell rows.
+/// The row, shaped like the layout's own three-cell rows: 846 pixels inside
+/// the box's padding, 282 a cell.
 fn row_source(ctx: &StableClient<'_>) -> String {
-    let cell = |name: &str, label: (&str, &str), hint: (&str, &str)| {
-        format!(
-            "#{name}:color_selectable {{\n\
-             @\"asset/base/style/main#strategy_option\";\n\
-             width: 423px;\n\
-             height: 32px;\n\
-             label: {{ size: 16; }}\n\
-             selected_label: {{ size: 16; }}\n\
-             text: \"{}\";\n\
-             hint: \"{}\";\n\
-             }}\n",
-            escape(&text(ctx, label)),
-            escape(&text(ctx, hint)),
-        )
-    };
+    let cells: String = CELLS
+        .iter()
+        .map(|cell| {
+            format!(
+                "#{}:color_selectable {{\n\
+                 @\"asset/base/style/main#strategy_option\";\n\
+                 width: 282px;\n\
+                 height: 32px;\n\
+                 label: {{ size: 16; }}\n\
+                 selected_label: {{ size: 16; }}\n\
+                 text: \"{}\";\n\
+                 hint: \"{}\";\n\
+                 }}\n",
+                cell.node,
+                escape(&text(ctx, cell.label)),
+                escape(&text(ctx, cell.hint)),
+            )
+        })
+        .collect();
     format!(
         "{ROW}:empty {{\n\
          width: 1160px;\n\
@@ -199,31 +254,55 @@ fn row_source(ctx: &StableClient<'_>) -> String {
          child_type: LeftToRight {{ spacing: 0px; }}\n\
          rounding: Uniform {{ rounding: 8; }}\n\
          \n\
-         {all}\
-         {first}\
+         {cells}\
          }}\n\
          }}\n",
         title = escape(&text(ctx, TITLE)),
-        all = cell("all", ALL, ALL_HINT),
-        first = cell("first", FIRST, FIRST_HINT),
     )
 }
 
-/// Lights the cell of the setting as it stands, in the row at `row`.
+/// The row's look as one number: which side is the setting, and whether it
+/// is greyed out. Never 0.
+fn look(rule: Rule, locked: bool) -> u8 {
+    1 + rule.code() + 4 * locked as u8
+}
+
+/// Lights the cell of the setting as it stands, in the row at `row`, greyed
+/// out while it may not be changed, and gives the cells the hint that goes
+/// with that.
 ///
 /// Painted, not set: see `strategy_ui::paint_toggle` for why a
 /// `color_selectable` is given the same look in both of its states.
 fn paint(ctx: &mut StableClient<'_>, row: &str) {
-    let first = crate::item_tiers::first_item_radiant();
-    PAINTED.store(if first { 2 } else { 1 }, Ordering::Relaxed);
-    ctx.ui_set_properties(
-        &format!("{row}{CELL_ALL}"),
-        &crate::strategy_ui::toggle_style_sized(!first, 16),
-    );
-    ctx.ui_set_properties(
-        &format!("{row}{CELL_FIRST}"),
-        &crate::strategy_ui::toggle_style_sized(first, 16),
-    );
+    let rule = crate::item_tiers::rule();
+    let locked = LOCKED.load(Ordering::Relaxed);
+    PAINTED.store(look(rule, locked), Ordering::Relaxed);
+    for cell in &CELLS {
+        let lit = cell.rule == rule;
+        let style = if locked {
+            crate::strategy_ui::toggle_off_style_sized(lit, 16)
+        } else {
+            crate::strategy_ui::toggle_style_sized(lit, 16)
+        };
+        let hint = escape(&text(ctx, if locked { LOCKED_HINT } else { cell.hint }));
+        let path = format!("{row}{CELLS_UNDER}{}", cell.node);
+        ctx.ui_set_properties(&path, &style);
+        ctx.ui_set_properties(&path, &format!("hint: \"{hint}\";"));
+    }
+}
+
+/// Whether the setting may not be changed now: anywhere but the management
+/// screens. A draft, a match, the screens around them and the ceremonies are
+/// each a client screen of their own, and the pause menu opens over all of
+/// them. A host that cannot say which screen is up is taken to be on the
+/// management ones, so that it does not lock the setting for good; a test
+/// game outside a save is a match.
+fn locked_now(ctx: &StableClient<'_>) -> bool {
+    match ctx.client_scene_kind() {
+        Some(ClientSceneKindV1::Main) => false,
+        Some(_) => true,
+        None => ctx.scene_kind() == Some(SceneKindV1::GameTest),
+    }
 }
 
 /// Registers the click handler on one cell of a row just spawned.
@@ -244,7 +323,7 @@ fn register(ctx: &mut StableClient<'_>, path: &str) {
     log("register", || format!("`{path}` registered={registered}"));
 }
 
-/// A click on either cell asserts that cell's value.
+/// A click on a cell asserts that cell's side.
 fn handle_event(ctx: &mut StableClient<'_>) {
     let Some(event) = ctx.ui_current_event() else {
         return;
@@ -254,19 +333,24 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
         return;
     }
-    let (row, first) = if let Some(row) = event.path.strip_suffix(CELL_ALL) {
-        (row, false)
-    } else if let Some(row) = event.path.strip_suffix(CELL_FIRST) {
-        (row, true)
-    } else {
+    let Some((row, node)) = event.path.rsplit_once(CELLS_UNDER) else {
+        return;
+    };
+    let Some(cell) = CELLS.iter().find(|cell| cell.node == node) else {
         return;
     };
     if !row.ends_with(ROW) {
         return;
     }
-    if crate::item_tiers::first_item_radiant() != first {
-        crate::item_tiers::choose(first);
-        log("click", || format!("first_item_radiant={first}"));
+    // Greyed out: the click changes nothing, and the row is painted again
+    // in case the click itself changed how the cell looks.
+    if LOCKED.load(Ordering::Relaxed) {
+        paint(ctx, row);
+        return;
+    }
+    if crate::item_tiers::rule() != cell.rule {
+        crate::item_tiers::choose(cell.rule);
+        log("click", || format!("{:?}", cell.rule));
     }
     paint(ctx, row);
 }
@@ -406,14 +490,15 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     // a registration is not known (see `register`), and saving the game from
     // the pause menu leaves the dialog and this row standing.
     if fresh || opened {
-        for cell in [CELL_ALL, CELL_FIRST] {
-            register(ctx, &format!("{row}{cell}"));
+        for cell in &CELLS {
+            register(ctx, &format!("{row}{CELLS_UNDER}{}", cell.node));
         }
     }
-    // The setting can change under an open dialog, when the save is read:
-    // the row says what rules now, not what was last clicked.
-    let first = crate::item_tiers::first_item_radiant();
-    if PAINTED.load(Ordering::Relaxed) != if first { 2 } else { 1 } {
+    // The setting can change under an open dialog, when the save is read,
+    // and so can whether it may be changed: the row says what rules now.
+    let locked = locked_now(ctx);
+    LOCKED.store(locked, Ordering::Relaxed);
+    if PAINTED.load(Ordering::Relaxed) != look(crate::item_tiers::rule(), locked) {
         paint(ctx, &row);
     }
 
@@ -423,7 +508,9 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     if opened || frame % SWEEP_EVERY == 0 {
         log("dialog", || {
             format!(
-                "`{dialog}` up; competition tab selected={selected:?} -> row shown={competition}; contents holds {:?}; the dialog holds {:?}; row at {:?}",
+                "`{dialog}` up; screen={:?} of {:?} -> locked={locked}; competition tab selected={selected:?} -> row shown={competition}; contents holds {:?}; the dialog holds {:?}; row at {:?}",
+                ctx.client_scene_kind(),
+                ctx.scene_kind(),
                 ctx.ui_child_names(&contents),
                 ctx.ui_child_names(&dialog),
                 ctx.ui_node_rect(&row),

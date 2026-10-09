@@ -608,17 +608,20 @@ fn slots_of(champion: &str, lane: usize, keys: &[String], pins: bool, grown: boo
 }
 
 /// `key` as Item Rules has a build hold it in `slot` (`crate::item_tiers`):
-/// under First Item Radiant the legendary in every slot after the first. What
+/// the legendary in every slot the setting caps. What
 /// reaches this is a build as it was decided, in radiants; the buy detour
 /// makes it this as the match gets under way, and the board says so from the
-/// start. Only where this mod has a card for the other form, so an item it
-/// cannot place is drawn as decided.
+/// start. Only where the other form is known to exist: the game's own six
+/// pairs always are, and another item where this mod has a card for it, so
+/// an item it cannot place is drawn as decided.
+///
+/// The game's pairs are not asked for a card. Theirs come from the settings
+/// document, which is first read when the panel opens, and a board is worked
+/// out before that and kept: asked for one, the game's radiants stayed
+/// radiant on a board whose every other slot was capped (2026-10-08).
 fn ruled_key(key: &str, slot: usize) -> String {
-    if !crate::item_tiers::first_item_radiant() {
-        return key.to_string();
-    }
     crate::item_tiers::for_slot(key, slot)
-        .filter(|other| card(other).is_some())
+        .filter(|other| crate::item_tiers::is_game_tier(other) || card(other).is_some())
         .unwrap_or_else(|| key.to_string())
 }
 
@@ -1573,6 +1576,10 @@ struct Panel {
     /// Until then the board is worked out again on the frame `grown_at`.
     full: bool,
     grown_at: u32,
+    /// The Item Rules setting the board was worked out under, as its code. A
+    /// change of it has the board worked out again: its slots are drawn in
+    /// the form the setting leaves them in ([`ruled_key`]).
+    ruled: u8,
     /// The board changed under what is drawn: draw it again.
     repaint: bool,
     /// Whether the board on screen was spawned with the game's own items
@@ -1599,6 +1606,7 @@ impl Panel {
             rows: None,
             full: false,
             grown_at: 0,
+            ruled: 0,
             repaint: false,
             spawned_with_cards: None,
             shown: None,
@@ -1679,6 +1687,14 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         panel.frame = panel.frame.wrapping_add(1);
         let opened = open && !panel.open;
         panel.open = open;
+        // The Item Rules setting changed, in the Options dialog or with the
+        // save: the board as it stands was drawn for the other.
+        let ruled = crate::item_tiers::rule().code();
+        if panel.ruled != ruled {
+            panel.ruled = ruled;
+            panel.full = false;
+            panel.grown_at = 0;
+        }
         // What the board was resolved from has changed, a new match on
         // screen above all: start over, taking down what was drawn.
         let outdated = panel.sources != sources && panel.spawned_with_cards.is_some();

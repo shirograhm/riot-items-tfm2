@@ -74,7 +74,7 @@ During a match, you can see both sides' planned builds using the [b]Check Tactic
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
 [h1] Item Rules [/h1]
-The game's [b]Options[/b] menu has an [b]Item Rules[/b] setting on the Competition tab. [b]All Radiants[/b] (default) upgrades every item in a build to Radiant. [b]First Item Radiant[/b] upgrades only the first item of each build to Radiant and stops the rest at Legendary, for both teams and for pinned items. The setting is kept in your save file, so each save can have its own (save the game after changing it).  
+The game's [b]Options[/b] menu has an [b]Item Rules[/b] setting on the Competition tab. [b]All Radiants[/b] (default) upgrades every item in a build to Radiant. [b]First Item Radiant[/b] upgrades only the first item of each build to Radiant and stops the rest at Legendary. [b]No Radiants[/b] stops every item at Legendary. Both apply to both teams and to pinned items. The setting is kept in your save file, so each save can have its own (save the game after changing it). It can only be changed between matches, not during a draft or a match.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
