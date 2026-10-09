@@ -167,6 +167,14 @@
             "tag": "burst",
             "z": 1,
             "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_mikaels_purify",
+            "anim": "asset/riot_items_tfm2/effects/mikaels_purify",
+            "tag": "purify",
+            "z": 1,
+            "is_follow": true
         }
     ],
     "view_projectiles": [

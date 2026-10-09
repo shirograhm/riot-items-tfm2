@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 235 new items (137 base + 98 Radiant) to the game.
+Reskins the 30 existing items and also adds 237 new items (138 base + 99 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -172,6 +172,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Locket of the Iron Solari** | 550G | +100 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 170 - 225 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Lord Dominik's Regards** | 750G | +25 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Malignance** | 650G | +60 AP<br>+12 Ability Haste | Scorn: Gain 12 Ultimate Ability Haste. |
+| **Mikael's Blessing** | 550G | +200 HP<br>+2 HP Regen<br>+10 AP<br>+10 Ability Haste | Purify: If an allied champion below 50% health is crowd controlled, cleanse them and yourself of all crowd control effects and heal them for 100 - 265 (based on the target's level) health (120 second cooldown, allies within 65 range). |
 | **Mirage Blade** | 750G | +40% AS<br>+10% MS | Illusion: Gain 30 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Blur: On kill, gain 20% movement speed for 2 seconds. |
 | **Moonstone Renewer** | 550G | +150 HP<br>+2 HP Regen<br>+20 AP<br>+15 Ability Haste | Starlit Grace: Healing an allied champion (excluding yourself) chains the effect to another allied champion within 100 range of them, healing 35% of the original amount. |
 | **Morellonomicon** | 650G | +100 HP<br>+60 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
@@ -275,6 +276,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Locket of the Iron Solari** | 850G | +150 HP<br>+40 Armor<br>+50 MR<br>+15 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 295 - 350 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Radiant Lord Dominik's Regards** | 1000G | +45 AD<br>+25% Crit Chance<br>+35% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Radiant Malignance** | 950G | +100 AP<br>+20 Ability Haste | Scorn: Gain 20 Ultimate Ability Haste. |
+| **Radiant Mikael's Blessing** | 750G | +300 HP<br>+3 HP Regen<br>+20 AP<br>+15 Ability Haste | Purify: If an allied champion below 50% health is crowd controlled, cleanse them and yourself of all crowd control effects and heal them for 100 - 265 (based on the target's level) health (120 second cooldown, allies within 65 range). |
 | **Radiant Mirage Blade** | 1050G | +65% AS<br>+15% MS | Illusion: Gain 50 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Blur: On kill, gain 20% movement speed for 2 seconds. |
 | **Radiant Moonstone Renewer** | 750G | +250 HP<br>+3 HP Regen<br>+30 AP<br>+20 Ability Haste | Starlit Grace: Healing an allied champion (excluding yourself) chains the effect to another allied champion within 100 range of them, healing 35% of the original amount. |
 | **Radiant Morellonomicon** | 950G | +200 HP<br>+95 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |

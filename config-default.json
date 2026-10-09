@@ -2254,5 +2254,29 @@
     "effect_max_growth_stacks": 10,
     "effect_min_heal": 15,
     "effect_max_heal": 40
+  },
+  "mikaels_blessing": {
+    "price": 550,
+    "hp": 200,
+    "hp_regen": 2,
+    "magic_power": 10,
+    "skill_cooldown_mult": 10,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_min_heal": 100,
+    "effect_max_heal": 265,
+    "effect_max_distance": 65,
+    "effect_cooldown_seconds": 120
+  },
+  "radiant_mikaels_blessing": {
+    "price": 750,
+    "hp": 300,
+    "hp_regen": 3,
+    "magic_power": 20,
+    "skill_cooldown_mult": 15,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_min_heal": 100,
+    "effect_max_heal": 265,
+    "effect_max_distance": 65,
+    "effect_cooldown_seconds": 120
   }
 }

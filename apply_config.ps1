@@ -672,6 +672,16 @@ $moonRange = [int]$config.moonstone_renewer.effect_max_distance
 $moonHeal = [double]$config.moonstone_renewer.effect_heal_chain_percent
 $rmoonRange = [int]$config.radiant_moonstone_renewer.effect_max_distance
 $rmoonHeal = [double]$config.radiant_moonstone_renewer.effect_heal_chain_percent
+$mikThreshold = [int]$config.mikaels_blessing.effect_hp_percent_threshold
+$mikMinHeal = [int]$config.mikaels_blessing.effect_min_heal
+$mikMaxHeal = [int]$config.mikaels_blessing.effect_max_heal
+$mikCd = [int]$config.mikaels_blessing.effect_cooldown_seconds
+$mikRange = [int]$config.mikaels_blessing.effect_max_distance
+$rmikThreshold = [int]$config.radiant_mikaels_blessing.effect_hp_percent_threshold
+$rmikMinHeal = [int]$config.radiant_mikaels_blessing.effect_min_heal
+$rmikMaxHeal = [int]$config.radiant_mikaels_blessing.effect_max_heal
+$rmikCd = [int]$config.radiant_mikaels_blessing.effect_cooldown_seconds
+$rmikRange = [int]$config.radiant_mikaels_blessing.effect_max_distance
 $abyShred = [int]$config.abyssal_mask.effect_percent_mr_shred
 $abyDist = [int]$config.abyssal_mask.effect_max_distance
 $rabyShred = [int]$config.radiant_abyssal_mask.effect_percent_mr_shred
@@ -1120,6 +1130,9 @@ $i18n.en.radiant_iceborn_gauntlet.option = $igTemplate -f $rigMin, $rigMax, $rig
 $moonTemplate = "<#ff7a3eff>Starlit Grace<>: Healing an allied champion (excluding yourself) chains the effect to another allied champion within <#ff86c2ff>{0} <$rangeIcon> range<> of them, <$hpRegenIcon> <#60e84dff>healing {1}%<> of the original amount."
 $i18n.en.moonstone_renewer.option = $moonTemplate -f $moonRange, $moonHeal
 $i18n.en.radiant_moonstone_renewer.option = $moonTemplate -f $rmoonRange, $rmoonHeal
+$mikTemplate = "<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below {0}% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <$hpRegenIcon> <#60e84dff>heal them<> for <#60e84dff>{1}<> - <#60e84dff>{2}<> (based on the target's <$levelIcon> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>{3} second<> cooldown, allies within <#ff86c2ff>{4} <$rangeIcon> range<>)."
+$i18n.en.mikaels_blessing.option = $mikTemplate -f $mikThreshold, $mikMinHeal, $mikMaxHeal, $mikCd, $mikRange
+$i18n.en.radiant_mikaels_blessing.option = $mikTemplate -f $rmikThreshold, $rmikMinHeal, $rmikMaxHeal, $rmikCd, $rmikRange
 $abyAura = "<#ff7a3eff>Unmake<>: Reduce the <$mrIcon> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>{1} <$rangeIcon> range<> by <#d94c49ff>{0}%<>."
 $i18n.en.abyssal_mask.option = $abyAura -f $abyShred, $abyDist
 $i18n.en.radiant_abyssal_mask.option = $abyAura -f $rabyShred, $rabyDist
@@ -1411,6 +1424,9 @@ $i18n.vi.radiant_iceborn_gauntlet.option = $igTemplateVi -f $rigMin, $rigMax, $r
 $moonTemplateVi = "<#ff7a3eff>Ánh Sao Yêu Kiều<>: Hồi máu cho một tướng đồng minh (không tính bản thân) sẽ truyền hiệu ứng sang một tướng đồng minh khác trong phạm vi <#ff86c2ff>{0}<> <$rangeIcon> quanh họ, <$hpRegenIcon> <#60e84dff>hồi máu bằng {1}%<> lượng ban đầu."
 $i18n.vi.moonstone_renewer.option = $moonTemplateVi -f $moonRange, $moonHeal
 $i18n.vi.radiant_moonstone_renewer.option = $moonTemplateVi -f $rmoonRange, $rmoonHeal
+$mikTemplateVi = "<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới {0}% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <$hpRegenIcon> <#60e84dff>hồi cho họ<> <#60e84dff>{1}<> - <#60e84dff>{2}<> (dựa theo <$levelIcon> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>{3} giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>{4}<> <$rangeIcon>)."
+$i18n.vi.mikaels_blessing.option = $mikTemplateVi -f $mikThreshold, $mikMinHeal, $mikMaxHeal, $mikCd, $mikRange
+$i18n.vi.radiant_mikaels_blessing.option = $mikTemplateVi -f $rmikThreshold, $rmikMinHeal, $rmikMaxHeal, $rmikCd, $rmikRange
 $abyAuraVi = "<#ff7a3eff>Hủy Hoại<>: Giảm <$mrIcon> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>{1}<> <$rangeIcon> đi <#d94c49ff>{0}%<>."
 $i18n.vi.abyssal_mask.option = $abyAuraVi -f $abyShred, $abyDist
 $i18n.vi.radiant_abyssal_mask.option = $abyAuraVi -f $rabyShred, $rabyDist
@@ -1702,6 +1718,9 @@ $i18n.'zh-hans'.radiant_iceborn_gauntlet.option = $igTemplateZh -f $rigMin, $rig
 $moonTemplateZh = "<#ff7a3eff>星光恩典<>：为友方英雄（自己除外）治疗时，效果会连锁至其 <#ff86c2ff>{0} <$rangeIcon> 射程<>范围内的另一名友方英雄，<$hpRegenIcon> <#60e84dff>治疗<>原治疗值的 <#60e84dff>{1}%<>。"
 $i18n.'zh-hans'.moonstone_renewer.option = $moonTemplateZh -f $moonRange, $moonHeal
 $i18n.'zh-hans'.radiant_moonstone_renewer.option = $moonTemplateZh -f $rmoonRange, $rmoonHeal
+$mikTemplateZh = "<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于{0}%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<$hpRegenIcon> <#60e84dff>为其回复<> <#60e84dff>{1}<> - <#60e84dff>{2}<>（基于目标的<$levelIcon> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间{3}秒，<#ff86c2ff>{4} <$rangeIcon> 射程<>范围内的友军）。"
+$i18n.'zh-hans'.mikaels_blessing.option = $mikTemplateZh -f $mikThreshold, $mikMinHeal, $mikMaxHeal, $mikCd, $mikRange
+$i18n.'zh-hans'.radiant_mikaels_blessing.option = $mikTemplateZh -f $rmikThreshold, $rmikMinHeal, $rmikMaxHeal, $rmikCd, $rmikRange
 $abyAuraZh = "<#ff7a3eff>损毁<>：使 <#ff86c2ff>{1} <$rangeIcon> 射程<>范围内敌方英雄的 <$mrIcon> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>{0}%<>。"
 $i18n.'zh-hans'.abyssal_mask.option = $abyAuraZh -f $abyShred, $abyDist
 $i18n.'zh-hans'.radiant_abyssal_mask.option = $abyAuraZh -f $rabyShred, $rabyDist
@@ -1993,6 +2012,9 @@ $i18n.'pt-BR'.radiant_iceborn_gauntlet.option = $igTemplatePt -f $rigMin, $rigMa
 $moonTemplatePt = "<#ff7a3eff>Graça Estrelada<>: Curar um campeão aliado (exceto você) propaga o efeito em cadeia para outro campeão aliado dentro de <#ff86c2ff>{0} <$rangeIcon> alcance<> dele, <$hpRegenIcon> <#60e84dff>curando-o em {1}%<> do valor original."
 $i18n.'pt-BR'.moonstone_renewer.option = $moonTemplatePt -f $moonRange, $moonHeal
 $i18n.'pt-BR'.radiant_moonstone_renewer.option = $moonTemplatePt -f $rmoonRange, $rmoonHeal
+$mikTemplatePt = "<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de {0}% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <$hpRegenIcon> <#60e84dff>cura-o<> em <#60e84dff>{1}<> - <#60e84dff>{2}<> (com base no <$levelIcon> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>{3} segundos<>, aliados dentro de <#ff86c2ff>{4} <$rangeIcon> alcance<>)."
+$i18n.'pt-BR'.mikaels_blessing.option = $mikTemplatePt -f $mikThreshold, $mikMinHeal, $mikMaxHeal, $mikCd, $mikRange
+$i18n.'pt-BR'.radiant_mikaels_blessing.option = $mikTemplatePt -f $rmikThreshold, $rmikMinHeal, $rmikMaxHeal, $rmikCd, $rmikRange
 $abyAuraPt = "<#ff7a3eff>Destroçar<>: Reduz a <$mrIcon> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>{1} <$rangeIcon> alcance<> em <#d94c49ff>{0}%<>."
 $i18n.'pt-BR'.abyssal_mask.option = $abyAuraPt -f $abyShred, $abyDist
 $i18n.'pt-BR'.radiant_abyssal_mask.option = $abyAuraPt -f $rabyShred, $rabyDist
@@ -2284,6 +2306,9 @@ $i18n.ru.radiant_iceborn_gauntlet.option = $igTemplateRu -f $rigMin, $rigMax, $r
 $moonTemplateRu = "<#ff7a3eff>Подарок звезд<>: При лечении союзного чемпиона (кроме вас) эффект распространяется на другого союзного чемпиона в пределах <#ff86c2ff>{0} <$rangeIcon> дальности<> от него, <$hpRegenIcon> <#60e84dff>исцеляя его на {1}%<> от изначального значения."
 $i18n.ru.moonstone_renewer.option = $moonTemplateRu -f $moonRange, $moonHeal
 $i18n.ru.radiant_moonstone_renewer.option = $moonTemplateRu -f $rmoonRange, $rmoonHeal
+$mikTemplateRu = "<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже {0}%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <$hpRegenIcon> <#60e84dff>восстанавливаете ему<> <#60e84dff>{1}<> - <#60e84dff>{2}<> (в зависимости от <$levelIcon> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка {3} секунд, союзники в пределах <#ff86c2ff>{4} <$rangeIcon> дальности<>)."
+$i18n.ru.mikaels_blessing.option = $mikTemplateRu -f $mikThreshold, $mikMinHeal, $mikMaxHeal, $mikCd, $mikRange
+$i18n.ru.radiant_mikaels_blessing.option = $mikTemplateRu -f $rmikThreshold, $rmikMinHeal, $rmikMaxHeal, $rmikCd, $rmikRange
 $abyAuraRu = "<#ff7a3eff>Уничтожение<>: Уменьшает <$mrIcon> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>{1} <$rangeIcon> дальности<> на <#d94c49ff>{0}%<>."
 $i18n.ru.abyssal_mask.option = $abyAuraRu -f $abyShred, $abyDist
 $i18n.ru.radiant_abyssal_mask.option = $abyAuraRu -f $rabyShred, $rabyDist
@@ -2574,6 +2599,9 @@ $i18n.ko.radiant_iceborn_gauntlet.option = $igTemplateKo -f $rigMin, $rigMax, $r
 $moonTemplateKo = "<#ff7a3eff>별빛 은총<>: 아군 챔피언(자신 제외)의 체력을 회복시키면 대상으로부터 <$rangeIcon> <#ff86c2ff>사거리 {0}<> 안의 다른 아군 챔피언에게 연쇄 효과가 적용되어, 기존 수치의 <#60e84dff>{1}%<>만큼 <$hpRegenIcon> <#60e84dff>체력을 회복<>시킵니다."
 $i18n.ko.moonstone_renewer.option = $moonTemplateKo -f $moonRange, $moonHeal
 $i18n.ko.radiant_moonstone_renewer.option = $moonTemplateKo -f $rmoonRange, $rmoonHeal
+$mikTemplateKo = "<#ff7a3eff>정화<>: <#d94c49ff>체력이 {0}% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <$levelIcon> <#d8c9b3ff>레벨<>에 따라 <$hpRegenIcon> <#60e84dff>체력을 {1}<>~<#60e84dff>{2} 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>{3}초<>이며, <$rangeIcon> <#ff86c2ff>사거리 {4}<> 안의 아군에게만 적용됩니다."
+$i18n.ko.mikaels_blessing.option = $mikTemplateKo -f $mikThreshold, $mikMinHeal, $mikMaxHeal, $mikCd, $mikRange
+$i18n.ko.radiant_mikaels_blessing.option = $mikTemplateKo -f $rmikThreshold, $rmikMinHeal, $rmikMaxHeal, $rmikCd, $rmikRange
 $abyAuraKo = "<#ff7a3eff>파괴<>: <$rangeIcon> <#ff86c2ff>사거리 {1}<> 안의 적 챔피언의 <$mrIcon> <#88ccffff>마법 저항력<>을 <#d94c49ff>{0}%<> 감소시킵니다."
 $i18n.ko.abyssal_mask.option = $abyAuraKo -f $abyShred, $abyDist
 $i18n.ko.radiant_abyssal_mask.option = $abyAuraKo -f $rabyShred, $rabyDist
@@ -2812,6 +2840,8 @@ Write-Host "  Bandlepipes:                 ${bpMoveSpeed}% MS ${bpDuration}s / $
 Write-Host "  Radiant Bandlepipes:         ${rbpMoveSpeed}% MS ${rbpDuration}s / ${rbpAttackSpeed}% AS to allies within ${rbpRange} range"
 Write-Host "  Moonstone Renewer:           chains ${moonHeal}% of a heal within ${moonRange} range"
 Write-Host "  Radiant Moonstone Renewer:   chains ${rmoonHeal}% of a heal within ${rmoonRange} range"
+Write-Host "  Mikael's Blessing:           Purify below ${mikThreshold}% / heal ${mikMinHeal}-${mikMaxHeal} / ${mikCd}s cd / ${mikRange} range"
+Write-Host "  Radiant Mikael's Blessing:   Purify below ${rmikThreshold}% / heal ${rmikMinHeal}-${rmikMaxHeal} / ${rmikCd}s cd / ${rmikRange} range"
 Write-Host "  Abyssal Mask:                -${abyShred}% MR to enemy champions within ${abyDist} range"
 Write-Host "  Radiant Abyssal Mask:        -${rabyShred}% MR to enemy champions within ${rabyDist} range"
 Write-Host "  World Atlas:                 ${atlasGold} gold every ${atlasEvery}s"

@@ -10,6 +10,7 @@ items! {
     echoes_of_helia,
     imperial_mandate,
     locket_of_the_iron_solari,
+    mikaels_blessing,
     moonstone_renewer,
     protoplasm_harness,
     solstice_sleigh,
