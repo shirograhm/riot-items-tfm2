@@ -851,6 +851,38 @@ fn game_item_overrides() -> &'static HashMap<String, serde_json::Map<String, Val
 
 /// Whether [`sync_server_items`] writes anything. Off, it still reads and
 /// reports.
+///
+/// # What a write does to the server, and why it needs [`lift_mod_items`]
+///
+/// `setting_set_json` does not change the one item it is given. The host
+/// serializes the server's WHOLE item settings to JSON, swaps the fragment
+/// in, deserializes the lot, drops the old settings and puts the new ones in
+/// their place (0.6.3: handler `0x2dc7670`, out through `0x2e376a0`, back in
+/// through `0x2d8b670`). Every mod's items are in that document, under
+/// `mod_items`, and the JSON form of one is eight plain fields (the exe's own
+/// "struct ModItemEntry with 8 elements": key, icon, price, tier, stat,
+/// next_tier, tags, category). What an entry holds besides those is the
+/// mod's item itself, the object its hooks are called on, and that does not
+/// come back: the rebuilt entry has none, the game takes an item without one
+/// for inactive, and the old entry, the one that had it, is dropped.
+///
+/// 0.11.13 wrote here unguarded. What players saw (2026-10-09): matches the
+/// server plays by itself, solo rank first of all, with the game's own items
+/// and nothing else. No boots and no jungle item either, which Smart Builds
+/// puts in every build it is shown, so those builds were made from a list
+/// with none of the mod's items in it. Saving, loading and reinstalling
+/// changed nothing, so the write was happening again at every server start,
+/// which means the server never came to hold what the file says. Why is not
+/// established. The likeliest reason: the write put the file's `next_tier`
+/// over the server's too, and the game keeps the mods' own items in those
+/// lists, so the two could not come out equal. The match a player watches is
+/// played by the client from its own copy, which is why it looked right
+/// there, and why the game's log had the two runs of one match disagreeing
+/// on all ten players.
+///
+/// So a write happens with the mod items lifted out of the settings and put
+/// back after it, and not at all where they cannot be, which makes it safe
+/// however often it happens; and `next_tier` is left as the server has it.
 const SYNC_SERVER_ITEMS: bool = true;
 
 /// Whether the server of the save now loaded has been through
@@ -899,12 +931,20 @@ fn same_setting(a: &Value, b: &Value) -> bool {
 ///
 /// A write the server refuses changes nothing there (its document must still
 /// deserialize), and is counted.
+///
+/// Only the numbers are written. An item's `next_tier` is the server's to
+/// keep: the file knows the base game's tree alone, and what the game has
+/// added to those lists for the mods' items is not this function's to undo
+/// (see [`SYNC_SERVER_ITEMS`]).
 pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
     if SERVER_ITEMS_SYNCED.load(Ordering::Relaxed) {
         return;
     }
-    let (mut read, mut differed, mut written, mut refused) = (0, 0, 0, 0);
+    let (mut read, mut written, mut refused) = (0, 0, 0);
     let mut before: Vec<String> = Vec::new();
+    // What there is to write, worked out before any of it is written: the
+    // mod items come out of the settings once, for all of it.
+    let mut writes: Vec<(&str, String)> = Vec::new();
     for (name, over) in game_item_file() {
         let Some(over) = over.as_object() else {
             continue;
@@ -927,19 +967,15 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
         }
         let mut merged = held.clone();
         merge_over(&mut merged, over);
+        match held.get("next_tier") {
+            Some(next_tier) => merged.insert("next_tier".to_string(), next_tier.clone()),
+            None => merged.remove("next_tier"),
+        };
         let merged = Value::Object(merged);
         if same_setting(&merged, &Value::Object(held)) {
             continue;
         }
-        differed += 1;
-        if !SYNC_SERVER_ITEMS {
-            continue;
-        }
-        if ctx.setting_set_json(SettingTargetV1::ItemSetting, name, &merged.to_string()) {
-            written += 1;
-        } else {
-            refused += 1;
-        }
+        writes.push((name.as_str(), merged.to_string()));
     }
     // Nothing read: the server has no item settings to show yet, or the
     // mod's file could not be read. The next tick asks again, which costs a
@@ -948,12 +984,65 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
         return;
     }
     SERVER_ITEMS_SYNCED.store(true, Ordering::Relaxed);
+    let differed = writes.len();
+    let mut mod_items = "untouched";
+    if SYNC_SERVER_ITEMS && !writes.is_empty() {
+        match lift_mod_items(ctx) {
+            Ok(lift) => {
+                mod_items = if lift.is_some() {
+                    "lifted"
+                } else {
+                    "none to lift"
+                };
+                for (name, json) in &writes {
+                    if ctx.setting_set_json(SettingTargetV1::ItemSetting, name, json) {
+                        written += 1;
+                    } else {
+                        refused += 1;
+                    }
+                }
+                // Back in, into the settings the writes left behind.
+                drop(lift);
+            }
+            Err(()) => mod_items = "could not be lifted, so nothing was written",
+        }
+    }
     crate::match_builds::log_stats("server items", || {
         format!(
-            "{read} read, {differed} unlike the mod's file, {written} written, {refused} refused; held before: {}",
+            "{read} read, {differed} unlike the mod's file, {written} written, {refused} refused; mod items: {mod_items}; held before: {}",
             before.join(" ")
         )
     });
+}
+
+/// Takes every mod's items out of the server's item settings for the length
+/// of a write there, which would otherwise rebuild each of them without the
+/// item it stands for (see [`SYNC_SERVER_ITEMS`]). They go back in when what
+/// this returns is dropped.
+///
+/// Nothing to lift where the server holds no mod items, and then a write
+/// harms nothing. An error where it holds some and they could not be taken
+/// out: the caller must not write. The list the server itself reports is what
+/// the native half checks its reading of the settings against, entry by
+/// entry, before it touches them (`tactics::lift_server_mod_items`).
+fn lift_mod_items(ctx: &StableServerCtx<'_>) -> Result<Option<crate::tactics::ModItemsLift>, ()> {
+    let listed = ctx
+        .setting_get_json(SettingTargetV1::ItemSetting, "mod_items")
+        .and_then(|json| serde_json::from_str::<Value>(&json).ok());
+    let Some(Value::Array(listed)) = listed else {
+        return Err(());
+    };
+    if listed.is_empty() {
+        return Ok(None);
+    }
+    let keys = listed
+        .iter()
+        .map(|item| item.get("key").and_then(Value::as_str).map(str::to_string))
+        .collect::<Option<Vec<String>>>()
+        .ok_or(())?;
+    crate::tactics::driver::lift_server_mod_items(ctx, &keys)
+        .map(Some)
+        .ok_or(())
 }
 
 /// One of an item's stats from its settings object, as a whole number: the

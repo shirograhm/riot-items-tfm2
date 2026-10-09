@@ -221,8 +221,10 @@ const LOG: bool = false;
 /// what `item_stats::prime_item_traits` read of the game's damage items and
 /// what it made of them, and `server items:`, what the server's item
 /// settings held when the mod went over them. On at the user's word
-/// (2026-10-08) with the rest off. A few lines a session.
-const STATS_LOG: bool = false;
+/// (2026-10-08) with the rest off. A few lines a session. On again
+/// (2026-10-09) to see the server write go through with the mod items lifted
+/// out: `mod items: lifted` and no refusals. Turn it off before a release.
+const STATS_LOG: bool = true;
 
 /// Lines written in one session at most.
 const LOG_LINES: usize = 600;

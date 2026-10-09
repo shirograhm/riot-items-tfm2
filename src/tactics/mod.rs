@@ -4296,6 +4296,128 @@ unsafe fn patch_result_row_floor(slots: u8) -> String {
     )
 }
 
+// ===========================================================================
+//  Server item settings: the mod items, lifted out for a settings write
+// ===========================================================================
+//
+// `setting_set_json` on the item settings rebuilds every entry of `mod_items`
+// from its JSON, which is eight data fields, and drops the entries it had.
+// What is lost with them is the one thing an entry holds that is not data:
+// the mod's item object, an `Option<Box<dyn ..>>` at `O_MOD_ITEM_OBJECT`,
+// whose absence is what the game reads as "inactive" (0.6.3: `is_active` at
+// 0x17da9f0 is `cmp qword [rcx+0x190],0`; the entry's drop, 0x2d5bb0, frees
+// it). `item_stats::SYNC_SERVER_ITEMS` has what that did to players.
+//
+// Nothing in the stable API puts the object back, so the entries must not go
+// through the write at all. The `Vec` they live in is three words in the
+// Database. Emptied for the length of the write, the host serializes
+// `mod_items: []`, builds new settings with an empty list, finds nothing of
+// the old list to drop or free (capacity 0), and installs the new settings in
+// the same place; the three words then go back, and the entries are the ones
+// that were there, untouched. The base items' `next_tier` lists name mod
+// items by key, as text, and pass through the write as they are.
+//
+// All four constants are 0.6.3's and are only used behind the version gate
+// (`driver::lift_server_mod_items`). They are also checked against the
+// server's own account of the list before anything is written, so a build
+// they are wrong for gets no write rather than a wrong one.
+
+/// Where the state the host hands every server call keeps its `Database`
+/// (0.6.3: the vtable's own `setting_set_json`, 0x2dccbe0, loads it with
+/// `mov rcx,[rdi+0x10]` before calling the handler).
+const O_SERVER_STATE_DATABASE: usize = 0x10;
+
+/// The Database's `mod_items`: a `Vec<ModItemEntry>` as capacity, pointer,
+/// length (0.6.3: the item settings are at +0x136c0 and the list 0x3028 into
+/// them; handler 0x2dc7670 drops the old one through
+/// `[r12+0x166e8] / [r12+0x166f0] / [r12+0x166f8]`).
+const O_DATABASE_MOD_ITEMS: usize = 0x166e8;
+
+/// Size of one `ModItemEntry` (0.6.3: `lea rsi,[rcx+0x1a8]` steps that drop
+/// loop). Its key, a `String`, is the first field: capacity, pointer, length.
+const MOD_ITEM_ENTRY_SIZE: usize = 0x1a8;
+
+/// Where an entry holds the mod's item object: data pointer, then vtable.
+const O_MOD_ITEM_OBJECT: usize = 0x190;
+
+/// An empty `Vec<ModItemEntry>`: no capacity, the dangling pointer of an
+/// 8-aligned type, no length. What `Vec::new()` is, and what the host's own
+/// code leaves where it deserializes an empty list.
+const EMPTY_VEC: [u64; 3] = [0, 8, 0];
+
+/// The server's mod items, out of its item settings until this is dropped.
+pub(crate) struct ModItemsLift {
+    /// Address of the `Vec`'s three words in the Database.
+    header: usize,
+    /// What they held.
+    taken: [u64; 3],
+}
+
+impl Drop for ModItemsLift {
+    /// Puts the list back, whatever the writes in between came to: accepted,
+    /// the host has installed new settings with an empty list at this same
+    /// address; refused, the empty list written by [`lift_server_mod_items`]
+    /// is still there. Either way these three words own nothing.
+    fn drop(&mut self) {
+        unsafe {
+            for (word, &value) in self.taken.iter().enumerate() {
+                wr_u64(self.header + word * 8, value);
+            }
+        }
+    }
+}
+
+/// Empties the server's `mod_items` and returns what puts it back.
+///
+/// `state` is the host state of the server call in progress and `keys` the
+/// keys of the list as the server reports it, in order. Nothing is touched
+/// unless the memory read through the constants above IS that list: the same
+/// number of entries, and every entry's key the one reported at its place.
+/// `None` otherwise, and the caller must not write to the item settings.
+///
+/// # Safety
+///
+/// Only from inside a server hook, on the thread it runs on: that is where
+/// the host itself replaces these settings, so nothing else is reading them.
+unsafe fn lift_server_mod_items(state: usize, keys: &[String]) -> Option<ModItemsLift> {
+    if keys.is_empty() {
+        return None;
+    }
+    let database = safe_read_u64(state.checked_add(O_SERVER_STATE_DATABASE)?)? as usize;
+    let header = database.checked_add(O_DATABASE_MOD_ITEMS)?;
+    let capacity = safe_read_u64(header)?;
+    let entries = safe_read_u64(header + 8)? as usize;
+    let len = safe_read_u64(header + 16)?;
+    if len != keys.len() as u64 || capacity < len {
+        return None;
+    }
+    let mut spelled = Vec::new();
+    for (index, key) in keys.iter().enumerate() {
+        let entry = entries.checked_add(index.checked_mul(MOD_ITEM_ENTRY_SIZE)?)?;
+        let text = safe_read_u64(entry + 8)? as usize;
+        let text_len = safe_read_u64(entry + 16)? as usize;
+        // The object's two words must be there to read as well, or this is
+        // not an array of entries this size.
+        safe_read_u64(entry + O_MOD_ITEM_OBJECT + 8)?;
+        if text_len != key.len()
+            || !safe_read_bytes(text, text_len, &mut spelled)
+            || spelled != key.as_bytes()
+        {
+            return None;
+        }
+    }
+    if !writable(header, EMPTY_VEC.len() * 8) {
+        return None;
+    }
+    for (word, &value) in EMPTY_VEC.iter().enumerate() {
+        wr_u64(header + word * 8, value);
+    }
+    Some(ModItemsLift {
+        header,
+        taken: [capacity, entries as u64, len],
+    })
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 //  ** Game version gate - 0.6.0_beta1 only. On any other version **every feature disables itself automatically**.
 // ═══════════════════════════════════════════════════════════════════════════
