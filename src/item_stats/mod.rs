@@ -871,18 +871,21 @@ fn game_item_overrides() -> &'static HashMap<String, serde_json::Map<String, Val
 /// and nothing else. No boots and no jungle item either, which Smart Builds
 /// puts in every build it is shown, so those builds were made from a list
 /// with none of the mod's items in it. Saving, loading and reinstalling
-/// changed nothing, so the write was happening again at every server start,
-/// which means the server never came to hold what the file says. Why is not
-/// established. The likeliest reason: the write put the file's `next_tier`
-/// over the server's too, and the game keeps the mods' own items in those
-/// lists, so the two could not come out equal. The match a player watches is
-/// played by the client from its own copy, which is why it looked right
-/// there, and why the game's log had the two runs of one match disagreeing
-/// on all ten players.
+/// changed nothing, because the write happened again at every server start:
+/// a save keeps the stats it is given and not the prices. The stats log of a
+/// save written to, saved and loaded again (2026-10-09) had Radiant
+/// Bloodthirster back at 2000 gold beside the 50 attack of the session
+/// before, and 24 of the thirty items to write again. So there is something
+/// to write at every load, for good. The match a player watches is played by
+/// the client from its own copy, which is why it looked right there, and why
+/// the game's log had the two runs of one match disagreeing on all ten
+/// players.
 ///
 /// So a write happens with the mod items lifted out of the settings and put
 /// back after it, and not at all where they cannot be, which makes it safe
 /// however often it happens; and `next_tier` is left as the server has it.
+/// Seen in that same log: `24 written, 0 refused; mod items: lifted`, so the
+/// host takes a write made while the list is out.
 const SYNC_SERVER_ITEMS: bool = true;
 
 /// Whether the server of the save now loaded has been through
