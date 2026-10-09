@@ -783,7 +783,7 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
             games |= key == A_GAME_ITEM && item_stat(in_document, "magic_power") > 0;
         },
     );
-    crate::match_builds::log_stats("traits", || {
+    crate::match_builds::log("traits", || {
         let buckets = match root.get("mod_items") {
             Some(Value::Object(mods)) => format!("{:?}", mods.keys().take(12).collect::<Vec<_>>()),
             Some(Value::Array(mods)) => format!("an array of {}", mods.len()),
@@ -799,7 +799,7 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     });
     // Settled only once the document describes the game's own items with
     // real numbers, however long that takes. What it holds before that, as
-    // the stats log caught it (2026-10-08): all thirty keys from the first
+    // the test log caught it (2026-10-08): all thirty keys from the first
     // frame, each with a stat block of zeros and a price of 0, and an empty
     // `mod_items` array. So the keys being there says nothing. Settling on
     // "the key is in it" settled on those placeholders and recorded blanks,
@@ -872,7 +872,7 @@ fn game_item_overrides() -> &'static HashMap<String, serde_json::Map<String, Val
 /// puts in every build it is shown, so those builds were made from a list
 /// with none of the mod's items in it. Saving, loading and reinstalling
 /// changed nothing, because the write happened again at every server start:
-/// a save keeps the stats it is given and not the prices. The stats log of a
+/// a save keeps the stats it is given and not the prices. The test log of a
 /// save written to, saved and loaded again (2026-10-09) had Radiant
 /// Bloodthirster back at 2000 gold beside the 50 attack of the session
 /// before, and 24 of the thirty items to write again. So there is something
@@ -929,7 +929,7 @@ fn same_setting(a: &Value, b: &Value) -> bool {
 /// tooltip and then on the game's own on the match result screen (the user,
 /// 2026-10-08), so the `merge` in `mod.override_info` cannot be relied on to
 /// have reached them. Whether matches were run on those numbers too is not
-/// known; this says what the server held, in the stats log, and from here on
+/// known; this says what the server held, in the test log, and from here on
 /// it holds the mod's either way.
 ///
 /// A write the server refuses changes nothing there (its document must still
@@ -1010,7 +1010,7 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
             Err(()) => mod_items = "could not be lifted, so nothing was written",
         }
     }
-    crate::match_builds::log_stats("server items", || {
+    crate::match_builds::log("server items", || {
         format!(
             "{read} read, {differed} unlike the mod's file, {written} written, {refused} refused; mod items: {mod_items}; held before: {}",
             before.join(" ")
