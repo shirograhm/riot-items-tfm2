@@ -97,6 +97,39 @@ pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
     super::tactics_post_update(client, in_game);
 }
 
+/// Takes every mod's items out of the server's item settings, for a write
+/// to those settings that would otherwise rebuild them without their items
+/// (`super::lift_server_mod_items`). They go back in when the result is
+/// dropped. `keys` is the list as the server reports it.
+///
+/// `None` on a game build this half does not know, where the offsets it
+/// reads the settings through mean nothing, and wherever the settings do not
+/// check out against `keys`. No write must be made then.
+pub(crate) fn lift_server_mod_items(
+    ctx: &mod_api_stable::StableServerCtx<'_>,
+    keys: &[String],
+) -> Option<super::ModItemsLift> {
+    if inert() {
+        return None;
+    }
+    // The context is a pointer to the host's `ServerCtxV1` and a marker, and
+    // keeps the pointer to itself. The host state in it is what every call
+    // through the context passes back to the host.
+    const _: () = assert!(
+        core::mem::size_of::<mod_api_stable::StableServerCtx<'static>>()
+            == core::mem::size_of::<usize>()
+    );
+    let raw = unsafe {
+        *(ctx as *const mod_api_stable::StableServerCtx<'_>
+            as *const *const mod_api_stable::ServerCtxV1)
+    };
+    if raw.is_null() {
+        return None;
+    }
+    let state = unsafe { (*raw).state } as usize;
+    unsafe { super::lift_server_mod_items(state, keys) }
+}
+
 /// Hands over the game's item catalog, which the mod-item registry is built
 /// from.
 ///

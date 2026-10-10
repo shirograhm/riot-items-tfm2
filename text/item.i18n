@@ -370,11 +370,11 @@
         },
         "terminus": {
             "name": "Terminus",
-            "option": "\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\n<#ff7a3eff>Shadow<>: Basic attacks deal <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP)<> <#a974ffff>magic damage<> <#ffff99ff>on-hit<>.\n\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "radiant_terminus": {
             "name": "Radiant Terminus",
-            "option": "\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
+            "option": "\n<#ff7a3eff>Shadow<>: Basic attacks deal <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>AP)<> <#a974ffff>magic damage<> <#ffff99ff>on-hit<>.\n\n<#ff7a3eff>Juxtaposition<>: Basic attacks grant either <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> armor penetration<> or <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> magic resistance penetration<> for <#e8a800ff>4 seconds<>, alternating (max 4 stacks each)."
         },
         "spirit_visage": {
             "name": "Spirit Visage",
@@ -1115,6 +1115,14 @@
         "radiant_rod_of_ages": {
             "name": "Radiant Rod of Ages",
             "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+        },
+        "mikaels_blessing": {
+            "name": "Mikael's Blessing",
+            "option": "\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Radiant Mikael's Blessing",
+            "option": "\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
         }
     },
     "vi": {
@@ -1488,11 +1496,11 @@
         },
         "terminus": {
             "name": "Cung Chạng Vạng",
-            "option": "\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+            "option": "\n<#ff7a3eff>Bóng Tối<>: Đòn đánh thường gây <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT)<> <#a974ffff>sát thương phép<> <#ffff99ff>khi đánh trúng<>.\n\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
         },
         "radiant_terminus": {
             "name": "Cung Chạng Vạng Ánh Sáng",
-            "option": "\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
+            "option": "\n<#ff7a3eff>Bóng Tối<>: Đòn đánh thường gây <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT)<> <#a974ffff>sát thương phép<> <#ffff99ff>khi đánh trúng<>.\n\n<#ff7a3eff>Đối lập<>: Đòn đánh thường cấp luân phiên <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> xuyên giáp<> hoặc <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> xuyên kháng phép<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn cho mỗi loại)."
         },
         "spirit_visage": {
             "name": "Giáp Tâm Linh",
@@ -2233,6 +2241,14 @@
         "radiant_rod_of_ages": {
             "name": "Trượng Trường Sinh Ánh Sáng",
             "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+        },
+        "mikaels_blessing": {
+            "name": "Chuông Bảo Hộ Mikael",
+            "option": "\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Chuông Bảo Hộ Mikael Ánh Sáng",
+            "option": "\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
         }
     },
     "zh-hans": {
@@ -2606,11 +2622,11 @@
         },
         "terminus": {
             "name": "界弓",
-            "option": "\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
+            "option": "\n<#ff7a3eff>晦影<>：普通攻击<#ffff99ff>命中时<>造成 <#a974ffff>30<> <#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<> <#a974ffff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度）<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
         },
         "radiant_terminus": {
             "name": "光明版界弓",
-            "option": "\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
+            "option": "\n<#ff7a3eff>晦影<>：普通攻击<#ffff99ff>命中时<>造成 <#a974ffff>30<> <#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<> <#a974ffff>（+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度）<> 的<#a974ffff>魔法伤害<>。\n\n<#ff7a3eff>交相<>：普通攻击会交替获得 <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>或 <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> 法术穿透<>，持续 <#e8a800ff>4秒<>（每种最多叠加4层）。"
         },
         "spirit_visage": {
             "name": "振奋盔甲",
@@ -3351,6 +3367,14 @@
         "radiant_rod_of_ages": {
             "name": "光明版时光之杖",
             "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+        },
+        "mikaels_blessing": {
+            "name": "米凯尔的祝福",
+            "option": "\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "光明版米凯尔的祝福",
+            "option": "\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
         }
     },
     "pt-BR": {
@@ -3724,11 +3748,11 @@
         },
         "terminus": {
             "name": "Terminus",
-            "option": "\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
+            "option": "\n<#ff7a3eff>Sombra<>: Ataques causam <#a974ffff>30<> <#ff9028ff>(+5% do<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <#a974ffff>(+10% do<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade)<> de <#a974ffff>dano mágico<> <#ffff99ff>ao contato<>.\n\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
         },
         "radiant_terminus": {
             "name": "Terminus Radiante",
-            "option": "\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
+            "option": "\n<#ff7a3eff>Sombra<>: Ataques causam <#a974ffff>30<> <#ff9028ff>(+5% do<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <#a974ffff>(+10% do<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade)<> de <#a974ffff>dano mágico<> <#ffff99ff>ao contato<>.\n\n<#ff7a3eff>Justaposição<>: Ataques alternam para conceder entre <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> de Penetração de Armadura<> ou <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> Penetração Mágica<> por <#e8a800ff>4 segundos<>. (acumula 4x cada)."
         },
         "spirit_visage": {
             "name": "Semblante Espiritual",
@@ -4469,6 +4493,14 @@
         "radiant_rod_of_ages": {
             "name": "Bastão das Eras Radiante",
             "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+        },
+        "mikaels_blessing": {
+            "name": "Bênção de Mikael",
+            "option": "\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Bênção de Mikael Radiante",
+            "option": "\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         }
     },
     "ru": {
@@ -4842,11 +4874,11 @@
         },
         "terminus": {
             "name": "Светотень",
-            "option": "\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+            "option": "\n<#ff7a3eff>Тень<>: Базовые атаки наносят <#ffff99ff>при попадании<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений)<> <#a974ffff>магического урона<>.\n\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
         },
         "radiant_terminus": {
             "name": "Лучезарная Светотень",
-            "option": "\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
+            "option": "\n<#ff7a3eff>Тень<>: Базовые атаки наносят <#ffff99ff>при попадании<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>силы умений)<> <#a974ffff>магического урона<>.\n\n<#ff7a3eff>Соприкосновение<>: Базовые атаки дают либо <#ffdd8eff>4% <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> пробивания брони<>, либо <#88ccffff>4% <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> пробивания магии<> на <#e8a800ff>4 секунды<>, чередуясь (макс. 4 стака каждого)."
         },
         "spirit_visage": {
             "name": "Облачение Духов",
@@ -5587,6 +5619,14 @@
         "radiant_rod_of_ages": {
             "name": "Лучезарный Жезл веков",
             "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+        },
+        "mikaels_blessing": {
+            "name": "Благословение Микаэля",
+            "option": "\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Лучезарное Благословение Микаэля",
+            "option": "\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
         }
     },
     "ko": {
@@ -5960,11 +6000,11 @@
         },
         "terminus": {
             "name": "경계",
-            "option": "\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>그림자<>: 기본 공격 <#ffff99ff>적중 시<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력)<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
         },
         "radiant_terminus": {
             "name": "찬란한 경계",
-            "option": "\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>그림자<>: 기본 공격 <#ffff99ff>적중 시<> <#a974ffff>30<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력)<> <#a974ffff>(+10%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력)<>만큼 <#a974ffff>마법 피해<>를 입힙니다.\n\n<#ff7a3eff>병치<>: 기본 공격 시 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> <#ffdd8eff>방어구 관통력 4%<> 또는 <i#asset/base/ui/banpick/champion_stat_icon:magic_pen_0> <#88ccffff>마법 관통력 4%<>를 번갈아 얻습니다. 각각 최대 4회 중첩됩니다."
         },
         "spirit_visage": {
             "name": "정령의 형상",
@@ -6705,6 +6745,14 @@
         "radiant_rod_of_ages": {
             "name": "찬란한 영겁의 지팡이",
             "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+        },
+        "mikaels_blessing": {
+            "name": "미카엘의 축복",
+            "option": "\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
+        },
+        "radiant_mikaels_blessing": {
+            "name": "찬란한 미카엘의 축복",
+            "option": "\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
         }
     }
 }
