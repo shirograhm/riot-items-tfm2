@@ -136,21 +136,32 @@ impl StableItem for NightHarvester {
         }
     }
 
-    fn on_skill_hit(
+    /// Soulrend. Ability damage sets it off, a tick of damage over time
+    /// included. Its own damage lands as an `Item` hit, which this does not
+    /// answer to.
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
         caster: usize,
         target: usize,
-        is_ally: bool,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
+        if !matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        ) {
+            return;
+        }
         let Some(caster_ref) = ctx.get_entity(caster) else {
             return;
         };
         let Some(target_ref) = ctx.get_entity(target) else {
             return;
         };
-        if !target_ref.is_champion() || is_ally {
+        if !target_ref.is_champion() {
             return;
         }
 
