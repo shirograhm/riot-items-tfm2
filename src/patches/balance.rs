@@ -313,5 +313,6 @@ pub(crate) fn decide(
         version: version.to_string(),
         matches,
         changes,
+        ..Patch::default()
     }
 }

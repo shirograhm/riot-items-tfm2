@@ -1100,9 +1100,18 @@ fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
 pub(crate) fn news(patch: &Patch) -> (String, String, String) {
     let texts = texts();
     let lang = game_language();
-    let title = texts
-        .ui(&lang, "title", "Item Balance Patch {N}")
-        .replace("{N}", &patch.number.to_string());
+    // Named as the game names its own, "Patch Notes v…", after the version
+    // the game was on when it landed; a patch set off by hand is a numbered
+    // hotfix of that version (the user's titles, 2026-10-10).
+    let mut title = texts
+        .ui(&lang, "title", "Item Patch Notes v{Version}")
+        .replace("{Version}", &patch.announced);
+    if patch.hotfix > 0 {
+        title = texts
+            .ui(&lang, "hotfix", "{Title} - Hotfix {N}")
+            .replace("{Title}", &title)
+            .replace("{N}", &patch.hotfix.to_string());
+    }
     let mut body = texts
         .ui(&lang, "intro", "Items were rebalanced after {Matches} matches on v{Version}.")
         .replace("{Matches}", &patch.matches.to_string())
@@ -1144,7 +1153,12 @@ pub(crate) fn news(patch: &Patch) -> (String, String, String) {
         body.push_str("\n\n");
         body.push_str(&texts.ui(&lang, "none", "No item was changed."));
     }
-    let author = texts.ui(&lang, "author", "shirograhm");
+    // A hotfix is the player's own, and signed so where Steam says who
+    // that is.
+    let author = (patch.hotfix > 0)
+        .then(super::steam::persona_name)
+        .flatten()
+        .unwrap_or_else(|| texts.ui(&lang, "author", "shirograhm"));
     (title, body, author)
 }
 

@@ -4,11 +4,16 @@
 //! The base game patches champions on a calendar and never touches an item.
 //! This is the same idea for items, built on what the mod already keeps:
 //! `item_stats` counts, for every game version, how often each item was held
-//! at the end of a match and how often its holder won. When the first match
-//! of a new version is counted, the version before it is judged
-//! ([`balance`]), the items that won and were held too much are nerfed and
-//! the ones that did neither are buffed, and a news article says what moved
-//! ([`text::news`]).
+//! at the end of a match and how often its holder won. When the game patches
+//! its champions, the version that just ended is judged ([`balance`]), the
+//! items that won and were held too much are nerfed and the ones that did
+//! neither are buffed, and a news article says what moved ([`text::news`]):
+//! "Item Patch Notes v…", under the version the game's own notes announce.
+//!
+//! That the game has patched is read off the player's inbox, where its
+//! patch notes arrive ([`watch_news`]), and failing that off the first match
+//! counted on a newer version, which is how it was first told and still
+//! catches a patch the inbox was not seen to get.
 //!
 //! # Where everything is
 //!
@@ -18,6 +23,7 @@
 //! - [`balance`]: choosing one patch's changes.
 //! - [`live`]: the balance as matches, build hooks and tooltips read it.
 //! - [`text`]: the patched tooltips, and the patch notes.
+//! - [`steam`]: the player's Steam name, for a hotfix's byline.
 //!
 //! # What follows a patch
 //!
@@ -34,14 +40,18 @@
 //! A patch waits for the game's next one, which is weeks of game time. An
 //! empty file named [`FORCE_FILE`] beside the DLL makes one land within two
 //! seconds, judged on the version being played, and is deleted as it is
-//! taken. With `match_builds::LOG` on, `match-builds.log` has a `patch.`
-//! line for everything this does.
+//! taken. Such a patch is a hotfix of the game's current version: "Item
+//! Patch Notes v… - Hotfix 1", numbered from one for each version, and
+//! signed with the player's Steam name where that can be had. With
+//! `match_builds::LOG` on, `match-builds.log` has a `patch.` line for
+//! everything this does.
 
 pub(crate) mod balance;
 pub(crate) mod base;
 pub(crate) mod fields;
 pub(crate) mod live;
 pub(crate) mod state;
+pub(crate) mod steam;
 pub(crate) mod text;
 
 use std::cmp::Ordering as Order;
@@ -145,6 +155,7 @@ struct Session {
     frame: u32,
     /// Looks a due patch has waited for the simulations to go quiet.
     waited: u32,
+    watch: Watch,
 }
 
 impl Session {
@@ -155,12 +166,14 @@ impl Session {
                 format: 0,
                 version: None,
                 number: 0,
+                hotfixes: 0,
                 ratios: std::collections::BTreeMap::new(),
                 history: Vec::new(),
             },
             dirty: false,
             frame: 0,
             waited: 0,
+            watch: Watch::new(),
         }
     }
 }
@@ -180,14 +193,27 @@ static ARTICLES: Mutex<Vec<Article>> = Mutex::new(Vec::new());
 static ARTICLE_WAITING: AtomicBool = AtomicBool::new(false);
 
 /// A version as its numbers, to tell the newer of two: `1.10` is after
-/// `1.9`. Versions that read the same that way fall back to their text.
+/// `1.9`. Two that have the same numbers are the same version however they
+/// are written (`1.2` and `1.2.0`, or with a letter in front): a version is
+/// read from two places now, the matches and the patch notes, and a patch
+/// must not be set off by the two spelling one version differently. Only
+/// versions with no number in them are told apart by their text.
 fn version_order(a: &str, b: &str) -> Order {
     let numbers = |text: &str| -> Vec<u64> {
-        text.split(|letter: char| !letter.is_ascii_digit())
+        let mut numbers: Vec<u64> = text
+            .split(|letter: char| !letter.is_ascii_digit())
             .filter_map(|run| run.parse().ok())
-            .collect()
+            .collect();
+        while numbers.len() > 1 && numbers.last() == Some(&0) {
+            numbers.pop();
+        }
+        numbers
     };
-    numbers(a).cmp(&numbers(b)).then_with(|| a.cmp(b))
+    let (a_numbers, b_numbers) = (numbers(a), numbers(b));
+    if a_numbers.is_empty() && b_numbers.is_empty() {
+        return a.cmp(b);
+    }
+    a_numbers.cmp(&b_numbers)
 }
 
 /// Whether [`FORCE_FILE`] is there, taking it away if so.
@@ -196,27 +222,141 @@ fn forced() -> bool {
     path.exists() && std::fs::remove_file(&path).is_ok()
 }
 
-/// Lands a patch if one is due. See the module docs for when that is.
-fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
-    let forced = session.frame % (CHECK_FRAMES * 4) == 0 && forced();
-    let Some(newest) = crate::item_stats::patches()
-        .into_iter()
-        .max_by(|a, b| version_order(a, b))
-    else {
-        // No match has been counted in this save yet.
+/// Looks at the inbox between two full readings of it.
+const WATCH_REREAD: u32 = 30;
+
+/// What the player's inbox has said of the game's own patches.
+struct Watch {
+    /// The team whose news was read.
+    team: Option<usize>,
+    /// How many articles it had then.
+    seen: usize,
+    /// The newest version a champion patch note among them announces.
+    newest: Option<String>,
+    looks: u32,
+}
+
+impl Watch {
+    const fn new() -> Self {
+        Self {
+            team: None,
+            seen: 0,
+            newest: None,
+            looks: 0,
+        }
+    }
+}
+
+/// Keeps [`Watch::newest`]: the version of the newest champion patch notes
+/// in the player's inbox. Every two seconds on the management screens.
+///
+/// The game says nowhere what version it is on (no event for a patch, no
+/// field for the version: only the matches played carry one). Its patch
+/// notes do, and they are an article in the player's team's news the day
+/// the patch lands: type `PatchNote`, with a `version`, in the team record's
+/// `news` list.
+///
+/// A look is one small read, of the article after the last one seen, which
+/// is not there while nothing has come. When something has, the list is read
+/// whole: where in it a new article goes is not known, and a patch note is
+/// looked for by what it is and not by where. It is read whole every
+/// [`WATCH_REREAD`]th look regardless, in case the list is ever shortened
+/// from the front as it grows.
+fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch) {
+    use serde_json::Value;
+
+    let Some(team) = ctx.player_team_id() else {
         return;
     };
-    let judged = match session.state.version.clone() {
+    let read = |path: &str| {
+        ctx.record_get_json(RecordKindV1::Team, team, path)
+            .and_then(|json| serde_json::from_str::<Value>(&json).ok())
+            .filter(|value| !value.is_null())
+    };
+    let first = watch.team != Some(team);
+    let reread = first || watch.looks % WATCH_REREAD == 0;
+    watch.looks = watch.looks.wrapping_add(1);
+    if !reread && read(&format!("news.{}.date", watch.seen)).is_none() {
+        return;
+    }
+    let started = std::time::Instant::now();
+    let Some(Value::Array(articles)) = read("news") else {
+        log("patch.watch", || format!("team {team}'s news could not be read"));
+        return;
+    };
+    let notes: Vec<&Value> = articles
+        .iter()
+        .filter_map(|article| article.pointer("/ty/PatchNote"))
+        .collect();
+    let newest = notes
+        .iter()
+        .filter_map(|note| note.get("version")?.as_str().map(str::to_string))
+        .max_by(|a, b| version_order(a, b));
+    if first {
+        // What a whole reading costs, once: it is the dear one.
+        log("patch.watch.cost", || {
+            format!(
+                "{} articles read and parsed in {:?}",
+                articles.len(),
+                started.elapsed()
+            )
+        });
+    }
+    log("patch.watch", || {
+        // A note whose version is not text would be why there is no newest.
+        let odd = notes
+            .iter()
+            .find(|note| note.get("version").and_then(Value::as_str).is_none())
+            .map(|note| note.to_string().chars().take(160).collect::<String>());
+        format!(
+            "team {team}: {} champion patch note(s), newest v{newest:?}{}",
+            notes.len(),
+            odd.map(|odd| format!("; one reads {odd}")).unwrap_or_default()
+        )
+    });
+    watch.team = Some(team);
+    watch.seen = articles.len();
+    watch.newest = newest;
+}
+
+/// Lands a patch if one is due. See the module docs for when that is.
+fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
+    let slow_look = session.frame % (CHECK_FRAMES * 4) == 0;
+    let forced = slow_look && forced();
+    if slow_look && ctx.client_scene_kind() == Some(ClientSceneKindV1::Main) {
+        watch_news(ctx, &mut session.watch);
+    }
+    // The version the game is on: the newest its patch notes announce, or
+    // the newest a counted match was played on, whichever is further along.
+    let played = crate::item_stats::patches()
+        .into_iter()
+        .max_by(|a, b| version_order(a, b));
+    let Some(current) = [played.clone(), session.watch.newest.clone()]
+        .into_iter()
+        .flatten()
+        .max_by(|a, b| version_order(a, b))
+    else {
+        // No match has been counted in this save yet, and no patch note read.
+        return;
+    };
+    // The version whose matches are judged, the version the patch is
+    // announced as, and whether it is a hotfix.
+    let (judged, announced, hotfix) = match session.state.version.clone() {
         // The first version this save is seen on: nothing came before it to
         // judge.
         None => {
-            session.state.version = Some(newest);
+            session.state.version = Some(current);
             session.dirty = true;
             return;
         }
-        Some(settled) if version_order(&newest, &settled) == Order::Greater => settled,
-        // Forced: the version being played is judged as far as it has got.
-        Some(_) if forced => newest.clone(),
+        // The game has patched its champions since the items were settled:
+        // the version that ended is judged, and the patch is the new one's.
+        Some(settled) if version_order(&current, &settled) == Order::Greater => {
+            (settled, current, false)
+        }
+        // Forced: a hotfix of the version the game is on, judged on the
+        // version being played as far as it has got.
+        Some(settled) if forced => (played.unwrap_or_else(|| settled.clone()), settled, true),
         Some(_) => return,
     };
 
@@ -232,7 +372,7 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
 
     let window = crate::item_stats::snapshot(Some(judged.as_str()), None);
     let number = session.state.number + 1;
-    let patch = if window.matches >= MIN_MATCHES || forced {
+    let mut patch = if window.matches >= MIN_MATCHES || forced {
         let tallies: HashMap<String, balance::Tally> = window
             .rows
             .iter()
@@ -259,12 +399,12 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
             number,
             version: judged.clone(),
             matches: window.matches,
-            changes: Vec::new(),
+            ..Patch::default()
         }
     };
     log("patch.landed", || {
         format!(
-            "patch {number} for v{judged} ({} matches, forced={forced}): {} change(s){}",
+            "patch {number} as v{announced} (hotfix={hotfix}), judged on v{judged} ({} matches, forced={forced}): {} change(s){}",
             patch.matches,
             patch.changes.len(),
             patch
@@ -283,12 +423,22 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
         )
     });
 
-    session.state.version = Some(newest);
+    if !hotfix {
+        // The game's version has moved on, and its hotfixes are counted
+        // from one again.
+        session.state.version = Some(announced.clone());
+        session.state.hotfixes = 0;
+    }
     session.dirty = true;
     // A version that changed nothing is not a patch: no number, no article.
     if patch.changes.is_empty() {
         return;
     }
+    if hotfix {
+        session.state.hotfixes += 1;
+        patch.hotfix = session.state.hotfixes;
+    }
+    patch.announced = announced;
     let (title, body, author) = text::news(&patch);
     session.state.adopt(patch);
     live::rebuild(base::base(), &session.state);

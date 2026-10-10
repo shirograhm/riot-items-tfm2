@@ -30,6 +30,10 @@ pub(crate) struct State {
     /// Item patches so far.
     #[serde(rename = "n")]
     pub number: u32,
+    /// Hotfixes released on `version` so far: the patches the player set
+    /// off by hand. Counted from one again when the game's version moves on.
+    #[serde(rename = "hf")]
+    pub hotfixes: u32,
     /// Item family -> field -> what the field is of its unpatched value
     /// after every patch so far. One number for all tiers of the item, so a
     /// radiant keeps its distance from the legendary it is built from.
@@ -51,6 +55,15 @@ pub(crate) struct Patch {
     /// Matches counted on that version.
     #[serde(rename = "m")]
     pub matches: u32,
+    /// The game version it was announced as: the one the game was on when
+    /// it landed, which for the patch a new version brings is the version
+    /// after the one judged. Empty in a patch from before this was kept.
+    #[serde(rename = "as")]
+    pub announced: String,
+    /// Which hotfix of that version it is, from one; zero for the patch a
+    /// new version brings.
+    #[serde(rename = "hf")]
+    pub hotfix: u32,
     #[serde(rename = "c")]
     pub changes: Vec<Change>,
 }
