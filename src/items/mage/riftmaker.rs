@@ -163,15 +163,29 @@ impl StableItem for Riftmaker {
         self.apply_infusion(ctx, player);
     }
 
-    fn on_skill_hit(
+    /// Corruption. Ability damage to an enemy champion sets it off, a tick of
+    /// damage over time included.
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
         caster: usize,
-        _target: usize,
-        is_ally: bool,
+        target: usize,
+        _damage: &mut usize,
+        _damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        _is_crit: bool,
     ) {
-        if is_ally || ctx.get_entity(caster).is_none() {
+        let ability = matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        );
+        if !ability || ctx.get_entity(caster).is_none() {
+            return;
+        }
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if !target_ref.is_champion() {
             return;
         }
 

@@ -207,6 +207,9 @@ impl StableServerExtension for NativeTapExtension {
         tactics::driver::before_management_tick();
         // One atomic load once the server's item settings have been seen to.
         item_stats::sync_server_items(ctx);
+        // The patch of the sets the Item Stats tab cannot place by seed: every
+        // league's but the player's own.
+        item_stats::place_captures(ctx);
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
