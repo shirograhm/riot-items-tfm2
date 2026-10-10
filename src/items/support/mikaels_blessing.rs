@@ -3,27 +3,35 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, sized_range, ticks, Elapsed, ItemMeta};
 
-/// Ticks between two looks for an ally to purify while the cooldown is up: a
+/// Ticks between two looks for a champion to purify while the cooldown is up: a
 /// tenth of a second. Nobody sees the wait, and the look costs a few host
 /// calls for every champion in the match.
 const PURIFY_POLL_TICKS: usize = 6;
-/// The cleanse, played on both champions it reaches, the ally and the carrier
-/// (`effects/mikaels_purify`): a round of pale light that opens about the
-/// body and lets go as glints rise off it. Bound in
-/// `view/effects.view_effects`.
+/// The cleanse, played on every champion it reaches, the one purified and,
+/// when that is an ally, the carrier too (`effects/mikaels_purify`): a round
+/// of pale light that opens about the body and lets go as glints rise off it.
+/// Bound in `view/effects.view_effects`.
 const PURIFY_EFFECT: &str = "riot_mikaels_purify";
 
-/// Mikael's Blessing — Purify, a cleanse and a heal for an ally caught at low
-/// health.
+/// Mikael's Blessing — Purify, a cleanse and a heal for a champion of the
+/// carrier's team caught at low health, the carrier included.
 ///
 /// # Why it is looked for
 ///
 /// An item's hooks report its carrier's own events, so an ally being crowd
 /// controlled is something to go and find: while the cooldown is up, the
-/// allied champions are gone over for one that is below the health threshold,
+/// team's champions are gone over for one that is below the health threshold,
 /// under a crowd control and within range, and the one worst off is purified.
 /// The range is measured last and once (`sized_range` reads the carrier's
 /// buffs), only when an ally has passed the other two tests.
+///
+/// # The carrier itself
+///
+/// One of the champions gone over, on the same two tests and with no range
+/// to pass: Purify can be cast on its own carrier (the user, 2026-10-09). It
+/// has no say over an ally worse off, as the worst off is still the one
+/// purified. An ally purified takes the carrier's crowd control with it, as
+/// the tooltip says; the carrier purified is the only one cleansed.
 ///
 /// # What counts as crowd control
 ///
@@ -31,13 +39,13 @@ const PURIFY_EFFECT: &str = "riot_mikaels_purify";
 /// which is the champion's own doing. A slow is not on that list: the host
 /// keeps it as a stat buff, so Purify neither answers to one nor removes it.
 /// The cleanse itself is the host's (`entity_clear_cc`), which takes all of
-/// it off, the ally's and the carrier's.
+/// it off.
 ///
 /// # Whose level
 ///
-/// The ally's, as the tooltip says ("based on the target's level") and as
-/// League has it: the user's call (2026-10-09). Every other "(based on
-/// level)" amount in the mod goes by the carrier's.
+/// The purified champion's, as the tooltip says ("based on the target's
+/// level") and as League has it: the user's call (2026-10-09). Every other
+/// "(based on level)" amount in the mod goes by the carrier's.
 ///
 /// # The cooldown
 ///
@@ -158,14 +166,11 @@ impl MikaelsBlessing {
         };
 
         let mut reach_sq: Option<u64> = None;
-        // The ally worst off, by the share of its health it has left:
+        // The champion worst off, by the share of its health it has left:
         // (entity, health, maximum health, level).
         let mut worst: Option<(usize, usize, usize, usize)> = None;
         for index in 0..ctx.champion_count() {
             let id = ctx.champion_id_at(index);
-            if id == caster {
-                continue;
-            }
             let Some(ally_ref) = ctx.get_entity(id) else {
                 continue;
             };
@@ -178,23 +183,27 @@ impl MikaelsBlessing {
             {
                 continue;
             }
-            let within_sq = *reach_sq.get_or_insert_with(|| {
-                let range = sized_range(ctx, caster, self.effect_max_distance);
-                range * range
-            });
-            if ctx.distance_sq(caster, id) > within_sq {
-                continue;
+            if id != caster {
+                let within_sq = *reach_sq.get_or_insert_with(|| {
+                    let range = sized_range(ctx, caster, self.effect_max_distance);
+                    range * range
+                });
+                if ctx.distance_sq(caster, id) > within_sq {
+                    continue;
+                }
             }
             if worst.is_none_or(|(_, low_hp, low_max, _)| hp * low_max < low_hp * max_hp) {
                 worst = Some((id, hp, max_hp, ally_ref.level()));
             }
         }
-        let Some((ally, _, _, level)) = worst else {
+        let Some((purified, _, _, level)) = worst else {
             return;
         };
 
-        // Both are cleansed and both show it; the heal is the ally's alone.
-        for cleansed in [ally, caster] {
+        // The carrier is cleansed along with an ally, and both show it; the
+        // heal is the purified champion's alone.
+        let also = (purified != caster).then_some(caster);
+        for cleansed in [Some(purified), also].into_iter().flatten() {
             ctx.entity_clear_cc(cleansed);
             ctx.play_view_effect(
                 PURIFY_EFFECT,
@@ -205,7 +214,7 @@ impl MikaelsBlessing {
                 0,
             );
         }
-        ctx.heal(caster, ally, self.heal_amount(level));
+        ctx.heal(caster, purified, self.heal_amount(level));
         self.purify_cooldown = ticks(self.effect_cooldown_seconds);
     }
 }
