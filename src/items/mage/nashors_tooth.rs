@@ -122,7 +122,10 @@ impl StableItem for NashorsTooth {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if attack_type != AttackTypeV1::BaseAttack {
+        let Some(target_ref) = ctx.get_entity(target) else {
+            return;
+        };
+        if target_ref.is_tower() || attack_type != AttackTypeV1::BaseAttack {
             return;
         }
 
