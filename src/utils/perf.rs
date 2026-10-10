@@ -493,10 +493,24 @@ fn write_report(at: f64, seconds: f64, totals: &[Acc]) {
 
 /// An item with its hooks timed, both by hook kind and under its own key.
 /// Derefs to the item, so what registration asks of it still reaches it.
+///
+/// It is also where an item balance patch reaches the item (`crate::patches`),
+/// being the one thing every item registers in. The game copies the
+/// registered item for each purchase; the first time any hook of a copy
+/// runs, the copy is built again from its config with the patch in it. Once,
+/// before the copy has done anything, so it holds no state to lose, and it
+/// keeps those numbers for as long as it lives: a patch that lands does not
+/// change an item somebody is holding.
 #[derive(Clone)]
 pub struct Timed<T> {
     inner: T,
     slot: Option<usize>,
+    key: &'static str,
+    /// The item's constructor from a config, tier and all.
+    build: fn(&crate::config::ItemConfig) -> T,
+    /// This copy has looked for its patch. Never set on the registered item,
+    /// which no hook runs on, so every copy of it starts unset.
+    patched: bool,
 }
 
 impl<T> Deref for Timed<T> {
@@ -507,8 +521,13 @@ impl<T> Deref for Timed<T> {
     }
 }
 
-/// Wraps `item` for timing under `key`.
-pub fn timed<T: StableItem + Clone>(key: &'static str, item: T) -> Timed<T> {
+/// Wraps `item` for timing under `key`. `build` is the constructor it was
+/// made with, for a copy to be made again with a patched config.
+pub fn timed<T: StableItem + Clone>(
+    key: &'static str,
+    item: T,
+    build: fn(&crate::config::ItemConfig) -> T,
+) -> Timed<T> {
     let slot = ENABLED
         .then(|| {
             let mut keys = ITEM_KEYS.lock().ok()?;
@@ -518,12 +537,31 @@ pub fn timed<T: StableItem + Clone>(key: &'static str, item: T) -> Timed<T> {
             })
         })
         .flatten();
-    Timed { inner: item, slot }
+    Timed {
+        inner: item,
+        slot,
+        key,
+        build,
+        patched: false,
+    }
 }
 
 impl<T> Timed<T> {
+    /// Takes on the save's item balance patch, where it has one for this
+    /// item. Out of line: it runs once in a copy's life.
+    #[cold]
+    fn adopt_patch(&mut self) {
+        self.patched = true;
+        if let Some(config) = crate::patches::live::config_for(self.key) {
+            self.inner = (self.build)(&config);
+        }
+    }
+
     #[inline]
     fn hook<R>(&mut self, section: Section, f: impl FnOnce(&mut T) -> R) -> R {
+        if !self.patched {
+            self.adopt_patch();
+        }
         let mut probe = Probe::sim(section);
         let other = !matches!(section, Section::ItemUpdate) as usize;
         probe.also = self.slot.map(|slot| slot + other);

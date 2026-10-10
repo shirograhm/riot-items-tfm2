@@ -35,13 +35,24 @@ impl StableItemBuildHook for ConfiguredBuilds {
         base_score: f32,
     ) -> StableDraftDecision {
         let _probe = crate::perf::Probe::start(crate::perf::Section::ScoreItem);
-        // Already wanted, or not ours: leave the engine's ranking alone.
-        if base_score > 0.0 {
-            return StableDraftDecision::Pass;
-        }
         let Some(key) = ctx.item_key(candidate) else {
             return StableDraftDecision::Pass;
         };
+        // What the save's item balance patches have made of the item: a
+        // nerfed one is worth a little less to a build and a buffed one a
+        // little more, so that how often an item is built follows its
+        // patches (`patches`, "What follows a patch"). Nothing for an item no
+        // patch has moved, which is every item while there are none.
+        let lean = crate::patches::leaning(key) * crate::patches::LEAN_SCORE;
+        // Already wanted, or not ours: the engine's ranking is left alone,
+        // bar that lean.
+        if base_score > 0.0 {
+            return if lean == 0.0 {
+                StableDraftDecision::Pass
+            } else {
+                StableDraftDecision::Add(lean)
+            };
+        }
         // Boots are listed with the finals for the editor's picker, but they
         // reach a build through Smart Builds' boots rule, never the ranking.
         if !crate::strategy_ui::is_mod_final_item(key) || smart_builds::is_boots(key) {
@@ -58,14 +69,14 @@ impl StableItemBuildHook for ConfiguredBuilds {
             return StableDraftDecision::Pass;
         }
         if fit.is_preferred_aid_item(key) {
-            return StableDraftDecision::Add(ALLY_AID_ITEM_SCORE_BONUS);
+            return StableDraftDecision::Add(ALLY_AID_ITEM_SCORE_BONUS + lean);
         }
         // A support's World Atlas item is its one dedicated support item, and
         // past that it prefers support items without being held to one.
         if fit.is_preferred_support_item(key) {
-            return StableDraftDecision::Add(SUPPORT_ITEM_SCORE_BONUS);
+            return StableDraftDecision::Add(SUPPORT_ITEM_SCORE_BONUS + lean);
         }
-        StableDraftDecision::Add(MOD_ITEM_SCORE_BONUS)
+        StableDraftDecision::Add(MOD_ITEM_SCORE_BONUS + lean)
     }
 
     fn decide_build(&self, ctx: &StableItemBuildContext<'_>) -> Vec<usize> {

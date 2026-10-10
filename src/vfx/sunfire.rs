@@ -179,6 +179,9 @@ impl StableMatchHook for MatchHooks {
             perf::sim_tick(sim.seed(), sim.tick(), sim.is_end());
         }
         let _probe = perf::Probe::sim(Section::MatchTick);
+        // What a balance patch has made of the flat stats of the items each
+        // champion holds, kept on the champion.
+        crate::patches::on_match_tick(sim);
         if !sim.is_end() {
             perf::time(Section::MatchImmolate, || {
                 immolate(sim, &self.immolate, &self.radiant_immolate)

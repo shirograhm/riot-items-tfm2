@@ -820,7 +820,7 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
 /// over its own. By the name each item has in the settings document, which
 /// is not always its key (`iron_blade` calls itself `ironsword`). Read once:
 /// the game loads it once too. Empty where it cannot be read.
-fn game_item_file() -> &'static serde_json::Map<String, Value> {
+pub(crate) fn game_item_file() -> &'static serde_json::Map<String, Value> {
     static FILE: OnceLock<serde_json::Map<String, Value>> = OnceLock::new();
     FILE.get_or_init(|| {
         let path = crate::config::mod_dir()
@@ -897,6 +897,45 @@ pub(crate) fn server_started() {
     SERVER_ITEMS_SYNCED.store(false, Ordering::Relaxed);
 }
 
+/// The numbers the server should hold have changed: an item balance patch
+/// landed, or a save's patches were loaded or left behind (`crate::patches`).
+/// The next management tick goes through [`sync_server_items`] again, which
+/// writes what differs and nothing where nothing does.
+pub(crate) fn resync_server_items() {
+    SERVER_ITEMS_SYNCED.store(false, Ordering::Relaxed);
+}
+
+/// Whether the save's item totals have been read, which is also the save's
+/// namespace having answered at all (see [`LOAD_GRACE`]).
+pub(crate) fn loaded() -> bool {
+    with_agg(|agg| agg.loaded).unwrap_or(false)
+}
+
+/// One of the game's items as the mod's settings file has it, with the
+/// stats an item balance patch has given it in place of the file's
+/// (`patches::live::game_stats`). The file's own object while no patch has
+/// touched the item.
+fn patched_game_item<'a>(
+    name: &str,
+    object: &'a serde_json::Map<String, Value>,
+) -> Cow<'a, serde_json::Map<String, Value>> {
+    let key = object
+        .get("key")
+        .and_then(Value::as_str)
+        .filter(|key| !key.is_empty())
+        .unwrap_or(name);
+    let Some(stats) = crate::patches::live::game_stats(key) else {
+        return Cow::Borrowed(object);
+    };
+    let mut patched = object.clone();
+    if let Some(Value::Object(block)) = patched.get_mut("stat") {
+        for (field, value) in stats {
+            block.insert(field, Value::from(value));
+        }
+    }
+    Cow::Owned(patched)
+}
+
 /// Whether two settings values say the same thing, a number being the same
 /// whether the host wrote it `50` or `50.0`.
 fn same_setting(a: &Value, b: &Value) -> bool {
@@ -969,7 +1008,9 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
             ));
         }
         let mut merged = held.clone();
-        merge_over(&mut merged, over);
+        // The file's numbers, and over them whatever the save's item balance
+        // patches have made of the item's stats.
+        merge_over(&mut merged, &patched_game_item(name, over));
         match held.get("next_tier") {
             Some(next_tier) => merged.insert("next_tier".to_string(), next_tier.clone()),
             None => merged.remove("next_tier"),
@@ -1117,6 +1158,10 @@ pub(crate) fn merged_item<'a>(
     match game_item_overrides().get(key) {
         Some(over) => {
             let mut merged = object.clone();
+            // The file's numbers, without the save's item balance patches:
+            // what is read here is kept (the rules' item traits, the Check
+            // Tactics cards), and a patch is laid over it where it is shown
+            // (`patches::live::shown_flat`).
             merge_over(&mut merged, over);
             Cow::Owned(merged)
         }

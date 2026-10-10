@@ -3108,6 +3108,9 @@ unsafe fn network_pick(
             build.len() as u64,
             0,
         );
+        // What the save's item balance patches have made of the item, as in
+        // the stable hook's `score_item`: nothing while no patch has moved it.
+        let score = score + crate::patches::leaning(&key) * crate::patches::LEAN_SCORE;
         // The first of equals wins, so a tie falls the same way every time.
         if !score.is_nan() && best.as_ref().is_none_or(|(top, _, _)| score > *top) {
             best = Some((score, index, key));

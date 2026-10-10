@@ -261,7 +261,11 @@ impl StableItem for ZazzaksRealmspike {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if attack_type != AttackTypeV1::Skill || self.cooldown > 0 {
+        let ability = matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        );
+        if !ability || self.cooldown > 0 {
             return;
         }
         let Some((x, y)) = ctx

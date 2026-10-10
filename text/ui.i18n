@@ -47,6 +47,14 @@
       "lane_mid": "   Mid",
       "lane_bottom": "   Bottom",
       "lane_support": "   Support"
+    },
+    "item_patch": {
+      "title": "Item Balance Patch {N}",
+      "intro": "Items were rebalanced after {Matches} matches on v{Version}.",
+      "nerfed": "Nerfed",
+      "buffed": "Buffed",
+      "none": "No item was changed.",
+      "author": "Balance Team"
     }
   },
   "ko": {
@@ -97,6 +105,14 @@
       "lane_mid": "   미드",
       "lane_bottom": "   바텀",
       "lane_support": "   서포터"
+    },
+    "item_patch": {
+      "title": "아이템 밸런스 패치 {N}",
+      "intro": "v{Version}에서 치른 {Matches}경기를 바탕으로 아이템 밸런스를 조정했습니다.",
+      "nerfed": "하향",
+      "buffed": "상향",
+      "none": "변경된 아이템이 없습니다.",
+      "author": "밸런스 팀"
     }
   },
   "zh-hans": {
@@ -147,6 +163,14 @@
       "lane_mid": "   中单",
       "lane_bottom": "   下路",
       "lane_support": "   辅助"
+    },
+    "item_patch": {
+      "title": "装备平衡补丁 {N}",
+      "intro": "根据 v{Version} 的 {Matches} 场比赛，对装备进行了平衡调整。",
+      "nerfed": "削弱",
+      "buffed": "增强",
+      "none": "没有装备被调整。",
+      "author": "平衡团队"
     }
   },
   "ja": {
@@ -197,6 +221,14 @@
       "lane_mid": "   ミッド",
       "lane_bottom": "   ボトム",
       "lane_support": "   サポート"
+    },
+    "item_patch": {
+      "title": "アイテムバランスパッチ {N}",
+      "intro": "v{Version} の {Matches} 試合をもとにアイテムのバランスを調整しました。",
+      "nerfed": "弱体化",
+      "buffed": "強化",
+      "none": "変更されたアイテムはありません。",
+      "author": "バランスチーム"
     }
   },
   "pt-BR": {
@@ -247,6 +279,14 @@
       "lane_mid": "   Meio",
       "lane_bottom": "   Base",
       "lane_support": "   Suporte"
+    },
+    "item_patch": {
+      "title": "Atualização de Balanceamento de Itens {N}",
+      "intro": "Os itens foram rebalanceados após {Matches} partidas na v{Version}.",
+      "nerfed": "Enfraquecidos",
+      "buffed": "Fortalecidos",
+      "none": "Nenhum item foi alterado.",
+      "author": "Equipe de Balanceamento"
     }
   },
   "ru": {
@@ -297,6 +337,14 @@
       "lane_mid": "   Мид",
       "lane_bottom": "   Керри",
       "lane_support": "   Поддержка"
+    },
+    "item_patch": {
+      "title": "Патч баланса предметов {N}",
+      "intro": "Баланс предметов изменён по итогам {Matches} матчей на v{Version}.",
+      "nerfed": "Ослаблены",
+      "buffed": "Усилены",
+      "none": "Ни один предмет не изменён.",
+      "author": "Команда баланса"
     }
   },
   "vi": {
@@ -347,6 +395,14 @@
       "lane_mid": "   Đường Giữa",
       "lane_bottom": "   Đường Dưới",
       "lane_support": "   Hỗ Trợ"
+    },
+    "item_patch": {
+      "title": "Bản cập nhật cân bằng trang bị {N}",
+      "intro": "Trang bị được cân bằng lại sau {Matches} trận đấu ở v{Version}.",
+      "nerfed": "Giảm sức mạnh",
+      "buffed": "Tăng sức mạnh",
+      "none": "Không có trang bị nào thay đổi.",
+      "author": "Đội cân bằng"
     }
   }
 }

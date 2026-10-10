@@ -3899,6 +3899,13 @@ impl StableExtension for StrategyPicker {
         // somewhere this early return would have skipped.
         perf::time(Section::FrameItemStats, || crate::item_stats::sync(ctx));
 
+        // The save's item balance patches: its state, whether the next one
+        // is due, and the patched numbers in whatever item tooltip the game
+        // has up. After the line above, whose word it takes that the save
+        // has been read. Unconditional because a tooltip can be on any
+        // screen; one atomic read a frame while nothing is patched.
+        crate::patches::sync(ctx);
+
         // Champion facts for the Smart Builds rules, which only the client can
         // ask the host for. Unconditional: the build paths need them in every
         // match, and it returns at once when there is no champion it has not

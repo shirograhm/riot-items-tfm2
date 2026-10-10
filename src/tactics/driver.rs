@@ -69,6 +69,14 @@ fn inert() -> bool {
     RETIRED || !ACTIVE.load(Ordering::Relaxed)
 }
 
+/// Whether [`lift_server_mod_items`] can work on this game build, which is
+/// whether the server's item settings can be written at all: the item
+/// balance patches leave the game's own items alone where they cannot
+/// (`patches::base`).
+pub(crate) fn can_lift() -> bool {
+    !inert()
+}
+
 /// Was `ModServerExtension::on_server_start`.
 pub fn on_server_start() {
     if inert() {

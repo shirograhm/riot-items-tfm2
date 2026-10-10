@@ -1026,7 +1026,7 @@ const SLEIGH_IMMOBILIZE_TICKS: usize = 60;
 const ZAZZAKS_REALMSPIKE: &str = "zazzaks_realmspike";
 
 /// Whether `key` is one of [`ATLAS_ITEMS`], base or radiant.
-fn is_atlas_item(key: &str) -> bool {
+pub(crate) fn is_atlas_item(key: &str) -> bool {
     ATLAS_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 

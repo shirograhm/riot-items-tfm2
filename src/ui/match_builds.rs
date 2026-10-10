@@ -217,9 +217,13 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 /// `crate::item_stats`: `traits:`, what `prime_item_traits` read of the
 /// game's damage items and what it made of them, and `server items:`, what
 /// the server's item settings held when the mod went over them and how the
-/// write went. On while something is being tried in game. Turn it off before
-/// a release.
-const LOG: bool = false;
+/// write went. And the `patch.` lines of `crate::patches`: the save's patch
+/// state as it loads, each patch as it lands, every tooltip found and whether
+/// its text could be rewritten. On while something is being tried in game.
+/// Turn it off before a release.
+///
+/// ON since 2026-10-10 for the first in-game run of the item balance patches.
+const LOG: bool = true;
 
 /// Lines written in one session at most.
 const LOG_LINES: usize = 600;
@@ -265,8 +269,11 @@ struct Card {
     /// Tag in [`ICON_SHEET`].
     frame: String,
     price: usize,
-    /// Stat icon tag and value, in [`STAT_ROWS`] order.
-    stats: Vec<(&'static str, String)>,
+    /// The stats it gives, in [`STAT_ROWS`] order: field, stat icon tag,
+    /// whether it reads as a percentage, and the amount the item registered
+    /// with. What is drawn is what an item balance patch has made of that,
+    /// where one has: see [`fill_tip`].
+    stats: Vec<(&'static str, &'static str, bool, i64)>,
     /// What stands for each placeholder in the item's effect text, for the
     /// few items whose text has any: see [`FILLS`].
     fills: Vec<(&'static str, String)>,
@@ -346,19 +353,12 @@ const STAT_ROWS: &[(&str, &str, bool)] = &[
     ("skill_damaged_reduce", "skill_damage_reduction_0", true),
 ];
 
-fn stat_lines(value: impl Fn(&str) -> i64) -> Vec<(&'static str, String)> {
+fn stat_lines(value: impl Fn(&str) -> i64) -> Vec<(&'static str, &'static str, bool, i64)> {
     STAT_ROWS
         .iter()
         .filter_map(|&(field, tag, percent)| {
             let amount = value(field);
-            (amount != 0).then(|| {
-                let text = if percent {
-                    format!("{amount}%")
-                } else {
-                    amount.to_string()
-                };
-                (tag, text)
-            })
+            (amount != 0).then_some((field, tag, percent, amount))
         })
         .collect()
 }
@@ -2430,7 +2430,17 @@ fn fill_tip(ctx: &mut StableClient<'_>, key: &str) -> TipBody {
     let stats: Vec<String> = card
         .iter()
         .flat_map(|card| card.stats.iter())
-        .map(|(tag, value)| format!("<i#{STAT_ICONS}:{tag}> {value}"))
+        .map(|&(field, tag, percent, amount)| {
+            // The number the item has now, where the save's item balance
+            // patches have moved it from the one it registered with.
+            let amount = crate::patches::live::shown_flat(key, field).unwrap_or(amount);
+            let value = if percent {
+                format!("{amount}%")
+            } else {
+                amount.to_string()
+            };
+            format!("<i#{STAT_ICONS}:{tag}> {value}")
+        })
         .collect();
     let lines: Vec<String> = stats
         .chunks(STATS_PER_LINE)
@@ -2458,11 +2468,16 @@ fn fill_tip(ctx: &mut StableClient<'_>, key: &str) -> TipBody {
         }
         None => (TIP_BODY_Y as f32, 0.0),
     };
+    // The effect text is a reference the label resolves in the game's
+    // language, unless an item balance patch has changed a number in it:
+    // then it is the patched sentence itself, which no text file holds.
+    let patched = crate::patches::text::option_now(key);
     ctx.ui_set_text(
         &format!("{TIP}.desc"),
-        option
-            .as_ref()
-            .map_or("", |(reference, _)| reference.as_str()),
+        patched
+            .as_deref()
+            .or(option.as_ref().map(|(reference, _)| reference.as_str()))
+            .unwrap_or(""),
     );
     ctx.ui_set_properties(&format!("{TIP}.desc"), &format!("y: {}px;", desc_y as i32));
 
