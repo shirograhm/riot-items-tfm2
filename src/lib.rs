@@ -233,8 +233,8 @@ struct NativeTapExtension;
 impl StableServerExtension for NativeTapExtension {
     fn before_management_tick(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::before_management_tick();
-        // The article of an item balance patch that has just landed. Before
-        // the settings below, which that patch may have given new numbers.
+        // The article of an item balance patch that has just landed, where
+        // the client's command for it did not get here first.
         patches::server_tick(ctx);
         // One atomic load once the server's item settings have been seen to.
         item_stats::sync_server_items(ctx);
@@ -250,6 +250,20 @@ impl StableServerExtension for NativeTapExtension {
         // That also retired the write-ordering hazard this used to carry: with
         // one store instead of two files, there is no half-written pair to lose
         // a match between.
+    }
+
+    fn handle_command(
+        &self,
+        ctx: &mut StableServerCtx<'_>,
+        command: &StableCommand<'_>,
+    ) -> CommandResultV1 {
+        // The client's word that an item balance patch has landed: its
+        // article, now and not at the next management tick.
+        if patches::handle_command(ctx, command) {
+            CommandResultV1::Handled
+        } else {
+            CommandResultV1::Pass
+        }
     }
 
     fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {

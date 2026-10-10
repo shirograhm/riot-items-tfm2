@@ -45,10 +45,10 @@ pub(crate) const FLAT: &[&str] = &[
     "vamp",
 ];
 
-/// Flat stats the game keeps as unsigned numbers. A patch reaches a mod
-/// item's flat stats as a buff on its holder ([`super::on_match_tick`]), and
-/// a buff cannot take away from an unsigned stat, so on a mod item these are
-/// never patched under what the item was registered with.
+/// Flat stats the game keeps as unsigned numbers. A patch reaches an item's
+/// flat stats as a buff on its holder ([`super::on_match_tick`]), and a buff
+/// cannot take away from an unsigned stat, so these are never patched under
+/// what the game holds for the item.
 const UNSIGNED_FLAT: &[&str] = &[
     "toughness",
     "defence_penetration",

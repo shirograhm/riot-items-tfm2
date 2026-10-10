@@ -9,7 +9,7 @@
 //! of this mod's items that is a flat stat with a line in the tooltip, or a
 //! number written into the effect text that `item-templates.json` can write
 //! again ([`super::text`]). For one of the game's own thirty it is a flat
-//! stat, which the game draws from the settings the patch is written into.
+//! stat with a line in the tooltip.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::sync::{Mutex, OnceLock};
@@ -88,6 +88,33 @@ pub(crate) struct Base {
     pub mod_items: HashMap<&'static str, ModItem>,
     pub refreshes: Vec<(&'static str, Refresh)>,
 }
+
+/// When an item is at its strongest, as a patch note's reason speaks of it.
+/// The user's rule (2026-10-10): a stacking item is an early-game item and a
+/// scaling one a late-game item.
+#[derive(Clone, Copy, PartialEq)]
+pub(crate) enum Tempo {
+    /// It stacks: some number of it is counted in stacks.
+    Early,
+    /// It scales: a share of its holder's or its target's stats, a range
+    /// that grows with level, or growth over the match.
+    Late,
+    Neither,
+}
+
+/// What in a config field's name says the number scales. A stat's own
+/// percentage (`attack_speed_mult`) is not among them: `attack_mult` and its
+/// like multiply a total.
+const SCALING: &[&str] = &[
+    "_percent_",
+    "effect_min_",
+    "growth",
+    "attack_mult",
+    "magic_power_mult",
+    "magic_resistance_mult",
+    "defence_mult",
+    "hp_mult",
+];
 
 /// Numbers an effect registered with the game at start-up carries its own
 /// copy of (`reg.add_native_effect` in `lib.rs`): the projectile would keep
@@ -257,10 +284,11 @@ impl Base {
         }
 
         // The game's own finals: its six lines' last two tiers, which the mod
-        // draws as a legendary and its radiant. Their numbers reach a match
-        // through the server's item settings, which only the native half can
-        // write safely (`item_stats::sync_server_items`); where it cannot,
-        // they are left out.
+        // draws as a legendary and its radiant. A patch is the difference
+        // from the settings file's numbers, so those have to be the numbers
+        // the game runs with, which they are where the native half can write
+        // them into the server (`item_stats::sync_server_items`). Where it
+        // cannot, these items are left out.
         if crate::tactics::driver::can_lift() {
             let file = crate::item_stats::game_item_file();
             let key_of = |name: &String, object: &serde_json::Map<String, Value>| {
@@ -364,6 +392,28 @@ impl Base {
             .and_then(|numbers| numbers.get(field))
             .copied()
             .unwrap_or(0.0)
+    }
+
+    /// [`Tempo`] of the item `key`, from the names of the numbers it is
+    /// configured with. An item that both stacks and scales is taken for a
+    /// stacking one; one of the game's own, which has no config entry of
+    /// this kind, for neither.
+    pub(crate) fn tempo(&self, key: &str) -> Tempo {
+        let Some(numbers) = self.config.get(key) else {
+            return Tempo::Neither;
+        };
+        let any = |named: &dyn Fn(&str) -> bool| {
+            numbers
+                .iter()
+                .any(|(field, number)| *number != 0.0 && named(field.as_str()))
+        };
+        if any(&|field: &str| field.contains("stack")) {
+            Tempo::Early
+        } else if any(&|field: &str| SCALING.iter().any(|mark| field.contains(mark))) {
+            Tempo::Late
+        } else {
+            Tempo::Neither
+        }
     }
 
     /// The player's own `config.json` entry for `key`, to lay a patch over.

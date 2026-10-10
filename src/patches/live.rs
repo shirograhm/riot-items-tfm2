@@ -9,15 +9,21 @@
 //!   purchase. The wrapper every item registers in (`perf::Timed`) builds it
 //!   again from the patched config the first time any hook of the copy runs
 //!   ([`config_for`]), so a copy carries one balance for as long as it lives.
-//! - **One of this mod's items, a flat stat.** The game holds its own copy of
-//!   an item's stats from the day it registered and never asks again, so the
-//!   difference is kept on the holder as one buff, [`DELTA_BUFF`], the sum
-//!   over what it holds ([`on_match_tick`]). A buff cannot take away from the
-//!   stats the game keeps unsigned, which is why those are never patched
-//!   down on a mod item (`fields::Rule::unsigned`).
-//! - **One of the game's own thirty.** Its stats are server settings, which
-//!   `item_stats::sync_server_items` already writes at every server start;
-//!   it writes the patched numbers ([`game_stats`]).
+//! - **A flat stat, of any item.** The game holds its own copy of an item's
+//!   stats and does not ask the item again, so the difference is kept on the
+//!   holder as one buff, [`DELTA_BUFF`], the sum over what it holds
+//!   ([`on_match_tick`]). A buff cannot take away from the stats the game
+//!   keeps unsigned, which is why those are never patched down
+//!   (`fields::Rule::unsigned`).
+//!
+//!   The game's own thirty items go the same way, and not through the
+//!   server's item settings, which is where their stats live and where the
+//!   first version of this wrote them. The server took the write, and the
+//!   client went on showing the old numbers (the Item Info page, 2026-10-10):
+//!   its copy of the settings is not kept up with a write made in the middle
+//!   of a session. A match the player watches is played from that copy, so
+//!   it would have run on other numbers than the server's run of the same
+//!   match. The buff is the same in both.
 //! - **What sits outside the item.** Axiom Arc reads every lethality item's
 //!   number from a table, and the Spellblade items theirs from another; both
 //!   are told (`crate::set_lethality_patches`, `Base::refreshes`).
@@ -177,10 +183,9 @@ pub(crate) fn stat_number(stat: &BuffV1, field: &str) -> Option<i64> {
 pub(crate) struct Live {
     /// Mod item -> its config with the patch laid over the player's own.
     configs: HashMap<String, Arc<ItemConfig>>,
-    /// Mod item -> what its patched stats add to the ones the game holds.
+    /// Item, the mod's or the game's -> what its patched stats add to the
+    /// ones the game holds for it.
     deltas: HashMap<String, Numbers>,
-    /// Game item -> stat field -> patched number.
-    game: HashMap<String, Vec<(String, i64)>>,
     /// Item -> what its tooltip has to say that the game will not.
     pub display: HashMap<String, text::Display>,
     /// Item -> how its patches lean a build choice, -1 (nerfed as far as it
@@ -192,7 +197,6 @@ static LIVE: RwLock<Option<Arc<Live>>> = RwLock::new(None);
 static ANY_CONFIGS: AtomicBool = AtomicBool::new(false);
 static ANY_DELTAS: AtomicBool = AtomicBool::new(false);
 static ANY_LEANING: AtomicBool = AtomicBool::new(false);
-static ANY_GAME: AtomicBool = AtomicBool::new(false);
 
 /// The balance now in force, or nothing while no number is patched.
 pub(crate) fn current() -> Option<Arc<Live>> {
@@ -207,6 +211,8 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
     // (item, field) -> patched number, where that is not the unpatched one.
     let mut values: HashMap<(String, String), f64> = HashMap::new();
     let mut leaning: HashMap<String, f32> = HashMap::new();
+    // Game item -> (stat, the number the game holds, the patched one).
+    let mut game_moves: HashMap<String, Vec<(String, i64, i64)>> = HashMap::new();
     for (id, ratios) in &state.ratios {
         let Some(family) = base.families.get(id) else {
             continue;
@@ -226,6 +232,13 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
                 if value != unpatched {
                     values.insert((member.key.clone(), field.clone()), value);
                     moved = true;
+                    if member.game {
+                        game_moves.entry(member.key.clone()).or_default().push((
+                            field.clone(),
+                            unpatched as i64,
+                            value as i64,
+                        ));
+                    }
                 }
             }
             if moved && ratio > 0.0 {
@@ -254,18 +267,36 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
 
     let mut configs: HashMap<String, Arc<ItemConfig>> = HashMap::new();
     let mut deltas: HashMap<String, Numbers> = HashMap::new();
-    let mut game: HashMap<String, Vec<(String, i64)>> = HashMap::new();
     let mut display: HashMap<String, text::Display> = HashMap::new();
     let mut lethality: HashMap<String, usize> = HashMap::new();
+    // The game's own items: the difference from the settings file's numbers,
+    // which are the ones the game holds for them and its tooltips show.
+    for (key, moves) in game_moves {
+        let mut delta = [0i64; STATS];
+        let mut flats = Vec::new();
+        for (field, before, after) in moves {
+            let Some(index) = STAT_NAMES.iter().position(|name| *name == field) else {
+                continue;
+            };
+            let mut change = after - before;
+            if index >= UNSIGNED_FROM {
+                change = change.max(0);
+            }
+            delta[index] = change;
+            if change != 0 && texts.has_line(&field) {
+                flats.push((field, before, before + change));
+            }
+        }
+        if delta.iter().any(|change| *change != 0) {
+            deltas.insert(key.clone(), delta);
+        }
+        if !flats.is_empty() {
+            display.entry(key).or_default().flats = flats;
+        }
+    }
     for (key, patched) in &by_item {
+        // Only this mod's items are built from a config.
         let Some(item) = base.mod_items.get(*key) else {
-            game.insert(
-                key.to_string(),
-                patched
-                    .iter()
-                    .map(|(field, value)| (field.to_string(), *value as i64))
-                    .collect(),
-            );
             continue;
         };
         let mut object = base.raw_config(key);
@@ -351,13 +382,11 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
         (&ANY_CONFIGS, !configs.is_empty()),
         (&ANY_DELTAS, !deltas.is_empty()),
         (&ANY_LEANING, !leaning.is_empty()),
-        (&ANY_GAME, !game.is_empty()),
     ];
     let live = (!values.is_empty()).then(|| {
         Arc::new(Live {
             configs,
             deltas,
-            game,
             display,
             leaning,
         })
@@ -390,25 +419,11 @@ pub(crate) fn leaning(key: &str) -> f32 {
         .unwrap_or(0.0)
 }
 
-/// The patched stats of one of the game's own items, by stat field.
-pub(crate) fn game_stats(key: &str) -> Option<Vec<(String, i64)>> {
-    if !ANY_GAME.load(Ordering::Relaxed) {
-        return None;
-    }
-    current()?.game.get(key).cloned()
-}
-
 /// What a tooltip should show for `key`'s flat stat `field`, where a patch
 /// has moved it.
 pub(crate) fn shown_flat(key: &str, field: &str) -> Option<i64> {
-    let live = current()?;
-    if let Some(stats) = live.game.get(key) {
-        return stats
-            .iter()
-            .find(|(known, _)| known == field)
-            .map(|(_, value)| *value);
-    }
-    live.display
+    current()?
+        .display
         .get(key)?
         .flats
         .iter()

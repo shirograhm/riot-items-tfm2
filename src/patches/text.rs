@@ -108,9 +108,11 @@ impl Template {
         out
     }
 
-    /// The name of the passive that `item`'s `field` is a number of, and
-    /// whether the sentence puts a percent sign after it. A passive's text
-    /// opens with its name and a colon, in every language.
+    /// What to call `item`'s `field` in a patch note, and whether the
+    /// sentence puts a percent sign after the number. A passive's text opens
+    /// with its name and a colon, in every language, and that name is it.
+    /// A sentence with no name (the lethality an item gives is one of its
+    /// own, "Gain 18 Lethality.") is its own label, less the number.
     fn passive_of(&self, item: &str, field: &str) -> Option<(String, bool)> {
         let mut text = String::new();
         let mut found = None;
@@ -131,12 +133,137 @@ impl Template {
             }
         }
         let (at, percent) = found?;
+        // The paragraph the number is in, and no further: the first run of
+        // this took the next paragraph's passive for the name of a sentence
+        // that had none ("Collector, Gain 0 Lethality. Death: 10 -> 9").
         let start = text[..at].rfind("\n\n").map_or(0, |gap| gap + 2);
-        let paragraph = plain(&text[start..]);
-        let paragraph = paragraph.trim();
-        let name = paragraph.split([':', '\u{ff1a}']).next()?.trim();
-        let named = !name.is_empty() && name.len() < paragraph.len() && name.chars().count() <= 40;
-        named.then(|| (name.to_string(), percent))
+        let end = text[at..].find("\n\n").map_or(text.len(), |gap| at + gap);
+        let before = plain(&text[start..at]);
+        let label = match before.split_once([':', '\u{ff1a}']) {
+            Some((name, _)) => name.trim().to_string(),
+            None => {
+                // `at` is where the number's one-letter stand-in sits.
+                let after = plain(&text[at + 1..end]);
+                let sentence = format!("{before} {after}");
+                let words: Vec<&str> = sentence.split_whitespace().collect();
+                words
+                    .join(" ")
+                    .trim_end_matches(['.', '\u{3002}'])
+                    .to_string()
+            }
+        };
+        let fits = !label.is_empty() && label.chars().count() <= 40;
+        fits.then_some((label, percent))
+    }
+
+    /// The stat icon the text puts by `item`'s `field`, as (sheet, tag): the
+    /// symbol of what the number is an amount of.
+    ///
+    /// Told by colour, which is how the sentences themselves pair a number
+    /// with its stat. Axiom Arc's Flux reads "Gain 10 (+0.2 per 1 [armour
+    /// penetration] Lethality) [haste] Ultimate Ability Haste": the icon
+    /// nearest the 0.2 is lethality's and the right one is haste's, and what
+    /// says so is that the 0.2 and "Ultimate Ability Haste" are the same
+    /// blue (the user, 2026-10-10: "for axiom, that would be the haste symbol
+    /// for flux"). So: the number's colour is the span it is in, or for a
+    /// number in none the span that closed last before it ("grants 15 (+2
+    /// per stack) bonus Attack Damage"); an icon's colour is the span it is
+    /// in, or the span that opens straight after it; and the icon is the
+    /// nearest one of the number's colour after it in its paragraph, else
+    /// the nearest before. A number the text gives no symbol (a duration, a
+    /// slow, plain damage) has none here either: a wrong icon says more than
+    /// a missing one.
+    ///
+    /// Meant for the English text, which the rest are written from: a
+    /// translation moves words and colours about (the same rule gives Flux
+    /// lethality's icon in five of the six).
+    fn icon_of(&self, item: &str, field: &str) -> Option<(String, String)> {
+        // An icon: where it comes among the icons and numbers, what it
+        // is, its colour.
+        type Icon = (usize, String, Option<String>);
+        fn pick(icons: &[Icon], slot: &(usize, Option<String>)) -> Option<(String, String)> {
+            let colour = slot.1.as_ref()?;
+            let same = |icon: &&Icon| icon.2.as_ref() == Some(colour);
+            let icon = icons
+                .iter()
+                .filter(same)
+                .find(|icon| icon.0 > slot.0)
+                .or_else(|| icons.iter().rev().filter(same).find(|icon| icon.0 < slot.0))?;
+            let (sheet, tag) = icon.1.rsplit_once(':')?;
+            Some((sheet.to_string(), tag.to_string()))
+        }
+
+        let mut icons: Vec<Icon> = Vec::new();
+        let mut slot: Option<(usize, Option<String>)> = None;
+        let mut order = 0usize;
+        // The colour spans open, and the one that closed last.
+        let mut colours: Vec<String> = Vec::new();
+        let mut closed: Option<String> = None;
+        // Nothing but blanks since the last icon.
+        let mut bare = false;
+        for part in &self.parts {
+            let text = match part {
+                Part::Text(text) => text,
+                Part::Slot(terms) => {
+                    let wanted = terms.iter().any(|term| term.item == item && term.field == field);
+                    if wanted && slot.is_none() {
+                        slot = Some((order, colours.last().cloned().or_else(|| closed.clone())));
+                    }
+                    order += 1;
+                    bare = false;
+                    continue;
+                }
+            };
+            let mut rest = text.as_str();
+            while let Some(at) = rest.find(['<', '\n']) {
+                if !rest[..at].trim().is_empty() {
+                    bare = false;
+                }
+                let tail = &rest[at..];
+                if tail.starts_with("\n\n") {
+                    // The paragraph is over, and the number's with it.
+                    if let Some(slot) = &slot {
+                        return pick(&icons, slot);
+                    }
+                    icons.clear();
+                    colours.clear();
+                    closed = None;
+                    bare = false;
+                    rest = &tail[2..];
+                    continue;
+                }
+                if tail.starts_with('\n') {
+                    rest = &tail[1..];
+                    continue;
+                }
+                let Some(end) = tail.find('>') else {
+                    break;
+                };
+                let tag = &tail[1..end];
+                if tag.is_empty() {
+                    if let Some(colour) = colours.pop() {
+                        closed = Some(colour);
+                    }
+                    bare = false;
+                } else if let Some(icon) = tag.strip_prefix("i#") {
+                    icons.push((order, icon.to_string(), colours.last().cloned()));
+                    order += 1;
+                    bare = true;
+                } else if let Some(colour) = tag.strip_prefix('#') {
+                    let colour = colour.to_ascii_lowercase();
+                    if let Some(icon) = icons.last_mut().filter(|icon| bare && icon.2.is_none()) {
+                        icon.2 = Some(colour.clone());
+                    }
+                    colours.push(colour);
+                    bare = false;
+                }
+                rest = &tail[end + 1..];
+            }
+            if !rest.trim().is_empty() {
+                bare = false;
+            }
+        }
+        pick(&icons, slot.as_ref()?)
     }
 }
 
@@ -431,6 +558,29 @@ impl Texts {
     }
 }
 
+impl Texts {
+    /// The icon a stat's tooltip line opens with, as (sheet, tag): the line
+    /// is `<i#sheet:tag> {Value} words`.
+    fn line_icon(&self, field: &str) -> Option<(String, String)> {
+        let line = self
+            .spec
+            .iter()
+            .find_map(|(_, lines)| lines.get(field).filter(|line| line.contains("<i#")))?;
+        let inside = line.split_once("<i#")?.1.split_once('>')?.0;
+        let (sheet, tag) = inside.rsplit_once(':')?;
+        Some((sheet.to_string(), tag.to_string()))
+    }
+
+    /// The icon of what a passive's number is an amount of: the one the
+    /// item's effect text puts by it ([`Template::icon_of`]), read off the
+    /// English text whatever the game's language. None for a number the
+    /// text gives no symbol, and for the game's own items, whose texts the
+    /// mod has no templates of.
+    fn passive_icon(&self, key: &str, field: &str) -> Option<(String, String)> {
+        self.templates.get("en")?.get(key)?.icon_of(key, field)
+    }
+}
+
 fn lines_of(value: &Value) -> HashMap<String, String> {
     value
         .as_object()
@@ -557,8 +707,10 @@ const DISCOVER_FRAMES: u32 = 45;
 /// (whose layout's root is `main` too), and on the solo rank page.
 const TOOLTIP: &str = "item_tooltip";
 /// The description panel of the Item Info page (`item_info.ui`), under Game
-/// Info and in the strategy screen's Item Info popup.
-const DETAIL: &str = "item_detail";
+/// Info and in the strategy screen's Item Info popup. Inside the page's
+/// `#data`: the page is `main.top.right.item_info` (seen in the test log,
+/// 2026-10-10, where looking for the panel straight under it found nothing).
+const DETAIL: &str = "data.item_detail";
 
 fn site_paths(root: String, inner: &str) -> (String, String, String) {
     let name = format!("{root}.{inner}name");
@@ -582,13 +734,23 @@ fn discover(ctx: &StableClient<'_>, sites: &mut Vec<Site>) {
             wanted.push(site_paths(format!("{base}.{DETAIL}"), ""));
             if child == "item_info_popup" {
                 let content = format!("{base}.popup.content");
-                wanted.push(site_paths(format!("{content}.{DETAIL}"), ""));
                 for inner in ctx.ui_child_names(&content) {
                     wanted.push(site_paths(format!("{content}.{inner}.{DETAIL}"), ""));
                 }
             }
         }
     }
+    // Where the management screens are mounted, for the test log: a line
+    // whenever the screen changes. It is what says where to look when a
+    // description is on screen and none of the paths above found it.
+    super::log("patch.screen", || {
+        format!(
+            "tab {:?}: main.top.right holds {:?}, main.contents holds {:?}",
+            ctx.client_main_tab(),
+            ctx.ui_child_names("main.top.right"),
+            ctx.ui_child_names("main.contents")
+        )
+    });
     sites.retain(|site| ctx.ui_exists(&site.desc));
     for (root, name, desc) in wanted {
         if sites.iter().any(|site| site.desc == desc) || !ctx.ui_exists(&desc) {
@@ -636,10 +798,17 @@ pub(crate) fn sync_tooltips(ctx: &mut StableClient<'_>) {
         if site.written.as_deref() == Some(desc.as_str()) {
             continue;
         }
-        let Some(key) = ctx
-            .ui_text(&site.name)
-            .and_then(|name| texts.key_of_name(&name).map(str::to_string))
+        let name = ctx.ui_text(&site.name);
+        let Some(key) = name
+            .as_deref()
+            .and_then(|name| texts.key_of_name(name).map(str::to_string))
         else {
+            // A description is up and its name is no item of the mod's text
+            // file: another mod's item, or a label that does not hold what
+            // this takes it to. Said in the test log, once a name.
+            super::log("patch.name", || {
+                format!("{} names no item: {name:?}", site.name)
+            });
             continue;
         };
         let Some(display) = live.display.get(&key) else {
@@ -671,9 +840,13 @@ fn note_number(value: f64, percent: bool) -> String {
     format!("{}{}", number_text(value), if percent { "%" } else { "" })
 }
 
-/// One line of a note: what moved on one item, every tier of it.
-fn note_line(texts: &Texts, lang: &str, change: &Change) -> Option<String> {
-    let first = change.members.first()?;
+/// What a note calls the number a change moved, and whether it reads as a
+/// percentage: a flat stat by its tooltip line, a passive's number by the
+/// passive's name. Empty where neither is found.
+fn label_of(texts: &Texts, lang: &str, change: &Change) -> (String, bool) {
+    let Some(first) = change.members.first() else {
+        return (String::new(), false);
+    };
     let label = if super::fields::FLAT.contains(&change.field.as_str()) {
         texts.line_label(lang, &change.field)
     } else {
@@ -688,28 +861,242 @@ fn note_line(texts: &Texts, lang: &str, change: &Change) -> Option<String> {
                 .and_then(|template| template.passive_of(&first.key, &change.field))
         })
     });
-    let (words, percent) = label.unwrap_or_else(|| (String::new(), false));
-    let moves: Vec<String> = change
-        .members
-        .iter()
-        .map(|moved| {
-            format!(
-                "{} -> {}",
+    label.unwrap_or_else(|| (String::new(), false))
+}
+
+/// The sheet the item icons are in (the mod's own, by `mod.override_info`).
+const ITEM_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
+/// The arrow the game's own patch notes put between two numbers, in the
+/// font they take it from (`text/news`, `patch.stat`).
+const ARROW: &str = "<f#asset/base/font/set/symbol>\u{2192}<f>";
+const BOLD: &str = "asset/base/font/set/bold";
+/// The green of the game's "Buffs" mark (`ui/icons/up_patch`), a red for
+/// "Nerfs", and the grey its notes give a reason in (`patch_reason_row`).
+const BUFF_COLOR: &str = "#4ed5bdff";
+const NERF_COLOR: &str = "#ff6b6bff";
+const REASON_COLOR: &str = "#8b8d9aff";
+
+/// One changed number of an entry: its icon, where it is a stat with one or
+/// a passive's number whose text gives it one, and the line.
+struct NoteRow {
+    icon: Option<(String, String)>,
+    text: String,
+}
+
+/// One item of a patch's buffs or nerfs: the legendary and its radiant
+/// together, under the legendary's name and icon.
+struct NoteEntry {
+    family: String,
+    /// The item it is drawn and named as: the legendary.
+    key: String,
+    /// Why the item was touched, as a designer would put it: see
+    /// [`reason_pool`]. Empty where the text file has no such sentence.
+    reason: String,
+    rows: Vec<NoteRow>,
+}
+
+/// The tag an item draws in the item sheet: one of the mod's is its own key,
+/// one of the game's has it in the settings file.
+fn frame_of(key: &str) -> String {
+    crate::item_stats::game_item_file()
+        .values()
+        .filter_map(Value::as_object)
+        .find(|object| object.get("key").and_then(Value::as_str) == Some(key))
+        .and_then(|object| object.get("icon").and_then(Value::as_str))
+        .filter(|icon| !icon.is_empty())
+        .unwrap_or(key)
+        .to_string()
+}
+
+/// A holder's win share from which an item counts as winning, and under
+/// which as losing; and holders a match from which it counts as popular.
+const WINNING: f64 = 0.6;
+const LOSING: f64 = 0.45;
+const OFTEN_HELD: f64 = 0.8;
+
+/// The reasons that fit one item's change, as keys of the `item_patch`
+/// strings in `text/ui.i18n` (`why_nerf_early_1`, ...).
+///
+/// A reason is a designer's sentence, in the voice of the game's own
+/// champion notes and of League's patch notes, and not the item's record
+/// read out (the user, 2026-10-10, whose rule it also is that an item that
+/// stacks is talked of as an early-game item and one that scales as a
+/// late-game one; no sentence calls an item oppressive, a word they gave
+/// as an example and then asked to have taken out). What picks the sentences is
+/// still the record: an item nobody held gets one about being left on the
+/// shelf, one that won and was held a lot gets one about the meta, and so
+/// on; and the item's kind adds the early- or late-game ones.
+fn reason_pool(
+    buff: bool,
+    tempo: super::base::Tempo,
+    change: &Change,
+    matches: u32,
+) -> Vec<&'static str> {
+    use super::base::Tempo;
+    let games = f64::from(change.games);
+    let share = if change.games > 0 {
+        f64::from(change.wins) / games
+    } else {
+        0.5
+    };
+    let held = if matches > 0 {
+        games / f64::from(matches)
+    } else {
+        0.0
+    };
+    let mut pool: Vec<&'static str> = Vec::new();
+    if buff {
+        if change.games == 0 {
+            pool.extend(["why_buff_unbuilt_1", "why_buff_unbuilt_2", "why_buff_unbuilt_3"]);
+        }
+        match tempo {
+            Tempo::Early => pool.extend(["why_buff_early_1", "why_buff_early_2"]),
+            Tempo::Late => pool.extend(["why_buff_late_1", "why_buff_late_2"]),
+            Tempo::Neither => {}
+        }
+        if change.games > 0 {
+            if share <= LOSING {
+                pool.extend(["why_buff_weak_1", "why_buff_weak_2"]);
+            } else {
+                pool.extend(["why_buff_niche_1", "why_buff_niche_2"]);
+            }
+        }
+    } else {
+        match tempo {
+            Tempo::Early => pool.extend(["why_nerf_early_1", "why_nerf_early_2"]),
+            Tempo::Late => pool.extend(["why_nerf_late_1", "why_nerf_late_2"]),
+            Tempo::Neither => {}
+        }
+        pool.extend(match (share >= WINNING, held >= OFTEN_HELD) {
+            (true, true) => ["why_nerf_meta_1", "why_nerf_meta_2"],
+            (false, true) => ["why_nerf_popular_1", "why_nerf_popular_2"],
+            _ => ["why_nerf_strong_1", "why_nerf_strong_2"],
+        });
+    }
+    pool
+}
+
+/// A number from a patch and an item, to start a pick at.
+fn seed_of(number: u32, text: &str) -> usize {
+    let mut hash = 0xcbf2_9ce4_8422_2325u64 ^ u64::from(number);
+    for byte in text.bytes() {
+        hash = (hash ^ u64::from(byte)).wrapping_mul(0x0000_0100_0000_01b3);
+    }
+    (hash >> 16) as usize
+}
+
+/// A patch's buffs or its nerfs, an entry an item, in the order the patch
+/// has them. A row is one changed number in one tier: the legendary's reads
+/// "Attack Damage: 20 -> 21", the radiant's "Attack Damage (Radiant): 33 ->
+/// 34", the legendary's first.
+fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
+    let texts = texts();
+    let base = super::base::base();
+    let mut entries: Vec<NoteEntry> = Vec::new();
+    // Reasons given so far, so that no two items share one while another
+    // fits.
+    let mut used: Vec<&'static str> = Vec::new();
+    for change in patch.changes.iter().filter(|change| change.buff == buff) {
+        let Some(first) = change.members.first() else {
+            continue;
+        };
+        let lead = base
+            .families
+            .get(&change.family)
+            .and_then(|family| family.members.first())
+            .map_or_else(|| first.key.clone(), |member| member.key.clone());
+        let at = match entries.iter().position(|entry| entry.family == change.family) {
+            Some(at) => at,
+            None => {
+                // One of the sentences that fit the item, a different one
+                // for every item of the article as far as the pool goes, and
+                // the same one whenever this patch's notes are written.
+                let pool = reason_pool(buff, base.tempo(&lead), change, patch.matches);
+                let from = seed_of(patch.number, &change.family) % pool.len().max(1);
+                let key = (0..pool.len())
+                    .map(|step| pool[(from + step) % pool.len()])
+                    .find(|key| !used.contains(key))
+                    .or_else(|| pool.get(from).copied());
+                let reason = key.map_or_else(String::new, |key| {
+                    used.push(key);
+                    texts.ui(lang, key, "")
+                });
+                entries.push(NoteEntry {
+                    family: change.family.clone(),
+                    key: lead.clone(),
+                    reason,
+                    rows: Vec::new(),
+                });
+                entries.len() - 1
+            }
+        };
+        let (label, percent) = label_of(texts, lang, change);
+        // A stat's own icon; a passive's number has the icon of what it is
+        // an amount of (the user, 2026-10-10: lethality armour penetration's,
+        // Axiom Arc's Flux haste's), which is the one its text puts by it.
+        let icon = if super::fields::FLAT.contains(&change.field.as_str()) {
+            texts.line_icon(&change.field)
+        } else {
+            None
+        }
+        .or_else(|| texts.passive_icon(&first.key, &change.field));
+        for moved in &change.members {
+            let numbers = format!(
+                "{} {ARROW} {}",
                 note_number(moved.before, percent),
                 note_number(moved.after, percent)
-            )
-        })
-        .collect();
-    let name = texts.name(lang, &first.key);
-    Some(if words.is_empty() {
-        format!("- {name}: {}", moves.join(" / "))
-    } else {
-        format!("- {name}, {words}: {}", moves.join(" / "))
-    })
+            );
+            // A tier past the first is told apart by what its name has that
+            // the first's does not: "Radiant", in whatever language.
+            let tier = if moved.key == lead {
+                String::new()
+            } else {
+                let name = texts.name(lang, &moved.key);
+                let word = name.replace(&texts.name(lang, &lead), "").trim().to_string();
+                if word.is_empty() {
+                    name
+                } else {
+                    word
+                }
+            };
+            let text = match (label.is_empty(), tier.is_empty()) {
+                (true, true) => numbers,
+                (true, false) => format!("{tier}: {numbers}"),
+                (false, true) => format!("{label}: {numbers}"),
+                (false, false) => format!("{label} ({tier}): {numbers}"),
+            };
+            entries[at].rows.push(NoteRow {
+                icon: icon.clone(),
+                text,
+            });
+        }
+    }
+    entries
 }
 
 /// The news article for one patch: title, body, author. In the game's
 /// language as it is when the patch lands; an article is text once written.
+///
+/// The body is formatted in the markup the game's own text uses (a colour
+/// `<#rrggbbaa>..<>`, a font `<f#asset>..<f>`, a size `<s#n>..<s>`, an inline
+/// icon `<i#sheet:tag>`). The layout is the user's (2026-10-10): the buffs
+/// and then the nerfs under a heading in their colour, and for each item
+///
+/// ```text
+/// <icon> Trinity Force
+/// <reason>
+///     <stat icon> Attack Damage: 20 -> 21
+///     <stat icon> Attack Damage (Radiant): 33 -> 34
+/// ```
+///
+/// An item is one entry, its radiant's numbers in it and marked as such.
+///
+/// One article and one column, however long the patch: also the user's
+/// choice, over an article cut into several and over the game's two columns
+/// drawn on top of this text, both of which were tried that night. A long
+/// one is read by scrolling, which a plain article has by the mod's override
+/// of its layout (`ui/layout/news_component/simple_content.ui`) and
+/// [`sync_article_scroll`].
 pub(crate) fn news(patch: &Patch) -> (String, String, String) {
     let texts = texts();
     let lang = game_language();
@@ -720,27 +1107,208 @@ pub(crate) fn news(patch: &Patch) -> (String, String, String) {
         .ui(&lang, "intro", "Items were rebalanced after {Matches} matches on v{Version}.")
         .replace("{Matches}", &patch.matches.to_string())
         .replace("{Version}", &patch.version);
-    for (buff, heading, fallback) in [(false, "nerfed", "Nerfed"), (true, "buffed", "Buffed")] {
-        let lines: Vec<String> = patch
-            .changes
-            .iter()
-            .filter(|change| change.buff == buff)
-            .filter_map(|change| note_line(texts, &lang, change))
-            .collect();
-        if lines.is_empty() {
+    for (buff, heading, fallback, color) in [
+        (true, "buffed", "Buffs", BUFF_COLOR),
+        (false, "nerfed", "Nerfs", NERF_COLOR),
+    ] {
+        let entries = note_entries(patch, &lang, buff);
+        if entries.is_empty() {
             continue;
         }
-        body.push_str("\n\n");
-        body.push_str(&texts.ui(&lang, heading, fallback));
-        for line in lines {
-            body.push('\n');
-            body.push_str(&line);
+        body.push_str(&format!(
+            "\n<s#24><f#{BOLD}><{color}>{}<><f><s>",
+            texts.ui(&lang, heading, fallback)
+        ));
+        for entry in &entries {
+            body.push_str(&format!(
+                "\n<i#{ITEM_SHEET}:{frame}> <f#{BOLD}>{name}<f>",
+                frame = frame_of(&entry.key),
+                name = texts.name(&lang, &entry.key),
+            ));
+            if !entry.reason.is_empty() {
+                body.push_str(&format!(
+                    "\n<s#15><{REASON_COLOR}>{}<><s>",
+                    entry.reason
+                ));
+            }
+            for row in &entry.rows {
+                let mark = match &row.icon {
+                    Some((sheet, tag)) => format!("<i#{sheet}:{tag}>"),
+                    None => "-".to_string(),
+                };
+                body.push_str(&format!("\n<s#18>        {mark} {}<s>", row.text));
+            }
         }
     }
     if patch.changes.is_empty() {
         body.push_str("\n\n");
         body.push_str(&texts.ui(&lang, "none", "No item was changed."));
     }
-    let author = texts.ui(&lang, "author", "Balance Team");
+    let author = texts.ui(&lang, "author", "shirograhm");
     (title, body, author)
+}
+
+// -- a plain article's scroll ---------------------------------------------------
+
+/// The news screen's article area, and a plain article in it
+/// (`news_component/simple_content`, mounted under its root's name).
+const ARTICLE_AREA: &str = "main.top.right.news.contents";
+const ARTICLE_BODY: &str = "main.top.right.news.contents.simple_container.contents";
+const ARTICLE_TEXT: &str = "main.top.right.news.contents.simple_container.contents.text";
+/// The node whose height is how far the body scrolls.
+const ARTICLE_EXTENT: &str = "main.top.right.news.contents.simple_container.contents.dummy";
+/// The body's height on screen, which is the least its scroll is long.
+const ARTICLE_VIEW_H: f32 = 774.0;
+/// The text as the layout authors it: how wide, how high a line, and the
+/// size it is written in where the text names no other.
+const ARTICLE_TEXT_W: f32 = 1043.0;
+const ARTICLE_LINE_H: f32 = 36.0;
+const ARTICLE_TEXT_SIZE: f32 = 20.0;
+/// Room under the last line: a line.
+const ARTICLE_FOOT: f32 = 36.0;
+
+/// A height set that the nodes then did not have, with the heights they had
+/// instead (the scroll's, the text box's): the same is not set a second
+/// time. Setting a height every frame that never takes is how a fix for the
+/// scroll would become what stops it.
+static SCROLL_TRIED: Mutex<Option<(f32, f32, f32)>> = Mutex::new(None);
+
+/// Whether a character is drawn a full size wide (Chinese, Japanese, Korean
+/// and the full-width forms) and not about half of one.
+fn is_wide(c: char) -> bool {
+    matches!(
+        c as u32,
+        0x1100..=0x11FF
+            | 0x2E80..=0xA4CF
+            | 0xAC00..=0xD7A3
+            | 0xF900..=0xFAFF
+            | 0xFE30..=0xFE4F
+            | 0xFF00..=0xFF60
+            | 0xFFE0..=0xFFE6
+    )
+}
+
+/// How tall an article's text is drawn: a line of the layout's height for
+/// every line of the text, and for a line wider than the label as many as
+/// it wraps to.
+///
+/// Worked out from the text because the host does not measure it: the
+/// label's rect and its contents rect are both its authored box, and
+/// `fit_height` does not grow it here (test log, 2026-10-10: a 35px box
+/// whatever the text). The widths are a guess at the font, a little wide.
+/// Nothing the mod writes wraps, so its own articles come out exact; the
+/// guess only decides whether one of the game's long articles gets a short
+/// scroll it did not have.
+fn article_text_height(text: &str) -> f32 {
+    let mut lines = 0usize;
+    for line in text.split('\n') {
+        let mut size = ARTICLE_TEXT_SIZE;
+        let mut width = 0f32;
+        let mut rest = line;
+        while let Some(c) = rest.chars().next() {
+            // Markup takes no room, but for an icon; a size holds until `<s>`.
+            let tag_end = if c == '<' { rest.find('>') } else { None };
+            if let Some(end) = tag_end {
+                let tag = &rest[1..end];
+                if let Some(number) = tag.strip_prefix("s#") {
+                    size = number.parse().unwrap_or(ARTICLE_TEXT_SIZE);
+                } else if tag == "s" {
+                    size = ARTICLE_TEXT_SIZE;
+                } else if tag.starts_with("i#") {
+                    width += size;
+                }
+                rest = &rest[end + 1..];
+                continue;
+            }
+            width += size * if is_wide(c) { 1.0 } else { 0.55 };
+            rest = &rest[c.len_utf8()..];
+        }
+        lines += ((width / ARTICLE_TEXT_W).ceil() as usize).max(1);
+    }
+    lines as f32 * ARTICLE_LINE_H
+}
+
+/// Makes the open article scroll as far as its text is long, and no
+/// further. Every client frame; off the news screen it is two failed
+/// lookups.
+///
+/// The mod's override of the plain article layout makes its body a scroll
+/// view. Two things about one were learned from the user's runs on
+/// 2026-10-10, neither of them to be had from the layouts:
+///
+/// - It is as long as a node in it says, and does not take its length from
+///   a label: with only the label in it the article did not scroll. The
+///   game's own scrolling article (`news_component/tutorial_last`) has a
+///   `#dummy` node for the length, whose height game code sets, and the
+///   override has the same node.
+/// - A node whose box has left the view is not drawn, text and all. The
+///   label was 35px high then, the text running out under it, and the first
+///   turn of the wheel took the whole article away (its box at y 20 under a
+///   view that starts at 120, in the test log). So the label's box is as
+///   long as the scroll, always.
+///
+/// The layout gives both a height that is enough for the longest patch
+/// notes, and this sets both to what the text takes: a short article does
+/// not scroll at all, and one this cannot reach still scrolls, past its end.
+///
+/// For any plain article, the mod's own or not: the layout is every plain
+/// article's.
+pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
+    let Some(text) = ctx.ui_text(ARTICLE_TEXT) else {
+        // No plain article is open; or one is, and its text does not answer
+        // by the path it should have, which the test log is told once.
+        if ctx
+            .ui_child_names(ARTICLE_AREA)
+            .iter()
+            .any(|child| child == "simple_container")
+        {
+            super::log("patch.scroll", || {
+                format!(
+                    "an article is open and {ARTICLE_TEXT} has no text; body exists={} is a {:?}, holds {:?}",
+                    ctx.ui_exists(ARTICLE_BODY),
+                    ctx.ui_runner_name(ARTICLE_BODY),
+                    ctx.ui_child_names(ARTICLE_BODY),
+                )
+            });
+        }
+        return;
+    };
+    let (Some((_, _, _, length)), Some((_, _, _, text_box))) =
+        (ctx.ui_node_rect(ARTICLE_EXTENT), ctx.ui_node_rect(ARTICLE_TEXT))
+    else {
+        // The layout in use is not the mod's: nothing to set.
+        super::log("patch.scroll", || {
+            format!(
+                "the open article has no {ARTICLE_EXTENT}; its body is a {:?} and holds {:?}",
+                ctx.ui_runner_name(ARTICLE_BODY),
+                ctx.ui_child_names(ARTICLE_BODY),
+            )
+        });
+        return;
+    };
+    let wanted = (article_text_height(&text) + ARTICLE_FOOT)
+        .max(ARTICLE_VIEW_H)
+        .ceil();
+    let Ok(mut tried) = SCROLL_TRIED.lock() else {
+        return;
+    };
+    if (length - wanted).abs() < 1.0 && (text_box - wanted).abs() < 1.0 {
+        *tried = None;
+        return;
+    }
+    if *tried == Some((wanted, length, text_box)) {
+        return;
+    }
+    let height = format!("height: {wanted}px;");
+    let set = ctx.ui_set_properties(ARTICLE_EXTENT, &height)
+        & ctx.ui_set_properties(ARTICLE_TEXT, &height);
+    *tried = Some((wanted, length, text_box));
+    // No positions in this line: they change with every turn of the wheel,
+    // and a line that changes is a line written again.
+    super::log("patch.scroll", || {
+        format!(
+            "{} lines of text; the scroll was {length}px long and the text's box {text_box}px high, both set to {wanted}px: {set}",
+            text.split('\n').count(),
+        )
+    });
 }

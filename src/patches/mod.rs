@@ -86,6 +86,16 @@ const QUIET_PATIENCE: u32 = 240;
 /// full lean an item is worth that much again less a fifth, or more.
 pub(crate) const LEAN_SCORE: f32 = 0.2;
 
+/// The command the client sends its own server extension to have it post a
+/// patch's article at once.
+///
+/// That used to wait for the next management tick, and the server only ticks
+/// while the calendar runs. The first in-game run (2026-10-10) had a patch
+/// land on an idle management screen and then nothing, three minutes on with
+/// the game open. With the command the article was posted as the patch
+/// landed (seen in the test log the same night).
+const SERVER_COMMAND: &str = "item_patches";
+
 pub(crate) fn log(key: &str, text: impl FnOnce() -> String) {
     crate::match_builds::log(key, text);
 }
@@ -282,23 +292,34 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
     let (title, body, author) = text::news(&patch);
     session.state.adopt(patch);
     live::rebuild(base::base(), &session.state);
-    crate::item_stats::resync_server_items();
-    if let Some(team) = ctx.player_team_id() {
-        if let Ok(mut articles) = ARTICLES.lock() {
-            articles.push(Article {
-                team,
-                title,
-                body,
-                author,
-            });
-            ARTICLE_WAITING.store(true, Ordering::Relaxed);
+    match ctx.player_team_id() {
+        Some(team) => {
+            if let Ok(mut articles) = ARTICLES.lock() {
+                articles.push(Article {
+                    team,
+                    title,
+                    body,
+                    author,
+                });
+                ARTICLE_WAITING.store(true, Ordering::Relaxed);
+            }
         }
+        None => log("patch.news", || {
+            "no article: the client does not know the player's team".to_string()
+        }),
     }
+    // Posted now ([`SERVER_COMMAND`]), or at the next management tick by a
+    // host that does not carry the command.
+    let sent = ctx.send_command(SERVER_COMMAND, &[]);
+    log("patch.wake", || format!("server asked to post now, sent={sent}"));
 }
 
 /// Every client frame: the tooltips, the save's state, and whether a patch
 /// is due.
 pub(crate) fn sync(ctx: &mut StableClient<'_>) {
+    // Whatever plain article is open scrolls as far as its text goes. Ahead
+    // of the switch below: the layout this goes with is in use either way.
+    text::sync_article_scroll(ctx);
     if !ENABLED {
         return;
     }
@@ -314,7 +335,6 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         if session.loaded {
             *session = Session::new();
             live::rebuild(base::base(), &State::default());
-            crate::item_stats::resync_server_items();
         }
         return;
     }
@@ -332,7 +352,6 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
             .unwrap_or_default();
         session.loaded = true;
         live::rebuild(base::base(), &session.state);
-        crate::item_stats::resync_server_items();
         log("patch.loaded", || {
             format!(
                 "patch {} on v{:?}, {} item(s) patched",
@@ -355,7 +374,6 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
             session.state = theirs;
             session.dirty = false;
             live::rebuild(base::base(), &session.state);
-            crate::item_stats::resync_server_items();
             return;
         }
         if ctx.save_set_string(KEY, &session.state.to_json()) {
@@ -364,8 +382,18 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     }
 }
 
-/// Every server management tick: posts the articles the client has written.
-/// One atomic read while there is none.
+/// The server's answer to [`SERVER_COMMAND`]: what its management tick does
+/// for a patch, without waiting for one. `false` for any other command.
+pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableCommand<'_>) -> bool {
+    if !ENABLED || command.command != SERVER_COMMAND {
+        return false;
+    }
+    server_tick(ctx);
+    true
+}
+
+/// Every server management tick, and at once on [`SERVER_COMMAND`]: posts the
+/// articles the client has written. One atomic read while there is none.
 pub(crate) fn server_tick(ctx: &mut StableServerCtx<'_>) {
     if !ARTICLE_WAITING.swap(false, Ordering::Relaxed) {
         return;
@@ -376,10 +404,117 @@ pub(crate) fn server_tick(ctx: &mut StableServerCtx<'_>) {
         .unwrap_or_default();
     for article in articles {
         let posted = ctx.news_push(article.team, &article.title, &article.body, &article.author);
+        let filed = if posted {
+            file_under_patch(ctx, article.team, &article.title)
+        } else {
+            String::new()
+        };
         log("patch.news", || {
-            format!("\"{}\" posted={posted} to team {}", article.title, article.team)
+            format!(
+                "\"{}\" posted={posted} to team {}; {filed}",
+                article.title, article.team
+            )
         });
     }
+}
+
+/// The content bind the game files a plain article by, and the value of it
+/// that files one under the inbox's Patch tab.
+const SCOPE_KEY: &str = "Scope";
+const SCOPE_PATCH: &str = "patch";
+
+/// Files the article just posted under the inbox's Patch tab (the user,
+/// 2026-10-10: "it should be a patch news article. right now it shows up in
+/// the General section"; and, if that cannot be had, "its fine to leave it
+/// in general"). Says what happened, for the test log. Whatever goes wrong,
+/// the article is left as it was posted, under General.
+///
+/// An article has no section of its own: the inbox works one out from the
+/// article's type (0.6.3 exe, the function at RVA 0x16f36a0, a jump table
+/// over the 53 news types). Only the game's champion patch notes are Patch
+/// by type, and those hold champion keys, not text. A plain article, which
+/// is all `news_push` makes, is filed by its content binds (RVA 0x16f3090):
+/// one named `Scope` decides, `patch` for Patch (`transfer` Transfer;
+/// `match`, `pre_match` Match; `scout`, `rating`, `season`, `meta` Report;
+/// `fan`, `finance`, `team`, `player`, `merch`, `staff` Club), and an
+/// article with no such bind is General.
+///
+/// `news_push` takes no binds, so the bind is written into the article
+/// where the server keeps it, the team record's `news` list (`ty` is the
+/// type, by serde's name for it, `Simple`, with `content` and
+/// `content_bind`). A bind is a pair of strings in the exe; how the record's
+/// JSON writes one is not known from there, so it is copied from any bind
+/// the list already has, and written as a `[name, value]` pair where there
+/// is none to copy.
+///
+/// Not yet seen in game when written: that the write is taken, and that the
+/// client's inbox has the bind without a save and a load in between.
+fn file_under_patch(ctx: &mut StableServerCtx<'_>, team: usize, title: &str) -> String {
+    use serde_json::Value;
+
+    let Some(news) = ctx
+        .record_get_json(RecordKindV1::Team, team, "news")
+        .and_then(|json| serde_json::from_str::<Value>(&json).ok())
+    else {
+        return "the team's news could not be read, left under General".to_string();
+    };
+    let list = news.as_array().map(Vec::as_slice).unwrap_or_default();
+    // The newest of that title: a push goes on the end.
+    let found = list.iter().enumerate().rev().find(|(_, article)| {
+        article.get("title").and_then(Value::as_str) == Some(title)
+            && article.pointer("/ty/Simple").is_some()
+    });
+    let Some((index, article)) = found else {
+        let last: String = list
+            .last()
+            .map(|last| last.to_string().chars().take(300).collect())
+            .unwrap_or_default();
+        return format!(
+            "not found among the team's {} articles, left under General; the last is {last}",
+            list.len()
+        );
+    };
+    // A bind as this record writes them, from any the list has.
+    let sample = list.iter().find_map(|article| {
+        [article.pointer("/ty/Simple/content_bind"), article.get("title_bind")]
+            .into_iter()
+            .flatten()
+            .find_map(|binds| binds.as_array()?.first().cloned())
+    });
+    let bind = match &sample {
+        Some(Value::Object(fields)) => Value::Object(
+            fields
+                .keys()
+                .map(|field| {
+                    let part = if field.to_ascii_lowercase().contains("val") {
+                        SCOPE_PATCH
+                    } else {
+                        SCOPE_KEY
+                    };
+                    (field.clone(), Value::from(part))
+                })
+                .collect(),
+        ),
+        _ => serde_json::json!([SCOPE_KEY, SCOPE_PATCH]),
+    };
+    let binds = match article.pointer("/ty/Simple/content_bind") {
+        // Written as a map of name to value.
+        Some(Value::Object(binds)) => {
+            let mut binds = binds.clone();
+            binds.insert(SCOPE_KEY.to_string(), Value::from(SCOPE_PATCH));
+            Value::Object(binds)
+        }
+        Some(Value::Array(binds)) => {
+            let mut binds = binds.clone();
+            binds.push(bind);
+            Value::Array(binds)
+        }
+        _ => Value::Array(vec![bind]),
+    };
+    let path = format!("news.{index}.ty.Simple.content_bind");
+    let set = ctx.record_set_json(RecordKindV1::Team, team, &path, &binds.to_string());
+    let now = ctx.record_get_json(RecordKindV1::Team, team, &path);
+    format!("{path} set to {binds}: {set}; it reads back {now:?} (a bind copied from {sample:?})")
 }
 
 /// Every tick of every simulation, from the match hook.

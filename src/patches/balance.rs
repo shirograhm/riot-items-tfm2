@@ -131,7 +131,7 @@ fn change(
         .rev()
         .find(|member| member.values.contains_key(field))?;
     let up = buff != rule.lower_is_stronger;
-    let floor = if rule.unsigned && !lead.game {
+    let floor = if rule.unsigned {
         1.0
     } else {
         fields::MIN_RATIO
