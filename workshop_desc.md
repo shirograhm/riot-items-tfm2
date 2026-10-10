@@ -32,9 +32,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 
 [h1] Known Issues [/h1]
 - Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
-- The SoloQ page may sometimes show incorrect item builds.  
 - The build editor only shows item and champion names in English.  
-- Saves from older versions of this mod may lag during the BP phase and in-game. For now, use a new save.  
 - Largely untested in multiplayer. It should work, but custom item builds only follow the host's choices.  
 
 [h1] Custom Item Values [/h1]
