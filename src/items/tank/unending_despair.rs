@@ -11,6 +11,11 @@ pub struct UnendingDespair {
     defence: i32,
     effect_bonus_flat_heal: i32,
     effect_caster_hp_percent_heal: f64,
+    // Non-vital stats (internals)
+    /// The carrier's remaining ability cooldowns (skill, skill2, ult) last
+    /// tick. `None` until the first reading after a spawn, which is only a
+    /// baseline.
+    last_cooldowns: Option<(usize, usize, usize)>,
 }
 
 impl UnendingDespair {
@@ -26,6 +31,8 @@ impl UnendingDespair {
             defence: 15,
             effect_bonus_flat_heal: 15,
             effect_caster_hp_percent_heal: 1.5,
+            // Non-vital stats (internals)
+            last_cooldowns: None,
         }
     }
 
@@ -108,26 +115,39 @@ impl StableItem for UnendingDespair {
         }
     }
 
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        _rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        let Some(entity_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if !target_ref.is_champion() || is_ally {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.last_cooldowns = None;
+    }
+
+    /// Anguish answers to the cast, whatever it hits. No hook reports one, so
+    /// it is read the way Eternity reads it: an ability's remaining cooldown
+    /// going up between two ticks.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let cooldowns = ctx
+            .get_player(player)
+            .and_then(|p| p.cooldowns())
+            .map(|(_, skill, skill2, ult)| (skill, skill2, ult));
+        let cast = matches!(
+            (cooldowns, self.last_cooldowns),
+            (Some(now), Some(before))
+                if now.0 > before.0 || now.1 > before.1 || now.2 > before.2
+        );
+        self.last_cooldowns = cooldowns;
+        if !cast {
             return;
         }
 
+        let Some((caster, max_hp)) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .filter(|c| c.is_alive())
+            .map(|c| (c.id(), c.hp().1))
+        else {
+            return;
+        };
+
         let heal_amount = self.effect_bonus_flat_heal as usize
-            + percent_of(entity_ref.hp().1, self.effect_caster_hp_percent_heal);
+            + percent_of(max_hp, self.effect_caster_hp_percent_heal);
 
         ctx.heal(caster, caster, heal_amount);
     }

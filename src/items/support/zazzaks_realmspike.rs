@@ -249,8 +249,9 @@ impl StableItem for ZazzaksRealmspike {
         self.blasts.clear();
     }
 
-    /// Void Explosion's trigger: ability damage to an enemy champion, off
-    /// cooldown. The cooldown runs from here, not from the blast.
+    /// Void Explosion's trigger: ability damage to an enemy champion, a tick
+    /// of damage over time included, off cooldown. The cooldown runs from
+    /// here, not from the blast.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

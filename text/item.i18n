@@ -298,11 +298,11 @@
         },
         "unending_despair": {
             "name": "Unending Despair",
-            "option": "\n<#ff7a3eff>Anguish<>: Landing an Ability on an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>15<> + <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "\n<#ff7a3eff>Anguish<>: Using an Ability <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>15<> + <#60e84dff>1.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "radiant_unending_despair": {
             "name": "Radiant Unending Despair",
-            "option": "\n<#ff7a3eff>Anguish<>: Landing an Ability on an enemy champion <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>20<> + <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
+            "option": "\n<#ff7a3eff>Anguish<>: Using an Ability <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heals you<> for <#60e84dff>20<> + <#60e84dff>2.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Blade of the Ruined King",
@@ -442,11 +442,11 @@
         },
         "spear_of_shojin": {
             "name": "Spear of Shojin",
-            "option": "\n<#ff7a3eff>Focused Will<>: Landing an Ability on an enemy champion grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+            "option": "\n<#ff7a3eff>Focused Will<>: Landing an Ability on an enemy champion grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<>, up to once per cast instance (max 4 stacks)."
         },
         "radiant_spear_of_shojin": {
             "name": "Radiant Spear of Shojin",
-            "option": "\n<#ff7a3eff>Focused Will<>: Landing an Ability on an enemy champion grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<> (max 4 stacks)."
+            "option": "\n<#ff7a3eff>Focused Will<>: Landing an Ability on an enemy champion grants <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> for <#e8a800ff>5 seconds<>, up to once per cast instance (max 4 stacks)."
         },
         "oblivion_orb": {
             "name": "Oblivion Orb",
@@ -574,11 +574,11 @@
         },
         "rite_of_ruin": {
             "name": "Rite of Ruin",
-            "option": "\n<#ff7a3eff>Wrath and Ruin<>: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\n<#ff7a3eff>Salvage the Wreckage<>: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>35<> - <#cab944ff>90<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+            "option": "\n<#ff7a3eff>Wrath and Ruin<>: Using an Ability grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\n<#ff7a3eff>Salvage the Wreckage<>: Using an Ability has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>35<> - <#cab944ff>90<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Radiant Rite of Ruin",
-            "option": "\n<#ff7a3eff>Wrath and Ruin<>: Landing an Ability on an enemy champion grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\n<#ff7a3eff>Salvage the Wreckage<>: Landing an Ability on an enemy champion has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>65<> - <#cab944ff>175<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
+            "option": "\n<#ff7a3eff>Wrath and Ruin<>: Using an Ability grants <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> critical strike chance<> for <#e8a800ff>5 seconds<> (max 5 stacks).\n\n<#ff7a3eff>Salvage the Wreckage<>: Using an Ability has a <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> to grant you a <#cab944ff>shield<> for <#e8a800ff>3 seconds<> that <#cab944ff>absorbs<> <#cab944ff>65<> - <#cab944ff>175<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#cab944ff>damage<>."
         },
         "glowing_mote": {
             "name": "Glowing Mote",
@@ -806,11 +806,11 @@
         },
         "ravenous_hydra": {
             "name": "Ravenous Hydra",
-            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> <#ffff99ff>on-hit<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Radiant Ravenous Hydra",
-            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> <#ffff99ff>on-hit<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         },
         "bamis_cinder": {
             "name": "Bami's Cinder",
@@ -826,7 +826,7 @@
         },
         "tiamat": {
             "name": "Tiamat",
-            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> <#ffff99ff>on-hit<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+            "option": "\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
         },
         "seryldas_grudge": {
             "name": "Serylda's Grudge",
@@ -1424,11 +1424,11 @@
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
-            "option": "\n<#ff7a3eff>Thống khổ<>: Kĩ năng trúng bạn sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>15<> + <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
+            "option": "\n<#ff7a3eff>Thống khổ<>: Sử dụng kĩ năng sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>15<> + <#60e84dff>1.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
         },
         "radiant_unending_despair": {
             "name": "Áo Choàng Diệt Vong Ánh Sáng",
-            "option": "\n<#ff7a3eff>Thống khổ<>: Kĩ năng trúng bạn sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>20<> + <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
+            "option": "\n<#ff7a3eff>Thống khổ<>: Sử dụng kĩ năng sẽ <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi máu<> một lượng tương ứng <#60e84dff>20<> + <#60e84dff>2.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> cho bản thân."
         },
         "blade_of_the_ruined_king": {
             "name": "Gươm Suy Vong",
@@ -1568,11 +1568,11 @@
         },
         "spear_of_shojin": {
             "name": "Ngọn Giáo Shojin",
-            "option": "\n<#ff7a3eff>Ý Chí Tập Trung<>: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<> (tối đa 4 cộng dồn)."
+            "option": "\n<#ff7a3eff>Ý Chí Tập Trung<>: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<>, tối đa một lần mỗi lần thi triển (tối đa 4 cộng dồn)."
         },
         "radiant_spear_of_shojin": {
             "name": "Ngọn Giáo Shojin Ánh Sáng",
-            "option": "\n<#ff7a3eff>Ý Chí Tập Trung<>: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<> (tối đa 4 cộng dồn)."
+            "option": "\n<#ff7a3eff>Ý Chí Tập Trung<>: Kĩ năng trúng tướng địch sẽ tăng <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> trong <#e8a800ff>5 giây<>, tối đa một lần mỗi lần thi triển (tối đa 4 cộng dồn)."
         },
         "oblivion_orb": {
             "name": "Quả Cầu Lãng Quên",
@@ -1700,11 +1700,11 @@
         },
         "rite_of_ruin": {
             "name": "Nghi Thức Suy Vong",
-            "option": "\n<#ff7a3eff>Thịnh Nộ Và Suy Vong<>: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\n<#ff7a3eff>Cứu Rỗi Trò Tàn<>: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#cab944ff>35<> - <#cab944ff>90<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+            "option": "\n<#ff7a3eff>Thịnh Nộ Và Suy Vong<>: Sử dụng kĩ năng cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\n<#ff7a3eff>Cứu Rỗi Trò Tàn<>: Sử dụng kĩ năng có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#cab944ff>35<> - <#cab944ff>90<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Nghi Thức Suy Vong Ánh Sáng",
-            "option": "\n<#ff7a3eff>Thịnh Nộ Và Suy Vong<>: Kĩ năng trúng tướng địch cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\n<#ff7a3eff>Cứu Rỗi Trò Tàn<>: Kĩ năng trúng tướng địch có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#cab944ff>65<> - <#cab944ff>175<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
+            "option": "\n<#ff7a3eff>Thịnh Nộ Và Suy Vong<>: Sử dụng kĩ năng cấp <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> tỉ lệ chí mạng<> trong <#e8a800ff>5 giây<> (tối đa 5 cộng dồn).\n\n<#ff7a3eff>Cứu Rỗi Trò Tàn<>: Sử dụng kĩ năng có <#d45656ff>tỉ lệ (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> tạo cho bạn một <#cab944ff>khiên<> trong <#e8a800ff>3 giây<>, <#cab944ff>hấp thụ<> <#cab944ff>65<> - <#cab944ff>175<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#cab944ff>sát thương<>."
         },
         "glowing_mote": {
             "name": "Bụi Lấp Lánh",
@@ -1932,11 +1932,11 @@
         },
         "ravenous_hydra": {
             "name": "Rìu Mãng Xà",
-            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Rìu Mãng Xà Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         },
         "bamis_cinder": {
             "name": "Tàn Tích Bami",
@@ -1944,7 +1944,7 @@
         },
         "tiamat": {
             "name": "Rìu Tiamat",
-            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+            "option": "\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
         },
         "bandlepipes": {
             "name": "Kèn Túi Bandle",
@@ -2550,11 +2550,11 @@
         },
         "unending_despair": {
             "name": "无终恨意",
-            "option": "\n<#ff7a3eff>苦楚<>：技能命中时，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的生命值。"
+            "option": "\n<#ff7a3eff>苦楚<>：施放技能后，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1.5%<> 的生命值。"
         },
         "radiant_unending_despair": {
             "name": "光明版无终恨意",
-            "option": "\n<#ff7a3eff>苦楚<>：技能命中时，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>20<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值。"
+            "option": "\n<#ff7a3eff>苦楚<>：施放技能后，<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回复<> <#60e84dff>20<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2.5%<> 的生命值。"
         },
         "blade_of_the_ruined_king": {
             "name": "破败王者之刃",
@@ -2694,11 +2694,11 @@
         },
         "spear_of_shojin": {
             "name": "朔极之矛",
-            "option": "\n<#ff7a3eff>专注意志<>：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>（最多叠加4层）。"
+            "option": "\n<#ff7a3eff>专注意志<>：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>，每次施放最多触发一次（最多叠加4层）。"
         },
         "radiant_spear_of_shojin": {
             "name": "光明版朔极之矛",
-            "option": "\n<#ff7a3eff>专注意志<>：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>（最多叠加4层）。"
+            "option": "\n<#ff7a3eff>专注意志<>：技能命中敌方英雄时获得 <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>，持续 <#e8a800ff>5秒<>，每次施放最多触发一次（最多叠加4层）。"
         },
         "oblivion_orb": {
             "name": "湮灭宝珠",
@@ -2826,11 +2826,11 @@
         },
         "rite_of_ruin": {
             "name": "毁坏仪式",
-            "option": "\n<#ff7a3eff>怒火与破坏<>：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n<#ff7a3eff>打捞残骸<>：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>35<> - <#cab944ff>90<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
+            "option": "\n<#ff7a3eff>怒火与破坏<>：施放技能后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n<#ff7a3eff>打捞残骸<>：施放技能后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>35<> - <#cab944ff>90<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
         },
         "radiant_rite_of_ruin": {
             "name": "光明版毁坏仪式",
-            "option": "\n<#ff7a3eff>怒火与破坏<>：技能命中敌方英雄后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n<#ff7a3eff>打捞残骸<>：技能命中敌方英雄后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>65<> - <#cab944ff>175<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
+            "option": "\n<#ff7a3eff>怒火与破坏<>：施放技能后获得 <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 暴击几率<>，持续 <#e8a800ff>5秒<>（最多 5 层）。\n\n<#ff7a3eff>打捞残骸<>：施放技能后有<#d45656ff>几率（<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>）<>为你提供一个持续 <#e8a800ff>3秒<> 的<#cab944ff>护盾<>，<#cab944ff>吸收<> <#cab944ff>65<> - <#cab944ff>175<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#cab944ff>伤害<>。"
         },
         "glowing_mote": {
             "name": "荧尘",
@@ -3058,11 +3058,11 @@
         },
         "ravenous_hydra": {
             "name": "贪欲九头蛇",
-            "option": "\n<#ff7a3eff>顺劈<>：普通攻击<#ffff99ff>命中时<>会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>30%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>30%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         },
         "radiant_ravenous_hydra": {
             "name": "光明版贪欲九头蛇",
-            "option": "\n<#ff7a3eff>顺劈<>：普通攻击<#ffff99ff>命中时<>会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>40%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>40%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         },
         "bamis_cinder": {
             "name": "斑比的熔渣",
@@ -3070,7 +3070,7 @@
         },
         "tiamat": {
             "name": "提亚马特",
-            "option": "\n<#ff7a3eff>顺劈<>：普通攻击<#ffff99ff>命中时<>会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+            "option": "\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
         },
         "bandlepipes": {
             "name": "班德尔音管",
@@ -3676,11 +3676,11 @@
         },
         "unending_despair": {
             "name": "Desespero Eterno",
-            "option": "\n<#ff7a3eff>Angústia<>: Suas mágias <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te curam<> em <#60e84dff>15<> + <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+            "option": "\n<#ff7a3eff>Angústia<>: Usar uma Habilidade <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te cura<> em <#60e84dff>15<> + <#60e84dff>1.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "radiant_unending_despair": {
             "name": "Desespero Eterno Radiante",
-            "option": "\n<#ff7a3eff>Angústia<>: Suas mágias <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te curam<> em <#60e84dff>20<> + <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
+            "option": "\n<#ff7a3eff>Angústia<>: Usar uma Habilidade <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>te cura<> em <#60e84dff>20<> + <#60e84dff>2.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Espada do Rei Destruído",
@@ -3820,11 +3820,11 @@
         },
         "spear_of_shojin": {
             "name": "Lança de Shojin",
-            "option": "\n<#ff7a3eff>Vontade Focada<>: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<> (acumula 4x)."
+            "option": "\n<#ff7a3eff>Vontade Focada<>: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<>, no máximo uma vez por instância de conjuração (acumula 4x)."
         },
         "radiant_spear_of_shojin": {
             "name": "Lança de Shojin Radiante",
-            "option": "\n<#ff7a3eff>Vontade Focada<>: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<> (acumula 4x)."
+            "option": "\n<#ff7a3eff>Vontade Focada<>: Acertar habilidades em campeões inimigos concede <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> por <#e8a800ff>5 segundos<>, no máximo uma vez por instância de conjuração (acumula 4x)."
         },
         "oblivion_orb": {
             "name": "Orbe do Esquecimento",
@@ -3952,11 +3952,11 @@
         },
         "rite_of_ruin": {
             "name": "Ritual da Ruína",
-            "option": "\n<#ff7a3eff>Ira e Ruína<>: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\n<#ff7a3eff>Recuperando os Destroços<>: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>35<> - <#cab944ff>90<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+            "option": "\n<#ff7a3eff>Ira e Ruína<>: Usar uma Habilidade concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\n<#ff7a3eff>Recuperando os Destroços<>: Usar uma Habilidade tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>35<> - <#cab944ff>90<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Ritual da Ruína Radiante",
-            "option": "\n<#ff7a3eff>Ira e Ruína<>: Acertar uma Habilidade em um campeão inimigo concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\n<#ff7a3eff>Recuperando os Destroços<>: Acertar uma Habilidade em um campeão inimigo tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>65<> - <#cab944ff>175<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
+            "option": "\n<#ff7a3eff>Ira e Ruína<>: Usar uma Habilidade concede <#d45656ff>5% de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> Chance de Acerto Crítico<> por <#e8a800ff>5 segundos<> (máx. 5 acúmulos).\n\n<#ff7a3eff>Recuperando os Destroços<>: Usar uma Habilidade tem <#d45656ff>chance (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> de conceder a você um <#cab944ff>escudo<> por <#e8a800ff>3 segundos<> que <#cab944ff>absorve<> <#cab944ff>65<> - <#cab944ff>175<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#cab944ff>dano<>."
         },
         "glowing_mote": {
             "name": "Partícula Brilhante",
@@ -4184,11 +4184,11 @@
         },
         "ravenous_hydra": {
             "name": "Hidra Raivosa",
-            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ffff99ff>ao contato<> <#ff9028ff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Hidra Raivosa Radiante",
-            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ffff99ff>ao contato<> <#ff9028ff>40%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>40%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         },
         "bamis_cinder": {
             "name": "Brasa de Bami",
@@ -4196,7 +4196,7 @@
         },
         "tiamat": {
             "name": "Tiamat",
-            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ffff99ff>ao contato<> <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+            "option": "\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
         },
         "bandlepipes": {
             "name": "Bandocanos",
@@ -4802,11 +4802,11 @@
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",
-            "option": "\n<#ff7a3eff>Страдание<>: Попадания умениями <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают вам<> <#60e84dff>15<> + <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+            "option": "\n<#ff7a3eff>Страдание<>: Применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> <#60e84dff>15<> + <#60e84dff>1.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "radiant_unending_despair": {
             "name": "Лучезарное Бесконечное Отчаяние",
-            "option": "\n<#ff7a3eff>Страдание<>: Попадания умениями <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают вам<> <#60e84dff>20<> + <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
+            "option": "\n<#ff7a3eff>Страдание<>: Применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает вам<> <#60e84dff>20<> + <#60e84dff>2.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>."
         },
         "blade_of_the_ruined_king": {
             "name": "Клинок падшего короля",
@@ -4946,11 +4946,11 @@
         },
         "spear_of_shojin": {
             "name": "Копье Седзина",
-            "option": "\n<#ff7a3eff>Концентрация<>: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<> (макс. 4 стака)."
+            "option": "\n<#ff7a3eff>Концентрация<>: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<>, не более одного раза за применение (макс. 4 стака)."
         },
         "radiant_spear_of_shojin": {
             "name": "Копье Хираны",
-            "option": "\n<#ff7a3eff>Концентрация<>: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<> (макс. 4 стака)."
+            "option": "\n<#ff7a3eff>Концентрация<>: Попадания способностями по вражеским чемпионам дают <#ff9028ff>3%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Силы Атаки<> на <#e8a800ff>5 секунд<>, не более одного раза за применение (макс. 4 стака)."
         },
         "oblivion_orb": {
             "name": "Сфера забвения",
@@ -5078,11 +5078,11 @@
         },
         "rite_of_ruin": {
             "name": "Ритуал уничтожения",
-            "option": "\n<#ff7a3eff>Гнев и уничтожение<>: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\n<#ff7a3eff>Спасение утопающих<>: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#cab944ff>35<> - <#cab944ff>90<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+            "option": "\n<#ff7a3eff>Гнев и уничтожение<>: Применение умения даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\n<#ff7a3eff>Спасение утопающих<>: Применение умения с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#cab944ff>35<> - <#cab944ff>90<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
         },
         "radiant_rite_of_ruin": {
             "name": "Лучезарный Ритуал уничтожения",
-            "option": "\n<#ff7a3eff>Гнев и уничтожение<>: Попадание умением по вражескому чемпиону даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\n<#ff7a3eff>Спасение утопающих<>: Попадание умением по вражескому чемпиону с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#cab944ff>65<> - <#cab944ff>175<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
+            "option": "\n<#ff7a3eff>Гнев и уничтожение<>: Применение умения даёт <#d45656ff>5% <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> шанса критического удара<> на <#e8a800ff>5 сек<> (максимум 5 зарядов).\n\n<#ff7a3eff>Спасение утопающих<>: Применение умения с <#d45656ff>шансом (<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<> даёт вам <#cab944ff>щит<> на <#e8a800ff>3 сек<>, поглощающий <#cab944ff>65<> - <#cab944ff>175<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#cab944ff>урона<>."
         },
         "glowing_mote": {
             "name": "Светлячок",
@@ -5310,11 +5310,11 @@
         },
         "ravenous_hydra": {
             "name": "Ненасытная гидра",
-            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки <#ffff99ff>при попадании<> наносят <#ff9028ff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         },
         "radiant_ravenous_hydra": {
             "name": "Лучезарная Ненасытная гидра",
-            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки <#ffff99ff>при попадании<> наносят <#ff9028ff>40%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>40%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         },
         "bamis_cinder": {
             "name": "Пепел Бами",
@@ -5322,7 +5322,7 @@
         },
         "tiamat": {
             "name": "Тиамат",
-            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки <#ffff99ff>при попадании<> наносят <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+            "option": "\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
         },
         "bandlepipes": {
             "name": "Бандл-трубы",
@@ -5928,11 +5928,11 @@
         },
         "unending_despair": {
             "name": "끝없는 절망",
-            "option": "\n<#ff7a3eff>고뇌<>: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
+            "option": "\n<#ff7a3eff>고뇌<>: 스킬을 사용하면 <#60e84dff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
         },
         "radiant_unending_despair": {
             "name": "찬란한 끝없는 절망",
-            "option": "\n<#ff7a3eff>고뇌<>: 적 챔피언에게 스킬을 적중시키면 <#60e84dff>20<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
+            "option": "\n<#ff7a3eff>고뇌<>: 스킬을 사용하면 <#60e84dff>20<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2.5%<>만큼 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 회복<>합니다."
         },
         "blade_of_the_ruined_king": {
             "name": "몰락한 왕의 검",
@@ -6072,11 +6072,11 @@
         },
         "spear_of_shojin": {
             "name": "쇼진의 창",
-            "option": "\n<#ff7a3eff>집중된 의지<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>3%<> 증가합니다. 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>집중된 의지<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>3%<> 증가합니다. 시전당 최대 1회 적용됩니다. 최대 4회 중첩됩니다."
         },
         "radiant_spear_of_shojin": {
             "name": "찬란한 쇼진의 창",
-            "option": "\n<#ff7a3eff>집중된 의지<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>3%<> 증가합니다. 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>집중된 의지<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력<>이 <#ff9028ff>3%<> 증가합니다. 시전당 최대 1회 적용됩니다. 최대 4회 중첩됩니다."
         },
         "oblivion_orb": {
             "name": "망각의 구",
@@ -6204,11 +6204,11 @@
         },
         "rite_of_ruin": {
             "name": "파멸의식 고서",
-            "option": "\n<#ff7a3eff>분노와 파멸<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n<#ff7a3eff>난파선 인양<>: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>35<>~<#cab944ff>90<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
+            "option": "\n<#ff7a3eff>분노와 파멸<>: 스킬을 사용하면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n<#ff7a3eff>난파선 인양<>: 스킬을 사용하면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>35<>~<#cab944ff>90<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
         },
         "radiant_rite_of_ruin": {
             "name": "찬란한 파멸의식 고서",
-            "option": "\n<#ff7a3eff>분노와 파멸<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n<#ff7a3eff>난파선 인양<>: 적 챔피언에게 스킬을 적중시키면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>65<>~<#cab944ff>175<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
+            "option": "\n<#ff7a3eff>분노와 파멸<>: 스킬을 사용하면 <#e8a800ff>5초<> 동안 <#d45656ff>5%의 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> 치명타 확률<>을 얻습니다. (최대 5중첩)\n\n<#ff7a3eff>난파선 인양<>: 스킬을 사용하면 <#d45656ff>확률(<i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>)<>로 <#e8a800ff>3초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#cab944ff>65<>~<#cab944ff>175<>의 <#cab944ff>피해를 흡수<>하는 <#cab944ff>보호막<>을 얻습니다."
         },
         "glowing_mote": {
             "name": "빛나는 티끌",
@@ -6436,11 +6436,11 @@
         },
         "ravenous_hydra": {
             "name": "굶주린 히드라",
-            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 <#ffff99ff>적중 시<> 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 30%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 30%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         },
         "radiant_ravenous_hydra": {
             "name": "찬란한 굶주린 히드라",
-            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 <#ffff99ff>적중 시<> 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 40%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 40%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         },
         "bamis_cinder": {
             "name": "바미의 불씨",
@@ -6448,7 +6448,7 @@
         },
         "tiamat": {
             "name": "티아맷",
-            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 <#ffff99ff>적중 시<> 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+            "option": "\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
         },
         "bandlepipes": {
             "name": "밴들파이프",
