@@ -50,12 +50,12 @@ Both files (config-default.json & config.json) should be located in the mod's wo
 [h1] Item Patches [/h1]
 Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b].  
 
-The patch system can be tuned in [b]config-autopatch.json[/b], in the same folder as config-default.json:  
+To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
 - [b]enabled[/b]: set to false to turn item patches off.  
-- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 and item patches never change it.  
+- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
 - [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (65% to 140% by default).  
 
-Re-run the game after editing it. A mod update may reset this file, so keep a copy of your changes.  
+Re-run the game after editing it. Without a config-autopatch.json, and for anything yours leaves out, the mod uses config-autopatch-default.json.  
 
 [h1] Custom Item Builds [/h1]
 Pick any item for any champion, in-game:

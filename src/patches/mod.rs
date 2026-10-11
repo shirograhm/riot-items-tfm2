@@ -69,8 +69,8 @@ use state::State;
 // that has a patch state keeps it untouched.
 pub(crate) const ENABLED: bool = true;
 
-// Whether patches are on: the switch above, and the player's own in
-// `config-autopatch.json`.
+// Whether patches are on: the switch above, and the one in the patch
+// settings (`tuning`).
 fn enabled() -> bool {
     ENABLED && tuning::tuning().enabled
 }

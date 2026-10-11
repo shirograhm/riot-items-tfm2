@@ -1,4 +1,7 @@
-//! The patch system's settings, from `config-autopatch.json` beside the DLL.
+//! The patch system's settings, from two files beside the DLL:
+//! `config-autopatch-default.json`, which the mod ships, and
+//! `config-autopatch.json`, the player's own copy of it. They pair up as
+//! `config-default.json` and `config.json` do.
 //!
 //! ```json
 //! {
@@ -11,9 +14,11 @@
 //! }
 //! ```
 //!
-//! Read once. A value the file does not give, or gives as something that
-//! cannot be used, keeps its default, and so does everything where there is
-//! no file. A step of 0 is no step at all: no patch moves that stat.
+//! Read once, the player's file over the shipped one: a value the player's
+//! file does not give, or gives as something that cannot be used, is the
+//! shipped file's, and every value is where the player has no file. One that
+//! neither file gives keeps the default built in here. A step of 0 is no step
+//! at all: no patch moves that stat.
 
 use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
@@ -22,6 +27,8 @@ use serde_json::Value;
 
 use super::fields;
 
+// The settings the mod ships, and the player's own, read over them.
+const DEFAULT_FILE: &str = "config-autopatch-default.json";
 const FILE: &str = "config-autopatch.json";
 
 pub(crate) struct Tuning {
@@ -78,7 +85,8 @@ pub(crate) fn tuning() -> &'static Tuning {
 }
 
 fn read() -> Tuning {
-    let root = super::base::read_object(FILE);
+    let defaults = super::base::read_object(DEFAULT_FILE);
+    let players = super::base::read_object(FILE);
     let mut tuning = Tuning {
         enabled: true,
         steps: HashMap::new(),
@@ -89,6 +97,36 @@ fn read() -> Tuning {
         min_ratio: fields::MIN_RATIO,
         max_ratio: fields::MAX_RATIO,
     };
+    for root in [&defaults, &players] {
+        lay(&mut tuning, root);
+    }
+    super::log("patch.tuning", || {
+        let mut steps: Vec<String> = tuning
+            .steps
+            .iter()
+            .map(|(field, step)| format!("{field}={step}"))
+            .collect();
+        steps.sort();
+        let mut frozen: Vec<&String> = tuning.frozen.iter().collect();
+        frozen.sort();
+        format!(
+            "{DEFAULT_FILE} read={} {FILE} read={}: enabled={} min_games={} max_nerfs={} max_buffs={} band={}..{} never moved: {frozen:?} steps: {}",
+            !defaults.is_empty(),
+            !players.is_empty(),
+            tuning.enabled,
+            tuning.min_games,
+            tuning.max_nerfs,
+            tuning.max_buffs,
+            tuning.min_ratio,
+            tuning.max_ratio,
+            steps.join(" ")
+        )
+    });
+    tuning
+}
+
+// Lays one file's settings over the ones `tuning` holds.
+fn lay(tuning: &mut Tuning, root: &serde_json::Map<String, Value>) {
     if let Some(enabled) = root.get("enabled").and_then(Value::as_bool) {
         tuning.enabled = enabled;
     }
@@ -107,6 +145,7 @@ fn read() -> Tuning {
             }
             for field in named {
                 if step == 0.0 {
+                    tuning.steps.remove(field);
                     tuning.frozen.insert(field.to_string());
                     continue;
                 }
@@ -117,6 +156,7 @@ fn read() -> Tuning {
                 } else {
                     step
                 };
+                tuning.frozen.remove(field);
                 tuning.steps.insert(field.to_string(), step);
             }
         }
@@ -145,26 +185,4 @@ fn read() -> Tuning {
             tuning.max_ratio = high / 100.0;
         }
     }
-    super::log("patch.tuning", || {
-        let mut steps: Vec<String> = tuning
-            .steps
-            .iter()
-            .map(|(field, step)| format!("{field}={step}"))
-            .collect();
-        steps.sort();
-        let mut frozen: Vec<&String> = tuning.frozen.iter().collect();
-        frozen.sort();
-        format!(
-            "{FILE} read={}: enabled={} min_games={} max_nerfs={} max_buffs={} band={}..{} never moved: {frozen:?} steps: {}",
-            !root.is_empty(),
-            tuning.enabled,
-            tuning.min_games,
-            tuning.max_nerfs,
-            tuning.max_buffs,
-            tuning.min_ratio,
-            tuning.max_ratio,
-            steps.join(" ")
-        )
-    });
-    tuning
 }
