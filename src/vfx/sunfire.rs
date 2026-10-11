@@ -17,7 +17,8 @@
 //! hook burns the band past it itself, which assumes the engine measures
 //! centre to centre the way the mod does. Its numbers, like the
 //! rest of the HP line's stats, are written into
-//! `setting/item_setting.item_setting` by `apply_config.ps1`. The hook reads
+//! `setting/item_setting.item_setting` from the config
+//! (`item_stats::game_item_file`). The hook reads
 //! the same config entries, `sunfire_cape` and `radiant_sunfire_cape`.
 
 use mod_api_stable::*;

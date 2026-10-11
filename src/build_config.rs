@@ -26,7 +26,7 @@ use serde::Deserialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::sync::atomic::{AtomicBool, AtomicU64, AtomicU8, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex, RwLock};
 use std::time::Instant;
 
@@ -109,22 +109,26 @@ fn config_path() -> Result<PathBuf, String> {
 
 static CONFIG_CACHE: RwLock<Option<Arc<BuildConfig>>> = RwLock::new(None);
 
-// `mod-settings.json` is cached in two atomics rather than behind the config
-// lock, because one of its readers is the buy detour: `own_team_only_enabled`
-// is asked once per buy decision, on every rayon worker at once, and a
-// `RwLock` read there is contention for a value that changes only when the
-// editor writes. `SETTING_UNSET` means "not read yet"; the first reader parses
-// the file and fills both.
-const SETTING_UNSET: u8 = 0;
-const SETTING_OFF: u8 = 1;
-const SETTING_ON: u8 = 2;
+// The two toggles of the build editor: Smart Builds, and builds for the
+// player's own team only. Kept in the save ([`sync_settings`]) and held here
+// in two atomics, because one of their readers is the buy detour:
+// `own_team_only_enabled` is asked once per buy decision, on every rayon
+// worker at once. Both are on until a save says otherwise.
+static SMART_BUILDS: AtomicBool = AtomicBool::new(true);
+static OWN_TEAM_ONLY: AtomicBool = AtomicBool::new(true);
+// The loaded save's toggles have been read.
+static SETTINGS_LOADED: AtomicBool = AtomicBool::new(false);
+// A toggle has changed since the save was last written to.
+static SETTINGS_DIRTY: AtomicBool = AtomicBool::new(false);
 
-static UNIQUE_ITEMS: AtomicU8 = AtomicU8::new(SETTING_UNSET);
-static OWN_TEAM_ONLY: AtomicU8 = AtomicU8::new(SETTING_UNSET);
+// The keys the toggles are kept under, in the mod's namespace of the save.
+const SMART_BUILDS_KEY: &str = "smart_builds";
+const OWN_TEAM_ONLY_KEY: &str = "own_team_only";
 
-// Drops both file caches, so the next read reloads from disk.
+// Drops the cached builds, so the next read reloads `item-builds.json` from
+// disk.
 //
-// The editor calls this after it writes — the one event that can change either
+// The editor calls this after it writes — the one event that can change the
 // file — and nothing else has cause to. Do not call it from anywhere a match
 // could be running: re-reading mid-match is exactly what "the build is fixed
 // once you click play" rules out.
@@ -132,8 +136,6 @@ pub fn invalidate_caches() {
     if let Ok(mut cache) = CONFIG_CACHE.write() {
         *cache = None;
     }
-    UNIQUE_ITEMS.store(SETTING_UNSET, Ordering::Relaxed);
-    OWN_TEAM_ONLY.store(SETTING_UNSET, Ordering::Relaxed);
 }
 
 // `item-builds.json`, parsed once and held.
@@ -1038,96 +1040,73 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
     Some(alias_key(radiant_key(&raw).as_ref()).to_string())
 }
 
-// Writes `mod-settings.json` from the toggles as they stand, with `apply`
-// changing the one the player just clicked.
-//
-// The whole file is rewritten every time, so every key has to be written out —
-// a partial write would silently reset the other toggle to its default.
-fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
-    let mut settings = ModSettings {
-        unique_items: smart_builds_enabled(),
-        own_team_only: own_team_only_enabled(),
-    };
-    apply(&mut settings);
-    let path = crate::config::mod_dir().join("mod-settings.json");
-    let text = format!(
-        "{{\n  \"unique_items\": {},\n  \"own_team_only\": {}\n}}\n",
-        settings.unique_items, settings.own_team_only
-    );
-    let written = std::fs::write(path, text).is_ok();
-    if written {
-        invalidate_caches();
-    }
-    written
-}
-
-// Writes `unique_items` to `mod-settings.json`, the toggle
-// [`smart_builds_enabled`] reads back on every hook call.
+// Sets the Smart Builds toggle, for the save that is loaded: in force at
+// once, and written to the save on the next client frame ([`sync_settings`]).
 pub fn set_smart_builds(enabled: bool) -> bool {
-    save_settings(|settings| settings.unique_items = enabled)
-}
-
-// Writes `own_team_only` to `mod-settings.json` — see
-// [`own_team_only_enabled`] for what the two sides of it mean.
-pub fn set_own_team_only(enabled: bool) -> bool {
-    save_settings(|settings| settings.own_team_only = enabled)
-}
-
-// Schema of `mod-settings.json`: behavior toggles managed by the item build
-// editor. An absent file (the common case) means every toggle takes its
-// default.
-#[derive(Deserialize)]
-struct ModSettings {
-    #[serde(default = "default_true")]
-    unique_items: bool,
-    #[serde(default = "default_true")]
-    own_team_only: bool,
-}
-
-fn default_true() -> bool {
+    SMART_BUILDS.store(enabled, Ordering::Relaxed);
+    SETTINGS_DIRTY.store(true, Ordering::Relaxed);
     true
 }
 
-// Reads one cached toggle out of `mod-settings.json`, parsing the file on the
-// first read of either.
+// Sets `own_team_only` the same way — see [`own_team_only_enabled`] for what
+// the two sides of it mean.
+pub fn set_own_team_only(enabled: bool) -> bool {
+    OWN_TEAM_ONLY.store(enabled, Ordering::Relaxed);
+    SETTINGS_DIRTY.store(true, Ordering::Relaxed);
+    true
+}
+
+// Every client frame: the two toggles follow the save that is loaded.
 //
-// Cached in an atomic rather than a lock because [`own_team_only_enabled`] is
-// on the buy detour's path — see the cache declarations. Flipping a toggle in
-// the editor still applies to the next match: the editor invalidates the cache
-// when it writes.
-fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool) -> bool {
-    match cache.load(Ordering::Relaxed) {
-        SETTING_ON => return true,
-        SETTING_OFF => return false,
-        _ => {}
+// A save's toggles are read once it has loaded, and a toggle the player
+// clicks is written back to it. Like everything kept in a save, that reaches
+// disk when the player saves. A save that has no toggles yet has the
+// defaults: Smart Builds on, and builds for the player's own team only. So
+// has the menu.
+pub fn sync_settings(ctx: &mut mod_api_stable::StableClient<'_>) {
+    if !ctx.save_can_write() {
+        if SETTINGS_LOADED.swap(false, Ordering::Relaxed) {
+            SMART_BUILDS.store(true, Ordering::Relaxed);
+            OWN_TEAM_ONLY.store(true, Ordering::Relaxed);
+            SETTINGS_DIRTY.store(false, Ordering::Relaxed);
+        }
+        return;
     }
-
-    let value = crate::config::dll_dir()
-        .map(|dir| dir.join("mod-settings.json"))
-        .and_then(|path| std::fs::read_to_string(path).ok())
-        .and_then(|text| serde_json::from_str::<ModSettings>(&text).ok())
-        .map(|settings| read(&settings))
-        .unwrap_or(default);
-    cache.store(
-        if value { SETTING_ON } else { SETTING_OFF },
-        Ordering::Relaxed,
-    );
-    value
+    if !SETTINGS_LOADED.load(Ordering::Relaxed) {
+        // The save's namespace reads empty on some frames while it is still
+        // loading. `item_stats` waits that out, and its word is taken here.
+        if !crate::item_stats::loaded() {
+            return;
+        }
+        let saved = |key: &str| {
+            ctx.save_get_string(key)
+                .and_then(|text| text.trim().parse::<bool>().ok())
+        };
+        let (smart, own) = (saved(SMART_BUILDS_KEY), saved(OWN_TEAM_ONLY_KEY));
+        SMART_BUILDS.store(smart.unwrap_or(true), Ordering::Relaxed);
+        OWN_TEAM_ONLY.store(own.unwrap_or(true), Ordering::Relaxed);
+        SETTINGS_LOADED.store(true, Ordering::Relaxed);
+    }
+    if SETTINGS_DIRTY.load(Ordering::Relaxed) {
+        let smart = smart_builds_enabled().to_string();
+        let own = own_team_only_enabled().to_string();
+        let written = ctx.save_set_string(SMART_BUILDS_KEY, &smart)
+            & ctx.save_set_string(OWN_TEAM_ONLY_KEY, &own);
+        if written {
+            SETTINGS_DIRTY.store(false, Ordering::Relaxed);
+        }
+    }
 }
 
-// Whether the Smart Builds pass is enabled: `unique_items` in
-// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
-// is absent or malformed, so players opt *out* via the editor toggle.
-//
-// The stored key is still `unique_items`, from when unique items were the
-// only rule: renaming it would silently reset the toggle for every player
-// who has already set it. See [`crate::smart_builds`] for what it gates now.
+// Whether the Smart Builds pass is enabled, for the save that is loaded.
+// On by default, so players opt *out* via the editor toggle. See
+// [`crate::smart_builds`] for what it gates.
 pub fn smart_builds_enabled() -> bool {
-    setting(&UNIQUE_ITEMS, |settings| settings.unique_items, true)
+    SMART_BUILDS.load(Ordering::Relaxed)
 }
 
-// Whether configured builds are restricted to the player's own team:
-// `own_team_only` in `mod-settings.json`. Defaults to on: a build applies
+// Whether configured builds are restricted to the player's own team, for the
+// save that is loaded. Defaults to on: a build applies
 // only to the player's own athletes. Off, a build applies to whoever plays
 // the champion, both teams, which is the only behaviour the stable
 // item-build hook can express.
@@ -1161,7 +1140,7 @@ pub fn smart_builds_enabled() -> bool {
 // is published (see `cap_spawn`): slot 0 is then the engine's, and the buy
 // path swaps rather than duplicates a pin.
 pub fn own_team_only_enabled() -> bool {
-    setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, true)
+    OWN_TEAM_ONLY.load(Ordering::Relaxed)
 }
 
 // A configured build merged with the AI's, as item indices, with a record of

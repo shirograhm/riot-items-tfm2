@@ -950,25 +950,157 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     }
 }
 
-// The mod's own copy of the game's thirty items as it is on disk:
-// `setting/item_setting.item_setting` beside the DLL, which `apply_config.ps1`
-// writes from the player's config and `mod.override_info` has the game merge
-// over its own. By the name each item has in the settings document, which
-// is not always its key (`iron_blade` calls itself `ironsword`). Read once:
-// the game loads it once too. Empty where it cannot be read.
+// The game's own thirty items by the names `config.json` is written in,
+// which are their League ones, and the name each has at the root of the
+// settings file.
+const GAME_ITEM_NAMES: [(&str, &str); 30] = [
+    ("long_sword", "iron_blade"),
+    ("pickaxe", "soldiers_longsword"),
+    ("vampiric_scepter", "ruinous_blade"),
+    ("bloodthirster", "conquerors_greatsword"),
+    ("radiant_bloodthirster", "warlords_final_judgement"),
+    ("dagger", "dagger"),
+    ("recurve_bow", "wind_dagger"),
+    ("zeal", "twin_stormblade"),
+    ("phantom_dancer", "thunderclaw"),
+    ("radiant_phantom_dancer", "storm_sovereign"),
+    ("cloth_armor", "steel_armor"),
+    ("chain_vest", "gatekeepers_armor"),
+    ("bramble_vest", "black_knights_heavy_plate"),
+    ("thornmail", "eternal_iron_plate"),
+    ("radiant_thornmail", "impregnable_fortress"),
+    ("null_magic_mantle", "mystic_cloak"),
+    ("negatron_cloak", "night_hood"),
+    ("spectres_cowl", "dusk_raven"),
+    ("dragons_claw", "souls_edge"),
+    ("radiant_dragons_claw", "veil_of_annihilation"),
+    ("amplifying_tome", "arcane_crystal"),
+    ("blasting_wand", "spirit_crystal"),
+    ("lost_chapter", "staff_of_rapture"),
+    ("ludens_tempest", "angels_fang"),
+    ("radiant_ludens_tempest", "prophet_of_the_abyss"),
+    ("ruby_crystal", "vital_orb"),
+    ("kindlegem", "hardened_heart"),
+    ("giants_belt", "ring_of_reincarnation"),
+    ("sunfire_cape", "hourglass_of_eternity"),
+    ("radiant_sunfire_cape", "giants_horn_shard"),
+];
+
+// Passive numbers the engine keeps outside the stat block: config entry,
+// config field, the settings field, and what one of the config's is of the
+// setting's (a range is written in thousandths of a distance unit).
+const GAME_PASSIVE_FIELDS: [(&str, &str, &str, i64); 8] = [
+    ("giants_belt", "effect_bonus_hp_regen", "flat_regen", 1),
+    ("sunfire_cape", "effect_bonus_hp_regen", "flat_regen", 1),
+    ("radiant_sunfire_cape", "effect_bonus_hp_regen", "flat_regen", 1),
+    ("radiant_sunfire_cape", "effect_bonus_flat_damage", "flat_aoe_damage", 1),
+    ("radiant_sunfire_cape", "effect_caster_hp_percent_damage", "max_hp_aoe_ratio", 1),
+    ("radiant_sunfire_cape", "effect_max_distance", "aoe_range", 1000),
+    ("radiant_thornmail", "effect_bonus_flat_damage", "flat_damage", 1),
+    ("radiant_thornmail", "effect_caster_defence_percent_damage", "defence_ratio", 1),
+];
+
+// Config fields of those items that are the DLL's to read, not the settings
+// file's: Sunfire Cape's Immolate is mod code, and so is both capes' bonus
+// against minions and monsters.
+const GAME_DLL_FIELDS: [(&str, &str); 5] = [
+    ("sunfire_cape", "effect_bonus_flat_damage"),
+    ("sunfire_cape", "effect_caster_hp_percent_damage"),
+    ("sunfire_cape", "effect_max_distance"),
+    ("sunfire_cape", "effect_minion_bonus_percent"),
+    ("radiant_sunfire_cape", "effect_minion_bonus_percent"),
+];
+
+// Writes the config's numbers for the game's own thirty items into `root`,
+// the settings file as read: `config.json` over `config-default.json`.
+// Whether anything changed.
+//
+// A price is the entry's `price`, the passive numbers the engine keeps
+// outside the stat block are [`GAME_PASSIVE_FIELDS`], and any other field is
+// a stat of the item's stat block, where it is one. All whole numbers, a
+// half rounded to the even one.
+fn apply_game_item_config(root: &mut serde_json::Map<String, Value>) -> bool {
+    let defaults = crate::patches::base::read_object("config-default.json");
+    let overrides = crate::patches::base::read_object("config.json");
+    let mut changed = false;
+    for (name, key) in GAME_ITEM_NAMES {
+        let Some(Value::Object(entry)) = root.get_mut(key) else {
+            continue;
+        };
+        for config in [&defaults, &overrides] {
+            let Some(Value::Object(numbers)) = config.get(name) else {
+                continue;
+            };
+            for (field, value) in numbers {
+                let Some(number) = value.as_f64() else {
+                    continue;
+                };
+                if GAME_DLL_FIELDS.contains(&(name, field.as_str())) {
+                    continue;
+                }
+                let whole = number.round_ties_even() as i64;
+                let passive = GAME_PASSIVE_FIELDS
+                    .iter()
+                    .find(|(item, config_field, _, _)| *item == name && *config_field == field);
+                let slot = if field == "price" {
+                    entry.get_mut("price").map(|slot| (slot, whole))
+                } else if let Some(&(_, _, setting, scale)) = passive {
+                    entry.get_mut(setting).map(|slot| (slot, whole * scale))
+                } else {
+                    entry
+                        .get_mut("stat")
+                        .and_then(Value::as_object_mut)
+                        .and_then(|stat| stat.get_mut(field))
+                        .map(|slot| (slot, whole))
+                };
+                // A field the item has no place for is left out, as it
+                // always was.
+                let Some((slot, wanted)) = slot else {
+                    continue;
+                };
+                if slot.as_f64() != Some(wanted as f64) {
+                    *slot = Value::from(wanted);
+                    changed = true;
+                }
+            }
+        }
+    }
+    changed
+}
+
+// The mod's own copy of the game's thirty items:
+// `setting/item_setting.item_setting` beside the DLL, which `mod.override_info`
+// has the game merge over its own, with the player's config in it
+// ([`apply_game_item_config`]). By the name each item has in the settings
+// document, which is not always its key (`iron_blade` calls itself
+// `ironsword`). Read once: the game loads it once too. Empty where it cannot
+// be read.
+//
+// Where the config changes anything the file is written back, so that the
+// game's own copy has the same numbers from its next reading of it. Until
+// then the numbers here are still the ones the server is given
+// ([`sync_server_items`]), which are the ones matches are played on.
 pub(crate) fn game_item_file() -> &'static serde_json::Map<String, Value> {
     static FILE: OnceLock<serde_json::Map<String, Value>> = OnceLock::new();
     FILE.get_or_init(|| {
         let path = crate::config::mod_dir()
             .join("setting")
             .join("item_setting.item_setting");
-        match std::fs::read_to_string(path)
+        let read: Option<Value> = std::fs::read_to_string(&path)
             .ok()
-            .and_then(|text| serde_json::from_str(text.trim_start_matches('\u{feff}')).ok())
-        {
-            Some(Value::Object(root)) => root,
-            _ => serde_json::Map::new(),
+            .and_then(|text| serde_json::from_str(text.trim_start_matches('\u{feff}')).ok());
+        let Some(Value::Object(mut root)) = read else {
+            return serde_json::Map::new();
+        };
+        if apply_game_item_config(&mut root) {
+            let written = serde_json::to_string_pretty(&root)
+                .ok()
+                .is_some_and(|text| std::fs::write(&path, text).is_ok());
+            crate::match_builds::log("config.game_items", || {
+                format!("the config changes the game's own items; settings file written: {written}")
+            });
         }
+        root
     })
 }
 

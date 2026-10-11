@@ -196,7 +196,8 @@ static ANY_CONFIGS: AtomicBool = AtomicBool::new(false);
 static ANY_DELTAS: AtomicBool = AtomicBool::new(false);
 static ANY_LEANING: AtomicBool = AtomicBool::new(false);
 
-// The balance now in force, or nothing while no number is patched.
+// The balance now in force, or nothing while no number is patched and no
+// tooltip has to be rewritten for the player's config.
 pub(crate) fn current() -> Option<Arc<Live>> {
     LIVE.read().ok()?.clone()
 }
@@ -343,7 +344,8 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
     }
 
     // Every effect text that quotes a patched number, the item's own or
-    // another's.
+    // another's; and every one that quotes a number the player's
+    // `config.json` changed, since the text the game holds has the default.
     let value_now = |item: &str, field: &str| {
         values
             .get(&(item.to_string(), field.to_string()))
@@ -351,7 +353,7 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
             .unwrap_or_else(|| base.value(item, field))
     };
     let mut quoted: HashSet<&str> = HashSet::new();
-    for (key, field) in values.keys() {
+    for (key, field) in values.keys().chain(base.custom()) {
         if let Some(shown) = texts.shown(key, field) {
             quoted.extend(shown.texts.iter().map(String::as_str));
         }
@@ -381,7 +383,10 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
         (&ANY_DELTAS, !deltas.is_empty()),
         (&ANY_LEANING, !leaning.is_empty()),
     ];
-    let live = (!values.is_empty()).then(|| {
+    // Something to show is enough: a text rewritten for the player's config
+    // is one with no patch at all.
+    let any = !values.is_empty() || !display.is_empty();
+    let live = any.then(|| {
         Arc::new(Live {
             configs,
             deltas,

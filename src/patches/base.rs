@@ -80,9 +80,12 @@ pub(crate) struct Family {
 pub(crate) struct Base {
     pub families: BTreeMap<String, Family>,
     // Config entry -> field -> number: `config.json` over
-    // `config-default.json`, which is what `apply_config.ps1` writes the
-    // item text from.
+    // `config-default.json`.
     config: HashMap<String, HashMap<String, f64>>,
+    // The numbers `config.json` gives that are not the default ones, as
+    // (config entry, field). An effect text that shows one is rewritten for
+    // it before any patch: the text the game holds is the default one.
+    custom: Vec<(String, String)>,
     // `config.json` as the player wrote it, by item.
     raw: HashMap<String, Value>,
     pub mod_items: HashMap<&'static str, ModItem>,
@@ -141,7 +144,7 @@ fn captured(family: &str, field: &str) -> bool {
         .any(|&(item, fields)| item == family && fields.contains(&field))
 }
 
-fn read_object(name: &str) -> serde_json::Map<String, Value> {
+pub(crate) fn read_object(name: &str) -> serde_json::Map<String, Value> {
     let path = crate::config::mod_dir().join(name);
     match std::fs::read_to_string(path)
         .ok()
@@ -174,28 +177,49 @@ impl Base {
 
         let defaults = read_object("config-default.json");
         let overrides = read_object("config.json");
+        // The default numbers, and those with the player's over them.
+        let mut shipped: HashMap<String, HashMap<String, f64>> = HashMap::new();
         let mut config: HashMap<String, HashMap<String, f64>> = HashMap::new();
-        for (item, numbers) in defaults.iter().chain(overrides.iter()) {
-            let Some(numbers) = numbers.as_object() else {
-                continue;
-            };
-            let entry = config.entry(item.clone()).or_default();
-            for (field, value) in numbers {
-                if let Some(number) = value.as_f64() {
-                    entry.insert(field.clone(), number);
+        let mut custom: Vec<(String, String)> = Vec::new();
+        for (players, root) in [(false, &defaults), (true, &overrides)] {
+            for (item, numbers) in root {
+                let Some(numbers) = numbers.as_object() else {
+                    continue;
+                };
+                for (field, value) in numbers {
+                    let Some(number) = value.as_f64() else {
+                        continue;
+                    };
+                    if players {
+                        let default = shipped.get(item).and_then(|numbers| numbers.get(field));
+                        if default != Some(&number) {
+                            custom.push((item.clone(), field.clone()));
+                        }
+                    } else {
+                        shipped
+                            .entry(item.clone())
+                            .or_default()
+                            .insert(field.clone(), number);
+                    }
+                    config
+                        .entry(item.clone())
+                        .or_default()
+                        .insert(field.clone(), number);
                 }
             }
         }
         let raw: HashMap<String, Value> = overrides.into_iter().collect();
 
-        let value = |item: &str, field: &str| {
-            config
+        let number_in = |numbers: &HashMap<String, HashMap<String, f64>>, item: &str, field: &str| {
+            numbers
                 .get(item)
                 .and_then(|numbers| numbers.get(field))
                 .copied()
                 .unwrap_or(0.0)
         };
-        let unverified = texts.unverified(&value);
+        let value = |item: &str, field: &str| number_in(&config, item, field);
+        let default = |item: &str, field: &str| number_in(&shipped, item, field);
+        let unverified = texts.unverified(&default, &value);
         if !unverified.is_empty() {
             let mut listed: Vec<&String> = unverified.iter().collect();
             listed.sort();
@@ -377,6 +401,7 @@ impl Base {
         Self {
             families,
             config,
+            custom,
             raw,
             mod_items: items.into_iter().collect(),
             refreshes,
@@ -413,6 +438,11 @@ impl Base {
         } else {
             Tempo::Neither
         }
+    }
+
+    // The config numbers the player changed, as (config entry, field).
+    pub(crate) fn custom(&self) -> &[(String, String)] {
+        &self.custom
     }
 
     // The player's own `config.json` entry for `key`, to lay a patch over.

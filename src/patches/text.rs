@@ -8,7 +8,7 @@
 //! are a copy taken when the mod loaded (0.5.2: `ModItemEntry::stat` copies
 //! them out of the entry and never asks the item). The effect text is looked
 //! up by the item's key (`ModItemEntry::option_desc`), in `text/item.i18n`,
-//! which `apply_config.ps1` wrote with the numbers already in the sentences.
+//! which has the default numbers already in the sentences.
 //! Neither follows a patch, and the stable API can change neither, so the
 //! text a tooltip is showing is corrected where it is shown: the label is
 //! read, the unpatched stat lines and effect text are found in it, and it is
@@ -20,11 +20,16 @@
 //!
 //! `item-templates.json`, beside the DLL: every item's effect text in every
 //! language, with a slot naming the config field where each number goes. It
-//! is made from `apply_config.ps1` itself by `tools/item_templates.py`, which
-//! also proves it: filled with the numbers of `config-default.json` it gives
-//! `text/item.i18n` back, letter for letter. The same check is run here at
-//! start-up against the files as the player has them ([`Texts::unverified`]),
-//! and an item that fails it is not patched in any number its text shows.
+//! is the source of those texts: `text/item.i18n` is written from it
+//! (`tools/item_i18n.py`), so filled with the numbers of
+//! `config-default.json` it gives that file back, letter for letter. The
+//! same check is run here at start-up against the files as the player has
+//! them ([`Texts::unverified`]), and an item that fails it is not patched in
+//! any number its text shows.
+//!
+//! The text the game holds is that default one, whatever the player's
+//! `config.json` says. So a tooltip is rewritten for a number the player
+//! changed just as it is for one a patch moved (`Base::custom`).
 
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
@@ -281,9 +286,10 @@ fn plain(text: &str) -> String {
     out
 }
 
-// A slot's number as `apply_config.ps1` writes it into a sentence, which is
-// how PowerShell turns a number into text: `[int]` rounds a half to the even
-// number, and a `[double]` is written to fifteen significant digits.
+// A slot's number as it is written into a sentence, in `text/item.i18n` as
+// here (`tools/item_i18n.py` writes that file the same way): an `int` slot
+// rounds a half to the even number, and a `double` is written to fifteen
+// significant digits.
 fn shown(terms: &[Term], value: &dyn Fn(&str, &str) -> f64) -> String {
     let read = |term: &Term| {
         let number = value(&term.item, &term.field);
@@ -470,17 +476,29 @@ impl Texts {
     }
 
     // The items whose effect text, in some language, is not what its
-    // template makes of the numbers `value` gives: a text file from another
-    // version than the templates, or a `config.json` that `apply_config`
-    // was not run for. What a patch would write into such a tooltip cannot
-    // be trusted to be the sentence that is in it.
-    pub(crate) fn unverified(&self, value: &dyn Fn(&str, &str) -> f64) -> HashSet<String> {
+    // template makes of the default numbers (`shipped`): a text file from
+    // another version than the templates. What a patch would write into such
+    // a tooltip cannot be trusted to be the sentence that is in it.
+    //
+    // A text made of the player's own numbers (`value`) passes too: a folder
+    // whose text file was written from the player's config shows the right
+    // numbers already.
+    pub(crate) fn unverified(
+        &self,
+        shipped: &dyn Fn(&str, &str) -> f64,
+        value: &dyn Fn(&str, &str) -> f64,
+    ) -> HashSet<String> {
         let mut out = HashSet::new();
         for (lang, templates) in &self.templates {
             let options = self.options.get(lang);
             for (key, template) in templates {
-                let have = options.and_then(|options| options.get(key));
-                if have.map(String::as_str) != Some(template.fill(value).as_str()) {
+                let have = options
+                    .and_then(|options| options.get(key))
+                    .map(String::as_str);
+                let made_of = |numbers: &dyn Fn(&str, &str) -> f64| {
+                    have == Some(template.fill(numbers).as_str())
+                };
+                if !made_of(shipped) && !made_of(value) {
                     out.insert(key.clone());
                 }
             }
@@ -945,8 +963,8 @@ fn reason_pool(
     let mut pool: Vec<&'static str> = Vec::new();
     if buff {
         // An item nobody held. No patch touches one as it stands (an item
-        // is judged on more than `balance::MIN_GAMES` games); the sentences
-        // are kept for the day one does.
+        // needs `tuning`'s `min_games` to be judged); the sentences are kept
+        // for the day one does.
         if change.games == 0 {
             pool.extend(["why_buff_unbuilt_1", "why_buff_unbuilt_2", "why_buff_unbuilt_3"]);
         }

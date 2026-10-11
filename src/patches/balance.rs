@@ -4,14 +4,8 @@ use super::base::{Base, Family, Member};
 use super::fields;
 use super::state::{Change, Moved, Patch, State};
 
-// Items a patch nerfs at most.
-const MAX_NERFS: usize = 4;
-// And buffs at most.
-const MAX_BUFFS: usize = 5;
 // The score an item has to reach, either way, to be touched.
 const THRESHOLD: f64 = 0.6;
-
-const MIN_GAMES: u32 = 15;
 
 // How far from what was wanted a change may come out: no less than this
 // much of it, no more than this much of it. A step over the second is made
@@ -159,7 +153,8 @@ fn in_bounds(family: &Family, field: &str, moved: &Moved) -> bool {
         return false;
     };
     let step = fields::step(&member.key, field, base, member.whole.contains(field));
-    (fields::MIN_RATIO - 1e-9..=fields::MAX_RATIO + 1e-9).contains(&(moved.after / base))
+    let tuning = super::tuning::tuning();
+    (tuning.min_ratio - 1e-9..=tuning.max_ratio + 1e-9).contains(&(moved.after / base))
         || (moved.after - base).abs() <= step + 1e-9
 }
 
@@ -181,6 +176,12 @@ fn nudge(
     to: f64,
 ) -> Option<Step> {
     let rule = fields::rule(field)?;
+    // A number the player's settings hold still, or the other end of a range
+    // that one is an end of.
+    let frozen = &super::tuning::tuning().frozen;
+    if frozen.contains(field) || fields::partner(field).is_some_and(|other| frozen.contains(other)) {
+        return None;
+    }
     let current = state.ratio(id, field);
     let lead = lead(family, field)?;
     let base = *lead.values.get(field)?;
@@ -312,15 +313,16 @@ fn total(state: &State, id: &str, family: &Family, plan: &[&Step]) -> f64 {
 }
 
 // Whether the item is still inside its band with `more` on top of `plan`:
-// its total no more than [`fields::MAX_RATIO`] after a buff, no less than
-// [`fields::MIN_RATIO`] after a nerf.
+// its total no more than the band's top after a buff, no less than its
+// bottom after a nerf (`tuning`).
 fn fits(state: &State, id: &str, family: &Family, plan: &[Step], more: &[Step], buff: bool) -> bool {
     let all: Vec<&Step> = plan.iter().chain(more).collect();
     let total = total(state, id, family, &all);
+    let tuning = super::tuning::tuning();
     if buff {
-        total <= fields::MAX_RATIO - 1.0 + 1e-9
+        total <= tuning.max_ratio - 1.0 + 1e-9
     } else {
-        total >= fields::MIN_RATIO - 1.0 - 1e-9
+        total >= tuning.min_ratio - 1.0 - 1e-9
     }
 }
 
@@ -524,21 +526,22 @@ pub(crate) fn decide(
             .then_with(|| a.tiebreak.cmp(&b.tiebreak))
     });
 
+    let tuning = super::tuning::tuning();
     let mut changes = Vec::new();
     for item in judged
         .iter()
-        .filter(|item| item.tally.games > MIN_GAMES)
+        .filter(|item| item.tally.games >= tuning.min_games)
         .take_while(|item| item.score >= THRESHOLD)
-        .take(MAX_NERFS)
+        .take(tuning.max_nerfs)
     {
         changes.extend(changes_for(state, item, false, number));
     }
     for item in judged
         .iter()
         .rev()
-        .filter(|item| item.tally.games > MIN_GAMES)
+        .filter(|item| item.tally.games >= tuning.min_games)
         .take_while(|item| item.score <= -THRESHOLD)
-        .take(MAX_BUFFS)
+        .take(tuning.max_buffs)
     {
         changes.extend(changes_for(state, item, true, number));
     }

@@ -189,6 +189,9 @@ pub(crate) fn step(item: &str, field: &str, base: f64, whole: bool) -> f64 {
     if keeps_its_three(item, field, base) {
         return THREE_STEP;
     }
+    if let Some(&step) = super::tuning::tuning().steps.get(field) {
+        return step;
+    }
     if let Some(step) = flat_step(field) {
         return step;
     }

@@ -40,12 +40,22 @@ This mod works directly out of the box! However, if any of the items feel too st
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]  
 2. Edit the new [b]config.json[/b] with the custom values that you want.  
-3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod may not update the values correctly.  
-4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!  
+3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!  
+4. If you changed any of the base game's own items (Bloodthirster, Thornmail and the like), start the game twice: the first start writes the new values, the second one loads them.  
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.  
 
-Both files (config-default & apply_config.bat) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+Both files (config-default.json & config.json) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+
+[h1] Item Patches [/h1]
+Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b].  
+
+The patch system can be tuned in [b]config-autopatch.json[/b], in the same folder as config-default.json:  
+- [b]enabled[/b]: set to false to turn item patches off.  
+- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 and item patches never change it.  
+- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (65% to 140% by default).  
+
+Re-run the game after editing it. A mod update may reset this file, so keep a copy of your changes.  
 
 [h1] Custom Item Builds [/h1]
 Pick any item for any champion, in-game:
@@ -94,5 +104,5 @@ This is a free fan-made mod. I am not affiliated with Riot Games in any way. Ite
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: apply_config.bat, apply_config.ps1, riot_items_tfm2.dll
+Files: riot_items_tfm2.dll
 Runs on: Windows

@@ -3892,6 +3892,10 @@ impl StableExtension for StrategyPicker {
         // somewhere this early return would have skipped.
         perf::time(Section::FrameItemStats, || crate::item_stats::sync(ctx));
 
+        // The editor's two toggles, which are the loaded save's. After the
+        // line above, whose word it takes that the save has been read.
+        build_config::sync_settings(ctx);
+
         // The save's item balance patches: its state, whether the next one
         // is due, and the patched numbers in whatever item tooltip the game
         // has up. After the line above, whose word it takes that the save

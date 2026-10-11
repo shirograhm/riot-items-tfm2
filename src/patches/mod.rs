@@ -53,6 +53,7 @@ pub(crate) mod live;
 pub(crate) mod state;
 pub(crate) mod steam;
 pub(crate) mod text;
+pub(crate) mod tuning;
 
 use std::cmp::Ordering as Order;
 use std::collections::HashMap;
@@ -67,6 +68,12 @@ use state::State;
 // The whole feature. Off, nothing is read, patched or written, and a save
 // that has a patch state keeps it untouched.
 pub(crate) const ENABLED: bool = true;
+
+// Whether patches are on: the switch above, and the player's own in
+// `config-autopatch.json`.
+fn enabled() -> bool {
+    ENABLED && tuning::tuning().enabled
+}
 
 // The key the patch state lives under, in the mod's namespace of the save.
 const KEY: &str = "item_patches";
@@ -380,7 +387,7 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
         })
         .collect();
     // Whether there is enough to judge an item on is asked item by item
-    // (`balance::MIN_GAMES`), of a forced patch as of any other. A version
+    // (`tuning`'s `min_games`), of a forced patch as of any other. A version
     // of few matches has few such items, or none, and then no patch.
     let mut patch = balance::decide(
         base::base(),
@@ -458,7 +465,12 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     // Whatever plain article is open scrolls as far as its text goes. Ahead
     // of the switch below: the layout this goes with is in use either way.
     text::sync_article_scroll(ctx);
-    if !ENABLED {
+    if !enabled() {
+        // No patches, but a tooltip still has to show the numbers of the
+        // player's `config.json`, which the text the game holds does not.
+        static SHOWN: std::sync::Once = std::sync::Once::new();
+        SHOWN.call_once(|| live::rebuild(base::base(), &State::default()));
+        text::sync_tooltips(ctx);
         return;
     }
     text::sync_tooltips(ctx);
@@ -523,7 +535,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
 // The server's answer to [`SERVER_COMMAND`]: what its management tick does
 // for a patch, without waiting for one. `false` for any other command.
 pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableCommand<'_>) -> bool {
-    if !ENABLED || command.command != SERVER_COMMAND {
+    if !enabled() || command.command != SERVER_COMMAND {
         return false;
     }
     server_tick(ctx);
@@ -655,7 +667,7 @@ fn file_under_patch(ctx: &mut StableServerCtx<'_>, team: usize, title: &str) -> 
 
 // Every tick of every simulation, from the match hook.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
-    if ENABLED {
+    if enabled() {
         live::on_match_tick(sim);
     }
 }
