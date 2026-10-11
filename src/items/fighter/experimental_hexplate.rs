@@ -19,7 +19,7 @@ pub struct ExperimentalHexplate {
     // Non-vital stats (internals)
     last_ult_cooldown: Option<usize>,
     cooldown_ticks: usize,
-    /// Steps the cooldown by the time gone by, so it runs through a death.
+    // Steps the cooldown by the time gone by, so it runs through a death.
     clock: Elapsed,
 }
 

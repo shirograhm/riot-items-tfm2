@@ -24,7 +24,7 @@
 //! The file fallback is also what covers a champion's *first* build. The host
 //! is only asked on the client frame after a build path wants the answer, so
 //! with the host alone the first build decided for a modded champion (a
-//! Twitch from another mod, 2026-09-21, building pure AP) went unchecked.
+//! Twitch from another mod, building pure AP) would go unchecked.
 //!
 //! The host's answer has no attack range in it, so whether a champion is
 //! ranged always comes from the fallbacks where they know it: both carry the
@@ -39,7 +39,7 @@ use std::sync::{Mutex, OnceLock, RwLock};
 
 use mod_api_stable::{ChampionCategoryV1, ChampionTagV1, StableClient};
 
-/// What a champion's damage scales with, from its `AD`/`AP` tags.
+// What a champion's damage scales with, from its `AD`/`AP` tags.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Scaling {
     Ad,
@@ -47,7 +47,7 @@ pub(crate) enum Scaling {
     Hybrid,
 }
 
-/// The champion's `category`: what the game groups it under in the draft.
+// The champion's `category`: what the game groups it under in the draft.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Class {
     Melee,
@@ -80,53 +80,53 @@ impl Class {
     }
 }
 
-/// What a kit immobilizes with: the crowd control that takes movement out of
-/// an enemy's hands, the set Imperial Mandate's Command answers to. A slow, a
-/// silence or a disarm is none of it.
+// What a kit immobilizes with: the crowd control that takes movement out of
+// an enemy's hands, the set Imperial Mandate's Command answers to. A slow, a
+// silence or a disarm is none of it.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(crate) struct Immobilize {
-    /// A taunt. Kept apart because a taunt names its taunter, so Command
-    /// credits it without guessing.
+    // A taunt. Kept apart because a taunt names its taunter, so Command
+    // credits it without guessing.
     pub taunt: bool,
-    /// Anything else: a stun, root, knock-up, knockback, pull, fear or charm.
+    // Anything else: a stun, root, knock-up, knockback, pull, fear or charm.
     pub other: bool,
-    /// How long the kit immobilizes for in all, in ticks: every stun, root,
-    /// knock-up, knockback, pull, fear, charm and taunt of its abilities and
-    /// its ultimate, added up. An immobilize the source puts no figure on
-    /// adds nothing.
+    // How long the kit immobilizes for in all, in ticks: every stun, root,
+    // knock-up, knockback, pull, fear, charm and taunt of its abilities and
+    // its ultimate, added up. An immobilize the source puts no figure on
+    // adds nothing.
     pub ticks: usize,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(crate) struct ChampionTraits {
-    /// `None` for a champion tagged neither way, which the rules leave alone.
+    // `None` for a champion tagged neither way, which the rules leave alone.
     pub scaling: Option<Scaling>,
-    /// `None` when the source did not say.
+    // `None` when the source did not say.
     pub class: Option<Class>,
-    /// Tagged `Tank`.
+    // Tagged `Tank`.
     pub tank: bool,
-    /// Tagged `Heal` or `Shield`. The tags do not say whom: a Vampire's healing
-    /// is all its own.
+    // Tagged `Heal` or `Shield`. The tags do not say whom: a Vampire's healing
+    // is all its own.
     pub sustains: bool,
-    /// Whether a basic ability of its kit heals, shields or buffs an ally,
-    /// which is what the items that answer to that need. Narrower than
-    /// `sustains` (the Vampire) and wider (a Bard only buffs). `None` when
-    /// only the tags are known.
+    // Whether a basic ability of its kit heals, shields or buffs an ally,
+    // which is what the items that answer to that need. Narrower than
+    // `sustains` (the Vampire) and wider (a Bard only buffs). `None` when
+    // only the tags are known.
     pub aids: Option<bool>,
-    /// Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
+    // Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
     pub cc: bool,
-    /// What its abilities immobilize with, which is narrower than `cc`. `None`
-    /// when only the tag is known.
+    // What its abilities immobilize with, which is narrower than `cc`. `None`
+    // when only the tag is known.
     pub immobilize: Option<Immobilize>,
-    /// Whether its basic attack reaches past [`MELEE_ATTACK_RANGE`]. `None`
-    /// when nothing says, which the rules leave alone.
+    // Whether its basic attack reaches past [`MELEE_ATTACK_RANGE`]. `None`
+    // when nothing says, which the rules leave alone.
     pub ranged: Option<bool>,
 }
 
 impl ChampionTraits {
-    /// `attack_range` is the reach of the basic attack in world units, where
-    /// the source states one, `immobilize` what its kit says about that, and
-    /// `aids` whether it says the kit aids allies.
+    // `attack_range` is the reach of the basic attack in world units, where
+    // the source states one, `immobilize` what its kit says about that, and
+    // `aids` whether it says the kit aids allies.
     fn from_flags(
         flags: u8,
         class: Option<Class>,
@@ -146,40 +146,40 @@ impl ChampionTraits {
         }
     }
 
-    /// Whether the kit can set off Imperial Mandate: what the kit itself says
-    /// where it is known, else the `CC` tag, which also counts slows.
+    // Whether the kit can set off Imperial Mandate: what the kit itself says
+    // where it is known, else the `CC` tag, which also counts slows.
     pub(crate) fn can_immobilize(&self) -> bool {
         self.immobilize
             .map_or(self.cc, |immobilize| immobilize.taunt || immobilize.other)
     }
 
-    /// Whether the kit immobilizes for at least `ticks` in all, where it is
-    /// known; else the `CC` tag, which also counts slows.
+    // Whether the kit immobilizes for at least `ticks` in all, where it is
+    // known; else the `CC` tag, which also counts slows.
     pub(crate) fn immobilizes_for(&self, ticks: usize) -> bool {
         self.immobilize
             .map_or(self.cc, |immobilize| immobilize.ticks >= ticks)
     }
 
-    /// Whether the kit can set off the items that answer to healing, shielding
-    /// or buffing an ally: what the kit itself says where it is known, else
-    /// the `Heal` and `Shield` tags.
+    // Whether the kit can set off the items that answer to healing, shielding
+    // or buffing an ally: what the kit itself says where it is known, else
+    // the `Heal` and `Shield` tags.
     pub(crate) fn aids_allies(&self) -> bool {
         self.aids.unwrap_or(self.sustains)
     }
 }
 
-/// The longest basic attack that still counts as melee, in the range units
-/// tooltips use: a champion reaching further is ranged. The same 35 the melee
-/// items measure their falloff from (`effect_melee_distance`), so a champion
-/// is ranged exactly when its own attacks land at reduced strength. Vanilla
-/// melee champions reach 23-30 and the ranged ones 40-80.
+// The longest basic attack that still counts as melee, in the range units
+// tooltips use: a champion reaching further is ranged. The same 35 the melee
+// items measure their falloff from (`effect_melee_distance`), so a champion
+// is ranged exactly when its own attacks land at reduced strength. Vanilla
+// melee champions reach 23-30 and the ranged ones 40-80.
 const MELEE_ATTACK_RANGE: usize = 35;
 
-/// Whether a champion attacks from range, `None` when nothing says: the reach
-/// of its basic attack (world units) where the source states one, else its
-/// `Range` or `Melee` tag, else its class where that settles it. The tags and
-/// classes are a last resort: only six vanilla champions carry either tag,
-/// Vampire is a Magician that attacks at 25, and Clown an Assassin at 40.
+// Whether a champion attacks from range, `None` when nothing says: the reach
+// of its basic attack (world units) where the source states one, else its
+// `Range` or `Melee` tag, else its class where that settles it. The tags and
+// classes are a last resort: only six vanilla champions carry either tag,
+// Vampire is a Magician that attacks at 25, and Clown an Assassin at 40.
 fn ranged_of(
     attack_range: Option<usize>,
     range_tag: bool,
@@ -216,7 +216,7 @@ const CC: u8 = 32;
 const RANGE: u8 = 64;
 const MELEE: u8 = 128;
 
-/// The flag bits for a champion's `tags`, by tag name.
+// The flag bits for a champion's `tags`, by tag name.
 fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
     tags.into_iter().fold(0, |flags, tag| {
         flags
@@ -234,14 +234,14 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
     })
 }
 
-/// The base game's champions, from `setting/champion_info` (`category`, `tags`
-/// and `attack.range`), including the eight it ships under `mod_champions`.
-/// Only a fallback: an answer from the host always wins. Kept true to the
-/// game's tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
-///
-/// The last column is the reach of the basic attack in range units (the
-/// game's value over 1000), which the host does not report. The `Range` and
-/// `Melee` tags are left out of the flags: the reach says the same and more.
+// The base game's champions, from `setting/champion_info` (`category`, `tags`
+// and `attack.range`), including the eight it ships under `mod_champions`.
+// Only a fallback: an answer from the host always wins. Kept true to the
+// game's tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
+//
+// The last column is the reach of the basic attack in range units (the
+// game's value over 1000), which the host does not report. The `Range` and
+// `Melee` tags are left out of the flags: the reach says the same and more.
 const VANILLA: &[(&str, u8, Class, usize)] = &[
     ("alchemist", AP | CC, Class::Magician, 60),
     ("android", AD | TANK | CC, Class::Melee, 25),
@@ -313,19 +313,19 @@ const VANILLA: &[(&str, u8, Class, usize)] = &[
     ("wind_mage", AP | CC, Class::Magician, 60),
 ];
 
-/// The base game's champions with an ability that taunts ([`Immobilize::taunt`]).
-/// Knight and Shield Bearer immobilize with nothing else. Sorted, for the
-/// binary search.
+// The base game's champions with an ability that taunts ([`Immobilize::taunt`]).
+// Knight and Shield Bearer immobilize with nothing else. Sorted, for the
+// binary search.
 const VANILLA_TAUNTERS: &[&str] = &["illusionist", "knight", "prisoner", "shield_bearer"];
 
-/// The base game's champions with an ability that immobilizes some other way
-/// ([`Immobilize::other`]). Both lists are read off each kit's parameters in
-/// `setting/champion_info` and its skill text (0.6.2). Not the `CC` tag: four
-/// tagged champions only slow, silence or disarm (Alchemist, Astrologer,
-/// Taoist, Voodoo Shaman), and thirteen with a stun, root, knockback, fear or
-/// charm carry no tag at all. Werewolf is here for the pull among its charge's
-/// parameters, though its text speaks only of the slow. Sorted, for the binary
-/// search.
+// The base game's champions with an ability that immobilizes some other way
+// ([`Immobilize::other`]). Both lists are read off each kit's parameters in
+// `setting/champion_info` and its skill text (0.6.2). Not the `CC` tag: four
+// tagged champions only slow, silence or disarm (Alchemist, Astrologer,
+// Taoist, Voodoo Shaman), and thirteen with a stun, root, knockback, fear or
+// charm carry no tag at all. Werewolf is here for the pull among its charge's
+// parameters, though its text speaks only of the slow. Sorted, for the binary
+// search.
 const VANILLA_IMMOBILIZERS: &[&str] = &[
     "android",
     "archer",
@@ -367,14 +367,14 @@ const VANILLA_IMMOBILIZERS: &[&str] = &[
     "wind_mage",
 ];
 
-/// How long each of the base game's champions immobilizes for in all, in
-/// ticks ([`Immobilize::ticks`]): every immobilizing parameter of its
-/// abilities and its ultimate added up, from `setting/champion_info` and the
-/// champions that are data kits of their own (0.6.3; the comment says which
-/// ability holds what). A champion not listed has none with a figure on it.
-/// Three have an immobilize the data gives no length for, which adds nothing:
-/// Archer's stun ("briefly"), Executioner's grab and Harpooner's pull. Knight's
-/// taunt is its skill's own `tick`. Sorted, for the binary search.
+// How long each of the base game's champions immobilizes for in all, in
+// ticks ([`Immobilize::ticks`]): every immobilizing parameter of its
+// abilities and its ultimate added up, from `setting/champion_info` and the
+// champions that are data kits of their own (0.6.3; the comment says which
+// ability holds what). A champion not listed has none with a figure on it.
+// Three have an immobilize the data gives no length for, which adds nothing:
+// Archer's stun ("briefly"), Executioner's grab and Harpooner's pull. Knight's
+// taunt is its skill's own `tick`. Sorted, for the binary search.
 const VANILLA_IMMOBILIZE_TICKS: &[(&str, usize)] = &[
     ("android", 60),          // skill2 60
     ("barrier_magician", 60), // ult 60
@@ -415,14 +415,14 @@ const VANILLA_IMMOBILIZE_TICKS: &[(&str, usize)] = &[
     ("wind_mage", 40),        // ult 40
 ];
 
-/// The base game's champions with a basic ability that heals, shields or
-/// buffs an ally ([`ChampionTraits::aids`]), read off each kit's skill text
-/// (0.6.2). Not the `Heal` and `Shield` tags: Vampire, Werewolf and Dokkaebi
-/// carry one for what they do to themselves, and Bard, Enchanter, Exorcist
-/// and Plague Doctor aid allies all day with neither. An ultimate alone does
-/// not count (Android's shield, Strongman's throw, Knight's ward): the items
-/// this is for want it done every few seconds. Sorted, for the binary
-/// search.
+// The base game's champions with a basic ability that heals, shields or
+// buffs an ally ([`ChampionTraits::aids`]), read off each kit's skill text
+// (0.6.2). Not the `Heal` and `Shield` tags: Vampire, Werewolf and Dokkaebi
+// carry one for what they do to themselves, and Bard, Enchanter, Exorcist
+// and Plague Doctor aid allies all day with neither. An ultimate alone does
+// not count (Android's shield, Strongman's throw, Knight's ward): the items
+// this is for want it done every few seconds. Sorted, for the binary
+// search.
 const VANILLA_ALLY_AIDS: &[&str] = &[
     "bard",
     "barrier_magician",
@@ -438,9 +438,9 @@ const VANILLA_ALLY_AIDS: &[&str] = &[
     "spirit_caller",
 ];
 
-/// How a `.data_champion` kit spells one kind of crowd control: the effect
-/// types that apply it, and the parameters a `Native` effect borrowed from the
-/// base game names it by.
+// How a `.data_champion` kit spells one kind of crowd control: the effect
+// types that apply it, and the parameters a `Native` effect borrowed from the
+// base game names it by.
 struct KitSign {
     effects: &'static [&'static str],
     params: &'static [&'static str],
@@ -451,7 +451,7 @@ const TAUNT_SIGN: KitSign = KitSign {
     params: &["taunt_duration"],
 };
 
-/// Every immobilize but the taunt.
+// Every immobilize but the taunt.
 const IMMOBILIZE_SIGN: KitSign = KitSign {
     effects: &[
         "Airborne",
@@ -480,9 +480,9 @@ const IMMOBILIZE_SIGN: KitSign = KitSign {
     ],
 };
 
-/// Whether anything in this part of a `.data_champion` kit does what `sign`
-/// spells to an enemy. What a kit does to its own caster (`WithSelf`) holds no
-/// one.
+// Whether anything in this part of a `.data_champion` kit does what `sign`
+// spells to an enemy. What a kit does to its own caster (`WithSelf`) holds no
+// one.
 fn kit_shows(kit: &serde_json::Value, sign: &KitSign) -> bool {
     match kit {
         serde_json::Value::Object(fields) => {
@@ -502,9 +502,9 @@ fn kit_shows(kit: &serde_json::Value, sign: &KitSign) -> bool {
     }
 }
 
-/// The parameters a kit names an immobilize's length by, in ticks, and the
-/// fields an immobilizing effect gives its own in. The signs' other
-/// parameters are speeds and switches.
+// The parameters a kit names an immobilize's length by, in ticks, and the
+// fields an immobilizing effect gives its own in. The signs' other
+// parameters are speeds and switches.
 const TICK_PARAMS: &[&str] = &[
     "airborne",
     "airborne_tick",
@@ -523,9 +523,9 @@ const TICK_PARAMS: &[&str] = &[
 ];
 const TICK_FIELDS: &[&str] = &["duration", "tick"];
 
-/// How long everything in this part of a `.data_champion` kit immobilizes an
-/// enemy for, added up, in ticks ([`Immobilize::ticks`]). What a kit does to
-/// its own caster (`WithSelf`) holds no one.
+// How long everything in this part of a `.data_champion` kit immobilizes an
+// enemy for, added up, in ticks ([`Immobilize::ticks`]). What a kit does to
+// its own caster (`WithSelf`) holds no one.
 fn kit_ticks(kit: &serde_json::Value) -> usize {
     let ticks = |value: &serde_json::Value| value.as_u64().unwrap_or(0) as usize;
     match kit {
@@ -563,9 +563,9 @@ fn kit_ticks(kit: &serde_json::Value) -> usize {
     }
 }
 
-/// Whether this part of a kit runs a `Native` effect: code in the mod's own
-/// DLL, which may stun or root with nothing in the file to show for it (another
-/// mod's Brand, tagged `CC`, does exactly that).
+// Whether this part of a kit runs a `Native` effect: code in the mod's own
+// DLL, which may stun or root with nothing in the file to show for it (another
+// mod's Brand, tagged `CC`, does exactly that).
 fn runs_native_code(kit: &serde_json::Value) -> bool {
     match kit {
         serde_json::Value::Object(fields) => {
@@ -577,9 +577,9 @@ fn runs_native_code(kit: &serde_json::Value) -> bool {
     }
 }
 
-/// Whether this part of a `.data_champion` kit is aimed at, or applied to, an
-/// ally other than its caster: a `casting_target`, `applied_target` or
-/// `target` that names allies. `AllyOnlySelf` is the caster alone.
+// Whether this part of a `.data_champion` kit is aimed at, or applied to, an
+// ally other than its caster: a `casting_target`, `applied_target` or
+// `target` that names allies. `AllyOnlySelf` is the caster alone.
 fn aims_at_allies(kit: &serde_json::Value) -> bool {
     const TARGETS: [&str; 3] = ["casting_target", "applied_target", "target"];
     match kit {
@@ -594,13 +594,13 @@ fn aims_at_allies(kit: &serde_json::Value) -> bool {
     }
 }
 
-/// The `.data_champion` effects that heal, shield or buff whoever the ability
-/// is applied to. `AddCasterBuff` is not one: it is the caster's own.
+// The `.data_champion` effects that heal, shield or buff whoever the ability
+// is applied to. `AddCasterBuff` is not one: it is the caster's own.
 const AID_EFFECTS: [&str; 4] = ["Heal", "Shield", "AddBuff", "AddStatScaledBuff"];
 
-/// Whether anything in this part of a `.data_champion` kit heals, shields or
-/// buffs someone other than its caster: one of [`AID_EFFECTS`] not marked for
-/// the caster (`heal_type` or `target` of `Caster`).
+// Whether anything in this part of a `.data_champion` kit heals, shields or
+// buffs someone other than its caster: one of [`AID_EFFECTS`] not marked for
+// the caster (`heal_type` or `target` of `Caster`).
 fn shows_aid(kit: &serde_json::Value) -> bool {
     match kit {
         serde_json::Value::Object(fields) => {
@@ -616,25 +616,25 @@ fn shows_aid(kit: &serde_json::Value) -> bool {
     }
 }
 
-/// Champions other mods add, by id, from the `tags`, `category`, `attack.range`
-/// and abilities in their `.data_champion` files. Filled once by [`load_mod_champions`].
+// Champions other mods add, by id, from the `tags`, `category`, `attack.range`
+// and abilities in their `.data_champion` files. Filled once by [`load_mod_champions`].
 static MOD_CHAMPIONS: OnceLock<HashMap<String, ChampionTraits>> = OnceLock::new();
 
-/// Steam app id, which names the game's Workshop content folder.
+// Steam app id, which names the game's Workshop content folder.
 const STEAM_APP_ID: &str = "3009300";
 
-/// How far below a mods root a `.data_champion` file may sit: `<mod>/champion/`
-/// is the usual place, and a Workshop item may nest its mod one folder deeper.
+// How far below a mods root a `.data_champion` file may sit: `<mod>/champion/`
+// is the usual place, and a Workshop item may nest its mod one folder deeper.
 const SCAN_DEPTH: usize = 4;
 
-/// Reads every `.data_champion` file under the game's `mods` folder and its
-/// Workshop content folder into [`MOD_CHAMPIONS`]. Called once from `init`, on
-/// the main thread, because the build paths that read the result run on sim
-/// workers, where file IO has no business. About 50 files and under 1 MB with
-/// the usual champion mods installed.
-///
-/// Disabled mods are read too. That costs nothing, because a champion no
-/// enabled mod adds never reaches a build, and ids are unique across mods.
+// Reads every `.data_champion` file under the game's `mods` folder and its
+// Workshop content folder into [`MOD_CHAMPIONS`]. Called once from `init`, on
+// the main thread, because the build paths that read the result run on sim
+// workers, where file IO has no business. About 50 files and under 1 MB with
+// the usual champion mods installed.
+//
+// Disabled mods are read too. That costs nothing, because a champion no
+// enabled mod adds never reaches a build, and ids are unique across mods.
 pub(crate) fn load_mod_champions() {
     MOD_CHAMPIONS.get_or_init(|| {
         let mut found = HashMap::new();
@@ -655,7 +655,12 @@ fn mod_roots() -> Vec<PathBuf> {
     let mut roots = vec![game.join("mods")];
     // steamapps/common/<game> -> steamapps/workshop/content/<app id>
     if let Some(steamapps) = game.parent().and_then(Path::parent) {
-        roots.push(steamapps.join("workshop").join("content").join(STEAM_APP_ID));
+        roots.push(
+            steamapps
+                .join("workshop")
+                .join("content")
+                .join(STEAM_APP_ID),
+        );
     }
     roots
 }
@@ -677,7 +682,7 @@ fn scan(dir: &Path, depth: usize, found: &mut HashMap<String, ChampionTraits>) {
     }
 }
 
-/// The fields of a `.data_champion` file this needs; serde skips the rest.
+// The fields of a `.data_champion` file this needs; serde skips the rest.
 #[derive(serde::Deserialize)]
 struct ChampionFile {
     id: String,
@@ -685,14 +690,14 @@ struct ChampionFile {
     category: String,
     #[serde(default)]
     tags: Vec<String>,
-    /// The basic attack, of which only `range` is read. Left untyped so that an
-    /// attack written some other way costs the champion its reach, not the
-    /// rest of what the file says.
+    // The basic attack, of which only `range` is read. Left untyped so that an
+    // attack written some other way costs the champion its reach, not the
+    // rest of what the file says.
     #[serde(default)]
     attack: serde_json::Value,
-    /// Everything else, the abilities among it: read for what they immobilize
-    /// with. The basic attack is left out, since Imperial Mandate only answers
-    /// to abilities.
+    // Everything else, the abilities among it: read for what they immobilize
+    // with. The basic attack is left out, since Imperial Mandate only answers
+    // to abilities.
     #[serde(flatten)]
     rest: HashMap<String, serde_json::Value>,
 }
@@ -704,7 +709,11 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
     let attack_range = file
         .attack
         .get("range")
-        .and_then(|range| range.as_u64().or_else(|| range.as_f64().map(|range| range as u64)))
+        .and_then(|range| {
+            range
+                .as_u64()
+                .or_else(|| range.as_f64().map(|range| range as u64))
+        })
         .map(|range| range as usize);
     let shows = |sign: &KitSign| file.rest.values().any(|part| kit_shows(part, sign));
     let (taunt, other) = (shows(&TAUNT_SIGN), shows(&IMMOBILIZE_SIGN));
@@ -741,45 +750,39 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
     Some((file.id, traits))
 }
 
-/// What is known about `champion` without the host: [`VANILLA`] for the base
-/// game, then [`MOD_CHAMPIONS`].
+// What is known about `champion` without the host: [`VANILLA`] for the base
+// game, then [`MOD_CHAMPIONS`].
 fn fallback(champion: &str) -> Option<ChampionTraits> {
-    vanilla(champion).or_else(|| {
-        MOD_CHAMPIONS
-            .get()?
-            .get(champion)
-            .copied()
-    })
+    vanilla(champion).or_else(|| MOD_CHAMPIONS.get()?.get(champion).copied())
 }
 
-/// Settled answers, by champion key: the host's where it gave one, otherwise
-/// the [`fallback`] or `None`. Misses are settled too, so a champion the
-/// host does not know costs one lookup here rather than a trip to [`PENDING`]
-/// on every item the build hook scores.
+// Settled answers, by champion key: the host's where it gave one, otherwise
+// the [`fallback`] or `None`. Misses are settled too, so a champion the
+// host does not know costs one lookup here rather than a trip to [`PENDING`]
+// on every item the build hook scores.
 static LEARNED: RwLock<Option<HashMap<String, Option<ChampionTraits>>>> = RwLock::new(None);
 
-/// Keys already put to the host, answered or not, so a champion the host does
-/// not know is asked once rather than every frame.
+// Keys already put to the host, answered or not, so a champion the host does
+// not know is asked once rather than every frame.
 static ASKED: Mutex<Option<HashSet<String>>> = Mutex::new(None);
 
-/// Keys a build path asked about before the client had learned them. The build
-/// paths are not on the client, so they leave the question here for [`learn`].
+// Keys a build path asked about before the client had learned them. The build
+// paths are not on the client, so they leave the question here for [`learn`].
 static PENDING: Mutex<Option<HashSet<String>>> = Mutex::new(None);
 
-/// Champions whose `AD`/`AP` tags misstate what their kit scales with, and
-/// what Smart Builds treats them as instead. These win over every source,
-/// the host included, which is why they are not simply edits to [`VANILLA`].
-///
-/// Magic Knight is tagged both, but only its basic attack is physical: both
-/// abilities deal magic damage off Ability Power, and its ultimate's attack
-/// speed scales with Ability Power too. Left hybrid, rule 5 never touched it
-/// and the engine had it building full AD (2026-09-26, in a match where it
-/// dealt ~20k damage, nearly all of it magic).
+// Champions whose `AD`/`AP` tags misstate what their kit scales with, and
+// what Smart Builds treats them as instead. These win over every source,
+// the host included, which is why they are not simply edits to [`VANILLA`].
+//
+// Magic Knight is tagged both, but only its basic attack is physical: both
+// abilities deal magic damage off Ability Power, and its ultimate's attack
+// speed scales with Ability Power too. Left hybrid, rule 5 never touches it
+// and the engine has it building full AD.
 const SCALING_OVERRIDES: &[(&str, Scaling)] = &[("magic_knight", Scaling::Ap)];
 
-/// What is known about `champion`, or `None` when nothing is — which the rules
-/// read as "no restriction". A miss is queued for the next [`learn`].
-/// [`SCALING_OVERRIDES`] apply on top of whatever answered.
+// What is known about `champion`, or `None` when nothing is — which the rules
+// read as "no restriction". A miss is queued for the next [`learn`].
+// [`SCALING_OVERRIDES`] apply on top of whatever answered.
 pub(crate) fn traits(champion: &str) -> Option<ChampionTraits> {
     let mut traits = looked_up(champion);
     if let Some(&(_, scaling)) = SCALING_OVERRIDES.iter().find(|(key, _)| *key == champion) {
@@ -788,8 +791,8 @@ pub(crate) fn traits(champion: &str) -> Option<ChampionTraits> {
     traits
 }
 
-/// [`traits`] as the sources give it: the host's settled answer, else the
-/// [`fallback`].
+// [`traits`] as the sources give it: the host's settled answer, else the
+// [`fallback`].
 fn looked_up(champion: &str) -> Option<ChampionTraits> {
     if let Some(settled) = LEARNED
         .read()
@@ -831,9 +834,9 @@ fn vanilla(champion: &str) -> Option<ChampionTraits> {
         })
 }
 
-/// Asks the host about every champion not asked about yet: the whole roster
-/// once the first match has recorded it, plus any champion a build path has
-/// queued. Cheap when there is nothing new, so it runs every client frame.
+// Asks the host about every champion not asked about yet: the whole roster
+// once the first match has recorded it, plus any champion a build path has
+// queued. Cheap when there is nothing new, so it runs every client frame.
 pub(crate) fn learn(ctx: &StableClient<'_>) {
     // The roster only grows, and copying it every frame to find nothing new
     // is the common case, so its length decides whether it is read at all.

@@ -63,6 +63,10 @@
     "remapping": "asset/riot_items_tfm2/ui/layout/match_result",
     "type": "override"
   },
+  "asset/base/ui/layout/news_component/simple_content": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/news_component/simple_content",
+    "type": "override"
+  },
   "asset/base/sound/sfx/riot_zhonyas_stasis": {
     "remapping": "asset/riot_items_tfm2/sound/sfx/riot_zhonyas_stasis",
     "type": "override"

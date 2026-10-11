@@ -13,10 +13,10 @@ pub struct Opportunity {
     effect_bonus_lethality: usize,
     effect_out_of_combat_seconds: f64,
     effect_duration_seconds: f64,
-    /// Ticks since the wielder last damaged an enemy champion. Reset on every
-    /// attack or ability hit against one, so it measures time out of combat.
+    // Ticks since the wielder last damaged an enemy champion. Reset on every
+    // attack or ability hit against one, so it measures time out of combat.
     idle_ticks: usize,
-    /// Whether Preparation's bonus lethality is currently applying.
+    // Whether Preparation's bonus lethality is currently applying.
     prepared: bool,
 }
 
@@ -84,9 +84,9 @@ impl Opportunity {
         }
     }
 
-    /// Restarts the out-of-combat timer when `target` is an enemy champion.
-    /// Deliberately leaves `prepared` alone: an already-earned bonus lingers for
-    /// `effect_duration_seconds` past this point (see `update`).
+    // Restarts the out-of-combat timer when `target` is an enemy champion.
+    // Deliberately leaves `prepared` alone: an already-earned bonus lingers for
+    // `effect_duration_seconds` past this point (see `update`).
     fn note_combat(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         if is_enemy_champion(ctx, caster, target) {
             self.idle_ticks = 0;

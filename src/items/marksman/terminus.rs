@@ -203,7 +203,7 @@ impl StableItem for Terminus {
         }
     }
 
-    /// Lands the on-hit damage whose delay has run out.
+    // Lands the on-hit damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }

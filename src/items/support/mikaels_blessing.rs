@@ -3,58 +3,9 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, sized_range, ticks, Elapsed, ItemMeta};
 
-/// Ticks between two looks for a champion to purify while the cooldown is up: a
-/// tenth of a second. Nobody sees the wait, and the look costs a few host
-/// calls for every champion in the match.
 const PURIFY_POLL_TICKS: usize = 6;
-/// The cleanse, played on every champion it reaches, the one purified and,
-/// when that is an ally, the carrier too (`effects/mikaels_purify`): a round
-/// of pale light that opens about the body and lets go as glints rise off it.
-/// Bound in `view/effects.view_effects`.
 const PURIFY_EFFECT: &str = "riot_mikaels_purify";
 
-/// Mikael's Blessing — Purify, a cleanse and a heal for a champion of the
-/// carrier's team caught at low health, the carrier included.
-///
-/// # Why it is looked for
-///
-/// An item's hooks report its carrier's own events, so an ally being crowd
-/// controlled is something to go and find: while the cooldown is up, the
-/// team's champions are gone over for one that is below the health threshold,
-/// under a crowd control and within range, and the one worst off is purified.
-/// The range is measured last and once (`sized_range` reads the carrier's
-/// buffs), only when an ally has passed the other two tests.
-///
-/// # The carrier itself
-///
-/// One of the champions gone over, on the same two tests and with no range
-/// to pass: Purify can be cast on its own carrier (the user, 2026-10-09). It
-/// has no say over an ally worse off, as the worst off is still the one
-/// purified. An ally purified takes the carrier's crowd control with it, as
-/// the tooltip says; the carrier purified is the only one cleansed.
-///
-/// # What counts as crowd control
-///
-/// Everything the host lists as one on the champion, bar an animation lock,
-/// which is the champion's own doing. A slow is not on that list: the host
-/// keeps it as a stat buff, so Purify neither answers to one nor removes it.
-/// The cleanse itself is the host's (`entity_clear_cc`), which takes all of
-/// it off.
-///
-/// # Whose level
-///
-/// The purified champion's, as the tooltip says ("based on the target's
-/// level") and as League has it: the user's call (2026-10-09). Every other
-/// "(based on level)" amount in the mod goes by the carrier's.
-///
-/// # The cooldown
-///
-/// An item-side tick counter that a respawn does not clear, unlike most in
-/// the mod: two minutes is two minutes, death or no death (the user,
-/// 2026-10-09). It also keeps running while the carrier is dead, the way
-/// `fiendhunter_bolts` keeps its own.
-///
-/// The passive is the same on base and Radiant; Radiant buys the stat line.
 #[derive(Clone, Debug)]
 pub struct MikaelsBlessing {
     meta: ItemMeta,
@@ -70,7 +21,7 @@ pub struct MikaelsBlessing {
     effect_cooldown_seconds: f64,
     // Non-vital stats (internals)
     purify_cooldown: usize,
-    /// Steps the cooldown by the time gone by, so it runs through a death.
+    // Steps the cooldown by the time gone by, so it runs through a death.
     clock: Elapsed,
 }
 
@@ -138,15 +89,13 @@ impl MikaelsBlessing {
         self
     }
 
-    /// Level 1 heals `effect_min_heal` and level 12 `effect_max_heal`, the
-    /// eleven-step ramp `locket_of_the_iron_solari` uses for its shield.
     fn heal_amount(&self, level: usize) -> usize {
         let span = self.effect_max_heal.saturating_sub(self.effect_min_heal);
         let per_level = (span as f64 / 11.0).round() as usize;
         self.effect_min_heal + level.saturating_sub(1) * per_level
     }
 
-    /// Whether the entity is under a crowd control Purify answers to.
+    // Whether the entity is under a crowd control Purify answers to
     fn crowd_controlled(entity: &StableEntity<'_, '_>) -> bool {
         (0..entity.cc_count())
             .filter_map(|index| entity.cc_at(index))
@@ -166,8 +115,6 @@ impl MikaelsBlessing {
         };
 
         let mut reach_sq: Option<u64> = None;
-        // The champion worst off, by the share of its health it has left:
-        // (entity, health, maximum health, level).
         let mut worst: Option<(usize, usize, usize, usize)> = None;
         for index in 0..ctx.champion_count() {
             let id = ctx.champion_id_at(index);
@@ -200,8 +147,7 @@ impl MikaelsBlessing {
             return;
         };
 
-        // The carrier is cleansed along with an ally, and both show it; the
-        // heal is the purified champion's alone.
+        // The carrier is also cleansed
         let also = (purified != caster).then_some(caster);
         for cleansed in [Some(purified), also].into_iter().flatten() {
             ctx.entity_clear_cc(cleansed);

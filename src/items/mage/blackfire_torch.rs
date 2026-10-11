@@ -116,8 +116,8 @@ impl StableItem for BlackfireTorch {
         }
     }
 
-    /// Maleficent. Ability damage sets it off, a tick of damage over time
-    /// included.
+    // Maleficent. Ability damage sets it off, a tick of damage over time
+    // included.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

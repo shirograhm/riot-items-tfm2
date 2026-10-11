@@ -134,7 +134,7 @@ impl StableItem for SteraksGage {
         self.lifeline.reset();
     }
 
-    /// Takes the bubble down when the shield is used up before its time.
+    // Takes the bubble down when the shield is used up before its time.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.lifeline.update(ctx, player);
     }

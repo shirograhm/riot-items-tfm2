@@ -16,24 +16,23 @@ use crate::{apply_config, has_buff, percent_of, ticks, upgrade_carry, ItemMeta};
 // while Rebirth is ready: she holds an `undying` buff, and the hit that pins her
 // at the HP floor is the "lethal" one.
 
-/// Held while Rebirth is ready. Shared by both tiers, so an upgrade keeps it.
-/// It is also the name the `view_buffs` binding in `view/effects.view_effects`
-/// draws the "Rebirth is ready" swirl under (`effects/guardian_angel_ready`),
-/// so the swirl is up exactly when the buff is and goes as Rebirth is spent.
+// Held while Rebirth is ready. Shared by both tiers, so an upgrade keeps it.
+// It is also the name the `view_buffs` binding in `view/effects.view_effects`
+// draws the "Rebirth is ready" swirl under (`effects/guardian_angel_ready`),
+// so the swirl is up exactly when the buff is and goes as Rebirth is spent.
 const UNDYING_BUFF: &str = "guardian_angel_undying";
-/// Invulnerability for the stasis (and the tick after it, for the last heal
-/// pulse): the banish stops targeting, this stops damage-over-time.
+// Invulnerability for the stasis (and the tick after it, for the last heal
+// pulse): the banish stops targeting, this stops damage-over-time.
 const STASIS_BUFF: &str = "guardian_angel_stasis";
-/// Wisps for the length of the stasis, then a flash as she gets up. Both are
-/// bound in `view/effects.view_effects`; the stasis sheet is drawn 4 seconds long.
+// Wisps for the length of the stasis, then a flash as she gets up. Both are
+// bound in `view/effects.view_effects`; the stasis sheet is drawn 4 seconds long.
 const STASIS_EFFECT: &str = "riot_guardian_angel_stasis";
 const REVIVE_EFFECT: &str = "riot_guardian_angel_revive";
-/// `has_buff` misses a new buff for ~3 ticks; don't re-add inside this window.
+// `has_buff` misses a new buff for ~3 ticks; don't re-add inside this window.
 const REAPPLY_GUARD_TICKS: usize = 10;
-/// The upgrade line Rebirths are noted under (`crate::upgrade_carry`): the
-/// cooldown has to follow the carrier into the Radiant item, which otherwise
-/// starts ready. Seen in game on 2026-10-02: Rebirth fired again 78 seconds
-/// after the base item's.
+// The upgrade line Rebirths are noted under (`crate::upgrade_carry`): the
+// cooldown has to follow the carrier into the Radiant item, which otherwise
+// starts ready.
 const BASE_KEY: &str = "guardian_angel";
 
 #[derive(Clone, Debug)]
@@ -46,13 +45,13 @@ pub struct GuardianAngel {
     effect_duration_seconds: f64,
     effect_heal_interval_seconds: f64,
     effect_cooldown_seconds: f64,
-    /// Stasis in progress: (carrier entity, next heal pulse tick, last pulse tick).
+    // Stasis in progress: (carrier entity, next heal pulse tick, last pulse tick).
     stasis: Option<(usize, usize, usize)>,
-    /// Sim tick at which Rebirth is available again; 0 = ready.
+    // Sim tick at which Rebirth is available again; 0 = ready.
     ready_at_tick: usize,
-    /// Tick the undying buff was last added, for `REAPPLY_GUARD_TICKS`.
+    // Tick the undying buff was last added, for `REAPPLY_GUARD_TICKS`.
     undying_added_tick: Option<usize>,
-    /// Whether this instance has looked up the Rebirth of the item it replaced.
+    // Whether this instance has looked up the Rebirth of the item it replaced.
     inherited: bool,
 }
 
@@ -129,14 +128,14 @@ impl GuardianAngel {
         ticks(self.effect_heal_interval_seconds).max(1)
     }
 
-    /// Share of the total heal that each pulse restores.
+    // Share of the total heal that each pulse restores.
     fn pulse_percent(&self) -> f64 {
         let pulses = (ticks(self.effect_duration_seconds) / self.interval_ticks()).max(1);
         self.effect_caster_hp_percent_heal / pulses as f64
     }
 
-    /// Restores HP for every pulse that has come due. Set directly rather than
-    /// through `heal`, so healing reduction can't shorten the revive.
+    // Restores HP for every pulse that has come due. Set directly rather than
+    // through `heal`, so healing reduction can't shorten the revive.
     fn pulse_heal(&mut self, ctx: &mut StableSim<'_>, tick: usize) {
         let Some((entity, mut next, last)) = self.stasis else {
             return;
@@ -163,8 +162,8 @@ impl GuardianAngel {
         ctx.entity_set_hp(entity, (hp + heal).min(max_hp));
     }
 
-    /// A Radiant instance takes over the cooldown of the Rebirth its base item
-    /// last fired, once, before it first decides anything.
+    // A Radiant instance takes over the cooldown of the Rebirth its base item
+    // last fired, once, before it first decides anything.
     fn inherit_cooldown(&mut self, ctx: &StableSim<'_>, player: usize) {
         if std::mem::replace(&mut self.inherited, true) || !self.meta.upgrades_from(BASE_KEY) {
             return;
@@ -175,8 +174,8 @@ impl GuardianAngel {
         }
     }
 
-    /// Rebirth itself: she stays at the HP floor and heals back up in pulses
-    /// across the stasis.
+    // Rebirth itself: she stays at the HP floor and heals back up in pulses
+    // across the stasis.
     fn rebirth(&mut self, ctx: &mut StableSim<'_>, player: usize, entity: usize, tick: usize) {
         upgrade_carry::note(BASE_KEY, ctx, player, 0);
         let stasis = ticks(self.effect_duration_seconds);
@@ -197,14 +196,14 @@ impl GuardianAngel {
         self.undying_added_tick = None;
     }
 
-    /// Settles a carrier the undying buff has pinned (`is_pinned`). While Rebirth
-    /// is ready that is its trigger. With Rebirth spent the buff should not be on
-    /// her at all, and if it ever is, it would keep her unkillable at the HP floor
-    /// for the rest of the cooldown: she dies to that hit after all, there and
-    /// then rather than on whichever hit follows the buff's removal.
-    ///
-    /// Raw damage, because the hit that pinned her has already been through the
-    /// attack pipeline once; a second pass would count it, and its procs, again.
+    // Settles a carrier the undying buff has pinned (`is_pinned`). While Rebirth
+    // is ready that is its trigger. With Rebirth spent the buff should not be on
+    // her at all, and if it ever is, it would keep her unkillable at the HP floor
+    // for the rest of the cooldown: she dies to that hit after all, there and
+    // then rather than on whichever hit follows the buff's removal.
+    //
+    // Raw damage, because the hit that pinned her has already been through the
+    // attack pipeline once; a second pass would count it, and its procs, again.
     fn settle_pinned(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -232,8 +231,8 @@ impl GuardianAngel {
     }
 }
 
-/// Alive at the HP floor with the undying buff up: the buff has caught a hit that
-/// would have killed the carrier.
+// Alive at the HP floor with the undying buff up: the buff has caught a hit that
+// would have killed the carrier.
 fn is_pinned(entity: &StableEntity<'_, '_>) -> bool {
     entity.is_alive() && entity.hp().0 <= 1 && has_buff(entity, UNDYING_BUFF)
 }

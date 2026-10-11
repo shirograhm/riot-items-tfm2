@@ -6,8 +6,8 @@ use crate::{apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch};
 #[derive(Clone, Debug)]
 pub struct StaffOfFlowingWater {
     meta: ItemMeta,
-    /// Shared by both variants: Rapids is a state on whoever holds it, and the
-    /// two variants grant the same amount.
+    // Shared by both variants: Rapids is a state on whoever holds it, and the
+    // two variants grant the same amount.
     rapids_buff: &'static str,
     price: usize,
     hp: i32,
@@ -97,10 +97,10 @@ impl StaffOfFlowingWater {
         }
     }
 
-    /// Rapids on `target` and on the carrier, refreshed rather than stacked.
-    /// A cast that reaches several allies comes through here once per ally in
-    /// the same tick, so the carrier's copy is refreshed only on the first of
-    /// them: one application per cast, however many allies it reached.
+    // Rapids on `target` and on the carrier, refreshed rather than stacked.
+    // A cast that reaches several allies comes through here once per ally in
+    // the same tick, so the carrier's copy is refreshed only on the first of
+    // them: one application per cast, however many allies it reached.
     fn grant_rapids(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         let buff = self.rapids();
         refresh_buff(ctx, target, self.rapids_buff, &buff);

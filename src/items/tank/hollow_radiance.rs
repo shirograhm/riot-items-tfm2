@@ -13,8 +13,8 @@ use crate::{
 // dealing 30 + 2% of your maximum health as magic damage to all enemies nearby.
 // This effect is 50% as effective against minions and monsters.
 
-/// The eruption, drawn to Desolate's size at the death location. Bound in
-/// `view/effects.view_effects`.
+// The eruption, drawn to Desolate's size at the death location. Bound in
+// `view/effects.view_effects`.
 const DESOLATE_EFFECT: &str = "riot_hollow_radiance_desolate";
 
 #[derive(Clone, Debug)]
@@ -34,10 +34,10 @@ pub struct HollowRadiance {
     effect_minion_percent: f64,
     // Non-vital stats (internals)
     until_next_burn: usize,
-    /// Death locations still to erupt. Kills are only noted in `on_kill`; the
-    /// eruption lands on the next `update`, so damage dealt from inside the
-    /// kill hook never re-enters it, and an eruption that kills sets off the
-    /// next one a tick later.
+    // Death locations still to erupt. Kills are only noted in `on_kill`; the
+    // eruption lands on the next `update`, so damage dealt from inside the
+    // kill hook never re-enters it, and an eruption that kills sets off the
+    // next one a tick later.
     eruptions: Vec<(u64, u64)>,
 }
 
@@ -116,8 +116,8 @@ impl HollowRadiance {
         self
     }
 
-    /// Enemy units (not turrets) within `range` of a point, with whether each
-    /// is a champion.
+    // Enemy units (not turrets) within `range` of a point, with whether each
+    // is a champion.
     fn enemies_near(
         ctx: &StableSim<'_>,
         team: usize,

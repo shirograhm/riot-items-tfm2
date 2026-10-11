@@ -1,8 +1,8 @@
 //! Carries an item's state into the instance that replaces it on an upgrade.
 //!
 //! `on_upgrade` / `on_upgraded_from` are meant for this, and the host does not
-//! call them: logged in game on 2026-10-02 (0.6.2), neither fired across three
-//! sessions of upgrades, and every Radiant item arrived holding nothing.
+//! call them (game 0.6.2): neither fires on an upgrade, and without this every
+//! Radiant item would arrive holding nothing.
 //!
 //! So an item notes its state here whenever it changes, under its upgrade line
 //! (the base item's key), the match seed and the player. The instance that
@@ -22,14 +22,14 @@ use std::sync::Mutex;
 
 use mod_api_stable::{KillLogV1, StableSim};
 
-/// (upgrade line, match seed, player).
+// (upgrade line, match seed, player).
 type Key = (&'static str, u64, usize);
-/// (tick, value, history before that tick), in no order.
+// (tick, value, history before that tick), in no order.
 type Notes = Vec<(usize, u64, u64)>;
 
-/// Two generations, so a long session forgets finished matches without ever
-/// dropping one that is still being played: a carrier noted again moves to
-/// `current`, and `previous` is only let go a full generation later.
+// Two generations, so a long session forgets finished matches without ever
+// dropping one that is still being played: a carrier noted again moves to
+// `current`, and `previous` is only let go a full generation later.
 #[derive(Default)]
 struct Table {
     current: HashMap<Key, Notes>,
@@ -37,19 +37,19 @@ struct Table {
 }
 
 static TABLE: Mutex<Option<Table>> = Mutex::new(None);
-/// Carriers in a generation.
+// Carriers in a generation.
 const GENERATION_CAP: usize = 2048;
 
-/// The match's kills, oldest first.
+// The match's kills, oldest first.
 fn kills(ctx: &StableSim<'_>) -> Vec<KillLogV1> {
     (0..ctx.kill_log_count())
         .filter_map(|index| ctx.kill_log_at(index))
         .collect()
 }
 
-/// The kills before `tick` as one hash (FNV-1a over each kill's fields). Kills
-/// of `tick` itself are left out: whether one is logged yet depends on where
-/// in the tick the caller runs.
+// The kills before `tick` as one hash (FNV-1a over each kill's fields). Kills
+// of `tick` itself are left out: whether one is logged yet depends on where
+// in the tick the caller runs.
 fn history(kills: &[KillLogV1], tick: usize) -> u64 {
     let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
     let mut fold = |value: u64| {
@@ -70,7 +70,7 @@ fn history(kills: &[KillLogV1], tick: usize) -> u64 {
     hash
 }
 
-/// Notes `value` as the state of `player`'s item on `line` at this tick.
+// Notes `value` as the state of `player`'s item on `line` at this tick.
 pub(crate) fn note(line: &'static str, ctx: &StableSim<'_>, player: usize, value: u64) {
     let key = (line, ctx.seed(), player);
     let tick = ctx.tick();
@@ -92,9 +92,9 @@ pub(crate) fn note(line: &'static str, ctx: &StableSim<'_>, player: usize, value
     }
 }
 
-/// The latest note for `player`'s item on `line` from before this tick and
-/// from this run's own history, as (tick, value): what the instance that
-/// replaces the item takes over.
+// The latest note for `player`'s item on `line` from before this tick and
+// from this run's own history, as (tick, value): what the instance that
+// replaces the item takes over.
 pub(crate) fn latest(
     line: &'static str,
     ctx: &StableSim<'_>,

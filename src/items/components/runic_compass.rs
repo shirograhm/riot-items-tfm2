@@ -2,10 +2,10 @@ use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api_stable::*;
 
-/// Runic Compass — World Atlas's upgrade, and the last step before a finished
-/// support item: health on top of the regen, and the gold comes in faster
-/// ([`crate::SharedRiches`]). It grows into every finished item of the World Atlas
-/// line.
+// Runic Compass — World Atlas's upgrade, and the last step before a finished
+// support item: health on top of the regen, and the gold comes in faster
+// ([`crate::SharedRiches`]). It grows into every finished item of the World Atlas
+// line.
 #[derive(Clone, Debug)]
 pub struct RunicCompass {
     price: usize,
@@ -44,8 +44,8 @@ impl RunicCompass {
         item
     }
 
-    /// What Shared Riches pays a holder: this much gold, this often.
-    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    // What Shared Riches pays a holder: this much gold, this often.
+    // [`crate::SharedRiches`] does the paying, from the match hook.
     pub(crate) fn shared_riches(&self) -> (usize, f64) {
         (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }

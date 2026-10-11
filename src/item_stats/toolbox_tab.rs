@@ -78,7 +78,7 @@ const GAME_TABS: [&str; 4] = [
     "main.top.right.statistics.tabs.team",
     "main.top.right.statistics.tabs.item",
 ];
-/// The game's own three tabs: the ones game code can consider selected.
+// The game's own three tabs: the ones game code can consider selected.
 const VANILLA_TABS: [&str; 3] = [GAME_TABS[0], GAME_TABS[1], GAME_TABS[2]];
 const ITEM_TAB: &str = "main.top.right.statistics.tabs.item";
 const ITEM_PANEL: &str = "main.top.right.statistics.data.item_stats";
@@ -86,8 +86,8 @@ const ADV_TAB: &str = "main.top.right.statistics.drafters_toolkit_adv_tab";
 const ADV_BUTTON: &str = "main.top.right.statistics.drafters_toolkit_adv_tab.button";
 const ADV_PANEL: &str = "main.top.right.statistics.drafters_toolkit_adv_panel";
 
-/// Everything the Item Stats tab draws outside its panel: the four dropdown
-/// buttons, their lists, and the click catcher behind an open list.
+// Everything the Item Stats tab draws outside its panel: the four dropdown
+// buttons, their lists, and the click catcher behind an open list.
 const ITEM_FILTERS: [&str; 9] = [
     "main.top.right.statistics.item_lane",
     "main.top.right.statistics.item_tier",
@@ -100,8 +100,8 @@ const ITEM_FILTERS: [&str; 9] = [
     "main.top.right.statistics.item_category_catch",
 ];
 
-/// The game's own filters, which drive its three tables and not the Toolbox's.
-/// The same four `super::ui` hides for the Item Stats tab.
+// The game's own filters, which drive its three tables and not the Toolbox's.
+// The same four `super::ui` hides for the Item Stats tab.
 const GAME_FILTERS: [&str; 4] = [
     "main.top.right.statistics.position",
     "main.top.right.statistics.patch",
@@ -111,35 +111,35 @@ const GAME_FILTERS: [&str; 4] = [
 
 // -- geometry -----------------------------------------------------------------
 
-/// Champ, Player, Team, Item, Advanced.
+// Champ, Player, Team, Item, Advanced.
 const TAB_COUNT: u32 = 5;
 
-/// Width of one tab, down from the 232px `statistics.ui` and the Toolbox both
-/// author.
-///
-/// Five tabs at 232 would make the bar 1168px and leave 432px for dropdowns
-/// that need 646. At 186 the bar is 942px - six more than the four-tab bar it
-/// replaces - so nothing to its right has to move.
+// Width of one tab, down from the 232px `statistics.ui` and the Toolbox both
+// author.
+//
+// Five tabs at 232 would make the bar 1168px and leave 432px for dropdowns
+// that need 646. At 186 the bar is 942px - six more than the four-tab bar it
+// replaces - so nothing to its right has to move.
 const TAB_W: u32 = 186;
 
-/// `#tabs` padding, which the Toolbox's own box copies.
+// `#tabs` padding, which the Toolbox's own box copies.
 const BAR_PAD: u32 = 4;
 
-/// Where the Toolbox's box goes: where the fourth tab ends.
-///
-/// The box keeps its own 4px padding, so its button starts 4px further in and
-/// the fifth tab stands that far off the fourth. Starting the box 4px earlier
-/// would close the gap, and lay its padding over the Item Stats tab's right
-/// edge - a sibling drawn above swallows clicks, so that strip of the tab
-/// would stop responding. A gap nobody can see beats a tab that misses clicks.
+// Where the Toolbox's box goes: where the fourth tab ends.
+//
+// The box keeps its own 4px padding, so its button starts 4px further in and
+// the fifth tab stands that far off the fourth. Starting the box 4px earlier
+// would close the gap, and lay its padding over the Item Stats tab's right
+// edge - a sibling drawn above swallows clicks, so that strip of the tab
+// would stop responding. A gap nobody can see beats a tab that misses clicks.
 const ADV_X: u32 = BAR_PAD + (TAB_COUNT - 1) * TAB_W;
 const ADV_W: u32 = TAB_W + 2 * BAR_PAD;
-/// The box's right padding stands in for the bar's.
+// The box's right padding stands in for the bar's.
 const BAR_W: u32 = ADV_X + ADV_W;
 
-/// The screen is 1600px wide and the four Item Stats dropdowns, right-anchored
-/// with their gaps, reach 646px in from the right edge (`statistics.ui`). A
-/// fifth dropdown, or wider ones, has to come out of [`TAB_W`].
+// The screen is 1600px wide and the four Item Stats dropdowns, right-anchored
+// with their gaps, reach 646px in from the right edge (`statistics.ui`). A
+// fifth dropdown, or wider ones, has to come out of [`TAB_W`].
 const SCREEN_W: u32 = 1600;
 const DROPDOWNS_W: u32 = 646;
 const _: () = assert!(BAR_W + 8 <= SCREEN_W - DROPDOWNS_W);
@@ -147,44 +147,44 @@ const _: () = assert!(BAR_W + 8 <= SCREEN_W - DROPDOWNS_W);
 // -- is the Toolbox's tab coming? ---------------------------------------------
 
 const TOOLBOX_ID: &str = "drafters_toolkit";
-/// The game's record of which mods are enabled, relative to the game folder.
+// The game's record of which mods are enabled, relative to the game folder.
 const MODS_JSON: &str = "config/game/mods.json";
-/// The Toolbox's settings, beside its DLL, and the one that turns its tab off.
+// The Toolbox's settings, beside its DLL, and the one that turns its tab off.
 const TOOLBOX_CONFIG: &str = "config.ini";
 const TOOLBOX_TAB_KEY: &str = "advanced_stats";
-/// Steam app id, which names the game's Workshop content folder.
+// Steam app id, which names the game's Workshop content folder.
 const STEAM_APP_ID: &str = "3009300";
 
 // -- the gap before the Toolbox's tab exists ----------------------------------
 
-/// A stand-in for the fifth tab, shown where the Toolbox's button will be.
-///
-/// A plain label rather than a copy of the Toolbox's node. Spawning a node
-/// under the Toolbox's own name would close the gap just as well, and would
-/// also stop the Toolbox spawning its own - the step where it registers its
-/// click handler. A label that does nothing for a sixth of a second cannot
-/// leave the tab dead; an impostor could.
+// A stand-in for the fifth tab, shown where the Toolbox's button will be.
+//
+// A plain label rather than a copy of the Toolbox's node. Spawning a node
+// under the Toolbox's own name would close the gap just as well, and would
+// also stop the Toolbox spawning its own - the step where it registers its
+// click handler. A label that does nothing for a sixth of a second cannot
+// leave the tab dead; an impostor could.
 const STUB: &str = "main.top.right.statistics.riot_tabs_stub";
-/// The Toolbox's label is a literal in its DLL, not a text reference.
+// The Toolbox's label is a literal in its DLL, not a text reference.
 const ADV_TEXT: &str = "Advanced Stats";
-/// `label.color` of `main#strategy_option`: an unselected tab's text.
+// `label.color` of `main#strategy_option`: an unselected tab's text.
 const IDLE_TEXT: &str = "#a3a9b6ff";
 
 // -- label size ---------------------------------------------------------------
 
-/// The size the tab labels are authored at.
+// The size the tab labels are authored at.
 const LABEL_SIZE: u32 = 18;
-/// Below this a tab label stops being readable, however long the text is.
+// Below this a tab label stops being readable, however long the text is.
 const MIN_LABEL_SIZE: u32 = 13;
-/// Clear space kept either side of a label inside its tab.
+// Clear space kept either side of a label inside its tab.
 const LABEL_MARGIN: f32 = 8.0;
 
-/// A throwaway node that measures the tab labels in the game's language.
-///
-/// Every English label fits a 186px tab at size 18. The Russian and Spanish
-/// ones do not, and there is no API that says which language is in use -
-/// `i18n` answers in English regardless. So the labels are laid out for real,
-/// off-screen, in the tabs' own bold font, and measured.
+// A throwaway node that measures the tab labels in the game's language.
+//
+// Every English label fits a 186px tab at size 18. The Russian and Spanish
+// ones do not, and there is no API that says which language is in use -
+// `i18n` answers in English regardless. So the labels are laid out for real,
+// off-screen, in the tabs' own bold font, and measured.
 const PROBE: &str = "main.top.right.statistics.riot_tabs_probe";
 const PROBE_W: u32 = 900;
 const PROBE_TEXTS: [&str; 5] = [
@@ -194,80 +194,80 @@ const PROBE_TEXTS: [&str; 5] = [
     "#asset/base/text/ui?item_stats.tab",
     ADV_TEXT,
 ];
-/// Frames to wait for a measurement before settling for the last one.
+// Frames to wait for a measurement before settling for the last one.
 const PROBE_FRAMES: u32 = 30;
-/// Probes spawned per visit before giving up. A rebuild can take one away.
+// Probes spawned per visit before giving up. A rebuild can take one away.
 const PROBE_SPAWNS: u32 = 3;
 
-/// The label size last measured, used until this visit's probe answers.
-///
-/// A rebuild can take the screen root with it, and with that everything this
-/// visit knew. Without a remembered size a shrunk label would snap back to 18
-/// for the frames the probe takes, on every tab switch.
+// The label size last measured, used until this visit's probe answers.
+//
+// A rebuild can take the screen root with it, and with that everything this
+// visit knew. Without a remembered size a shrunk label would snap back to 18
+// for the frames the probe takes, on every tab switch.
 static LAST_SIZE: AtomicU32 = AtomicU32::new(LABEL_SIZE);
-/// Whether any size but the authored one has ever been written. Once it has,
-/// sizes are always written, so a label shrunk earlier can grow back.
+// Whether any size but the authored one has ever been written. Once it has,
+// sizes are always written, so a label shrunk earlier can grow back.
 static SHRUNK: AtomicBool = AtomicBool::new(false);
 
 // -- rebuild detection --------------------------------------------------------
 
-/// A zero-sized child left in the tab bar and in the Toolbox's box.
-///
-/// A rebuild puts the tabs back at 232px, and the Toolbox respawns its box at
-/// `x: 944` whenever that goes missing. `ui_node_rect` would notice, but it
-/// reports the *last* layout pass, so it notices a frame late and the bar would
-/// visibly jump on every switch. A node that was rebuilt has lost its children,
-/// and `ui_exists` says so the same frame - the signal `super::ui` takes from
-/// its missing `row0`.
+// A zero-sized child left in the tab bar and in the Toolbox's box.
+//
+// A rebuild puts the tabs back at 232px, and the Toolbox respawns its box at
+// `x: 944` whenever that goes missing. `ui_node_rect` would notice, but it
+// reports the *last* layout pass, so it notices a frame late and the bar would
+// visibly jump on every switch. A node that was rebuilt has lost its children,
+// and `ui_exists` says so the same frame - the signal `super::ui` takes from
+// its missing `row0`.
 const BAR_MARK: &str = "main.top.right.statistics.tabs.riot_tabs_mark";
 const ADV_MARK: &str = "main.top.right.statistics.drafters_toolkit_adv_tab.riot_tabs_mark";
 const MARK_SOURCE: &str =
     "riot_tabs_mark:empty {\nignore_event: true;\nwidth: 0px;\nheight: 0px;\n}\n";
 
-/// Frames a fresh merge is given to show up in `ui_node_rect` before it is
-/// judged not to have taken and written again.
+// Frames a fresh merge is given to show up in `ui_node_rect` before it is
+// judged not to have taken and written again.
 const SETTLE_FRAMES: u32 = 2;
-/// Consecutive frames the marks may be missing before they are written off as
-/// not working and the rects alone are trusted.
+// Consecutive frames the marks may be missing before they are written off as
+// not working and the rects alone are trusted.
 const MARK_STREAK: u32 = 5;
 
 // -- which tab looks open -----------------------------------------------------
 
-/// An invisible button laid over the Advanced tab while its panel is open.
-///
-/// The Toolbox's click handler is a toggle: a click on the open tab closes it.
-/// A tab does not do that, and the handler is not this mod's to change, so the
-/// click is kept from reaching it. Same shape as `#item_category_catch`.
+// An invisible button laid over the Advanced tab while its panel is open.
+//
+// The Toolbox's click handler is a toggle: a click on the open tab closes it.
+// A tab does not do that, and the handler is not this mod's to change, so the
+// click is kept from reaching it. Same shape as `#item_category_catch`.
 const SHIELD: &str = "main.top.right.statistics.riot_tabs_shield";
 
-/// Frames between re-asserts while the Advanced panel is open. `super::ui`
-/// repaints the tabs when it heals a rebuilt screen, on a cadence of its own.
+// Frames between re-asserts while the Advanced panel is open. `super::ui`
+// repaints the tabs when it heals a rebuilt screen, on a cadence of its own.
 const REASSERT_EVERY: u32 = 10;
 
 #[derive(Default)]
 struct State {
-    /// Whether [`on_game_tab`] is registered for this visit to the screen.
+    // Whether [`on_game_tab`] is registered for this visit to the screen.
     wired: bool,
-    /// The label size that fits, once the probe has answered.
+    // The label size that fits, once the probe has answered.
     size: Option<u32>,
     probe_spawns: u32,
     probe_age: u32,
-    /// Set when the marks turn out not to work, so the rects are used alone.
+    // Set when the marks turn out not to work, so the rects are used alone.
     markless: bool,
     mark_streak: u32,
     settle: u32,
     frame: u32,
-    /// Whether the Advanced panel is currently over the Item Stats tab.
+    // Whether the Advanced panel is currently over the Item Stats tab.
     covered: bool,
-    /// Whether the Advanced tab is currently painted as the open one.
+    // Whether the Advanced tab is currently painted as the open one.
     lit: bool,
-    /// Which of [`GAME_FILTERS`] were showing the last frame the Advanced panel
-    /// was closed: what to put back when it closes again.
+    // Which of [`GAME_FILTERS`] were showing the last frame the Advanced panel
+    // was closed: what to put back when it closes again.
     filters: [bool; 4],
 }
 
 impl State {
-    /// The size to draw labels at: this visit's measurement, or the last one.
+    // The size to draw labels at: this visit's measurement, or the last one.
     fn label_size(&self) -> u32 {
         self.size
             .unwrap_or_else(|| LAST_SIZE.load(Ordering::Relaxed))
@@ -278,8 +278,8 @@ static STATE: Mutex<Option<State>> = Mutex::new(None);
 
 // -- the soft dependency ------------------------------------------------------
 
-/// Whether `id` is in the `enabled_mods` array of the game's `mods.json`, or
-/// `None` if the document has no such array.
+// Whether `id` is in the `enabled_mods` array of the game's `mods.json`, or
+// `None` if the document has no such array.
 fn listed_enabled(document: &str, id: &str) -> Option<bool> {
     let rest = &document[document.find("\"enabled_mods\"")?..];
     let open = rest.find('[')?;
@@ -287,10 +287,10 @@ fn listed_enabled(document: &str, id: &str) -> Option<bool> {
     Some(rest[open..close].contains(&format!("\"{id}\"")))
 }
 
-/// Whether a Toolbox `config.ini` leaves its Advanced Stats tab on.
-///
-/// The Toolbox reads `true` and `1` as on. A file that does not mention the
-/// key at all is an older or trimmed config, and the tab defaults to on.
+// Whether a Toolbox `config.ini` leaves its Advanced Stats tab on.
+//
+// The Toolbox reads `true` and `1` as on. A file that does not mention the
+// key at all is an older or trimmed config, and the tab defaults to on.
 fn tab_on(config: &str) -> bool {
     for line in config.lines() {
         let line = line.trim();
@@ -306,8 +306,8 @@ fn tab_on(config: &str) -> bool {
     true
 }
 
-/// The Toolbox's folder: placed by hand under its mod id, or subscribed, under
-/// a published file id that is found by its DLL rather than written down here.
+// The Toolbox's folder: placed by hand under its mod id, or subscribed, under
+// a published file id that is found by its DLL rather than written down here.
 fn toolbox_dir(game: &Path) -> Option<PathBuf> {
     let dll = format!("{TOOLBOX_ID}.dll");
     let local = game.join("mods").join(TOOLBOX_ID);
@@ -328,14 +328,14 @@ fn toolbox_dir(game: &Path) -> Option<PathBuf> {
         .find(|dir| dir.join(&dll).is_file())
 }
 
-/// Whether the Toolbox is going to add its Advanced Stats tab this session:
-/// the game lists it as enabled, and its own config has not switched the tab
-/// off.
-///
-/// A list that cannot be read is a no. Nothing requires the Toolbox to be
-/// there, and guessing yes would leave players without it a fifth tab that is
-/// only a label. A config that cannot be read is a yes: the tab is on unless
-/// its owner said otherwise.
+// Whether the Toolbox is going to add its Advanced Stats tab this session:
+// the game lists it as enabled, and its own config has not switched the tab
+// off.
+//
+// A list that cannot be read is a no. Nothing requires the Toolbox to be
+// there, and guessing yes would leave players without it a fifth tab that is
+// only a label. A config that cannot be read is a yes: the tab is on unless
+// its owner said otherwise.
 fn toolbox_tab_enabled() -> bool {
     let Some(game) = std::env::current_exe()
         .ok()
@@ -355,13 +355,12 @@ fn toolbox_tab_enabled() -> bool {
         .map_or(true, |config| tab_on(&config))
 }
 
-/// [`toolbox_tab_enabled`], asked once.
-///
-/// Once is enough because once is all the game and the Toolbox ask: both read
-/// those files at start. It is also what makes the bar right from the first
-/// frame of a visit. Finding out by watching for the Toolbox's box was tried
-/// first, and the bar fell back to four wide tabs every time the box was
-/// briefly gone.
+// [`toolbox_tab_enabled`], asked once.
+//
+// Once is enough because once is all the game and the Toolbox ask: both read
+// those files at start. It is also what makes the bar right from the first
+// frame of a visit: finding out by watching for the Toolbox's box would have
+// the bar fall back to four wide tabs every time the box is briefly gone.
 fn enabled() -> bool {
     static ENABLED: OnceLock<bool> = OnceLock::new();
     *ENABLED.get_or_init(toolbox_tab_enabled)
@@ -369,8 +368,8 @@ fn enabled() -> bool {
 
 // -- label size ---------------------------------------------------------------
 
-/// The largest label size at which a label `widest` pixels wide at
-/// [`LABEL_SIZE`] fits a tab.
+// The largest label size at which a label `widest` pixels wide at
+// [`LABEL_SIZE`] fits a tab.
 fn size_for(widest: f32) -> u32 {
     let room = TAB_W as f32 - 2.0 * LABEL_MARGIN;
     if widest <= room {
@@ -397,7 +396,7 @@ fn probe_source() -> String {
     source
 }
 
-/// The widest tab label at [`LABEL_SIZE`], or `None` while there is no answer.
+// The widest tab label at [`LABEL_SIZE`], or `None` while there is no answer.
 fn widest_label(ctx: &StableClient<'_>) -> Option<f32> {
     let mut widest = 0f32;
     for index in 0..PROBE_TEXTS.len() {
@@ -415,8 +414,8 @@ fn widest_label(ctx: &StableClient<'_>) -> Option<f32> {
     (widest > 0.0).then_some(widest)
 }
 
-/// Measures the labels once per visit. Returns whether the size to draw them
-/// at just changed, which the tabs then have to be told.
+// Measures the labels once per visit. Returns whether the size to draw them
+// at just changed, which the tabs then have to be told.
 fn fit_labels(state: &mut State, ctx: &mut StableClient<'_>) -> bool {
     if state.size.is_some() {
         return false;
@@ -452,7 +451,7 @@ fn near(measured: f32, authored: u32) -> bool {
     (measured - authored as f32).abs() < 0.5
 }
 
-/// Whether the last layout pass had the bar merged, or `None` if it cannot say.
+// Whether the last layout pass had the bar merged, or `None` if it cannot say.
 fn merged(ctx: &StableClient<'_>) -> Option<bool> {
     // Both rects come from the same call, so their difference is the box's `x`
     // inside the screen whatever space the call reports in.
@@ -462,9 +461,9 @@ fn merged(ctx: &StableClient<'_>) -> Option<bool> {
     Some(near(bar_w, BAR_W) && near(adv_x - screen_x, ADV_X) && near(adv_w, ADV_W))
 }
 
-/// One tab's properties: its width, and its label size once a label somewhere
-/// has needed shrinking. The layout authors 18, so in a session where every
-/// label fits the labels are never touched at all.
+// One tab's properties: its width, and its label size once a label somewhere
+// has needed shrinking. The layout authors 18, so in a session where every
+// label fits the labels are never touched at all.
 fn tab_props(size: u32) -> String {
     if SHRUNK.load(Ordering::Relaxed) {
         format!("width: {TAB_W}px; label: {{ size: {size}; }} selected_label: {{ size: {size}; }}")
@@ -473,7 +472,7 @@ fn tab_props(size: u32) -> String {
     }
 }
 
-/// The game's half of the five-tab bar: narrower tabs in a bar sized for five.
+// The game's half of the five-tab bar: narrower tabs in a bar sized for five.
 fn write_bar(ctx: &mut StableClient<'_>, size: u32) {
     let tab = tab_props(size);
     ctx.ui_set_properties(BAR, &format!("width: {BAR_W}px;"));
@@ -482,8 +481,8 @@ fn write_bar(ctx: &mut StableClient<'_>, size: u32) {
     }
 }
 
-/// Writes the five-tab bar, with the Toolbox's box moved to the end of it and
-/// its border dropped.
+// Writes the five-tab bar, with the Toolbox's box moved to the end of it and
+// its border dropped.
 fn merge(ctx: &mut StableClient<'_>, size: u32) {
     write_bar(ctx, size);
     // `color` is the box's 1px outline. Inside the bar it would be a second
@@ -508,13 +507,13 @@ fn stub_source(size: u32) -> String {
     )
 }
 
-/// Keeps the bar in its five-tab shape while the Toolbox's tab does not exist.
-///
-/// The Toolbox looks for its tab on every tenth frame. After a rebuild - a
-/// click on Champ, Player or Team - that is up to ten frames with the tabs
-/// back at their authored width and no fifth one, and then everything jumping
-/// into place: long enough to read as the bar breaking and fixing itself. So
-/// the bar is kept as it will be, with a label standing where the tab will.
+// Keeps the bar in its five-tab shape while the Toolbox's tab does not exist.
+//
+// The Toolbox looks for its tab on every tenth frame. After a rebuild - a
+// click on Champ, Player or Team - that is up to ten frames with the tabs
+// back at their authored width and no fifth one, and then everything jumping
+// into place: long enough to read as the bar breaking and fixing itself. So
+// the bar is kept as it will be, with a label standing where the tab will.
 fn hold_place(state: &mut State, ctx: &mut StableClient<'_>, resized: bool) {
     let size = state.label_size();
     let marked = !state.markless && ctx.ui_exists(BAR_MARK);
@@ -534,8 +533,8 @@ fn hold_place(state: &mut State, ctx: &mut StableClient<'_>, resized: bool) {
     }
 }
 
-/// Keeps the bar merged across rebuilds and respawns. Returns whether one was
-/// just caught, so the highlights can be repeated on the fresh nodes too.
+// Keeps the bar merged across rebuilds and respawns. Returns whether one was
+// just caught, so the highlights can be repeated on the fresh nodes too.
 fn keep_merged(state: &mut State, ctx: &mut StableClient<'_>, resized: bool) -> bool {
     let rebuilt = !state.markless && !(ctx.ui_exists(BAR_MARK) && ctx.ui_exists(ADV_MARK));
 
@@ -574,14 +573,14 @@ fn keep_merged(state: &mut State, ctx: &mut StableClient<'_>, resized: bool) -> 
 
 // -- tabs that behave like tabs -----------------------------------------------
 
-/// Puts the Item Stats dropdowns and tab highlight away while the Advanced
-/// panel is open over that tab, and lets them back when it closes.
-///
-/// [`super::ui`] is still "showing" underneath - a panel spawned over its table
-/// is not the player leaving the tab - so it goes on asserting its dropdowns
-/// visible every frame. This runs straight after it in the same hook, which is
-/// why hiding them here holds, and why nothing has to put them back: the frame
-/// the panel is gone, that assert is the last word again.
+// Puts the Item Stats dropdowns and tab highlight away while the Advanced
+// panel is open over that tab, and lets them back when it closes.
+//
+// [`super::ui`] is still "showing" underneath - a panel spawned over its table
+// is not the player leaving the tab - so it goes on asserting its dropdowns
+// visible every frame. This runs straight after it in the same hook, which is
+// why hiding them here holds, and why nothing has to put them back: the frame
+// the panel is gone, that assert is the last word again.
 fn keep_clear(state: &mut State, ctx: &mut StableClient<'_>, rebuilt: bool) {
     let item_up = ctx.ui_visible(ITEM_PANEL) == Some(true);
     let covered = item_up && ctx.ui_exists(ADV_PANEL);
@@ -609,32 +608,32 @@ fn shield_source() -> String {
     )
 }
 
-/// Makes the tab bar say which table is showing, and makes Advanced a tab
-/// rather than a toggle, for as long as the Advanced panel is open.
-///
-/// The Toolbox means to do the first half itself: on open it deselects the
-/// game's tab and selects its own button, through the `selected` state. The
-/// host only takes that write for `checkbox`, `text_edit`, `slider` and
-/// `selectable` nodes, and every tab here is a `color_selectable`, so nothing
-/// changes - the game's tab stays lit, the Advanced tab never is. This is the
-/// wall `super::ui::paint_tabs` paints around, and the same paint: a tab the
-/// engine never selects is drawn through `image` / `label`, the one game code
-/// has selected through `selected_image` / `selected_label`.
-///
-/// All three of the game's tabs are dimmed without asking which one that is:
-/// the other two are drawing `image` / `label` and ignore it.
-///
-/// # The game's filters
-///
-/// The Toolbox hides the four of them when it opens, once. Game code drives
-/// them from its own tab state and puts them back, so they sat over a table
-/// they do not filter - exactly what `super::ui` found over the Item Stats tab,
-/// and the fix is the same: hide them every frame the panel is open.
-///
-/// Putting them back is the half `super::ui` gets for free, because leaving its
-/// tab is always a click that names the panel to show. Here the panel can close
-/// with nothing rebuilt - a click on the game tab it was opened from - so which
-/// filters were up is remembered from the last frame before it opened.
+// Makes the tab bar say which table is showing, and makes Advanced a tab
+// rather than a toggle, for as long as the Advanced panel is open.
+//
+// The Toolbox means to do the first half itself: on open it deselects the
+// game's tab and selects its own button, through the `selected` state. The
+// host only takes that write for `checkbox`, `text_edit`, `slider` and
+// `selectable` nodes, and every tab here is a `color_selectable`, so nothing
+// changes - the game's tab stays lit, the Advanced tab never is. This is the
+// wall `super::ui::paint_tabs` paints around, and the same paint: a tab the
+// engine never selects is drawn through `image` / `label`, the one game code
+// has selected through `selected_image` / `selected_label`.
+//
+// All three of the game's tabs are dimmed without asking which one that is:
+// the other two are drawing `image` / `label` and ignore it.
+//
+// # The game's filters
+//
+// The Toolbox hides the four of them when it opens, once. Game code drives
+// them from its own tab state and puts them back, so they sat over a table
+// they do not filter - exactly what `super::ui` found over the Item Stats tab,
+// and the fix is the same: hide them every frame the panel is open.
+//
+// Putting them back is the half `super::ui` gets for free, because leaving its
+// tab is always a click that names the panel to show. Here the panel can close
+// with nothing rebuilt - a click on the game tab it was opened from - so which
+// filters were up is remembered from the last frame before it opened.
 fn keep_lit(state: &mut State, ctx: &mut StableClient<'_>, rebuilt: bool) {
     let open = ctx.ui_exists(ADV_PANEL);
     let shielded = ctx.ui_exists(SHIELD);
@@ -693,28 +692,28 @@ fn keep_lit(state: &mut State, ctx: &mut StableClient<'_>, rebuilt: bool) {
     }
 }
 
-/// Closes the Advanced panel when any of the other four tabs is clicked.
-///
-/// The Toolbox closes itself when a game tab becomes `selected`, which it reads
-/// through the same state the host will not let it write - so that never fires.
-/// What closed the panel in practice was the game rebuilding the screen under
-/// it, and that does not happen for the two clicks that matter most:
-///
-/// - Item Stats, which game code knows nothing about. The item table would
-///   open underneath the panel.
-/// - The game tab the panel was opened from. Game code still considers it
-///   selected, so the click changes nothing - and now that the Advanced tab no
-///   longer toggles, it is the only way back.
-///
-/// Removing the panel is a close the Toolbox already handles: its own check
-/// finds the panel gone and clears its open flag, the same path it takes when
-/// the game rebuilds the screen. That path does not put back the filters the
-/// Toolbox hid; [`keep_lit`] does.
-///
-/// Registered beside `super::ui`'s own handler on the same four paths rather
-/// than called from it: that one drops a click it has already seen this frame,
-/// and this has to act on every delivery or none. It is idempotent, so the
-/// duplicates a path-keyed, never-dropped registration produces cost nothing.
+// Closes the Advanced panel when any of the other four tabs is clicked.
+//
+// The Toolbox closes itself when a game tab becomes `selected`, which it reads
+// through the same state the host will not let it write - so that never fires.
+// What closed the panel in practice was the game rebuilding the screen under
+// it, and that does not happen for the two clicks that matter most:
+//
+// - Item Stats, which game code knows nothing about. The item table would
+//   open underneath the panel.
+// - The game tab the panel was opened from. Game code still considers it
+//   selected, so the click changes nothing - and now that the Advanced tab no
+//   longer toggles, it is the only way back.
+//
+// Removing the panel is a close the Toolbox already handles: its own check
+// finds the panel gone and clears its open flag, the same path it takes when
+// the game rebuilds the screen. That path does not put back the filters the
+// Toolbox hid; [`keep_lit`] does.
+//
+// Registered beside `super::ui`'s own handler on the same four paths rather
+// than called from it: that one drops a click it has already seen this frame,
+// and this has to act on every delivery or none. It is idempotent, so the
+// duplicates a path-keyed, never-dropped registration produces cost nothing.
 fn on_game_tab(ctx: &mut StableClient<'_>) {
     let Some(event) = ctx.ui_current_event() else {
         return;
@@ -729,11 +728,11 @@ fn on_game_tab(ctx: &mut StableClient<'_>) {
     }
 }
 
-/// Per-frame entry point, called from the mod's one client hook straight after
-/// [`super::ui::sync`] - an order [`keep_clear`] depends on.
-///
-/// Returns on its first line unless the Toolbox is enabled, and on its second
-/// unless the statistics screen is up.
+// Per-frame entry point, called from the mod's one client hook straight after
+// [`super::ui::sync`] - an order [`keep_clear`] depends on.
+//
+// Returns on its first line unless the Toolbox is enabled, and on its second
+// unless the statistics screen is up.
 pub fn sync(ctx: &mut StableClient<'_>) {
     if !enabled() {
         return;

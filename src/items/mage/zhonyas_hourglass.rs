@@ -11,17 +11,17 @@ use crate::{apply_config, percent_of, ticks, ItemMeta};
 // the carrier untargetable and locks her inputs, and a `damaged_reduce: 100` buff
 // covers damage already on its way (burns, projectiles in flight).
 
-/// Invulnerability for the stasis and the tick after it. Shared by both tiers.
+// Invulnerability for the stasis and the tick after it. Shared by both tiers.
 const STASIS_BUFF: &str = "zhonyas_hourglass_stasis";
-/// A turning golden hourglass whose sand runs out over the stasis, on Guardian
-/// Angel's ring. Bound in `view/effects.view_effects`; the sheet is drawn 2.5
-/// seconds long, so it matches the default `effect_duration_seconds`.
+// A turning golden hourglass whose sand runs out over the stasis, on Guardian
+// Angel's ring. Bound in `view/effects.view_effects`; the sheet is drawn 2.5
+// seconds long, so it matches the default `effect_duration_seconds`.
 const STASIS_EFFECT: &str = "riot_zhonyas_hourglass_stasis";
-/// The activation sound: `sound/sfx/riot_zhonyas_stasis.sound_info`, mapped
-/// into `asset/base/sound/sfx` by `mod.override_info`, which is where sound
-/// names are looked up. The clip is trimmed so its first hit lands on the
-/// activation and its closing chime on the default 2.5 second stasis ending;
-/// the untrimmed source is `sfx/zhonyas.wav`.
+// The activation sound: `sound/sfx/riot_zhonyas_stasis.sound_info`, mapped
+// into `asset/base/sound/sfx` by `mod.override_info`, which is where sound
+// names are looked up. The clip is trimmed so its first hit lands on the
+// activation and its closing chime on the default 2.5 second stasis ending;
+// the untrimmed source is `sfx/zhonyas.wav`.
 const STASIS_SFX: &str = "riot_zhonyas_stasis";
 
 #[derive(Clone, Debug)]
@@ -35,8 +35,8 @@ pub struct ZhonyasHourglass {
     effect_cooldown_seconds: f64,
     // Non-vital stats (internals)
     time_stop_cooldown: usize,
-    /// A hit took the carrier under the threshold this tick; stasis waits for
-    /// `update` to see whether she survived the rest of the tick's damage.
+    // A hit took the carrier under the threshold this tick; stasis waits for
+    // `update` to see whether she survived the rest of the tick's damage.
     time_stop_pending: bool,
 }
 
@@ -148,8 +148,8 @@ impl StableItem for ZhonyasHourglass {
 
     // Time Stop itself. It waits here rather than firing from `on_damaged`
     // because a hit that takes the carrier under the threshold can be followed,
-    // in the same tick, by one that kills her: stasis started on the first played
-    // its hourglass and sound over a death (2026-09-26). By the time this runs
+    // in the same tick, by one that kills her: stasis started on the first would
+    // play its hourglass and sound over a death. By the time this runs
     // the tick's damage is in, so a carrier who died gets nothing, and the
     // cooldown is not spent.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {

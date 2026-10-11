@@ -11,28 +11,25 @@
 //! Every Eternity item a champion holds sees the same cast in the same tick,
 //! so the first to heal for it leaves a note (`HEALED`) and the others find it
 //! and stand down.
-//!
-//! Until 2026-10-06 Eternity also granted stacking Ability Haste for damage
-//! taken from enemy champions; the user took that half out.
 
 use std::cell::Cell;
 
 use mod_api_stable::*;
 
-/// Levels run from 1 to 12, so the heal grows over eleven steps.
+// Levels run from 1 to 12, so the heal grows over eleven steps.
 const LEVEL_STEPS: f64 = 11.0;
 
 thread_local! {
-    /// The cast last healed for, as (match seed, tick, champion). A match is
-    /// simulated on one thread, so the items of one champion all read it.
+    // The cast last healed for, as (match seed, tick, champion). A match is
+    // simulated on one thread, so the items of one champion all read it.
     static HEALED: Cell<Option<(u64, usize, usize)>> = const { Cell::new(None) };
 }
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Eternity {
-    /// The carrier's remaining ability cooldowns (skill, skill2, ult) last
-    /// tick. `None` until the first reading after a spawn, which is only a
-    /// baseline.
+    // The carrier's remaining ability cooldowns (skill, skill2, ult) last
+    // tick. `None` until the first reading after a spawn, which is only a
+    // baseline.
     last_cooldowns: Option<(usize, usize, usize)>,
 }
 
@@ -41,9 +38,9 @@ impl Eternity {
         *self = Self::default();
     }
 
-    /// Heals the carrier when they cast an Ability: `min_heal` at level 1 and
-    /// `max_heal` at level 12, in a straight line between. Call once per
-    /// `update`.
+    // Heals the carrier when they cast an Ability: `min_heal` at level 1 and
+    // `max_heal` at level 12, in a straight line between. Call once per
+    // `update`.
     pub(crate) fn update(
         &mut self,
         ctx: &mut StableSim<'_>,

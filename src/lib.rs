@@ -7,6 +7,7 @@ mod hooks;
 mod item_catalog;
 mod item_stats;
 mod items;
+mod patches;
 mod smart_builds;
 mod tactics;
 mod ui;
@@ -86,6 +87,22 @@ fn record_lethality_table(configs: &std::collections::HashMap<String, config::It
     let _ = LETHALITY_TABLE.set(table);
 }
 
+// Lethality an item balance patch has given an item in place of the
+// table's (`patches::live`). Empty while no patch has.
+static LETHALITY_PATCHES: std::sync::RwLock<Option<std::collections::HashMap<String, usize>>> =
+    std::sync::RwLock::new(None);
+static LETHALITY_PATCHED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+// Hands over the lethality of every item a patch has changed it for, in
+// place of whatever was handed over before.
+pub(crate) fn set_lethality_patches(patches: std::collections::HashMap<String, usize>) {
+    let any = !patches.is_empty();
+    if let Ok(mut held) = LETHALITY_PATCHES.write() {
+        *held = any.then_some(patches);
+    }
+    LETHALITY_PATCHED.store(any, std::sync::atomic::Ordering::Relaxed);
+}
+
 fn total_lethality(ctx: &mut StableSim<'_>, player: usize) -> usize {
     let Some(table) = LETHALITY_TABLE.get() else {
         return 0;
@@ -93,6 +110,16 @@ fn total_lethality(ctx: &mut StableSim<'_>, player: usize) -> usize {
     let Some(keys) = ctx.get_player(player).map(|p| p.item_keys()) else {
         return 0;
     };
+    if LETHALITY_PATCHED.load(std::sync::atomic::Ordering::Relaxed) {
+        if let Ok(patches) = LETHALITY_PATCHES.read() {
+            if let Some(patches) = patches.as_ref() {
+                return keys
+                    .iter()
+                    .filter_map(|key| patches.get(key).or_else(|| table.get(key)))
+                    .sum();
+            }
+        }
+    }
     keys.iter().filter_map(|key| table.get(key)).sum()
 }
 
@@ -205,6 +232,9 @@ struct NativeTapExtension;
 impl StableServerExtension for NativeTapExtension {
     fn before_management_tick(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::before_management_tick();
+        // The article of an item balance patch that has just landed, where
+        // the client's command for it did not get here first.
+        patches::server_tick(ctx);
         // One atomic load once the server's item settings have been seen to.
         item_stats::sync_server_items(ctx);
         // The patch of the sets the Item Stats tab cannot place by seed: every
@@ -213,12 +243,23 @@ impl StableServerExtension for NativeTapExtension {
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Nothing to write here any more. The captures stay in memory and the
-        // totals live in the save file, which only a `StableClient` can reach —
-        // so both are driven from `item_stats::sync` on the client frame loop.
-        // That also retired the write-ordering hazard this used to carry: with
-        // one store instead of two files, there is no half-written pair to lose
-        // a match between.
+        // Nothing to write here. The captures stay in memory and the totals
+        // live in the save file, which only a `StableClient` can reach, so
+        // both are driven from `item_stats::sync` on the client frame loop.
+    }
+
+    fn handle_command(
+        &self,
+        ctx: &mut StableServerCtx<'_>,
+        command: &StableCommand<'_>,
+    ) -> CommandResultV1 {
+        // The client's word that an item balance patch has landed: its
+        // article, now and not at the next management tick.
+        if patches::handle_command(ctx, command) {
+            CommandResultV1::Handled
+        } else {
+            CommandResultV1::Pass
+        }
     }
 
     fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {
@@ -273,18 +314,18 @@ fn init(host: &StableHost) -> StableMod {
     let mut riches = SharedRiches::default();
 
     // Both macros note the key as they go, for the item catalog to name and draw.
-    // Registration order used to matter: the numeric `items` on a match record were
-    // decoded by it. Nothing reads them that way now — loadouts come from the
-    // simulation as real keys, and the statistics are stored under those keys — so
-    // the order below is for people, grouped by tier and alphabetical within it.
+    // Registration order does not matter: loadouts come from the simulation as
+    // real keys, and the statistics are stored under those keys. The order
+    // below is for people, grouped by tier and alphabetical within it.
     // The `, passive_crit` arm is for items whose passive grants crit chance:
     // Smart Builds counts it at full stacks on top of the flat stat.
     // The `, boots` arm is for upgraded boots: tier-3 items that are build goals
     // of their own, so the editor's picker lists them beside the radiants.
     // The `, shared_riches` arm is for the World Atlas line: its gold is paid
     // from the match hook, at the rate the item was configured with.
-    // Every item comes out wrapped in `perf::Timed`, which is the item itself
-    // unless `perf::ENABLED`.
+    // Every item comes out wrapped in `perf::Timed`, which times its hooks
+    // when `perf::ENABLED` and is where an item balance patch reaches it
+    // (`patches`): that is what the constructor handed over with it is for.
     macro_rules! configured {
         ($key:literal => $T:ty, shared_riches) => {{
             let item = configured!($key => $T);
@@ -304,11 +345,17 @@ fn init(host: &StableHost) -> StableMod {
         ($key:literal => $T:ty, spellblade) => {{
             let item = configured!($key => $T);
             Spellblade::note_bonus($key, item.spellblade_bonus());
+            patches::note_refresh($key, |config| {
+                Spellblade::note_bonus($key, <$T>::with_config(config).spellblade_bonus())
+            });
             item
         }};
         ($key:literal => $T:ty, $also:ident, spellblade) => {{
             let item = configured!($key => $T, $also);
             Spellblade::note_bonus($key, item.spellblade_bonus());
+            patches::note_refresh($key, |config| {
+                Spellblade::note_bonus($key, <$T>::with_config(config).spellblade_bonus())
+            });
             item
         }};
         ($key:literal => $T:ty) => {{
@@ -316,7 +363,8 @@ fn init(host: &StableHost) -> StableMod {
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
-            perf::timed($key, item)
+            patches::note_mod_item($key, &item, <$T>::with_config);
+            perf::timed($key, item, <$T>::with_config)
         }};
     }
     macro_rules! configured_radiant {
@@ -333,11 +381,17 @@ fn init(host: &StableHost) -> StableMod {
         ($key:literal => $T:ty, spellblade) => {{
             let item = configured_radiant!($key => $T);
             Spellblade::note_bonus($key, item.spellblade_bonus());
+            patches::note_refresh($key, |config| {
+                Spellblade::note_bonus($key, <$T>::radiant_with_config(config).spellblade_bonus())
+            });
             item
         }};
         ($key:literal => $T:ty, $also:ident, spellblade) => {{
             let item = configured_radiant!($key => $T, $also);
             Spellblade::note_bonus($key, item.spellblade_bonus());
+            patches::note_refresh($key, |config| {
+                Spellblade::note_bonus($key, <$T>::radiant_with_config(config).spellblade_bonus())
+            });
             item
         }};
         ($key:literal => $T:ty) => {{
@@ -349,7 +403,8 @@ fn init(host: &StableHost) -> StableMod {
             smart_builds::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key);
-            perf::timed($key, item)
+            patches::note_mod_item($key, &item, <$T>::radiant_with_config);
+            perf::timed($key, item, <$T>::radiant_with_config)
         }};
     }
 

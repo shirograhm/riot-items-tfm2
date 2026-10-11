@@ -3,47 +3,47 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, HealWatch, ItemMeta, DISTANCE_UNITS_PER_RANGE};
 
-/// The `view_projectiles` name in `view/effects.view_effects` that draws the
-/// wisp flying from the ally who was healed to the ally the heal chains to
-/// (`effects/moonstone_wisp`).
+// The `view_projectiles` name in `view/effects.view_effects` that draws the
+// wisp flying from the ally who was healed to the ally the heal chains to
+// (`effects/moonstone_wisp`).
 const WISP_PROJECTILE: &str = "riot_moonstone_wisp";
-/// The wisp's hit circle: small, so it only lands on the ally it was sent to.
+// The wisp's hit circle: small, so it only lands on the ally it was sent to.
 const WISP_RADIUS: u64 = 1_000;
-/// How long the wisp is in the air, whatever the distance (1/6 s).
+// How long the wisp is in the air, whatever the distance (1/6 s).
 const WISP_TICKS: u64 = 10;
-/// The slowest the wisp flies, in world units per tick: two allies standing
-/// together still get a visible flight rather than a hop.
+// The slowest the wisp flies, in world units per tick: two allies standing
+// together still get a visible flight rather than a hop.
 const WISP_MIN_SPEED: u64 = 500;
 
-/// Moonstone Renewer — Starlit Grace, a share of every heal the carrier gives
-/// an ally passed on to another ally near them.
-///
-/// # Where the amounts come from
-///
-/// The host says that an ally-targeted skill was cast and at whom, never what
-/// it did. So the heal is read back afterwards from the carrier's own healing
-/// statistics ([`HealWatch`]): the host credits the carrier with the health
-/// they really restored to another champion, so both who was healed and by how
-/// much are the host's own figures. A skill cast on the carrier that heals
-/// around them counts as well.
-///
-/// Shields are not chained. Riot's item does, but the host credits nothing as
-/// a shield is given, so one could only be guessed at.
-///
-/// # The wisp is only a picture
-///
-/// The chained heal lands at once and a wisp is sent after it from the ally
-/// who was healed. It could not carry the heal: a projectile has no payload,
-/// so the amount would have to be worked out again on arrival, and a heal that
-/// lands later would be read back as one of the carrier's to chain.
-///
-/// # A chained heal does not chain again
-///
-/// It is given in the carrier's name, so the host credits it like any other;
-/// the watch is read again straight after, or it would come back next tick as
-/// a heal to chain.
-///
-/// The passive is the same on base and Radiant; Radiant buys the stat line.
+// Moonstone Renewer — Starlit Grace, a share of every heal the carrier gives
+// an ally passed on to another ally near them.
+//
+// # Where the amounts come from
+//
+// The host says that an ally-targeted skill was cast and at whom, never what
+// it did. So the heal is read back afterwards from the carrier's own healing
+// statistics ([`HealWatch`]): the host credits the carrier with the health
+// they really restored to another champion, so both who was healed and by how
+// much are the host's own figures. A skill cast on the carrier that heals
+// around them counts as well.
+//
+// Shields are not chained. Riot's item does, but the host credits nothing as
+// a shield is given, so one could only be guessed at.
+//
+// # The wisp is only a picture
+//
+// The chained heal lands at once and a wisp is sent after it from the ally
+// who was healed. It could not carry the heal: a projectile has no payload,
+// so the amount would have to be worked out again on arrival, and a heal that
+// lands later would be read back as one of the carrier's to chain.
+//
+// # A chained heal does not chain again
+//
+// It is given in the carrier's name, so the host credits it like any other;
+// the watch is read again straight after, or it would come back next tick as
+// a heal to chain.
+//
+// The passive is the same on base and Radiant; Radiant buys the stat line.
 #[derive(Clone, Debug)]
 pub struct MoonstoneRenewer {
     meta: ItemMeta,
@@ -59,7 +59,7 @@ pub struct MoonstoneRenewer {
 }
 
 impl MoonstoneRenewer {
-    /// The native effect the wisp carries, registered in `lib.rs`.
+    // The native effect the wisp carries, registered in `lib.rs`.
     pub const WISP_HIT: &'static str = "riot_moonstone_wisp_hit";
 
     pub fn base() -> Self {
@@ -118,10 +118,10 @@ impl MoonstoneRenewer {
         self
     }
 
-    /// Who a heal on `from` chains to: the nearest living allied champion
-    /// within range of `from`, the carrier and `from` aside. The range is
-    /// measured from the ally, not the carrier, so the carrier's size does not
-    /// stretch it.
+    // Who a heal on `from` chains to: the nearest living allied champion
+    // within range of `from`, the carrier and `from` aside. The range is
+    // measured from the ally, not the carrier, so the carrier's size does not
+    // stretch it.
     fn chain_target(&self, ctx: &StableSim<'_>, caster: usize, from: usize) -> Option<usize> {
         let caster_team = ctx.get_entity(caster)?.team();
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
@@ -150,9 +150,9 @@ impl MoonstoneRenewer {
         best.map(|(id, _)| id)
     }
 
-    /// Sends the wisp from `from` to `to`. Its speed is Statikk Shiv's spark
-    /// timing: the gap between the two hit circles spread over `WISP_TICKS`,
-    /// plus the ally's own move speed, so one running away is still caught.
+    // Sends the wisp from `from` to `to`. Its speed is Statikk Shiv's spark
+    // timing: the gap between the two hit circles spread over `WISP_TICKS`,
+    // plus the ally's own move speed, so one running away is still caught.
     fn send_wisp(ctx: &mut StableSim<'_>, caster: usize, from: usize, to: usize) {
         let Some(team) = ctx.get_entity(caster).map(|c| c.team()) else {
             return;
@@ -288,8 +288,8 @@ impl StableItem for MoonstoneRenewer {
     }
 }
 
-/// What the wisp does when it reaches the ally: nothing. The heal has landed
-/// already; `spawn_projectile` still needs an effect for the wisp to carry.
+// What the wisp does when it reaches the ally: nothing. The heal has landed
+// already; `spawn_projectile` still needs an effect for the wisp to carry.
 #[derive(Clone, Debug)]
 pub struct MoonstoneWisp;
 

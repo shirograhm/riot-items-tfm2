@@ -3,36 +3,36 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
 
-/// Statless marker on a unit Torment is burning, monster as much as
-/// champion: the `view_buffs` binding of the same name in
-/// `view/effects.view_effects` draws a fire at its feet for as long as the
-/// marker is up. One name for both tiers and every carrier, so a unit two of
-/// them burn shows one fire. The art is drawn to a champion's size.
+// Statless marker on a unit Torment is burning, monster as much as
+// champion: the `view_buffs` binding of the same name in
+// `view/effects.view_effects` draws a fire at its feet for as long as the
+// marker is up. One name for both tiers and every carrier, so a unit two of
+// them burn shows one fire. The art is drawn to a champion's size.
 const BURN_BUFF: &str = "riot_liandrys_burn";
-/// The same marker for a minion, bound to a fire its size: a minion stands
-/// about 13 px wide and tall against a champion's 21 to 36, its feet 7 px
-/// under it against 12, and the champion's fire swallowed it.
+// The same marker for a minion, bound to a fire its size: a minion stands
+// about 13 px wide and tall against a champion's 21 to 36, its feet 7 px
+// under it against 12, and the champion's fire swallowed it.
 const SMALL_BURN_BUFF: &str = "riot_liandrys_burn_small";
-/// How much longer than the burn the marker is put up for, which is also how
-/// long it is left alone before it is put up again. A damage-over-time skill
-/// starts the burn over on every one of its ticks, and replacing a buff that
-/// often is work for nothing: the marker would restart its animation as often
-/// if the view ever took a replaced buff for a new one. So the flames may
-/// outlast the burn by this much, a fifth of a second.
+// How much longer than the burn the marker is put up for, which is also how
+// long it is left alone before it is put up again. A damage-over-time skill
+// starts the burn over on every one of its ticks, and replacing a buff that
+// often is work for nothing: the marker would restart its animation as often
+// if the view ever took a replaced buff for a new one. So the flames may
+// outlast the burn by this much, a fifth of a second.
 const MARKER_SLACK_TICKS: usize = DOT_TICK_RATE;
 
-/// One unit this carrier's Torment is burning.
+// One unit this carrier's Torment is burning.
 #[derive(Clone, Copy, Debug)]
 struct Burn {
     target: usize,
-    /// Ticks the burn has left.
+    // Ticks the burn has left.
     remaining: usize,
-    /// Ticks until its next damage instance.
+    // Ticks until its next damage instance.
     until_next: usize,
-    /// Ticks the flames' marker has left. Never less than `remaining`.
+    // Ticks the flames' marker has left. Never less than `remaining`.
     marker: usize,
-    /// Which marker the flames are: the small one on a minion. Kept here
-    /// because the unit may be gone by the time its flames are to come down.
+    // Which marker the flames are: the small one on a minion. Kept here
+    // because the unit may be gone by the time its flames are to come down.
     flames: &'static str,
 }
 
@@ -124,8 +124,8 @@ impl LiandrysTorment {
         Some(per_instance.round() as usize)
     }
 
-    /// Starts the burn on `target`, or starts its time over, and puts the
-    /// `flames` up with it.
+    // Starts the burn on `target`, or starts its time over, and puts the
+    // `flames` up with it.
     fn apply_burn(&mut self, ctx: &mut StableSim<'_>, target: usize, flames: &'static str) {
         let duration = self.duration_ticks();
         let index = match self.burns.iter().position(|burn| burn.target == target) {

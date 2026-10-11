@@ -3,9 +3,9 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus};
 
-/// Bloodsong — what World Atlas grows into, by way of Runic Compass:
-/// Spellblade, a mark that makes its target take more damage, and the gold
-/// the Atlas line pays ([`crate::SharedRiches`]).
+// Bloodsong — what World Atlas grows into, by way of Runic Compass:
+// Spellblade, a mark that makes its target take more damage, and the gold
+// the Atlas line pays ([`crate::SharedRiches`]).
 #[derive(Clone, Debug)]
 pub struct Bloodsong {
     meta: ItemMeta,
@@ -93,8 +93,8 @@ impl Bloodsong {
         SpellbladeBonus::by_level(self.effect_min_bonus_damage, self.effect_max_bonus_damage)
     }
 
-    /// What Shared Riches pays a holder: this much gold, this often.
-    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    // What Shared Riches pays a holder: this much gold, this often.
+    // [`crate::SharedRiches`] does the paying, from the match hook.
     pub(crate) fn shared_riches(&self) -> (usize, f64) {
         (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
@@ -186,8 +186,8 @@ impl StableItem for Bloodsong {
             .on_hit_magic(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for
-    /// the cast that readies the next one.
+    // Lands the Spellblade damage whose delay has run out, and watches for
+    // the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);
