@@ -16,7 +16,7 @@ pub struct VoltaicCyclosword {
     effect_max_stacks: usize,
     effect_duration_seconds: f64,
     energized: Energized,
-    /// Ticks left on Firmament's bonus lethality
+    // Ticks left on Firmament's bonus lethality
     firmament_ticks: usize,
     procs: ProcQueue,
 }
@@ -196,8 +196,8 @@ impl StableItem for VoltaicCyclosword {
         self.energized.update(ctx, player, self.effect_max_stacks);
     }
 
-    /// The Energized meter carries across the Radiant upgrade, so buying it
-    /// mid-fight does not throw away a nearly full bar.
+    // The Energized meter carries across the Radiant upgrade, so buying it
+    // mid-fight does not throw away a nearly full bar.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.energized.stacks() as u64

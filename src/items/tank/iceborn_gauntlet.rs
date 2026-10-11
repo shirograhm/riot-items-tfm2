@@ -15,39 +15,39 @@ use crate::{
 // zone is a spot and a timer, like Hollow Radiance's eruption: no unit stands
 // for it, so it stays where the target was hit and nothing can attack it.
 
-/// A zone slows what stands in it four times a second.
+// A zone slows what stands in it four times a second.
 const SLOW_TICK_SECONDS: f64 = 0.25;
-/// Shared by both variants and by every zone: the slow is a state on the
-/// target, so two zones refresh one slow rather than stacking two.
+// Shared by both variants and by every zone: the slow is a state on the
+// target, so two zones refresh one slow rather than stacking two.
 const SLOW_BUFF: &str = "iceborn_gauntlet_slow";
-/// A little longer than one slow tick, so an enemy inside a zone is never
-/// between slows; it wears off shortly after leaving the zone or the zone
-/// melting. The slow has no duration of its own: it is for being in the zone.
+// A little longer than one slow tick, so an enemy inside a zone is never
+// between slows; it wears off shortly after leaving the zone or the zone
+// melting. The slow has no duration of its own: it is for being in the zone.
 const SLOW_GRACE_TICKS: usize = 10;
 
-/// The zone's picture, in three plays of one sheet (`effects/frost_zone`): it
-/// spreads, it lies there, it melts. Bound in `view/effects.view_effects`.
+// The zone's picture, in three plays of one sheet (`effects/frost_zone`): it
+// spreads, it lies there, it melts. Bound in `view/effects.view_effects`.
 const ZONE_FORM_EFFECT: &str = "riot_frost_zone_form";
 const ZONE_HOLD_EFFECT: &str = "riot_frost_zone_hold";
 const ZONE_MELT_EFFECT: &str = "riot_frost_zone_melt";
-/// How long one play lasts, in ticks: each is five frames of 0.1 s. A zone's
-/// first play spreads, its last melts and the ones between hold, so the
-/// picture covers whatever the config makes the zone's duration, to within one
-/// play.
+// How long one play lasts, in ticks: each is five frames of 0.1 s. A zone's
+// first play spreads, its last melts and the ones between hold, so the
+// picture covers whatever the config makes the zone's duration, to within one
+// play.
 const ZONE_PLAY_TICKS: usize = 30;
 
-/// A frost zone lying in the world.
+// A frost zone lying in the world.
 #[derive(Clone, Copy, Debug)]
 struct FrostZone {
     x: u64,
     y: u64,
-    /// Ticks until it melts away.
+    // Ticks until it melts away.
     remaining: usize,
-    /// Ticks until it slows again. Zero as it forms, so it slows at once.
+    // Ticks until it slows again. Zero as it forms, so it slows at once.
     until_slow: usize,
-    /// Ticks until its picture is played again.
+    // Ticks until its picture is played again.
     until_play: usize,
-    /// Whether its picture has been played at all: the first play spreads.
+    // Whether its picture has been played at all: the first play spreads.
     formed: bool,
 }
 
@@ -68,8 +68,8 @@ pub struct IcebornGauntlet {
     // Non-vital stats (internals)
     spellblade: Spellblade,
     procs: ProcQueue,
-    /// Every zone this carrier has lying in the world. The empowered attack
-    /// lays one; the rest happens in `update`.
+    // Every zone this carrier has lying in the world. The empowered attack
+    // lays one; the rest happens in `update`.
     zones: Vec<FrostZone>,
 }
 
@@ -148,8 +148,8 @@ impl IcebornGauntlet {
         SpellbladeBonus::by_level(self.effect_min_bonus_damage, self.effect_max_bonus_damage)
     }
 
-    /// Lays a frost zone where `target` stands. It stays on that spot for its
-    /// whole life, whatever the target does next.
+    // Lays a frost zone where `target` stands. It stays on that spot for its
+    // whole life, whatever the target does next.
     fn lay_zone(&mut self, ctx: &StableSim<'_>, target: usize) {
         let Some((x, y)) = ctx.get_entity(target).map(|target| target.pos()) else {
             return;
@@ -168,7 +168,7 @@ impl IcebornGauntlet {
         });
     }
 
-    /// Enemy units (not turrets) within `range` of a spot.
+    // Enemy units (not turrets) within `range` of a spot.
     fn enemies_near(
         ctx: &StableSim<'_>,
         team: usize,
@@ -190,7 +190,7 @@ impl IcebornGauntlet {
             .collect()
     }
 
-    /// Runs every zone lying in the world: its picture, its slow, its timer.
+    // Runs every zone lying in the world: its picture, its slow, its timer.
     fn run_zones(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.zones.is_empty() {
             return;
@@ -319,8 +319,8 @@ impl StableItem for IcebornGauntlet {
         self.lay_zone(ctx, target);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, watches for the
-    /// cast that readies the next one, and runs the zones.
+    // Lands the Spellblade damage whose delay has run out, watches for the
+    // cast that readies the next one, and runs the zones.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);

@@ -62,48 +62,42 @@ use std::sync::Mutex;
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use state::{Patch, State};
+use state::State;
 
-/// The whole feature. Off, nothing is read, patched or written, and a save
-/// that has a patch state keeps it untouched.
+// The whole feature. Off, nothing is read, patched or written, and a save
+// that has a patch state keeps it untouched.
 pub(crate) const ENABLED: bool = true;
 
-/// The key the patch state lives under, in the mod's namespace of the save.
+// The key the patch state lives under, in the mod's namespace of the save.
 const KEY: &str = "item_patches";
 
-/// Frames between two looks at whether a patch is due.
+// Frames between two looks at whether a patch is due.
 const CHECK_FRAMES: u32 = 30;
 
-/// Matches a version needs to have had counted for its items to be judged.
-/// A version with fewer passes without a patch.
-const MIN_MATCHES: u32 = 8;
-
-/// See the module docs.
+// See the module docs.
 const FORCE_FILE: &str = "item-patch.now";
 
-/// A patch lands on the management screens, and not while a simulation is
-/// ticking: the numbers a match reads must not change under it. This is how
-/// long none has to have ticked for.
+// A patch lands on the management screens, and not while a simulation is
+// ticking: the numbers a match reads must not change under it. This is how
+// long none has to have ticked for.
 const QUIET_MILLIS: u64 = 400;
-/// Looks after which a due patch lands on the management screens however
-/// busy the simulations are: the calendar can be left running, and
-/// background fixtures with it.
+// Looks after which a due patch lands on the management screens however
+// busy the simulations are: the calendar can be left running, and
+// background fixtures with it.
 const QUIET_PATIENCE: u32 = 240;
 
-/// What the build hooks add to an item's score for its patches, at the most
-/// they lean ([`leaning`]). On the scale of `item_build_hook`'s bonuses,
-/// which nothing documents: a mod final gets 0.5 there for being one, so at
-/// full lean an item is worth that much again less a fifth, or more.
+// What the build hooks add to an item's score for its patches, at the most
+// they lean ([`leaning`]). On the scale of `item_build_hook`'s bonuses,
+// which nothing documents: a mod final gets 0.5 there for being one, so at
+// full lean an item is worth that much again less a fifth, or more.
 pub(crate) const LEAN_SCORE: f32 = 0.2;
 
-/// The command the client sends its own server extension to have it post a
-/// patch's article at once.
-///
-/// That used to wait for the next management tick, and the server only ticks
-/// while the calendar runs. The first in-game run (2026-10-10) had a patch
-/// land on an idle management screen and then nothing, three minutes on with
-/// the game open. With the command the article was posted as the patch
-/// landed (seen in the test log the same night).
+// The command the client sends its own server extension to have it post a
+// patch's article at once.
+//
+// Without it the article waits for the next management tick, and the server
+// only ticks while the calendar runs: a patch that lands on an idle
+// management screen would post nothing until the player moves on.
 const SERVER_COMMAND: &str = "item_patches";
 
 pub(crate) fn log(key: &str, text: impl FnOnce() -> String) {
@@ -112,9 +106,9 @@ pub(crate) fn log(key: &str, text: impl FnOnce() -> String) {
 
 // -- registration ---------------------------------------------------------------
 
-/// Notes one of this mod's items as it registers, with the constructor that
-/// makes it from a config: what a patch needs to know what the item's stats
-/// would be with other numbers.
+// Notes one of this mod's items as it registers, with the constructor that
+// makes it from a config: what a patch needs to know what the item's stats
+// would be with other numbers.
 pub(crate) fn note_mod_item<T: StableItem>(
     key: &'static str,
     item: &T,
@@ -130,8 +124,8 @@ pub(crate) fn note_mod_item<T: StableItem>(
     );
 }
 
-/// Notes something that keeps a copy of `key`'s numbers outside the item:
-/// `refresh` is called with the item's config whenever the patches change.
+// Notes something that keeps a copy of `key`'s numbers outside the item:
+// `refresh` is called with the item's config whenever the patches change.
 pub(crate) fn note_refresh(
     key: &'static str,
     refresh: impl Fn(&ItemConfig) + Send + Sync + 'static,
@@ -139,7 +133,7 @@ pub(crate) fn note_refresh(
     base::note_refresh(key, Box::new(refresh));
 }
 
-/// How `key`'s patches lean a build choice, -1 (nerfed) to 1 (buffed).
+// How `key`'s patches lean a build choice, -1 (nerfed) to 1 (buffed).
 pub(crate) fn leaning(key: &str) -> f32 {
     live::leaning(key)
 }
@@ -147,13 +141,13 @@ pub(crate) fn leaning(key: &str) -> f32 {
 // -- the save's state -----------------------------------------------------------
 
 struct Session {
-    /// The save's state has been read.
+    // The save's state has been read.
     loaded: bool,
     state: State,
-    /// The state has changed since it was last written to the save.
+    // The state has changed since it was last written to the save.
     dirty: bool,
     frame: u32,
-    /// Looks a due patch has waited for the simulations to go quiet.
+    // Looks a due patch has waited for the simulations to go quiet.
     waited: u32,
     watch: Watch,
 }
@@ -187,17 +181,17 @@ struct Article {
     author: String,
 }
 
-/// Articles the client has written for the server to post: only the server
-/// can.
+// Articles the client has written for the server to post: only the server
+// can.
 static ARTICLES: Mutex<Vec<Article>> = Mutex::new(Vec::new());
 static ARTICLE_WAITING: AtomicBool = AtomicBool::new(false);
 
-/// A version as its numbers, to tell the newer of two: `1.10` is after
-/// `1.9`. Two that have the same numbers are the same version however they
-/// are written (`1.2` and `1.2.0`, or with a letter in front): a version is
-/// read from two places now, the matches and the patch notes, and a patch
-/// must not be set off by the two spelling one version differently. Only
-/// versions with no number in them are told apart by their text.
+// A version as its numbers, to tell the newer of two: `1.10` is after
+// `1.9`. Two that have the same numbers are the same version however they
+// are written (`1.2` and `1.2.0`, or with a letter in front): a version is
+// read from two places now, the matches and the patch notes, and a patch
+// must not be set off by the two spelling one version differently. Only
+// versions with no number in them are told apart by their text.
 fn version_order(a: &str, b: &str) -> Order {
     let numbers = |text: &str| -> Vec<u64> {
         let mut numbers: Vec<u64> = text
@@ -216,22 +210,22 @@ fn version_order(a: &str, b: &str) -> Order {
     a_numbers.cmp(&b_numbers)
 }
 
-/// Whether [`FORCE_FILE`] is there, taking it away if so.
+// Whether [`FORCE_FILE`] is there, taking it away if so.
 fn forced() -> bool {
     let path = crate::config::mod_dir().join(FORCE_FILE);
     path.exists() && std::fs::remove_file(&path).is_ok()
 }
 
-/// Looks at the inbox between two full readings of it.
+// Looks at the inbox between two full readings of it.
 const WATCH_REREAD: u32 = 30;
 
-/// What the player's inbox has said of the game's own patches.
+// What the player's inbox has said of the game's own patches.
 struct Watch {
-    /// The team whose news was read.
+    // The team whose news was read.
     team: Option<usize>,
-    /// How many articles it had then.
+    // How many articles it had then.
     seen: usize,
-    /// The newest version a champion patch note among them announces.
+    // The newest version a champion patch note among them announces.
     newest: Option<String>,
     looks: u32,
 }
@@ -247,21 +241,21 @@ impl Watch {
     }
 }
 
-/// Keeps [`Watch::newest`]: the version of the newest champion patch notes
-/// in the player's inbox. Every two seconds on the management screens.
-///
-/// The game says nowhere what version it is on (no event for a patch, no
-/// field for the version: only the matches played carry one). Its patch
-/// notes do, and they are an article in the player's team's news the day
-/// the patch lands: type `PatchNote`, with a `version`, in the team record's
-/// `news` list.
-///
-/// A look is one small read, of the article after the last one seen, which
-/// is not there while nothing has come. When something has, the list is read
-/// whole: where in it a new article goes is not known, and a patch note is
-/// looked for by what it is and not by where. It is read whole every
-/// [`WATCH_REREAD`]th look regardless, in case the list is ever shortened
-/// from the front as it grows.
+// Keeps [`Watch::newest`]: the version of the newest champion patch notes
+// in the player's inbox. Every two seconds on the management screens.
+//
+// The game says nowhere what version it is on (no event for a patch, no
+// field for the version: only the matches played carry one). Its patch
+// notes do, and they are an article in the player's team's news the day
+// the patch lands: type `PatchNote`, with a `version`, in the team record's
+// `news` list.
+//
+// A look is one small read, of the article after the last one seen, which
+// is not there while nothing has come. When something has, the list is read
+// whole: where in it a new article goes is not known, and a patch note is
+// looked for by what it is and not by where. It is read whole every
+// [`WATCH_REREAD`]th look regardless, in case the list is ever shortened
+// from the front as it grows.
 fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch) {
     use serde_json::Value;
 
@@ -319,7 +313,7 @@ fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch) {
     watch.newest = newest;
 }
 
-/// Lands a patch if one is due. See the module docs for when that is.
+// Lands a patch if one is due. See the module docs for when that is.
 fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
     let slow_look = session.frame % (CHECK_FRAMES * 4) == 0;
     let forced = slow_look && forced();
@@ -372,36 +366,30 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
 
     let window = crate::item_stats::snapshot(Some(judged.as_str()), None);
     let number = session.state.number + 1;
-    let mut patch = if window.matches >= MIN_MATCHES || forced {
-        let tallies: HashMap<String, balance::Tally> = window
-            .rows
-            .iter()
-            .map(|(key, totals)| {
-                (
-                    key.clone(),
-                    balance::Tally {
-                        games: totals.games,
-                        wins: totals.wins,
-                    },
-                )
-            })
-            .collect();
-        balance::decide(
-            base::base(),
-            &session.state,
-            &tallies,
-            window.matches,
-            number,
-            &judged,
-        )
-    } else {
-        Patch {
-            number,
-            version: judged.clone(),
-            matches: window.matches,
-            ..Patch::default()
-        }
-    };
+    let tallies: HashMap<String, balance::Tally> = window
+        .rows
+        .iter()
+        .map(|(key, totals)| {
+            (
+                key.clone(),
+                balance::Tally {
+                    games: totals.games,
+                    wins: totals.wins,
+                },
+            )
+        })
+        .collect();
+    // Whether there is enough to judge an item on is asked item by item
+    // (`balance::MIN_GAMES`), of a forced patch as of any other. A version
+    // of few matches has few such items, or none, and then no patch.
+    let mut patch = balance::decide(
+        base::base(),
+        &session.state,
+        &tallies,
+        window.matches,
+        number,
+        &judged,
+    );
     log("patch.landed", || {
         format!(
             "patch {number} as v{announced} (hotfix={hotfix}), judged on v{judged} ({} matches, forced={forced}): {} change(s){}",
@@ -464,8 +452,8 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session) {
     log("patch.wake", || format!("server asked to post now, sent={sent}"));
 }
 
-/// Every client frame: the tooltips, the save's state, and whether a patch
-/// is due.
+// Every client frame: the tooltips, the save's state, and whether a patch
+// is due.
 pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     // Whatever plain article is open scrolls as far as its text goes. Ahead
     // of the switch below: the layout this goes with is in use either way.
@@ -532,8 +520,8 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     }
 }
 
-/// The server's answer to [`SERVER_COMMAND`]: what its management tick does
-/// for a patch, without waiting for one. `false` for any other command.
+// The server's answer to [`SERVER_COMMAND`]: what its management tick does
+// for a patch, without waiting for one. `false` for any other command.
 pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableCommand<'_>) -> bool {
     if !ENABLED || command.command != SERVER_COMMAND {
         return false;
@@ -542,8 +530,8 @@ pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableComm
     true
 }
 
-/// Every server management tick, and at once on [`SERVER_COMMAND`]: posts the
-/// articles the client has written. One atomic read while there is none.
+// Every server management tick, and at once on [`SERVER_COMMAND`]: posts the
+// articles the client has written. One atomic read while there is none.
 pub(crate) fn server_tick(ctx: &mut StableServerCtx<'_>) {
     if !ARTICLE_WAITING.swap(false, Ordering::Relaxed) {
         return;
@@ -568,37 +556,35 @@ pub(crate) fn server_tick(ctx: &mut StableServerCtx<'_>) {
     }
 }
 
-/// The content bind the game files a plain article by, and the value of it
-/// that files one under the inbox's Patch tab.
+// The content bind the game files a plain article by, and the value of it
+// that files one under the inbox's Patch tab.
 const SCOPE_KEY: &str = "Scope";
 const SCOPE_PATCH: &str = "patch";
 
-/// Files the article just posted under the inbox's Patch tab (the user,
-/// 2026-10-10: "it should be a patch news article. right now it shows up in
-/// the General section"; and, if that cannot be had, "its fine to leave it
-/// in general"). Says what happened, for the test log. Whatever goes wrong,
-/// the article is left as it was posted, under General.
-///
-/// An article has no section of its own: the inbox works one out from the
-/// article's type (0.6.3 exe, the function at RVA 0x16f36a0, a jump table
-/// over the 53 news types). Only the game's champion patch notes are Patch
-/// by type, and those hold champion keys, not text. A plain article, which
-/// is all `news_push` makes, is filed by its content binds (RVA 0x16f3090):
-/// one named `Scope` decides, `patch` for Patch (`transfer` Transfer;
-/// `match`, `pre_match` Match; `scout`, `rating`, `season`, `meta` Report;
-/// `fan`, `finance`, `team`, `player`, `merch`, `staff` Club), and an
-/// article with no such bind is General.
-///
-/// `news_push` takes no binds, so the bind is written into the article
-/// where the server keeps it, the team record's `news` list (`ty` is the
-/// type, by serde's name for it, `Simple`, with `content` and
-/// `content_bind`). A bind is a pair of strings in the exe; how the record's
-/// JSON writes one is not known from there, so it is copied from any bind
-/// the list already has, and written as a `[name, value]` pair where there
-/// is none to copy.
-///
-/// Not yet seen in game when written: that the write is taken, and that the
-/// client's inbox has the bind without a save and a load in between.
+// Files the article just posted under the inbox's Patch tab. Says what
+// happened, for the test log. Whatever goes wrong, the article is left as it
+// was posted, under General.
+//
+// An article has no section of its own: the inbox works one out from the
+// article's type (0.6.3 exe, the function at RVA 0x16f36a0, a jump table
+// over the 53 news types). Only the game's champion patch notes are Patch
+// by type, and those hold champion keys, not text. A plain article, which
+// is all `news_push` makes, is filed by its content binds (RVA 0x16f3090):
+// one named `Scope` decides, `patch` for Patch (`transfer` Transfer;
+// `match`, `pre_match` Match; `scout`, `rating`, `season`, `meta` Report;
+// `fan`, `finance`, `team`, `player`, `merch`, `staff` Club), and an
+// article with no such bind is General.
+//
+// `news_push` takes no binds, so the bind is written into the article
+// where the server keeps it, the team record's `news` list (`ty` is the
+// type, by serde's name for it, `Simple`, with `content` and
+// `content_bind`). A bind is a pair of strings in the exe; how the record's
+// JSON writes one is not known from there, so it is copied from any bind
+// the list already has, and written as a `[name, value]` pair where there
+// is none to copy.
+//
+// Not yet seen in game when written: that the write is taken, and that the
+// client's inbox has the bind without a save and a load in between.
 fn file_under_patch(ctx: &mut StableServerCtx<'_>, team: usize, title: &str) -> String {
     use serde_json::Value;
 
@@ -667,7 +653,7 @@ fn file_under_patch(ctx: &mut StableServerCtx<'_>, team: usize, title: &str) -> 
     format!("{path} set to {binds}: {set}; it reads back {now:?} (a bind copied from {sample:?})")
 }
 
-/// Every tick of every simulation, from the match hook.
+// Every tick of every simulation, from the match hook.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
     if ENABLED {
         live::on_match_tick(sim);

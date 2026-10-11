@@ -93,7 +93,7 @@ impl EchoesOfHelia {
         }
     }
 
-    /// Spends every stored charge on `target`, a living allied champion.
+    // Spends every stored charge on `target`, a living allied champion.
     fn spend_charges(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         ctx.heal(caster, target, self.charge_stored);
         self.charge_stored = 0;
@@ -178,18 +178,18 @@ impl StableItem for EchoesOfHelia {
         self.save_charges(caster_ref.level(), *damage as f64);
     }
 
-    /// Spends the stored charges on an ally.
-    ///
-    /// Self-casts count as ally-targeted, and Soul Charges only ever spend on
-    /// someone else, so a self-cast spends nothing here. It may still have
-    /// healed an ally, as the Monk's heal does around them: that is watched for
-    /// and spent in `update`.
-    ///
-    /// Every one of these checks now returns *before* the reset rather than
-    /// skipping only the heal. Clearing the charges unconditionally spent them
-    /// on casts that healed nobody — a self-cast, an enemy-targeted skill, a
-    /// minion, a dead ally — which contradicted the tooltip and made the
-    /// self-exclusion a punishment rather than a no-op.
+    // Spends the stored charges on an ally.
+    //
+    // Self-casts count as ally-targeted, and Soul Charges only ever spend on
+    // someone else, so a self-cast spends nothing here. It may still have
+    // healed an ally, as the Monk's heal does around them: that is watched for
+    // and spent in `update`.
+    //
+    // Every one of these checks now returns *before* the reset rather than
+    // skipping only the heal. Clearing the charges unconditionally spent them
+    // on casts that healed nobody — a self-cast, an enemy-targeted skill, a
+    // minion, a dead ally — which contradicted the tooltip and made the
+    // self-exclusion a punishment rather than a no-op.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -215,8 +215,8 @@ impl StableItem for EchoesOfHelia {
         self.spend_charges(ctx, caster, target);
     }
 
-    /// A self-cast that healed allies as well spends the charges on the most
-    /// wounded of them: the charges are spent whole, on one ally.
+    // A self-cast that healed allies as well spends the charges on the most
+    // wounded of them: the charges are spent whole, on one ally.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         let healed = self.self_cast.poll(ctx);
         let most_wounded = healed
@@ -244,8 +244,8 @@ impl StableItem for EchoesOfHelia {
         self.self_cast.close();
     }
 
-    /// Stored charges follow the item through the Radiant upgrade; the next
-    /// `save_charges` clamps them back down if the wielder's level allows less.
+    // Stored charges follow the item through the Radiant upgrade; the next
+    // `save_charges` clamps them back down if the wielder's level allows less.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.charge_stored as u64

@@ -151,7 +151,7 @@ impl StableItem for BladeOfTheRuinedKing {
         self.procs.clear();
     }
 
-    /// Lands the hits whose delay has run out.
+    // Lands the hits whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }

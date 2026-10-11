@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, ticks, upgrade_carry, ItemMeta};
 
-/// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
-/// they follow the carrier into the Radiant item.
+// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
+// they follow the carrier into the Radiant item.
 const BASE_KEY: &str = "hubris";
 
 #[derive(Clone, Debug)]
@@ -18,7 +18,7 @@ pub struct Hubris {
     effect_stack_attack: i32,
     effect_duration_seconds: f64,
     eminence_stacks: usize,
-    /// Whether this instance has taken over the stacks of the item it replaced.
+    // Whether this instance has taken over the stacks of the item it replaced.
     inherited: bool,
 }
 
@@ -78,8 +78,8 @@ impl Hubris {
         self
     }
 
-    /// The Radiant item arrives as a fresh instance: it takes over the base
-    /// item's stacks, once, before it first counts anything.
+    // The Radiant item arrives as a fresh instance: it takes over the base
+    // item's stacks, once, before it first counts anything.
     fn inherit_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         if std::mem::replace(&mut self.inherited, true) || !self.meta.upgrades_from(BASE_KEY) {
             return;
@@ -89,7 +89,7 @@ impl Hubris {
         }
     }
 
-    /// A takedown: a bonus sized by the stacks so far, and one more stack.
+    // A takedown: a bonus sized by the stacks so far, and one more stack.
     fn takedown(&mut self, ctx: &mut StableSim<'_>, player: usize, entity: usize) {
         self.inherit_stacks(ctx, player);
         let bonus_ad =
@@ -207,11 +207,11 @@ impl StableItem for Hubris {
         self.takedown(sim, player, entity);
     }
 
-    /// Eminence is bought, not earned twice: the kills banked on the base item
-    /// keep scaling the bonus after the Radiant upgrade replaces it.
-    ///
-    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    /// `inherit_stacks` does the carrying, and they stay for a host that does.
+    // Eminence is bought, not earned twice: the kills banked on the base item
+    // keep scaling the bonus after the Radiant upgrade replaces it.
+    //
+    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    // `inherit_stacks` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.eminence_stacks as u64

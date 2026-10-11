@@ -14,13 +14,10 @@
 //! onto a stunned target counts again.
 //!
 //! Either order, and a window of a sixth of a second, because how a skill
-//! lays its crowd control down beside its damage is the skill's own business.
-//! This used to wait for the stun on the hit alone, for two ticks, and only
-//! heard of hits through `on_skill_hit`: Berserker's slam, half a second of
-//! knock-up, never set Going Sledding off (the user, 2026-10-08). Which of the
-//! three it was is not known, so all three are gone: a stun that lands before
-//! its hit is remembered for it, the wait is longer, and a skill's hit is
-//! taken from `on_attack` as well.
+//! lays its crowd control down beside its damage is the skill's own business:
+//! a stun that lands before its hit is remembered for it, and a skill's hit
+//! is taken from `on_attack` as well as `on_skill_hit`. Waiting for the stun
+//! on the hit alone, for two ticks, misses a knock-up like Berserker's slam.
 //!
 //! An ally's stun landing on a champion inside that window of your skill
 //! hitting it reads the same and is credited to you, which is why a carrier
@@ -29,12 +26,12 @@
 
 use mod_api_stable::*;
 
-/// Crowd control that takes movement out of the target's hands: stun, root,
-/// knock-up, knockback/pull, fear and charm, and taunt, which is counted on its
-/// own below. League's "immobilize" set, plus the three that walk the target
-/// somewhere; disarm, silence and ground leave them free to walk, and a slow
-/// is not crowd control here at all. `champion_traits::Immobilize` is the same
-/// set read off a champion's kit: keep the two in step.
+// Crowd control that takes movement out of the target's hands: stun, root,
+// knock-up, knockback/pull, fear and charm, and taunt, which is counted on its
+// own below. League's "immobilize" set, plus the three that walk the target
+// somewhere; disarm, silence and ground leave them free to walk, and a slow
+// is not crowd control here at all. `champion_traits::Immobilize` is the same
+// set read off a champion's kit: keep the two in step.
 const IMMOBILIZING: [CcKindV1; 6] = [
     CcKindV1::Airborne,
     CcKindV1::Stun,
@@ -44,10 +41,10 @@ const IMMOBILIZING: [CcKindV1; 6] = [
     CcKindV1::Charm,
 ];
 
-/// What the entity is under right now, read in one pass: (immobilizing effects,
-/// taunts aside; taunts onto `taunter`). A taunt names who it forces its target
-/// to attack, which is who applied it: the one immobilize whose source the host
-/// does give.
+// What the entity is under right now, read in one pass: (immobilizing effects,
+// taunts aside; taunts onto `taunter`). A taunt names who it forces its target
+// to attack, which is who applied it: the one immobilize whose source the host
+// does give.
 fn held(entity: &StableEntity<'_, '_>, taunter: usize) -> (usize, usize) {
     let (mut immobilized, mut taunted) = (0, 0);
     for cc in (0..entity.cc_count()).filter_map(|i| entity.cc_at(i)) {
@@ -60,7 +57,7 @@ fn held(entity: &StableEntity<'_, '_>, taunter: usize) -> (usize, usize) {
     (immobilized, taunted)
 }
 
-/// How many immobilizing effects the entity is under right now, taunts aside.
+// How many immobilizing effects the entity is under right now, taunts aside.
 fn immobilize_count(entity: &StableEntity<'_, '_>) -> usize {
     (0..entity.cc_count())
         .filter(|&i| {
@@ -71,8 +68,8 @@ fn immobilize_count(entity: &StableEntity<'_, '_>) -> usize {
         .count()
 }
 
-/// Whether a skill hit by `champion` may claim an immobilize (`claims_hits`):
-/// yes unless its kit is known to have none but a taunt.
+// Whether a skill hit by `champion` may claim an immobilize (`claims_hits`):
+// yes unless its kit is known to have none but a taunt.
 fn claims_hits(champion: &StableEntity<'_, '_>) -> bool {
     champion
         .name()
@@ -81,34 +78,34 @@ fn claims_hits(champion: &StableEntity<'_, '_>) -> bool {
         .map_or(true, |immobilize| immobilize.other)
 }
 
-/// Ticks a skill hit and a new immobilize on the same champion may be apart
-/// and still be one thing: a sixth of a second, either way round.
+// Ticks a skill hit and a new immobilize on the same champion may be apart
+// and still be one thing: a sixth of a second, either way round.
 const WINDOW_TICKS: usize = 10;
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ImmobilizeWatch {
-    /// Each enemy champion as of the last tick: (entity, immobilize count,
-    /// taunts onto the carrier). What a new immobilize, or a new taunt, is
-    /// new against.
+    // Each enemy champion as of the last tick: (entity, immobilize count,
+    // taunts onto the carrier). What a new immobilize, or a new taunt, is
+    // new against.
     baseline: Vec<(usize, usize, usize)>,
-    /// The tick before's `baseline`, kept to swap with rather than reallocate.
+    // The tick before's `baseline`, kept to swap with rather than reallocate.
     previous: Vec<(usize, usize, usize)>,
-    /// The carrier's skill hits still waiting for their target to be
-    /// immobilized: (target, tick of the hit).
+    // The carrier's skill hits still waiting for their target to be
+    // immobilized: (target, tick of the hit).
     hits: Vec<(usize, usize)>,
-    /// Enemy champions newly immobilized and still waiting for a skill of the
-    /// carrier's to hit them: (target, tick it was seen).
+    // Enemy champions newly immobilized and still waiting for a skill of the
+    // carrier's to hit them: (target, tick it was seen).
     stuns: Vec<(usize, usize)>,
-    /// Whether a skill hit may claim an immobilize that lands with it: not for
-    /// a carrier whose kit is known to immobilize with nothing but a taunt, or
-    /// nothing at all, or every stun an ally lands on a target of its slows
-    /// would be credited to it. `None` until the carrier's champion is read.
+    // Whether a skill hit may claim an immobilize that lands with it: not for
+    // a carrier whose kit is known to immobilize with nothing but a taunt, or
+    // nothing at all, or every stun an ally lands on a target of its slows
+    // would be credited to it. `None` until the carrier's champion is read.
     claims_hits: Option<bool>,
 }
 
 impl ImmobilizeWatch {
-    /// Forgets what it was following, for `on_spawn`. What it knows of the
-    /// carrier's kit stays.
+    // Forgets what it was following, for `on_spawn`. What it knows of the
+    // carrier's kit stays.
     pub(crate) fn reset(&mut self) {
         self.baseline.clear();
         self.previous.clear();
@@ -116,14 +113,14 @@ impl ImmobilizeWatch {
         self.stuns.clear();
     }
 
-    /// From `on_skill_hit`, and from `on_attack` for a hit of a skill's:
-    /// whether this hit of the carrier's goes with an immobilize on `target`,
-    /// one already seen or one that is there now. A hit with neither is
-    /// remembered for [`WINDOW_TICKS`], and `update` reports it if its
-    /// immobilize turns up.
-    ///
-    /// Both hooks may tell of the same hit, and a skill may hit the same
-    /// champion several times: an immobilize is only ever answered to once.
+    // From `on_skill_hit`, and from `on_attack` for a hit of a skill's:
+    // whether this hit of the carrier's goes with an immobilize on `target`,
+    // one already seen or one that is there now. A hit with neither is
+    // remembered for [`WINDOW_TICKS`], and `update` reports it if its
+    // immobilize turns up.
+    //
+    // Both hooks may tell of the same hit, and a skill may hit the same
+    // champion several times: an immobilize is only ever answered to once.
     pub(crate) fn skill_hit(&mut self, ctx: &StableSim<'_>, target: usize, is_ally: bool) -> bool {
         if is_ally || self.claims_hits == Some(false) {
             return false;
@@ -161,9 +158,9 @@ impl ImmobilizeWatch {
         false
     }
 
-    /// From `update`, every tick: the enemy champions the carrier has
-    /// immobilized since the last one. Those whose immobilize has caught up
-    /// with a skill hit, then new taunts.
+    // From `update`, every tick: the enemy champions the carrier has
+    // immobilized since the last one. Those whose immobilize has caught up
+    // with a skill hit, then new taunts.
     pub(crate) fn update(&mut self, ctx: &StableSim<'_>, player: usize) -> Vec<usize> {
         let tick = ctx.tick();
         let mut immobilized = Vec::new();
@@ -227,8 +224,8 @@ impl ImmobilizeWatch {
             .map_or(0, |&(_, count, _)| count)
     }
 
-    /// Takes `count` as what `target` was already under, so the next tick
-    /// does not see it as new.
+    // Takes `count` as what `target` was already under, so the next tick
+    // does not see it as new.
     fn set_baseline(&mut self, target: usize, count: usize) {
         match self.baseline.iter_mut().find(|(id, _, _)| *id == target) {
             Some(known) => known.1 = count,

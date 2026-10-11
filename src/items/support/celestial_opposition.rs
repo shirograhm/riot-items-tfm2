@@ -3,20 +3,20 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta};
 
-/// Celestial Opposition — what World Atlas grows into for a support that
-/// stands in front and is hit: Blessing of the Mountain, and the gold the
-/// Atlas line pays ([`crate::SharedRiches`]).
-///
-/// # Blessing of the Mountain
-///
-/// Damage from an enemy champion makes the carrier Blessed: for a short while
-/// everything it takes is cut by a share. The hit that brings the blessing on
-/// has already landed, so it is the ones after it that are cut. When Blessed
-/// runs out the carrier lets a shockwave go, which slows every enemy unit
-/// around it, and only then does the cooldown start.
-///
-/// A carrier that dies Blessed lets nothing go: the blessing ends with it and
-/// the cooldown starts there.
+// Celestial Opposition — what World Atlas grows into for a support that
+// stands in front and is hit: Blessing of the Mountain, and the gold the
+// Atlas line pays ([`crate::SharedRiches`]).
+//
+// # Blessing of the Mountain
+//
+// Damage from an enemy champion makes the carrier Blessed: for a short while
+// everything it takes is cut by a share. The hit that brings the blessing on
+// has already landed, so it is the ones after it that are cut. When Blessed
+// runs out the carrier lets a shockwave go, which slows every enemy unit
+// around it, and only then does the cooldown start.
+//
+// A carrier that dies Blessed lets nothing go: the blessing ends with it and
+// the cooldown starts there.
 #[derive(Clone, Debug)]
 pub struct CelestialOpposition {
     meta: ItemMeta,
@@ -32,23 +32,23 @@ pub struct CelestialOpposition {
     effect_bonus_gold: usize,
     effect_gold_interval_seconds: f64,
     // Non-vital stats (internals)
-    /// Ticks of Blessed left; zero when the carrier is not Blessed.
+    // Ticks of Blessed left; zero when the carrier is not Blessed.
     blessed: usize,
-    /// Ticks until Blessing of the Mountain can come on again.
+    // Ticks until Blessing of the Mountain can come on again.
     cooldown: usize,
 }
 
-/// Blessed: the cut in damage taken, and the name the `view_buffs` binding in
-/// `view/effects.view_effects` draws the golden shield under
-/// (`effects/celestial_shield`). Shared by both variants.
+// Blessed: the cut in damage taken, and the name the `view_buffs` binding in
+// `view/effects.view_effects` draws the golden shield under
+// (`effects/celestial_shield`). Shared by both variants.
 const BLESSED_BUFF: &str = "celestial_opposition_blessed";
-/// The shockwave's slow. One name for both variants and every carrier, so two
-/// shockwaves refresh one slow on a target rather than stacking two.
+// The shockwave's slow. One name for both variants and every carrier, so two
+// shockwaves refresh one slow on a target rather than stacking two.
 const SLOW_BUFF: &str = "celestial_opposition_slow";
-/// The shield breaking, played on the carrier (`effects/celestial_shatter`).
-/// It is the shockwave's picture too: the pieces fly out as far as the slow
-/// reaches, so there is the one burst and not two. Bound in
-/// `view/effects.view_effects`.
+// The shield breaking, played on the carrier (`effects/celestial_shatter`).
+// It is the shockwave's picture too: the pieces fly out as far as the slow
+// reaches, so there is the one burst and not two. Bound in
+// `view/effects.view_effects`.
 const SHATTER_EFFECT: &str = "riot_celestial_shatter";
 
 impl CelestialOpposition {
@@ -117,9 +117,9 @@ impl CelestialOpposition {
         self
     }
 
-    /// Counts Blessed down, and ends it: with the shockwave when it runs out,
-    /// with nothing when the carrier died under it. Either way the cooldown
-    /// starts there.
+    // Counts Blessed down, and ends it: with the shockwave when it runs out,
+    // with nothing when the carrier died under it. Either way the cooldown
+    // starts there.
     fn run_blessed(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         let Some((carrier, team, alive)) = ctx
             .get_player(player)
@@ -145,8 +145,8 @@ impl CelestialOpposition {
         }
     }
 
-    /// Slows every enemy unit (not turrets) within range of the carrier, the
-    /// range stretched by the carrier's size ([`sized_range`]).
+    // Slows every enemy unit (not turrets) within range of the carrier, the
+    // range stretched by the carrier's size ([`sized_range`]).
     fn shockwave(&self, ctx: &mut StableSim<'_>, carrier: usize, team: usize) {
         let reach = sized_range(ctx, carrier, self.effect_max_distance);
         let reach_sq = reach * reach;
@@ -175,8 +175,8 @@ impl CelestialOpposition {
         );
     }
 
-    /// What Shared Riches pays a holder: this much gold, this often.
-    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    // What Shared Riches pays a holder: this much gold, this often.
+    // [`crate::SharedRiches`] does the paying, from the match hook.
     pub(crate) fn shared_riches(&self) -> (usize, f64) {
         (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
@@ -230,9 +230,9 @@ impl StableItem for CelestialOpposition {
         self.cooldown = 0;
     }
 
-    /// Blessing of the Mountain's trigger: damage from an enemy champion, off
-    /// cooldown and not already Blessed. A hit that killed the carrier
-    /// blesses nobody.
+    // Blessing of the Mountain's trigger: damage from an enemy champion, off
+    // cooldown and not already Blessed. A hit that killed the carrier
+    // blesses nobody.
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -273,7 +273,7 @@ impl StableItem for CelestialOpposition {
         );
     }
 
-    /// Runs the cooldown and Blessed.
+    // Runs the cooldown and Blessed.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.cooldown = self.cooldown.saturating_sub(1);
         if self.blessed > 0 {

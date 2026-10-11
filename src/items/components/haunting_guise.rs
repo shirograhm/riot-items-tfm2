@@ -12,10 +12,10 @@ pub struct HauntingGuise {
     effect_max_stacks: usize,
     effect_out_of_combat_seconds: f64,
     // Non-vital stats (internals)
-    /// Ticks of combat left before Madness falls off. Refreshed to the full
-    /// window on every trade with an enemy champion, counted down in `update`.
+    // Ticks of combat left before Madness falls off. Refreshed to the full
+    // window on every trade with an enemy champion, counted down in `update`.
     combat_ticks: usize,
-    /// Madness stacks held, and the sub-second progress toward the next one.
+    // Madness stacks held, and the sub-second progress toward the next one.
     madness: usize,
     stack_progress: usize,
 }
@@ -57,18 +57,18 @@ impl HauntingGuise {
         item
     }
 
-    /// Restarts the combat window when the wielder and `other` are on opposite
-    /// sides and `other` is a champion. Called from both directions: being hit
-    /// by an enemy champion is as much "in combat with" one as hitting it.
+    // Restarts the combat window when the wielder and `other` are on opposite
+    // sides and `other` is a champion. Called from both directions: being hit
+    // by an enemy champion is as much "in combat with" one as hitting it.
     fn note_combat(&mut self, ctx: &mut StableSim<'_>, entity: usize, other: usize) {
         if is_enemy_champion(ctx, entity, other) {
             self.combat_ticks = ticks(self.effect_out_of_combat_seconds);
         }
     }
 
-    /// One tick of progress toward the next Madness stack. Counted in
-    /// stacks-per-second over [`TICKS_PER_SECOND`] rather than in whole seconds
-    /// so the cadence stays configurable.
+    // One tick of progress toward the next Madness stack. Counted in
+    // stacks-per-second over [`TICKS_PER_SECOND`] rather than in whole seconds
+    // so the cadence stays configurable.
     fn build_madness(&mut self) {
         if self.madness >= self.effect_max_stacks {
             self.madness = self.effect_max_stacks;
@@ -83,7 +83,7 @@ impl HauntingGuise {
         }
     }
 
-    /// What Madness currently multiplies outgoing damage by — `1.0` unstacked.
+    // What Madness currently multiplies outgoing damage by — `1.0` unstacked.
     fn madness_multiplier(&self) -> f64 {
         1.0 + (self.madness as f64 * self.effect_stack_percent_damage) / 100.0
     }
@@ -150,8 +150,8 @@ impl StableItem for HauntingGuise {
         self.build_madness();
     }
 
-    /// Fires for every hit the wielder lands, basic attack or ability, so
-    /// Madness amplifies all of their damage rather than just their autos.
+    // Fires for every hit the wielder lands, basic attack or ability, so
+    // Madness amplifies all of their damage rather than just their autos.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

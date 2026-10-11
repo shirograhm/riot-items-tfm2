@@ -36,22 +36,22 @@ use serde_json::Value;
 
 use super::state::{Change, Patch};
 
-/// One config number in a slot, as the generator reads it.
+// One config number in a slot, as the generator reads it.
 pub(crate) struct Term {
     pub item: String,
     pub field: String,
-    /// Read as `[int]`: the sentence shows a whole number.
+    // Read as `[int]`: the sentence shows a whole number.
     pub whole: bool,
 }
 
 enum Part {
     Text(String),
-    /// One number, or the product of several (Haunting Guise's total is its
-    /// share a stack times its stacks).
+    // One number, or the product of several (Haunting Guise's total is its
+    // share a stack times its stacks).
     Slot(Vec<Term>),
 }
 
-/// An item's effect text with its numbers still to be written in.
+// An item's effect text with its numbers still to be written in.
 pub(crate) struct Template {
     parts: Vec<Part>,
 }
@@ -95,8 +95,8 @@ impl Template {
             .flatten()
     }
 
-    /// The text with every number in, `value` giving each by config item and
-    /// field. Written as the generator writes them: see [`shown`].
+    // The text with every number in, `value` giving each by config item and
+    // field. Written as the generator writes them: see [`shown`].
     pub(crate) fn fill(&self, value: &dyn Fn(&str, &str) -> f64) -> String {
         let mut out = String::new();
         for part in &self.parts {
@@ -108,11 +108,11 @@ impl Template {
         out
     }
 
-    /// What to call `item`'s `field` in a patch note, and whether the
-    /// sentence puts a percent sign after the number. A passive's text opens
-    /// with its name and a colon, in every language, and that name is it.
-    /// A sentence with no name (the lethality an item gives is one of its
-    /// own, "Gain 18 Lethality.") is its own label, less the number.
+    // What to call `item`'s `field` in a patch note, and whether the
+    // sentence puts a percent sign after the number. A passive's text opens
+    // with its name and a colon, in every language, and that name is it.
+    // A sentence with no name (the lethality an item gives is one of its
+    // own, "Gain 18 Lethality.") is its own label, less the number.
     fn passive_of(&self, item: &str, field: &str) -> Option<(String, bool)> {
         let mut text = String::new();
         let mut found = None;
@@ -156,27 +156,26 @@ impl Template {
         fits.then_some((label, percent))
     }
 
-    /// The stat icon the text puts by `item`'s `field`, as (sheet, tag): the
-    /// symbol of what the number is an amount of.
-    ///
-    /// Told by colour, which is how the sentences themselves pair a number
-    /// with its stat. Axiom Arc's Flux reads "Gain 10 (+0.2 per 1 [armour
-    /// penetration] Lethality) [haste] Ultimate Ability Haste": the icon
-    /// nearest the 0.2 is lethality's and the right one is haste's, and what
-    /// says so is that the 0.2 and "Ultimate Ability Haste" are the same
-    /// blue (the user, 2026-10-10: "for axiom, that would be the haste symbol
-    /// for flux"). So: the number's colour is the span it is in, or for a
-    /// number in none the span that closed last before it ("grants 15 (+2
-    /// per stack) bonus Attack Damage"); an icon's colour is the span it is
-    /// in, or the span that opens straight after it; and the icon is the
-    /// nearest one of the number's colour after it in its paragraph, else
-    /// the nearest before. A number the text gives no symbol (a duration, a
-    /// slow, plain damage) has none here either: a wrong icon says more than
-    /// a missing one.
-    ///
-    /// Meant for the English text, which the rest are written from: a
-    /// translation moves words and colours about (the same rule gives Flux
-    /// lethality's icon in five of the six).
+    // The stat icon the text puts by `item`'s `field`, as (sheet, tag): the
+    // symbol of what the number is an amount of.
+    //
+    // Told by colour, which is how the sentences themselves pair a number
+    // with its stat. Axiom Arc's Flux reads "Gain 10 (+0.2 per 1 [armour
+    // penetration] Lethality) [haste] Ultimate Ability Haste": the icon
+    // nearest the 0.2 is lethality's and the right one is haste's, and what
+    // says so is that the 0.2 and "Ultimate Ability Haste" are the same
+    // blue. So: the number's colour is the span it is in, or for a
+    // number in none the span that closed last before it ("grants 15 (+2
+    // per stack) bonus Attack Damage"); an icon's colour is the span it is
+    // in, or the span that opens straight after it; and the icon is the
+    // nearest one of the number's colour after it in its paragraph, else
+    // the nearest before. A number the text gives no symbol (a duration, a
+    // slow, plain damage) has none here either: a wrong icon says more than
+    // a missing one.
+    //
+    // Meant for the English text, which the rest are written from: a
+    // translation moves words and colours about (the same rule gives Flux
+    // lethality's icon in five of the six).
     fn icon_of(&self, item: &str, field: &str) -> Option<(String, String)> {
         // An icon: where it comes among the icons and numbers, what it
         // is, its colour.
@@ -267,7 +266,7 @@ impl Template {
     }
 }
 
-/// `text` without its markup: colour spans and inline icons are `<...>`.
+// `text` without its markup: colour spans and inline icons are `<...>`.
 fn plain(text: &str) -> String {
     let mut out = String::new();
     let mut tag = false;
@@ -282,9 +281,9 @@ fn plain(text: &str) -> String {
     out
 }
 
-/// A slot's number as `apply_config.ps1` writes it into a sentence, which is
-/// how PowerShell turns a number into text: `[int]` rounds a half to the even
-/// number, and a `[double]` is written to fifteen significant digits.
+// A slot's number as `apply_config.ps1` writes it into a sentence, which is
+// how PowerShell turns a number into text: `[int]` rounds a half to the even
+// number, and a `[double]` is written to fifteen significant digits.
 fn shown(terms: &[Term], value: &dyn Fn(&str, &str) -> f64) -> String {
     let read = |term: &Term| {
         let number = value(&term.item, &term.field);
@@ -302,7 +301,7 @@ fn shown(terms: &[Term], value: &dyn Fn(&str, &str) -> f64) -> String {
     }
 }
 
-/// A number to fifteen significant digits, with no trailing zeros.
+// A number to fifteen significant digits, with no trailing zeros.
 pub(crate) fn number_text(value: f64) -> String {
     if value == 0.0 || !value.is_finite() {
         return "0".to_string();
@@ -317,32 +316,32 @@ pub(crate) fn number_text(value: f64) -> String {
     }
 }
 
-/// Where one config number is written.
+// Where one config number is written.
 #[derive(Default)]
 pub(crate) struct Shown {
-    /// The items whose effect text has it, by text key. Usually the item
-    /// itself; a few sentences quote another item's number.
+    // The items whose effect text has it, by text key. Usually the item
+    // itself; a few sentences quote another item's number.
     pub texts: Vec<String>,
-    /// Some sentence writes it as a whole number, so it has to stay one.
+    // Some sentence writes it as a whole number, so it has to stay one.
     pub whole: bool,
 }
 
-/// Everything read from the mod's text files, once.
+// Everything read from the mod's text files, once.
 pub(crate) struct Texts {
-    /// Language -> item key -> effect text, as the game was given it.
+    // Language -> item key -> effect text, as the game was given it.
     options: HashMap<String, HashMap<String, String>>,
-    /// Language -> item key -> name.
+    // Language -> item key -> name.
     names: HashMap<String, HashMap<String, String>>,
-    /// Language -> stat field -> its tooltip line, `{Value}` in it. The
-    /// mod's languages, then the base game's own for the rest.
+    // Language -> stat field -> its tooltip line, `{Value}` in it. The
+    // mod's languages, then the base game's own for the rest.
     spec: Vec<(String, HashMap<String, String>)>,
-    /// Language -> item key -> template.
+    // Language -> item key -> template.
     templates: HashMap<String, HashMap<String, Template>>,
-    /// An item's name in any language -> its key.
+    // An item's name in any language -> its key.
     name_keys: HashMap<String, String>,
     shown: HashMap<(String, String), Shown>,
-    /// Language -> the mod's own patch-note strings (`text/ui.i18n`,
-    /// `item_patch`).
+    // Language -> the mod's own patch-note strings (`text/ui.i18n`,
+    // `item_patch`).
     ui: HashMap<String, HashMap<String, String>>,
 }
 
@@ -448,13 +447,13 @@ impl Texts {
         texts
     }
 
-    /// Where `item`'s `field` is written, if any effect text has it.
+    // Where `item`'s `field` is written, if any effect text has it.
     pub(crate) fn shown(&self, item: &str, field: &str) -> Option<&Shown> {
         self.shown.get(&(item.to_string(), field.to_string()))
     }
 
-    /// Whether the effect text of `key` spells out a number of `field`,
-    /// whichever config entry it takes it from.
+    // Whether the effect text of `key` spells out a number of `field`,
+    // whichever config entry it takes it from.
     pub(crate) fn quotes(&self, key: &str, field: &str) -> bool {
         self.templates.values().any(|templates| {
             templates
@@ -463,18 +462,18 @@ impl Texts {
         })
     }
 
-    /// Whether a tooltip has a stat line for `field`.
+    // Whether a tooltip has a stat line for `field`.
     pub(crate) fn has_line(&self, field: &str) -> bool {
         self.spec
             .iter()
             .any(|(_, lines)| lines.get(field).is_some_and(|line| line.contains("{Value}")))
     }
 
-    /// The items whose effect text, in some language, is not what its
-    /// template makes of the numbers `value` gives: a text file from another
-    /// version than the templates, or a `config.json` that `apply_config`
-    /// was not run for. What a patch would write into such a tooltip cannot
-    /// be trusted to be the sentence that is in it.
+    // The items whose effect text, in some language, is not what its
+    // template makes of the numbers `value` gives: a text file from another
+    // version than the templates, or a `config.json` that `apply_config`
+    // was not run for. What a patch would write into such a tooltip cannot
+    // be trusted to be the sentence that is in it.
     pub(crate) fn unverified(&self, value: &dyn Fn(&str, &str) -> f64) -> HashSet<String> {
         let mut out = HashSet::new();
         for (lang, templates) in &self.templates {
@@ -489,8 +488,8 @@ impl Texts {
         out
     }
 
-    /// The effect text of `key` in every language it has a template in: the
-    /// one the game holds, and the one `value`'s numbers make.
+    // The effect text of `key` in every language it has a template in: the
+    // one the game holds, and the one `value`'s numbers make.
     pub(crate) fn options_of(
         &self,
         key: &str,
@@ -512,8 +511,8 @@ impl Texts {
         out
     }
 
-    /// The key of the item a tooltip's name label is showing: the name in
-    /// whatever language, or the reference a label was handed to resolve.
+    // The key of the item a tooltip's name label is showing: the name in
+    // whatever language, or the reference a label was handed to resolve.
     fn key_of_name(&self, label: &str) -> Option<&str> {
         if let Some(key) = label
             .strip_prefix("#asset/base/text/item?")
@@ -524,7 +523,7 @@ impl Texts {
         self.name_keys.get(label.trim()).map(String::as_str)
     }
 
-    /// An item's name in `lang`, in English where that language has none.
+    // An item's name in `lang`, in English where that language has none.
     fn name(&self, lang: &str, key: &str) -> String {
         [lang, "en"]
             .iter()
@@ -541,8 +540,8 @@ impl Texts {
             .unwrap_or_else(|| fallback.to_string())
     }
 
-    /// The stat line of `field` in `lang` (English failing that), as a label
-    /// for a patch note: its words, and whether it reads as a percentage.
+    // The stat line of `field` in `lang` (English failing that), as a label
+    // for a patch note: its words, and whether it reads as a percentage.
     fn line_label(&self, lang: &str, field: &str) -> Option<(String, bool)> {
         let line = [lang, "en"].iter().find_map(|lang| {
             self.spec
@@ -559,8 +558,8 @@ impl Texts {
 }
 
 impl Texts {
-    /// The icon a stat's tooltip line opens with, as (sheet, tag): the line
-    /// is `<i#sheet:tag> {Value} words`.
+    // The icon a stat's tooltip line opens with, as (sheet, tag): the line
+    // is `<i#sheet:tag> {Value} words`.
     fn line_icon(&self, field: &str) -> Option<(String, String)> {
         let line = self
             .spec
@@ -571,11 +570,11 @@ impl Texts {
         Some((sheet.to_string(), tag.to_string()))
     }
 
-    /// The icon of what a passive's number is an amount of: the one the
-    /// item's effect text puts by it ([`Template::icon_of`]), read off the
-    /// English text whatever the game's language. None for a number the
-    /// text gives no symbol, and for the game's own items, whose texts the
-    /// mod has no templates of.
+    // The icon of what a passive's number is an amount of: the one the
+    // item's effect text puts by it ([`Template::icon_of`]), read off the
+    // English text whatever the game's language. None for a number the
+    // text gives no symbol, and for the game's own items, whose texts the
+    // mod has no templates of.
     fn passive_icon(&self, key: &str, field: &str) -> Option<(String, String)> {
         self.templates.get("en")?.get(key)?.icon_of(key, field)
     }
@@ -593,10 +592,10 @@ fn lines_of(value: &Value) -> HashMap<String, String> {
         .unwrap_or_default()
 }
 
-/// The game's language, from its own settings file (`config/game/base.json`
-/// beside the executable, `lang`). The stable API does not say, and answers
-/// every text lookup in English. Read again every few seconds: the player
-/// can change it in the options.
+// The game's language, from its own settings file (`config/game/base.json`
+// beside the executable, `lang`). The stable API does not say, and answers
+// every text lookup in English. Read again every few seconds: the player
+// can change it in the options.
 pub(crate) fn game_language() -> String {
     static LANG: Mutex<Option<(Instant, String)>> = Mutex::new(None);
     let Ok(mut cached) = LANG.lock() else {
@@ -620,20 +619,20 @@ pub(crate) fn game_language() -> String {
 
 // -- what a patched item shows -------------------------------------------------
 
-/// What a tooltip of one item has to say that the game will not: built by
-/// [`super::live`] whenever the patch state changes.
+// What a tooltip of one item has to say that the game will not: built by
+// [`super::live`] whenever the patch state changes.
 #[derive(Default)]
 pub(crate) struct Display {
-    /// (language, the effect text the game holds, the patched one).
+    // (language, the effect text the game holds, the patched one).
     pub options: Vec<(String, String, String)>,
-    /// (stat field, the number the game's stat line shows, the patched one).
-    /// Empty for the game's own items, whose stat lines follow their data.
+    // (stat field, the number the game's stat line shows, the patched one).
+    // Empty for the game's own items, whose stat lines follow their data.
     pub flats: Vec<(String, i64, i64)>,
 }
 
 impl Display {
-    /// `desc` with this item's patched numbers in, or nothing where it holds
-    /// none of the text they would replace.
+    // `desc` with this item's patched numbers in, or nothing where it holds
+    // none of the text they would replace.
     fn rewritten(&self, texts: &Texts, desc: &str) -> Option<String> {
         let mut text = desc.to_string();
         let mut changed = false;
@@ -661,8 +660,8 @@ impl Display {
     }
 }
 
-/// The patched effect text of `key` in the game's language, for a tooltip
-/// the mod draws itself. Nothing where the patch leaves that text alone.
+// The patched effect text of `key` in the game's language, for a tooltip
+// the mod draws itself. Nothing where the patch leaves that text alone.
 pub(crate) fn option_now(key: &str) -> Option<String> {
     let live = super::live::current()?;
     let display = live.display.get(key)?;
@@ -678,14 +677,14 @@ pub(crate) fn option_now(key: &str) -> Option<String> {
 
 // -- the game's own tooltips ---------------------------------------------------
 
-/// One place the game shows an item's description.
+// One place the game shows an item's description.
 struct Site {
-    /// The node game code shows and hides.
+    // The node game code shows and hides.
     root: String,
     name: String,
     desc: String,
-    /// What was last written to `desc`: while the label still says it,
-    /// there is nothing to do.
+    // What was last written to `desc`: while the label still says it,
+    // there is nothing to do.
     written: Option<String>,
 }
 
@@ -699,17 +698,17 @@ static TOOLTIPS: Mutex<Tooltips> = Mutex::new(Tooltips {
     frame: 0,
 });
 
-/// Frames between two looks for tooltips not known yet.
+// Frames between two looks for tooltips not known yet.
 const DISCOVER_FRAMES: u32 = 45;
 
-/// The hover tooltip of an item slot, which three screens have under their
-/// own root with the same nodes inside: in a match, on the match result
-/// (whose layout's root is `main` too), and on the solo rank page.
+// The hover tooltip of an item slot, which three screens have under their
+// own root with the same nodes inside: in a match, on the match result
+// (whose layout's root is `main` too), and on the solo rank page.
 const TOOLTIP: &str = "item_tooltip";
-/// The description panel of the Item Info page (`item_info.ui`), under Game
-/// Info and in the strategy screen's Item Info popup. Inside the page's
-/// `#data`: the page is `main.top.right.item_info` (seen in the test log,
-/// 2026-10-10, where looking for the panel straight under it found nothing).
+// The description panel of the Item Info page (`item_info.ui`), under Game
+// Info and in the strategy screen's Item Info popup. Inside the page's
+// `#data`: the page is `main.top.right.item_info`, and the panel is not
+// straight under it.
 const DETAIL: &str = "data.item_detail";
 
 fn site_paths(root: String, inner: &str) -> (String, String, String) {
@@ -718,10 +717,10 @@ fn site_paths(root: String, inner: &str) -> (String, String, String) {
     (root, name, desc)
 }
 
-/// Finds the description labels now on screen. The two roots a layout puts
-/// its tooltip under are known; where a screen is mounted inside the
-/// management UI is game code's doing, so those are looked for one level
-/// down from the places screens are put.
+// Finds the description labels now on screen. The two roots a layout puts
+// its tooltip under are known; where a screen is mounted inside the
+// management UI is game code's doing, so those are looked for one level
+// down from the places screens are put.
 fn discover(ctx: &StableClient<'_>, sites: &mut Vec<Site>) {
     let mut wanted = vec![
         site_paths(format!("ingame.{TOOLTIP}"), "data."),
@@ -766,13 +765,13 @@ fn discover(ctx: &StableClient<'_>, sites: &mut Vec<Site>) {
     }
 }
 
-/// Puts the patched numbers into whatever item description the game is
-/// showing. Every client frame; one atomic read while no patch shows
-/// anything.
-///
-/// The label is written again whenever it stops saying what was written,
-/// which covers both ways game code may fill it: once when the hover
-/// starts, or every frame.
+// Puts the patched numbers into whatever item description the game is
+// showing. Every client frame; one atomic read while no patch shows
+// anything.
+//
+// The label is written again whenever it stops saying what was written,
+// which covers both ways game code may fill it: once when the hover
+// starts, or every frame.
 pub(crate) fn sync_tooltips(ctx: &mut StableClient<'_>) {
     let Some(live) = super::live::current().filter(|live| !live.display.is_empty()) else {
         return;
@@ -835,14 +834,14 @@ pub(crate) fn sync_tooltips(ctx: &mut StableClient<'_>) {
 
 // -- patch notes ---------------------------------------------------------------
 
-/// A number as a note shows it.
+// A number as a note shows it.
 fn note_number(value: f64, percent: bool) -> String {
     format!("{}{}", number_text(value), if percent { "%" } else { "" })
 }
 
-/// What a note calls the number a change moved, and whether it reads as a
-/// percentage: a flat stat by its tooltip line, a passive's number by the
-/// passive's name. Empty where neither is found.
+// What a note calls the number a change moved, and whether it reads as a
+// percentage: a flat stat by its tooltip line, a passive's number by the
+// passive's name. Empty where neither is found.
 fn label_of(texts: &Texts, lang: &str, change: &Change) -> (String, bool) {
     let Some(first) = change.members.first() else {
         return (String::new(), false);
@@ -864,39 +863,39 @@ fn label_of(texts: &Texts, lang: &str, change: &Change) -> (String, bool) {
     label.unwrap_or_else(|| (String::new(), false))
 }
 
-/// The sheet the item icons are in (the mod's own, by `mod.override_info`).
+// The sheet the item icons are in (the mod's own, by `mod.override_info`).
 const ITEM_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
-/// The arrow the game's own patch notes put between two numbers, in the
-/// font they take it from (`text/news`, `patch.stat`).
+// The arrow the game's own patch notes put between two numbers, in the
+// font they take it from (`text/news`, `patch.stat`).
 const ARROW: &str = "<f#asset/base/font/set/symbol>\u{2192}<f>";
 const BOLD: &str = "asset/base/font/set/bold";
-/// The green of the game's "Buffs" mark (`ui/icons/up_patch`), a red for
-/// "Nerfs", and the grey its notes give a reason in (`patch_reason_row`).
+// The green of the game's "Buffs" mark (`ui/icons/up_patch`), a red for
+// "Nerfs", and the grey its notes give a reason in (`patch_reason_row`).
 const BUFF_COLOR: &str = "#4ed5bdff";
 const NERF_COLOR: &str = "#ff6b6bff";
 const REASON_COLOR: &str = "#8b8d9aff";
 
-/// One changed number of an entry: its icon, where it is a stat with one or
-/// a passive's number whose text gives it one, and the line.
+// One changed number of an entry: its icon, where it is a stat with one or
+// a passive's number whose text gives it one, and the line.
 struct NoteRow {
     icon: Option<(String, String)>,
     text: String,
 }
 
-/// One item of a patch's buffs or nerfs: the legendary and its radiant
-/// together, under the legendary's name and icon.
+// One item of a patch's buffs or nerfs: the legendary and its radiant
+// together, under the legendary's name and icon.
 struct NoteEntry {
     family: String,
-    /// The item it is drawn and named as: the legendary.
+    // The item it is drawn and named as: the legendary.
     key: String,
-    /// Why the item was touched, as a designer would put it: see
-    /// [`reason_pool`]. Empty where the text file has no such sentence.
+    // Why the item was touched, as a designer would put it: see
+    // [`reason_pool`]. Empty where the text file has no such sentence.
     reason: String,
     rows: Vec<NoteRow>,
 }
 
-/// The tag an item draws in the item sheet: one of the mod's is its own key,
-/// one of the game's has it in the settings file.
+// The tag an item draws in the item sheet: one of the mod's is its own key,
+// one of the game's has it in the settings file.
 fn frame_of(key: &str) -> String {
     crate::item_stats::game_item_file()
         .values()
@@ -908,24 +907,23 @@ fn frame_of(key: &str) -> String {
         .to_string()
 }
 
-/// A holder's win share from which an item counts as winning, and under
-/// which as losing; and holders a match from which it counts as popular.
+// A holder's win share from which an item counts as winning, and under
+// which as losing; and holders a match from which it counts as popular.
 const WINNING: f64 = 0.6;
 const LOSING: f64 = 0.45;
 const OFTEN_HELD: f64 = 0.8;
 
-/// The reasons that fit one item's change, as keys of the `item_patch`
-/// strings in `text/ui.i18n` (`why_nerf_early_1`, ...).
-///
-/// A reason is a designer's sentence, in the voice of the game's own
-/// champion notes and of League's patch notes, and not the item's record
-/// read out (the user, 2026-10-10, whose rule it also is that an item that
-/// stacks is talked of as an early-game item and one that scales as a
-/// late-game one; no sentence calls an item oppressive, a word they gave
-/// as an example and then asked to have taken out). What picks the sentences is
-/// still the record: an item nobody held gets one about being left on the
-/// shelf, one that won and was held a lot gets one about the meta, and so
-/// on; and the item's kind adds the early- or late-game ones.
+// The reasons that fit one item's change, as keys of the `item_patch`
+// strings in `text/ui.i18n` (`why_nerf_early_1`, ...).
+//
+// A reason is a designer's sentence, in the voice of the game's own
+// champion notes and of League's patch notes, and not the item's record
+// read out. An item that stacks is talked of as an early-game item and one
+// that scales as a late-game one, and no sentence calls an item oppressive.
+// What picks the sentences is
+// still the record: an item nobody held gets one about being left on the
+// shelf, one that won and was held a lot gets one about the meta, and so
+// on; and the item's kind adds the early- or late-game ones.
 fn reason_pool(
     buff: bool,
     tempo: super::base::Tempo,
@@ -946,6 +944,9 @@ fn reason_pool(
     };
     let mut pool: Vec<&'static str> = Vec::new();
     if buff {
+        // An item nobody held. No patch touches one as it stands (an item
+        // is judged on more than `balance::MIN_GAMES` games); the sentences
+        // are kept for the day one does.
         if change.games == 0 {
             pool.extend(["why_buff_unbuilt_1", "why_buff_unbuilt_2", "why_buff_unbuilt_3"]);
         }
@@ -976,7 +977,7 @@ fn reason_pool(
     pool
 }
 
-/// A number from a patch and an item, to start a pick at.
+// A number from a patch and an item, to start a pick at.
 fn seed_of(number: u32, text: &str) -> usize {
     let mut hash = 0xcbf2_9ce4_8422_2325u64 ^ u64::from(number);
     for byte in text.bytes() {
@@ -985,10 +986,10 @@ fn seed_of(number: u32, text: &str) -> usize {
     (hash >> 16) as usize
 }
 
-/// A patch's buffs or its nerfs, an entry an item, in the order the patch
-/// has them. A row is one changed number in one tier: the legendary's reads
-/// "Attack Damage: 20 -> 21", the radiant's "Attack Damage (Radiant): 33 ->
-/// 34", the legendary's first.
+// A patch's buffs or its nerfs, an entry an item, in the order the patch
+// has them. A row is one changed number in one tier: the legendary's reads
+// "Attack Damage: 20 -> 21", the radiant's "Attack Damage (Radiant): 33 ->
+// 34", the legendary's first.
 fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
     let texts = texts();
     let base = super::base::base();
@@ -1032,8 +1033,8 @@ fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
         };
         let (label, percent) = label_of(texts, lang, change);
         // A stat's own icon; a passive's number has the icon of what it is
-        // an amount of (the user, 2026-10-10: lethality armour penetration's,
-        // Axiom Arc's Flux haste's), which is the one its text puts by it.
+        // an amount of (lethality armour penetration's, Axiom Arc's Flux
+        // haste's), which is the one its text puts by it.
         let icon = if super::fields::FLAT.contains(&change.field.as_str()) {
             texts.line_icon(&change.field)
         } else {
@@ -1074,35 +1075,33 @@ fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
     entries
 }
 
-/// The news article for one patch: title, body, author. In the game's
-/// language as it is when the patch lands; an article is text once written.
-///
-/// The body is formatted in the markup the game's own text uses (a colour
-/// `<#rrggbbaa>..<>`, a font `<f#asset>..<f>`, a size `<s#n>..<s>`, an inline
-/// icon `<i#sheet:tag>`). The layout is the user's (2026-10-10): the buffs
-/// and then the nerfs under a heading in their colour, and for each item
-///
-/// ```text
-/// <icon> Trinity Force
-/// <reason>
-///     <stat icon> Attack Damage: 20 -> 21
-///     <stat icon> Attack Damage (Radiant): 33 -> 34
-/// ```
-///
-/// An item is one entry, its radiant's numbers in it and marked as such.
-///
-/// One article and one column, however long the patch: also the user's
-/// choice, over an article cut into several and over the game's two columns
-/// drawn on top of this text, both of which were tried that night. A long
-/// one is read by scrolling, which a plain article has by the mod's override
-/// of its layout (`ui/layout/news_component/simple_content.ui`) and
-/// [`sync_article_scroll`].
+// The news article for one patch: title, body, author. In the game's
+// language as it is when the patch lands; an article is text once written.
+//
+// The body is formatted in the markup the game's own text uses (a colour
+// `<#rrggbbaa>..<>`, a font `<f#asset>..<f>`, a size `<s#n>..<s>`, an inline
+// icon `<i#sheet:tag>`). The layout: the buffs and then the nerfs under a
+// heading in their colour, and for each item
+//
+// ```text
+// <icon> Trinity Force
+// <reason>
+//     <stat icon> Attack Damage: 20 -> 21
+//     <stat icon> Attack Damage (Radiant): 33 -> 34
+// ```
+//
+// An item is one entry, its radiant's numbers in it and marked as such.
+//
+// One article and one column, however long the patch. A long one is read
+// by scrolling, which a plain article has by the mod's override of its
+// layout (`ui/layout/news_component/simple_content.ui`) and
+// [`sync_article_scroll`].
 pub(crate) fn news(patch: &Patch) -> (String, String, String) {
     let texts = texts();
     let lang = game_language();
     // Named as the game names its own, "Patch Notes v…", after the version
     // the game was on when it landed; a patch set off by hand is a numbered
-    // hotfix of that version (the user's titles, 2026-10-10).
+    // hotfix of that version.
     let mut title = texts
         .ui(&lang, "title", "Item Patch Notes v{Version}")
         .replace("{Version}", &patch.announced);
@@ -1164,31 +1163,31 @@ pub(crate) fn news(patch: &Patch) -> (String, String, String) {
 
 // -- a plain article's scroll ---------------------------------------------------
 
-/// The news screen's article area, and a plain article in it
-/// (`news_component/simple_content`, mounted under its root's name).
+// The news screen's article area, and a plain article in it
+// (`news_component/simple_content`, mounted under its root's name).
 const ARTICLE_AREA: &str = "main.top.right.news.contents";
 const ARTICLE_BODY: &str = "main.top.right.news.contents.simple_container.contents";
 const ARTICLE_TEXT: &str = "main.top.right.news.contents.simple_container.contents.text";
-/// The node whose height is how far the body scrolls.
+// The node whose height is how far the body scrolls.
 const ARTICLE_EXTENT: &str = "main.top.right.news.contents.simple_container.contents.dummy";
-/// The body's height on screen, which is the least its scroll is long.
+// The body's height on screen, which is the least its scroll is long.
 const ARTICLE_VIEW_H: f32 = 774.0;
-/// The text as the layout authors it: how wide, how high a line, and the
-/// size it is written in where the text names no other.
+// The text as the layout authors it: how wide, how high a line, and the
+// size it is written in where the text names no other.
 const ARTICLE_TEXT_W: f32 = 1043.0;
 const ARTICLE_LINE_H: f32 = 36.0;
 const ARTICLE_TEXT_SIZE: f32 = 20.0;
-/// Room under the last line: a line.
+// Room under the last line: a line.
 const ARTICLE_FOOT: f32 = 36.0;
 
-/// A height set that the nodes then did not have, with the heights they had
-/// instead (the scroll's, the text box's): the same is not set a second
-/// time. Setting a height every frame that never takes is how a fix for the
-/// scroll would become what stops it.
+// A height set that the nodes then did not have, with the heights they had
+// instead (the scroll's, the text box's): the same is not set a second
+// time. Setting a height every frame that never takes is how a fix for the
+// scroll would become what stops it.
 static SCROLL_TRIED: Mutex<Option<(f32, f32, f32)>> = Mutex::new(None);
 
-/// Whether a character is drawn a full size wide (Chinese, Japanese, Korean
-/// and the full-width forms) and not about half of one.
+// Whether a character is drawn a full size wide (Chinese, Japanese, Korean
+// and the full-width forms) and not about half of one.
 fn is_wide(c: char) -> bool {
     matches!(
         c as u32,
@@ -1202,17 +1201,17 @@ fn is_wide(c: char) -> bool {
     )
 }
 
-/// How tall an article's text is drawn: a line of the layout's height for
-/// every line of the text, and for a line wider than the label as many as
-/// it wraps to.
-///
-/// Worked out from the text because the host does not measure it: the
-/// label's rect and its contents rect are both its authored box, and
-/// `fit_height` does not grow it here (test log, 2026-10-10: a 35px box
-/// whatever the text). The widths are a guess at the font, a little wide.
-/// Nothing the mod writes wraps, so its own articles come out exact; the
-/// guess only decides whether one of the game's long articles gets a short
-/// scroll it did not have.
+// How tall an article's text is drawn: a line of the layout's height for
+// every line of the text, and for a line wider than the label as many as
+// it wraps to.
+//
+// Worked out from the text because the host does not measure it: the
+// label's rect and its contents rect are both its authored box, and
+// `fit_height` does not grow it here (a 35px box whatever the text). The
+// widths are a guess at the font, a little wide.
+// Nothing the mod writes wraps, so its own articles come out exact; the
+// guess only decides whether one of the game's long articles gets a short
+// scroll it did not have.
 fn article_text_height(text: &str) -> f32 {
     let mut lines = 0usize;
     for line in text.split('\n') {
@@ -1242,31 +1241,28 @@ fn article_text_height(text: &str) -> f32 {
     lines as f32 * ARTICLE_LINE_H
 }
 
-/// Makes the open article scroll as far as its text is long, and no
-/// further. Every client frame; off the news screen it is two failed
-/// lookups.
-///
-/// The mod's override of the plain article layout makes its body a scroll
-/// view. Two things about one were learned from the user's runs on
-/// 2026-10-10, neither of them to be had from the layouts:
-///
-/// - It is as long as a node in it says, and does not take its length from
-///   a label: with only the label in it the article did not scroll. The
-///   game's own scrolling article (`news_component/tutorial_last`) has a
-///   `#dummy` node for the length, whose height game code sets, and the
-///   override has the same node.
-/// - A node whose box has left the view is not drawn, text and all. The
-///   label was 35px high then, the text running out under it, and the first
-///   turn of the wheel took the whole article away (its box at y 20 under a
-///   view that starts at 120, in the test log). So the label's box is as
-///   long as the scroll, always.
-///
-/// The layout gives both a height that is enough for the longest patch
-/// notes, and this sets both to what the text takes: a short article does
-/// not scroll at all, and one this cannot reach still scrolls, past its end.
-///
-/// For any plain article, the mod's own or not: the layout is every plain
-/// article's.
+// Makes the open article scroll as far as its text is long, and no
+// further. Every client frame; off the news screen it is two failed
+// lookups.
+//
+// The mod's override of the plain article layout makes its body a scroll
+// view. Two things about one, neither of them to be had from the layouts:
+//
+// - It is as long as a node in it says, and does not take its length from
+//   a label: with only the label in it the article does not scroll. The
+//   game's own scrolling article (`news_component/tutorial_last`) has a
+//   `#dummy` node for the length, whose height game code sets, and the
+//   override has the same node.
+// - A node whose box has left the view is not drawn, text and all: a label
+//   35px high, with the text running out under it, is gone at the first
+//   turn of the wheel. So the label's box is as long as the scroll, always.
+//
+// The layout gives both a height that is enough for the longest patch
+// notes, and this sets both to what the text takes: a short article does
+// not scroll at all, and one this cannot reach still scrolls, past its end.
+//
+// For any plain article, the mod's own or not: the layout is every plain
+// article's.
 pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
     let Some(text) = ctx.ui_text(ARTICLE_TEXT) else {
         // No plain article is open; or one is, and its text does not answer

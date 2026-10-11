@@ -31,11 +31,11 @@ use crate::{
 use super::immolate_burn_between;
 
 const SUNFIRE_KEY: &str = "hourglass_of_eternity";
-/// Radiant Sunfire Cape. The engine burns for it; the hook only adds the flames.
+// Radiant Sunfire Cape. The engine burns for it; the hook only adds the flames.
 const RADIANT_SUNFIRE_KEY: &str = "giants_horn_shard";
 
-/// Immolate numbers for one of the two capes. Defaults mirror Radiant Sunfire
-/// Cape's vanilla aura, matching the tooltip.
+// Immolate numbers for one of the two capes. Defaults mirror Radiant Sunfire
+// Cape's vanilla aura, matching the tooltip.
 #[derive(Clone, Debug)]
 pub(crate) struct Immolate {
     effect_bonus_flat_damage: usize,
@@ -71,20 +71,20 @@ impl Immolate {
         immolate
     }
 
-    /// One second of the burn from a champion with `max_hp`.
+    // One second of the burn from a champion with `max_hp`.
     fn damage(&self, max_hp: usize) -> usize {
         self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage)
     }
 
-    /// What minions and monsters take on top of `damage`.
+    // What minions and monsters take on top of `damage`.
     fn minion_bonus(&self, damage: usize) -> usize {
         percent_of(damage, self.effect_minion_bonus_percent)
     }
 }
 
-/// Deals one second of Immolate for every living Sunfire Cape holder, adds
-/// the minion and monster bonus to the engine's burn for every Radiant Sunfire
-/// Cape holder, and keeps the Immolate flames up on both.
+// Deals one second of Immolate for every living Sunfire Cape holder, adds
+// the minion and monster bonus to the engine's burn for every Radiant Sunfire
+// Cape holder, and keeps the Immolate flames up on both.
 fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     if sim.tick() % TICKS_PER_SECOND as usize != 0 {
         return;
@@ -156,12 +156,12 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     }
 }
 
-/// The mod's one match hook: Immolate and Shared Riches while the match runs,
-/// then the end-of-match item capture.
+// The mod's one match hook: Immolate and Shared Riches while the match runs,
+// then the end-of-match item capture.
 pub(crate) struct MatchHooks {
     pub(crate) immolate: Immolate,
     pub(crate) radiant_immolate: Immolate,
-    /// The World Atlas line's gold, which keeps coming while its carrier is dead.
+    // The World Atlas line's gold, which keeps coming while its carrier is dead.
     pub(crate) riches: crate::SharedRiches,
 }
 

@@ -11,18 +11,18 @@ use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta};
 // and ice around you for 4 seconds. The storm deals 60 magic damage per second to
 // nearby enemies and applies a 40% slow.
 
-/// The storm hits four times a second.
+// The storm hits four times a second.
 const TEMPEST_TICK_SECONDS: f64 = 0.25;
-/// Shared by both variants: the slow is a state on the target, and two carriers'
-/// storms refresh one slow rather than stacking two.
+// Shared by both variants: the slow is a state on the target, and two carriers'
+// storms refresh one slow rather than stacking two.
 const SLOW_BUFF: &str = "zekes_convergence_slow";
-/// A little longer than one storm tick, so a target inside the storm is never
-/// between slows; it wears off shortly after leaving the storm or the storm
-/// ending.
+// A little longer than one storm tick, so a target inside the storm is never
+// between slows; it wears off shortly after leaving the storm or the storm
+// ending.
 const SLOW_GRACE_TICKS: usize = 10;
-/// Statless marker on the carrier for as long as the storm lasts. It is the
-/// `view_buffs` binding in `view/effects.view_effects` that draws the storm, so
-/// the art follows her and goes when she dies (buffs do not survive death).
+// Statless marker on the carrier for as long as the storm lasts. It is the
+// `view_buffs` binding in `view/effects.view_effects` that draws the storm, so
+// the art follows her and goes when she dies (buffs do not survive death).
 const STORM_BUFF: &str = "zekes_convergence_storm";
 
 #[derive(Clone, Debug)]
@@ -39,14 +39,14 @@ pub struct ZekesHerald {
     effect_slow_amount: i32,
     effect_max_distance: usize,
     // Non-vital stats (internals)
-    /// Ult cooldown seen on the previous tick. There is no "cast ultimate" hook,
-    /// so a cast is read off the cooldown jumping up.
+    // Ult cooldown seen on the previous tick. There is no "cast ultimate" hook,
+    // so a cast is read off the cooldown jumping up.
     last_ult_cooldown: Option<usize>,
     storm_ticks_left: usize,
     until_next_tick: usize,
-    /// Storm ticks dealt so far, so per-tick damage can alternate to hit the
-    /// per-second total exactly (a total that does not divide by four, such as
-    /// 30 a second, is 7.5 a tick: 7, 8, 7, 8).
+    // Storm ticks dealt so far, so per-tick damage can alternate to hit the
+    // per-second total exactly (a total that does not divide by four, such as
+    // 30 a second, is 7.5 a tick: 7, 8, 7, 8).
     storm_ticks_dealt: usize,
 }
 
@@ -121,8 +121,8 @@ impl ZekesHerald {
         self
     }
 
-    /// Damage for the next storm tick: the running total rounded down, minus
-    /// what has already been dealt.
+    // Damage for the next storm tick: the running total rounded down, minus
+    // what has already been dealt.
     fn next_tick_damage(&mut self) -> usize {
         let per_tick = self.effect_bonus_magic_damage as f64 * TEMPEST_TICK_SECONDS;
         let dealt = (per_tick * self.storm_ticks_dealt as f64).floor() as usize;

@@ -10,17 +10,17 @@
 
 use mod_api_stable::StableSim;
 
-/// The match tick of the last `update` that asked.
+// The match tick of the last `update` that asked.
 #[derive(Clone, Copy, Debug, Default)]
 pub(crate) struct Elapsed {
     last: Option<usize>,
 }
 
 impl Elapsed {
-    /// Ticks gone by since this was last asked. Call once per `update`. One
-    /// tick the first time, and whenever the clock does not read later than it
-    /// did (a copy of the match played on from an earlier point), which is the
-    /// plain once-per-`update` step.
+    // Ticks gone by since this was last asked. Call once per `update`. One
+    // tick the first time, and whenever the clock does not read later than it
+    // did (a copy of the match played on from an earlier point), which is the
+    // plain once-per-`update` step.
     pub(crate) fn since_last(&mut self, ctx: &StableSim<'_>) -> usize {
         let now = ctx.tick();
         let gone = match self.last {

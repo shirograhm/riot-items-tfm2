@@ -24,18 +24,18 @@ use crate::{apply_config, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RA
 // there is no behind, and the splash falls back to a circle of the same reach.
 // A host without projectiles gets Tiamat's swing effect instead of the wave.
 
-/// The `view_projectiles` name in `view/effects.view_effects` that draws the
-/// wedge (`effects/titanic_hydra_wave`).
+// The `view_projectiles` name in `view/effects.view_effects` that draws the
+// wedge (`effects/titanic_hydra_wave`).
 const WAVE_PROJECTILE: &str = "riot_titanic_hydra_wave";
-/// How long the wedge stays up (0.3 s): the first five frames of its
-/// animation. The sixth holds longer, so a late removal never loops it.
+// How long the wedge stays up (0.3 s): the first five frames of its
+// animation. The sixth holds longer, so a late removal never loops it.
 const WAVE_TICKS: u64 = 18;
-/// How far the wedge creeps each tick, in world units (1.8 px in all).
+// How far the wedge creeps each tick, in world units (1.8 px in all).
 const WAVE_DRIFT: u64 = 100;
-/// Half the width of the wave's short side, across the target, in range.
+// Half the width of the wave's short side, across the target, in range.
 const WAVE_SHORT_HALF_WIDTH: usize = 12;
-/// How much each side of the wave widens per range it reaches past the
-/// target: 12 either side at the target becomes 29.5 at the default 35.
+// How much each side of the wave widens per range it reaches past the
+// target: 12 either side at the target becomes 29.5 at the default 35.
 const WAVE_SPREAD: f64 = 0.5;
 
 #[derive(Clone, Debug)]
@@ -55,7 +55,7 @@ pub struct TitanicHydra {
 }
 
 impl TitanicHydra {
-    /// The native effect the wedge carries, for `lib.rs` to register.
+    // The native effect the wedge carries, for `lib.rs` to register.
     pub const WAVE_HIT: &'static str = "riot_titanic_hydra_wave_hit";
 
     pub fn base() -> Self {
@@ -116,8 +116,8 @@ impl TitanicHydra {
         self
     }
 
-    /// The way the wave points: from the carrier through `target`, as a unit
-    /// vector. None when the two stand on the same spot.
+    // The way the wave points: from the carrier through `target`, as a unit
+    // vector. None when the two stand on the same spot.
     fn away_from_carrier(ctx: &StableSim<'_>, caster: usize, target: usize) -> Option<(f64, f64)> {
         let (cx, cy) = ctx.get_entity(caster)?.pos();
         let (tx, ty) = ctx.get_entity(target)?.pos();
@@ -126,9 +126,9 @@ impl TitanicHydra {
         (length >= 1.0).then(|| (dx / length, dy / length))
     }
 
-    /// The enemies the Cleave splashes, towers excepted: every one other than
-    /// `target` whose body overlaps the wave pointing `away` from the carrier,
-    /// or without a direction, every one within the wave's reach of `target`.
+    // The enemies the Cleave splashes, towers excepted: every one other than
+    // `target` whose body overlaps the wave pointing `away` from the carrier,
+    // or without a direction, every one within the wave's reach of `target`.
     fn splash_targets(
         &self,
         ctx: &StableSim<'_>,
@@ -177,9 +177,9 @@ impl TitanicHydra {
         splashed
     }
 
-    /// Bursts the wave out of `target` along `away`, the unit direction from
-    /// the carrier through it. False when there is no projectile to draw it
-    /// with.
+    // Bursts the wave out of `target` along `away`, the unit direction from
+    // the carrier through it. False when there is no projectile to draw it
+    // with.
     fn throw_wedge(
         &self,
         ctx: &mut StableSim<'_>,
@@ -315,7 +315,7 @@ impl StableItem for TitanicHydra {
         }
     }
 
-    /// Lands the on-hit damage whose delay has run out.
+    // Lands the on-hit damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }
@@ -329,9 +329,9 @@ impl StableItem for TitanicHydra {
     }
 }
 
-/// What the Cleave wedge does to whatever it passes through: nothing. The
-/// wedge is only the picture; `spawn_projectile` still needs an effect for
-/// it to carry.
+// What the Cleave wedge does to whatever it passes through: nothing. The
+// wedge is only the picture; `spawn_projectile` still needs an effect for
+// it to carry.
 #[derive(Clone, Debug)]
 pub struct TitanicWave;
 

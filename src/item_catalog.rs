@@ -1,6 +1,6 @@
-/// The six legendary classes, in picker order. The picker also has a `Boots`
-/// group, which [`category_rank`] sorts after these; it is left out of this
-/// array because the Item Stats tab builds one filter row per entry.
+// The six legendary classes, in picker order. The picker also has a `Boots`
+// group, which [`category_rank`] sorts after these; it is left out of this
+// array because the Item Stats tab builds one filter row per entry.
 pub const CATEGORY_ORDER: [&str; 6] =
     ["Assassin", "Fighter", "Marksman", "Mage", "Tank", "Support"];
 

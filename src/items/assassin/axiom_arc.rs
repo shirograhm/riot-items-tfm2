@@ -12,8 +12,8 @@ pub struct AxiomArc {
     effect_lethality: usize,
     effect_ult_cooldown_mult: i32,
     effect_ult_cooldown_per_lethality: f64,
-    /// Name of the buff Flux applies. Distinct per variant so the base and the
-    /// Radiant version cannot be mistaken for one another.
+    // Name of the buff Flux applies. Distinct per variant so the base and the
+    // Radiant version cannot be mistaken for one another.
     flux_buff: &'static str,
 }
 

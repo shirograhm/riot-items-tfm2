@@ -20,21 +20,21 @@ use serde_json::Value;
 use super::{fields, live, text};
 use crate::config::ItemConfig;
 
-/// One of this mod's items as it registered, noted from the registration
-/// macros in `lib.rs`.
+// One of this mod's items as it registered, noted from the registration
+// macros in `lib.rs`.
 pub(crate) struct ModItem {
     pub tier: usize,
-    /// The stats the game took a copy of, and holds for the item ever after.
+    // The stats the game took a copy of, and holds for the item ever after.
     pub registered: BuffV1,
-    /// The stats the item would have with another config.
+    // The stats the item would have with another config.
     pub stat_of: Box<dyn Fn(&ItemConfig) -> BuffV1 + Send + Sync>,
 }
 
 type Refresh = Box<dyn Fn(&ItemConfig) + Send + Sync>;
 
-/// What registration has noted so far: the items in the order they
-/// registered, and whatever keeps a copy of an item's numbers outside the
-/// item and has to be told when they change.
+// What registration has noted so far: the items in the order they
+// registered, and whatever keeps a copy of an item's numbers outside the
+// item and has to be told when they change.
 struct Noted {
     items: Vec<(&'static str, ModItem)>,
     refreshes: Vec<(&'static str, Refresh)>,
@@ -57,54 +57,53 @@ pub(crate) fn note_refresh(key: &'static str, refresh: Refresh) {
     }
 }
 
-/// One tier of an item.
+// One tier of an item.
 pub(crate) struct Member {
     pub key: String,
-    /// One of the game's own thirty items.
+    // One of the game's own thirty items.
     pub game: bool,
-    /// Patchable field -> its unpatched number.
+    // Patchable field -> its unpatched number.
     pub values: BTreeMap<String, f64>,
-    /// The fields among those that are whole numbers.
+    // The fields among those that are whole numbers.
     pub whole: HashSet<String>,
 }
 
-/// An item in every tier it comes in: the legendary first, the radiant last.
+// An item in every tier it comes in: the legendary first, the radiant last.
 pub(crate) struct Family {
     pub members: Vec<Member>,
-    /// Whether builds choose it. Boots, the jungle items and the World Atlas
-    /// line are handed out by Smart Builds' rules, so how often they are held
-    /// says nothing about them and is not held against them.
+    // Whether builds choose it. Boots, the jungle items and the World Atlas
+    // line are handed out by Smart Builds' rules, so how often they are held
+    // says nothing about them and is not held against them.
     pub chosen: bool,
 }
 
 pub(crate) struct Base {
     pub families: BTreeMap<String, Family>,
-    /// Config entry -> field -> number: `config.json` over
-    /// `config-default.json`, which is what `apply_config.ps1` writes the
-    /// item text from.
+    // Config entry -> field -> number: `config.json` over
+    // `config-default.json`, which is what `apply_config.ps1` writes the
+    // item text from.
     config: HashMap<String, HashMap<String, f64>>,
-    /// `config.json` as the player wrote it, by item.
+    // `config.json` as the player wrote it, by item.
     raw: HashMap<String, Value>,
     pub mod_items: HashMap<&'static str, ModItem>,
     pub refreshes: Vec<(&'static str, Refresh)>,
 }
 
-/// When an item is at its strongest, as a patch note's reason speaks of it.
-/// The user's rule (2026-10-10): a stacking item is an early-game item and a
-/// scaling one a late-game item.
+// When an item is at its strongest, as a patch note's reason speaks of it:
+// a stacking item is an early-game item and a scaling one a late-game item.
 #[derive(Clone, Copy, PartialEq)]
 pub(crate) enum Tempo {
-    /// It stacks: some number of it is counted in stacks.
+    // It stacks: some number of it is counted in stacks.
     Early,
-    /// It scales: a share of its holder's or its target's stats, a range
-    /// that grows with level, or growth over the match.
+    // It scales: a share of its holder's or its target's stats, a range
+    // that grows with level, or growth over the match.
     Late,
     Neither,
 }
 
-/// What in a config field's name says the number scales. A stat's own
-/// percentage (`attack_speed_mult`) is not among them: `attack_mult` and its
-/// like multiply a total.
+// What in a config field's name says the number scales. A stat's own
+// percentage (`attack_speed_mult`) is not among them: `attack_mult` and its
+// like multiply a total.
 const SCALING: &[&str] = &[
     "_percent_",
     "effect_min_",
@@ -116,9 +115,9 @@ const SCALING: &[&str] = &[
     "hp_mult",
 ];
 
-/// Numbers an effect registered with the game at start-up carries its own
-/// copy of (`reg.add_native_effect` in `lib.rs`): the projectile would keep
-/// dealing the unpatched number whatever the item said.
+// Numbers an effect registered with the game at start-up carries its own
+// copy of (`reg.add_native_effect` in `lib.rs`): the projectile would keep
+// dealing the unpatched number whatever the item said.
 const CAPTURED: &[(&str, &[&str])] = &[
     ("runaans_hurricane", &["effect_ad_percent_damage"]),
     (
@@ -153,8 +152,8 @@ fn read_object(name: &str) -> serde_json::Map<String, Value> {
     }
 }
 
-/// Everything above, built on first use. Not before the mod has finished
-/// registering: it takes what registration noted.
+// Everything above, built on first use. Not before the mod has finished
+// registering: it takes what registration noted.
 pub(crate) fn base() -> &'static Base {
     static BASE: OnceLock<Base> = OnceLock::new();
     BASE.get_or_init(Base::build)
@@ -384,8 +383,8 @@ impl Base {
         }
     }
 
-    /// The unpatched number of a config entry's field, 0 where it has none,
-    /// which is what the generator makes of a missing one too.
+    // The unpatched number of a config entry's field, 0 where it has none,
+    // which is what the generator makes of a missing one too.
     pub(crate) fn value(&self, item: &str, field: &str) -> f64 {
         self.config
             .get(item)
@@ -394,10 +393,10 @@ impl Base {
             .unwrap_or(0.0)
     }
 
-    /// [`Tempo`] of the item `key`, from the names of the numbers it is
-    /// configured with. An item that both stacks and scales is taken for a
-    /// stacking one; one of the game's own, which has no config entry of
-    /// this kind, for neither.
+    // [`Tempo`] of the item `key`, from the names of the numbers it is
+    // configured with. An item that both stacks and scales is taken for a
+    // stacking one; one of the game's own, which has no config entry of
+    // this kind, for neither.
     pub(crate) fn tempo(&self, key: &str) -> Tempo {
         let Some(numbers) = self.config.get(key) else {
             return Tempo::Neither;
@@ -416,7 +415,7 @@ impl Base {
         }
     }
 
-    /// The player's own `config.json` entry for `key`, to lay a patch over.
+    // The player's own `config.json` entry for `key`, to lay a patch over.
     pub(crate) fn raw_config(&self, key: &str) -> serde_json::Map<String, Value> {
         match self.raw.get(key) {
             Some(Value::Object(entry)) => entry.clone(),

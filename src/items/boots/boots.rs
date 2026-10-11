@@ -2,7 +2,7 @@ use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api_stable::*;
 
-/// The tier-1 boots every upgraded pair builds from.
+// The tier-1 boots every upgraded pair builds from.
 #[derive(Clone, Debug)]
 pub struct Boots {
     price: usize,

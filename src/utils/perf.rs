@@ -40,12 +40,12 @@ const REPORT_SECONDS: f64 = 5.0;
 const FLUSH_CALLS: u64 = 256;
 const FLUSH_NANOS: u64 = 1_000_000;
 const FLUSH_TICKS: usize = 64;
-/// A wait between two ticks of one match longer than this is the frame rate
-/// pacing a watched match (or a stall), not the tick itself.
+// A wait between two ticks of one match longer than this is the frame rate
+// pacing a watched match (or a stall), not the tick itself.
 const TICK_GAP_NANOS: u64 = 2_000_000;
-/// Items given rows of their own; any past this are timed by hook only.
+// Items given rows of their own; any past this are timed by hook only.
 const MAX_ITEMS: usize = 320;
-/// Items listed by cost at the end of each block.
+// Items listed by cost at the end of each block.
 const TOP_ITEMS: usize = 20;
 
 #[derive(Clone, Copy)]
@@ -87,7 +87,7 @@ pub enum Section {
     ItemOther,
 }
 
-/// Row labels, in [`Section`] order.
+// Row labels, in [`Section`] order.
 const NAMES: [&str; SECTIONS] = [
     "frame (client, total)",
     "frame: tactics",
@@ -127,7 +127,7 @@ const NAMES: [&str; SECTIONS] = [
 ];
 
 const SECTIONS: usize = Section::ItemOther as usize + 1;
-/// Two per item after the sections: its `update`, then its other hooks.
+// Two per item after the sections: its `update`, then its other hooks.
 const SLOTS: usize = SECTIONS + 2 * MAX_ITEMS;
 
 #[derive(Clone, Copy)]
@@ -187,17 +187,17 @@ thread_local! {
     // this on the game's worker threads, where lazy TLS init and destructor
     // registration are best avoided.
     static LOCAL: RefCell<[Acc; SLOTS]> = const { RefCell::new([Acc::ZERO; SLOTS]) };
-    /// How many [`Probe::sim`] probes are open on this thread.
+    // How many [`Probe::sim`] probes are open on this thread.
     static DEPTH: Cell<u32> = const { Cell::new(0) };
-    /// The last match tick this thread saw: (seed, tick, when).
+    // The last match tick this thread saw: (seed, tick, when).
     static LAST_TICK: Cell<Option<(u64, usize, Instant)>> = const { Cell::new(None) };
 }
 
-/// Item keys by registration order; item `i` is counted in slots
-/// `SECTIONS + 2 * i` (its `update`) and the one after (its other hooks).
+// Item keys by registration order; item `i` is counted in slots
+// `SECTIONS + 2 * i` (its `update`) and the one after (its other hooks).
 static ITEM_KEYS: Mutex<Vec<&'static str>> = Mutex::new(Vec::new());
 
-/// Adds one call of `nanos` to each of `slots`.
+// Adds one call of `nanos` to each of `slots`.
 fn record(slots: [Option<usize>; 3], nanos: u64) {
     let _ = LOCAL.try_with(|local| {
         let Ok(mut local) = local.try_borrow_mut() else {
@@ -216,7 +216,7 @@ fn record(slots: [Option<usize>; 3], nanos: u64) {
     });
 }
 
-/// Folds this thread's unflushed counts into the totals.
+// Folds this thread's unflushed counts into the totals.
 fn flush_local() {
     let _ = LOCAL.try_with(|local| {
         let Ok(mut local) = local.try_borrow_mut() else {
@@ -231,10 +231,10 @@ fn flush_local() {
     });
 }
 
-/// Counts one occurrence of `section`, with no time attached.
-///
-/// Straight into the totals rather than through the per-thread batch: counted
-/// events are far rarer than timed calls.
+// Counts one occurrence of `section`, with no time attached.
+//
+// Straight into the totals rather than through the per-thread batch: counted
+// events are far rarer than timed calls.
 pub fn count(section: Section) {
     if ENABLED {
         TOTALS[section as usize]
@@ -243,9 +243,9 @@ pub fn count(section: Section) {
     }
 }
 
-/// Called first thing in the match tick hook: times the tick that has just
-/// ended, when this thread's previous call was the tick before of the same
-/// match, and flushes this thread's counts now and then.
+// Called first thing in the match tick hook: times the tick that has just
+// ended, when this thread's previous call was the tick before of the same
+// match, and flushes this thread's counts now and then.
 pub fn sim_tick(seed: u64, tick: usize, ended: bool) {
     if !ENABLED {
         return;
@@ -273,15 +273,15 @@ pub fn sim_tick(seed: u64, tick: usize, ended: bool) {
 
 #[derive(Clone, Copy, PartialEq)]
 enum Scope {
-    /// Not sim-thread work, or timing is off.
+    // Not sim-thread work, or timing is off.
     Free,
     Nested,
     Outermost,
 }
 
-/// Times from its start until it is dropped, under whichever section it was
-/// last [`set`](Probe::set) to, so a function with many exits can say which
-/// kind of exit it took.
+// Times from its start until it is dropped, under whichever section it was
+// last [`set`](Probe::set) to, so a function with many exits can say which
+// kind of exit it took.
 pub struct Probe {
     slot: usize,
     also: Option<usize>,
@@ -300,8 +300,8 @@ impl Probe {
         }
     }
 
-    /// [`start`](Probe::start) for work on a sim thread: the outermost such
-    /// probe on a thread is counted under [`Section::SimTotal`] as well.
+    // [`start`](Probe::start) for work on a sim thread: the outermost such
+    // probe on a thread is counted under [`Section::SimTotal`] as well.
     #[inline]
     pub fn sim(section: Section) -> Self {
         let mut probe = Self::start(section);
@@ -341,15 +341,15 @@ impl Drop for Probe {
     }
 }
 
-/// Runs `f`, timed under `section`.
+// Runs `f`, timed under `section`.
 #[inline]
 pub fn time<R>(section: Section, f: impl FnOnce() -> R) -> R {
     let _probe = Probe::start(section);
     f()
 }
 
-/// Writes a report if [`REPORT_SECONDS`] have passed since the last one. Called
-/// once a frame from the client's `post_update`.
+// Writes a report if [`REPORT_SECONDS`] have passed since the last one. Called
+// once a frame from the client's `post_update`.
 pub fn report_if_due() {
     if !ENABLED {
         return;
@@ -378,8 +378,8 @@ pub fn report_if_due() {
     }
 }
 
-/// The log, opened (and truncated) on first use, so it only holds this game
-/// launch.
+// The log, opened (and truncated) on first use, so it only holds this game
+// launch.
 static FILE: Mutex<Option<std::fs::File>> = Mutex::new(None);
 
 fn with_file(write: impl FnOnce(&mut std::fs::File)) {
@@ -491,25 +491,25 @@ fn write_report(at: f64, seconds: f64, totals: &[Acc]) {
     });
 }
 
-/// An item with its hooks timed, both by hook kind and under its own key.
-/// Derefs to the item, so what registration asks of it still reaches it.
-///
-/// It is also where an item balance patch reaches the item (`crate::patches`),
-/// being the one thing every item registers in. The game copies the
-/// registered item for each purchase; the first time any hook of a copy
-/// runs, the copy is built again from its config with the patch in it. Once,
-/// before the copy has done anything, so it holds no state to lose, and it
-/// keeps those numbers for as long as it lives: a patch that lands does not
-/// change an item somebody is holding.
+// An item with its hooks timed, both by hook kind and under its own key.
+// Derefs to the item, so what registration asks of it still reaches it.
+//
+// It is also where an item balance patch reaches the item (`crate::patches`),
+// being the one thing every item registers in. The game copies the
+// registered item for each purchase; the first time any hook of a copy
+// runs, the copy is built again from its config with the patch in it. Once,
+// before the copy has done anything, so it holds no state to lose, and it
+// keeps those numbers for as long as it lives: a patch that lands does not
+// change an item somebody is holding.
 #[derive(Clone)]
 pub struct Timed<T> {
     inner: T,
     slot: Option<usize>,
     key: &'static str,
-    /// The item's constructor from a config, tier and all.
+    // The item's constructor from a config, tier and all.
     build: fn(&crate::config::ItemConfig) -> T,
-    /// This copy has looked for its patch. Never set on the registered item,
-    /// which no hook runs on, so every copy of it starts unset.
+    // This copy has looked for its patch. Never set on the registered item,
+    // which no hook runs on, so every copy of it starts unset.
     patched: bool,
 }
 
@@ -521,8 +521,8 @@ impl<T> Deref for Timed<T> {
     }
 }
 
-/// Wraps `item` for timing under `key`. `build` is the constructor it was
-/// made with, for a copy to be made again with a patched config.
+// Wraps `item` for timing under `key`. `build` is the constructor it was
+// made with, for a copy to be made again with a patched config.
 pub fn timed<T: StableItem + Clone>(
     key: &'static str,
     item: T,
@@ -547,8 +547,8 @@ pub fn timed<T: StableItem + Clone>(
 }
 
 impl<T> Timed<T> {
-    /// Takes on the save's item balance patch, where it has one for this
-    /// item. Out of line: it runs once in a copy's life.
+    // Takes on the save's item balance patch, where it has one for this
+    // item. Out of line: it runs once in a copy's life.
     #[cold]
     fn adopt_patch(&mut self) {
         self.patched = true;

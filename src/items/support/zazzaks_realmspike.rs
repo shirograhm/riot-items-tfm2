@@ -3,21 +3,21 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
 
-/// Zaz'Zak's Realmspike — what World Atlas grows into for a support that
-/// fights with its abilities: Void Explosion, and the gold the Atlas line pays
-/// ([`crate::SharedRiches`]).
-///
-/// # Void Explosion
-///
-/// Ability damage to an enemy champion marks the spot that champion stands on.
-/// After a short delay the spot goes off, on whoever is standing there by
-/// then: the champion may have walked out of it, and another may have walked
-/// in. Each enemy caught takes a flat amount, a share of the carrier's ability
-/// power and a share of its own maximum health, as magic damage.
-///
-/// The spot is a place and a timer, like Iceborn Gauntlet's frost zone: no
-/// unit stands for it. Its damage goes out as an `Item` hit, which the trigger
-/// does not answer to, so one explosion never sets off the next.
+// Zaz'Zak's Realmspike — what World Atlas grows into for a support that
+// fights with its abilities: Void Explosion, and the gold the Atlas line pays
+// ([`crate::SharedRiches`]).
+//
+// # Void Explosion
+//
+// Ability damage to an enemy champion marks the spot that champion stands on.
+// After a short delay the spot goes off, on whoever is standing there by
+// then: the champion may have walked out of it, and another may have walked
+// in. Each enemy caught takes a flat amount, a share of the carrier's ability
+// power and a share of its own maximum health, as magic damage.
+//
+// The spot is a place and a timer, like Iceborn Gauntlet's frost zone: no
+// unit stands for it. Its damage goes out as an `Item` hit, which the trigger
+// does not answer to, so one explosion never sets off the next.
 #[derive(Clone, Debug)]
 pub struct ZazzaksRealmspike {
     meta: ItemMeta,
@@ -33,25 +33,25 @@ pub struct ZazzaksRealmspike {
     effect_bonus_gold: usize,
     effect_gold_interval_seconds: f64,
     // Non-vital stats (internals)
-    /// Ticks until Void Explosion can be set off again.
+    // Ticks until Void Explosion can be set off again.
     cooldown: usize,
-    /// Every spot this carrier has marked that has yet to go off.
+    // Every spot this carrier has marked that has yet to go off.
     blasts: Vec<Blast>,
 }
 
-/// The spot gathering, played once as it is marked, and the blast, played as
-/// it goes off: two tags of one sheet (`effects/void_explosion`), bound in
-/// `view/effects.view_effects`. The gathering is drawn half a second long, so
-/// a longer delay in the config leaves the spot bare for the rest of it.
+// The spot gathering, played once as it is marked, and the blast, played as
+// it goes off: two tags of one sheet (`effects/void_explosion`), bound in
+// `view/effects.view_effects`. The gathering is drawn half a second long, so
+// a longer delay in the config leaves the spot bare for the rest of it.
 const GATHER_EFFECT: &str = "riot_void_explosion_gather";
 const BLAST_EFFECT: &str = "riot_void_explosion_blast";
 
-/// A marked spot waiting to go off.
+// A marked spot waiting to go off.
 #[derive(Clone, Copy, Debug)]
 struct Blast {
     x: u64,
     y: u64,
-    /// Ticks until it does.
+    // Ticks until it does.
     remaining: usize,
 }
 
@@ -120,8 +120,8 @@ impl ZazzaksRealmspike {
         self
     }
 
-    /// Enemy units (not turrets) within `range` of a spot, each with its
-    /// maximum health.
+    // Enemy units (not turrets) within `range` of a spot, each with its
+    // maximum health.
     fn enemies_near(
         ctx: &StableSim<'_>,
         team: usize,
@@ -143,8 +143,8 @@ impl ZazzaksRealmspike {
             .collect()
     }
 
-    /// Counts every marked spot down and sets off the ones whose delay has
-    /// run out.
+    // Counts every marked spot down and sets off the ones whose delay has
+    // run out.
     fn run_blasts(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.blasts.is_empty() {
             return;
@@ -192,8 +192,8 @@ impl ZazzaksRealmspike {
         }
     }
 
-    /// What Shared Riches pays a holder: this much gold, this often.
-    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    // What Shared Riches pays a holder: this much gold, this often.
+    // [`crate::SharedRiches`] does the paying, from the match hook.
     pub(crate) fn shared_riches(&self) -> (usize, f64) {
         (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
@@ -249,9 +249,9 @@ impl StableItem for ZazzaksRealmspike {
         self.blasts.clear();
     }
 
-    /// Void Explosion's trigger: ability damage to an enemy champion, a tick
-    /// of damage over time included, off cooldown. The cooldown runs from
-    /// here, not from the blast.
+    // Void Explosion's trigger: ability damage to an enemy champion, a tick
+    // of damage over time included, off cooldown. The cooldown runs from
+    // here, not from the blast.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -289,7 +289,7 @@ impl StableItem for ZazzaksRealmspike {
         ctx.play_view_effect(GATHER_EFFECT, caster, &InputTargetV1::pos(x, y), 0, 0, 0);
     }
 
-    /// Runs the cooldown and the marked spots.
+    // Runs the cooldown and the marked spots.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.cooldown = self.cooldown.saturating_sub(1);
         self.run_blasts(ctx, player);

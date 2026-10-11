@@ -12,7 +12,7 @@ pub struct BamisCinder {
     effect_max_distance: usize,
     effect_minion_bonus_percent: f64,
     // Non-vital stats (internals)
-    /// Ticks until the next second of Immolate lands on everyone in range.
+    // Ticks until the next second of Immolate lands on everyone in range.
     until_next_burn: usize,
 }
 

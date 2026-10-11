@@ -1,27 +1,11 @@
-//! Which of an item's numbers a balance patch may move, which way is a buff,
-//! and in what steps.
-//!
-//! The shape is the base game's own, read off its champion patches
-//! (`setting/patch_setting`): every field has a floor and a cap on what all
-//! patches together may make of it, a smallest step, and a flag for the
-//! fields where lower is stronger. The numbers here are this mod's picks
-//! (2026-10-10), and this file is where to tune them.
-
 use serde_json::{json, Value};
 
 use crate::config::ItemConfig;
 
-/// The lowest a field goes, as a share of its unpatched value, however many
-/// patches nerf it.
-pub(crate) const MIN_RATIO: f64 = 0.75;
-/// And the highest.
-pub(crate) const MAX_RATIO: f64 = 1.3;
-/// The most one patch moves one number, as a share of what it was. A number
-/// whose smallest step is more than this (3 stacks to 4) is left alone.
+pub(crate) const MIN_RATIO: f64 = 0.65;
+pub(crate) const MAX_RATIO: f64 = 1.4;
 pub(crate) const MAX_SINGLE_CHANGE: f64 = 0.25;
 
-/// Config fields that are an item's flat stats: what `StableItem::stat`
-/// hands the game, by the name `BuffV1` and the game's own settings give it.
 pub(crate) const FLAT: &[&str] = &[
     "hp",
     "hp_regen",
@@ -45,10 +29,43 @@ pub(crate) const FLAT: &[&str] = &[
     "vamp",
 ];
 
-/// Flat stats the game keeps as unsigned numbers. A patch reaches an item's
-/// flat stats as a buff on its holder ([`super::on_match_tick`]), and a buff
-/// cannot take away from an unsigned stat, so these are never patched under
-/// what the game holds for the item.
+const HEALTH_STEP: f64 = 50.0;
+const FLAT_STEP: f64 = 5.0;
+const PERCENT_STEP: f64 = 1.0;
+
+// The flat stats that are health.
+const HEALTH_FLAT: &[&str] = &["hp"];
+
+// The flat stats a tooltip writes as a percentage.
+const PERCENT_FLAT: &[&str] = &[
+    "attack_mult",
+    "magic_power_mult",
+    "magic_resistance_mult",
+    "crit_chance",
+    "attack_speed_mult",
+    "move_speed_mult",
+    "toughness",
+    "defence_penetration",
+    "magic_resistance_penetration",
+    "skill_damaged_reduce",
+    "base_attack_damaged_reduce",
+    "vamp",
+];
+
+const UNIT_FLAT: &[&str] = &["hp_regen"];
+
+const KEEPS_ITS_THREE: &[(&str, &[&str])] = &[("trinity_force", &["price", "attack"])];
+const THREE_STEP: f64 = 10.0;
+
+fn keeps_its_three(item: &str, field: &str, base: f64) -> bool {
+    let family = crate::build_config::base_slug(item);
+    base.fract() == 0.0
+        && (base.abs() as u64) % 10 == 3
+        && KEEPS_ITS_THREE
+            .iter()
+            .any(|(known, fields)| *known == family && fields.contains(&field))
+}
+
 const UNSIGNED_FLAT: &[&str] = &[
     "toughness",
     "defence_penetration",
@@ -57,14 +74,6 @@ const UNSIGNED_FLAT: &[&str] = &[
     "base_attack_damaged_reduce",
 ];
 
-/// Never patched, though they are numbers in an item's text.
-///
-/// Counts and caps that are part of how a passive works (stacks, targets),
-/// reaches and sizes (the effects drawn for them are sized to match), waits
-/// that are not a cooldown, what only minions, monsters and towers feel, the
-/// World Atlas line's gold (paid from the match hook at the rate the item
-/// registered with), and thresholds, where which way is a buff depends on
-/// the sentence.
 const FROZEN: &[&str] = &[
     "price",
     "effect_max_stacks",
@@ -97,11 +106,11 @@ const FROZEN: &[&str] = &[
     "effect_max_skill_damaged_reduce",
 ];
 
-/// Fields where the smaller number is the stronger item.
+// Fields where the smaller number is the stronger item.
 const LOWER_IS_STRONGER: &[&str] = &["effect_cooldown_seconds", "effect_out_of_combat_seconds"];
 
-/// The two ends of a range that grows with level. They move together, or a
-/// patch could put the low end over the high one.
+// The two ends of a range that grows with level. They move together, or a
+// patch could put the low end over the high one.
 const PAIRS: &[(&str, &str)] = &[
     ("effect_min_bonus_damage", "effect_max_bonus_damage"),
     ("effect_min_heal", "effect_max_heal"),
@@ -109,18 +118,18 @@ const PAIRS: &[(&str, &str)] = &[
     ("effect_min_bonus_hp", "effect_max_bonus_hp"),
 ];
 
-/// How one field is patched.
+// How one field is patched.
 #[derive(Clone, Copy)]
 pub(crate) struct Rule {
-    /// A buff makes the number smaller.
+    // A buff makes the number smaller.
     pub lower_is_stronger: bool,
-    /// See [`UNSIGNED_FLAT`].
+    // See [`UNSIGNED_FLAT`].
     pub unsigned: bool,
-    /// One of [`FLAT`].
+    // One of [`FLAT`].
     pub flat: bool,
 }
 
-/// The rule for `field`, or nothing for one a patch never moves.
+// The rule for `field`, or nothing for one a patch never moves.
 pub(crate) fn rule(field: &str) -> Option<Rule> {
     if FROZEN.contains(&field) {
         return None;
@@ -136,7 +145,7 @@ pub(crate) fn rule(field: &str) -> Option<Rule> {
     })
 }
 
-/// The field that has to move with `field`, where there is one.
+// The field that has to move with `field`, where there is one.
 pub(crate) fn partner(field: &str) -> Option<&'static str> {
     PAIRS.iter().find_map(|&(low, high)| {
         if low == field {
@@ -149,22 +158,40 @@ pub(crate) fn partner(field: &str) -> Option<&'static str> {
     })
 }
 
-/// Whether an item keeps `field` as a whole number, asked of the config
-/// type itself: a field that is one refuses a fraction. So the list of
-/// fields is written down once, in `utils/config.rs`.
+// Whether an item keeps `field` as a whole number, asked of the config
+// type itself: a field that is one refuses a fraction. So the list of
+// fields is written down once, in `utils/config.rs`.
 pub(crate) fn is_whole(field: &str) -> bool {
     serde_json::from_value::<ItemConfig>(json!({ field: 0.5 })).is_err()
 }
 
-/// Whether `field` is one an item can be configured with at all.
+// Whether `field` is one an item can be configured with at all.
 pub(crate) fn is_config_field(field: &str) -> bool {
     serde_json::from_value::<ItemConfig>(json!({ field: Value::String(String::new()) })).is_err()
 }
 
-/// The smallest change to a number that reads `base` unpatched: one for a
-/// small whole number, and enough to keep a round number round for a big
-/// one (150 health goes to 155, not 151).
-pub(crate) fn step(base: f64, whole: bool) -> f64 {
+// The step a flat stat is patched in, or nothing for a field that is not
+// one.
+fn flat_step(field: &str) -> Option<f64> {
+    if !FLAT.contains(&field) {
+        return None;
+    }
+    Some(if HEALTH_FLAT.contains(&field) {
+        HEALTH_STEP
+    } else if PERCENT_FLAT.contains(&field) || UNIT_FLAT.contains(&field) {
+        PERCENT_STEP
+    } else {
+        FLAT_STEP
+    })
+}
+
+pub(crate) fn step(item: &str, field: &str, base: f64, whole: bool) -> f64 {
+    if keeps_its_three(item, field, base) {
+        return THREE_STEP;
+    }
+    if let Some(step) = flat_step(field) {
+        return step;
+    }
     let size = base.abs();
     let divides = |by: f64| (size / by).fract() == 0.0;
     if whole {
@@ -192,17 +219,37 @@ pub(crate) fn step(base: f64, whole: bool) -> f64 {
     }
 }
 
-/// `target` on `base`'s grid of steps, and never the other side of zero.
-pub(crate) fn quantize(base: f64, target: f64, whole: bool) -> f64 {
-    let step = step(base, whole);
-    let stepped = (target / step).round() * step;
+pub(crate) fn quantize(item: &str, field: &str, base: f64, target: f64, whole: bool) -> f64 {
+    if base == 0.0 {
+        return 0.0;
+    }
+    if (target - base).abs() < 1e-9 {
+        return base;
+    }
+    let step = step(item, field, base, whole);
+    let from_base = keeps_its_three(item, field, base);
+    let stepped = if from_base {
+        base + ((target - base) / step).round() * step
+    } else {
+        (target / step).round() * step
+    };
     // Four places: what is left of a product of doubles after that is noise.
     let stepped = (stepped * 10_000.0).round() / 10_000.0;
-    if base > 0.0 {
-        stepped.max(step)
-    } else if base < 0.0 {
-        stepped.min(-step)
+    let stepped = if target > base {
+        stepped.max(base)
     } else {
-        0.0
+        stepped.min(base)
+    };
+    // The least it can be: a step, or all of a number smaller than one; and
+    // of a number counted from its base, the last point before zero.
+    let least = if from_base {
+        base.abs() % step
+    } else {
+        step.min(base.abs())
+    };
+    if base > 0.0 {
+        stepped.max(least)
+    } else {
+        stepped.min(-least)
     }
 }

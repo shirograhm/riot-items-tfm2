@@ -87,15 +87,14 @@ fn record_lethality_table(configs: &std::collections::HashMap<String, config::It
     let _ = LETHALITY_TABLE.set(table);
 }
 
-/// Lethality an item balance patch has given an item in place of the
-/// table's (`patches::live`). Empty while no patch has.
+// Lethality an item balance patch has given an item in place of the
+// table's (`patches::live`). Empty while no patch has.
 static LETHALITY_PATCHES: std::sync::RwLock<Option<std::collections::HashMap<String, usize>>> =
     std::sync::RwLock::new(None);
-static LETHALITY_PATCHED: std::sync::atomic::AtomicBool =
-    std::sync::atomic::AtomicBool::new(false);
+static LETHALITY_PATCHED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 
-/// Hands over the lethality of every item a patch has changed it for, in
-/// place of whatever was handed over before.
+// Hands over the lethality of every item a patch has changed it for, in
+// place of whatever was handed over before.
 pub(crate) fn set_lethality_patches(patches: std::collections::HashMap<String, usize>) {
     let any = !patches.is_empty();
     if let Ok(mut held) = LETHALITY_PATCHES.write() {
@@ -244,12 +243,9 @@ impl StableServerExtension for NativeTapExtension {
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Nothing to write here any more. The captures stay in memory and the
-        // totals live in the save file, which only a `StableClient` can reach —
-        // so both are driven from `item_stats::sync` on the client frame loop.
-        // That also retired the write-ordering hazard this used to carry: with
-        // one store instead of two files, there is no half-written pair to lose
-        // a match between.
+        // Nothing to write here. The captures stay in memory and the totals
+        // live in the save file, which only a `StableClient` can reach, so
+        // both are driven from `item_stats::sync` on the client frame loop.
     }
 
     fn handle_command(
@@ -318,10 +314,9 @@ fn init(host: &StableHost) -> StableMod {
     let mut riches = SharedRiches::default();
 
     // Both macros note the key as they go, for the item catalog to name and draw.
-    // Registration order used to matter: the numeric `items` on a match record were
-    // decoded by it. Nothing reads them that way now — loadouts come from the
-    // simulation as real keys, and the statistics are stored under those keys — so
-    // the order below is for people, grouped by tier and alphabetical within it.
+    // Registration order does not matter: loadouts come from the simulation as
+    // real keys, and the statistics are stored under those keys. The order
+    // below is for people, grouped by tier and alphabetical within it.
     // The `, passive_crit` arm is for items whose passive grants crit chance:
     // Smart Builds counts it at full stacks on top of the flat stat.
     // The `, boots` arm is for upgraded boots: tier-3 items that are build goals

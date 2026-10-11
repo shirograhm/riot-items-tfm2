@@ -55,13 +55,13 @@ impl SeekersArmguard {
         item
     }
 
-    /// Armor is whole points, so half-point steps land on every second kill.
+    // Armor is whole points, so half-point steps land on every second kill.
     fn bonus_defence(&self) -> i32 {
         (self.stacks as f64 * self.effect_stack_defence).floor() as i32
     }
 
-    /// Replaces rather than adds, so a new kill shows at once instead of
-    /// overlapping the previous total for the rest of its duration.
+    // Replaces rather than adds, so a new kill shows at once instead of
+    // overlapping the previous total for the rest of its duration.
     fn apply_witchs_path(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         let bonus = self.bonus_defence();
         if bonus <= 0 {

@@ -81,7 +81,7 @@ impl EssenceReaver {
         self
     }
 
-    /// What Spellblade adds to the empowered attack.
+    // What Spellblade adds to the empowered attack.
     pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
         SpellbladeBonus {
             ad_percent: self.effect_ad_percent_damage,

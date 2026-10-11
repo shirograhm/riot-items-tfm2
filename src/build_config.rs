@@ -30,27 +30,27 @@ use std::sync::atomic::{AtomicBool, AtomicU64, AtomicU8, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex, RwLock};
 use std::time::Instant;
 
-/// Schema of `item-builds.json`: the whole file is a map of champion id -> build
-/// (there is no wrapper object).
-///
-/// Key = champion id, optionally suffixed with `@role` (`"lancer"`,
-/// `"lancer@jungle"`); value = an ordered list of build slots.
-///
-/// A bare champion id is the [`Role`]-agnostic build, which is what every file
-/// written before the Role column contains — so an old file loads unchanged, and
-/// a file this version writes still loads in an older build of the mod, which
-/// sees the suffixed keys as champions it does not have. A suffixed key wins over
-/// the bare one when the champion is played in that role; see [`build_entry`]. Each slot is
-/// either an item key (a *pinned* item) or JSON `null` (a *blank* slot the game's
-/// AI fills). Pinned keys are resolved to their `radiant_` (tier 5) variant
-/// (`radiant_key`), then to the game's internal key for renamed items
-/// (`alias_key`). A route whose champion has no entry here is left as the game
-/// generated it.
-///
-/// A build with no `null`s behaves exactly as before: the champion builds only
-/// the listed items. Each `null` slot is filled with the next item the AI would
-/// have built that the player did not already pin, so `["kraken_slayer", null,
-/// null]` = Kraken Slayer plus the AI's two best complementary picks.
+// Schema of `item-builds.json`: the whole file is a map of champion id -> build
+// (there is no wrapper object).
+//
+// Key = champion id, optionally suffixed with `@role` (`"lancer"`,
+// `"lancer@jungle"`); value = an ordered list of build slots.
+//
+// A bare champion id is the [`Role`]-agnostic build, which is what every file
+// written before the Role column contains — so an old file loads unchanged, and
+// a file this version writes still loads in an older build of the mod, which
+// sees the suffixed keys as champions it does not have. A suffixed key wins over
+// the bare one when the champion is played in that role; see [`build_entry`]. Each slot is
+// either an item key (a *pinned* item) or JSON `null` (a *blank* slot the game's
+// AI fills). Pinned keys are resolved to their `radiant_` (tier 5) variant
+// (`radiant_key`), then to the game's internal key for renamed items
+// (`alias_key`). A route whose champion has no entry here is left as the game
+// generated it.
+//
+// A build with no `null`s behaves exactly as before: the champion builds only
+// the listed items. Each `null` slot is filled with the next item the AI would
+// have built that the player did not already pin, so `["kraken_slayer", null,
+// null]` = Kraken Slayer plus the AI's two best complementary picks.
 #[derive(Deserialize, Default)]
 #[serde(transparent)]
 pub struct BuildConfig {
@@ -63,12 +63,12 @@ impl BuildConfig {
     }
 }
 
-/// Loads `item-builds.json` from next to the mod DLL.
-///
-/// Returns `Ok(None)` when the file is absent — the common, non-error case: the
-/// mod ships inert and the file appears the first time the editor saves a build.
-///
-/// Callers want [`load_cached`]; this is the one place that touches the disk.
+// Loads `item-builds.json` from next to the mod DLL.
+//
+// Returns `Ok(None)` when the file is absent — the common, non-error case: the
+// mod ships inert and the file appears the first time the editor saves a build.
+//
+// Callers want [`load_cached`]; this is the one place that touches the disk.
 fn load() -> Result<Option<BuildConfig>, String> {
     let path = config_path()?;
     match std::fs::read_to_string(&path) {
@@ -122,12 +122,12 @@ const SETTING_ON: u8 = 2;
 static UNIQUE_ITEMS: AtomicU8 = AtomicU8::new(SETTING_UNSET);
 static OWN_TEAM_ONLY: AtomicU8 = AtomicU8::new(SETTING_UNSET);
 
-/// Drops both file caches, so the next read reloads from disk.
-///
-/// The editor calls this after it writes — the one event that can change either
-/// file — and nothing else has cause to. Do not call it from anywhere a match
-/// could be running: re-reading mid-match is exactly what "the build is fixed
-/// once you click play" rules out.
+// Drops both file caches, so the next read reloads from disk.
+//
+// The editor calls this after it writes — the one event that can change either
+// file — and nothing else has cause to. Do not call it from anywhere a match
+// could be running: re-reading mid-match is exactly what "the build is fixed
+// once you click play" rules out.
 pub fn invalidate_caches() {
     if let Ok(mut cache) = CONFIG_CACHE.write() {
         *cache = None;
@@ -136,15 +136,15 @@ pub fn invalidate_caches() {
     OWN_TEAM_ONLY.store(SETTING_UNSET, Ordering::Relaxed);
 }
 
-/// `item-builds.json`, parsed once and held.
-///
-/// This is what the route hook calls. A malformed file yields an empty config
-/// rather than an error: the hook's only response to one was to ignore it and
-/// leave the game's routes alone, which is what an empty config does.
-///
-/// Loading also publishes [`PINS`], which is why nothing else needs to: the
-/// snapshot the buy detour reads and the config the hook applies come from the
-/// same parse.
+// `item-builds.json`, parsed once and held.
+//
+// This is what the route hook calls. A malformed file yields an empty config
+// rather than an error: the hook's only response to one was to ignore it and
+// leave the game's routes alone, which is what an empty config does.
+//
+// Loading also publishes [`PINS`], which is why nothing else needs to: the
+// snapshot the buy detour reads and the config the hook applies come from the
+// same parse.
 pub fn load_cached() -> Arc<BuildConfig> {
     if let Ok(cache) = CONFIG_CACHE.read() {
         if let Some(config) = cache.as_ref() {
@@ -180,56 +180,52 @@ pub fn load_cached() -> Arc<BuildConfig> {
     value
 }
 
-/// Item slots the editor exposes per champion, matching the columns the
-/// strategy screen shows.
-///
-/// **Four, from game 0.6.0 (release).** This used to forward to
-/// `tactics::driver`, because a fourth slot existed only where that half's byte
-/// patches had put one — so the count was a property of *this mod*. 0.6.0 ships
-/// four slots itself and that half is retired, so the count is a property of
-/// the *game*, and asking a retired module for it was how the editor ended up
-/// offering three on a four-slot game.
-///
-/// It stays a function rather than becoming a bare `4` at each of its ~17 call
-/// sites — loop bounds, `resize`, and `min()` clamps across the editor and this
-/// module — so there is still exactly one place to change if a future build
-/// makes the count vary again. `mod.mod_info` pins the base to `=0.6.0`, so
-/// there is no older game left to answer three for.
-///
-/// A build written with more slots than are shown keeps its tail in
-/// `item-builds.json` — [`load_champion_rows`] only pads short builds, never
-/// truncates long ones — but the editor stops showing that item and [`apply`]
-/// stops sending it, because the game has nowhere to put it.
-///
-/// # Six, from 2026-09-18
-///
-/// The game still ships four. The fifth and sixth are this mod's: the native
-/// buy detour grows every athlete's build `Vec` from four to this many and
-/// fills the new slots (`tactics::buy_replace_ctx`), and three byte patches
-/// let the engine buy past four finals and draw the longer row
-/// (`tactics::patch_final_gate`, `patch_row_floor`, `patch_result_row_floor`).
-/// The stable API cannot express any of that — see [`game_slots`].
+// Item slots the editor exposes per champion, matching the columns the
+// strategy screen shows.
+//
+// **Four, from game 0.6.0 (release).** The game ships four slots itself, so
+// the count is a property of the *game*, not of this mod.
+//
+// It stays a function rather than becoming a bare `4` at each of its ~17 call
+// sites — loop bounds, `resize`, and `min()` clamps across the editor and this
+// module — so there is still exactly one place to change if a future build
+// makes the count vary again. `mod.mod_info` pins the base to `=0.6.0`, so
+// there is no older game left to answer three for.
+//
+// A build written with more slots than are shown keeps its tail in
+// `item-builds.json` — [`load_champion_rows`] only pads short builds, never
+// truncates long ones — but the editor stops showing that item and [`apply`]
+// stops sending it, because the game has nowhere to put it.
+//
+// # Six
+//
+// The game still ships four. The fifth and sixth are this mod's: the native
+// buy detour grows every athlete's build `Vec` from four to this many and
+// fills the new slots (`tactics::buy_replace_ctx`), and three byte patches
+// let the engine buy past four finals and draw the longer row
+// (`tactics::patch_final_gate`, `patch_row_floor`, `patch_result_row_floor`).
+// The stable API cannot express any of that — see [`game_slots`].
 pub fn picker_slots() -> usize {
     6
 }
 
-/// Item slots the *game* allocates per build: the most the stable item-build
-/// hook can hand back, because `decide_build` only fills the engine's own
-/// `Vec`. Slots past this one exist only once the buy detour has grown that
-/// `Vec` to [`picker_slots`].
+// Item slots the *game* allocates per build: the most the stable item-build
+// hook can hand back, because `decide_build` only fills the engine's own
+// `Vec`. Slots past this one exist only once the buy detour has grown that
+// `Vec` to [`picker_slots`].
 pub fn game_slots() -> usize {
     4
 }
 
-/// The role a build is written for.
-///
-/// `Any` is the default and the one every build had before this column existed:
-/// it applies wherever the champion is played. A role-specific build wins over
-/// `Any` when the champion is actually played in that role, which is the whole
-/// point of the column.
-///
-/// The order matches the game's own `Position` (and the stable API's `LaneV1`)
-/// from `Top` on, so a lane code indexes straight into [`Role::LANES`].
+// The role a build is written for.
+//
+// `Any` is the default and the one every build had before this column existed:
+// it applies wherever the champion is played. A role-specific build wins over
+// `Any` when the champion is actually played in that role, which is the whole
+// point of the column.
+//
+// The order matches the game's own `Position` (and the stable API's `LaneV1`)
+// from `Top` on, so a lane code indexes straight into [`Role::LANES`].
 #[derive(Default, Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Role {
     #[default]
@@ -242,7 +238,7 @@ pub enum Role {
 }
 
 impl Role {
-    /// Every role, in the order the editor's dropdown offers them.
+    // Every role, in the order the editor's dropdown offers them.
     pub const ALL: [Role; 6] = [
         Role::Any,
         Role::Top,
@@ -252,8 +248,8 @@ impl Role {
         Role::Support,
     ];
 
-    /// The five real lanes, indexed by lane code (`Top` = 0), which is the order
-    /// both `LaneV1` and the route hook's `team1` use.
+    // The five real lanes, indexed by lane code (`Top` = 0), which is the order
+    // both `LaneV1` and the route hook's `team1` use.
     pub const LANES: [Role; 5] = [
         Role::Top,
         Role::Jungle,
@@ -262,7 +258,7 @@ impl Role {
         Role::Support,
     ];
 
-    /// Label for the editor's Role column.
+    // Label for the editor's Role column.
     pub fn label(self) -> &'static str {
         match self {
             Role::Any => "Any",
@@ -274,20 +270,20 @@ impl Role {
         }
     }
 
-    /// The role a lane code names, or [`Role::Any`] for a code the host does not
-    /// map — an unknown lane must not silently answer to a real role's build.
+    // The role a lane code names, or [`Role::Any`] for a code the host does not
+    // map — an unknown lane must not silently answer to a real role's build.
     pub fn from_lane_code(code: usize) -> Role {
         Role::LANES.get(code).copied().unwrap_or(Role::Any)
     }
 
-    /// Suffix this role carries in an `item-builds.json` key.
-    ///
-    /// `Any` has none: its build stays under the bare champion id, which is
-    /// exactly what every file written before roles existed contains. That is
-    /// what makes the format change invisible to an existing file — and what
-    /// makes a file this version writes still readable by one that predates it,
-    /// which sees the suffixed keys as champions it does not have and ignores
-    /// them.
+    // Suffix this role carries in an `item-builds.json` key.
+    //
+    // `Any` has none: its build stays under the bare champion id, which is
+    // exactly what every file written before roles existed contains. That is
+    // what makes the format change invisible to an existing file — and what
+    // makes a file this version writes still readable by one that predates it,
+    // which sees the suffixed keys as champions it does not have and ignores
+    // them.
     fn suffix(self) -> Option<&'static str> {
         match self {
             Role::Any => None,
@@ -307,10 +303,10 @@ impl Role {
     }
 }
 
-/// Splits a stored key into the champion it names and the role it is written
-/// for. A key with no `@` — or with a suffix this version does not know — is an
-/// [`Role::Any`] build for the whole key, so an unrecognised suffix degrades to
-/// "some champion we have no build for" rather than to the wrong role.
+// Splits a stored key into the champion it names and the role it is written
+// for. A key with no `@` — or with a suffix this version does not know — is an
+// [`Role::Any`] build for the whole key, so an unrecognised suffix degrades to
+// "some champion we have no build for" rather than to the wrong role.
 pub fn split_build_key(key: &str) -> (&str, Role) {
     match key.rsplit_once(ROLE_SEPARATOR) {
         Some((champion, suffix)) => match Role::from_suffix(suffix) {
@@ -321,8 +317,8 @@ pub fn split_build_key(key: &str) -> (&str, Role) {
     }
 }
 
-/// The key a row is stored under: the champion id for [`Role::Any`], and
-/// `champion@role` for anything else.
+// The key a row is stored under: the champion id for [`Role::Any`], and
+// `champion@role` for anything else.
 pub fn build_key(champion: &str, role: Role) -> String {
     match role.suffix() {
         Some(suffix) => format!("{champion}{ROLE_SEPARATOR}{suffix}"),
@@ -330,44 +326,44 @@ pub fn build_key(champion: &str, role: Role) -> String {
     }
 }
 
-/// Separator between champion and role in a stored key. `@` cannot occur in a
-/// champion id, which are all snake_case, so the split is unambiguous.
+// Separator between champion and role in a stored key. `@` cannot occur in a
+// champion id, which are all snake_case, so the split is unambiguous.
 const ROLE_SEPARATOR: char = '@';
 
-/// One editable row of the in-game editor: a champion, the role it is for, and
-/// its three slots.
-///
-/// The champion is optional because a freshly added row has not been assigned
-/// one yet. Such a row is kept in the editor but never written, since a build
-/// with nothing to key it by is not a build.
+// One editable row of the in-game editor: a champion, the role it is for, and
+// its three slots.
+//
+// The champion is optional because a freshly added row has not been assigned
+// one yet. Such a row is kept in the editor but never written, since a build
+// with nothing to key it by is not a build.
 #[derive(Default, Clone, Debug, PartialEq)]
 pub struct ChampionRow {
     pub champion: Option<String>,
-    /// Which role this build is for. Defaults to [`Role::Any`], so a row added
-    /// without touching the column behaves as every row did before.
+    // Which role this build is for. Defaults to [`Role::Any`], so a row added
+    // without touching the column behaves as every row did before.
     pub role: Role,
     pub slots: Vec<Option<String>>,
 }
 
 impl ChampionRow {
-    /// Whether the row contributes a build: a champion, and at least one pinned
-    /// item. A row of nothing but AI slots is a no-op, identical to not listing
-    /// the champion at all.
+    // Whether the row contributes a build: a champion, and at least one pinned
+    // item. A row of nothing but AI slots is a no-op, identical to not listing
+    // the champion at all.
     pub fn is_complete(&self) -> bool {
         self.champion.is_some() && self.slots.iter().any(Option::is_some)
     }
 }
 
-/// Reads `item-builds.json` as an ordered row list for the editor.
-///
-/// File order is preserved (serde_json is built with `preserve_order`), so rows
-/// do not shuffle between visits. This reads the file directly rather than going
-/// through [`load_cached`] for that reason: the cached form is a `HashMap` and
-/// has already lost the order the editor wrote.
-///
-/// A missing or malformed file yields no rows rather than an error: the editor
-/// is additive, and a bad file must never cost the player the routes the game
-/// already produced.
+// Reads `item-builds.json` as an ordered row list for the editor.
+//
+// File order is preserved (serde_json is built with `preserve_order`), so rows
+// do not shuffle between visits. This reads the file directly rather than going
+// through [`load_cached`] for that reason: the cached form is a `HashMap` and
+// has already lost the order the editor wrote.
+//
+// A missing or malformed file yields no rows rather than an error: the editor
+// is additive, and a bad file must never cost the player the routes the game
+// already produced.
 pub fn load_champion_rows() -> Vec<ChampionRow> {
     let Ok(path) = config_path() else {
         return Vec::new();
@@ -407,11 +403,11 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
         .collect()
 }
 
-/// Writes the complete rows back to `item-builds.json`, in row order.
-///
-/// Incomplete rows are skipped and a later row with the same champion *and
-/// role* wins, so one champion can hold an `Any` build alongside a build for
-/// each role it is played in. Returns false when it could not be written.
+// Writes the complete rows back to `item-builds.json`, in row order.
+//
+// Incomplete rows are skipped and a later row with the same champion *and
+// role* wins, so one champion can hold an `Any` build alongside a build for
+// each role it is played in. Returns false when it could not be written.
 pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
     let Ok(path) = config_path() else {
         return false;
@@ -453,28 +449,28 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
     written
 }
 
-/// Champion roster the hook was handed, for the editor to offer.
-///
-/// A static, not a file: the detour and the client extension run in the *same
-/// process*, so handing a list from one to the other never needed to touch the
-/// disk. It is only a fallback — the editor asks the client for
-/// `champion_names()` first — and it exists because that call returns nothing
-/// when made from inside a UI event handler, the same restriction that makes
-/// `setting_get_json` return None there.
-///
-/// The hook receives the whole roster as `champion_ids`, and those are exactly
-/// the strings a build is keyed by, so it is the right list by construction
-/// rather than by coincidence. It includes champions added by *other* mods,
-/// which is why the editor must not filter it against the base game's champion
-/// text (see `strategy_ui::load_champions`).
+// Champion roster the hook was handed, for the editor to offer.
+//
+// A static, not a file: the detour and the client extension run in the *same
+// process*, so handing a list from one to the other never needed to touch the
+// disk. It is only a fallback — the editor asks the client for
+// `champion_names()` first — and it exists because that call returns nothing
+// when made from inside a UI event handler, the same restriction that makes
+// `setting_get_json` return None there.
+//
+// The hook receives the whole roster as `champion_ids`, and those are exactly
+// the strings a build is keyed by, so it is the right list by construction
+// rather than by coincidence. It includes champions added by *other* mods,
+// which is why the editor must not filter it against the base game's champion
+// text (see `strategy_ui::load_champions`).
 static CHAMPION_ROSTER: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
 
-/// Records the roster from inside the detour.
-///
-/// The roster cannot change without a restart, so an unchanged list returns
-/// without allocating: the detour runs once per team per match *including the
-/// league's background fixtures*, on parallel workers, and copying 60-odd
-/// `String`s under a global lock each time is contention for no new information.
+// Records the roster from inside the detour.
+//
+// The roster cannot change without a restart, so an unchanged list returns
+// without allocating: the detour runs once per team per match *including the
+// league's background fixtures*, on parallel workers, and copying 60-odd
+// `String`s under a global lock each time is contention for no new information.
 pub fn record_champion_roster(ids: &[String]) {
     if let Ok(mut roster) = CHAMPION_ROSTER.lock() {
         if roster.as_slice() == ids {
@@ -485,8 +481,8 @@ pub fn record_champion_roster(ids: &[String]) {
     }
 }
 
-/// The recorded roster. Empty until the first match simulates, which happens
-/// before the player can reach their own strategy screen.
+// The recorded roster. Empty until the first match simulates, which happens
+// before the player can reach their own strategy screen.
 pub fn champion_roster() -> Vec<String> {
     CHAMPION_ROSTER
         .lock()
@@ -494,10 +490,10 @@ pub fn champion_roster() -> Vec<String> {
         .unwrap_or_default()
 }
 
-/// Where `champion` stands in the recorded roster, which is the id the game's
-/// item network knows it by: `get_item_builds_list` turns each lineup entry
-/// into its index in this same list before it scores anything. `None` until
-/// the first match simulates.
+// Where `champion` stands in the recorded roster, which is the id the game's
+// item network knows it by: `get_item_builds_list` turns each lineup entry
+// into its index in this same list before it scores anything. `None` until
+// the first match simulates.
 pub fn champion_roster_index(champion: &str) -> Option<usize> {
     CHAMPION_ROSTER
         .lock()
@@ -506,39 +502,41 @@ pub fn champion_roster_index(champion: &str) -> Option<usize> {
         .position(|key| key == champion)
 }
 
-/// Size of the recorded roster, for a per-frame caller that only needs to
-/// know whether it grew and should not copy it to find out.
+// Size of the recorded roster, for a per-frame caller that only needs to
+// know whether it grew and should not copy it to find out.
 pub fn champion_roster_len() -> usize {
-    CHAMPION_ROSTER.lock().map(|roster| roster.len()).unwrap_or(0)
+    CHAMPION_ROSTER
+        .lock()
+        .map(|roster| roster.len())
+        .unwrap_or(0)
 }
 
-/// The buy detour's view of `item-builds.json`: the file's keys exactly as
-/// written, plus an index that survives the detour not knowing the lane.
+// The buy detour's view of `item-builds.json`: the file's keys exactly as
+// written, plus an index that survives the detour not knowing the lane.
 struct PinSnapshot {
-    /// `champion` or `champion@role`, as the file has it.
+    // `champion` or `champion@role`, as the file has it.
     by_key: HashMap<String, Vec<Option<String>>>,
-    /// Champion id -> its only key in [`Self::by_key`], for champions the file
-    /// gives exactly one build. Built here rather than searched per lookup
-    /// because the buy detour reads pins per slot per buy decision, hundreds of
-    /// thousands of times a match, and must not scan a map to do it.
+    // Champion id -> its only key in [`Self::by_key`], for champions the file
+    // gives exactly one build. Built here rather than searched per lookup
+    // because the buy detour reads pins per slot per buy decision, hundreds of
+    // thousands of times a match, and must not scan a map to do it.
     sole_key: HashMap<String, String>,
 }
 
-/// `item-builds.json`, as the *simulation* side reads it.
-///
-/// The buy detour that applies these builds per athlete fires per buy decision,
-/// hundreds of thousands of times a match, and must never touch the disk. So the
-/// file is published here when it loads, and that side takes a snapshot.
-///
-/// This used to say the route hook could read the file itself because it "fires
-/// a couple of times a match". It does not — see the cache above — so the load
-/// and the publication are now one event, in [`load_cached`], and the snapshot
-/// changes only when the editor saves.
+// `item-builds.json`, as the *simulation* side reads it.
+//
+// The buy detour that applies these builds per athlete fires per buy decision,
+// hundreds of thousands of times a match, and must never touch the disk. So the
+// file is published here when it loads, and that side takes a snapshot.
+//
+// The route hook does not fire "a couple of times a match" either — see the
+// cache above — so the load and the publication are one event, in
+// [`load_cached`], and the snapshot changes only when the editor saves.
 static PINS: Mutex<Option<Arc<PinSnapshot>>> = Mutex::new(None);
 
-/// Publishes the current builds for the buy detour. An empty config publishes an
-/// empty set — builds the editor removed must stop applying, not keep the last
-/// ones alive.
+// Publishes the current builds for the buy detour. An empty config publishes an
+// empty set — builds the editor removed must stop applying, not keep the last
+// ones alive.
 fn publish_pins(config: &BuildConfig) {
     let by_key = config.by_champion.clone();
 
@@ -568,13 +566,13 @@ fn publish_pins(config: &BuildConfig) {
     PINS_GENERATION.fetch_add(1, Ordering::Relaxed);
 }
 
-/// Counts publications of [`PINS`]. The buy detour memoizes its per-athlete
-/// work against it (see `tactics::BuyMemo`), so a build the editor saves
-/// mid-match is picked up on the next buy decision instead of being hidden
-/// behind the memo.
+// Counts publications of [`PINS`]. The buy detour memoizes its per-athlete
+// work against it (see `tactics::BuyMemo`), so a build the editor saves
+// mid-match is picked up on the next buy decision instead of being hidden
+// behind the memo.
 static PINS_GENERATION: AtomicU64 = AtomicU64::new(0);
 
-/// How many times the pins have been published. One atomic load.
+// How many times the pins have been published. One atomic load.
 pub fn pins_generation() -> u64 {
     PINS_GENERATION.load(Ordering::Relaxed)
 }
@@ -583,12 +581,12 @@ fn pins() -> Option<Arc<PinSnapshot>> {
     PINS.lock().ok()?.clone()
 }
 
-/// Whether this champion has any pinned item in the role it is being played,
-/// which is what makes it worth looking up slot by slot.
-///
-/// The role comes from [`lane_for_champion`] rather than from the caller: the
-/// detours read this from inside an athlete hook, which hands the lane over
-/// through [`set_athlete_lane`] instead of an argument.
+// Whether this champion has any pinned item in the role it is being played,
+// which is what makes it worth looking up slot by slot.
+//
+// The role comes from [`lane_for_champion`] rather than from the caller: the
+// detours read this from inside an athlete hook, which hands the lane over
+// through [`set_athlete_lane`] instead of an argument.
 pub fn has_pins(champion: &str) -> bool {
     let (role, known) = lane_for_champion(champion);
     pins().is_some_and(|pins| {
@@ -597,57 +595,56 @@ pub fn has_pins(champion: &str) -> bool {
     })
 }
 
-/// The pin row the detours apply to `champion` played in `role`, picked the
-/// way they pick it ([`pin_entry`]); empty when there is none.
-///
-/// For the stable hook under `own_team_only`, which builds the pin-aware
-/// Smart Builds build for the spawn injector from it (see
-/// [`remember_pinned_build`]). Both sides know the real lane — the hook is
-/// told it, the detours read it off the athlete ([`set_athlete_lane`]) — so
-/// they pick the same row. `role` is [`Role::Any`] when the host did not say,
-/// and then the lane is not known. A pin is the row's as written, a jungle
-/// item pinned for a champion that is not jungling included: for a day
-/// (2026-10-07) such a pin was a blank slot, and the user had it put back
-/// (2026-10-08: "the mod should never overwrite pins").
+// The pin row the detours apply to `champion` played in `role`, picked the
+// way they pick it ([`pin_entry`]); empty when there is none.
+//
+// For the stable hook under `own_team_only`, which builds the pin-aware
+// Smart Builds build for the spawn injector from it (see
+// [`remember_pinned_build`]). Both sides know the real lane — the hook is
+// told it, the detours read it off the athlete ([`set_athlete_lane`]) — so
+// they pick the same row. `role` is [`Role::Any`] when the host did not say,
+// and then the lane is not known. A pin is the row's as written, a jungle
+// item pinned for a champion that is not jungling included: the mod never
+// overwrites a pin.
 pub fn pin_row(champion: &str, role: Role) -> Vec<Option<String>> {
     pins()
         .and_then(|pins| pin_entry(&pins, champion, role, role != Role::Any).cloned())
         .unwrap_or_default()
 }
 
-/// [`build_entry`] over the pin snapshot: the role's build first, `Any` second,
-/// and — unlike `build_entry` — the champion's only build third.
-///
-/// # Why this has a third arm and `build_entry` does not
-///
-/// `build_entry` is reached from the stable item-build hook, where the host
-/// *states* the lane. A `champion@jungle` build not matching a champion played
-/// mid is the correct answer there: the player said which role that build is
-/// for.
-///
-/// Here the role is a guess. The buy detour has the champion key and nothing
-/// else, so `role` arrives from [`role_for_champion`] — a process-global,
-/// last-writer-wins map that `record_lineup_roles` refills from *every* route
-/// call, background league fixtures included. A champion the player fields at
-/// jungle is overwritten by whatever lane an AI team last played it at, so the
-/// first arm looks up `champion@top`, misses, the second looks up the bare
-/// `champion`, misses too because the row is role-specific — and the build the
-/// player configured is silently not applied.
-///
-/// That path is the only one `own_team_only` has: with the toggle on, the
-/// stable hook deliberately declines (it cannot tell the teams apart) and this
-/// is what applies slots 0/1/2. So a wrong guess here is the whole feature
-/// failing, and it fails for exactly the role-specific rows the editor
-/// encourages writing.
-///
-/// When the file gives a champion exactly one build, the guess is not needed:
-/// there is one build it could mean. Two or more and this arm stays out of it —
-/// a wrong role is better answered by no build than by another role's.
-///
-/// Only while the role *is* a guess (`known` false). The detours now read the
-/// athlete's lane off the athlete ([`set_athlete_lane`]), and with the lane
-/// known this arm would be the one thing putting a jungle build on a champion
-/// played top — which `build_entry`, on the stable hook, rightly never does.
+// [`build_entry`] over the pin snapshot: the role's build first, `Any` second,
+// and — unlike `build_entry` — the champion's only build third.
+//
+// # Why this has a third arm and `build_entry` does not
+//
+// `build_entry` is reached from the stable item-build hook, where the host
+// *states* the lane. A `champion@jungle` build not matching a champion played
+// mid is the correct answer there: the player said which role that build is
+// for.
+//
+// Here the role is a guess. The buy detour has the champion key and nothing
+// else, so `role` arrives from [`role_for_champion`] — a process-global,
+// last-writer-wins map that `record_lineup_roles` refills from *every* route
+// call, background league fixtures included. A champion the player fields at
+// jungle is overwritten by whatever lane an AI team last played it at, so the
+// first arm looks up `champion@top`, misses, the second looks up the bare
+// `champion`, misses too because the row is role-specific — and the build the
+// player configured is silently not applied.
+//
+// That path is the only one `own_team_only` has: with the toggle on, the
+// stable hook deliberately declines (it cannot tell the teams apart) and this
+// is what applies slots 0/1/2. So a wrong guess here is the whole feature
+// failing, and it fails for exactly the role-specific rows the editor
+// encourages writing.
+//
+// When the file gives a champion exactly one build, the guess is not needed:
+// there is one build it could mean. Two or more and this arm stays out of it —
+// a wrong role is better answered by no build than by another role's.
+//
+// Only while the role *is* a guess (`known` false). The detours now read the
+// athlete's lane off the athlete ([`set_athlete_lane`]), and with the lane
+// known this arm would be the one thing putting a jungle build on a champion
+// played top — which `build_entry`, on the stable hook, rightly never does.
 fn pin_entry<'a>(
     pins: &'a PinSnapshot,
     champion: &str,
@@ -693,36 +690,36 @@ fn pin_entry<'a>(
 
 static LINEUP_ROLES: Mutex<Option<Arc<HashMap<String, Role>>>> = Mutex::new(None);
 
-/// Whether the last item-build route call set up a lane or 5v5 test. Read by
-/// `tactics` for its team-id bookkeeping; the test's own athletes are found
-/// through [`TEST_WINDOW`] instead, which a league fixture does not close.
+// Whether the last item-build route call set up a lane or 5v5 test. Read by
+// `tactics` for its team-id bookkeeping; the test's own athletes are found
+// through [`TEST_WINDOW`] instead, which a league fixture does not close.
 static TRAINING_MATCH: AtomicBool = AtomicBool::new(false);
 
-/// The last test's route call: when it came, and the champions of both its
-/// sides.
-///
-/// The route call is the one reliable signal for a test (its `mode` argument,
-/// see `crate::hook::apply_training_builds`), but it only says that a test
-/// *started*: the day's league fixtures keep simulating while it runs, their
-/// athletes on the same champions, and their route calls can come between the
-/// test's and its spawns (log of 2026-09-25: one 0.08 s after a lane test's,
-/// on the same thread, before its second athlete had spawned). So it opens a
-/// window, closed only by the next test or after [`TEST_WINDOW_SECS`], in
-/// which the spawn hook finds the test's own match ([`note_test_spawn`]); it
-/// is that match, not the champion, that makes an athlete the player's.
-/// Gating on the champion put the player's pins on four league athletes
-/// during a lane test.
+// The last test's route call: when it came, and the champions of both its
+// sides.
+//
+// The route call is the one reliable signal for a test (its `mode` argument,
+// see `crate::hook::apply_training_builds`), but it only says that a test
+// *started*: the day's league fixtures keep simulating while it runs, their
+// athletes on the same champions, and their route calls can come between the
+// test's and its spawns (one was logged 0.08 s after a lane test's, on the
+// same thread, before its second athlete had spawned). So it opens a
+// window, closed only by the next test or after [`TEST_WINDOW_SECS`], in
+// which the spawn hook finds the test's own match ([`note_test_spawn`]); it
+// is that match, not the champion, that makes an athlete the player's.
+// Gating on the champion would put the player's pins on league athletes
+// during a lane test.
 static TEST_WINDOW: Mutex<Option<(Instant, Vec<String>)>> = Mutex::new(None);
 
-/// How long after a test's route call its athletes can still spawn. They come
-/// within a fraction of a second; a league fixture spawning in the window is
-/// told apart by its champions anyway, so this only bounds how long a window
-/// stays open.
+// How long after a test's route call its athletes can still spawn. They come
+// within a fraction of a second; a league fixture spawning in the window is
+// told apart by its champions anyway, so this only bounds how long a window
+// stays open.
 const TEST_WINDOW_SECS: u64 = 10;
 
-/// Records whether an item-build route call is for a lane or 5v5 test
-/// (`training`), with the champions of both sides. A test opens a new window
-/// and drops the tallies of the last one; a league fixture changes neither.
+// Records whether an item-build route call is for a lane or 5v5 test
+// (`training`), with the champions of both sides. A test opens a new window
+// and drops the tallies of the last one; a league fixture changes neither.
 pub fn record_route_call<'a>(training: bool, champions: impl Iterator<Item = &'a str>) {
     if training {
         if let Ok(mut window) = TEST_WINDOW.lock() {
@@ -735,52 +732,52 @@ pub fn record_route_call<'a>(training: bool, champions: impl Iterator<Item = &'a
     TRAINING_MATCH.store(training, Ordering::Relaxed);
 }
 
-/// Whether a lane or 5v5 test has been set up since the last league fixture.
-/// One atomic load.
+// Whether a lane or 5v5 test has been set up since the last league fixture.
+// One atomic load.
 pub fn training_match() -> bool {
     TRAINING_MATCH.load(Ordering::Relaxed)
 }
 
-/// A match that spawned athletes while a test was on, by its seed
-/// (`provider + O_PROVIDER_SEED` in `tactics`). Not by the provider itself:
-/// the game spawns a match's athletes into one sim object and plays the match
-/// in copies of it, each a provider of its own that the buy detour sees, all
-/// with the same seed (log of 2026-09-25: one lane test, spawned in one
-/// provider, bought in another). Nor by athlete: the spawn hook sees a stack
-/// copy of each, at an address the buy detour never does.
+// A match that spawned athletes while a test was on, by its seed
+// (`provider + O_PROVIDER_SEED` in `tactics`). Not by the provider itself:
+// the game spawns a match's athletes into one sim object and plays the match
+// in copies of it, each a provider of its own that the buy detour sees, all
+// with the same seed (a lane test spawns in one provider and buys in
+// another). Nor by athlete: the spawn hook sees a stack
+// copy of each, at an address the buy detour never does.
 struct TestSpawns {
     seed: u64,
-    /// How many of its athletes play a champion of the test. Counted per
-    /// spawn, so a match spawned twice counts each athlete twice.
+    // How many of its athletes play a champion of the test. Counted per
+    // spawn, so a match spawned twice counts each athlete twice.
     matching: usize,
-    /// Whether one plays a champion the test does not have: a league fixture.
+    // Whether one plays a champion the test does not have: a league fixture.
     foreign: bool,
 }
 
 static TEST_SPAWNS: Mutex<Vec<TestSpawns>> = Mutex::new(Vec::new());
 
-/// The seeds of the matches [`TEST_SPAWNS`] showed to be a test's: every
-/// athlete on a test champion, and as many of them as the test has.
-///
-/// Several slots, though only one test runs at a time: a league fixture can
-/// look like the test for as long as only the test's champions have spawned
-/// in it (a lane test's two, as its first two athletes), and it must not take
-/// the real test's slot, or withdrawing it would take the real test with it.
-/// The oldest slot is overwritten first, so a test's seed outlives the test,
-/// which is harmless: seeds are not reused. Lock-free, because the buy
-/// detour's hot-path exit reads it; `0` is an empty slot, and never a test's
-/// seed.
+// The seeds of the matches [`TEST_SPAWNS`] showed to be a test's: every
+// athlete on a test champion, and as many of them as the test has.
+//
+// Several slots, though only one test runs at a time: a league fixture can
+// look like the test for as long as only the test's champions have spawned
+// in it (a lane test's two, as its first two athletes), and it must not take
+// the real test's slot, or withdrawing it would take the real test with it.
+// The oldest slot is overwritten first, so a test's seed outlives the test,
+// which is harmless: seeds are not reused. Lock-free, because the buy
+// detour's hot-path exit reads it; `0` is an empty slot, and never a test's
+// seed.
 static TEST_SEEDS: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
 static NEXT_TEST_SEED: AtomicUsize = AtomicUsize::new(0);
 
-/// Records an athlete on `champion` spawning in the match seeded `seed` while
-/// a test is on, and publishes the match as the test's once its athletes add
-/// up to it.
-///
-/// A league fixture is told apart by its champions: it has ten athletes, and
-/// some always play champions the test does not have. It may start with test
-/// champions, so a match can be published and withdrawn again before any
-/// athlete in it has bought anything.
+// Records an athlete on `champion` spawning in the match seeded `seed` while
+// a test is on, and publishes the match as the test's once its athletes add
+// up to it.
+//
+// A league fixture is told apart by its champions: it has ten athletes, and
+// some always play champions the test does not have. It may start with test
+// champions, so a match can be published and withdrawn again before any
+// athlete in it has bought anything.
 pub fn note_test_spawn(seed: u64, champion: &str) {
     if seed == 0 {
         return;
@@ -845,9 +842,9 @@ pub fn note_test_spawn(seed: u64, champion: &str) {
     }
 }
 
-/// Whether the match seeded `seed` is one [`note_test_spawn`] found to be a
-/// lane or 5v5 test: both of its sides are the player's. Lock-free: the buy
-/// detour's hot-path exit reads it.
+// Whether the match seeded `seed` is one [`note_test_spawn`] found to be a
+// lane or 5v5 test: both of its sides are the player's. Lock-free: the buy
+// detour's hot-path exit reads it.
 pub fn is_test_match(seed: u64) -> bool {
     seed != 0
         && TEST_SEEDS
@@ -855,10 +852,10 @@ pub fn is_test_match(seed: u64) -> bool {
             .any(|slot| slot.load(Ordering::Relaxed) == seed)
 }
 
-/// Records a lineup's champion -> role mapping from a position-ordered roster.
-///
-/// Entries beyond the five lanes are ignored rather than wrapped: a longer
-/// roster than the map has positions for is not something to guess about.
+// Records a lineup's champion -> role mapping from a position-ordered roster.
+//
+// Entries beyond the five lanes are ignored rather than wrapped: a longer
+// roster than the map has positions for is not something to guess about.
 pub fn record_lineup_roles(champions: &[String]) {
     let mut roles: HashMap<String, Role> = match lineup_roles() {
         Some(existing) => (*existing).clone(),
@@ -884,17 +881,17 @@ pub fn record_lineup_roles(champions: &[String]) {
 }
 
 thread_local! {
-    /// The lane of the athlete the spawn or buy detour is handling on this
-    /// thread, read off the athlete itself, so [`role_for_champion`] need not
-    /// guess. Every lookup of a lane happens inside those detours, for the
-    /// athlete they are handling, and each sets this first thing (see
-    /// [`set_athlete_lane`]).
+    // The lane of the athlete the spawn or buy detour is handling on this
+    // thread, read off the athlete itself, so [`role_for_champion`] need not
+    // guess. Every lookup of a lane happens inside those detours, for the
+    // athlete they are handling, and each sets this first thing (see
+    // [`set_athlete_lane`]).
     static ATHLETE_LANE: std::cell::Cell<Option<Role>> = const { std::cell::Cell::new(None) };
 }
 
-/// Tells [`role_for_champion`] the lane of the athlete this thread is about to
-/// resolve pins for, or `None` when it could not be read (the guess then
-/// stands). Set on every detour call, never left from the last athlete.
+// Tells [`role_for_champion`] the lane of the athlete this thread is about to
+// resolve pins for, or `None` when it could not be read (the guess then
+// stands). Set on every detour call, never left from the last athlete.
 pub fn set_athlete_lane(lane: Option<Role>) {
     ATHLETE_LANE.with(|cell| cell.set(lane));
 }
@@ -903,10 +900,10 @@ fn lineup_roles() -> Option<Arc<HashMap<String, Role>>> {
     LINEUP_ROLES.lock().ok()?.clone()
 }
 
-/// The lane pins for `champion` resolve in, and whether it is known: the
-/// athlete's own (see [`set_athlete_lane`]), else the lane the champion was
-/// last seen playing, else [`Role::Any`] — which is also what makes the `Any`
-/// build the answer.
+// The lane pins for `champion` resolve in, and whether it is known: the
+// athlete's own (see [`set_athlete_lane`]), else the lane the champion was
+// last seen playing, else [`Role::Any`] — which is also what makes the `Any`
+// build the answer.
 fn lane_for_champion(champion: &str) -> (Role, bool) {
     if let Some(lane) = ATHLETE_LANE.with(std::cell::Cell::get) {
         return (lane, true);
@@ -917,35 +914,35 @@ fn lane_for_champion(champion: &str) -> (Role, bool) {
     (guess, false)
 }
 
-/// The role `champion` is played in, as [`lane_for_champion`] finds it.
+// The role `champion` is played in, as [`lane_for_champion`] finds it.
 pub fn role_for_champion(champion: &str) -> Role {
     lane_for_champion(champion).0
 }
 
-/// The pin row the detours apply to `champion`, one entry per picker slot, in
-/// the lane [`pinned_key_raw`] resolves: the row [`pin_row`] gives the stable
-/// hook, padded the same way, when both find the same lane.
+// The pin row the detours apply to `champion`, one entry per picker slot, in
+// the lane [`pinned_key_raw`] resolves: the row [`pin_row`] gives the stable
+// hook, padded the same way, when both find the same lane.
 pub fn athlete_pin_row(champion: &str) -> Vec<Option<String>> {
     (0..picker_slots())
         .map(|slot| pinned_key_raw(champion, slot))
         .collect()
 }
 
-/// Whether a build slot past the game's four — the 5th or 6th — is open for
-/// Smart Builds' boots: one that no pin in `row` holds, in a build the buy
-/// detour will grow that far. `row` is a pin row as [`pin_row`] gives it.
+// Whether a build slot past the game's four — the 5th or 6th — is open for
+// Smart Builds' boots: one that no pin in `row` holds, in a build the buy
+// detour will grow that far. `row` is a pin row as [`pin_row`] gives it.
 pub fn later_slot_open(row: &[Option<String>]) -> bool {
     (game_slots()..picker_slots()).any(|slot| row.get(slot).map_or(true, Option::is_none))
         && crate::tactics::builds_grow_past_four()
 }
 
-/// The pair of boots Smart Builds last picked for each champion, by key.
-/// Only the stable hook and the training-screen detour see the enemy lineup
-/// that picks them, so the buy detour, when it puts the boots in the 5th or
-/// 6th slot, takes them from here.
+// The pair of boots Smart Builds last picked for each champion, by key.
+// Only the stable hook and the training-screen detour see the enemy lineup
+// that picks them, so the buy detour, when it puts the boots in the 5th or
+// 6th slot, takes them from here.
 static RULE_BOOTS: Mutex<Vec<(String, String)>> = Mutex::new(Vec::new());
 
-/// Records `boots` as the pair Smart Builds picked for `champion`.
+// Records `boots` as the pair Smart Builds picked for `champion`.
 pub fn remember_rule_boots(champion: &str, boots: &str) {
     let Ok(mut picked) = RULE_BOOTS.lock() else {
         return;
@@ -956,7 +953,7 @@ pub fn remember_rule_boots(champion: &str, boots: &str) {
     }
 }
 
-/// The pair of boots Smart Builds last picked for `champion`, when it has.
+// The pair of boots Smart Builds last picked for `champion`, when it has.
 pub fn rule_boots(champion: &str) -> Option<String> {
     let picked = RULE_BOOTS.lock().ok()?;
     picked
@@ -965,9 +962,9 @@ pub fn rule_boots(champion: &str) -> Option<String> {
         .map(|(_, boots)| boots.clone())
 }
 
-/// A pin-aware build waiting for the spawn injector: under `own_team_only`,
-/// the build the stable hook would have given `champion` had it known it was
-/// the player's (`to`), next to the one it gave instead (`from`).
+// A pin-aware build waiting for the spawn injector: under `own_team_only`,
+// the build the stable hook would have given `champion` had it known it was
+// the player's (`to`), next to the one it gave instead (`from`).
 struct PinnedBuild {
     champion: String,
     row: Vec<Option<String>>,
@@ -975,15 +972,15 @@ struct PinnedBuild {
     to: Vec<String>,
 }
 
-/// Newest last. Every fixture's athletes land here, background ones included,
-/// so it is capped; a spawn follows its own match's decisions closely enough
-/// that the oldest entries are never the ones still wanted.
+// Newest last. Every fixture's athletes land here, background ones included,
+// so it is capped; a spawn follows its own match's decisions closely enough
+// that the oldest entries are never the ones still wanted.
 static PINNED_BUILDS: Mutex<Vec<PinnedBuild>> = Mutex::new(Vec::new());
 const PINNED_BUILDS_CAP: usize = 64;
 
-/// Records the build `champion` with pins `row` gets on the player's team when
-/// the stable hook hands it `from`. Replaces an older entry for the same three,
-/// so a match whose pins change nothing clears a stale one.
+// Records the build `champion` with pins `row` gets on the player's team when
+// the stable hook hands it `from`. Replaces an older entry for the same three,
+// so a match whose pins change nothing clears a stale one.
 pub fn remember_pinned_build(
     champion: &str,
     row: Vec<Option<String>>,
@@ -1005,9 +1002,13 @@ pub fn remember_pinned_build(
     });
 }
 
-/// The pin-aware build for a player's athlete on `champion` with pins `row`
-/// holding `from`, when the stable hook recorded one that differs from it.
-pub fn pinned_build(champion: &str, row: &[Option<String>], from: &[String]) -> Option<Vec<String>> {
+// The pin-aware build for a player's athlete on `champion` with pins `row`
+// holding `from`, when the stable hook recorded one that differs from it.
+pub fn pinned_build(
+    champion: &str,
+    row: &[Option<String>],
+    from: &[String],
+) -> Option<Vec<String>> {
     let builds = PINNED_BUILDS.lock().ok()?;
     builds
         .iter()
@@ -1017,31 +1018,31 @@ pub fn pinned_build(champion: &str, row: &[Option<String>], from: &[String]) -> 
         .map(|build| build.to.clone())
 }
 
-/// The pinned item for one slot, exactly as written in the file.
-///
-/// The verbatim key matters on its own: it is what tells a vanilla tier 5
-/// (`"warlords_final_judgement"`, whose id *is* its catalog index) from a mod
-/// item that has to be found by name.
+// The pinned item for one slot, exactly as written in the file.
+//
+// The verbatim key matters on its own: it is what tells a vanilla tier 5
+// (`"warlords_final_judgement"`, whose id *is* its catalog index) from a mod
+// item that has to be found by name.
 pub fn pinned_key_raw(champion: &str, slot: usize) -> Option<String> {
     let pins = pins()?;
     let (role, known) = lane_for_champion(champion);
     pin_entry(&pins, champion, role, known)?.get(slot)?.clone()
 }
 
-/// The pinned item for one slot, normalized the way [`resolve_key`] normalizes
-/// it — `radiant_` variant first, then through [`alias_key`] — so a build
-/// authored with a plain LoL name resolves the same here as it does on the
-/// route hook.
+// The pinned item for one slot, normalized the way [`resolve_key`] normalizes
+// it — `radiant_` variant first, then through [`alias_key`] — so a build
+// authored with a plain LoL name resolves the same here as it does on the
+// route hook.
 pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
     let raw = pinned_key_raw(champion, slot)?;
     Some(alias_key(radiant_key(&raw).as_ref()).to_string())
 }
 
-/// Writes `mod-settings.json` from the toggles as they stand, with `apply`
-/// changing the one the player just clicked.
-///
-/// The whole file is rewritten every time, so every key has to be written out —
-/// a partial write would silently reset the other toggle to its default.
+// Writes `mod-settings.json` from the toggles as they stand, with `apply`
+// changing the one the player just clicked.
+//
+// The whole file is rewritten every time, so every key has to be written out —
+// a partial write would silently reset the other toggle to its default.
 fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
     let mut settings = ModSettings {
         unique_items: smart_builds_enabled(),
@@ -1060,21 +1061,21 @@ fn save_settings(apply: impl FnOnce(&mut ModSettings)) -> bool {
     written
 }
 
-/// Writes `unique_items` to `mod-settings.json`, the toggle
-/// [`smart_builds_enabled`] reads back on every hook call.
+// Writes `unique_items` to `mod-settings.json`, the toggle
+// [`smart_builds_enabled`] reads back on every hook call.
 pub fn set_smart_builds(enabled: bool) -> bool {
     save_settings(|settings| settings.unique_items = enabled)
 }
 
-/// Writes `own_team_only` to `mod-settings.json` — see
-/// [`own_team_only_enabled`] for what the two sides of it mean.
+// Writes `own_team_only` to `mod-settings.json` — see
+// [`own_team_only_enabled`] for what the two sides of it mean.
 pub fn set_own_team_only(enabled: bool) -> bool {
     save_settings(|settings| settings.own_team_only = enabled)
 }
 
-/// Schema of `mod-settings.json`: behavior toggles managed by the item build
-/// editor. An absent file (the common case) means every toggle takes its
-/// default.
+// Schema of `mod-settings.json`: behavior toggles managed by the item build
+// editor. An absent file (the common case) means every toggle takes its
+// default.
 #[derive(Deserialize)]
 struct ModSettings {
     #[serde(default = "default_true")]
@@ -1087,13 +1088,13 @@ fn default_true() -> bool {
     true
 }
 
-/// Reads one cached toggle out of `mod-settings.json`, parsing the file on the
-/// first read of either.
-///
-/// Cached in an atomic rather than a lock because [`own_team_only_enabled`] is
-/// on the buy detour's path — see the cache declarations. Flipping a toggle in
-/// the editor still applies to the next match: the editor invalidates the cache
-/// when it writes.
+// Reads one cached toggle out of `mod-settings.json`, parsing the file on the
+// first read of either.
+//
+// Cached in an atomic rather than a lock because [`own_team_only_enabled`] is
+// on the buy detour's path — see the cache declarations. Flipping a toggle in
+// the editor still applies to the next match: the editor invalidates the cache
+// when it writes.
 fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool) -> bool {
     match cache.load(Ordering::Relaxed) {
         SETTING_ON => return true,
@@ -1114,117 +1115,82 @@ fn setting(cache: &AtomicU8, read: impl Fn(&ModSettings) -> bool, default: bool)
     value
 }
 
-/// Whether the Smart Builds pass is enabled: `unique_items` in
-/// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
-/// is absent or malformed, so players opt *out* via the editor toggle.
-///
-/// The stored key is still `unique_items`, from when unique items were the
-/// only rule: renaming it would silently reset the toggle for every player
-/// who has already set it. See [`crate::smart_builds`] for what it gates now.
+// Whether the Smart Builds pass is enabled: `unique_items` in
+// `mod-settings.json` next to the mod DLL. Defaults to enforced when the file
+// is absent or malformed, so players opt *out* via the editor toggle.
+//
+// The stored key is still `unique_items`, from when unique items were the
+// only rule: renaming it would silently reset the toggle for every player
+// who has already set it. See [`crate::smart_builds`] for what it gates now.
 pub fn smart_builds_enabled() -> bool {
     setting(&UNIQUE_ITEMS, |settings| settings.unique_items, true)
 }
 
-/// Whether configured builds are restricted to the player's own team:
-/// `own_team_only` in `mod-settings.json`. Defaults to on (since 2026-09-23,
-/// once the spawn injector made slot 0 work under it): a build applies only to
-/// the player's own athletes. Off, a build applies to whoever plays the
-/// champion, both teams, which is the behaviour every earlier version had and
-/// the only one the stable item-build hook can express.
-///
-/// Turning it on moves the work to the other half of the mod: the stable hook
-/// stops setting builds entirely and the native buy detour pins the same items
-/// per athlete instead, under the athlete-id team gate that already scopes the
-/// 4th item (`tactics::is_my_athlete`). The two must never both be applying
-/// builds — see `item_build_hook::decide_build` and the injection in `tactics`.
-///
-/// # The cost of that split, and why it is still here
-///
-/// The buy detour can only write a build slot at a *buy decision*, which is
-/// never early enough for slot 0: by the time it first sees the athlete, one
-/// item has completed and its `owned > si` guard locks that slot out for the
-/// rest of the match. So under this toggle the first item is the engine's pick,
-/// not the configured one, while slots 1 and 2 apply normally.
-///
-/// The obvious fix is to set the build before the match, on the stable hook,
-/// which is the one place it can be done once per player with no purchase race.
-/// **That was tried and does not work**, and the reason is worth keeping so it
-/// is not tried again.
-///
-/// It needs a team gate the hook can evaluate. `StableItemBuildContext` does
-/// carry a `team()` — the older claim here and in `item_build_hook` that it
-/// "never says which side" was wrong in letter — but a logged match
-/// (2026-09-08) established what the number is: a **0/1 side index within the
-/// match**. 40 decisions across 4 fixtures came back as five `team=0` lines
-/// then five `team=1` lines per match, uniform per lineup.
-///
-/// That is one bit about which of two lineups a build belongs to, and it does
-/// not answer either half of the question the gate needs. Which side is the
-/// player's alternates per match, and nothing in the context says whether the
-/// player is in the match at all — all 40 of those decisions were background
-/// league fixtures between AI teams, where `team=0` means only "the first
-/// lineup". The lineups cannot bridge it either: champions are drafted per
-/// match, and the `Athlete` record carries `recent_champions` and
-/// `champion_proficiency` but no assigned champion, so there is no athlete ->
-/// champion mapping to match `ally_champions()` against the player's starters.
-///
-/// So the pre-match route needs a live-match/side signal this context does not
-/// have, and the remaining candidate for slot 0 is the native spawn-time
-/// injector, which holds the athlete pointer and therefore the `is_my_athlete`
-/// gate that already works — see `tactics::SPAWN_INJECT_ENABLED`, which is what
-/// now sets slot 0 (below).
-/// # Restored 2026-09-16
-///
-/// This was forced to `false` on 2026-09-15, when `src/tactics` was retired
-/// and took the buy detour with it: honouring the setting then would have
-/// meant `decide_build` handing off to something that no longer existed, and
-/// configured builds would have stopped applying with no evidence anywhere.
-///
-/// The team gate is back -- `RVA_BUY_ITEM`, `SEEDCTOR_RVA` and
-/// `CL_LAUNCHER_RVA` were re-derived for the 0.6.0 release and
-/// `tactics::driver::RETIRED` is `false` again -- so the setting means
-/// something again and is read normally.
-///
-/// # Slot 0 fixed 2026-09-23
-///
-/// `SPAWN_RVA` had been a beta1 address that never matched on beta2 or the
-/// release, so the spawn-time injector had not run on any 0.6.x build and the
-/// first item under this toggle was always the engine's pick. It was
-/// re-derived for 0.6.1 and `tactics::SPAWN_INJECT_ENABLED` is on again, so
-/// all configured slots apply. The one remaining gap is the first match of a
-/// session, before the roster is published (see `cap_spawn`): slot 0 is then
-/// the engine's, and the buy path swaps rather than duplicates a pin.
+// Whether configured builds are restricted to the player's own team:
+// `own_team_only` in `mod-settings.json`. Defaults to on: a build applies
+// only to the player's own athletes. Off, a build applies to whoever plays
+// the champion, both teams, which is the only behaviour the stable
+// item-build hook can express.
+//
+// Turning it on moves the work to the other half of the mod: the stable hook
+// stops setting builds entirely and the native buy detour pins the same items
+// per athlete instead, under the athlete-id team gate
+// (`tactics::is_my_athlete`). The two must never both be applying builds —
+// see `item_build_hook::decide_build` and the injection in `tactics`.
+//
+// # Why the split
+//
+// The buy detour can only write a build slot at a *buy decision*, which is
+// never early enough for slot 0: by the time it first sees the athlete, one
+// item has completed and its `owned > si` guard locks that slot out for the
+// rest of the match. Slot 0 is set by the native spawn-time injector instead
+// (`tactics::SPAWN_INJECT_ENABLED`), which holds the athlete pointer and
+// therefore the `is_my_athlete` gate.
+//
+// Setting the build before the match, on the stable hook, does not work. It
+// needs a team gate the hook can evaluate, and `StableItemBuildContext`'s
+// `team()` is only a **0/1 side index within the match**. Which side is the
+// player's alternates per match, and nothing in the context says whether the
+// player is in the match at all. The lineups cannot bridge it either:
+// champions are drafted per match, and the `Athlete` record carries
+// `recent_champions` and `champion_proficiency` but no assigned champion, so
+// there is no athlete -> champion mapping to match `ally_champions()` against
+// the player's starters.
+//
+// The one remaining gap is the first match of a session, before the roster
+// is published (see `cap_spawn`): slot 0 is then the engine's, and the buy
+// path swaps rather than duplicates a pin.
 pub fn own_team_only_enabled() -> bool {
     setting(&OWN_TEAM_ONLY, |settings| settings.own_team_only, true)
 }
 
-/// A configured build merged with the AI's, as item indices, with a record of
-/// which slots the player pinned. Smart Builds may only rewrite the others.
+// A configured build merged with the AI's, as item indices, with a record of
+// which slots the player pinned. Smart Builds may only rewrite the others.
 pub struct MergedBuild {
     pub items: Vec<usize>,
-    /// Parallel to `items`: `true` where the slot holds the player's pin.
+    // Parallel to `items`: `true` where the slot holds the player's pin.
     pub pinned: Vec<bool>,
-    /// The player's pins for slots past the ones `items` covers — the 5th and
-    /// 6th, which the buy detour fills later. Not placed here, but already
-    /// spoken for: the AI's picks in `items` must not duplicate them.
+    // The player's pins for slots past the ones `items` covers — the 5th and
+    // 6th, which the buy detour fills later. Not placed here, but already
+    // spoken for: the AI's picks in `items` must not duplicate them.
     pub reserved: Vec<usize>,
 }
 
-/// The configured build for one champion, as item indices.
-///
-/// `resolve` turns an item key into an index in whatever list the caller is
-/// working against — `StableItemBuildContext::item_index` for the item-build
-/// hook. Keeping it a closure is what makes this independent of *how* the caller
-/// sees the item pool, which is the whole difference between the stable hook and
-/// the detour this used to serve.
-///
-/// `ai_build` is the build the engine picked for the same champion; it fills the
-/// blank (`null`) slots. Returns `None` when the champion has no entry, which
-/// callers must read as "leave the engine's build alone" — distinct from
-/// `Some(vec![])`, a configured build whose every key failed to resolve.
-///
-/// Unknown item keys are skipped rather than aborting, so one typo does not
-/// discard the rest of a build.
+// The configured build for one champion, as item indices.
+//
+// `resolve` turns an item key into an index in whatever list the caller is
+// working against — `StableItemBuildContext::item_index` for the item-build
+// hook. Keeping it a closure is what makes this independent of *how* the caller
+// sees the item pool, which is the whole difference between the stable hook and
+// a native detour.
+//
+// `ai_build` is the build the engine picked for the same champion; it fills the
+// blank (`null`) slots. Returns `None` when the champion has no entry, which
+// callers must read as "leave the engine's build alone" — distinct from
+// `Some(vec![])`, a configured build whose every key failed to resolve.
+//
+// Unknown item keys are skipped rather than aborting, so one typo does not
+// discard the rest of a build.
 pub fn build_for_champion(
     config: &BuildConfig,
     champion: &str,
@@ -1236,12 +1202,12 @@ pub fn build_for_champion(
     Some(merge_pin_row(build, resolve, ai_build))
 }
 
-/// A pin row merged into the engine's build: each pin in its slot, the
-/// engine's picks sliding into the slots between them, and the pins past the
-/// game's slots as `reserved`. What [`build_for_champion`] does with the row
-/// it looks up, for a caller that already holds one — the stable hook under
-/// `own_team_only`, whose row ([`pin_row`]) is also what the spawn injector
-/// finds the result by.
+// A pin row merged into the engine's build: each pin in its slot, the
+// engine's picks sliding into the slots between them, and the pins past the
+// game's slots as `reserved`. What [`build_for_champion`] does with the row
+// it looks up, for a caller that already holds one — the stable hook under
+// `own_team_only`, whose row ([`pin_row`]) is also what the spawn injector
+// finds the result by.
 pub fn merge_pin_row(
     row: &[Option<String>],
     resolve: impl Fn(&str) -> Option<usize>,
@@ -1268,12 +1234,12 @@ pub fn merge_pin_row(
     }
 }
 
-/// The build a champion uses in `role`: the role's own if one is written, and
-/// the [`Role::Any`] build otherwise.
-///
-/// This ordering is the whole contract of the Role column — a build written for
-/// Jungle beats the catch-all when the champion is actually jungling, and the
-/// catch-all still covers every role nobody wrote a build for.
+// The build a champion uses in `role`: the role's own if one is written, and
+// the [`Role::Any`] build otherwise.
+//
+// This ordering is the whole contract of the Role column — a build written for
+// Jungle beats the catch-all when the champion is actually jungling, and the
+// catch-all still covers every role nobody wrote a build for.
 fn build_entry<'a>(
     config: &'a BuildConfig,
     champion: &str,
@@ -1287,22 +1253,22 @@ fn build_entry<'a>(
     config.by_champion.get(champion)
 }
 
-/// Resolves one configured item key to a pool index. The key is normalized to
-/// its `radiant_` variant and run through `alias_key` first, which is what lets
-/// builds be authored with plain LoL names (`"collector"`); only if that misses
-/// is it tried verbatim, so a game-internal key (`"warlords_final_judgement"`,
-/// or any vanilla tier 5) still resolves as written. Unknown keys return `None`
-/// (skipped rather than aborting the build).
-///
-/// The `radiant_` attempt comes FIRST and the verbatim one is the fallback.
-/// Order matters: `"liandrys_torment"` in an existing `item-builds.json` means
-/// the radiant item, but a base item of that exact key also exists, so trying
-/// verbatim first would silently downgrade every build in that file to its base
-/// tier. The fallback exists only for keys with no radiant variant — the vanilla
-/// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
-///
-/// Generic over the result so the in-game editor can resolve a key to its own
-/// list entry with exactly the same rules the hook uses.
+// Resolves one configured item key to a pool index. The key is normalized to
+// its `radiant_` variant and run through `alias_key` first, which is what lets
+// builds be authored with plain LoL names (`"collector"`); only if that misses
+// is it tried verbatim, so a game-internal key (`"warlords_final_judgement"`,
+// or any vanilla tier 5) still resolves as written. Unknown keys return `None`
+// (skipped rather than aborting the build).
+//
+// The `radiant_` attempt comes FIRST and the verbatim one is the fallback.
+// Order matters: `"liandrys_torment"` in an existing `item-builds.json` means
+// the radiant item, but a base item of that exact key also exists, so trying
+// verbatim first would silently downgrade every build in that file to its base
+// tier. The fallback exists only for keys with no radiant variant — the vanilla
+// tier 5s the in-game picker offers, like `"warlords_final_judgement"`.
+//
+// Generic over the result so the in-game editor can resolve a key to its own
+// list entry with exactly the same rules the hook uses.
 pub(crate) fn resolve_key<T>(key: &str, resolve: &impl Fn(&str) -> Option<T>) -> Option<T> {
     let radiant = radiant_key(key);
     if let Some(index) = resolve(alias_key(radiant.as_ref())) {
@@ -1311,13 +1277,13 @@ pub(crate) fn resolve_key<T>(key: &str, resolve: &impl Fn(&str) -> Option<T>) ->
     resolve(key)
 }
 
-/// Builds the final route from a configured build and the route the AI generated
-/// for the same champion (`ai_route`). Pinned slots (`Some`) use the player's
-/// item; blank slots (`None`) are filled, in order, with the AI's own picks that
-/// the player did not already pin. An unresolvable pinned key is treated as a
-/// blank slot, so one typo neither aborts the rest nor moves the pins after it;
-/// the route ends where the AI's has no pick left to fill a slot. The second
-/// vector says, per slot of the route, whether it is a pin.
+// Builds the final route from a configured build and the route the AI generated
+// for the same champion (`ai_route`). Pinned slots (`Some`) use the player's
+// item; blank slots (`None`) are filled, in order, with the AI's own picks that
+// the player did not already pin. An unresolvable pinned key is treated as a
+// blank slot, so one typo neither aborts the rest nor moves the pins after it;
+// the route ends where the AI's has no pick left to fill a slot. The second
+// vector says, per slot of the route, whether it is a pin.
 fn merge_build(
     build: &[Option<String>],
     ai_route: &[usize],
@@ -1353,11 +1319,11 @@ fn merge_build(
     (route, is_pin)
 }
 
-/// Resolves a configured item key to its `radiant_` (tier 5) variant: keys that
-/// do not already start with `radiant_` are prefixed with it. This lets builds
-/// be written with base item names (`"collector"`) and always resolve to the
-/// radiant item the mod registers (`"radiant_collector"`). Keys already starting
-/// with `radiant_` are passed through unchanged.
+// Resolves a configured item key to its `radiant_` (tier 5) variant: keys that
+// do not already start with `radiant_` are prefixed with it. This lets builds
+// be written with base item names (`"collector"`) and always resolve to the
+// radiant item the mod registers (`"radiant_collector"`). Keys already starting
+// with `radiant_` are passed through unchanged.
 fn radiant_key(key: &str) -> Cow<'_, str> {
     if key.starts_with("radiant_") {
         Cow::Borrowed(key)
@@ -1366,32 +1332,32 @@ fn radiant_key(key: &str) -> Cow<'_, str> {
     }
 }
 
-/// Maps a `radiant_`-normalized item slug to the game's internal item key, for
-/// renamed items whose registered key differs from the LoL name shown in
-/// `text/item.i18n`. The input is the output of `radiant_key`, so both
-/// `"bloodthirster"` and `"radiant_bloodthirster"` arrive here as
-/// `"radiant_bloodthirster"` and resolve to the same internal key. Slugs with no
-/// alias pass through unchanged (covers items whose registered key already
-/// matches their slug, like `radiant_collector`).
-///
-/// Add a new arm per renamed item in `text/item.i18n` (lines 58-177): key the arm
-/// on the `radiant_` form of the LoL name, value is the i18n object key.
-/// Normalizes any spelling of an item back to the plain LoL slug the item
-/// catalog is keyed by: the inverse of [`alias_key`] followed by dropping the
-/// `radiant_` prefix. `"warlords_final_judgement"`, `"radiant_bloodthirster"`
-/// and `"bloodthirster"` all yield `"bloodthirster"`.
-///
-/// The in-game editor needs this because it reads item keys back out of the
-/// game (where they are internal keys) but groups them with
-/// [`crate::item_catalog`], which is keyed the way a player writes a build.
+// Maps a `radiant_`-normalized item slug to the game's internal item key, for
+// renamed items whose registered key differs from the LoL name shown in
+// `text/item.i18n`. The input is the output of `radiant_key`, so both
+// `"bloodthirster"` and `"radiant_bloodthirster"` arrive here as
+// `"radiant_bloodthirster"` and resolve to the same internal key. Slugs with no
+// alias pass through unchanged (covers items whose registered key already
+// matches their slug, like `radiant_collector`).
+//
+// Add a new arm per renamed item in `text/item.i18n` (lines 58-177): key the arm
+// on the `radiant_` form of the LoL name, value is the i18n object key.
+// Normalizes any spelling of an item back to the plain LoL slug the item
+// catalog is keyed by: the inverse of [`alias_key`] followed by dropping the
+// `radiant_` prefix. `"warlords_final_judgement"`, `"radiant_bloodthirster"`
+// and `"bloodthirster"` all yield `"bloodthirster"`.
+//
+// The in-game editor needs this because it reads item keys back out of the
+// game (where they are internal keys) but groups them with
+// [`crate::item_catalog`], which is keyed the way a player writes a build.
 pub fn base_slug(key: &str) -> &str {
     unalias_key(key)
         .strip_prefix("radiant_")
         .unwrap_or_else(|| unalias_key(key))
 }
 
-/// Inverse of [`alias_key`]: the game's internal key for a renamed item back to
-/// the `radiant_` form of its LoL name. Keys with no alias pass through.
+// Inverse of [`alias_key`]: the game's internal key for a renamed item back to
+// the `radiant_` form of its LoL name. Keys with no alias pass through.
 fn unalias_key(key: &str) -> &str {
     match key {
         "warlords_final_judgement" => "radiant_bloodthirster",

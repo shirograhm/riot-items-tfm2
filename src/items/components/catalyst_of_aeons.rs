@@ -2,9 +2,9 @@ use crate::config::ItemConfig;
 use crate::{apply_config, Eternity};
 use mod_api_stable::*;
 
-/// Catalyst of Aeons: health, a little Ability Power and Ability Haste, and
-/// Eternity ([`crate::Eternity`]): a heal for every Ability cast. It grows
-/// into Rod of Ages, which keeps Eternity.
+// Catalyst of Aeons: health, a little Ability Power and Ability Haste, and
+// Eternity ([`crate::Eternity`]): a heal for every Ability cast. It grows
+// into Rod of Ages, which keeps Eternity.
 #[derive(Clone, Debug)]
 pub struct CatalystOfAeons {
     price: usize,
@@ -93,7 +93,7 @@ impl StableItem for CatalystOfAeons {
         self.eternity.reset();
     }
 
-    /// Eternity's heal, for an Ability cast since the last tick.
+    // Eternity's heal, for an Ability cast since the last tick.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.eternity
             .update(ctx, player, self.effect_min_heal, self.effect_max_heal);

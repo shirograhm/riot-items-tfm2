@@ -8,11 +8,11 @@
 
 use std::ffi::{c_char, c_void, CStr};
 
-/// The Steam library as the 64-bit game loads it.
+// The Steam library as the 64-bit game loads it.
 const LIBRARY: &[u8] = b"steam_api64.dll\0";
-/// The friends interface, by the names the library exports it under. The
-/// number is the interface's version and goes up with the Steam SDK the game
-/// ships: 17 in the 0.6.3 game's library, the rest in case that moves.
+// The friends interface, by the names the library exports it under. The
+// number is the interface's version and goes up with the Steam SDK the game
+// ships: 17 in the 0.6.3 game's library, the rest in case that moves.
 const FRIENDS: [&[u8]; 4] = [
     b"SteamAPI_SteamFriends_v017\0",
     b"SteamAPI_SteamFriends_v018\0",
@@ -21,8 +21,8 @@ const FRIENDS: [&[u8]; 4] = [
 ];
 const PERSONA_NAME: &[u8] = b"SteamAPI_ISteamFriends_GetPersonaName\0";
 
-/// The name the player goes by on Steam. `None` where the game is not
-/// running under Steam, or its library does not have these calls.
+// The name the player goes by on Steam. `None` where the game is not
+// running under Steam, or its library does not have these calls.
 pub(crate) fn persona_name() -> Option<String> {
     extern "system" {
         fn GetModuleHandleA(name: *const u8) -> *mut c_void;

@@ -22,35 +22,35 @@ use mod_api_stable::*;
 
 use crate::{refresh_buff, ticks, upgrade_carry};
 
-/// One name for every Annul item, so a champion holding two has one shield:
-/// the hit that pops it reaches both items and starts both cooldowns. Also the
-/// `view_buffs` name in `view/effects.view_effects` that draws the shield
-/// bubble (`effects/annul_spell_shield`) for as long as it is up.
+// One name for every Annul item, so a champion holding two has one shield:
+// the hit that pops it reaches both items and starts both cooldowns. Also the
+// `view_buffs` name in `view/effects.view_effects` that draws the shield
+// bubble (`effects/annul_spell_shield`) for as long as it is up.
 const ANNUL_BUFF: &str = "riot_annul";
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Annul {
     cooldown: usize,
-    /// The Spell Shield is on the carrier and has not been spent.
+    // The Spell Shield is on the carrier and has not been spent.
     up: bool,
-    /// Popped this tick; `update` takes the buff off the carrier.
+    // Popped this tick; `update` takes the buff off the carrier.
     popped: bool,
-    /// The upgrade line the cooldown is noted under: the key of the first item
-    /// of those that hand it on to one another.
+    // The upgrade line the cooldown is noted under: the key of the first item
+    // of those that hand it on to one another.
     line: &'static str,
-    /// Whether this item is built from another on its line, and so takes over
-    /// that one's cooldown.
+    // Whether this item is built from another on its line, and so takes over
+    // that one's cooldown.
     built_up: bool,
-    /// Whether this instance has taken over the cooldown of the item it replaced.
+    // Whether this instance has taken over the cooldown of the item it replaced.
     inherited: bool,
 }
 
-/// Flags packed above the cooldown in [`Annul::carry`].
+// Flags packed above the cooldown in [`Annul::carry`].
 const CARRY_UP: u64 = 1 << 62;
 const CARRY_POPPED: u64 = 1 << 63;
 
-/// The carrier's ability damage reduction from every other buff, and the
-/// shield's own if it is on, so the shield only fills the room left under 100%.
+// The carrier's ability damage reduction from every other buff, and the
+// shield's own if it is on, so the shield only fills the room left under 100%.
 fn skill_damaged_reduce(entity: &StableEntity<'_, '_>) -> (usize, Option<usize>) {
     let mut others = 0;
     let mut own = None;
@@ -65,8 +65,8 @@ fn skill_damaged_reduce(entity: &StableEntity<'_, '_>) -> (usize, Option<usize>)
 }
 
 impl Annul {
-    /// The Annul of an item on `line`; `built_up` is whether the item is built
-    /// from another on it.
+    // The Annul of an item on `line`; `built_up` is whether the item is built
+    // from another on it.
     pub(crate) fn on_line(line: &'static str, built_up: bool) -> Self {
         Self {
             line,
@@ -75,7 +75,7 @@ impl Annul {
         }
     }
 
-    /// The carrier respawned: the shield starts over, ready.
+    // The carrier respawned: the shield starts over, ready.
     pub(crate) fn reset(&mut self, ctx: &StableSim<'_>, player: usize) {
         self.cooldown = 0;
         self.up = false;
@@ -85,9 +85,9 @@ impl Annul {
         upgrade_carry::note(self.line, ctx, player, 0);
     }
 
-    /// What an upgrade hands its successor, so building the next tier neither
-    /// resets the cooldown nor strands a popped shield on the carrier: the old
-    /// item is gone before its `update` could take the buff off.
+    // What an upgrade hands its successor, so building the next tier neither
+    // resets the cooldown nor strands a popped shield on the carrier: the old
+    // item is gone before its `update` could take the buff off.
     pub(crate) fn carry(&self) -> u64 {
         let mut carry = self.cooldown as u64;
         if self.up {
@@ -99,17 +99,17 @@ impl Annul {
         carry
     }
 
-    /// Picks up where the item this one was built from left off.
+    // Picks up where the item this one was built from left off.
     pub(crate) fn resume(&mut self, carry: u64) {
         self.cooldown = (carry & !(CARRY_UP | CARRY_POPPED)) as usize;
         self.up = carry & CARRY_UP != 0;
         self.popped = carry & CARRY_POPPED != 0;
     }
 
-    /// Takes a popped shield off, then keeps a ready one on the carrier. The
-    /// buff is re-checked every tick rather than added once: death can strip
-    /// it, and its size follows the carrier's other ability damage reduction
-    /// (Cloak of Starry Night's grows with magic resistance).
+    // Takes a popped shield off, then keeps a ready one on the carrier. The
+    // buff is re-checked every tick rather than added once: death can strip
+    // it, and its size follows the carrier's other ability damage reduction
+    // (Cloak of Starry Night's grows with magic resistance).
     pub(crate) fn update(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         // An item built from another arrives as a fresh instance: it takes over
         // what is left of that one's cooldown, once.
@@ -181,9 +181,9 @@ impl Annul {
         }
     }
 
-    /// A pure crowd-control ability deals no damage, so this is what spends
-    /// the shield on one. Whether the host still reports CC that `cc_immune`
-    /// turned away is not known yet.
+    // A pure crowd-control ability deals no damage, so this is what spends
+    // the shield on one. Whether the host still reports CC that `cc_immune`
+    // turned away is not known yet.
     pub(crate) fn on_cc(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -201,9 +201,9 @@ impl Annul {
         self.pop(ctx, player, entity, caster, cooldown_seconds);
     }
 
-    /// Spends the shield on a hit from `source`, if it is up and `source` is
-    /// not on the carrier's team. A source the host no longer knows (a caster
-    /// who died with the spell in flight) still counts: the hit was blocked.
+    // Spends the shield on a hit from `source`, if it is up and `source` is
+    // not on the carrier's team. A source the host no longer knows (a caster
+    // who died with the spell in flight) still counts: the hit was blocked.
     fn pop(
         &mut self,
         ctx: &mut StableSim<'_>,

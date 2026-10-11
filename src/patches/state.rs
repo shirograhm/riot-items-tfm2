@@ -10,12 +10,12 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-/// The shape this build writes and reads. A state in another shape is left
-/// where it is and the save starts over unpatched.
+// The shape this build writes and reads. A state in another shape is left
+// where it is and the save starts over unpatched.
 pub(crate) const FORMAT: u32 = 1;
 
-/// Patches kept for the notes. The numbers themselves need none of them:
-/// [`State::ratios`] is the whole balance.
+// Patches kept for the notes. The numbers themselves need none of them:
+// [`State::ratios`] is the whole balance.
 const HISTORY_KEPT: usize = 12;
 
 #[derive(Serialize, Deserialize, Clone, Default)]
@@ -23,23 +23,23 @@ const HISTORY_KEPT: usize = 12;
 pub(crate) struct State {
     #[serde(rename = "v")]
     pub format: u32,
-    /// The game's balance version the items were last settled for. A match
-    /// recorded on a newer one is what sets off the next patch.
+    // The game's balance version the items were last settled for. A match
+    // recorded on a newer one is what sets off the next patch.
     #[serde(rename = "ver")]
     pub version: Option<String>,
-    /// Item patches so far.
+    // Item patches so far.
     #[serde(rename = "n")]
     pub number: u32,
-    /// Hotfixes released on `version` so far: the patches the player set
-    /// off by hand. Counted from one again when the game's version moves on.
+    // Hotfixes released on `version` so far: the patches the player set
+    // off by hand. Counted from one again when the game's version moves on.
     #[serde(rename = "hf")]
     pub hotfixes: u32,
-    /// Item family -> field -> what the field is of its unpatched value
-    /// after every patch so far. One number for all tiers of the item, so a
-    /// radiant keeps its distance from the legendary it is built from.
+    // Item family -> field -> what the field is of its unpatched value
+    // after every patch so far. One number for all tiers of the item, so a
+    // radiant keeps its distance from the legendary it is built from.
     #[serde(rename = "r")]
     pub ratios: BTreeMap<String, BTreeMap<String, f64>>,
-    /// Newest last.
+    // Newest last.
     #[serde(rename = "h")]
     pub history: Vec<Patch>,
 }
@@ -49,19 +49,19 @@ pub(crate) struct State {
 pub(crate) struct Patch {
     #[serde(rename = "n")]
     pub number: u32,
-    /// The game version whose matches were judged.
+    // The game version whose matches were judged.
     #[serde(rename = "ver")]
     pub version: String,
-    /// Matches counted on that version.
+    // Matches counted on that version.
     #[serde(rename = "m")]
     pub matches: u32,
-    /// The game version it was announced as: the one the game was on when
-    /// it landed, which for the patch a new version brings is the version
-    /// after the one judged. Empty in a patch from before this was kept.
+    // The game version it was announced as: the one the game was on when
+    // it landed, which for the patch a new version brings is the version
+    // after the one judged. Empty in a patch from before this was kept.
     #[serde(rename = "as")]
     pub announced: String,
-    /// Which hotfix of that version it is, from one; zero for the patch a
-    /// new version brings.
+    // Which hotfix of that version it is, from one; zero for the patch a
+    // new version brings.
     #[serde(rename = "hf")]
     pub hotfix: u32,
     #[serde(rename = "c")]
@@ -77,14 +77,14 @@ pub(crate) struct Change {
     pub field: String,
     #[serde(rename = "b")]
     pub buff: bool,
-    /// [`State::ratios`] for the field once this change is in.
+    // [`State::ratios`] for the field once this change is in.
     #[serde(rename = "r")]
     pub ratio: f64,
-    /// What each tier of the item read before and reads after.
+    // What each tier of the item read before and reads after.
     #[serde(rename = "t")]
     pub members: Vec<Moved>,
-    /// What the item was judged on: times it was held, and how many of
-    /// those won.
+    // What the item was judged on: times it was held, and how many of
+    // those won.
     #[serde(rename = "g")]
     pub games: u32,
     #[serde(rename = "w")]
@@ -114,7 +114,7 @@ impl State {
         serde_json::to_string(&state).unwrap_or_default()
     }
 
-    /// Takes a patch in: its ratios, and its place in the history.
+    // Takes a patch in: its ratios, and its place in the history.
     pub(crate) fn adopt(&mut self, patch: Patch) {
         for change in &patch.changes {
             self.ratios

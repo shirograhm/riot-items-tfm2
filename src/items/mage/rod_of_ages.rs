@@ -12,11 +12,11 @@ use crate::{apply_config, ticks, upgrade_carry, Elapsed, Eternity, ItemMeta};
 // Eternity is Catalyst of Aeons' passive, kept ([`crate::Eternity`]): a heal
 // for every Ability cast.
 
-/// Timeless's stats on the carrier. One name for both tiers, so what the base
-/// item granted stays on through the Radiant upgrade and is counted once.
+// Timeless's stats on the carrier. One name for both tiers, so what the base
+// item granted stays on through the Radiant upgrade and is counted once.
 const TIMELESS_BUFF: &str = "riot_timeless";
-/// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
-/// they follow the carrier into the Radiant item.
+// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
+// they follow the carrier into the Radiant item.
 const BASE_KEY: &str = "rod_of_ages";
 
 #[derive(Clone, Debug)]
@@ -34,12 +34,12 @@ pub struct RodOfAges {
     effect_min_heal: usize,
     effect_max_heal: usize,
     // Non-vital stats (internals)
-    /// How long the item has been held, in ticks, up to the time the last
-    /// Timeless stack takes.
+    // How long the item has been held, in ticks, up to the time the last
+    // Timeless stack takes.
     held_ticks: usize,
-    /// Whether this instance has taken over the stacks of the item it replaced.
+    // Whether this instance has taken over the stacks of the item it replaced.
     inherited: bool,
-    /// Counts the time gone by, so Timeless keeps growing through a death.
+    // Counts the time gone by, so Timeless keeps growing through a death.
     clock: Elapsed,
     eternity: Eternity,
 }
@@ -114,23 +114,23 @@ impl RodOfAges {
         self
     }
 
-    /// Ticks between two Timeless stacks.
+    // Ticks between two Timeless stacks.
     fn growth_every(&self) -> usize {
         ticks(self.effect_growth_interval_seconds).max(1)
     }
 
-    /// Timeless stacks gained so far.
+    // Timeless stacks gained so far.
     fn timeless_stacks(&self) -> usize {
         (self.held_ticks / self.growth_every()).min(self.effect_max_growth_stacks)
     }
 
-    /// Sets the time held to what `stacks` Timeless stacks take, clamped to
-    /// this item's own ceiling.
+    // Sets the time held to what `stacks` Timeless stacks take, clamped to
+    // this item's own ceiling.
     fn set_timeless_stacks(&mut self, stacks: usize) {
         self.held_ticks = stacks.min(self.effect_max_growth_stacks) * self.growth_every();
     }
 
-    /// What `stacks` Timeless stacks are worth, as one buff.
+    // What `stacks` Timeless stacks are worth, as one buff.
     fn timeless_buff(&self, stacks: usize) -> BuffV1 {
         let stacks = stacks as i32;
         BuffV1 {
@@ -141,11 +141,11 @@ impl RodOfAges {
         }
     }
 
-    /// The Radiant item arrives as a fresh instance: it takes over the base
-    /// item's stacks once, before it first counts its own. Only the count
-    /// moves. What those stacks grant is already on the champion as
-    /// `TIMELESS_BUFF`, and `on_spawn` puts it back from the count on the next
-    /// respawn.
+    // The Radiant item arrives as a fresh instance: it takes over the base
+    // item's stacks once, before it first counts its own. Only the count
+    // moves. What those stacks grant is already on the champion as
+    // `TIMELESS_BUFF`, and `on_spawn` puts it back from the count on the next
+    // respawn.
     fn inherit_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         if std::mem::replace(&mut self.inherited, true) || !self.meta.upgrades_from(BASE_KEY) {
             return;
@@ -222,8 +222,8 @@ impl StableItem for RodOfAges {
         }
     }
 
-    /// Grows Timeless by the time gone by and heals for an Ability cast since
-    /// the last tick.
+    // Grows Timeless by the time gone by and heals for an Ability cast since
+    // the last tick.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.inherit_stacks(ctx, player);
 
@@ -253,11 +253,11 @@ impl StableItem for RodOfAges {
             .update(ctx, player, self.effect_min_heal, self.effect_max_heal);
     }
 
-    /// Timeless stacks survive the Radiant upgrade, clamped to the successor's
-    /// own ceiling in case the config gives the two variants different caps.
-    ///
-    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    /// `inherit_stacks` does the carrying, and they stay for a host that does.
+    // Timeless stacks survive the Radiant upgrade, clamped to the successor's
+    // own ceiling in case the config gives the two variants different caps.
+    //
+    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    // `inherit_stacks` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.timeless_stacks() as u64

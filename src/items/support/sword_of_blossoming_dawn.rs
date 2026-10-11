@@ -3,22 +3,22 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, sized_range, ItemMeta};
 
-/// The `view_projectiles` name in `view/effects.view_effects` that draws the
-/// wisp flying from the carrier to the ally Peppermint heals
-/// (`effects/blossoming_dawn_wisp`).
+// The `view_projectiles` name in `view/effects.view_effects` that draws the
+// wisp flying from the carrier to the ally Peppermint heals
+// (`effects/blossoming_dawn_wisp`).
 const WISP_PROJECTILE: &str = "riot_blossoming_dawn_wisp";
-/// The wisp's hit circle: small, so it only lands on the ally it was sent to.
+// The wisp's hit circle: small, so it only lands on the ally it was sent to.
 const WISP_RADIUS: u64 = 1_000;
-/// How long the wisp takes to reach the ally, whatever the distance (1/6 s).
+// How long the wisp takes to reach the ally, whatever the distance (1/6 s).
 const WISP_TICKS: u64 = 10;
-/// The slowest the wisp flies, in world units per tick: an ally right next to
-/// the carrier still gets a visible flight rather than a hop.
+// The slowest the wisp flies, in world units per tick: an ally right next to
+// the carrier still gets a visible flight rather than a hop.
 const WISP_MIN_SPEED: u64 = 500;
 
 #[derive(Clone, Debug)]
 pub struct SwordOfBlossomingDawn {
     meta: ItemMeta,
-    /// The name this tier's [`BlossomingDawnWisp`] is registered under.
+    // The name this tier's [`BlossomingDawnWisp`] is registered under.
     wisp_hit: &'static str,
     price: usize,
     attack_speed_mult: i32,
@@ -98,8 +98,8 @@ impl SwordOfBlossomingDawn {
         self
     }
 
-    /// This tier's Peppermint heal, as the effect the wisp carries to the ally.
-    /// For `lib.rs` to register under [`Self::wisp_hit_name`].
+    // This tier's Peppermint heal, as the effect the wisp carries to the ally.
+    // For `lib.rs` to register under [`Self::wisp_hit_name`].
     pub fn wisp_hit(&self) -> BlossomingDawnWisp {
         BlossomingDawnWisp {
             min_heal: self.effect_min_heal,
@@ -113,11 +113,11 @@ impl SwordOfBlossomingDawn {
         self.wisp_hit
     }
 
-    /// Sends the wisp, and with it the heal, from the carrier to `ally`. False
-    /// when there is no projectile to send it with. Its speed is Statikk Shiv's
-    /// spark timing: the gap between the two hit circles spread over
-    /// `WISP_TICKS`, plus the ally's own move speed, so one running away is
-    /// still caught.
+    // Sends the wisp, and with it the heal, from the carrier to `ally`. False
+    // when there is no projectile to send it with. Its speed is Statikk Shiv's
+    // spark timing: the gap between the two hit circles spread over
+    // `WISP_TICKS`, plus the ally's own move speed, so one running away is
+    // still caught.
     fn send_wisp(&self, ctx: &mut StableSim<'_>, caster: usize, team: usize, ally: usize) -> bool {
         let Some((x, y)) = ctx.get_entity(caster).map(|c| c.pos()) else {
             return false;
@@ -278,9 +278,9 @@ impl StableItem for SwordOfBlossomingDawn {
     }
 }
 
-/// Peppermint's heal, carried by the wisp: when it reaches the ally, it heals
-/// them by the carrier's heal as it stands then. One per tier, with that tier's
-/// numbers, since a projectile carries no payload of its own.
+// Peppermint's heal, carried by the wisp: when it reaches the ally, it heals
+// them by the carrier's heal as it stands then. One per tier, with that tier's
+// numbers, since a projectile carries no payload of its own.
 #[derive(Clone, Debug)]
 pub struct BlossomingDawnWisp {
     min_heal: usize,
@@ -290,9 +290,9 @@ pub struct BlossomingDawnWisp {
 }
 
 impl BlossomingDawnWisp {
-    /// Level 1 pays `min_heal` and level 12 pays `max_heal`, the same
-    /// eleven-step ramp `bloodsong` uses for Spellblade, plus shares of the
-    /// carrier's Attack Damage and Ability Power.
+    // Level 1 pays `min_heal` and level 12 pays `max_heal`, the same
+    // eleven-step ramp `bloodsong` uses for Spellblade, plus shares of the
+    // carrier's Attack Damage and Ability Power.
     fn amount(&self, level: usize, attack: usize, magic_power: usize) -> usize {
         let per_level = ((self.max_heal - self.min_heal) as f64 / 11.0).round() as usize;
         self.min_heal

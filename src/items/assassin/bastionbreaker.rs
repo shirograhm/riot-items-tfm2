@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, has_buff, percent_of, refresh_buff, ticks, ItemMeta};
 
-/// The burst on the turret as Sabotage goes off: the `view_effects` binding of
-/// this name in `view/effects.view_effects` (`effects/sabotage_blast`).
+// The burst on the turret as Sabotage goes off: the `view_effects` binding of
+// this name in `view/effects.view_effects` (`effects/sabotage_blast`).
 const BLAST_EFFECT: &str = "riot_sabotage_blast";
 
 fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percent: f64) -> usize {
@@ -73,9 +73,9 @@ impl Bastionbreaker {
         Self::radiant().configured(cfg)
     }
 
-    /// Grants Sabotage, or starts its time over on a carrier that already has
-    /// it. Replaced rather than added: Sabotage is one empowered attack however
-    /// many takedowns came before it, and one buff is one picture.
+    // Grants Sabotage, or starts its time over on a carrier that already has
+    // it. Replaced rather than added: Sabotage is one empowered attack however
+    // many takedowns came before it, and one buff is one picture.
     fn grant_sabotage(&self, sim: &mut StableSim<'_>, entity: usize) {
         refresh_buff(
             sim,

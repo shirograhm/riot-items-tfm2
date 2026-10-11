@@ -9,7 +9,7 @@ pub struct FatedAshes {
     effect_bonus_flat_damage: usize,
     effect_duration_seconds: f64,
     effect_minion_percent: f64,
-    /// Targets burning now, as `(entity, ticks left, ticks until the next tick)`.
+    // Targets burning now, as `(entity, ticks left, ticks until the next tick)`.
     burns: Vec<(usize, usize, usize)>,
 }
 
@@ -51,12 +51,12 @@ impl FatedAshes {
         (self.duration_ticks() / DOT_TICK_RATE).max(1)
     }
 
-    /// One tick's worth of the burn, or `None` if the target is not there to
-    /// take it.
-    ///
-    /// The stated total is what a champion takes over the full duration; a minion
-    /// or monster takes the boosted share of it. Entity ids are recycled slots, so
-    /// the target is re-read every tick rather than trusted from when it was lit.
+    // One tick's worth of the burn, or `None` if the target is not there to
+    // take it.
+    //
+    // The stated total is what a champion takes over the full duration; a minion
+    // or monster takes the boosted share of it. Entity ids are recycled slots, so
+    // the target is re-read every tick rather than trusted from when it was lit.
     fn instance_damage(&self, ctx: &mut StableSim<'_>, id: usize) -> Option<usize> {
         let entity_ref = ctx.get_entity(id)?;
         if !entity_ref.is_alive() {

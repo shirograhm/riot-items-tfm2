@@ -17,13 +17,11 @@
 //!   (`fields::Rule::unsigned`).
 //!
 //!   The game's own thirty items go the same way, and not through the
-//!   server's item settings, which is where their stats live and where the
-//!   first version of this wrote them. The server took the write, and the
-//!   client went on showing the old numbers (the Item Info page, 2026-10-10):
-//!   its copy of the settings is not kept up with a write made in the middle
-//!   of a session. A match the player watches is played from that copy, so
-//!   it would have run on other numbers than the server's run of the same
-//!   match. The buff is the same in both.
+//!   server's item settings, which is where their stats live. The server
+//!   takes such a write, but the client's copy of the settings is not kept
+//!   up with a write made in the middle of a session. A match the player
+//!   watches is played from that copy, so it would run on other numbers
+//!   than the server's run of the same match. The buff is the same in both.
 //! - **What sits outside the item.** Axiom Arc reads every lethality item's
 //!   number from a table, and the Spellblade items theirs from another; both
 //!   are told (`crate::set_lethality_patches`, `Base::refreshes`).
@@ -41,24 +39,24 @@ use super::state::State;
 use super::{fields, text};
 use crate::config::ItemConfig;
 
-/// The buff a champion holds for the patched flat stats of its items.
+// The buff a champion holds for the patched flat stats of its items.
 const DELTA_BUFF: &str = "riot_item_patch";
 
-/// Ticks between two looks at what each champion should hold of it: a third
-/// of a second. A buff just added does not show among an entity's buffs for
-/// a few ticks, so this must stay well over that or it would be added twice.
+// Ticks between two looks at what each champion should hold of it: a third
+// of a second. A buff just added does not show among an entity's buffs for
+// a few ticks, so this must stay well over that or it would be added twice.
 const DELTA_CHECK_TICKS: usize = 20;
 
-/// How far an item's patches have to have moved it, as the sum of the
-/// logarithms of its fields' ratios, to lean a build choice as hard as they
-/// can: a quarter, about what five patches of one field come to.
+// How far an item's patches have to have moved it, as the sum of the
+// logarithms of its fields' ratios, to lean a build choice as hard as they
+// can: a quarter, about what five patches of one field come to.
 const LEANING_FULL: f64 = 0.25;
 
-/// The numbers of a stat block, in [`STAT_NAMES`] order.
+// The numbers of a stat block, in [`STAT_NAMES`] order.
 const STATS: usize = 32;
 type Numbers = [i64; STATS];
 
-/// From this index on, the game keeps the stat unsigned.
+// From this index on, the game keeps the stat unsigned.
 const UNSIGNED_FROM: usize = 18;
 
 const STAT_NAMES: [&str; STATS] = [
@@ -133,7 +131,7 @@ fn numbers(stat: &BuffV1) -> Numbers {
     ]
 }
 
-/// A permanent buff named `name` that gives `of`.
+// A permanent buff named `name` that gives `of`.
 fn buff_of(name: &str, of: &Numbers) -> BuffV1 {
     let unsigned = |index: usize| of[index].max(0) as usize;
     BuffV1 {
@@ -173,23 +171,23 @@ fn buff_of(name: &str, of: &Numbers) -> BuffV1 {
     }
 }
 
-/// One stat of a stat block by its field name, or nothing for a name that
-/// is not a stat.
+// One stat of a stat block by its field name, or nothing for a name that
+// is not a stat.
 pub(crate) fn stat_number(stat: &BuffV1, field: &str) -> Option<i64> {
     let index = STAT_NAMES.iter().position(|name| *name == field)?;
     Some(numbers(stat)[index])
 }
 
 pub(crate) struct Live {
-    /// Mod item -> its config with the patch laid over the player's own.
+    // Mod item -> its config with the patch laid over the player's own.
     configs: HashMap<String, Arc<ItemConfig>>,
-    /// Item, the mod's or the game's -> what its patched stats add to the
-    /// ones the game holds for it.
+    // Item, the mod's or the game's -> what its patched stats add to the
+    // ones the game holds for it.
     deltas: HashMap<String, Numbers>,
-    /// Item -> what its tooltip has to say that the game will not.
+    // Item -> what its tooltip has to say that the game will not.
     pub display: HashMap<String, text::Display>,
-    /// Item -> how its patches lean a build choice, -1 (nerfed as far as it
-    /// counts) to 1.
+    // Item -> how its patches lean a build choice, -1 (nerfed as far as it
+    // counts) to 1.
     leaning: HashMap<String, f32>,
 }
 
@@ -198,14 +196,14 @@ static ANY_CONFIGS: AtomicBool = AtomicBool::new(false);
 static ANY_DELTAS: AtomicBool = AtomicBool::new(false);
 static ANY_LEANING: AtomicBool = AtomicBool::new(false);
 
-/// The balance now in force, or nothing while no number is patched.
+// The balance now in force, or nothing while no number is patched.
 pub(crate) fn current() -> Option<Arc<Live>> {
     LIVE.read().ok()?.clone()
 }
 
-/// Works the whole of [`Live`] out from the patch state, and tells whatever
-/// keeps an item's numbers outside the item. With an empty state, which is
-/// what leaving a save comes to, everything is as the mod loaded it.
+// Works the whole of [`Live`] out from the patch state, and tells whatever
+// keeps an item's numbers outside the item. With an empty state, which is
+// what leaving a save comes to, everything is as the mod loaded it.
 pub(crate) fn rebuild(base: &Base, state: &State) {
     let texts = text::texts();
     // (item, field) -> patched number, where that is not the unpatched one.
@@ -228,7 +226,7 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
                     continue;
                 };
                 let whole = member.whole.contains(field);
-                let value = fields::quantize(unpatched, unpatched * ratio, whole);
+                let value = fields::quantize(&member.key, field, unpatched, unpatched * ratio, whole);
                 if value != unpatched {
                     values.insert((member.key.clone(), field.clone()), value);
                     moved = true;
@@ -399,8 +397,8 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
     }
 }
 
-/// The patched config of one of this mod's items, for a copy of it to be
-/// built from. Nothing for an item no patch has touched: one atomic read.
+// The patched config of one of this mod's items, for a copy of it to be
+// built from. Nothing for an item no patch has touched: one atomic read.
 pub(crate) fn config_for(key: &str) -> Option<Arc<ItemConfig>> {
     if !ANY_CONFIGS.load(Ordering::Relaxed) {
         return None;
@@ -408,8 +406,8 @@ pub(crate) fn config_for(key: &str) -> Option<Arc<ItemConfig>> {
     current()?.configs.get(key).cloned()
 }
 
-/// How `key`'s patches lean a build choice: see [`Live::leaning`]. 0 for an
-/// item no patch has moved.
+// How `key`'s patches lean a build choice: see [`Live::leaning`]. 0 for an
+// item no patch has moved.
 pub(crate) fn leaning(key: &str) -> f32 {
     if !ANY_LEANING.load(Ordering::Relaxed) {
         return 0.0;
@@ -419,8 +417,8 @@ pub(crate) fn leaning(key: &str) -> f32 {
         .unwrap_or(0.0)
 }
 
-/// What a tooltip should show for `key`'s flat stat `field`, where a patch
-/// has moved it.
+// What a tooltip should show for `key`'s flat stat `field`, where a patch
+// has moved it.
 pub(crate) fn shown_flat(key: &str, field: &str) -> Option<i64> {
     current()?
         .display
@@ -438,23 +436,23 @@ fn clock() -> u64 {
     START.get_or_init(Instant::now).elapsed().as_millis() as u64
 }
 
-/// When any simulation last ticked, on [`clock`].
+// When any simulation last ticked, on [`clock`].
 static LAST_TICK: AtomicU64 = AtomicU64::new(0);
 
-/// Milliseconds since any match simulation last ticked.
+// Milliseconds since any match simulation last ticked.
 pub(crate) fn quiet_millis() -> u64 {
     clock().saturating_sub(LAST_TICK.load(Ordering::Relaxed))
 }
 
-/// Keeps every champion's [`DELTA_BUFF`] at the sum of what its items'
-/// patched flat stats add. From the match hook, every tick of every
-/// simulation; while no flat stat is patched it is a clock read every eighth
-/// tick and an atomic read.
-///
-/// One buff for all of a champion's items and not one an item, so nothing is
-/// left behind when an item is built into the next: the sum is taken from
-/// what the champion holds now. It is only touched when it is not what it
-/// should be, which after a purchase is once.
+// Keeps every champion's [`DELTA_BUFF`] at the sum of what its items'
+// patched flat stats add. From the match hook, every tick of every
+// simulation; while no flat stat is patched it is a clock read every eighth
+// tick and an atomic read.
+//
+// One buff for all of a champion's items and not one an item, so nothing is
+// left behind when an item is built into the next: the sum is taken from
+// what the champion holds now. It is only touched when it is not what it
+// should be, which after a purchase is once.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
     let tick = sim.tick();
     if tick % 8 == 0 {
