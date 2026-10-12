@@ -156,14 +156,14 @@ fn in_bounds(family: &Family, field: &str, moved: &Moved) -> bool {
         || (moved.after - base).abs() <= step + 1e-9
 }
 
-// `field` of `family` made stronger or weaker by the least that moves the
-// legendary's number, looked for from `from` to `to` (shares of the number,
-// a hundredth at a time). Nothing where no step is to be had: none that
-// near, or the number is at its bounds.
+// `field` of `family` made stronger or weaker by the least that moves its
+// number, looked for from `from` to `to` (shares of the number, a hundredth
+// at a time). Nothing where no step is to be had: none that near, or the
+// number is at its bounds.
 //
-// Of the ratios that give the legendary that one step, it is the one that
-// moves the most tiers: the radiant's number comes along where it has a
-// step to take before the legendary's has a second.
+// `family` is one tier as a patch plans it. Given more, the number that has
+// to move is the first tier's ([`lead`]), and of the ratios that give it
+// that one step the one is taken that moves the most tiers.
 fn nudge(
     state: &State,
     id: &str,
