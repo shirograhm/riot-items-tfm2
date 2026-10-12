@@ -109,6 +109,19 @@ const FROZEN: &[&str] = &[
 // Fields where the smaller number is the stronger item.
 const LOWER_IS_STRONGER: &[&str] = &["effect_cooldown_seconds", "effect_out_of_combat_seconds"];
 
+// Numbers that go the other way from their field, as (base item, field).
+// Warmog's Armor's is the time its holder has to go without taking damage,
+// where every other duration is how long something good lasts: the shorter
+// the stronger. Haunting Guise's is how long its stacks are kept out of
+// combat, where the field is otherwise a wait: the longer the stronger.
+// Liandry's Torment's is the time its burn takes to deal a set amount: the
+// shorter the stronger.
+const REVERSED: &[(&str, &str)] = &[
+    ("warmogs_armor", "effect_duration_seconds"),
+    ("haunting_guise", "effect_out_of_combat_seconds"),
+    ("liandrys_torment", "effect_duration_seconds"),
+];
+
 // The two ends of a range that grows with level. They move together, or a
 // patch could put the low end over the high one.
 const PAIRS: &[(&str, &str)] = &[
@@ -121,7 +134,8 @@ const PAIRS: &[(&str, &str)] = &[
 // How one field is patched.
 #[derive(Clone, Copy)]
 pub(crate) struct Rule {
-    // A buff makes the number smaller.
+    // A buff makes the number smaller. The field's own way: an item can
+    // have it the other way round ([`rule_for`]).
     pub lower_is_stronger: bool,
     // See [`UNSIGNED_FLAT`].
     pub unsigned: bool,
@@ -143,6 +157,21 @@ pub(crate) fn rule(field: &str) -> Option<Rule> {
         unsigned: UNSIGNED_FLAT.contains(&field),
         flat,
     })
+}
+
+// The rule for `field` as it is on `item`, any tier of it: the field's own,
+// the other way round for one of [`REVERSED`]. Which way a number is
+// stronger is asked here, of the item, and never of the field alone.
+pub(crate) fn rule_for(item: &str, field: &str) -> Option<Rule> {
+    let mut rule = rule(field)?;
+    let slug = crate::build_config::base_slug(item);
+    if REVERSED
+        .iter()
+        .any(|&(known, reversed)| known == slug && reversed == field)
+    {
+        rule.lower_is_stronger = !rule.lower_is_stronger;
+    }
+    Some(rule)
 }
 
 // The range `field` is an end of, its low end first, where it is one.

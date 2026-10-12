@@ -222,7 +222,7 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
                 continue;
             };
             for (field, &ratio) in ratios {
-                let Some(rule) = fields::rule(field) else {
+                let Some(rule) = fields::rule_for(&member.key, field) else {
                     continue;
                 };
                 let Some(&unpatched) = member.values.get(field) else {

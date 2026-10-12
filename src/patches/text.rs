@@ -965,9 +965,11 @@ fn seed_of(number: u32, text: &str) -> usize {
 
 // How a patch note words one passive's number. Its row is called by the
 // passive's name and then by what the number does, "Flux - Base Ultimate
-// Haste: 10 -> 12", and the words that follow the number, where there are
-// any, are given too: "Stasis - Stasis Duration: 2.5 seconds -> 3 seconds".
-// A format with no label has the passive's name alone ahead of the numbers.
+// Haste: 10 -> 12", and the words that lead up to the number and that
+// follow it, where there are any, are given too: "Sweet Spot - Bonus Damage:
+// up to 25% -> up to 30%", "Stasis - Stasis Duration: 2.5 seconds -> 3
+// seconds". A format with no label has the passive's name alone ahead of
+// the numbers.
 //
 // Every one is written by hand. Nothing is read off the item's sentence but
 // the passive's name and the number's percent sign
@@ -981,6 +983,7 @@ struct RowFormat {
     item: &'static str,
     field: &'static str,
     label: Option<(&'static str, &'static str)>,
+    lead: Option<(&'static str, &'static str)>,
     unit: Option<(&'static str, &'static str)>,
 }
 
@@ -1026,276 +1029,481 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 45] = [
+const ROW_FORMATS: [RowFormat; 61] = [
     RowFormat {
         item: "deaths_dance",
         field: "effect_delayed_damage_percent",
         label: Some(("row_damage_reduction", "Damage Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "echoes_of_helia",
         field: "effect_damage_conversion",
         label: Some(("row_damage_stored", "Damage Stored")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "heartsteel",
         field: "effect_bonus_hp_percent_of_damage",
         label: Some(("row_permanent_health", "Permanent Health")),
+        lead: None,
         unit: Some(("unit_of_damage_dealt", " of the damage dealt")),
     },
     RowFormat {
         item: "randuins_omen",
         field: "effect_crit_damage_percent_heal",
         label: Some(("row_crit_healing", "Critical Strike Healing")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "hubris",
         field: "effect_stack_attack",
         label: Some(("row_scaling", "Scaling")),
+        lead: None,
         unit: Some(("unit_per_stack", " per stack")),
     },
     RowFormat {
         item: "zhonyas_hourglass",
         field: "effect_duration_seconds",
         label: Some(("row_stasis_duration", "Stasis Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "axiom_arc",
         field: "effect_ult_cooldown_mult",
         label: Some(("row_base_ult_haste", "Base Ultimate Haste")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "endless_hunger",
         field: "effect_skill_cooldown_mult",
         label: Some(("row_base_ability_haste", "Base Ability Haste")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "feral_flare",
         field: "effect_bonus_magic_damage",
         label: Some(("row_flat_damage_on_hit", "Flat Damage On-Hit")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "feral_flare",
         field: "effect_stack_magic_damage",
         label: None,
+        lead: None,
         unit: Some(("unit_per_feral_stack", " per Feral stack")),
     },
     RowFormat {
         item: "hubris",
         field: "effect_bonus_flat_attack",
         label: Some(("row_base_ad_kill_bonus", "Base AD Kill Bonus")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "terminus",
         field: "effect_bonus_flat_damage",
         label: Some(("row_flat_damage_on_hit", "Flat Damage On-Hit")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "zazzaks_realmspike",
         field: "effect_bonus_flat_damage",
         label: Some(("row_flat_damage", "Flat Damage")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "cloak_of_starry_night",
         field: "effect_skill_damaged_reduce",
         label: Some(("row_base_skill_damage_reduction", "Base Skill Damage Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "black_cleaver",
         field: "effect_percent_armor_shred",
         label: Some(("row_armor_reduction", "Armor Reduction")),
+        lead: None,
         unit: Some(("unit_per_stack", " per stack")),
     },
     RowFormat {
         item: "bloodletters_curse",
         field: "effect_percent_mr_shred",
         label: Some(("row_mr_reduction", "Magic Resistance Reduction")),
+        lead: None,
         unit: Some(("unit_per_stack", " per stack")),
     },
     RowFormat {
         item: "abyssal_mask",
         field: "effect_percent_mr_shred",
         label: Some(("row_mr_reduction", "Magic Resistance Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "frozen_heart",
         field: "effect_attack_speed_reduce",
         label: Some(("row_attack_speed_reduction", "Attack Speed Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "executioners_calling",
         field: "effect_heal_reduce",
         label: Some(("row_healing_reduction", "Healing Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "mortal_reminder",
         field: "effect_heal_reduce",
         label: Some(("row_healing_reduction", "Healing Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "chempunk_chainsword",
         field: "effect_heal_reduce",
         label: Some(("row_healing_reduction", "Healing Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "chemtech_putrifier",
         field: "effect_heal_reduce",
         label: Some(("row_healing_reduction", "Healing Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "morellonomicon",
         field: "effect_heal_reduce",
         label: Some(("row_healing_reduction", "Healing Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "oblivion_orb",
         field: "effect_heal_reduce",
         label: Some(("row_healing_reduction", "Healing Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "bloodsong",
         field: "effect_damaged_amplify",
         label: Some(("row_damage_taken_bonus", "Damage Taken Bonus")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "imperial_mandate",
         field: "effect_damaged_amplify",
         label: Some(("row_damage_taken_bonus", "Damage Taken Bonus")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "celestial_opposition",
         field: "effect_damaged_reduce",
         label: Some(("row_damage_reduction", "Damage Reduction")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "spirit_visage",
         field: "effect_heal_mult",
         label: Some(("row_bonus_healing_received", "Bonus Healing Received")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "lord_dominiks_regards",
         field: "effect_max_percent_bonus",
         label: Some(("row_bonus_damage_cap", "Bonus Damage Cap")),
+        lead: None,
         unit: None,
     },
     RowFormat {
         item: "eclipse",
         field: "effect_cooldown_seconds",
         label: Some(("row_cooldown", "Cooldown")),
+        lead: None,
         unit: Some(("unit_seconds_per_target", " seconds per target")),
     },
     RowFormat {
         item: "heartsteel",
         field: "effect_cooldown_seconds",
         label: Some(("row_cooldown", "Cooldown")),
+        lead: None,
         unit: Some(("unit_seconds_per_target", " seconds per target")),
     },
     RowFormat {
         item: "night_harvester",
         field: "effect_cooldown_seconds",
         label: Some(("row_cooldown", "Cooldown")),
+        lead: None,
         unit: Some(("unit_seconds_per_target", " seconds per target")),
     },
     RowFormat {
         item: "stormsurge",
         field: "effect_cooldown_seconds",
         label: Some(("row_cooldown", "Cooldown")),
+        lead: None,
         unit: Some(("unit_seconds_per_target", " seconds per target")),
     },
     RowFormat {
         item: "sundered_sky",
         field: "effect_cooldown_seconds",
         label: Some(("row_cooldown", "Cooldown")),
+        lead: None,
         unit: Some(("unit_seconds_per_target", " seconds per target")),
     },
     RowFormat {
         item: "celestial_opposition",
         field: "effect_duration_seconds",
         label: Some(("row_damage_reduction_duration", "Damage Reduction Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "celestial_opposition",
         field: "effect_slow_seconds",
         label: Some(("row_slow_duration", "Slow Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "eclipse",
         field: "effect_duration_seconds",
         label: Some(("row_mark_duration", "Mark Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "eclipse",
         field: "effect_shield_seconds",
         label: Some(("row_shield_duration", "Shield Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "opportunity",
         field: "effect_out_of_combat_seconds",
         label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "opportunity",
         field: "effect_duration_seconds",
         label: Some(("row_lethality_duration", "Lethality Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "rite_of_ruin",
         field: "effect_shield_seconds",
         label: Some(("row_shield_duration", "Shield Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "rite_of_ruin",
         field: "effect_duration_seconds",
         label: Some(("row_stack_duration", "Stack Duration")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "haunting_guise",
         field: "effect_out_of_combat_seconds",
         label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "warmogs_armor",
         field: "effect_duration_seconds",
         label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
         item: "stormsurge",
         field: "effect_duration_seconds",
         label: Some(("row_burst_window", "Burst Window")),
+        lead: None,
         unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "grezs_spectral_lantern",
+        field: "effect_percent_bonus_damage",
+        label: Some(("row_bonus_magic_damage", "Bonus Magic Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "spirit_stone",
+        field: "effect_percent_bonus_damage",
+        label: Some(("row_bonus_magic_damage", "Bonus Magic Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "diamond_tipped_spear",
+        field: "effect_max_percent_bonus",
+        label: Some(("row_bonus_damage", "Bonus Damage")),
+        lead: Some(("lead_up_to", "up to ")),
+        unit: None,
+    },
+    RowFormat {
+        item: "fiendhunter_bolts",
+        field: "effect_percent_bonus_damage",
+        label: Some(("row_bonus_damage", "Bonus Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "haunting_guise",
+        field: "effect_stack_percent_damage",
+        label: Some(("row_bonus_damage", "Bonus Damage")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "infinity_edge",
+        field: "effect_crit_damage_bonus",
+        label: Some(("row_bonus_crit_damage", "Bonus Crit Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "kraken_slayer",
+        field: "effect_max_percent_bonus",
+        label: Some(("row_missing_health_scaling", "Missing Health Scaling")),
+        lead: Some(("lead_up_to", "up to ")),
+        unit: None,
+    },
+    RowFormat {
+        item: "lord_dominiks_regards",
+        field: "effect_percent_bonus_damage",
+        label: Some(("row_bonus_damage", "Bonus Damage")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "sundered_sky",
+        field: "effect_percent_bonus_damage",
+        label: Some(("row_first_attack_multiplier", "First Attack Multiplier")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "grezs_spectral_lantern",
+        field: "effect_bonus_hp_percent_of_damage",
+        label: Some(("row_healing", "Healing")),
+        lead: None,
+        unit: Some(("unit_of_your_damage_dealt", " of your damage dealt")),
+    },
+    RowFormat {
+        item: "spirit_stone",
+        field: "effect_bonus_hp_percent_of_damage",
+        label: Some(("row_healing", "Healing")),
+        lead: None,
+        unit: Some(("unit_of_your_damage_dealt", " of your damage dealt")),
+    },
+    RowFormat {
+        item: "feral_flare",
+        field: "effect_bonus_flat_heal",
+        label: Some(("row_healing", "Healing")),
+        lead: None,
+        unit: Some(("unit_health", " health")),
+    },
+    RowFormat {
+        item: "guardian_angel",
+        field: "effect_caster_hp_percent_heal",
+        label: Some(("row_resurrect_health", "Resurrect Health")),
+        lead: None,
+        unit: Some(("unit_max_hp", " max HP")),
+    },
+    RowFormat {
+        item: "moonstone_renewer",
+        field: "effect_heal_chain_percent",
+        label: Some(("row_chained_healing", "Chained Healing")),
+        lead: None,
+        unit: Some(("unit_of_original_amount", " of the original amount")),
+    },
+    RowFormat {
+        item: "steraks_gage",
+        field: "effect_caster_hp_percent_shield",
+        label: Some(("row_shielding", "Shielding")),
+        lead: None,
+        unit: Some(("unit_max_hp", " max HP")),
+    },
+    RowFormat {
+        item: "warmogs_armor",
+        field: "effect_caster_hp_percent_heal",
+        label: Some(("row_out_of_combat_healing", "Out of Combat Healing")),
+        lead: None,
+        unit: Some(("unit_max_hp_per_second", " max HP per second")),
+    },
+];
+
+// A row of two of a passive's numbers that make one amount, a flat part
+// and a share or two shares: "Defy - Healing: 45 + 15% missing HP -> 50 +
+// 15% missing HP". Both numbers are written whichever of them the patch
+// moved, as the ends of a level range are ([`pair_rows`]).
+//
+// `amount` is the amount with `{A}` and `{B}` where the two numbers go, in
+// the order of `fields`, percent signs and all. `item` is the base key, and
+// the strings are `item_patch` ones, by key and the English.
+struct PairFormat {
+    item: &'static str,
+    fields: (&'static str, &'static str),
+    label: (&'static str, &'static str),
+    amount: (&'static str, &'static str),
+}
+
+const PAIR_FORMATS: [PairFormat; 5] = [
+    PairFormat {
+        item: "deaths_dance",
+        fields: ("effect_bonus_flat_heal", "effect_kill_heal_missing_percent"),
+        label: ("row_healing", "Healing"),
+        amount: ("amount_flat_missing_hp", "{A} + {B}% missing HP"),
+    },
+    PairFormat {
+        item: "dusk_and_dawn",
+        fields: ("effect_caster_ap_percent_heal", "effect_caster_hp_percent_heal"),
+        label: ("row_healing", "Healing"),
+        amount: ("amount_ap_and_max_hp", "{A}% AP and {B}% max HP"),
+    },
+    PairFormat {
+        item: "eclipse",
+        fields: ("effect_bonus_flat_shield", "effect_ad_percent_shield"),
+        label: ("row_shielding", "Shielding"),
+        amount: ("amount_flat_ad", "{A} + {B}% AD"),
+    },
+    PairFormat {
+        item: "sundered_sky",
+        fields: ("effect_bonus_flat_heal", "effect_caster_hp_percent_heal"),
+        label: ("row_healing", "Healing"),
+        amount: ("amount_flat_missing_hp", "{A} + {B}% missing HP"),
+    },
+    PairFormat {
+        item: "unending_despair",
+        fields: ("effect_bonus_flat_heal", "effect_caster_hp_percent_heal"),
+        label: ("row_healing", "Healing"),
+        amount: ("amount_flat_max_hp", "{A} + {B}% max HP"),
     },
 ];
 
@@ -1323,25 +1531,24 @@ fn standing(state: &State, member: &super::base::Member, field: &str) -> Option<
     ))
 }
 
-// The rows of a range that grows with level, `low` to `high` of `change`'s
-// item: a row a tier, with the tier it is of, the whole range as it was and
-// as it is, "40 - 100 (based on level) -> 45 - 110 (based on level)",
-// whichever of its ends the patch moved. An end the patch left where it was
-// is read at the balance the save has, which is `state` before the patch is
-// taken into it.
+// The rows of two numbers of `change`'s item that a note writes as one
+// amount, `first` and `second`: a row a tier, with the tier it is of, the
+// whole amount as it was and as it is, whichever of the two the patch moved.
+// `write` makes the amount of the two numbers. A number the patch left
+// where it was is read at the balance the save has, which is `state` before
+// the patch is taken into it.
 //
-// Nothing where a tier has one end and not the other, or no tier's range
-// moved: the ends then get rows of their own.
-fn range_rows(
-    texts: &Texts,
+// Nothing where a tier has one of the numbers and not the other, or no
+// tier's amount moved: the numbers then get rows of their own.
+fn pair_rows(
     state: &State,
     patch: &Patch,
-    lang: &str,
     change: &Change,
-    (low, high): (&str, &str),
+    (first, second): (&str, &str),
+    label: &str,
+    write: &dyn Fn(f64, f64) -> String,
 ) -> Option<Vec<(String, NoteRow)>> {
     let family = super::base::base().families.get(&change.family)?;
-    let lead = family.members.first()?;
     // What the patch says of `field` in the tier `key`: each tier's change
     // is its own.
     let moved = |field: &str, key: &str| {
@@ -1352,42 +1559,62 @@ fn range_rows(
             .flat_map(|other| other.members.iter())
             .find(|moved| moved.key == key)
     };
-    let (label, percent) = label_of(texts, lang, change);
-    let (between, tail) = texts.range_words(lang, &lead.key, low, high);
     let mut rows = Vec::new();
     for member in &family.members {
-        // An end as it was and as it is.
-        let end = |field: &str| -> Option<(f64, f64)> {
+        // A number as it was and as it is.
+        let number = |field: &str| -> Option<(f64, f64)> {
             match moved(field, &member.key) {
                 Some(moved) => Some((moved.before, moved.after)),
                 None => standing(state, member, field).map(|value| (value, value)),
             }
         };
-        let (low_was, low_is, high_was, high_is) = match (end(low), end(high)) {
-            (Some((low_was, low_is)), Some((high_was, high_is))) => (low_was, low_is, high_was, high_is),
+        let ((first_was, first_is), (second_was, second_is)) = match (number(first), number(second)) {
+            (Some(first), Some(second)) => (first, second),
             (None, None) => continue,
             _ => return None,
         };
-        if low_was == low_is && high_was == high_is {
+        if first_was == first_is && second_was == second_is {
             continue;
         }
         let numbers = format!(
-            "{}{between}{}{tail} {ARROW} {}{between}{}{tail}",
-            note_number(low_was, percent),
-            note_number(high_was, percent),
-            note_number(low_is, percent),
-            note_number(high_is, percent)
+            "{} {ARROW} {}",
+            write(first_was, second_was),
+            write(first_is, second_is)
         );
         rows.push((
             member.key.clone(),
             NoteRow {
                 icon: None,
-                text: row_text(&label, numbers),
+                text: row_text(label, numbers),
                 rank: super::fields::FLAT.len(),
             },
         ));
     }
     (!rows.is_empty()).then_some(rows)
+}
+
+// The rows of a range that grows with level, `low` to `high` of `change`'s
+// item, under the passive's name: "40 - 100 (based on level) -> 45 - 110
+// (based on level)", whichever of its ends the patch moved ([`pair_rows`]).
+fn range_rows(
+    texts: &Texts,
+    state: &State,
+    patch: &Patch,
+    lang: &str,
+    change: &Change,
+    (low, high): (&str, &str),
+) -> Option<Vec<(String, NoteRow)>> {
+    let family = super::base::base().families.get(&change.family)?;
+    let lead = family.members.first()?;
+    let (label, percent) = label_of(texts, lang, change);
+    let (between, tail) = texts.range_words(lang, &lead.key, low, high);
+    pair_rows(state, patch, change, (low, high), &label, &|from: f64, to: f64| {
+        format!(
+            "{}{between}{}{tail}",
+            note_number(from, percent),
+            note_number(to, percent)
+        )
+    })
 }
 
 // A patch's items, an entry an item: the ones it set out to buff and then
@@ -1400,13 +1627,15 @@ fn range_rows(
 // order. A passive's number is worded by its row format ([`ROW_FORMATS`]),
 // "Flux - Base Ultimate Haste: 10 -> 12", or by its field's
 // ([`FIELD_FORMATS`]). The two ends of a range that grows with level are one
-// row ([`range_rows`]).
+// row ([`range_rows`]), and so are two numbers that make one amount
+// ([`PAIR_FORMATS`]).
 fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     let texts = texts();
     let base = super::base::base();
     let mut entries: Vec<NoteEntry> = Vec::new();
-    // The ranges written so far, by item family and low end: the second end
-    // to come up has its numbers in the row the first one made.
+    // The ranges and the two-number amounts written so far, by item family
+    // and first number: the second number to come up is in the row the
+    // first one made.
     let mut ranged: Vec<(&str, &str)> = Vec::new();
     // Reasons given so far, so that no two items share one while another
     // fits.
@@ -1459,7 +1688,8 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         // Which way this number went, as strength: a cooldown that got
         // shorter is stronger. Told of each tier it moved, in that tier's
         // own entry.
-        let lower = super::fields::rule(&change.field).is_some_and(|rule| rule.lower_is_stronger);
+        let lower = super::fields::rule_for(&first.key, &change.field)
+            .is_some_and(|rule| rule.lower_is_stronger);
         for moved in &change.members {
             let at = entry_of(&mut entries, &moved.key, change);
             if (moved.after.abs() > moved.before.abs()) != lower {
@@ -1481,6 +1711,38 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
                 continue;
             }
         }
+        let slug = crate::build_config::base_slug(&first.key);
+        // Two numbers that make one amount are one row as well, written
+        // when the first of them comes up.
+        let pair = PAIR_FORMATS.iter().find(|pair| {
+            pair.item == slug && (pair.fields.0 == change.field || pair.fields.1 == change.field)
+        });
+        if let Some(pair) = pair {
+            if ranged.contains(&(change.family.as_str(), pair.fields.0)) {
+                continue;
+            }
+            let (name, _) = label_of(texts, lang, change);
+            let what = texts.ui(lang, pair.label.0, pair.label.1);
+            let label = if name.is_empty() {
+                what
+            } else {
+                format!("{name} - {what}")
+            };
+            let amount = texts.ui(lang, pair.amount.0, pair.amount.1);
+            let write = |first: f64, second: f64| {
+                amount
+                    .replace("{A}", &number_text(first))
+                    .replace("{B}", &number_text(second))
+            };
+            if let Some(rows) = pair_rows(state, patch, change, pair.fields, &label, &write) {
+                ranged.push((change.family.as_str(), pair.fields.0));
+                for (key, row) in rows {
+                    let at = entry_of(&mut entries, &key, change);
+                    entries[at].rows.push(row);
+                }
+                continue;
+            }
+        }
         let (label, percent) = label_of(texts, lang, change);
         let flat = super::fields::FLAT
             .iter()
@@ -1489,29 +1751,30 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         // has none: its row is named for the passive.
         let icon = flat.and_then(|_| texts.line_icon(&change.field));
         // A passive's number is called by its passive's name and then by
-        // what it does, with the words that follow it: both as the item's
-        // row format has them, or failing one as the format of the number's
-        // field has. One with neither is the bare number under the
-        // passive's name.
-        let slug = crate::build_config::base_slug(&first.key);
+        // what it does, with the words that lead up to it and that follow
+        // it: all as the item's row format has them, or failing one as the
+        // format of the number's field has. One with neither is the bare
+        // number under the passive's name.
         let worded = if flat.is_some() {
             None
         } else {
             ROW_FORMATS
                 .iter()
                 .find(|format| format.item == slug && format.field == change.field)
-                .map(|format| (format.label, format.unit))
+                .map(|format| (format.label, format.lead, format.unit))
                 .or_else(|| {
                     FIELD_FORMATS
                         .iter()
                         .find(|format| format.fields.contains(&change.field.as_str()))
-                        .map(|format| (Some(format.label), format.unit))
+                        .map(|format| (Some(format.label), None, format.unit))
                 })
         };
         let said = |words: Option<(&str, &str)>| {
             words.map_or_else(String::new, |(key, english)| texts.ui(lang, key, english))
         };
-        let (what, unit) = worded.map(|(what, unit)| (said(what), said(unit))).unwrap_or_default();
+        let (what, lead, unit) = worded
+            .map(|(what, lead, unit)| (said(what), said(lead), said(unit)))
+            .unwrap_or_default();
         let label = if what.is_empty() {
             label
         } else if label.is_empty() {
@@ -1521,7 +1784,7 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         };
         for moved in &change.members {
             let numbers = format!(
-                "{}{unit} {ARROW} {}{unit}",
+                "{lead}{}{unit} {ARROW} {lead}{}{unit}",
                 note_number(moved.before, percent),
                 note_number(moved.after, percent)
             );

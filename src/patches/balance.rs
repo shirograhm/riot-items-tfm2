@@ -185,7 +185,7 @@ fn nudge(
     from: f64,
     to: f64,
 ) -> Option<Step> {
-    let rule = fields::rule(field)?;
+    let rule = fields::rule_for(id, field)?;
     // A number the player's settings hold still, or the other end of a range
     // that one is an end of.
     let frozen = &super::tuning::tuning().frozen;
@@ -302,7 +302,7 @@ fn total(state: &State, id: &str, family: &Family, plan: &[&Step]) -> f64 {
                 continue;
             }
             seen.push(field.as_str());
-            let Some(rule) = fields::rule(field) else {
+            let Some(rule) = fields::rule_for(&member.key, field) else {
                 continue;
             };
             let ratio = plan
@@ -340,7 +340,7 @@ fn fits(state: &State, id: &str, family: &Family, plan: &[Step], more: &[Step], 
 // the same ratio: both ends of a range, or neither.
 fn with_partner(state: &State, id: &str, family: &Family, first: Step) -> Vec<Step> {
     let partner = fields::partner(&first.field)
-        .and_then(|partner| Some((partner, fields::rule(partner)?, lead(family, partner)?)));
+        .and_then(|partner| Some((partner, fields::rule_for(id, partner)?, lead(family, partner)?)));
     let Some((partner, rule, lead)) = partner else {
         return vec![first];
     };
