@@ -854,7 +854,7 @@ fn is_support_class(key: &str) -> bool {
 
 // Whether `key` is an item only the support role may build: the editor's Support
 // class, base or radiant, less [`SUPPORT_ITEM_EXCEPTIONS`].
-fn is_support_item(key: &str) -> bool {
+pub(crate) fn is_support_item(key: &str) -> bool {
     !SUPPORT_ITEM_EXCEPTIONS.contains(&crate::build_config::base_slug(key)) && is_support_class(key)
 }
 

@@ -39,7 +39,7 @@ use std::time::Instant;
 use mod_api_stable::*;
 use serde_json::Value;
 
-use super::state::{Change, Patch};
+use super::state::{Change, Patch, State};
 
 // One config number in a slot, as the generator reads it.
 pub(crate) struct Term {
@@ -159,6 +159,195 @@ impl Template {
         };
         let fits = !label.is_empty() && label.chars().count() <= 40;
         fits.then_some((label, percent))
+    }
+
+    // The wording the text has after `item`'s `field`, to follow the number
+    // in a patch note: the "seconds" of "Every 15 seconds", "bonus magic
+    // damage", "range". It starts with a blank where the text has one
+    // between the two, which not every language does.
+    //
+    // It is what the number's colour span holds after the number: a
+    // sentence colours a number and what it is a number of as one. Less
+    // the percent sign, which is the number's own (see `passive_of`), and
+    // less the icons. A time is given the words that run on from its span
+    // to the next stop as well, where they are three or fewer: the
+    // "cooldown" of "60 second cooldown", "per target", "out of combat".
+    //
+    // A span that holds the number and nothing else is followed by what
+    // the number is of: "5%", and then "of your maximum health" with the
+    // stat in a colour of its own. So the wording is then the next colour
+    // span and what leads up to it, where nothing but words does: a stop
+    // there, or the plus of a formula, and the next colour is something
+    // else's. Failing a colour it is the words up to the sentence's next
+    // stop. Six words of the one or four of the other at most. A word or
+    // two that run on from that colour and finish the bracket the number is
+    // in are taken with it: the "stack" of "(+3 per Feral stack)".
+    //
+    // Nothing for a number that is in no span, whose span runs on into
+    // another number, or that none of this finds words for; and nothing
+    // for a lone short word, which is a translation's "of" left hanging.
+    fn unit_of(&self, item: &str, field: &str) -> Option<String> {
+        const STOPS: [char; 15] = [
+            '.', ',', ';', ':', '(', ')', '!', '?', '\u{3002}', '\u{ff0c}', '\u{ff1b}',
+            '\u{ff1a}', '\u{ff08}', '\u{ff09}', '\u{3001}',
+        ];
+        let stop = |letter: char| STOPS.contains(&letter);
+        // Colour spans open where the text has got to.
+        let mut open = 0usize;
+        for (index, part) in self.parts.iter().enumerate() {
+            let terms = match part {
+                Part::Text(text) => {
+                    let mut rest = text.as_str();
+                    while let Some(at) = rest.find('<') {
+                        let Some(end) = rest[at..].find('>') else {
+                            break;
+                        };
+                        let tag = &rest[at + 1..at + end];
+                        if tag.is_empty() {
+                            open = open.saturating_sub(1);
+                        } else if tag.starts_with('#') {
+                            open += 1;
+                        }
+                        rest = &rest[at + end + 1..];
+                    }
+                    continue;
+                }
+                Part::Slot(terms) => terms,
+            };
+            if !(terms.len() == 1 && terms[0].item == item && terms[0].field == field) {
+                continue;
+            }
+            if open == 0 {
+                return None;
+            }
+            let Some(Part::Text(next)) = self.parts.get(index + 1) else {
+                return None;
+            };
+            let (span, after) = next.split_once("<>")?;
+            if span.contains('\n') {
+                return None;
+            }
+            // Words with one blank between them, and no stop at either end.
+            let tidy = |text: &str| {
+                text.split_whitespace()
+                    .collect::<Vec<_>>()
+                    .join(" ")
+                    .trim_matches(|letter: char| stop(letter) || letter.is_whitespace())
+                    .to_string()
+            };
+            let span = plain(span);
+            let span = span.strip_prefix('%').unwrap_or(&span);
+            let mut spaced = span.starts_with(char::is_whitespace);
+            let mut words = tidy(span);
+            if words.is_empty() {
+                spaced = after.starts_with(char::is_whitespace);
+                let named = after.split_once("<#").and_then(|(lead, rest)| {
+                    let (name, on) = rest.split_once('>')?.1.split_once("<>")?;
+                    let runs_on = !lead.contains('\n')
+                        && !name.contains('\n')
+                        && !plain(lead).contains(|letter: char| stop(letter) || letter == '+');
+                    let words = runs_on.then(|| tidy(&plain(&format!("{lead}{name}"))))?;
+                    if words.is_empty() || words.split_whitespace().count() > 6 {
+                        return None;
+                    }
+                    let more = on.strip_prefix(' ').and_then(|on| {
+                        let end = on.find(|letter: char| stop(letter) || letter == '<' || letter == '\n')?;
+                        let more = on[end..]
+                            .starts_with([')', '\u{ff09}'])
+                            .then(|| on[..end].trim())?;
+                        let fits = !more.is_empty()
+                            && more.split_whitespace().count() <= 2
+                            && !more.contains('+')
+                            && words.chars().count() + 1 + more.chars().count() <= 40;
+                        fits.then_some(more)
+                    });
+                    Some(match more {
+                        Some(more) => format!("{words} {more}"),
+                        None => words,
+                    })
+                });
+                let to_stop = || {
+                    let text = plain(after);
+                    let end = text.find(|letter: char| stop(letter) || letter == '\n')?;
+                    let run = text[end..].starts_with(stop).then(|| tidy(&text[..end]))?;
+                    let fits = !run.is_empty()
+                        && run.split_whitespace().count() <= 4
+                        && !run.contains('+');
+                    fits.then_some(run)
+                };
+                words = named.or_else(to_stop)?;
+            } else if field.ends_with("_seconds") {
+                if let Some(more) = after.strip_prefix(' ') {
+                    let end = more.find(|letter: char| stop(letter) || letter == '<' || letter == '\n');
+                    if let Some(end) = end.filter(|end| more[*end..].starts_with(stop)) {
+                        let more = more[..end].trim();
+                        let fits = !more.is_empty()
+                            && more.split_whitespace().count() <= 3
+                            && more.chars().count() <= 24;
+                        if fits {
+                            words = format!("{words} {more}");
+                        }
+                    }
+                }
+            }
+            let letters = words.chars().count();
+            let hanging = letters <= 2 && words.chars().all(|letter| letter.is_ascii_lowercase());
+            if hanging || letters > 40 {
+                return None;
+            }
+            return Some(if spaced { format!(" {words}") } else { words });
+        }
+        None
+    }
+
+    // How the text writes the range of `item` that runs from `low` to
+    // `high`: what stands between the two numbers (" - "), and the bracket
+    // that follows the second where it holds words and no number
+    // (" (based on level)"). Nothing where the two are not written one
+    // after the other.
+    fn range_of(&self, item: &str, low: &str, high: &str) -> Option<(String, String)> {
+        let is = |part: &Part, field: &str| {
+            matches!(
+                part,
+                Part::Slot(terms)
+                    if terms.len() == 1 && terms[0].item == item && terms[0].field == field
+            )
+        };
+        let at = self.parts.iter().position(|part| is(part, low))?;
+        let Some(Part::Text(between)) = self.parts.get(at + 1) else {
+            return None;
+        };
+        if !self.parts.get(at + 2).is_some_and(|part| is(part, high)) {
+            return None;
+        }
+        let between = plain(between);
+        if between.contains('\n') || between.trim().chars().count() > 3 {
+            return None;
+        }
+        let tail = match self.parts.get(at + 3) {
+            Some(Part::Text(after)) => {
+                let after = plain(after);
+                let words = after.trim_start();
+                let bracket = words
+                    .starts_with(['(', '\u{ff08}'])
+                    .then(|| words.find([')', '\u{ff09}']))
+                    .flatten()
+                    .map(|end| {
+                        let close = words[end..].chars().next().map_or(1, char::len_utf8);
+                        words[..end + close]
+                            .split_whitespace()
+                            .collect::<Vec<_>>()
+                            .join(" ")
+                    });
+                match bracket {
+                    Some(bracket) if after.starts_with(char::is_whitespace) => format!(" {bracket}"),
+                    Some(bracket) => bracket,
+                    None => String::new(),
+                }
+            }
+            _ => String::new(),
+        };
+        Some((between, tail))
     }
 
     // The stat icon the text puts by `item`'s `field`, as (sheet, tag): the
@@ -596,6 +785,28 @@ impl Texts {
     fn passive_icon(&self, key: &str, field: &str) -> Option<(String, String)> {
         self.templates.get("en")?.get(key)?.icon_of(key, field)
     }
+
+    // The wording `key`'s effect text has after a passive's number
+    // ([`Template::unit_of`]), in `lang`, or in English where the mod has
+    // no text of the item in that language.
+    fn passive_unit(&self, lang: &str, key: &str, field: &str) -> Option<String> {
+        [lang, "en"]
+            .iter()
+            .find_map(|lang| self.templates.get(*lang)?.get(key))?
+            .unit_of(key, field)
+    }
+
+    // How `key`'s effect text writes the range from `low` to `high`
+    // ([`Template::range_of`]), in `lang` or failing that in English: what
+    // stands between the two numbers, and what follows them. A dash and
+    // nothing where the text has no such range.
+    fn range_words(&self, lang: &str, key: &str, low: &str, high: &str) -> (String, String) {
+        [lang, "en"]
+            .iter()
+            .find_map(|lang| self.templates.get(*lang)?.get(key))
+            .and_then(|template| template.range_of(key, low, high))
+            .unwrap_or_else(|| (" - ".to_string(), String::new()))
+    }
 }
 
 fn lines_of(value: &Value) -> HashMap<String, String> {
@@ -888,9 +1099,11 @@ const ITEM_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18"
 const ARROW: &str = "<f#asset/base/font/set/symbol>\u{2192}<f>";
 const BOLD: &str = "asset/base/font/set/bold";
 // The green of the game's "Buffs" mark (`ui/icons/up_patch`), a red for
-// "Nerfs", and the grey its notes give a reason in (`patch_reason_row`).
+// "Nerfs", an amber for the "Adjustments" between the two, and the grey its
+// notes give a reason in (`patch_reason_row`).
 const BUFF_COLOR: &str = "#4ed5bdff";
 const NERF_COLOR: &str = "#ff6b6bff";
+const ADJUST_COLOR: &str = "#f0c05aff";
 const REASON_COLOR: &str = "#8b8d9aff";
 
 // One changed number of an entry: its icon, where it is a stat with one or
@@ -898,10 +1111,13 @@ const REASON_COLOR: &str = "#8b8d9aff";
 struct NoteRow {
     icon: Option<(String, String)>,
     text: String,
+    // Where it comes among its entry's rows: a flat stat by its place in
+    // `fields::FLAT`, and a passive's number after every one of those.
+    rank: usize,
 }
 
-// One item of a patch's buffs or nerfs: the legendary and its radiant
-// together, under the legendary's name and icon.
+// One item of a patch's notes: the legendary and its radiant together,
+// under the legendary's name and icon.
 struct NoteEntry {
     family: String,
     // The item it is drawn and named as: the legendary.
@@ -910,6 +1126,12 @@ struct NoteEntry {
     // [`reason_pool`]. Empty where the text file has no such sentence.
     reason: String,
     rows: Vec<NoteRow>,
+    // Whether any of its numbers got stronger, and whether any got weaker.
+    // The section it is listed under goes by these, and not by which way
+    // the patch meant the item to go: a nerf made up for in another number
+    // has both.
+    stronger: bool,
+    weaker: bool,
 }
 
 // The tag an item draws in the item sheet: one of the mod's is its own key,
@@ -942,8 +1164,14 @@ const OFTEN_HELD: f64 = 0.8;
 // still the record: an item nobody held gets one about being left on the
 // shelf, one that won and was held a lot gets one about the meta, and so
 // on; and the item's kind adds the early- or late-game ones.
+//
+// An item builds do not choose (`Family::chosen`: boots, the jungle items,
+// what only a support builds) is in every build it can be in, and is judged
+// on how it wins alone. Nothing is said of how often it is built: it is too
+// strong, or it is too weak.
 fn reason_pool(
     buff: bool,
+    chosen: bool,
     tempo: super::base::Tempo,
     change: &Change,
     matches: u32,
@@ -974,7 +1202,7 @@ fn reason_pool(
             Tempo::Neither => {}
         }
         if change.games > 0 {
-            if share <= LOSING {
+            if share <= LOSING || !chosen {
                 pool.extend(["why_buff_weak_1", "why_buff_weak_2"]);
             } else {
                 pool.extend(["why_buff_niche_1", "why_buff_niche_2"]);
@@ -986,7 +1214,7 @@ fn reason_pool(
             Tempo::Late => pool.extend(["why_nerf_late_1", "why_nerf_late_2"]),
             Tempo::Neither => {}
         }
-        pool.extend(match (share >= WINNING, held >= OFTEN_HELD) {
+        pool.extend(match (share >= WINNING, chosen && held >= OFTEN_HELD) {
             (true, true) => ["why_nerf_meta_1", "why_nerf_meta_2"],
             (false, true) => ["why_nerf_popular_1", "why_nerf_popular_2"],
             _ => ["why_nerf_strong_1", "why_nerf_strong_2"],
@@ -1004,18 +1232,132 @@ fn seed_of(number: u32, text: &str) -> usize {
     (hash >> 16) as usize
 }
 
-// A patch's buffs or its nerfs, an entry an item, in the order the patch
-// has them. A row is one changed number in one tier: the legendary's reads
+// A row's line: the numbers under what they are called, and for a tier
+// past the first under what tells it apart, which is what its name has that
+// the first's does not: "Radiant", in whatever language.
+fn row_text(texts: &Texts, lang: &str, lead: &str, key: &str, label: &str, numbers: String) -> String {
+    let tier = if key == lead {
+        String::new()
+    } else {
+        let name = texts.name(lang, key);
+        let word = name.replace(&texts.name(lang, lead), "").trim().to_string();
+        if word.is_empty() {
+            name
+        } else {
+            word
+        }
+    };
+    match (label.is_empty(), tier.is_empty()) {
+        (true, true) => numbers,
+        (true, false) => format!("{tier}: {numbers}"),
+        (false, true) => format!("{label}: {numbers}"),
+        (false, false) => format!("{label} ({tier}): {numbers}"),
+    }
+}
+
+// What a tier's `field` reads at the balance `state` has: its unpatched
+// number at the field's ratio, in the steps a patch moves it by. Nothing
+// for a tier that has no such number.
+fn standing(state: &State, member: &super::base::Member, field: &str) -> Option<f64> {
+    let unpatched = *member.values.get(field)?;
+    let whole = member.whole.contains(field);
+    Some(super::fields::quantize(
+        &member.key,
+        field,
+        unpatched,
+        unpatched * state.ratio(&member.key, field),
+        whole,
+    ))
+}
+
+// The rows of a range that grows with level, `low` to `high` of `change`'s
+// item: a row a tier, the whole range as it was and as it is, "40 - 100
+// (based on level) -> 45 - 110 (based on level)", whichever of its ends the
+// patch moved. An end the patch left where it was is read at the balance
+// the save has, which is `state` before the patch is taken into it.
+//
+// Nothing where a tier has one end and not the other, or no tier's range
+// moved: the ends then get rows of their own.
+fn range_rows(
+    texts: &Texts,
+    state: &State,
+    patch: &Patch,
+    lang: &str,
+    change: &Change,
+    (low, high): (&str, &str),
+) -> Option<Vec<NoteRow>> {
+    let family = super::base::base().families.get(&change.family)?;
+    let lead = family.members.first()?;
+    // What the patch says of `field` in the tier `key`: each tier's change
+    // is its own.
+    let moved = |field: &str, key: &str| {
+        patch
+            .changes
+            .iter()
+            .filter(|other| other.family == change.family && other.field == field)
+            .flat_map(|other| other.members.iter())
+            .find(|moved| moved.key == key)
+    };
+    let (label, percent) = label_of(texts, lang, change);
+    let (between, tail) = texts.range_words(lang, &lead.key, low, high);
+    let icon = texts
+        .passive_icon(&lead.key, low)
+        .or_else(|| texts.passive_icon(&lead.key, high));
+    let mut rows = Vec::new();
+    for member in &family.members {
+        // An end as it was and as it is.
+        let end = |field: &str| -> Option<(f64, f64)> {
+            match moved(field, &member.key) {
+                Some(moved) => Some((moved.before, moved.after)),
+                None => standing(state, member, field).map(|value| (value, value)),
+            }
+        };
+        let (low_was, low_is, high_was, high_is) = match (end(low), end(high)) {
+            (Some((low_was, low_is)), Some((high_was, high_is))) => (low_was, low_is, high_was, high_is),
+            (None, None) => continue,
+            _ => return None,
+        };
+        if low_was == low_is && high_was == high_is {
+            continue;
+        }
+        let numbers = format!(
+            "{}{between}{}{tail} {ARROW} {}{between}{}{tail}",
+            note_number(low_was, percent),
+            note_number(high_was, percent),
+            note_number(low_is, percent),
+            note_number(high_is, percent)
+        );
+        rows.push(NoteRow {
+            icon: icon.clone(),
+            text: row_text(texts, lang, &lead.key, &member.key, &label, numbers),
+            rank: super::fields::FLAT.len(),
+        });
+    }
+    (!rows.is_empty()).then_some(rows)
+}
+
+// A patch's items, an entry an item: the ones it set out to buff and then
+// the ones it set out to nerf, each lot in the order the patch has them. A
+// row is one changed number in one tier: the legendary's reads
 // "Attack Damage: 20 -> 21", the radiant's "Attack Damage (Radiant): 33 ->
-// 34", the legendary's first.
-fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
+// 34", the legendary's first. An entry's flat stats come first and its
+// passives' numbers after them, each lot in a set order, and a passive's
+// number is written with the words its sentence has after it: "Flurry: 15
+// seconds -> 16 seconds". The two ends of a range that grows with level
+// are one row ([`range_rows`]).
+fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     let texts = texts();
     let base = super::base::base();
     let mut entries: Vec<NoteEntry> = Vec::new();
+    // The ranges written so far, by item and low end: the second end to
+    // come up has its numbers in the row the first one made.
+    let mut ranged: Vec<(&str, &str)> = Vec::new();
     // Reasons given so far, so that no two items share one while another
     // fits.
     let mut used: Vec<&'static str> = Vec::new();
-    for change in patch.changes.iter().filter(|change| change.buff == buff) {
+    let buffs = patch.changes.iter().filter(|change| change.buff);
+    let nerfs = patch.changes.iter().filter(|change| !change.buff);
+    for change in buffs.chain(nerfs) {
         let Some(first) = change.members.first() else {
             continue;
         };
@@ -1030,7 +1372,12 @@ fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
                 // One of the sentences that fit the item, a different one
                 // for every item of the article as far as the pool goes, and
                 // the same one whenever this patch's notes are written.
-                let pool = reason_pool(buff, base.tempo(&lead), change, patch.matches);
+                let chosen = base
+                    .families
+                    .get(&change.family)
+                    .map_or(true, |family| family.chosen);
+                let pool =
+                    reason_pool(change.buff, chosen, base.tempo(&lead), change, patch.matches);
                 let from = seed_of(patch.number, &change.family) % pool.len().max(1);
                 let key = (0..pool.len())
                     .map(|step| pool[(from + step) % pool.len()])
@@ -1045,61 +1392,84 @@ fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
                     key: lead.clone(),
                     reason,
                     rows: Vec::new(),
+                    stronger: false,
+                    weaker: false,
                 });
                 entries.len() - 1
             }
         };
+        // Which way this number went, as strength: a cooldown that got
+        // shorter is stronger.
+        let grew = first.after.abs() > first.before.abs();
+        let lower = super::fields::rule(&change.field).is_some_and(|rule| rule.lower_is_stronger);
+        if grew != lower {
+            entries[at].stronger = true;
+        } else {
+            entries[at].weaker = true;
+        }
+        if let Some((low, high)) = super::fields::range_of(&change.field) {
+            if ranged.contains(&(change.family.as_str(), low)) {
+                continue;
+            }
+            if let Some(rows) = range_rows(texts, state, patch, lang, change, (low, high)) {
+                ranged.push((change.family.as_str(), low));
+                entries[at].rows.extend(rows);
+                continue;
+            }
+        }
         let (label, percent) = label_of(texts, lang, change);
+        let flat = super::fields::FLAT
+            .iter()
+            .position(|field| *field == change.field);
         // A stat's own icon; a passive's number has the icon of what it is
         // an amount of (lethality armour penetration's, Axiom Arc's Flux
         // haste's), which is the one its text puts by it.
-        let icon = if super::fields::FLAT.contains(&change.field.as_str()) {
+        let icon = if flat.is_some() {
             texts.line_icon(&change.field)
         } else {
             None
         }
         .or_else(|| texts.passive_icon(&first.key, &change.field));
+        // What a passive's number is a number of, in its sentence's own
+        // words. A flat stat's label is that already, and so is a label
+        // that is the sentence itself ("Gain Lethality").
+        let unit = if flat.is_some() {
+            None
+        } else {
+            texts.passive_unit(lang, &first.key, &change.field)
+        }
+        .filter(|unit| !label.to_lowercase().contains(&unit.trim().to_lowercase()))
+        .unwrap_or_default();
         for moved in &change.members {
             let numbers = format!(
-                "{} {ARROW} {}",
+                "{}{unit} {ARROW} {}{unit}",
                 note_number(moved.before, percent),
                 note_number(moved.after, percent)
             );
-            // A tier past the first is told apart by what its name has that
-            // the first's does not: "Radiant", in whatever language.
-            let tier = if moved.key == lead {
-                String::new()
-            } else {
-                let name = texts.name(lang, &moved.key);
-                let word = name.replace(&texts.name(lang, &lead), "").trim().to_string();
-                if word.is_empty() {
-                    name
-                } else {
-                    word
-                }
-            };
-            let text = match (label.is_empty(), tier.is_empty()) {
-                (true, true) => numbers,
-                (true, false) => format!("{tier}: {numbers}"),
-                (false, true) => format!("{label}: {numbers}"),
-                (false, false) => format!("{label} ({tier}): {numbers}"),
-            };
             entries[at].rows.push(NoteRow {
                 icon: icon.clone(),
-                text,
+                text: row_text(texts, lang, &lead, &moved.key, &label, numbers),
+                rank: flat.unwrap_or(super::fields::FLAT.len()),
             });
         }
+    }
+    // The stats first and the passives' numbers after. The rows of one
+    // rank stay as the patch has them, a legendary's before its radiant's.
+    for entry in &mut entries {
+        entry.rows.sort_by_key(|row| row.rank);
     }
     entries
 }
 
 // The news article for one patch: title, body, author. In the game's
 // language as it is when the patch lands; an article is text once written.
+// `state` is the save's balance before the patch is taken into it, which
+// is where a number the patch did not move is read from.
 //
 // The body is formatted in the markup the game's own text uses (a colour
 // `<#rrggbbaa>..<>`, a font `<f#asset>..<f>`, a size `<s#n>..<s>`, an inline
-// icon `<i#sheet:tag>`). The layout: the buffs and then the nerfs under a
-// heading in their colour, and for each item
+// icon `<i#sheet:tag>`). The layout: the buffs, the adjustments and the
+// nerfs, each under a heading in its colour, and for each item
 //
 // ```text
 // <icon> Trinity Force
@@ -1108,13 +1478,17 @@ fn note_entries(patch: &Patch, lang: &str, buff: bool) -> Vec<NoteEntry> {
 //     <stat icon> Attack Damage (Radiant): 33 -> 34
 // ```
 //
-// An item is one entry, its radiant's numbers in it and marked as such.
+// An item is one entry, its radiant's numbers in it and marked as such. It
+// is a buff where every number of it got stronger, a nerf where every one
+// got weaker, and an adjustment where it has both. Only where it is listed
+// goes by that: its reason is still the one for what the patch set out to
+// do with it.
 //
 // One article and one column, however long the patch. A long one is read
 // by scrolling, which a plain article has by the mod's override of its
 // layout (`ui/layout/news_component/simple_content.ui`) and
 // [`sync_article_scroll`].
-pub(crate) fn news(patch: &Patch) -> (String, String, String) {
+pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
     let texts = texts();
     let lang = game_language();
     // Named as the game names its own, "Patch Notes v…", after the version
@@ -1133,19 +1507,24 @@ pub(crate) fn news(patch: &Patch) -> (String, String, String) {
         .ui(&lang, "intro", "Items were rebalanced after {Matches} matches on v{Version}.")
         .replace("{Matches}", &patch.matches.to_string())
         .replace("{Version}", &patch.version);
-    for (buff, heading, fallback, color) in [
-        (true, "buffed", "Buffs", BUFF_COLOR),
-        (false, "nerfed", "Nerfs", NERF_COLOR),
+    let entries = note_entries(patch, state, &lang);
+    for (stronger, weaker, heading, fallback, color) in [
+        (true, false, "buffed", "Buffs", BUFF_COLOR),
+        (true, true, "adjusted", "Adjustments", ADJUST_COLOR),
+        (false, true, "nerfed", "Nerfs", NERF_COLOR),
     ] {
-        let entries = note_entries(patch, &lang, buff);
-        if entries.is_empty() {
+        let section: Vec<&NoteEntry> = entries
+            .iter()
+            .filter(|entry| entry.stronger == stronger && entry.weaker == weaker)
+            .collect();
+        if section.is_empty() {
             continue;
         }
         body.push_str(&format!(
             "\n<s#24><f#{BOLD}><{color}>{}<><f><s>",
             texts.ui(&lang, heading, fallback)
         ));
-        for entry in &entries {
+        for entry in section {
             body.push_str(&format!(
                 "\n<i#{ITEM_SHEET}:{frame}> <f#{BOLD}>{name}<f>",
                 frame = frame_of(&entry.key),
@@ -1181,10 +1560,13 @@ pub(crate) fn news(patch: &Patch) -> (String, String, String) {
 
 // -- a plain article's scroll ---------------------------------------------------
 
-// The news screen's article area, and a plain article in it
-// (`news_component/simple_content`, mounted under its root's name).
-const ARTICLE_AREA: &str = "main.top.right.news.contents";
-const ARTICLE_BODY: &str = "main.top.right.news.contents.simple_container.contents";
+// The news screen, and a plain article in it
+// (`news_component/simple_content`, mounted under its root's name): its
+// title, author and date, and its text.
+const NEWS_SCREEN: &str = "main.top.right.news";
+const ARTICLE_TITLE: &str = "main.top.right.news.contents.simple_container.top.title";
+const ARTICLE_AUTHOR: &str = "main.top.right.news.contents.simple_container.top.author";
+const ARTICLE_TIME: &str = "main.top.right.news.contents.simple_container.top.time";
 const ARTICLE_TEXT: &str = "main.top.right.news.contents.simple_container.contents.text";
 // The node whose height is how far the body scrolls.
 const ARTICLE_EXTENT: &str = "main.top.right.news.contents.simple_container.contents.dummy";
@@ -1203,6 +1585,12 @@ const ARTICLE_FOOT: f32 = 36.0;
 // time. Setting a height every frame that never takes is how a fix for the
 // scroll would become what stops it.
 static SCROLL_TRIED: Mutex<Option<(f32, f32, f32)>> = Mutex::new(None);
+
+// The article whose scroll was last worked out, by its title, and what that
+// came to ([`scroll_for`]). Finding an article's text can mean reading the
+// whole inbox, which is done once an article and not on every frame it is
+// open.
+static SCROLL_FOR: Mutex<Option<(String, Option<f32>)>> = Mutex::new(None);
 
 // Whether a character is drawn a full size wide (Chinese, Japanese, Korean
 // and the full-width forms) and not about half of one.
@@ -1260,8 +1648,8 @@ fn article_text_height(text: &str) -> f32 {
 }
 
 // Makes the open article scroll as far as its text is long, and no
-// further. Every client frame; off the news screen it is two failed
-// lookups.
+// further. Every client frame; off the news screen it is one failed
+// lookup.
 //
 // The mod's override of the plain article layout makes its body a scroll
 // view. Two things about one, neither of them to be had from the layouts:
@@ -1276,47 +1664,25 @@ fn article_text_height(text: &str) -> f32 {
 //   turn of the wheel. So the label's box is as long as the scroll, always.
 //
 // The layout gives both a height that is enough for the longest patch
-// notes, and this sets both to what the text takes: a short article does
-// not scroll at all, and one this cannot reach still scrolls, past its end.
+// notes, and this sets both to what the open article's text takes
+// ([`scroll_for`]): the patch notes scroll to their last line and no
+// further, and a short article does not scroll at all. One whose text
+// cannot be had keeps the layout's length, and scrolls past its end.
 //
 // For any plain article, the mod's own or not: the layout is every plain
 // article's.
 pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
-    let Some(text) = ctx.ui_text(ARTICLE_TEXT) else {
-        // No plain article is open; or one is, and its text does not answer
-        // by the path it should have, which the test log is told once.
-        if ctx
-            .ui_child_names(ARTICLE_AREA)
-            .iter()
-            .any(|child| child == "simple_container")
-        {
-            super::log("patch.scroll", || {
-                format!(
-                    "an article is open and {ARTICLE_TEXT} has no text; body exists={} is a {:?}, holds {:?}",
-                    ctx.ui_exists(ARTICLE_BODY),
-                    ctx.ui_runner_name(ARTICLE_BODY),
-                    ctx.ui_child_names(ARTICLE_BODY),
-                )
-            });
-        }
+    // A plain article in the mod's layout is up: its length node is there.
+    let Some((_, _, _, length)) = ctx.ui_node_rect(ARTICLE_EXTENT) else {
         return;
     };
-    let (Some((_, _, _, length)), Some((_, _, _, text_box))) =
-        (ctx.ui_node_rect(ARTICLE_EXTENT), ctx.ui_node_rect(ARTICLE_TEXT))
-    else {
-        // The layout in use is not the mod's: nothing to set.
-        super::log("patch.scroll", || {
-            format!(
-                "the open article has no {ARTICLE_EXTENT}; its body is a {:?} and holds {:?}",
-                ctx.ui_runner_name(ARTICLE_BODY),
-                ctx.ui_child_names(ARTICLE_BODY),
-            )
-        });
+    probe_article(ctx);
+    let Some((_, _, _, text_box)) = ctx.ui_node_rect(ARTICLE_TEXT) else {
         return;
     };
-    let wanted = (article_text_height(&text) + ARTICLE_FOOT)
-        .max(ARTICLE_VIEW_H)
-        .ceil();
+    let Some(wanted) = scroll_for(ctx) else {
+        return;
+    };
     let Ok(mut tried) = SCROLL_TRIED.lock() else {
         return;
     };
@@ -1325,6 +1691,11 @@ pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
         return;
     }
     if *tried == Some((wanted, length, text_box)) {
+        super::log("patch.scroll.kept", || {
+            format!(
+                "set to {wanted}px, and the scroll is still {length}px long and the text's box {text_box}px high"
+            )
+        });
         return;
     }
     let height = format!("height: {wanted}px;");
@@ -1335,8 +1706,217 @@ pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
     // and a line that changes is a line written again.
     super::log("patch.scroll", || {
         format!(
-            "{} lines of text; the scroll was {length}px long and the text's box {text_box}px high, both set to {wanted}px: {set}",
-            text.split('\n').count(),
+            "the scroll was {length}px long and the text's box {text_box}px high, both set to {wanted}px: {set}"
         )
     });
+}
+
+// A label's text: as the host gives it, or failing that out of the label's
+// state, which has it too.
+fn label_text(ctx: &StableClient<'_>, path: &str) -> Option<String> {
+    ctx.ui_text(path).or_else(|| {
+        let state: Value = serde_json::from_str(&ctx.ui_state_json(path)?).ok()?;
+        state.get("text")?.as_str().map(str::to_string)
+    })
+}
+
+// How long the scroll of the open article is to be: as long as its text is
+// drawn, and never shorter than the view, which is no scroll at all.
+// Nothing where the text could not be had.
+//
+// The text is the label's where the host gives it. For the patch notes it
+// has been seen to give none, with the label there, and why is not known.
+// So failing that the article is looked up in the inbox by its title
+// ([`inbox_article`]). An article the inbox does not have by its title is
+// one of the game's own, and has no scroll, as in the game's own layout.
+fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
+    let title = label_text(ctx, ARTICLE_TITLE);
+    let body = label_text(ctx, ARTICLE_TEXT);
+    // What the answer was worked out from: while it is the same, so is the
+    // answer.
+    let asked = format!(
+        "{}\n{}",
+        title.as_deref().unwrap_or_default(),
+        body.as_ref().map_or(0, String::len)
+    );
+    if let Ok(known) = SCROLL_FOR.lock() {
+        if let Some((_, length)) = known.as_ref().filter(|(known, _)| *known == asked) {
+            return *length;
+        }
+    }
+    let length_of = |text: &str| {
+        (article_text_height(text) + ARTICLE_FOOT)
+            .max(ARTICLE_VIEW_H)
+            .ceil()
+    };
+    let (length, from) = match (&body, &title) {
+        (Some(body), _) => (Some(length_of(body)), "the label's text"),
+        (None, Some(title)) => match inbox_article(ctx, title) {
+            Some(Some(text)) => (Some(length_of(&text)), "the inbox's text"),
+            Some(None) => (Some(ARTICLE_VIEW_H), "no article of that title in the inbox"),
+            None => (None, "an inbox that could not be read"),
+        },
+        (None, None) => (None, "nothing: neither the title nor the text can be read"),
+    };
+    super::log("patch.scroll.for", || {
+        format!("title {title:?}: {length:?}px, from {from}")
+    });
+    if let Ok(mut known) = SCROLL_FOR.lock() {
+        *known = Some((asked, length));
+    }
+    length
+}
+
+// The text of the newest plain article in the player's inbox that goes by
+// `title`. Nothing inside where the inbox has none by that title: a title
+// the game makes from a template is not kept as it is shown, and one the
+// mod posts is. Nothing at all where the inbox could not be read.
+fn inbox_article(ctx: &StableClient<'_>, title: &str) -> Option<Option<String>> {
+    let team = ctx.player_team_id()?;
+    let news = ctx.record_get_json(RecordKindV1::Team, team, "news")?;
+    let news: Value = serde_json::from_str(&news).ok()?;
+    let articles = news.as_array()?;
+    Some(articles.iter().rev().find_map(|article| {
+        let named = article.get("title")?.as_str()?;
+        if named.trim() != title.trim() {
+            return None;
+        }
+        article
+            .pointer("/ty/Simple/content")?
+            .as_str()
+            .map(str::to_string)
+    }))
+}
+
+// Children of a node [`tree`] writes out.
+const TREE_WIDTH: usize = 6;
+
+// What the news screen gives of an open plain article, for the test log:
+// what each of its labels answers, the screen's tree, and the newest of the
+// inbox. Looked at every thirtieth frame and written when it has changed.
+// With the log off it is a counter.
+fn probe_article(ctx: &StableClient<'_>) {
+    use std::sync::atomic::{AtomicU32, Ordering};
+
+    static LOOKS: AtomicU32 = AtomicU32::new(0);
+    if LOOKS.fetch_add(1, Ordering::Relaxed) % 30 != 0 {
+        return;
+    }
+    let head = |text: Option<String>| {
+        text.map(|text| {
+            format!(
+                "{} bytes {:?}",
+                text.len(),
+                text.chars().take(40).collect::<String>()
+            )
+        })
+    };
+    super::log("patch.scroll.labels", || {
+        [ARTICLE_TITLE, ARTICLE_AUTHOR, ARTICLE_TIME, ARTICLE_TEXT, ARTICLE_EXTENT]
+            .iter()
+            .map(|&path| {
+                format!(
+                    "{}: a {:?}, visible={:?}, size={:?}, text={:?}, state={:?}",
+                    path.rsplit('.').next().unwrap_or(path),
+                    ctx.ui_runner_name(path),
+                    ctx.ui_visible(path),
+                    ctx.ui_node_rect(path).map(|(_, _, width, height)| (width, height)),
+                    head(ctx.ui_text(path)),
+                    head(ctx.ui_state_json(path)),
+                )
+            })
+            .collect::<Vec<_>>()
+            .join(" | ")
+    });
+    super::log("patch.scroll.tree", || tree(ctx, NEWS_SCREEN, 5, &mut 160));
+    super::log("patch.scroll.inbox", || {
+        let Some(team) = ctx.player_team_id() else {
+            return "the player's team is not known".to_string();
+        };
+        let news = ctx
+            .record_get_json(RecordKindV1::Team, team, "news")
+            .and_then(|json| serde_json::from_str::<Value>(&json).ok());
+        let Some(Value::Array(list)) = news else {
+            return format!("team {team}'s news could not be read");
+        };
+        let newest: Vec<String> = list
+            .iter()
+            .rev()
+            .take(5)
+            .map(|article| {
+                format!(
+                    "{:?} a {:?}, read={:?}, {:?} bytes of plain text",
+                    article
+                        .get("title")
+                        .and_then(Value::as_str)
+                        .map(|title| title.chars().take(40).collect::<String>()),
+                    article
+                        .get("ty")
+                        .and_then(Value::as_object)
+                        .and_then(|ty| ty.keys().next()),
+                    article.get("is_read"),
+                    article
+                        .pointer("/ty/Simple/content")
+                        .and_then(Value::as_str)
+                        .map(str::len),
+                )
+            })
+            .collect();
+        format!(
+            "{} articles, the newest first: {}",
+            list.len(),
+            newest.join(" | ")
+        )
+    });
+}
+
+// The UI tree under `path` by name and kind, `depth` levels of it, the first
+// [`TREE_WIDTH`] children of each node and no more than `budget` nodes in
+// all: a label with the start of its text, a selectable with whether it is
+// selected, and of a node with more children which of them are.
+fn tree(ctx: &StableClient<'_>, path: &str, depth: usize, budget: &mut usize) -> String {
+    let kind = ctx.ui_runner_name(path).unwrap_or_default();
+    let mut out = format!("{}:{kind}", path.rsplit('.').next().unwrap_or(path));
+    if kind == "label" {
+        let text = label_text(ctx, path).map(|text| text.chars().take(24).collect::<String>());
+        out.push_str(&format!("={text:?}"));
+    }
+    if let Some(selected) = ctx.ui_selectable_selected(path) {
+        out.push_str(&format!("(selected={selected})"));
+    }
+    if ctx.ui_visible(path) == Some(false) {
+        out.push_str("(hidden)");
+    }
+    let children = ctx.ui_child_names(path);
+    if children.is_empty() {
+        return out;
+    }
+    if depth == 0 {
+        out.push_str(&format!("[{} children]", children.len()));
+        return out;
+    }
+    if children.len() > TREE_WIDTH {
+        let selected: Vec<&String> = children
+            .iter()
+            .filter(|child| ctx.ui_selectable_selected(&format!("{path}.{child}")) == Some(true))
+            .collect();
+        out.push_str(&format!(
+            "({} children, selected {selected:?})",
+            children.len()
+        ));
+    }
+    out.push('[');
+    for (at, child) in children.iter().take(TREE_WIDTH).enumerate() {
+        if *budget == 0 {
+            out.push_str(" ...");
+            break;
+        }
+        *budget -= 1;
+        if at > 0 {
+            out.push(' ');
+        }
+        out.push_str(&tree(ctx, &format!("{path}.{child}"), depth - 1, budget));
+    }
+    out.push(']');
+    out
 }

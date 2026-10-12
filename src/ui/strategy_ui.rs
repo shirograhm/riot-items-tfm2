@@ -1736,6 +1736,12 @@ fn paint_toggle_off(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) 
 // One toggle cell's appearance, in the vanilla `strategy_option` colours the
 // tabs and list rows already use.
 fn toggle_style(lit: bool) -> String {
+    toggle_style_sized(lit, 13)
+}
+
+// [`toggle_style`] with the label at `size`: the footer's cells are 13, the
+// game's own option rows 16 (`crate::ui::hotfix_row`).
+pub(crate) fn toggle_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
     } else {
@@ -1746,18 +1752,24 @@ fn toggle_style(lit: bool) -> String {
     } else {
         (TAB_HOVER_LINE, TAB_HOVER_TEXT)
     };
-    toggle_cell_style(fill, text, stroke, hover_line, hover_text)
+    toggle_cell_style(fill, text, stroke, hover_line, hover_text, size)
 }
 
 // One cell of a greyed-out toggle (see [`paint_toggle_off`]). Its hover
 // colours are its resting ones, so it does not light up under the cursor.
 fn toggle_off_style(lit: bool) -> String {
+    toggle_off_style_sized(lit, 13)
+}
+
+// [`toggle_off_style`] with the label at `size`, for the game's own option
+// rows (`crate::ui::hotfix_row`).
+pub(crate) fn toggle_off_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TOGGLE_OFF_SELECTED_FILL, TOGGLE_OFF_SELECTED_TEXT, 0)
     } else {
         (TAB_IDLE_FILL, TOGGLE_OFF_IDLE_TEXT, 1)
     };
-    toggle_cell_style(fill, text, stroke, fill, text)
+    toggle_cell_style(fill, text, stroke, fill, text, size)
 }
 
 // The property blocks of one toggle cell in the given colours.
@@ -1767,6 +1779,7 @@ fn toggle_cell_style(
     stroke: u32,
     hover_line: &str,
     hover_text: &str,
+    size: u32,
 ) -> String {
     // `size` and `align_x` are restated rather than left to the `.ui`, because a
     // property write replaces the block it names: a `label` carrying only a
@@ -1776,7 +1789,7 @@ fn toggle_cell_style(
             "{image_key}: {{ color: {fill}; back_color: {fill}; stroke: {stroke}; \
              rounding: Uniform {{ rounding: 6; }} \
              hover: {{ color: {hover_line}; back_color: {fill}; }} }} \
-             {label_key}: {{ size: 13; align_x: Center; color: {text}; \
+             {label_key}: {{ size: {size}; align_x: Center; color: {text}; \
              hover: {{ color: {hover_text}; }} }}"
         )
     };
@@ -3902,6 +3915,11 @@ impl StableExtension for StrategyPicker {
         // has been read. Unconditional because a tooltip can be on any
         // screen; one atomic read a frame while nothing is patched.
         crate::patches::sync(ctx);
+
+        // The Options dialog's Run Manual Item Patch row, which queues one
+        // of those patches. Unconditional because the dialog opens over any
+        // screen; one lookup a frame while it is closed.
+        crate::ui::hotfix_row::sync(ctx);
 
         // Champion facts for the Smart Builds rules, which only the client can
         // ask the host for. Unconditional: the build paths need them in every

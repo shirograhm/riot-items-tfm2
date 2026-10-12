@@ -58,6 +58,7 @@ pub(crate) fn note_refresh(key: &'static str, refresh: Refresh) {
 }
 
 // One tier of an item.
+#[derive(Clone)]
 pub(crate) struct Member {
     pub key: String,
     // One of the game's own thirty items.
@@ -72,8 +73,10 @@ pub(crate) struct Member {
 pub(crate) struct Family {
     pub members: Vec<Member>,
     // Whether builds choose it. Boots, the jungle items and the World Atlas
-    // line are handed out by Smart Builds' rules, so how often they are held
-    // says nothing about them and is not held against them.
+    // line are handed out by Smart Builds' rules, and the other items only a
+    // support builds are kept to that one role by them, so how often any of
+    // these is held says nothing about it. They are judged on how they win
+    // and on nothing else.
     pub chosen: bool,
 }
 
@@ -295,7 +298,8 @@ impl Base {
             }
             let chosen = !(crate::smart_builds::is_boots(key)
                 || crate::smart_builds::is_jungle_item(key)
-                || crate::smart_builds::is_atlas_item(key));
+                || crate::smart_builds::is_atlas_item(key)
+                || crate::smart_builds::is_support_item(key));
             families
                 .entry(id)
                 .or_insert_with(|| Family {

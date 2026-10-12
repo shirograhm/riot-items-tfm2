@@ -1,5 +1,6 @@
 Adds 6 item slots & 237 new items (138 base + 99 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
+Champions start each match with 250 gold instead of 500.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
 
@@ -48,7 +49,9 @@ Your config.json is your item information save. If you lose it, you can re-copy 
 Both files (config-default.json & config.json) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
 [h1] Item Patches [/h1]
-Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b].  
+Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b]. Boots, jungle items and support-only items are judged on win rate alone, since Smart Builds decides who builds them.  
+
+Don't want to wait for the next champion patch? Open [b]Options > Competition[/b] from the pause menu and click [b]Queue[/b] next to [b]Run Manual Item Patch[/b]. A manual item patch is released with the next news that reaches your inbox, as a hotfix of the current version. The button stays greyed out until it has been released.  
 
 To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
 - [b]enabled[/b]: set to false to turn item patches off.  
@@ -89,7 +92,7 @@ Works alongside [b]Bows' Drafter's Toolbox[/b]. With both enabled, its Advanced 
 [h2] Credits [/h2]
 Thank you to [b]@SUB[/b] from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
-Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
+Special thanks to all the playtesters/modders that helped me out along the way by offering ideas, sending crash dumps and testing beta builds:
 [b]@toxicsnek[/b], [b]@Monsoon[/b], [b]@blasé[/b], [b]@Guardsman C[/b], [b]@kmrn[/b]
 
 Thank you to all the translators:

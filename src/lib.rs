@@ -254,7 +254,7 @@ impl StableServerExtension for NativeTapExtension {
         command: &StableCommand<'_>,
     ) -> CommandResultV1 {
         // The client's word that an item balance patch has landed: its
-        // article, now and not at the next management tick.
+        // state and its article, now and not at the next management tick.
         if patches::handle_command(ctx, command) {
             CommandResultV1::Handled
         } else {
@@ -268,6 +268,9 @@ impl StableServerExtension for NativeTapExtension {
         // server's item settings, before it creates a match.
         item_stats::server_started();
         item_stats::sync_server_items(ctx);
+        // What the server's side of the save has of the item patches, for
+        // the test log.
+        patches::server_started(ctx);
 
         match hook::install_hook() {
             Ok(address) => {

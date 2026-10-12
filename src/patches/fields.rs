@@ -145,6 +145,14 @@ pub(crate) fn rule(field: &str) -> Option<Rule> {
     })
 }
 
+// The range `field` is an end of, its low end first, where it is one.
+pub(crate) fn range_of(field: &str) -> Option<(&'static str, &'static str)> {
+    PAIRS
+        .iter()
+        .copied()
+        .find(|&(low, high)| low == field || high == field)
+}
+
 // The field that has to move with `field`, where there is one.
 pub(crate) fn partner(field: &str) -> Option<&'static str> {
     PAIRS.iter().find_map(|&(low, high)| {

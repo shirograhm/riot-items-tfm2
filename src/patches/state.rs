@@ -10,9 +10,14 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-// The shape this build writes and reads. A state in another shape is left
-// where it is and the save starts over unpatched.
-pub(crate) const FORMAT: u32 = 1;
+// The shape this build writes, and the oldest it reads. A state in a shape
+// outside the two is left where it is and the save starts over unpatched.
+//
+// 2: the ratios are kept a tier of an item ([`State::ratios`]). In 1 they
+// were kept an item, under its legendary's key, for all of its tiers, and
+// such a state is read and spread over the tiers (`read_state`).
+pub(crate) const FORMAT: u32 = 2;
+const OLDEST_FORMAT: u32 = 1;
 
 // Patches kept for the notes. The numbers themselves need none of them:
 // [`State::ratios`] is the whole balance.
@@ -34,9 +39,13 @@ pub(crate) struct State {
     // off by hand. Counted from one again when the game's version moves on.
     #[serde(rename = "hf")]
     pub hotfixes: u32,
-    // Item family -> field -> what the field is of its unpatched value
-    // after every patch so far. One number for all tiers of the item, so a
-    // radiant keeps its distance from the legendary it is built from.
+    // A hotfix the player has queued, which goes out with the next news.
+    #[serde(rename = "q")]
+    pub queued: bool,
+    // Item -> field -> what the field is of its unpatched value after
+    // every patch so far. An item here is one tier: a legendary and its
+    // radiant are patched one by one, and need not move together or in the
+    // same numbers.
     #[serde(rename = "r")]
     pub ratios: BTreeMap<String, BTreeMap<String, f64>>,
     // Newest last.
@@ -77,10 +86,12 @@ pub(crate) struct Change {
     pub field: String,
     #[serde(rename = "b")]
     pub buff: bool,
-    // [`State::ratios`] for the field once this change is in.
+    // [`State::ratios`] for the field, of the tiers moved, once this
+    // change is in.
     #[serde(rename = "r")]
     pub ratio: f64,
-    // What each tier of the item read before and reads after.
+    // What each tier the change moved read before and reads after: one
+    // tier, since a patch plans every tier by itself.
     #[serde(rename = "t")]
     pub members: Vec<Moved>,
     // What the item was judged on: times it was held, and how many of
@@ -105,7 +116,9 @@ pub(crate) struct Moved {
 impl State {
     pub(crate) fn parse(text: &str) -> Option<Self> {
         let state: Self = serde_json::from_str(text).ok()?;
-        (state.format == FORMAT).then_some(state)
+        (OLDEST_FORMAT..=FORMAT)
+            .contains(&state.format)
+            .then_some(state)
     }
 
     pub(crate) fn to_json(&self) -> String {
@@ -114,13 +127,16 @@ impl State {
         serde_json::to_string(&state).unwrap_or_default()
     }
 
-    // Takes a patch in: its ratios, and its place in the history.
+    // Takes a patch in: its ratios, for the tiers each change moved, and
+    // its place in the history.
     pub(crate) fn adopt(&mut self, patch: Patch) {
         for change in &patch.changes {
-            self.ratios
-                .entry(change.family.clone())
-                .or_default()
-                .insert(change.field.clone(), change.ratio);
+            for moved in &change.members {
+                self.ratios
+                    .entry(moved.key.clone())
+                    .or_default()
+                    .insert(change.field.clone(), change.ratio);
+            }
         }
         self.number = patch.number;
         self.history.push(patch);
@@ -130,9 +146,10 @@ impl State {
         }
     }
 
-    pub(crate) fn ratio(&self, family: &str, field: &str) -> f64 {
+    // What `field` of the item `key`, one tier, is of its unpatched value.
+    pub(crate) fn ratio(&self, key: &str, field: &str) -> f64 {
         self.ratios
-            .get(family)
+            .get(key)
             .and_then(|fields| fields.get(field))
             .copied()
             .unwrap_or(1.0)

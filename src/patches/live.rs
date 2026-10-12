@@ -27,9 +27,8 @@
 //!   are told (`crate::set_lethality_patches`, `Base::refreshes`).
 
 use std::collections::{HashMap, HashSet};
-use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
-use std::sync::{Arc, OnceLock, RwLock};
-use std::time::Instant;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, RwLock};
 
 use mod_api_stable::*;
 use serde_json::Value;
@@ -212,43 +211,48 @@ pub(crate) fn rebuild(base: &Base, state: &State) {
     let mut leaning: HashMap<String, f32> = HashMap::new();
     // Game item -> (stat, the number the game holds, the patched one).
     let mut game_moves: HashMap<String, Vec<(String, i64, i64)>> = HashMap::new();
-    for (id, ratios) in &state.ratios {
-        let Some(family) = base.families.get(id) else {
-            continue;
-        };
+    for family in base.families.values() {
+        // How far each tier's patches have taken it, added up over the
+        // item's tiers.
         let mut level = 0.0f64;
-        for (field, &ratio) in ratios {
-            let Some(rule) = fields::rule(field) else {
+        let mut tiers = 0usize;
+        for member in &family.members {
+            tiers += 1;
+            let Some(ratios) = state.ratios.get(&member.key) else {
                 continue;
             };
-            let mut moved = false;
-            for member in &family.members {
+            for (field, &ratio) in ratios {
+                let Some(rule) = fields::rule(field) else {
+                    continue;
+                };
                 let Some(&unpatched) = member.values.get(field) else {
                     continue;
                 };
                 let whole = member.whole.contains(field);
                 let value = fields::quantize(&member.key, field, unpatched, unpatched * ratio, whole);
-                if value != unpatched {
-                    values.insert((member.key.clone(), field.clone()), value);
-                    moved = true;
-                    if member.game {
-                        game_moves.entry(member.key.clone()).or_default().push((
-                            field.clone(),
-                            unpatched as i64,
-                            value as i64,
-                        ));
-                    }
+                if value == unpatched {
+                    continue;
+                }
+                values.insert((member.key.clone(), field.clone()), value);
+                if member.game {
+                    game_moves.entry(member.key.clone()).or_default().push((
+                        field.clone(),
+                        unpatched as i64,
+                        value as i64,
+                    ));
+                }
+                if ratio > 0.0 {
+                    level += if rule.lower_is_stronger {
+                        -ratio.ln()
+                    } else {
+                        ratio.ln()
+                    };
                 }
             }
-            if moved && ratio > 0.0 {
-                level += if rule.lower_is_stronger {
-                    -ratio.ln()
-                } else {
-                    ratio.ln()
-                };
-            }
         }
-        let lean = (level / LEANING_FULL).clamp(-1.0, 1.0) as f32;
+        // A build chooses the item, whichever tier it ends on: the tiers
+        // lean together, by what they have moved between them.
+        let lean = (level / tiers.max(1) as f64 / LEANING_FULL).clamp(-1.0, 1.0) as f32;
         if lean != 0.0 {
             for member in &family.members {
                 leaning.insert(member.key.clone(), lean);
@@ -436,23 +440,9 @@ pub(crate) fn shown_flat(key: &str, field: &str) -> Option<i64> {
 
 // -- in the match ---------------------------------------------------------------
 
-fn clock() -> u64 {
-    static START: OnceLock<Instant> = OnceLock::new();
-    START.get_or_init(Instant::now).elapsed().as_millis() as u64
-}
-
-// When any simulation last ticked, on [`clock`].
-static LAST_TICK: AtomicU64 = AtomicU64::new(0);
-
-// Milliseconds since any match simulation last ticked.
-pub(crate) fn quiet_millis() -> u64 {
-    clock().saturating_sub(LAST_TICK.load(Ordering::Relaxed))
-}
-
 // Keeps every champion's [`DELTA_BUFF`] at the sum of what its items'
 // patched flat stats add. From the match hook, every tick of every
-// simulation; while no flat stat is patched it is a clock read every eighth
-// tick and an atomic read.
+// simulation; while no flat stat is patched it is an atomic read.
 //
 // One buff for all of a champion's items and not one an item, so nothing is
 // left behind when an item is built into the next: the sum is taken from
@@ -460,9 +450,6 @@ pub(crate) fn quiet_millis() -> u64 {
 // should be, which after a purchase is once.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
     let tick = sim.tick();
-    if tick % 8 == 0 {
-        LAST_TICK.store(clock(), Ordering::Relaxed);
-    }
     if !ANY_DELTAS.load(Ordering::Relaxed) || tick % DELTA_CHECK_TICKS != 0 || sim.is_end() {
         return;
     }

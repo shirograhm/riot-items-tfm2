@@ -119,10 +119,8 @@ struct Step {
 }
 
 // The tier a change is measured on and has to move: the first that has the
-// field, the legendary. It was the last, the radiant, while every number
-// went in small steps and the two moved together. In steps of five and
-// fifty the radiant's bigger number takes a step first, and a change that
-// stopped there would be the radiant's alone, patch after patch.
+// field. A patch plans every tier by itself ([`changes_for`]), so that is
+// the one tier there is.
 fn lead<'a>(family: &'a Family, field: &str) -> Option<&'a Member> {
     family
         .members
@@ -282,7 +280,7 @@ fn counter(
 // value, as a share of it and counted as strength, all added up. With the
 // numbers as the state has them, but for the fields `plan` moves.
 //
-// Read off the legendary, like every change.
+// Of the one tier being planned, like every change.
 fn total(state: &State, id: &str, family: &Family, plan: &[&Step]) -> f64 {
     let mut seen: Vec<&str> = Vec::new();
     let mut sum = 0.0;
@@ -355,26 +353,33 @@ fn with_partner(state: &State, id: &str, family: &Family, first: Step) -> Vec<St
     ]
 }
 
-// The changes to one item: one or two of its numbers, picked at random
-// among those that can move, the other end of a range with it, and what
-// makes up for a step that is more than was wanted.
+// The steps a patch takes on one tier of an item: one or two of its
+// numbers, picked at random among those that can move, the other end of a
+// range with it, and what makes up for a step that is more than was wanted.
 //
 // A number moves by its smallest step. Twice what was wanted or less, the
-// step stands as it is. More, and another number of the item is moved the
+// step stands as it is. More, and another number of the tier is moved the
 // other way ([`counter`]): then a step may even be a big one, over a
 // quarter of the number, which nothing else lets through. A number that
 // finds nothing to make up for it is passed over, and once every number
 // has been asked that way, whatever is still wanted is taken as it used to
 // be: any step that is no big one, however far over.
 //
-// Every row a change brings is the item's, under its buff or its nerf: what
-// makes up for a buff is a number going down in the list of buffs.
-fn changes_for(state: &State, judged: &Judged<'_>, buff: bool, number: u32) -> Vec<Change> {
-    let size = judged.score.abs();
-    let rate = RATE * (size / 2.0).clamp(RATE_SPAN.0, RATE_SPAN.1);
-    let wanted = if size >= TWO_FIELDS_FROM { 2 } else { 1 };
-    let (id, family) = (judged.id, judged.family);
-
+// `tier` is the item with that one tier in it, and `id` the tier's own key,
+// which its ratios are kept under. `seed` is what orders the numbers that
+// are tried, and `allowed` is asked of every step before it is taken.
+#[allow(clippy::too_many_arguments)]
+fn plan_for(
+    state: &State,
+    id: &str,
+    tier: &Family,
+    seed: (u32, &str),
+    buff: bool,
+    rate: f64,
+    wanted: usize,
+    allowed: &dyn Fn(&[Step]) -> bool,
+) -> Vec<Step> {
+    let family = tier;
     let mut candidates: Vec<&str> = Vec::new();
     for member in &family.members {
         for field in member.values.keys() {
@@ -384,7 +389,7 @@ fn changes_for(state: &State, judged: &Judged<'_>, buff: bool, number: u32) -> V
         }
     }
     candidates.sort_unstable();
-    Rng::seeded(number, id).shuffle(&mut candidates);
+    Rng::seeded(seed.0, seed.1).shuffle(&mut candidates);
 
     let mut plan: Vec<Step> = Vec::new();
     let mut picked = 0;
@@ -423,7 +428,7 @@ fn changes_for(state: &State, judged: &Judged<'_>, buff: bool, number: u32) -> V
             };
             steps.push(made_up);
         }
-        if !fits(state, id, family, &plan, &steps, buff) {
+        if !fits(state, id, family, &plan, &steps, buff) || !allowed(&steps) {
             continue;
         }
         plan.extend(steps);
@@ -445,24 +450,163 @@ fn changes_for(state: &State, judged: &Judged<'_>, buff: bool, number: u32) -> V
             continue;
         }
         let steps = with_partner(state, id, family, first);
-        if !fits(state, id, family, &plan, &steps, buff) {
+        if !fits(state, id, family, &plan, &steps, buff) || !allowed(&steps) {
             continue;
         }
         plan.extend(steps);
         picked += 1;
     }
+    plan
+}
 
-    plan.into_iter()
-        .map(|step| Change {
-            family: id.to_string(),
-            field: step.field,
-            buff,
-            ratio: step.ratio,
-            members: step.members,
-            games: judged.tally.games,
-            wins: judged.tally.wins,
-        })
+// The tiers of an item that a patch moves, by their place among its tiers.
+//
+// A patch does not have to move every tier of an item. A tier is moved
+// where its own record says what the item's does: its holders' win share,
+// taken with the same imaginary even games as the item's, on the item's
+// side of even by half of what an item needs to be touched. Where no
+// tier's record says that much, which is what an item touched for how
+// often it is built comes to, the tier that was held the most is moved, the
+// first of them where they were held as much.
+fn tiers_to_move(family: &Family, tallies: &HashMap<String, Tally>, buff: bool) -> Vec<usize> {
+    let of = |member: &Member| tallies.get(&member.key).copied().unwrap_or_default();
+    let lean = |tally: Tally| {
+        let share = (f64::from(tally.wins) + PRIOR_GAMES / 2.0) / (f64::from(tally.games) + PRIOR_GAMES);
+        (share - 0.5) / WIN_UNIT
+    };
+    let side = if buff { -1.0 } else { 1.0 };
+    let agreeing: Vec<usize> = family
+        .members
+        .iter()
+        .enumerate()
+        .filter(|(_, member)| lean(of(member)) * side >= THRESHOLD / 2.0)
+        .map(|(at, _)| at)
+        .collect();
+    if !agreeing.is_empty() {
+        return agreeing;
+    }
+    (0..family.members.len())
+        .max_by_key(|&at| (of(&family.members[at]).games, std::cmp::Reverse(at)))
+        .into_iter()
         .collect()
+}
+
+// Whether `steps`, taken on the tier at `at`, would turn the order of two
+// tiers round in one of their numbers: a radiant left with less attack
+// damage than its legendary, or a longer cooldown. Asked only of numbers
+// the two tiers do not have alike unpatched. The other tiers are read as
+// this patch has left them (`landed`: tier, field, what it reads), or as
+// the state has them.
+fn crosses(
+    state: &State,
+    family: &Family,
+    at: usize,
+    steps: &[Step],
+    landed: &[(usize, String, f64)],
+) -> bool {
+    let Some(mine) = family.members.get(at) else {
+        return false;
+    };
+    steps.iter().any(|step| {
+        let field = step.field.as_str();
+        let (Some(&my_base), Some(after)) = (
+            mine.values.get(field),
+            step.members.first().map(|moved| moved.after),
+        ) else {
+            return false;
+        };
+        family.members.iter().enumerate().any(|(other_at, other)| {
+            let Some(&their_base) = other.values.get(field) else {
+                return false;
+            };
+            if other_at == at || their_base == my_base {
+                return false;
+            }
+            let theirs = landed
+                .iter()
+                .rev()
+                .find(|(tier, moved, _)| *tier == other_at && moved == field)
+                .map_or_else(
+                    || {
+                        fields::quantize(
+                            &other.key,
+                            field,
+                            their_base,
+                            their_base * state.ratio(&other.key, field),
+                            other.whole.contains(field),
+                        )
+                    },
+                    |(_, _, value)| *value,
+                );
+            // On the other side of the other tier's number than unpatched.
+            (after - theirs) * (my_base - their_base) < 0.0
+        })
+    })
+}
+
+// The changes to one item: the steps of each tier a patch moves
+// ([`tiers_to_move`]), every tier planned by itself ([`plan_for`]). So a
+// patch may move the legendary and leave its radiant, or the other way
+// round, and where it moves both they need not move in the same numbers:
+// as it falls for the item in the patch, the tiers try their numbers in one
+// order, and then mostly move the same ones, or each in an order of its
+// own. What they may not do is change places ([`crosses`]).
+//
+// Every row a change brings is the item's, under its buff or its nerf: what
+// makes up for a buff is a number going down in the list of buffs.
+fn changes_for(
+    state: &State,
+    judged: &Judged<'_>,
+    tallies: &HashMap<String, Tally>,
+    buff: bool,
+    number: u32,
+) -> Vec<Change> {
+    let size = judged.score.abs();
+    let rate = RATE * (size / 2.0).clamp(RATE_SPAN.0, RATE_SPAN.1);
+    let wanted = if size >= TWO_FIELDS_FROM { 2 } else { 1 };
+    let family = judged.family;
+    let together = Rng::seeded(number, judged.id).next() % 2 == 0;
+
+    // What the tiers moved so far read: tier, field, number.
+    let mut landed: Vec<(usize, String, f64)> = Vec::new();
+    let mut changes = Vec::new();
+    for at in tiers_to_move(family, tallies, buff) {
+        let member = &family.members[at];
+        let tier = Family {
+            members: vec![member.clone()],
+            chosen: family.chosen,
+        };
+        let seed = if together {
+            judged.id
+        } else {
+            member.key.as_str()
+        };
+        let plan = plan_for(
+            state,
+            &member.key,
+            &tier,
+            (number, seed),
+            buff,
+            rate,
+            wanted,
+            &|steps: &[Step]| !crosses(state, family, at, steps, &landed),
+        );
+        for step in plan {
+            if let Some(moved) = step.members.first() {
+                landed.push((at, step.field.clone(), moved.after));
+            }
+            changes.push(Change {
+                family: judged.id.to_string(),
+                field: step.field,
+                buff,
+                ratio: step.ratio,
+                members: step.members,
+                games: judged.tally.games,
+                wins: judged.tally.wins,
+            });
+        }
+    }
+    changes
 }
 
 // The patch for the matches of `version`: `tallies` by item key.
@@ -534,7 +678,7 @@ pub(crate) fn decide(
         .take_while(|item| item.score >= THRESHOLD)
         .take(tuning.max_nerfs)
     {
-        changes.extend(changes_for(state, item, false, number));
+        changes.extend(changes_for(state, item, tallies, false, number));
     }
     for item in judged
         .iter()
@@ -543,7 +687,7 @@ pub(crate) fn decide(
         .take_while(|item| item.score <= -THRESHOLD)
         .take(tuning.max_buffs)
     {
-        changes.extend(changes_for(state, item, true, number));
+        changes.extend(changes_for(state, item, tallies, true, number));
     }
     Patch {
         number,
