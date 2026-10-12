@@ -6,19 +6,19 @@ use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, ItemMeta, ProcQueue};
 
 thread_local! {
-    /// Set while Shield Reaver procs are landing. They go out through the
-    /// engine's attack pipeline and come back around through `on_attack` as
-    /// `Item` hits before `deal_damage` returns, on this item and on any
-    /// other Serpent's Fang the champion holds. One that answered to them
-    /// would reave forever: every proc that lands queues the next for as long
-    /// as the shield holds up.
+    // Set while Shield Reaver procs are landing. They go out through the
+    // engine's attack pipeline and come back around through `on_attack` as
+    // `Item` hits before `deal_damage` returns, on this item and on any
+    // other Serpent's Fang the champion holds. One that answered to them
+    // would reave forever: every proc that lands queues the next for as long
+    // as the shield holds up.
     static REAVING: Cell<bool> = const { Cell::new(false) };
 }
 
-/// The Shield Reaver bonus this hit earned, or zero when the passive does not
-/// apply. The shield is read here, at the moment of the hit, so the proc that
-/// lands a moment later is the one the attack earned rather than one judged
-/// against whatever shield the target has by then.
+// The Shield Reaver bonus this hit earned, or zero when the passive does not
+// apply. The shield is read here, at the moment of the hit, so the proc that
+// lands a moment later is the one the attack earned rather than one judged
+// against whatever shield the target has by then.
 fn shield_reaver(
     ctx: &mut StableSim<'_>,
     caster: usize,
@@ -184,7 +184,7 @@ impl StableItem for SerpentsFang {
         self.procs.clear();
     }
 
-    /// Lands the Shield Reaver damage whose delay has run out.
+    // Lands the Shield Reaver damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         REAVING.set(true);
         self.procs.update(ctx, player);

@@ -3,9 +3,9 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, percent_of_i32, ticks, ItemMeta};
 
-/// Green pluses rising off the carrier while Fortification heals:
-/// the `view_effects` binding `effects/protoplasm_heal`, drawn 1.5 seconds long
-/// to match the default heal.
+// Green pluses rising off the carrier while Fortification heals:
+// the `view_effects` binding `effects/protoplasm_heal`, drawn 1.5 seconds long
+// to match the default heal.
 const HEAL_EFFECT: &str = "riot_protoplasm_heal";
 
 #[derive(Clone, Debug)]
@@ -201,7 +201,7 @@ impl StableItem for ProtoplasmHarness {
         self.healing = None;
     }
 
-    /// Pays the Fortification heal out one pulse at a time. Death stops it.
+    // Pays the Fortification heal out one pulse at a time. Death stops it.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         let Some(mut heal) = self.healing else {
             return;
@@ -242,8 +242,8 @@ impl StableItem for ProtoplasmHarness {
     }
 }
 
-/// Fortification's heal while it is being paid out: what is still owed, the
-/// pulses left to pay it in, and the ticks until the next one.
+// Fortification's heal while it is being paid out: what is still owed, the
+// pulses left to pay it in, and the ticks until the next one.
 #[derive(Clone, Copy, Debug)]
 struct PendingHeal {
     owed: usize,

@@ -3,26 +3,26 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, sized_range, ticks, ImmobilizeWatch, ItemMeta};
 
-/// Solstice Sleigh — what World Atlas grows into for a support that locks
-/// enemies down: Going Sledding, and the gold the Atlas line pays
-/// ([`crate::SharedRiches`]).
-///
-/// # Going Sledding
-///
-/// When the carrier immobilizes an enemy champion ([`ImmobilizeWatch`], the
-/// trigger Imperial Mandate's Command uses), the carrier and the most wounded
-/// allied champion in range speed up and gain bonus health for a moment.
-///
-/// The bonus health is maximum health on the buff, and the same amount is
-/// restored as it lands: a buff's `hp` raises the ceiling and leaves the
-/// health under it where it was, so without that the bonus would be health
-/// nobody has. When the buff runs out the ceiling comes back down.
-///
-/// # Both variants share the buff name
-///
-/// Re-applying is a remove followed by an add, and one `entity_remove_buff`
-/// clears every copy, so two Sleighs sledding the same ally leave one buff on
-/// them, not two.
+// Solstice Sleigh — what World Atlas grows into for a support that locks
+// enemies down: Going Sledding, and the gold the Atlas line pays
+// ([`crate::SharedRiches`]).
+//
+// # Going Sledding
+//
+// When the carrier immobilizes an enemy champion ([`ImmobilizeWatch`], the
+// trigger Imperial Mandate's Command uses), the carrier and the most wounded
+// allied champion in range speed up and gain bonus health for a moment.
+//
+// The bonus health is maximum health on the buff, and the same amount is
+// restored as it lands: a buff's `hp` raises the ceiling and leaves the
+// health under it where it was, so without that the bonus would be health
+// nobody has. When the buff runs out the ceiling comes back down.
+//
+// # Both variants share the buff name
+//
+// Re-applying is a remove followed by an add, and one `entity_remove_buff`
+// clears every copy, so two Sleighs sledding the same ally leave one buff on
+// them, not two.
 #[derive(Clone, Debug)]
 pub struct SolsticeSleigh {
     meta: ItemMeta,
@@ -104,8 +104,8 @@ impl SolsticeSleigh {
         self
     }
 
-    /// Level 1 gets `effect_min_bonus_hp` and level 12 `effect_max_bonus_hp`,
-    /// the same eleven-step ramp `bloodsong` uses for Spellblade.
+    // Level 1 gets `effect_min_bonus_hp` and level 12 `effect_max_bonus_hp`,
+    // the same eleven-step ramp `bloodsong` uses for Spellblade.
     fn bonus_hp(&self, level: usize) -> usize {
         let per_level = (self
             .effect_max_bonus_hp
@@ -115,8 +115,8 @@ impl SolsticeSleigh {
         self.effect_min_bonus_hp + level.saturating_sub(1) * per_level
     }
 
-    /// The living allied champion in range of the carrier with the least of
-    /// its health left, the nearer of two as wounded. Not the carrier.
+    // The living allied champion in range of the carrier with the least of
+    // its health left, the nearer of two as wounded. Not the carrier.
     fn most_wounded_ally(&self, ctx: &StableSim<'_>, caster: usize, team: usize) -> Option<usize> {
         let range = sized_range(ctx, caster, self.effect_max_distance);
         let range_sq = range * range;
@@ -152,7 +152,7 @@ impl SolsticeSleigh {
         best.map(|(id, _, _)| id)
     }
 
-    /// Going Sledding, on the carrier and its most wounded ally in range.
+    // Going Sledding, on the carrier and its most wounded ally in range.
     fn sled(&self, ctx: &mut StableSim<'_>, caster: usize) {
         let Some((level, team)) = ctx
             .get_entity(caster)
@@ -179,8 +179,8 @@ impl SolsticeSleigh {
         }
     }
 
-    /// What Shared Riches pays a holder: this much gold, this often.
-    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    // What Shared Riches pays a holder: this much gold, this often.
+    // [`crate::SharedRiches`] does the paying, from the match hook.
     pub(crate) fn shared_riches(&self) -> (usize, f64) {
         (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
@@ -246,9 +246,9 @@ impl StableItem for SolsticeSleigh {
         }
     }
 
-    /// A skill's hit again, as `on_attack` tells of it, a tick of its damage
-    /// over time included: it is not known that `on_skill_hit` hears of every
-    /// one (see [`ImmobilizeWatch`]).
+    // A skill's hit again, as `on_attack` tells of it, a tick of its damage
+    // over time included: it is not known that `on_skill_hit` hears of every
+    // one (see [`ImmobilizeWatch`]).
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -268,7 +268,7 @@ impl StableItem for SolsticeSleigh {
         }
     }
 
-    /// Sleds once however many enemies were immobilized this tick.
+    // Sleds once however many enemies were immobilized this tick.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if !self.watch.update(ctx, player).is_empty() {
             let carrier = ctx

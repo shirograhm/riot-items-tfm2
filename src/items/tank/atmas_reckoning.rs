@@ -112,7 +112,7 @@ impl AtmasReckoning {
         self
     }
 
-    /// Crit chance Big Hands grants at full stacks, for Smart Builds.
+    // Crit chance Big Hands grants at full stacks, for Smart Builds.
     pub fn max_passive_crit(&self) -> i32 {
         self.effect_stack_crit_chance * self.effect_max_stacks as i32
     }

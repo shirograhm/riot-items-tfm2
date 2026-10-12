@@ -35,34 +35,34 @@ use std::sync::Mutex;
 
 use mod_api_stable::StableClient;
 
-/// The draft screen's champion grid. The screen's root is `main`, like every
-/// screen's; `#champions` is its scroll view and `#contents` the table of
-/// slots inside it (`banpick/layout.ui`).
+// The draft screen's champion grid. The screen's root is `main`, like every
+// screen's; `#champions` is its scroll view and `#contents` the table of
+// slots inside it (`banpick/layout.ui`).
 const GRID: &str = "main.champions.contents";
 
-/// Frames between two readings of the grid. A pick stands for seconds, and a
-/// reading is two lookups for each of some seventy slots.
+// Frames between two readings of the grid. A pick stands for seconds, and a
+// reading is two lookups for each of some seventy slots.
 const SCAN_FRAMES: u32 = 15;
 
-/// One champion a side picked, as the grid showed it.
+// One champion a side picked, as the grid showed it.
 #[derive(Clone, PartialEq)]
 pub(crate) struct Pick {
-    /// The slot's node name. The champion's id if the game names slots for
-    /// their champion, a position in the grid if it does not.
+    // The slot's node name. The champion's id if the game names slots for
+    // their champion, a position in the grid if it does not.
     pub(crate) node: String,
-    /// The `#name` label's text: a name in the game's language, or the
-    /// `#asset/...` reference the label resolves one from. Empty when the label
-    /// gave nothing.
+    // The `#name` label's text: a name in the game's language, or the
+    // `#asset/...` reference the label resolves one from. Empty when the label
+    // gave nothing.
     pub(crate) name: String,
     red: bool,
-    /// The number on the badge, or `usize::MAX` when it is not one.
+    // The number on the badge, or `usize::MAX` when it is not one.
     order: usize,
 }
 
 impl Pick {
-    /// Whether this is the champion in the slot `node` showing `name`. By name
-    /// where there is one: a filtered grid may reuse a node for another
-    /// champion, and a name cannot be reused.
+    // Whether this is the champion in the slot `node` showing `name`. By name
+    // where there is one: a filtered grid may reuse a node for another
+    // champion, and a name cannot be reused.
     fn is(&self, node: &str, name: &str) -> bool {
         if self.name.is_empty() || name.is_empty() {
             self.node == node
@@ -73,14 +73,14 @@ impl Pick {
 }
 
 struct Watch {
-    /// Whether the grid was up on the last frame: a draft is on.
+    // Whether the grid was up on the last frame: a draft is on.
     drafting: bool,
     frames: u32,
-    /// Whether this draft's grid has been written to the log yet.
+    // Whether this draft's grid has been written to the log yet.
     described: bool,
     picks: Vec<Pick>,
-    /// Goes up whenever `picks` changes, so a reader can tell without
-    /// comparing them.
+    // Goes up whenever `picks` changes, so a reader can tell without
+    // comparing them.
     revision: u64,
 }
 
@@ -92,8 +92,8 @@ static WATCH: Mutex<Watch> = Mutex::new(Watch {
     revision: 0,
 });
 
-/// Reads the draft screen's picks while it is up. Called every client frame;
-/// off the draft screen it is one failed path lookup.
+// Reads the draft screen's picks while it is up. Called every client frame;
+// off the draft screen it is one failed path lookup.
 pub(crate) fn sync(ctx: &StableClient<'_>) {
     let up = ctx.ui_exists(GRID);
     let Ok(mut watch) = WATCH.lock() else {
@@ -173,7 +173,7 @@ pub(crate) fn sync(ctx: &StableClient<'_>) {
     }
 }
 
-/// One side's picks, in the order of the numbers on their badges.
+// One side's picks, in the order of the numbers on their badges.
 pub(crate) fn picks(red: bool) -> Vec<Pick> {
     let Ok(watch) = WATCH.lock() else {
         return Vec::new();
@@ -190,14 +190,14 @@ pub(crate) fn picks(red: bool) -> Vec<Pick> {
     side
 }
 
-/// A number that changes whenever the picks held do.
+// A number that changes whenever the picks held do.
 pub(crate) fn revision() -> u64 {
     WATCH.lock().map_or(0, |watch| watch.revision)
 }
 
-/// Drops the picks held. For when the match they were drafted for has begun:
-/// a Tactics screen reached without a draft before it must not be told about
-/// the last one.
+// Drops the picks held. For when the match they were drafted for has begun:
+// a Tactics screen reached without a draft before it must not be told about
+// the last one.
 pub(crate) fn forget() {
     let Ok(mut watch) = WATCH.lock() else {
         return;

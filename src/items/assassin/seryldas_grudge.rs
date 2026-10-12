@@ -3,13 +3,13 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
 
-/// Bitter Cold's slow. The name is also a `view_buffs` binding in
-/// `view/effects.view_effects` that draws Rylai's frost at the slowed unit's
-/// feet (`effects/rylais_frost`), so the picture is up exactly while the slow
-/// is. The base item and its Radiant share it.
+// Bitter Cold's slow. The name is also a `view_buffs` binding in
+// `view/effects.view_effects` that draws Rylai's frost at the slowed unit's
+// feet (`effects/rylais_frost`), so the picture is up exactly while the slow
+// is. The base item and its Radiant share it.
 const SLOW_BUFF: &str = "seryldas_grudge_slow";
-/// The same slow on a minion, under a name of its own for frost drawn at a
-/// minion's size (`effects/rylais_frost_small`).
+// The same slow on a minion, under a name of its own for frost drawn at a
+// minion's size (`effects/rylais_frost_small`).
 const SMALL_SLOW_BUFF: &str = "seryldas_grudge_slow_small";
 
 #[derive(Clone, Debug)]
@@ -140,9 +140,9 @@ impl StableItem for SeryldasGrudge {
         _is_crit: bool,
     ) {
         // Ability damage is a skill's hit and every tick of a skill's damage
-        // over time, which the engine reports as a kind of its own. Only the
-        // hit used to count, so a burn that wore a target down to the
-        // threshold never slowed it.
+        // over time, which the engine reports as a kind of its own. With only
+        // the hit counted, a burn that wears a target down to the threshold
+        // would never slow it.
         let ability = matches!(
             attack_type,
             AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield

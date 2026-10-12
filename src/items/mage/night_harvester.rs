@@ -136,9 +136,9 @@ impl StableItem for NightHarvester {
         }
     }
 
-    /// Soulrend. Ability damage sets it off, a tick of damage over time
-    /// included. Its own damage lands as an `Item` hit, which this does not
-    /// answer to.
+    // Soulrend. Ability damage sets it off, a tick of damage over time
+    // included. Its own damage lands as an `Item` hit, which this does not
+    // answer to.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -201,7 +201,7 @@ impl StableItem for NightHarvester {
         self.procs.clear();
     }
 
-    /// Lands the Soulrend damage whose delay has run out.
+    // Lands the Soulrend damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }

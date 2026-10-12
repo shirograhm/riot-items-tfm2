@@ -3,22 +3,22 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, sized_range, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS};
 
-/// Abyssal Mask — Unmake, an aura that lowers the magic resistance of the
-/// enemy champions around the carrier.
-///
-/// The same shape as `FrozenHeart`'s Winter's Caress: a short buff on every
-/// enemy champion in range, put back on the shared aura cycle
-/// ([`AURA_REFRESH_TICKS`]), so an enemy who walks out keeps it for at most
-/// [`AURA_DURATION_TICKS`] and one who walks in has it within a cycle.
-///
-/// Riot's Unmake now reads "take 12% more magic damage". This is the older
-/// form of it, the one the item was asked for with: less magic resistance.
-///
-/// # Both variants share the buff name
-///
-/// Same-name buffs stack, and re-applying is a remove followed by an add: one
-/// `entity_remove_buff` clears every copy. So two Masks standing by the same
-/// enemy leave one Unmake on them, not two.
+// Abyssal Mask — Unmake, an aura that lowers the magic resistance of the
+// enemy champions around the carrier.
+//
+// The same shape as `FrozenHeart`'s Winter's Caress: a short buff on every
+// enemy champion in range, put back on the shared aura cycle
+// ([`AURA_REFRESH_TICKS`]), so an enemy who walks out keeps it for at most
+// [`AURA_DURATION_TICKS`] and one who walks in has it within a cycle.
+//
+// Riot's Unmake now reads "take 12% more magic damage". This is the older
+// form of it: less magic resistance.
+//
+// # Both variants share the buff name
+//
+// Same-name buffs stack, and re-applying is a remove followed by an add: one
+// `entity_remove_buff` clears every copy. So two Masks standing by the same
+// enemy leave one Unmake on them, not two.
 #[derive(Clone, Debug)]
 pub struct AbyssalMask {
     meta: ItemMeta,
@@ -30,7 +30,7 @@ pub struct AbyssalMask {
     effect_percent_mr_shred: i32,
     effect_max_distance: usize,
     // Non-vital stats (internals)
-    /// Ticks until the aura re-applies, on the shared cycle.
+    // Ticks until the aura re-applies, on the shared cycle.
     refresh_cooldown: usize,
 }
 

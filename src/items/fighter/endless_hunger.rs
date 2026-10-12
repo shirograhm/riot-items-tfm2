@@ -6,8 +6,8 @@ use crate::{
     BUFF_REFRESH_PERIOD_TICKS,
 };
 
-/// Famine's ability haste, re-added on a cycle so it follows the carrier's
-/// Attack Damage. The base item and its Radiant share both buff names.
+// Famine's ability haste, re-added on a cycle so it follows the carrier's
+// Attack Damage. The base item and its Radiant share both buff names.
 const FAMINE_BUFF: &str = "endless_hunger_famine";
 const FEAST_BUFF: &str = "endless_hunger_feast";
 

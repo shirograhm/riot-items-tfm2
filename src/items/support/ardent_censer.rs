@@ -6,8 +6,8 @@ use crate::{apply_config, ticks, ItemMeta, SelfCastWatch};
 #[derive(Clone, Debug)]
 pub struct ArdentCenser {
     meta: ItemMeta,
-    /// Shared by both variants: Sanctify is a state on the ally rather than
-    /// a per-carrier stack, and the two variants grant the same amount.
+    // Shared by both variants: Sanctify is a state on the ally rather than
+    // a per-carrier stack, and the two variants grant the same amount.
     sanctify_buff: &'static str,
     price: usize,
     hp: i32,
@@ -85,10 +85,10 @@ impl ArdentCenser {
         self
     }
 
-    /// Puts Sanctify on `target`. Re-applying is a remove followed by an add
-    /// rather than a `has_buff` gate: refreshing means replacing the instance,
-    /// and one `entity_remove_buff` clears every copy, so a multi-hit cast
-    /// cannot leave two on the same ally.
+    // Puts Sanctify on `target`. Re-applying is a remove followed by an add
+    // rather than a `has_buff` gate: refreshing means replacing the instance,
+    // and one `entity_remove_buff` clears every copy, so a multi-hit cast
+    // cannot leave two on the same ally.
     fn sanctify(&self, ctx: &mut StableSim<'_>, target: usize) {
         ctx.entity_remove_buff(target, self.sanctify_buff);
         ctx.add_buff(

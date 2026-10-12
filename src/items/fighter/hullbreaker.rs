@@ -7,12 +7,12 @@ use crate::{
 };
 
 // Skipper: Every fifth basic attack against champions and monsters deals bonus
-// physical damage, increased against turrets.
+// physical damage on-hit, increased against turrets.
 //
 // Boarding Party: Allied minions nearby gain armor and magic resistance.
 
-/// One name for both tiers, so two carriers near the same wave replace each
-/// other's bonus instead of stacking it.
+// One name for both tiers, so two carriers near the same wave replace each
+// other's bonus instead of stacking it.
 const BOARDING_PARTY_BUFF: &str = "hullbreaker_boarding_party";
 
 #[derive(Clone, Debug)]
@@ -110,9 +110,9 @@ impl Hullbreaker {
         self
     }
 
-    /// Boarding Party, refreshed on the shared aura cycle: every allied minion
-    /// in range has its bonus replaced, and one that walks out keeps it until
-    /// the buff runs out.
+    // Boarding Party, refreshed on the shared aura cycle: every allied minion
+    // in range has its bonus replaced, and one that walks out keeps it until
+    // the buff runs out.
     fn boarding_party(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
@@ -211,10 +211,10 @@ impl StableItem for Hullbreaker {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -255,18 +255,20 @@ impl StableItem for Hullbreaker {
         if ctx.distance_sq(caster, target) > reach * reach {
             bonus = percent_of(bonus, self.effect_ranged_percent);
         }
-        self.procs.push_physical(ctx, target, bonus);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus);
         self.attack_count = 0;
     }
 
-    /// Lands the Skipper hits whose delay has run out, and keeps Boarding
-    /// Party on the minions around the carrier.
+    // Lands the Skipper hits that could not go into their swing, once their
+    // delay has run out, and keeps Boarding Party on the minions around the
+    // carrier.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.boarding_party(ctx, player);
     }
 
-    /// Skipper's count survives the Radiant upgrade rather than resetting.
+    // Skipper's count survives the Radiant upgrade rather than resetting.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.attack_count as u64

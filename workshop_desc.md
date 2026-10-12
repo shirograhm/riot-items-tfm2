@@ -1,5 +1,6 @@
 Adds 6 item slots & 237 new items (138 base + 99 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
+Champions start each match with 250 gold instead of 500.  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
 
@@ -40,12 +41,27 @@ This mod works directly out of the box! However, if any of the items feel too st
 
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]  
 2. Edit the new [b]config.json[/b] with the custom values that you want.  
-3. Run [b]apply_config.bat[/b] to auto-generate the item effect text with the new values. If you don't do this, the mod may not update the values correctly.  
-4. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!  
+3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!  
+4. If you changed any of the base game's own items (Bloodthirster, Thornmail and the like), start the game twice: the first start writes the new values, the second one loads them.  
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.  
 
-Both files (config-default & apply_config.bat) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+Both files (config-default.json & config.json) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
+
+[h1] Item Patches [/h1]
+Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b]. Boots, jungle items and support-only items are judged on win rate alone, since Smart Builds decides who builds them. A patch may change an item's base version, its Radiant version, or both, and not always in the same stats. No item is left with less of a flat stat than an item it is built from, and a Radiant item's passive is never weaker than its base item's.  
+
+Want to set the numbers yourself? Open [b]Options > Competition[/b] from the pause menu and click [b]Open[/b] next to [b]Item Patcher Settings[/b]: a window with every item a patch can change. Pick an item and type a [b]New Value[/b] for any of its numbers. The same window lets you give a number a [b]Minimum[/b] and a [b]Maximum[/b] that the automatic patches stay within, or turn on [b]Protected[/b] so that they never move it. These settings are kept in your save.  
+
+Your new values are released together as a manual item patch: click [b]Queue Manual Patch[/b] at the bottom of the window. The patch is released with the next news that reaches your inbox, as a hotfix of the current version, and changes nothing but the numbers you set. The button is greyed out while there are no new values to release, and after queueing until the patch has been released. [b]Changed Items Only[/b], at the bottom left, narrows the list to the items you have set new values for.  
+
+To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
+- [b]enabled[/b]: set to false to turn item patches off.  
+- [b]automatic[/b]: set to false to stop item patches from arriving with the champion patches. Manual item patches still work, and patches you already have stay in effect.  
+- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
+- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (65% to 140% by default).  
+
+Re-run the game after editing it. Without a config-autopatch.json, and for anything yours leaves out, the mod uses config-autopatch-default.json.  
 
 [h1] Custom Item Builds [/h1]
 Pick any item for any champion, in-game:
@@ -79,7 +95,7 @@ Works alongside [b]Bows' Drafter's Toolbox[/b]. With both enabled, its Advanced 
 [h2] Credits [/h2]
 Thank you to [b]@SUB[/b] from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
 
-Special thanks to all the playtesters that helped me out along the way by sending me crash dumps and testing beta builds:
+Special thanks to all the playtesters/modders that helped me out along the way by offering ideas, sending crash dumps and testing beta builds:
 [b]@toxicsnek[/b], [b]@Monsoon[/b], [b]@blasé[/b], [b]@Guardsman C[/b], [b]@kmrn[/b]
 
 Thank you to all the translators:
@@ -94,5 +110,5 @@ This is a free fan-made mod. I am not affiliated with Riot Games in any way. Ite
 
 [Code Mod Notice]
 This Workshop item contains native/executable code files. Enabling it allows code to run inside the game process. Use only mods from creators you trust.
-Files: apply_config.bat, apply_config.ps1, riot_items_tfm2.dll
+Files: riot_items_tfm2.dll
 Runs on: Windows

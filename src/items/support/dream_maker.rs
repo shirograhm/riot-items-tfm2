@@ -3,30 +3,30 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch, ADAPTIVE_FORCE_AD_RATIO};
 
-/// Dream Maker — what World Atlas grows into for a support that keeps its
-/// allies up: the passive it is named for, and the gold the Atlas line pays
-/// ([`crate::SharedRiches`]).
-///
-/// # Dream Maker
-///
-/// A skill the carrier casts on an allied champion (a heal, a shield or a
-/// buff) blows that ally a Dream Bubble. For as long as the bubble lasts the
-/// ally takes less damage from abilities and has Adaptive Force: ability
-/// power for an ally with more of that than attack damage, attack damage at
-/// [`ADAPTIVE_FORCE_AD_RATIO`] for any other, the way Diamond Tipped Spear's
-/// Pierce reads it.
-///
-/// One cast, one bubble: while it lasts no other is blown, and when it ends
-/// the cooldown starts. Both variants share the buff name, so two Dream
-/// Makers blowing on one ally leave one bubble, not two.
-///
-/// # Who gets the bubble
-///
-/// The nearest allied champion the cast reached. A skill cast on an ally
-/// names only that ally, so that is the one, as Ardent Censer's Sanctify has
-/// it. A skill the carrier casts on itself that heals around it (the Monk's)
-/// names no ally: of the ones it is seen to heal ([`SelfCastWatch`]), the
-/// nearest to the carrier gets it.
+// Dream Maker — what World Atlas grows into for a support that keeps its
+// allies up: the passive it is named for, and the gold the Atlas line pays
+// ([`crate::SharedRiches`]).
+//
+// # Dream Maker
+//
+// A skill the carrier casts on an allied champion (a heal, a shield or a
+// buff) blows that ally a Dream Bubble. For as long as the bubble lasts the
+// ally takes less damage from abilities and has Adaptive Force: ability
+// power for an ally with more of that than attack damage, attack damage at
+// [`ADAPTIVE_FORCE_AD_RATIO`] for any other, the way Diamond Tipped Spear's
+// Pierce reads it.
+//
+// One cast, one bubble: while it lasts no other is blown, and when it ends
+// the cooldown starts. Both variants share the buff name, so two Dream
+// Makers blowing on one ally leave one bubble, not two.
+//
+// # Who gets the bubble
+//
+// The nearest allied champion the cast reached. A skill cast on an ally
+// names only that ally, so that is the one, as Ardent Censer's Sanctify has
+// it. A skill the carrier casts on itself that heals around it (the Monk's)
+// names no ally: of the ones it is seen to heal ([`SelfCastWatch`]), the
+// nearest to the carrier gets it.
 #[derive(Clone, Debug)]
 pub struct DreamMaker {
     meta: ItemMeta,
@@ -40,16 +40,16 @@ pub struct DreamMaker {
     effect_bonus_gold: usize,
     effect_gold_interval_seconds: f64,
     // Non-vital stats (internals)
-    /// Ticks the bubble blown last still has to run; zero when none is out.
+    // Ticks the bubble blown last still has to run; zero when none is out.
     bubble: usize,
-    /// Ticks until another can be blown, counted from when the last one ended.
+    // Ticks until another can be blown, counted from when the last one ended.
     cooldown: usize,
     self_cast: SelfCastWatch,
 }
 
-/// The Dream Bubble: the buff that carries what it grants. It is also the name
-/// the `view_buffs` binding in `view/effects.view_effects` draws the bubble
-/// under (`effects/dream_bubble`).
+// The Dream Bubble: the buff that carries what it grants. It is also the name
+// the `view_buffs` binding in `view/effects.view_effects` draws the bubble
+// under (`effects/dream_bubble`).
 const BUBBLE_BUFF: &str = "dream_maker_bubble";
 
 impl DreamMaker {
@@ -110,21 +110,21 @@ impl DreamMaker {
         self
     }
 
-    /// Whether a bubble can be blown: none is out and the cooldown has run.
+    // Whether a bubble can be blown: none is out and the cooldown has run.
     fn ready(&self) -> bool {
         self.bubble == 0 && self.cooldown == 0
     }
 
-    /// Blows a Dream Bubble to `ally`, if one can be blown, and starts its time.
+    // Blows a Dream Bubble to `ally`, if one can be blown, and starts its time.
     fn blow_to(&mut self, ctx: &mut StableSim<'_>, ally: usize) {
         if self.ready() && self.blow(ctx, ally) {
             self.bubble = ticks(self.effect_duration_seconds).max(1);
         }
     }
 
-    /// Blows a Dream Bubble to `ally`, in place of any it already has (another
-    /// Dream Maker's). Whether it was blown: not to an ally that is no living
-    /// champion.
+    // Blows a Dream Bubble to `ally`, in place of any it already has (another
+    // Dream Maker's). Whether it was blown: not to an ally that is no living
+    // champion.
     fn blow(&self, ctx: &mut StableSim<'_>, ally: usize) -> bool {
         let Some(favors_ap) = ctx
             .get_entity(ally)
@@ -156,8 +156,8 @@ impl DreamMaker {
         true
     }
 
-    /// What Shared Riches pays a holder: this much gold, this often.
-    /// [`crate::SharedRiches`] does the paying, from the match hook.
+    // What Shared Riches pays a holder: this much gold, this often.
+    // [`crate::SharedRiches`] does the paying, from the match hook.
     pub(crate) fn shared_riches(&self) -> (usize, f64) {
         (self.effect_bonus_gold, self.effect_gold_interval_seconds)
     }
@@ -239,8 +239,8 @@ impl StableItem for DreamMaker {
         self.blow_to(ctx, target);
     }
 
-    /// Runs the bubble's time and the cooldown that starts as it ends, and the
-    /// watch on a self-cast.
+    // Runs the bubble's time and the cooldown that starts as it ends, and the
+    // watch on a self-cast.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if self.bubble > 0 {
             self.bubble -= 1;

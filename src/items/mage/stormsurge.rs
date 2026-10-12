@@ -3,15 +3,15 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
 
-/// How far ahead of the damage the bolt is drawn.
-///
-/// `effects/stormsurge_lightning` is six frames at 0.1s, so at 60 ticks a second
-/// each frame is 6 ticks. Three frames of lead puts the damage on the third/
-/// fourth frame — where the bolt is fully extended — instead of on frame one,
-/// which had the hit landing as the bolt was still only a wisp at the top.
-///
-/// Retune by frames: this is `frames * 6`, and the frame count and durations are
-/// in `effects/stormsurge_lightning#anim.fanim`.
+// How far ahead of the damage the bolt is drawn.
+//
+// `effects/stormsurge_lightning` is six frames at 0.1s, so at 60 ticks a second
+// each frame is 6 ticks. Three frames of lead puts the damage on the third/
+// fourth frame — where the bolt is fully extended — instead of on frame one,
+// which had the hit landing as the bolt was still only a wisp at the top.
+//
+// Retune by frames: this is `frames * 6`, and the frame count and durations are
+// in `effects/stormsurge_lightning#anim.fanim`.
 const STRIKE_LEAD_TICKS: usize = 18;
 
 #[derive(Clone, Debug)]
@@ -20,15 +20,15 @@ struct Tracked {
     accumulated: usize,
     window: usize,
     strike: usize,
-    /// Whether the bolt for the pending strike has been drawn yet — the strike
-    /// countdown alone cannot say, because the tick it fires on is passed
-    /// through once and the effect must not repeat on later ticks.
+    // Whether the bolt for the pending strike has been drawn yet — the strike
+    // countdown alone cannot say, because the tick it fires on is passed
+    // through once and the effect must not repeat on later ticks.
     flashed: bool,
     cooldown: usize,
 }
 
 impl Tracked {
-    /// Whether this entry still has anything left to do.
+    // Whether this entry still has anything left to do.
     fn live(&self) -> bool {
         self.window > 0 || self.strike > 0 || self.cooldown > 0
     }
@@ -63,9 +63,9 @@ impl Stormsurge {
             // Our own bolt, bound in `view/effects.view_effects` to
             // `effects/stormsurge_lightning` (tag `strike`).
             //
-            // This used to be `lightning_mage_skill2`, which drew nothing: that
-            // name is registered as a view *projectile*, and `play_view_effect`
-            // only searches the view-effect table. An unknown name is not an
+            // Not `lightning_mage_skill2`, which draws nothing: that name is
+            // registered as a view *projectile*, and `play_view_effect` only
+            // searches the view-effect table. An unknown name is not an
             // error — it silently draws nothing. See the note in `update`.
             strike_effect: "riot_stormsurge_squall",
             price: 700,
@@ -122,7 +122,7 @@ impl Stormsurge {
         self
     }
 
-    /// The entry for `target`, created idle if this is the first hit on it.
+    // The entry for `target`, created idle if this is the first hit on it.
     fn entry(&mut self, target: usize) -> &mut Tracked {
         if let Some(index) = self
             .tracked
@@ -240,7 +240,7 @@ impl StableItem for Stormsurge {
         tracked.accumulated = 0;
     }
 
-    /// Lands the Squall strikes whose delay has run out.
+    // Lands the Squall strikes whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if self.tracked.is_empty() {
             return;

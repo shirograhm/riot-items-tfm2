@@ -163,8 +163,8 @@ impl StableItem for Riftmaker {
         self.apply_infusion(ctx, player);
     }
 
-    /// Corruption. Ability damage to an enemy champion sets it off, a tick of
-    /// damage over time included.
+    // Corruption. Ability damage to an enemy champion sets it off, a tick of
+    // damage over time included.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

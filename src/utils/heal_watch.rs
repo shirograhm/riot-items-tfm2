@@ -27,43 +27,43 @@
 
 use mod_api_stable::*;
 
-/// How long a cast is watched. The heal lands at the skill's `start_timing`
-/// (28 ticks into the Monk's), so this only has to outlast the slowest cast.
+// How long a cast is watched. The heal lands at the skill's `start_timing`
+// (28 ticks into the Monk's), so this only has to outlast the slowest cast.
 const WATCH_TICKS: usize = 90;
 
-/// The two statistics read, out of the player's whole document.
+// The two statistics read, out of the player's whole document.
 #[derive(serde::Deserialize)]
 struct Healing {
     heal: u64,
     self_heal: u64,
 }
 
-/// A heal the carrier landed on an allied champion.
+// A heal the carrier landed on an allied champion.
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct AllyHeal {
     pub(crate) ally: usize,
-    /// The health restored.
+    // The health restored.
     pub(crate) amount: usize,
 }
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct HealWatch {
-    /// Ticks left to watch; 0 when nothing is being watched.
+    // Ticks left to watch; 0 when nothing is being watched.
     remaining: usize,
     caster: usize,
     player: usize,
-    /// The carrier's healing of other champions, as last read: at the cast,
-    /// or on the last tick an ally's health rose.
+    // The carrier's healing of other champions, as last read: at the cast,
+    // or on the last tick an ally's health rose.
     healed_others: u64,
-    /// (id, health) of the carrier's living allied champions, as last read.
+    // (id, health) of the carrier's living allied champions, as last read.
     allies: Vec<(usize, usize)>,
 }
 
 impl HealWatch {
-    /// Starts watching, from `on_skill_hit`: the carrier cast an ally-targeted
-    /// skill. The heal has not landed yet, so what is read here is the state
-    /// before it. A watch that is already running is only given more time, and
-    /// keeps what it last read.
+    // Starts watching, from `on_skill_hit`: the carrier cast an ally-targeted
+    // skill. The heal has not landed yet, so what is read here is the state
+    // before it. A watch that is already running is only given more time, and
+    // keeps what it last read.
     pub(crate) fn open(&mut self, ctx: &StableSim<'_>, caster: usize) {
         if self.is_open() && self.caster == caster {
             self.remaining = WATCH_TICKS;
@@ -92,8 +92,8 @@ impl HealWatch {
         self.remaining > 0
     }
 
-    /// Called every tick, from `update`. Returns the heals the carrier landed
-    /// on allied champions since the last tick.
+    // Called every tick, from `update`. Returns the heals the carrier landed
+    // on allied champions since the last tick.
     pub(crate) fn poll(&mut self, ctx: &StableSim<'_>) -> Vec<AllyHeal> {
         if !self.is_open() {
             return Vec::new();
@@ -148,9 +148,9 @@ impl HealWatch {
         healed
     }
 
-    /// Reads the state again, so that a heal the item itself has just given in
-    /// the carrier's name is not read back next tick as one of the carrier's.
-    /// Heals apply at once (`Entity::healed_inner`), so this sees them.
+    // Reads the state again, so that a heal the item itself has just given in
+    // the carrier's name is not read back next tick as one of the carrier's.
+    // Heals apply at once (`Entity::healed_inner`), so this sees them.
     pub(crate) fn resync(&mut self, ctx: &StableSim<'_>) {
         if !self.is_open() {
             return;
@@ -164,15 +164,15 @@ impl HealWatch {
     }
 }
 
-/// A [`HealWatch`] for the items that only ask whether a cast on the carrier
-/// reached an ally as well: it answers once for one cast, the way an
-/// ally-targeted skill is reported once.
+// A [`HealWatch`] for the items that only ask whether a cast on the carrier
+// reached an ally as well: it answers once for one cast, the way an
+// ally-targeted skill is reported once.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct SelfCastWatch(HealWatch);
 
 impl SelfCastWatch {
-    /// Starts watching, from `on_skill_hit`: the carrier cast an ally-targeted
-    /// skill on themselves.
+    // Starts watching, from `on_skill_hit`: the carrier cast an ally-targeted
+    // skill on themselves.
     pub(crate) fn open(&mut self, ctx: &StableSim<'_>, caster: usize) {
         self.0.open(ctx, caster);
     }
@@ -181,8 +181,8 @@ impl SelfCastWatch {
         self.0.close();
     }
 
-    /// Called every tick, from `update`. Returns the allied champions the
-    /// carrier healed since the last tick, which ends the watch.
+    // Called every tick, from `update`. Returns the allied champions the
+    // carrier healed since the last tick, which ends the watch.
     pub(crate) fn poll(&mut self, ctx: &StableSim<'_>) -> Vec<usize> {
         let healed = self.0.poll(ctx);
         if !healed.is_empty() {
@@ -192,8 +192,8 @@ impl SelfCastWatch {
     }
 }
 
-/// The player whose champion `caster` is. `on_skill_hit` is handed the entity
-/// and the statistics hang off the player.
+// The player whose champion `caster` is. `on_skill_hit` is handed the entity
+// and the statistics hang off the player.
 fn carrier_player(ctx: &StableSim<'_>, caster: usize) -> Option<usize> {
     (0..ctx.player_count()).find_map(|index| {
         let player_ref = ctx.player_at(index)?;
@@ -202,14 +202,14 @@ fn carrier_player(ctx: &StableSim<'_>, caster: usize) -> Option<usize> {
     })
 }
 
-/// The player's healing of champions other than their own, over the match.
+// The player's healing of champions other than their own, over the match.
 fn healed_others(ctx: &StableSim<'_>, player: usize) -> Option<u64> {
     let json = ctx.get_player(player)?.statistics_json("")?;
     let healing: Healing = serde_json::from_str(&json).ok()?;
     Some(healing.heal.saturating_sub(healing.self_heal))
 }
 
-/// (id, health) of every living allied champion other than the carrier.
+// (id, health) of every living allied champion other than the carrier.
 fn allies(ctx: &StableSim<'_>, caster: usize) -> Vec<(usize, usize)> {
     let Some(caster_team) = ctx.get_entity(caster).map(|caster_ref| caster_ref.team()) else {
         return Vec::new();

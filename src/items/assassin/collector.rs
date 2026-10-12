@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, ticks, ItemMeta, PROC_DELAY_SECONDS};
 
-/// The gold X that marks an execute: the `view_effects` binding of this name
-/// in `view/effects.view_effects` (`effects/collector_execute`).
+// The gold X that marks an execute: the `view_effects` binding of this name
+// in `view/effects.view_effects` (`effects/collector_execute`).
 const EXECUTE_EFFECT: &str = "riot_collector_execute";
 
 #[derive(Clone, Debug)]

@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, Elapsed, ItemMeta};
 
-/// Opening Barrage's attack speed. The base item and its Radiant share the
-/// name, so an upgrade mid-window replaces it rather than stacking a second one.
+// Opening Barrage's attack speed. The base item and its Radiant share the
+// name, so an upgrade mid-window replaces it rather than stacking a second one.
 const BARRAGE_BUFF: &str = "fiendhunter_bolts_barrage";
 
 #[derive(Clone, Debug)]
@@ -25,7 +25,7 @@ pub struct FiendhunterBolts {
     window_ticks: usize,
     empowered_attacks: usize,
     cooldown_ticks: usize,
-    /// Steps the cooldown by the time gone by, so it runs through a death.
+    // Steps the cooldown by the time gone by, so it runs through a death.
     clock: Elapsed,
 }
 

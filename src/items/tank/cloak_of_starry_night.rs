@@ -81,13 +81,13 @@ impl CloakOfStarryNight {
         self
     }
 
-    /// Limitless as the Stars. The magic resistance multiplier is a plain stat,
-    /// but the skill damage reduction it feeds has to track that resistance as
-    /// buffs and levels move it, so it is granted as a re-applied timed buff the
-    /// way `Overlord's Bloodmail` grants Tyranny.
-    ///
-    /// Read first, then remove-and-replace: the buff carries no resistance of
-    /// its own, so the number it is solved from is never one it produced.
+    // Limitless as the Stars. The magic resistance multiplier is a plain stat,
+    // but the skill damage reduction it feeds has to track that resistance as
+    // buffs and levels move it, so it is granted as a re-applied timed buff the
+    // way `Overlord's Bloodmail` grants Tyranny.
+    //
+    // Read first, then remove-and-replace: the buff carries no resistance of
+    // its own, so the number it is solved from is never one it produced.
     fn apply_limitless(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;

@@ -17,17 +17,17 @@ use crate::{apply_config, is_monster, percent_of, sized_range, ItemMeta, ProcQue
 // effects -- this item's own included, which would otherwise fire bolts
 // forever.
 
-/// The `view_projectiles` name in `view/effects.view_effects` that draws a
-/// bolt in flight (`effects/runaans_bolt`).
+// The `view_projectiles` name in `view/effects.view_effects` that draws a
+// bolt in flight (`effects/runaans_bolt`).
 const BOLT_PROJECTILE: &str = "riot_runaans_bolt";
-/// World units per tick. The base game's own ranged attacks fly at 4200-4300;
-/// the bolts go a little faster, which read as too slow at 4300.
+// World units per tick. The base game's own ranged attacks fly at 4200-4300;
+// the bolts go a little faster, which read as too slow at 4300.
 const BOLT_SPEED: u64 = 5000;
 
 #[derive(Clone, Debug)]
 pub struct RunaansHurricane {
     meta: ItemMeta,
-    /// The native effect this tier's bolts carry.
+    // The native effect this tier's bolts carry.
     bolt_hit: &'static str,
     price: usize,
     attack_speed_mult: i32,
@@ -98,8 +98,8 @@ impl RunaansHurricane {
         self
     }
 
-    /// The native effect this tier's bolts land through, for `lib.rs` to
-    /// register under [`RunaansHurricane::bolt_hit_name`].
+    // The native effect this tier's bolts land through, for `lib.rs` to
+    // register under [`RunaansHurricane::bolt_hit_name`].
     pub fn bolt_hit(&self) -> RunaansBolt {
         RunaansBolt {
             ad_percent: self.effect_ad_percent_damage,
@@ -110,10 +110,10 @@ impl RunaansHurricane {
         self.bolt_hit
     }
 
-    /// Up to `effect_max_targets` enemies other than `target` within range of
-    /// the carrier, as LoL measures it: every champion in range before any
-    /// other unit, nearest first within each. Turrets are never picked. The
-    /// default range sits just past a ranged champion's attack range (60).
+    // Up to `effect_max_targets` enemies other than `target` within range of
+    // the carrier, as LoL measures it: every champion in range before any
+    // other unit, nearest first within each. Turrets are never picked. The
+    // default range sits just past a ranged champion's attack range (60).
     fn bolt_targets(
         &self,
         ctx: &StableSim<'_>,
@@ -238,7 +238,7 @@ impl StableItem for RunaansHurricane {
         }
     }
 
-    /// Lands fallback bolts whose delay has run out.
+    // Lands fallback bolts whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }
@@ -252,8 +252,8 @@ impl StableItem for RunaansHurricane {
     }
 }
 
-/// Lands one Wind's Fury bolt: a share of the carrier's AD as physical damage,
-/// doubled on a critical strike rolled against their crit chance.
+// Lands one Wind's Fury bolt: a share of the carrier's AD as physical damage,
+// doubled on a critical strike rolled against their crit chance.
 #[derive(Clone, Debug)]
 pub struct RunaansBolt {
     ad_percent: f64,

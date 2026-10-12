@@ -11,6 +11,10 @@
     "remapping": "asset/riot_items_tfm2/setting/item_setting",
     "type": "merge"
   },
+  "asset/base/setting/game_setting": {
+    "remapping": "asset/riot_items_tfm2/setting/game_setting",
+    "type": "merge"
+  },
   "asset/base/aseprite_resources/ingame/item_icons_18x18#sheet": {
     "remapping": "asset/riot_items_tfm2/aseprite_resources/ingame/item_icons_640X640#sheet",
     "type": "override"
@@ -61,6 +65,10 @@
   },
   "asset/base/ui/layout/match_result": {
     "remapping": "asset/riot_items_tfm2/ui/layout/match_result",
+    "type": "override"
+  },
+  "asset/base/ui/layout/news_component/simple_content": {
+    "remapping": "asset/riot_items_tfm2/ui/layout/news_component/simple_content",
     "type": "override"
   },
   "asset/base/sound/sfx/riot_zhonyas_stasis": {

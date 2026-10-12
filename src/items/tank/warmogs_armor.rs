@@ -6,8 +6,8 @@ use crate::{
     BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
 };
 
-/// Warmog's Heart heals in a pulse every half second, each one half of the
-/// per-second share, so the rate the tooltip states is unchanged.
+// Warmog's Heart heals in a pulse every half second, each one half of the
+// per-second share, so the rate the tooltip states is unchanged.
 const REGEN_PERIOD_TICKS: usize = 30;
 
 #[derive(Clone, Debug)]
@@ -22,8 +22,8 @@ pub struct WarmogsArmor {
     effect_duration_seconds: f64,
     regen_cooldown: usize,
     move_speed_cooldown: usize,
-    /// Ticks left before Warmog's Heart is live again; every hit taken
-    /// restarts it at `effect_duration_seconds`.
+    // Ticks left before Warmog's Heart is live again; every hit taken
+    // restarts it at `effect_duration_seconds`.
     damaged_ticks: usize,
 }
 

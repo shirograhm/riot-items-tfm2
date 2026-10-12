@@ -12,19 +12,17 @@
 //! `#tabs` widened 704 -> 936 to fit it, and an `#item_stats` panel beside the
 //! three vanilla ones in `#data`. Only the rows are built at runtime.
 //!
-//! The first version spawned all of it with `ui_spawn_source` instead, on the
-//! reasoning that a bad override kills the whole screen —
+//! Declared, and not spawned with `ui_spawn_source`. A bad override does kill
+//! the whole screen —
 //!
 //! ```text
 //! [main_ui] failed to create main tab: Statistics
 //! ```
 //!
-//! — the way a missing fourth item slot killed Solorank, whereas a failed spawn
-//! leaves the vanilla screen standing. That reasoning was sound and the
-//! conclusion was still wrong, because it valued the wrong risk: **game code
+//! — where a failed spawn leaves the vanilla screen standing. But **game code
 //! rebuilds this screen's subtrees on its own tab switches**, and a spawned node
-//! is not in the layout it rebuilds from. So the tab disappeared on the first
-//! switch to Champ/Player/Team, and re-spawning it from [`heal`] traded that for
+//! is not in the layout it rebuilds from: the tab would disappear on the first
+//! switch to Champ/Player/Team, and re-spawning it from [`heal`] trades that for
 //! a visible flicker on every switch.
 //!
 //! A declared node has no such problem: the rebuild puts it back, because it is
@@ -59,67 +57,67 @@ use mod_api_stable::*;
 use crate::item_stats::{self, ItemInfo, Totals};
 use crate::strategy_ui::{tab_style, ICON_SHEET};
 
-/// How often to walk the tree looking for the statistics screen, in frames.
-///
-/// [`find_screen`] is a breadth-first `ui_child_names` sweep and running one per
-/// frame is a documented way to make this mod lag — but [`on_statistics_tab`]
-/// gates it to the one screen that needs it, so the throttle only has to bound
-/// repeated *failed* sweeps rather than pay for every other screen in the game.
-///
-/// It was a full second, which is what "the tab takes a moment to appear" was:
-/// the screen is up and the walk has not run yet. A twelfth of that is not
-/// noticeable and still collapses to a single successful sweep.
+// How often to walk the tree looking for the statistics screen, in frames.
+//
+// [`find_screen`] is a breadth-first `ui_child_names` sweep and running one per
+// frame is a documented way to make this mod lag — but [`on_statistics_tab`]
+// gates it to the one screen that needs it, so the throttle only has to bound
+// repeated *failed* sweeps rather than pay for every other screen in the game.
+//
+// It was a full second, which is what "the tab takes a moment to appear" was:
+// the screen is up and the walk has not run yet. A twelfth of that is not
+// noticeable and still collapses to a single successful sweep.
 const PROBE_EVERY: u32 = 5;
 
-/// How deep below the UI root [`find_screen`] will look.
-///
-/// The screen sits at depth 2 in the management scene (`main` -> `contents` ->
-/// the tab), so this has room to spare without turning a missed match into a
-/// sweep of the entire tree.
+// How deep below the UI root [`find_screen`] will look.
+//
+// The screen sits at depth 2 in the management scene (`main` -> `contents` ->
+// the tab), so this has room to spare without turning a missed match into a
+// sweep of the entire tree.
 const SCREEN_DEPTH: u32 = 4;
 
-/// Nodes [`find_screen`] will visit before giving up for this sweep.
+// Nodes [`find_screen`] will visit before giving up for this sweep.
 const SCREEN_NODES: u32 = 600;
 
-/// Frames between repaints while records are still being folded.
-///
-/// A repaint rewrites every visible row, and the order changes as samples land,
-/// so it cannot be skipped entirely during the scan — but it also does not need
-/// to happen at 60Hz for a table nobody is reading yet.
+// Frames between repaints while records are still being folded.
+//
+// A repaint rewrites every visible row, and the order changes as samples land,
+// so it cannot be skipped entirely during the scan — but it also does not need
+// to happen at 60Hz for a table nobody is reading yet.
 const REPAINT_EVERY: u32 = 12;
 
-/// Frames between checks that our spawned nodes are still there.
+// Frames between checks that our spawned nodes are still there.
 const HEAL_EVERY: u32 = 10;
 
-/// Frames between patch-backfill passes while the screen is up.
-///
-/// Thirty seconds. `wire` runs one on arrival, which is the pass that matters;
-/// this is the safety net for a screen the game hides rather than destroys, and
-/// for records that appear while it is open.
-///
-/// Slower than it was, because a pass now re-reads *every* record rather than
-/// only ids it has not seen — record ids are recycled, so "already scanned" is
-/// not a durable fact. Nothing is folded from records any more, so the only cost
-/// is the reads, and there is no reason to pay it every five seconds.
+// Frames between patch-backfill passes while the screen is up.
+//
+// Thirty seconds. `wire` runs one on arrival, which is the pass that matters;
+// this is the safety net for a screen the game hides rather than destroys, and
+// for records that appear while it is open.
+//
+// Slower than it was, because a pass now re-reads *every* record rather than
+// only ids it has not seen — record ids are recycled, so "already scanned" is
+// not a durable fact. Nothing is folded from records any more, so the only cost
+// is the reads, and there is no reason to pay it every five seconds.
 const SWEEP_EVERY: u32 = 1800;
 
-/// Rows spawned per repaint.
-///
-/// The full table is one row per item in the pool, which is around 150 nodes'
-/// worth of subtree. Spawning them in one frame is a visible hitch on arrival;
-/// spread over a few repaints it is not.
+// Rows spawned per repaint.
+//
+// The full table is one row per item in the pool, which is around 150 nodes'
+// worth of subtree. Spawning them in one frame is a visible hitch on arrival;
+// spread over a few repaints it is not.
 const SPAWN_PER_REPAINT: usize = 60;
 
-/// Most rows the table will ever show.
+// Most rows the table will ever show.
 const MAX_ROWS: usize = 300;
 
-/// Row pitch: 56px of data, a 1px separator, and the scroll view's 4px spacing.
+// Row pitch: 56px of data, a 1px separator, and the scroll view's 4px spacing.
 const ROW_PITCH: usize = 61;
 
-/// Column widths, left to right. They sum to less than the panel's 1600px on
-/// purpose — the vanilla champion table fills its width with three damage
-/// columns this table has no equivalent of, and stretching six columns across
-/// the gap would leave the numbers floating far from their headings.
+// Column widths, left to right. They sum to less than the panel's 1600px on
+// purpose — the vanilla champion table fills its width with three damage
+// columns this table has no equivalent of, and stretching six columns across
+// the gap would leave the numbers floating far from their headings.
 const COL_RANK: u32 = 68;
 const COL_NAME: u32 = 420;
 const COL_GAMES: u32 = 140;
@@ -127,29 +125,29 @@ const COL_WIN: u32 = 130;
 const COL_LOSE: u32 = 130;
 const COL_RATE: u32 = 150;
 const COL_PLAY: u32 = 150;
-/// Wider than the other percentage column because its heading is the longest on
-/// the table — "Primeiro Item" and "Первый предмет" both run past 130px, and a
-/// heading that reaches the sort arrow looks like a rendering fault.
+// Wider than the other percentage column because its heading is the longest on
+// the table — "Primeiro Item" and "Первый предмет" both run past 130px, and a
+// heading that reaches the sort arrow looks like a rendering fault.
 const COL_FIRST: u32 = 160;
 const COL_CHAMPS: u32 = 160;
 
-/// The three vanilla tabs and the panel each one shows, paired so the two can
-/// never drift apart. Named relative to the screen root, resolved at runtime.
+// The three vanilla tabs and the panel each one shows, paired so the two can
+// never drift apart. Named relative to the screen root, resolved at runtime.
 const VANILLA: [(&str, &str); 3] = [
     ("tabs.champion", "data.champion"),
     ("tabs.athlete", "data.athlete"),
     ("tabs.team", "data.team"),
 ];
 
-/// The header controls that filter the vanilla tables and not this one.
+// The header controls that filter the vanilla tables and not this one.
 const FILTERS: [&str; 4] = ["position", "patch", "year_filter", "league_filter"];
 
-/// Fills the patch list from the patches the scan has actually seen.
-///
-/// Rewritten whenever the set changes, which during a scan is often at first and
-/// then never. Rows past the end are hidden rather than removed, because the
-/// list is declared in the layout: a rebuilt panel brings all of them back and
-/// nothing here has to re-spawn anything.
+// Fills the patch list from the patches the scan has actually seen.
+//
+// Rewritten whenever the set changes, which during a scan is often at first and
+// then never. Rows past the end are hidden rather than removed, because the
+// list is declared in the layout: a rebuilt panel brings all of them back and
+// nothing here has to re-spawn anything.
 fn refresh_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
     let patches = item_stats::patches();
 
@@ -214,42 +212,42 @@ fn refresh_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
     });
 }
 
-/// The item categories the filter offers, in the order the list declares them.
-/// Row 0 is "All"; row `i` is `CATEGORIES[i - 1]`.
+// The item categories the filter offers, in the order the list declares them.
+// Row 0 is "All"; row `i` is `CATEGORIES[i - 1]`.
 const CATEGORIES: [&str; 6] = crate::item_catalog::CATEGORY_ORDER;
 
-/// Row height and the list's own padding, both as the layout declares them —
-/// needed here because the list is resized to the patches on offer.
+// Row height and the list's own padding, both as the layout declares them —
+// needed here because the list is resized to the patches on offer.
 const PATCH_ROW_HEIGHT: usize = 36;
 const PATCH_LIST_PADDING: usize = 8;
 
-/// Leading whitespace that indents a dropdown row's text.
-///
-/// The indent is in the text rather than in the node's `x`, because insetting
-/// the node moves its highlight in too and the row stops looking full-width.
-/// A `label:` block accepts nothing positional (size/font/align/colour/hover
-/// only), so this is the one place the offset can live.
+// Leading whitespace that indents a dropdown row's text.
+//
+// The indent is in the text rather than in the node's `x`, because insetting
+// the node moves its highlight in too and the row stops looking full-width.
+// A `label:` block accepts nothing positional (size/font/align/colour/hover
+// only), so this is the one place the offset can live.
 const ROW_INDENT: &str = "   ";
 
-/// Rows the patch list declares. One is "All"; the rest hold the patches found
-/// in the records, newest first, and any beyond this are not offered — a save
-/// with more than this many patches shows the most recent.
+// Rows the patch list declares. One is "All"; the rest hold the patches found
+// in the records, newest first, and any beyond this are not offered — a save
+// with more than this many patches shows the most recent.
 const PATCH_ROWS: usize = 12;
 
-/// Radiant, as the item documents number tiers: 0..=4 is
-/// starter/basic/epic/legendary/radiant.
+// Radiant, as the item documents number tiers: 0..=4 is
+// starter/basic/epic/legendary/radiant.
 const TIER_RADIANT: usize = 4;
 
-/// The tier the filter opens on.
-///
-/// Radiant rather than "All", because "All" opens on a table led by components:
-/// a BF Sword goes into half the builds in the game, so it out-samples every
-/// finished item and its win rate is the average of the whole format. The
-/// finished items are the question this tab is opened to ask.
+// The tier the filter opens on.
+//
+// Radiant rather than "All", because "All" opens on a table led by components:
+// a BF Sword goes into half the builds in the game, so it out-samples every
+// finished item and its win rate is the average of the whole format. The
+// finished items are the question this tab is opened to ask.
 const DEFAULT_TIER: Option<usize> = Some(TIER_RADIANT);
 
-/// i18n keys for the tier rows, All first — parallel to the `#tier{i}` nodes.
-/// Row `i` filters to tier `i - 1`, which is the item's own `tier` field.
+// i18n keys for the tier rows, All first — parallel to the `#tier{i}` nodes.
+// Row `i` filters to tier `i - 1`, which is the item's own `tier` field.
 const TIER_KEYS: [&str; 6] = [
     "item_stats.cat_all",
     "item_stats.tier_starter",
@@ -259,17 +257,17 @@ const TIER_KEYS: [&str; 6] = [
     "item_stats.tier_radiant",
 ];
 
-/// i18n keys for the lane rows, All first — parallel to the `#lane{i}` nodes.
-/// Row `i` filters to lane `i - 1`, which is `LaneV1` as its code.
-///
-/// The wording is vanilla's own `position.*`, copied per locale rather than
-/// referenced, because a dropdown row carries its indent in the string and
-/// vanilla's has none.
-/// The icon each lane draws on the button face, parallel to `LaneV1`'s codes.
-///
-/// The game's own, at the size its own position dropdown uses them (18x18).
-/// They are plain SVG sources rather than sheet tags, so `source` alone is the
-/// whole reference — no `rect_tag`, unlike the aseprite item sheet.
+// i18n keys for the lane rows, All first — parallel to the `#lane{i}` nodes.
+// Row `i` filters to lane `i - 1`, which is `LaneV1` as its code.
+//
+// The wording is vanilla's own `position.*`, copied per locale rather than
+// referenced, because a dropdown row carries its indent in the string and
+// vanilla's has none.
+// The icon each lane draws on the button face, parallel to `LaneV1`'s codes.
+//
+// The game's own, at the size its own position dropdown uses them (18x18).
+// They are plain SVG sources rather than sheet tags, so `source` alone is the
+// whole reference — no `rect_tag`, unlike the aseprite item sheet.
 const LANE_ICONS: [&str; 5] = [
     "asset/base/ui/icons/top",
     "asset/base/ui/icons/jungle",
@@ -287,7 +285,7 @@ const LANE_KEYS: [&str; 6] = [
     "item_stats.lane_support",
 ];
 
-/// i18n keys for the list rows, All first — parallel to the `#cat{i}` nodes.
+// i18n keys for the list rows, All first — parallel to the `#cat{i}` nodes.
 const CATEGORY_KEYS: [&str; 7] = [
     "item_stats.cat_all",
     "item_stats.cat_assassin",
@@ -298,24 +296,24 @@ const CATEGORY_KEYS: [&str; 7] = [
     "item_stats.cat_support",
 ];
 
-/// Which column the table is ordered by.
+// Which column the table is ordered by.
 #[derive(Clone, Copy, PartialEq, Eq, Default)]
 enum SortBy {
-    /// Display name, so it follows the game's language rather than the key.
+    // Display name, so it follows the game's language rather than the key.
     Item,
     Games,
     Wins,
     Losses,
     #[default]
     WinRate,
-    /// Times built per match.
+    // Times built per match.
     PlayRate,
-    /// Share of this item's buys where it went in the first slot.
+    // Share of this item's buys where it went in the first slot.
     FirstRate,
 }
 
 impl SortBy {
-    /// Header node under `#header`, and the click path that selects this column.
+    // Header node under `#header`, and the click path that selects this column.
     fn node(self) -> &'static str {
         match self {
             SortBy::Item => "item_name",
@@ -328,11 +326,11 @@ impl SortBy {
         }
     }
 
-    /// Which way round to sort when this column is first clicked.
-    ///
-    /// Descending for the numbers, because "most" is the question being asked of
-    /// every one of them. Ascending for the name, because that is what
-    /// alphabetical means to a reader.
+    // Which way round to sort when this column is first clicked.
+    //
+    // Descending for the numbers, because "most" is the question being asked of
+    // every one of them. Ascending for the name, because that is what
+    // alphabetical means to a reader.
     fn starts_descending(self) -> bool {
         self != SortBy::Item
     }
@@ -350,60 +348,60 @@ impl SortBy {
 
 #[derive(Default)]
 struct State {
-    /// Statistics screen path, once found. Cleared when the screen goes away so
-    /// a re-entered screen is searched for again rather than written to at a
-    /// stale path.
+    // Statistics screen path, once found. Cleared when the screen goes away so
+    // a re-entered screen is searched for again rather than written to at a
+    // stale path.
     screen: Option<String>,
-    /// Whether every handler is registered for the current screen.
+    // Whether every handler is registered for the current screen.
     wired: bool,
-    /// Whether this tab is the one currently showing.
+    // Whether this tab is the one currently showing.
     showing: bool,
-    /// Row nodes spawned so far.
+    // Row nodes spawned so far.
     spawned: usize,
-    /// Rows currently visible, so a shrinking table hides its tail.
+    // Rows currently visible, so a shrinking table hides its tail.
     shown: usize,
-    /// Set when new records land; cleared by a repaint.
+    // Set when new records land; cleared by a repaint.
     dirty: bool,
-    /// Category filter, as an index into [`CATEGORIES`]. `None` is "All".
+    // Category filter, as an index into [`CATEGORIES`]. `None` is "All".
     category: Option<usize>,
-    /// Tier filter — the item's own `tier`, 0..=4. `None` is "All".
+    // Tier filter — the item's own `tier`, 0..=4. `None` is "All".
     tier: Option<usize>,
-    /// Whether the tier list is dropped down.
+    // Whether the tier list is dropped down.
     tier_open: bool,
-    /// Lane filter — `LaneV1` as its code, 0..=4. `None` is "All".
+    // Lane filter — `LaneV1` as its code, 0..=4. `None` is "All".
     lane: Option<usize>,
-    /// Whether the lane list is dropped down.
+    // Whether the lane list is dropped down.
     lane_open: bool,
-    /// Patch filter. `None` is "All".
+    // Patch filter. `None` is "All".
     patch: Option<String>,
-    /// Patches currently offered by the list, in row order.
+    // Patches currently offered by the list, in row order.
     patch_rows: Vec<String>,
-    /// Whether the category list is dropped down.
+    // Whether the category list is dropped down.
     list_open: bool,
-    /// Whether the patch list is dropped down. Only ever one of the two.
+    // Whether the patch list is dropped down. Only ever one of the two.
     patch_open: bool,
-    /// Column the table is ordered by.
+    // Column the table is ordered by.
     sort: SortBy,
-    /// Which way round. Named for the *non*-default so that the derived
-    /// `Default` — which is what [`State::new`] builds on — gives the intended
-    /// opening view, win rate highest first, with no field to set by hand.
+    // Which way round. Named for the *non*-default so that the derived
+    // `Default` — which is what [`State::new`] builds on — gives the intended
+    // opening view, win rate highest first, with no field to set by hand.
     ascending: bool,
     tick: u32,
-    /// Counts every frame the screen is up, which `tick` does not — it only
-    /// advances while probing for the screen or while this tab is showing.
+    // Counts every frame the screen is up, which `tick` does not — it only
+    // advances while probing for the screen or while this tab is showing.
     sweep_tick: u32,
-    /// [`item_stats::folds`] when the table was last marked for a repaint.
+    // [`item_stats::folds`] when the table was last marked for a repaint.
     folds: u64,
-    /// The last event acted on, as `(path, frame)`. See [`already_handled`].
+    // The last event acted on, as `(path, frame)`. See [`already_handled`].
     last_event: Option<(String, u32)>,
 }
 
 impl State {
-    /// A fresh state, with the filters at their opening positions.
-    ///
-    /// Separate from `Default` rather than replacing it: `..Self::default()` is
-    /// what keeps this from being a hand-written list of all twenty fields, and
-    /// a `Default` impl cannot spell itself that way.
+    // A fresh state, with the filters at their opening positions.
+    //
+    // Separate from `Default` rather than replacing it: `..Self::default()` is
+    // what keeps this from being a hand-written list of all twenty fields, and
+    // a `Default` impl cannot spell itself that way.
     fn new() -> Self {
         Self {
             tier: DEFAULT_TIER,
@@ -419,12 +417,12 @@ fn with_state<T>(f: impl FnOnce(&mut State) -> T) -> Option<T> {
     Some(f(guard.get_or_insert_with(State::new)))
 }
 
-/// Paths this module has registered a handler for.
-///
-/// Same hazard and same fix as the build editor's set: a handler outlives the
-/// node it was registered for, so registering twice on one live path runs the
-/// handler twice, and a process-lifetime set would leave the *second* visit to
-/// this screen unwired. Cleared only on teardown.
+// Paths this module has registered a handler for.
+//
+// Same hazard and same fix as the build editor's set: a handler outlives the
+// node it was registered for, so registering twice on one live path runs the
+// handler twice, and a process-lifetime set would leave the *second* visit to
+// this screen unwired. Cleared only on teardown.
 static REGISTERED: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
 
 fn register_once(ctx: &mut StableClient<'_>, path: &str) {
@@ -448,10 +446,10 @@ fn forget_registrations() {
     }
 }
 
-/// Per-frame entry point, called from the mod's one client hook.
-///
-/// Ordered before that hook's strategy-screen early return, since this screen is
-/// not that one.
+// Per-frame entry point, called from the mod's one client hook.
+//
+// Ordered before that hook's strategy-screen early return, since this screen is
+// not that one.
 pub fn sync(ctx: &mut StableClient<'_>) {
     let Some(screen) = resolve_screen(ctx) else {
         return;
@@ -557,23 +555,23 @@ pub fn sync(ctx: &mut StableClient<'_>) {
     }
 }
 
-/// Re-syncs to a screen subtree game code has rebuilt underneath us.
-///
-/// Game code rebuilds parts of this screen on its own tab switches. The tab and
-/// the panel come back on their own now that the layout declares them — that is
-/// the whole reason they moved into the override, and what stopped them
-/// flickering — but the **rows** do not: those are spawned per session from the
-/// current totals, and a rebuilt panel comes back with an empty `#contents` and
-/// its authored `visible: false`.
-///
-/// Missing rows are therefore the signal that a rebuild happened. Without this,
-/// `spawned` still claims rows exist, every repaint writes text at paths that no
-/// longer resolve, and the table stays blank for the rest of the visit.
-///
-/// Rate-limited rather than run every frame: if game code ever rebuilt
-/// continuously, an unthrottled version would respawn a subtree per frame. At
-/// [`HEAL_EVERY`] the worst case is a few per second, and the normal case — one
-/// rebuild, caught within a sixth of a second — is imperceptible.
+// Re-syncs to a screen subtree game code has rebuilt underneath us.
+//
+// Game code rebuilds parts of this screen on its own tab switches. The tab and
+// the panel come back on their own now that the layout declares them — that is
+// the whole reason they moved into the override, and what stopped them
+// flickering — but the **rows** do not: those are spawned per session from the
+// current totals, and a rebuilt panel comes back with an empty `#contents` and
+// its authored `visible: false`.
+//
+// Missing rows are therefore the signal that a rebuild happened. Without this,
+// `spawned` still claims rows exist, every repaint writes text at paths that no
+// longer resolve, and the table stays blank for the rest of the visit.
+//
+// Rate-limited rather than run every frame: if game code ever rebuilt
+// continuously, an unthrottled version would respawn a subtree per frame. At
+// [`HEAL_EVERY`] the worst case is a few per second, and the normal case — one
+// rebuild, caught within a sixth of a second — is imperceptible.
 fn heal(ctx: &mut StableClient<'_>, screen: &str) {
     if !with_state(|state| state.wired).unwrap_or(false) {
         return;
@@ -631,35 +629,35 @@ fn heal(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// The statistics screen path, or `None` when it is not up.
-///
-/// # Why this searches instead of naming a path
-///
-/// The first version of this anchored on `main.contents.statistics`, reasoning
-/// from `main.contents.strategy`, which is a path the build editor uses and
-/// which works. That reasoning was wrong, and the tab silently never appeared.
-///
-/// A path's root is the root **node name of the scene's own layout**, and that
-/// name is not `main` everywhere:
-///
-/// ```text
-/// main.ui        main:main_ui          <- the management scene
-/// strategy.ui    main:strategy_ui      <- also `main`, hence main.contents.strategy
-/// lineup.ui      main:lineup_ui
-/// ingame.ui      ingame:ingame_ui      <- NOT main; see the in-match note
-/// solo_rank.ui   solo_rank:solo_rank_ui
-/// statistics.ui  statistics:statistics_ui
-/// ```
-///
-/// So "prefix with `main.`" is not a rule, it is a coincidence of the three
-/// layouts that happen to declare that root, and the statistics screen is not
-/// one of them. Rather than swap one guess for another, this walks down from the
-/// real UI root — `ui_child_names("")` — until it finds a node with a
-/// `tabs.champion` under it, which is a shape no other screen has.
-///
-/// The walk is throttled to [`PROBE_EVERY`] because an unthrottled breadth-first
-/// `ui_child_names` sweep is a known way to make this mod lag, and it stops as
-/// soon as the screen is cached.
+// The statistics screen path, or `None` when it is not up.
+//
+// # Why this searches instead of naming a path
+//
+// `main.contents.statistics` looks right by analogy with
+// `main.contents.strategy`, a path the build editor uses and which works. It
+// is wrong, and anchored on it the tab silently never appears.
+//
+// A path's root is the root **node name of the scene's own layout**, and that
+// name is not `main` everywhere:
+//
+// ```text
+// main.ui        main:main_ui          <- the management scene
+// strategy.ui    main:strategy_ui      <- also `main`, hence main.contents.strategy
+// lineup.ui      main:lineup_ui
+// ingame.ui      ingame:ingame_ui      <- NOT main; see the in-match note
+// solo_rank.ui   solo_rank:solo_rank_ui
+// statistics.ui  statistics:statistics_ui
+// ```
+//
+// So "prefix with `main.`" is not a rule, it is a coincidence of the three
+// layouts that happen to declare that root, and the statistics screen is not
+// one of them. Rather than swap one guess for another, this walks down from the
+// real UI root — `ui_child_names("")` — until it finds a node with a
+// `tabs.champion` under it, which is a shape no other screen has.
+//
+// The walk is throttled to [`PROBE_EVERY`] because an unthrottled breadth-first
+// `ui_child_names` sweep is a known way to make this mod lag, and it stops as
+// soon as the screen is cached.
 fn resolve_screen(ctx: &mut StableClient<'_>) -> Option<String> {
     if let Some(screen) = with_state(|state| state.screen.clone()).flatten() {
         if ctx.ui_exists(&format!("{screen}.tabs.champion")) {
@@ -692,18 +690,18 @@ fn resolve_screen(ctx: &mut StableClient<'_>) -> Option<String> {
     Some(found)
 }
 
-/// Whether the client is on the Statistics main tab.
-///
-/// This is the gate that keeps [`find_screen`]'s sweep off every other screen in
-/// the game, which is the difference between a walk that runs once on arrival
-/// and one that runs once a second forever. `Statistics` is a real main-tab
-/// variant name in the exe's string table, beside `Solorank` and `Recruitment`.
-///
-/// Matched loosely and failing open: `None` means the host would not say (an
-/// older ABI, or not on the Main screen at all), and being inert is a worse
-/// answer than searching. The substring test is because the engine has form for
-/// spelling these inconsistently — `solo_rank` vs `solorank` cost the
-/// solo-rank module the same question.
+// Whether the client is on the Statistics main tab.
+//
+// This is the gate that keeps [`find_screen`]'s sweep off every other screen in
+// the game, which is the difference between a walk that runs once on arrival
+// and one that runs once a second forever. `Statistics` is a real main-tab
+// variant name in the exe's string table, beside `Solorank` and `Recruitment`.
+//
+// Matched loosely and failing open: `None` means the host would not say (an
+// older ABI, or not on the Main screen at all), and being inert is a worse
+// answer than searching. The substring test is because the engine has form for
+// spelling these inconsistently — `solo_rank` vs `solorank` cost the
+// solo-rank module the same question.
 fn on_statistics_tab(ctx: &StableClient<'_>) -> bool {
     let Some(tab) = ctx.client_main_tab() else {
         return true;
@@ -712,13 +710,13 @@ fn on_statistics_tab(ctx: &StableClient<'_>) -> bool {
     tab.to_ascii_lowercase().contains("statistic")
 }
 
-/// Breadth-first from the UI root for the node holding the statistics tabs.
-///
-/// `tabs.champion` is the marker rather than the screen's name, for the same
-/// reason `solo_rank_ui` matches on an `item_slot3` child: the name is game
-/// code's business and the engine has been inconsistent about it before
-/// (`solo_rank` vs `solorank`), while the shape is what this module actually
-/// needs to be true.
+// Breadth-first from the UI root for the node holding the statistics tabs.
+//
+// `tabs.champion` is the marker rather than the screen's name, for the same
+// reason `solo_rank_ui` matches on an `item_slot3` child: the name is game
+// code's business and the engine has been inconsistent about it before
+// (`solo_rank` vs `solorank`), while the shape is what this module actually
+// needs to be true.
 fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
     let mut level: Vec<String> = ctx.ui_child_names("");
 
@@ -757,11 +755,11 @@ fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
     None
 }
 
-/// Spawns the tab and the panel, and registers all four tabs.
-///
-/// Registering the vanilla three is observation only — a handler on them is what
-/// puts this panel away when the player switches back, and game code's own
-/// handling for those clicks is untouched.
+// Spawns the tab and the panel, and registers all four tabs.
+//
+// Registering the vanilla three is observation only — a handler on them is what
+// puts this panel away when the player switches back, and game code's own
+// handling for those clicks is untouched.
 fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     let paths = handler_paths(screen);
 
@@ -800,10 +798,10 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     });
 }
 
-/// Every node this module puts a click handler on.
-///
-/// One list so that "is the screen ready" and "what gets registered" cannot
-/// disagree — the bug above was exactly that disagreement.
+// Every node this module puts a click handler on.
+//
+// One list so that "is the screen ready" and "what gets registered" cannot
+// disagree — the bug above was exactly that disagreement.
 fn handler_paths(screen: &str) -> Vec<String> {
     let mut paths = Vec::new();
     // Registering the vanilla tabs is observation only: a handler on them is
@@ -836,34 +834,34 @@ fn handler_paths(screen: &str) -> Vec<String> {
     paths
 }
 
-/// Whether this exact event has already been acted on this frame.
-///
-/// # Why one click arrives twice
-///
-/// `ui_register_path_events` registers a handler for **every** event whose path
-/// equals the one given, and the closure it takes is leaked — "handlers live
-/// until process exit". A registration is therefore permanent and keyed by the
-/// *path*, not by the node that happens to sit at it. [`forget_registrations`]
-/// clears only this module's own bookkeeping when the screen goes away, so the
-/// next visit registers the same paths again and leaves **two** live handlers on
-/// each of them.
-///
-/// Two is not harmless, because nearly everything this handler does is a
-/// toggle. A dropdown opens and instantly closes again; a sort header reverses
-/// and reverses back. That is the whole of "the dropdowns do nothing and the
-/// sort only ever goes one way" — and it is why leaving and re-entering appeared
-/// to fix it: a third registration restores the parity a fourth breaks again, so
-/// the tab works on odd visits and is dead on even ones. Which is also why it
-/// looked intermittent rather than broken.
-///
-/// # Why it is suppressed here
-///
-/// Rather than by not re-registering, which would be the other obvious fix.
-/// This one is correct whether or not the host *also* drops a registration when
-/// the screen it belongs to is destroyed, and that is not a question this can
-/// answer from the outside. Guessing wrong in the other direction gives a tab
-/// that is dead on every visit but the first, which is worse than a handler that
-/// occasionally does nothing.
+// Whether this exact event has already been acted on this frame.
+//
+// # Why one click arrives twice
+//
+// `ui_register_path_events` registers a handler for **every** event whose path
+// equals the one given, and the closure it takes is leaked — "handlers live
+// until process exit". A registration is therefore permanent and keyed by the
+// *path*, not by the node that happens to sit at it. [`forget_registrations`]
+// clears only this module's own bookkeeping when the screen goes away, so the
+// next visit registers the same paths again and leaves **two** live handlers on
+// each of them.
+//
+// Two is not harmless, because nearly everything this handler does is a
+// toggle. A dropdown opens and instantly closes again; a sort header reverses
+// and reverses back. That is the whole of "the dropdowns do nothing and the
+// sort only ever goes one way" — and it is why leaving and re-entering appeared
+// to fix it: a third registration restores the parity a fourth breaks again, so
+// the tab works on odd visits and is dead on even ones. Which is also why it
+// looked intermittent rather than broken.
+//
+// # Why it is suppressed here
+//
+// Rather than by not re-registering, which would be the other obvious fix.
+// This one is correct whether or not the host *also* drops a registration when
+// the screen it belongs to is destroyed, and that is not a question this can
+// answer from the outside. Guessing wrong in the other direction gives a tab
+// that is dead on every visit but the first, which is worse than a handler that
+// occasionally does nothing.
 fn already_handled(path: &str) -> bool {
     with_state(|state| {
         // `sweep_tick` advances once per frame for as long as the screen is up,
@@ -1058,17 +1056,17 @@ fn open(ctx: &mut StableClient<'_>, screen: &str) {
     repaint(ctx, screen);
 }
 
-/// Leaves the tab for `panel`, the vanilla panel belonging to the tab that was
-/// clicked.
-///
-/// The panel is shown here rather than left to game code, which is the opposite
-/// of what the Builds tab does on the strategy screen. The difference is what is
-/// selected underneath: game code never stopped considering one of these three
-/// tabs selected while this one was up, so a click on *that* tab is a click on
-/// the already-selected tab, and a runner that short-circuits it would leave the
-/// screen with nothing showing at all. Showing it here cannot disagree with game
-/// code — it is the panel belonging to the tab just clicked, so the worst case
-/// is that both of us show the same one.
+// Leaves the tab for `panel`, the vanilla panel belonging to the tab that was
+// clicked.
+//
+// The panel is shown here rather than left to game code, which is the opposite
+// of what the Builds tab does on the strategy screen. The difference is what is
+// selected underneath: game code never stopped considering one of these three
+// tabs selected while this one was up, so a click on *that* tab is a click on
+// the already-selected tab, and a runner that short-circuits it would leave the
+// screen with nothing showing at all. Showing it here cannot disagree with game
+// code — it is the panel belonging to the tab just clicked, so the worst case
+// is that both of us show the same one.
 fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
     ctx.ui_set_visible(&format!("{screen}.data.item_stats"), false);
     ctx.ui_set_visible(&format!("{screen}.item_category"), false);
@@ -1093,12 +1091,12 @@ fn close(ctx: &mut StableClient<'_>, screen: &str, panel: &str) {
     let _ = with_state(|state| state.showing = false);
 }
 
-/// Shows or hides the category list, and the full-screen catcher behind it.
-///
-/// The catcher is what makes a click anywhere else dismiss the list. Without one
-/// the list can only be closed by choosing something or by clicking the button
-/// again, which is not what a dropdown does — the build editor learned the same
-/// thing and for the same reason.
+// Shows or hides the category list, and the full-screen catcher behind it.
+//
+// The catcher is what makes a click anywhere else dismiss the list. Without one
+// the list can only be closed by choosing something or by clicking the button
+// again, which is not what a dropdown does — the build editor learned the same
+// thing and for the same reason.
 fn show_category_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     ctx.ui_set_visible(&format!("{screen}.item_category_list"), open);
     if open {
@@ -1107,7 +1105,7 @@ fn show_category_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     sync_catch(ctx, screen);
 }
 
-/// Shows or hides the patch list, sharing the category list's catcher.
+// Shows or hides the patch list, sharing the category list's catcher.
 fn show_patch_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     ctx.ui_set_visible(&format!("{screen}.item_patch_list"), open);
     if open {
@@ -1119,7 +1117,7 @@ fn show_patch_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     sync_catch(ctx, screen);
 }
 
-/// Applies the patch on row `row` and closes the list.
+// Applies the patch on row `row` and closes the list.
 fn pick_patch(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     let _ = with_state(|state| {
         // Row 0 is All, which is the absence of a filter.
@@ -1135,11 +1133,11 @@ fn pick_patch(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     repaint(ctx, screen);
 }
 
-/// Writes the selected patch onto the button face.
-///
-/// A version string is not translated text, so this goes on as a literal —
-/// unlike the category button, which hands over a document reference so the
-/// label follows the game's language.
+// Writes the selected patch onto the button face.
+//
+// A version string is not translated text, so this goes on as a literal —
+// unlike the category button, which hands over a document reference so the
+// label follows the game's language.
 fn paint_patch_button(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.patch.clone()).unwrap_or(None);
     let text = match &selected {
@@ -1152,7 +1150,7 @@ fn paint_patch_button(ctx: &mut StableClient<'_>, screen: &str) {
     );
 }
 
-/// Lights the row of the patch currently in force.
+// Lights the row of the patch currently in force.
 fn paint_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
     let (selected, rows) =
         with_state(|state| (state.patch.clone(), state.patch_rows.clone())).unwrap_or_default();
@@ -1167,7 +1165,7 @@ fn paint_patch_rows(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// Shows or hides the tier list, sharing the one catcher.
+// Shows or hides the tier list, sharing the one catcher.
 fn show_tier_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     ctx.ui_set_visible(&format!("{screen}.item_tier_list"), open);
     if open {
@@ -1176,7 +1174,7 @@ fn show_tier_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     sync_catch(ctx, screen);
 }
 
-/// Applies the tier on row `row` and closes the list.
+// Applies the tier on row `row` and closes the list.
 fn pick_tier(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     let _ = with_state(|state| {
         // Row 0 is All; row `i` is tier `i - 1`.
@@ -1189,7 +1187,7 @@ fn pick_tier(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     repaint(ctx, screen);
 }
 
-/// Writes the selected tier onto the button face.
+// Writes the selected tier onto the button face.
 fn paint_tier_button(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.tier).unwrap_or(DEFAULT_TIER);
     let key = TIER_KEYS[selected.map_or(0, |tier| tier + 1)];
@@ -1197,7 +1195,7 @@ fn paint_tier_button(ctx: &mut StableClient<'_>, screen: &str) {
     ctx.ui_set_text(&format!("{screen}.item_tier.text"), &text);
 }
 
-/// Lights the row of the tier currently in force.
+// Lights the row of the tier currently in force.
 fn paint_tier_rows(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.tier).unwrap_or(DEFAULT_TIER);
     let lit_row = selected.map_or(0, |tier| tier + 1);
@@ -1209,7 +1207,7 @@ fn paint_tier_rows(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// Shows or hides the lane list, sharing the one catcher.
+// Shows or hides the lane list, sharing the one catcher.
 fn show_lane_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     ctx.ui_set_visible(&format!("{screen}.item_lane_list"), open);
     if open {
@@ -1218,7 +1216,7 @@ fn show_lane_list(ctx: &mut StableClient<'_>, screen: &str, open: bool) {
     sync_catch(ctx, screen);
 }
 
-/// Applies the lane on row `row` and closes the list.
+// Applies the lane on row `row` and closes the list.
 fn pick_lane(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     let _ = with_state(|state| {
         // Row 0 is All; row `i` is lane `i - 1`.
@@ -1231,15 +1229,15 @@ fn pick_lane(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     repaint(ctx, screen);
 }
 
-/// Writes the selected lane onto the button face, as its icon.
-///
-/// The face shows the icon *instead of* the name, which is what lets this
-/// dropdown be 96px wide where the others need 160 or more — the 30px it gives
-/// back went to the tier and category buttons. The list still spells the lanes
-/// out; a dropdown may be wider than the trigger that opens it.
-///
-/// "All" is the exception, because there is no art for "every position". It
-/// falls back to the word, which is the one thing the 96px has to hold.
+// Writes the selected lane onto the button face, as its icon.
+//
+// The face shows the icon *instead of* the name, which is what lets this
+// dropdown be 96px wide where the others need 160 or more — the 30px it gives
+// back went to the tier and category buttons. The list still spells the lanes
+// out; a dropdown may be wider than the trigger that opens it.
+//
+// "All" is the exception, because there is no art for "every position". It
+// falls back to the word, which is the one thing the 96px has to hold.
 fn paint_lane_button(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.lane).unwrap_or(None);
     let icon = format!("{screen}.item_lane.icon");
@@ -1262,7 +1260,7 @@ fn paint_lane_button(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// Lights the row of the lane currently in force.
+// Lights the row of the lane currently in force.
 fn paint_lane_rows(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.lane).unwrap_or(None);
     let lit_row = selected.map_or(0, |lane| lane + 1);
@@ -1274,10 +1272,10 @@ fn paint_lane_rows(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// Puts the catcher up while any list is down, and takes it away otherwise.
-///
-/// One place rather than four, so a new dropdown cannot forget to consider the
-/// others and strand a full-screen button over the whole screen.
+// Puts the catcher up while any list is down, and takes it away otherwise.
+//
+// One place rather than four, so a new dropdown cannot forget to consider the
+// others and strand a full-screen button over the whole screen.
 fn sync_catch(ctx: &mut StableClient<'_>, screen: &str) {
     let any = with_state(|state| {
         state.list_open || state.patch_open || state.tier_open || state.lane_open
@@ -1286,7 +1284,7 @@ fn sync_catch(ctx: &mut StableClient<'_>, screen: &str) {
     ctx.ui_set_visible(&format!("{screen}.item_category_catch"), any);
 }
 
-/// Applies the category on row `row` and closes the list.
+// Applies the category on row `row` and closes the list.
 fn pick_category(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     let _ = with_state(|state| {
         // Row 0 is All, which is the absence of a filter rather than one of the
@@ -1300,10 +1298,10 @@ fn pick_category(ctx: &mut StableClient<'_>, screen: &str, row: usize) {
     repaint(ctx, screen);
 }
 
-/// Writes the selected category onto the button face.
-///
-/// The text is handed over as a document reference, not as resolved text, so the
-/// button follows the game's language the way the layout's own labels do.
+// Writes the selected category onto the button face.
+//
+// The text is handed over as a document reference, not as resolved text, so the
+// button follows the game's language the way the layout's own labels do.
 fn paint_category_button(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.category).unwrap_or(None);
     let key = CATEGORY_KEYS[selected.map_or(0, |index| index + 1)];
@@ -1315,7 +1313,7 @@ fn paint_category_button(ctx: &mut StableClient<'_>, screen: &str) {
     ctx.ui_set_text(&format!("{screen}.item_category.text"), &text);
 }
 
-/// Lights the row of the category currently in force.
+// Lights the row of the category currently in force.
 fn paint_category_rows(ctx: &mut StableClient<'_>, screen: &str) {
     let selected = with_state(|state| state.category).unwrap_or(None);
     let lit_row = selected.map_or(0, |index| index + 1);
@@ -1327,11 +1325,11 @@ fn paint_category_rows(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// The category an item belongs to, or `None` for one with no role.
-///
-/// Components and the game's own lower tiers have no role — a BF Sword goes into
-/// half the builds in the game — so they answer `None` and appear only under
-/// "All". That is the honest answer rather than filing them somewhere.
+// The category an item belongs to, or `None` for one with no role.
+//
+// Components and the game's own lower tiers have no role — a BF Sword goes into
+// half the builds in the game — so they answer `None` and appear only under
+// "All". That is the honest answer rather than filing them somewhere.
 fn category_of(key: &str) -> Option<&'static str> {
     crate::item_catalog::category_of(crate::build_config::base_slug(key))
 }
@@ -1340,11 +1338,11 @@ fn header_path(screen: &str, column: SortBy) -> String {
     format!("{screen}.data.item_stats.header.{}", column.node())
 }
 
-/// Re-orders the table by `column`.
-///
-/// Clicking the column already in use flips the direction; clicking a new one
-/// starts it at [`SortBy::starts_descending`]. That is the behaviour every table
-/// with clickable headings has, and getting it wrong is immediately obvious.
+// Re-orders the table by `column`.
+//
+// Clicking the column already in use flips the direction; clicking a new one
+// starts it at [`SortBy::starts_descending`]. That is the behaviour every table
+// with clickable headings has, and getting it wrong is immediately obvious.
 fn sort_by(ctx: &mut StableClient<'_>, screen: &str, column: SortBy) {
     // Same reason `open` does it: a click landing between a rebuild and the
     // throttled heal would otherwise repaint onto rows that no longer exist.
@@ -1363,13 +1361,13 @@ fn sort_by(ctx: &mut StableClient<'_>, screen: &str, column: SortBy) {
     repaint(ctx, screen);
 }
 
-/// Puts the arrow on the column being sorted by, pointing the way it sorts.
-///
-/// The layout authors every arrow transparent, so "inactive" needs no repaint of
-/// its own — only the active one is coloured in, and the previous active one is
-/// cleared by the same loop. `dropdown`/`dropdown_up` are the game's own matched
-/// pair, which is why the direction can be shown by swapping `source` rather
-/// than by rotating anything.
+// Puts the arrow on the column being sorted by, pointing the way it sorts.
+//
+// The layout authors every arrow transparent, so "inactive" needs no repaint of
+// its own — only the active one is coloured in, and the previous active one is
+// cleared by the same loop. `dropdown`/`dropdown_up` are the game's own matched
+// pair, which is why the direction can be shown by swapping `source` rather
+// than by rotating anything.
 fn paint_headers(ctx: &mut StableClient<'_>, screen: &str) {
     let (sort, ascending) =
         with_state(|state| (state.sort, state.ascending)).unwrap_or((SortBy::default(), false));
@@ -1389,21 +1387,21 @@ fn paint_headers(ctx: &mut StableClient<'_>, screen: &str) {
     }
 }
 
-/// Paints which tab looks selected.
-///
-/// The selection cannot be *set*: `ui_set_selectable_selected` is
-/// `state_set_json` with `{"selected": …}`, which the host accepts only for the
-/// `checkbox`, `text_edit`, `slider` and `selectable` runner kinds — these tabs
-/// are `color_selectable`, so the write is rejected. The highlight is drawn on
-/// instead, exactly as the Builds tab does it.
-///
-/// The two sides go through different property pairs because they are in
-/// different states underneath. This tab is never `selected` as far as game code
-/// is concerned, so its plain `image`/`label` are what render. Whichever vanilla
-/// tab game code thinks is selected renders `selected_image`/`selected_label`
-/// instead, and those are the ones that have to be dulled — writing all three is
-/// how this avoids having to know which one it is, since the other two are
-/// rendering `image`/`label` and ignore it.
+// Paints which tab looks selected.
+//
+// The selection cannot be *set*: `ui_set_selectable_selected` is
+// `state_set_json` with `{"selected": …}`, which the host accepts only for the
+// `checkbox`, `text_edit`, `slider` and `selectable` runner kinds — these tabs
+// are `color_selectable`, so the write is rejected. The highlight is drawn on
+// instead, exactly as the Builds tab does it.
+//
+// The two sides go through different property pairs because they are in
+// different states underneath. This tab is never `selected` as far as game code
+// is concerned, so its plain `image`/`label` are what render. Whichever vanilla
+// tab game code thinks is selected renders `selected_image`/`selected_label`
+// instead, and those are the ones that have to be dulled — writing all three is
+// how this avoids having to know which one it is, since the other two are
+// rendering `image`/`label` and ignore it.
 fn paint_tabs(ctx: &mut StableClient<'_>, screen: &str, ours_active: bool) {
     ctx.ui_set_properties(
         &format!("{screen}.tabs.item"),
@@ -1419,17 +1417,17 @@ fn paint_tabs(ctx: &mut StableClient<'_>, screen: &str, ours_active: bool) {
 
 // -- rendering --------------------------------------------------------------
 
-/// Orders the table by the chosen column, on the column's value and nothing else.
-///
-/// Every comparison ends on the item key, so the order is total: without that,
-/// rows that tie — and on a small sample most of them tie — would swap places
-/// between repaints while the scan is still folding records, which reads as the
-/// table flickering.
-///
-/// Win rate used to demote thin samples below everything else, on the grounds
-/// that one game at 100% is not the best item in the game. That is true of the
-/// number and not this function's call to make: the pick count is right there in
-/// the next column, so the reader can see the sample for themselves.
+// Orders the table by the chosen column, on the column's value and nothing else.
+//
+// Every comparison ends on the item key, so the order is total: without that,
+// rows that tie — and on a small sample most of them tie — would swap places
+// between repaints while the scan is still folding records, which reads as the
+// table flickering.
+//
+// Win rate does not demote thin samples. That one game at 100% is not the
+// best item in the game is true of the number and not this function's call to
+// make: the pick count is right there in the next column, so the reader can
+// see the sample for themselves.
 fn order_rows(
     rows: &mut [(String, item_stats::Totals)],
     catalog: &BTreeMap<String, item_stats::ItemInfo>,
@@ -1666,16 +1664,15 @@ fn status_text(snapshot: &item_stats::Snapshot) -> String {
         return "No matches with end-of-game items yet".into();
     }
 
-    // Just the count. The "N before item tracking" note that used to follow it
-    // was long enough to run under the "Purchased On" heading.
+    // Just the count: anything longer runs under the "Purchased On" heading.
     format!("{} matches simmed", snapshot.matches)
 }
 
 // -- layout sources ---------------------------------------------------------
 
-/// One table row, mirroring `statistics_component/champion.ui`: a `LeftToRight`
-/// data band over a 1px separator, with the item's icon in the name cell the way
-/// the champion table carries a portrait.
+// One table row, mirroring `statistics_component/champion.ui`: a `LeftToRight`
+// data band over a 1px separator, with the item's icon in the name cell the way
+// the champion table carries a portrait.
 fn row_source(index: usize) -> String {
     let value_cell = |name: &str, width: u32| {
         format!(
@@ -1808,17 +1805,17 @@ fn row_source(index: usize) -> String {
     )
 }
 
-/// A `text/ui` key as a document reference, where one resolves.
-///
-/// Handed to the label as a reference rather than as resolved text, so
-/// LabelRunner does the lookup and the category button follows the game's
-/// language the way the layout's own headings do. `ctx.i18n` answers in `en`
-/// whatever the locale is, which is useless as a translation and exactly right
-/// as the existence check this needs — an unresolvable key would otherwise be
-/// drawn as a literal `#asset/...`.
-///
-/// Safe from a click handler, unlike `setting_get_json`: `i18n` reads through
-/// the asset table, and asset calls are live there.
+// A `text/ui` key as a document reference, where one resolves.
+//
+// Handed to the label as a reference rather than as resolved text, so
+// LabelRunner does the lookup and the category button follows the game's
+// language the way the layout's own headings do. `ctx.i18n` answers in `en`
+// whatever the locale is, which is useless as a translation and exactly right
+// as the existence check this needs — an unresolvable key would otherwise be
+// drawn as a literal `#asset/...`.
+//
+// Safe from a click handler, unlike `setting_get_json`: `i18n` reads through
+// the asset table, and asset calls are live there.
 fn label(ctx: &StableClient<'_>, key: &str, fallback: &str) -> String {
     let path = format!("#asset/base/text/ui?{key}");
     match ctx.i18n(&path) {

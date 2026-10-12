@@ -12,9 +12,9 @@ pub struct UnendingDespair {
     effect_bonus_flat_heal: i32,
     effect_caster_hp_percent_heal: f64,
     // Non-vital stats (internals)
-    /// The carrier's remaining ability cooldowns (skill, skill2, ult) last
-    /// tick. `None` until the first reading after a spawn, which is only a
-    /// baseline.
+    // The carrier's remaining ability cooldowns (skill, skill2, ult) last
+    // tick. `None` until the first reading after a spawn, which is only a
+    // baseline.
     last_cooldowns: Option<(usize, usize, usize)>,
 }
 
@@ -119,9 +119,9 @@ impl StableItem for UnendingDespair {
         self.last_cooldowns = None;
     }
 
-    /// Anguish answers to the cast, whatever it hits. No hook reports one, so
-    /// it is read the way Eternity reads it: an ability's remaining cooldown
-    /// going up between two ticks.
+    // Anguish answers to the cast, whatever it hits. No hook reports one, so
+    // it is read the way Eternity reads it: an ability's remaining cooldown
+    // going up between two ticks.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         let cooldowns = ctx
             .get_player(player)

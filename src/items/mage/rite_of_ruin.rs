@@ -26,9 +26,9 @@ pub struct RiteOfRuin {
     effect_min_shield: usize,
     effect_max_shield: usize,
     // Non-vital stats (internals)
-    /// The carrier's remaining ability cooldowns (skill, skill2, ult) last
-    /// tick. `None` until the first reading after a spawn, which is only a
-    /// baseline.
+    // The carrier's remaining ability cooldowns (skill, skill2, ult) last
+    // tick. `None` until the first reading after a spawn, which is only a
+    // baseline.
     last_cooldowns: Option<(usize, usize, usize)>,
 }
 
@@ -108,7 +108,7 @@ impl RiteOfRuin {
         self.effect_min_shield + level.saturating_sub(1) * per_level
     }
 
-    /// Crit chance Wrath and Ruin grants at full stacks, for Smart Builds.
+    // Crit chance Wrath and Ruin grants at full stacks, for Smart Builds.
     pub fn max_passive_crit(&self) -> i32 {
         self.effect_stack_crit_chance * self.effect_max_stacks as i32
     }

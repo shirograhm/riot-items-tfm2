@@ -19,26 +19,26 @@ use crate::{
 // chain hits, the first one included, is left crackling for a moment
 // (`SHOCK_EFFECT`), since the hop itself vanishes the instant it lands.
 
-/// The `view_projectiles` name in `view/effects.view_effects` that draws one
-/// hop of the chain (`effects/statikk_spark`).
+// The `view_projectiles` name in `view/effects.view_effects` that draws one
+// hop of the chain (`effects/statikk_spark`).
 const SPARK_PROJECTILE: &str = "riot_statikk_spark";
-/// The `view_effects` name that crackles on each enemy the chain hits
-/// (`effects/statikk_shock`, 0.4 s, following the unit).
+// The `view_effects` name that crackles on each enemy the chain hits
+// (`effects/statikk_shock`, 0.4 s, following the unit).
 const SHOCK_EFFECT: &str = "riot_statikk_shock";
-/// A hop's hit circle. The default is one champion wide (10000), and enemies
-/// in a fight stand close enough that a hop that size touched its target
-/// almost as soon as it spawned, before it was ever drawn.
+// A hop's hit circle. The default is one champion wide (10000), and enemies
+// in a fight stand close enough that a hop that size touched its target
+// almost as soon as it spawned, before it was ever drawn.
 const SPARK_RADIUS: u64 = 1_000;
-/// How long every hop is in the air, whatever its length (0.1 s). A fixed
-/// speed would still make the short hops between bunched-up enemies vanish.
+// How long every hop is in the air, whatever its length (0.1 s). A fixed
+// speed would still make the short hops between bunched-up enemies vanish.
 const HOP_TICKS: u64 = 6;
-/// Floor for a hop with almost no distance left to cover.
+// Floor for a hop with almost no distance left to cover.
 const MIN_SPARK_SPEED: u64 = 500;
 
 #[derive(Clone, Debug)]
 pub struct StatikkShiv {
     meta: ItemMeta,
-    /// The native effect this tier's chain hops carry.
+    // The native effect this tier's chain hops carry.
     spark_hit: &'static str,
     price: usize,
     attack: i32,
@@ -126,8 +126,8 @@ impl StatikkShiv {
         self
     }
 
-    /// The native effect this tier's chain hops land through, for `lib.rs` to
-    /// register under [`StatikkShiv::spark_hit_name`].
+    // The native effect this tier's chain hops land through, for `lib.rs` to
+    // register under [`StatikkShiv::spark_hit_name`].
     pub fn spark_hit(&self) -> StatikkSpark {
         StatikkSpark {
             damage: self.effect_bonus_magic_damage,
@@ -147,11 +147,11 @@ impl StatikkShiv {
         )
     }
 
-    /// The chain's hops after `target`, as `(from, to)` pairs: each jump goes
-    /// to an enemy within range of the one before it that the chain has not
-    /// hit yet, every champion in range before any other unit, nearest first
-    /// within each. Turrets are never picked. Stops early when nothing is in
-    /// range of the last enemy hit.
+    // The chain's hops after `target`, as `(from, to)` pairs: each jump goes
+    // to an enemy within range of the one before it that the chain has not
+    // hit yet, every champion in range before any other unit, nearest first
+    // within each. Turrets are never picked. Stops early when nothing is in
+    // range of the last enemy hit.
     fn chain_hops(&self, ctx: &StableSim<'_>, team: usize, target: usize) -> Vec<(usize, usize)> {
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
@@ -188,8 +188,8 @@ impl StatikkShiv {
         hops
     }
 
-    /// Hits `target` with the charged swing's bonus damage and sends the
-    /// chain on from it.
+    // Hits `target` with the charged swing's bonus damage and sends the
+    // chain on from it.
     fn electrospark(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         let Some(team) = ctx.get_entity(caster).map(|c| c.team()) else {
             return;
@@ -312,8 +312,8 @@ impl StableItem for StatikkShiv {
         self.energized.update(ctx, player, self.effect_max_stacks);
     }
 
-    /// The Energized meter carries across the Radiant upgrade, so buying it
-    /// mid-fight does not throw away a nearly full bar.
+    // The Energized meter carries across the Radiant upgrade, so buying it
+    // mid-fight does not throw away a nearly full bar.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.energized.stacks() as u64
@@ -343,8 +343,8 @@ impl StableItem for StatikkShiv {
     }
 }
 
-/// Electrospark's damage against one unit: the flat amount on champions,
-/// scaled by `minion_percent` on minions and monsters.
+// Electrospark's damage against one unit: the flat amount on champions,
+// scaled by `minion_percent` on minions and monsters.
 fn spark_damage(damage: usize, minion_percent: f64, champion: bool) -> usize {
     if champion {
         damage
@@ -353,12 +353,12 @@ fn spark_damage(damage: usize, minion_percent: f64, champion: bool) -> usize {
     }
 }
 
-/// The speed that keeps a hop from `from` to `to` in the air for `HOP_TICKS`:
-/// the distance left once the hit circles touch, spread over the flight, plus
-/// the target's own move speed. Without that, a short hop could fly slower
-/// than its target runs and trail behind an enemy moving away. Move speed is
-/// in the same units per tick as projectile speed (vanilla champions move at
-/// 900; their basic attacks fly at 4200-4300).
+// The speed that keeps a hop from `from` to `to` in the air for `HOP_TICKS`:
+// the distance left once the hit circles touch, spread over the flight, plus
+// the target's own move speed. Without that, a short hop could fly slower
+// than its target runs and trail behind an enemy moving away. Move speed is
+// in the same units per tick as projectile speed (vanilla champions move at
+// 900; their basic attacks fly at 4200-4300).
 fn hop_speed(ctx: &StableSim<'_>, from: usize, to: usize) -> u64 {
     let distance = (ctx.distance_sq(from, to) as f64).sqrt() as u64;
     let (radius, move_speed) = ctx
@@ -368,8 +368,8 @@ fn hop_speed(ctx: &StableSim<'_>, from: usize, to: usize) -> u64 {
     (travel / HOP_TICKS).max(MIN_SPARK_SPEED) + move_speed
 }
 
-/// Leaves `target` crackling after a hit. Anchored on the unit, so like every
-/// on-hit view effect here it uses none of `range`/`radius`/`time`.
+// Leaves `target` crackling after a hit. Anchored on the unit, so like every
+// on-hit view effect here it uses none of `range`/`radius`/`time`.
 fn play_shock(sim: &mut StableSim<'_>, caster: usize, target: usize) {
     sim.play_view_effect(
         SHOCK_EFFECT,
@@ -381,7 +381,7 @@ fn play_shock(sim: &mut StableSim<'_>, caster: usize, target: usize) {
     );
 }
 
-/// Lands one hop of Electrospark's chain lightning as magic damage.
+// Lands one hop of Electrospark's chain lightning as magic damage.
 #[derive(Clone, Debug)]
 pub struct StatikkSpark {
     damage: usize,
