@@ -113,11 +113,11 @@ impl Template {
         out
     }
 
-    // What to call `item`'s `field` in a patch note, and whether the
-    // sentence puts a percent sign after the number. A passive's text opens
-    // with its name and a colon, in every language, and that name is it.
-    // A sentence with no name (the lethality an item gives is one of its
-    // own, "Gain 18 Lethality.") is its own label, less the number.
+    // The name of the passive `item`'s `field` is a number of, and whether
+    // the sentence puts a percent sign after the number. A passive's text
+    // opens with its name and a colon, in every language. The name is empty
+    // for a number in a sentence that has none: the lethality an item gives
+    // is a sentence of its own, "Gain 18 Lethality."
     fn passive_of(&self, item: &str, field: &str) -> Option<(String, bool)> {
         let mut text = String::new();
         let mut found = None;
@@ -138,166 +138,16 @@ impl Template {
             }
         }
         let (at, percent) = found?;
-        // The paragraph the number is in, and no further: the first run of
-        // this took the next paragraph's passive for the name of a sentence
-        // that had none ("Collector, Gain 0 Lethality. Death: 10 -> 9").
+        // The paragraph the number is in, and no further back: a sentence
+        // with no name is not part of the passive above it.
         let start = text[..at].rfind("\n\n").map_or(0, |gap| gap + 2);
-        let end = text[at..].find("\n\n").map_or(text.len(), |gap| at + gap);
         let before = plain(&text[start..at]);
-        let label = match before.split_once([':', '\u{ff1a}']) {
-            Some((name, _)) => name.trim().to_string(),
-            None => {
-                // `at` is where the number's one-letter stand-in sits.
-                let after = plain(&text[at + 1..end]);
-                let sentence = format!("{before} {after}");
-                let words: Vec<&str> = sentence.split_whitespace().collect();
-                words
-                    .join(" ")
-                    .trim_end_matches(['.', '\u{3002}'])
-                    .to_string()
-            }
-        };
-        let fits = !label.is_empty() && label.chars().count() <= 40;
-        fits.then_some((label, percent))
-    }
-
-    // The wording the text has after `item`'s `field`, to follow the number
-    // in a patch note: the "seconds" of "Every 15 seconds", "bonus magic
-    // damage", "range". It starts with a blank where the text has one
-    // between the two, which not every language does.
-    //
-    // It is what the number's colour span holds after the number: a
-    // sentence colours a number and what it is a number of as one. Less
-    // the percent sign, which is the number's own (see `passive_of`), and
-    // less the icons. A time is given the words that run on from its span
-    // to the next stop as well, where they are three or fewer: the
-    // "cooldown" of "60 second cooldown", "per target", "out of combat".
-    //
-    // A span that holds the number and nothing else is followed by what
-    // the number is of: "5%", and then "of your maximum health" with the
-    // stat in a colour of its own. So the wording is then the next colour
-    // span and what leads up to it, where nothing but words does: a stop
-    // there, or the plus of a formula, and the next colour is something
-    // else's. Failing a colour it is the words up to the sentence's next
-    // stop. Six words of the one or four of the other at most. A word or
-    // two that run on from that colour and finish the bracket the number is
-    // in are taken with it: the "stack" of "(+3 per Feral stack)".
-    //
-    // Nothing for a number that is in no span, whose span runs on into
-    // another number, or that none of this finds words for; and nothing
-    // for a lone short word, which is a translation's "of" left hanging.
-    fn unit_of(&self, item: &str, field: &str) -> Option<String> {
-        const STOPS: [char; 15] = [
-            '.', ',', ';', ':', '(', ')', '!', '?', '\u{3002}', '\u{ff0c}', '\u{ff1b}',
-            '\u{ff1a}', '\u{ff08}', '\u{ff09}', '\u{3001}',
-        ];
-        let stop = |letter: char| STOPS.contains(&letter);
-        // Colour spans open where the text has got to.
-        let mut open = 0usize;
-        for (index, part) in self.parts.iter().enumerate() {
-            let terms = match part {
-                Part::Text(text) => {
-                    let mut rest = text.as_str();
-                    while let Some(at) = rest.find('<') {
-                        let Some(end) = rest[at..].find('>') else {
-                            break;
-                        };
-                        let tag = &rest[at + 1..at + end];
-                        if tag.is_empty() {
-                            open = open.saturating_sub(1);
-                        } else if tag.starts_with('#') {
-                            open += 1;
-                        }
-                        rest = &rest[at + end + 1..];
-                    }
-                    continue;
-                }
-                Part::Slot(terms) => terms,
-            };
-            if !(terms.len() == 1 && terms[0].item == item && terms[0].field == field) {
-                continue;
-            }
-            if open == 0 {
-                return None;
-            }
-            let Some(Part::Text(next)) = self.parts.get(index + 1) else {
-                return None;
-            };
-            let (span, after) = next.split_once("<>")?;
-            if span.contains('\n') {
-                return None;
-            }
-            // Words with one blank between them, and no stop at either end.
-            let tidy = |text: &str| {
-                text.split_whitespace()
-                    .collect::<Vec<_>>()
-                    .join(" ")
-                    .trim_matches(|letter: char| stop(letter) || letter.is_whitespace())
-                    .to_string()
-            };
-            let span = plain(span);
-            let span = span.strip_prefix('%').unwrap_or(&span);
-            let mut spaced = span.starts_with(char::is_whitespace);
-            let mut words = tidy(span);
-            if words.is_empty() {
-                spaced = after.starts_with(char::is_whitespace);
-                let named = after.split_once("<#").and_then(|(lead, rest)| {
-                    let (name, on) = rest.split_once('>')?.1.split_once("<>")?;
-                    let runs_on = !lead.contains('\n')
-                        && !name.contains('\n')
-                        && !plain(lead).contains(|letter: char| stop(letter) || letter == '+');
-                    let words = runs_on.then(|| tidy(&plain(&format!("{lead}{name}"))))?;
-                    if words.is_empty() || words.split_whitespace().count() > 6 {
-                        return None;
-                    }
-                    let more = on.strip_prefix(' ').and_then(|on| {
-                        let end = on.find(|letter: char| stop(letter) || letter == '<' || letter == '\n')?;
-                        let more = on[end..]
-                            .starts_with([')', '\u{ff09}'])
-                            .then(|| on[..end].trim())?;
-                        let fits = !more.is_empty()
-                            && more.split_whitespace().count() <= 2
-                            && !more.contains('+')
-                            && words.chars().count() + 1 + more.chars().count() <= 40;
-                        fits.then_some(more)
-                    });
-                    Some(match more {
-                        Some(more) => format!("{words} {more}"),
-                        None => words,
-                    })
-                });
-                let to_stop = || {
-                    let text = plain(after);
-                    let end = text.find(|letter: char| stop(letter) || letter == '\n')?;
-                    let run = text[end..].starts_with(stop).then(|| tidy(&text[..end]))?;
-                    let fits = !run.is_empty()
-                        && run.split_whitespace().count() <= 4
-                        && !run.contains('+');
-                    fits.then_some(run)
-                };
-                words = named.or_else(to_stop)?;
-            } else if field.ends_with("_seconds") {
-                if let Some(more) = after.strip_prefix(' ') {
-                    let end = more.find(|letter: char| stop(letter) || letter == '<' || letter == '\n');
-                    if let Some(end) = end.filter(|end| more[*end..].starts_with(stop)) {
-                        let more = more[..end].trim();
-                        let fits = !more.is_empty()
-                            && more.split_whitespace().count() <= 3
-                            && more.chars().count() <= 24;
-                        if fits {
-                            words = format!("{words} {more}");
-                        }
-                    }
-                }
-            }
-            let letters = words.chars().count();
-            let hanging = letters <= 2 && words.chars().all(|letter| letter.is_ascii_lowercase());
-            if hanging || letters > 40 {
-                return None;
-            }
-            return Some(if spaced { format!(" {words}") } else { words });
-        }
-        None
+        let name = before
+            .split_once([':', '\u{ff1a}'])
+            .map(|(name, _)| name.trim())
+            .filter(|name| name.chars().count() <= 40)
+            .unwrap_or_default();
+        Some((name.to_string(), percent))
     }
 
     // How the text writes the range of `item` that runs from `low` to
@@ -348,115 +198,6 @@ impl Template {
             _ => String::new(),
         };
         Some((between, tail))
-    }
-
-    // The stat icon the text puts by `item`'s `field`, as (sheet, tag): the
-    // symbol of what the number is an amount of.
-    //
-    // Told by colour, which is how the sentences themselves pair a number
-    // with its stat. Axiom Arc's Flux reads "Gain 10 (+0.2 per 1 [armour
-    // penetration] Lethality) [haste] Ultimate Ability Haste": the icon
-    // nearest the 0.2 is lethality's and the right one is haste's, and what
-    // says so is that the 0.2 and "Ultimate Ability Haste" are the same
-    // blue. So: the number's colour is the span it is in, or for a
-    // number in none the span that closed last before it ("grants 15 (+2
-    // per stack) bonus Attack Damage"); an icon's colour is the span it is
-    // in, or the span that opens straight after it; and the icon is the
-    // nearest one of the number's colour after it in its paragraph, else
-    // the nearest before. A number the text gives no symbol (a duration, a
-    // slow, plain damage) has none here either: a wrong icon says more than
-    // a missing one.
-    //
-    // Meant for the English text, which the rest are written from: a
-    // translation moves words and colours about (the same rule gives Flux
-    // lethality's icon in five of the six).
-    fn icon_of(&self, item: &str, field: &str) -> Option<(String, String)> {
-        // An icon: where it comes among the icons and numbers, what it
-        // is, its colour.
-        type Icon = (usize, String, Option<String>);
-        fn pick(icons: &[Icon], slot: &(usize, Option<String>)) -> Option<(String, String)> {
-            let colour = slot.1.as_ref()?;
-            let same = |icon: &&Icon| icon.2.as_ref() == Some(colour);
-            let icon = icons
-                .iter()
-                .filter(same)
-                .find(|icon| icon.0 > slot.0)
-                .or_else(|| icons.iter().rev().filter(same).find(|icon| icon.0 < slot.0))?;
-            let (sheet, tag) = icon.1.rsplit_once(':')?;
-            Some((sheet.to_string(), tag.to_string()))
-        }
-
-        let mut icons: Vec<Icon> = Vec::new();
-        let mut slot: Option<(usize, Option<String>)> = None;
-        let mut order = 0usize;
-        // The colour spans open, and the one that closed last.
-        let mut colours: Vec<String> = Vec::new();
-        let mut closed: Option<String> = None;
-        // Nothing but blanks since the last icon.
-        let mut bare = false;
-        for part in &self.parts {
-            let text = match part {
-                Part::Text(text) => text,
-                Part::Slot(terms) => {
-                    let wanted = terms.iter().any(|term| term.item == item && term.field == field);
-                    if wanted && slot.is_none() {
-                        slot = Some((order, colours.last().cloned().or_else(|| closed.clone())));
-                    }
-                    order += 1;
-                    bare = false;
-                    continue;
-                }
-            };
-            let mut rest = text.as_str();
-            while let Some(at) = rest.find(['<', '\n']) {
-                if !rest[..at].trim().is_empty() {
-                    bare = false;
-                }
-                let tail = &rest[at..];
-                if tail.starts_with("\n\n") {
-                    // The paragraph is over, and the number's with it.
-                    if let Some(slot) = &slot {
-                        return pick(&icons, slot);
-                    }
-                    icons.clear();
-                    colours.clear();
-                    closed = None;
-                    bare = false;
-                    rest = &tail[2..];
-                    continue;
-                }
-                if tail.starts_with('\n') {
-                    rest = &tail[1..];
-                    continue;
-                }
-                let Some(end) = tail.find('>') else {
-                    break;
-                };
-                let tag = &tail[1..end];
-                if tag.is_empty() {
-                    if let Some(colour) = colours.pop() {
-                        closed = Some(colour);
-                    }
-                    bare = false;
-                } else if let Some(icon) = tag.strip_prefix("i#") {
-                    icons.push((order, icon.to_string(), colours.last().cloned()));
-                    order += 1;
-                    bare = true;
-                } else if let Some(colour) = tag.strip_prefix('#') {
-                    let colour = colour.to_ascii_lowercase();
-                    if let Some(icon) = icons.last_mut().filter(|icon| bare && icon.2.is_none()) {
-                        icon.2 = Some(colour.clone());
-                    }
-                    colours.push(colour);
-                    bare = false;
-                }
-                rest = &tail[end + 1..];
-            }
-            if !rest.trim().is_empty() {
-                bare = false;
-            }
-        }
-        pick(&icons, slot.as_ref()?)
     }
 }
 
@@ -777,25 +518,6 @@ impl Texts {
         Some((sheet.to_string(), tag.to_string()))
     }
 
-    // The icon of what a passive's number is an amount of: the one the
-    // item's effect text puts by it ([`Template::icon_of`]), read off the
-    // English text whatever the game's language. None for a number the
-    // text gives no symbol, and for the game's own items, whose texts the
-    // mod has no templates of.
-    fn passive_icon(&self, key: &str, field: &str) -> Option<(String, String)> {
-        self.templates.get("en")?.get(key)?.icon_of(key, field)
-    }
-
-    // The wording `key`'s effect text has after a passive's number
-    // ([`Template::unit_of`]), in `lang`, or in English where the mod has
-    // no text of the item in that language.
-    fn passive_unit(&self, lang: &str, key: &str, field: &str) -> Option<String> {
-        [lang, "en"]
-            .iter()
-            .find_map(|lang| self.templates.get(*lang)?.get(key))?
-            .unit_of(key, field)
-    }
-
     // How `key`'s effect text writes the range from `low` to `high`
     // ([`Template::range_of`]), in `lang` or failing that in English: what
     // stands between the two numbers, and what follows them. A dash and
@@ -1070,7 +792,8 @@ fn note_number(value: f64, percent: bool) -> String {
 
 // What a note calls the number a change moved, and whether it reads as a
 // percentage: a flat stat by its tooltip line, a passive's number by the
-// passive's name. Empty where neither is found.
+// passive's name. Empty where neither is found, and for a passive's number
+// in a sentence with no name.
 fn label_of(texts: &Texts, lang: &str, change: &Change) -> (String, bool) {
     let Some(first) = change.members.first() else {
         return (String::new(), false);
@@ -1106,8 +829,8 @@ const NERF_COLOR: &str = "#ff6b6bff";
 const ADJUST_COLOR: &str = "#f0c05aff";
 const REASON_COLOR: &str = "#8b8d9aff";
 
-// One changed number of an entry: its icon, where it is a stat with one or
-// a passive's number whose text gives it one, and the line.
+// One changed number of an entry: its icon, which a flat stat has where its
+// tooltip line has one and a passive's number never has, and the line.
 struct NoteRow {
     icon: Option<(String, String)>,
     text: String,
@@ -1116,11 +839,10 @@ struct NoteRow {
     rank: usize,
 }
 
-// One item of a patch's notes: the legendary and its radiant together,
-// under the legendary's name and icon.
+// One item of a patch's notes. A legendary and its radiant are two items,
+// each with an entry of its own, under its own name and icon.
 struct NoteEntry {
-    family: String,
-    // The item it is drawn and named as: the legendary.
+    // The item: one tier.
     key: String,
     // Why the item was touched, as a designer would put it: see
     // [`reason_pool`]. Empty where the text file has no such sentence.
@@ -1241,26 +963,348 @@ fn seed_of(number: u32, text: &str) -> usize {
     (hash >> 16) as usize
 }
 
-// A row's line: the numbers under what they are called, and for a tier
-// past the first under what tells it apart, which is what its name has that
-// the first's does not: "Radiant", in whatever language.
-fn row_text(texts: &Texts, lang: &str, lead: &str, key: &str, label: &str, numbers: String) -> String {
-    let tier = if key == lead {
-        String::new()
+// How a patch note words one passive's number. Its row is called by the
+// passive's name and then by what the number does, "Flux - Base Ultimate
+// Haste: 10 -> 12", and the words that follow the number, where there are
+// any, are given too: "Stasis - Stasis Duration: 2.5 seconds -> 3 seconds".
+// A format with no label has the passive's name alone ahead of the numbers.
+//
+// Every one is written by hand. Nothing is read off the item's sentence but
+// the passive's name and the number's percent sign
+// ([`Template::passive_of`]), so a number with no format here, and none of
+// [`FIELD_FORMATS`], is a bare one under its passive's name.
+//
+// `item` is the base key, so a radiant reads as its legendary does. The
+// strings are `item_patch` ones in `text/ui.i18n`, here as their key and
+// the English.
+struct RowFormat {
+    item: &'static str,
+    field: &'static str,
+    label: Option<(&'static str, &'static str)>,
+    unit: Option<(&'static str, &'static str)>,
+}
+
+// How a patch note words a passive's number of one kind, whichever item it
+// is of: by config field. An amount of a stat the game has no tooltip line
+// for is called by the stat, and a cooldown, a duration and a slow by what
+// they are, each after the passive's name where the sentence has one:
+// "Lethality: 18 -> 19", "Illusion - Adaptive Force: 30 -> 33", "Annul -
+// Cooldown: 40 seconds -> 35 seconds", "Icy - Slow: 20% -> 25%". An item's
+// own row format comes first ([`ROW_FORMATS`]): a cooldown that is one per
+// target has one, and so has each duration of an item with two of them.
+struct FieldFormat {
+    fields: &'static [&'static str],
+    label: (&'static str, &'static str),
+    unit: Option<(&'static str, &'static str)>,
+}
+
+const FIELD_FORMATS: [FieldFormat; 5] = [
+    FieldFormat {
+        fields: &["effect_lethality", "effect_bonus_lethality"],
+        label: ("row_lethality", "Lethality"),
+        unit: None,
+    },
+    FieldFormat {
+        fields: &["adaptive_force", "effect_adaptive_force"],
+        label: ("row_adaptive_force", "Adaptive Force"),
+        unit: None,
+    },
+    FieldFormat {
+        fields: &["effect_cooldown_seconds"],
+        label: ("row_cooldown", "Cooldown"),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    FieldFormat {
+        fields: &["effect_duration_seconds", "effect_shield_seconds"],
+        label: ("row_effect_duration", "Effect Duration"),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    FieldFormat {
+        fields: &["effect_slow_amount"],
+        label: ("row_slow", "Slow"),
+        unit: None,
+    },
+];
+
+const ROW_FORMATS: [RowFormat; 45] = [
+    RowFormat {
+        item: "deaths_dance",
+        field: "effect_delayed_damage_percent",
+        label: Some(("row_damage_reduction", "Damage Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "echoes_of_helia",
+        field: "effect_damage_conversion",
+        label: Some(("row_damage_stored", "Damage Stored")),
+        unit: None,
+    },
+    RowFormat {
+        item: "heartsteel",
+        field: "effect_bonus_hp_percent_of_damage",
+        label: Some(("row_permanent_health", "Permanent Health")),
+        unit: Some(("unit_of_damage_dealt", " of the damage dealt")),
+    },
+    RowFormat {
+        item: "randuins_omen",
+        field: "effect_crit_damage_percent_heal",
+        label: Some(("row_crit_healing", "Critical Strike Healing")),
+        unit: None,
+    },
+    RowFormat {
+        item: "hubris",
+        field: "effect_stack_attack",
+        label: Some(("row_scaling", "Scaling")),
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "zhonyas_hourglass",
+        field: "effect_duration_seconds",
+        label: Some(("row_stasis_duration", "Stasis Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "axiom_arc",
+        field: "effect_ult_cooldown_mult",
+        label: Some(("row_base_ult_haste", "Base Ultimate Haste")),
+        unit: None,
+    },
+    RowFormat {
+        item: "endless_hunger",
+        field: "effect_skill_cooldown_mult",
+        label: Some(("row_base_ability_haste", "Base Ability Haste")),
+        unit: None,
+    },
+    RowFormat {
+        item: "feral_flare",
+        field: "effect_bonus_magic_damage",
+        label: Some(("row_flat_damage_on_hit", "Flat Damage On-Hit")),
+        unit: None,
+    },
+    RowFormat {
+        item: "feral_flare",
+        field: "effect_stack_magic_damage",
+        label: None,
+        unit: Some(("unit_per_feral_stack", " per Feral stack")),
+    },
+    RowFormat {
+        item: "hubris",
+        field: "effect_bonus_flat_attack",
+        label: Some(("row_base_ad_kill_bonus", "Base AD Kill Bonus")),
+        unit: None,
+    },
+    RowFormat {
+        item: "terminus",
+        field: "effect_bonus_flat_damage",
+        label: Some(("row_flat_damage_on_hit", "Flat Damage On-Hit")),
+        unit: None,
+    },
+    RowFormat {
+        item: "zazzaks_realmspike",
+        field: "effect_bonus_flat_damage",
+        label: Some(("row_flat_damage", "Flat Damage")),
+        unit: None,
+    },
+    RowFormat {
+        item: "cloak_of_starry_night",
+        field: "effect_skill_damaged_reduce",
+        label: Some(("row_base_skill_damage_reduction", "Base Skill Damage Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "black_cleaver",
+        field: "effect_percent_armor_shred",
+        label: Some(("row_armor_reduction", "Armor Reduction")),
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "bloodletters_curse",
+        field: "effect_percent_mr_shred",
+        label: Some(("row_mr_reduction", "Magic Resistance Reduction")),
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "abyssal_mask",
+        field: "effect_percent_mr_shred",
+        label: Some(("row_mr_reduction", "Magic Resistance Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "frozen_heart",
+        field: "effect_attack_speed_reduce",
+        label: Some(("row_attack_speed_reduction", "Attack Speed Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "executioners_calling",
+        field: "effect_heal_reduce",
+        label: Some(("row_healing_reduction", "Healing Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "mortal_reminder",
+        field: "effect_heal_reduce",
+        label: Some(("row_healing_reduction", "Healing Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "chempunk_chainsword",
+        field: "effect_heal_reduce",
+        label: Some(("row_healing_reduction", "Healing Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "chemtech_putrifier",
+        field: "effect_heal_reduce",
+        label: Some(("row_healing_reduction", "Healing Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "morellonomicon",
+        field: "effect_heal_reduce",
+        label: Some(("row_healing_reduction", "Healing Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "oblivion_orb",
+        field: "effect_heal_reduce",
+        label: Some(("row_healing_reduction", "Healing Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "bloodsong",
+        field: "effect_damaged_amplify",
+        label: Some(("row_damage_taken_bonus", "Damage Taken Bonus")),
+        unit: None,
+    },
+    RowFormat {
+        item: "imperial_mandate",
+        field: "effect_damaged_amplify",
+        label: Some(("row_damage_taken_bonus", "Damage Taken Bonus")),
+        unit: None,
+    },
+    RowFormat {
+        item: "celestial_opposition",
+        field: "effect_damaged_reduce",
+        label: Some(("row_damage_reduction", "Damage Reduction")),
+        unit: None,
+    },
+    RowFormat {
+        item: "spirit_visage",
+        field: "effect_heal_mult",
+        label: Some(("row_bonus_healing_received", "Bonus Healing Received")),
+        unit: None,
+    },
+    RowFormat {
+        item: "lord_dominiks_regards",
+        field: "effect_max_percent_bonus",
+        label: Some(("row_bonus_damage_cap", "Bonus Damage Cap")),
+        unit: None,
+    },
+    RowFormat {
+        item: "eclipse",
+        field: "effect_cooldown_seconds",
+        label: Some(("row_cooldown", "Cooldown")),
+        unit: Some(("unit_seconds_per_target", " seconds per target")),
+    },
+    RowFormat {
+        item: "heartsteel",
+        field: "effect_cooldown_seconds",
+        label: Some(("row_cooldown", "Cooldown")),
+        unit: Some(("unit_seconds_per_target", " seconds per target")),
+    },
+    RowFormat {
+        item: "night_harvester",
+        field: "effect_cooldown_seconds",
+        label: Some(("row_cooldown", "Cooldown")),
+        unit: Some(("unit_seconds_per_target", " seconds per target")),
+    },
+    RowFormat {
+        item: "stormsurge",
+        field: "effect_cooldown_seconds",
+        label: Some(("row_cooldown", "Cooldown")),
+        unit: Some(("unit_seconds_per_target", " seconds per target")),
+    },
+    RowFormat {
+        item: "sundered_sky",
+        field: "effect_cooldown_seconds",
+        label: Some(("row_cooldown", "Cooldown")),
+        unit: Some(("unit_seconds_per_target", " seconds per target")),
+    },
+    RowFormat {
+        item: "celestial_opposition",
+        field: "effect_duration_seconds",
+        label: Some(("row_damage_reduction_duration", "Damage Reduction Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "celestial_opposition",
+        field: "effect_slow_seconds",
+        label: Some(("row_slow_duration", "Slow Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "eclipse",
+        field: "effect_duration_seconds",
+        label: Some(("row_mark_duration", "Mark Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "eclipse",
+        field: "effect_shield_seconds",
+        label: Some(("row_shield_duration", "Shield Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "opportunity",
+        field: "effect_out_of_combat_seconds",
+        label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "opportunity",
+        field: "effect_duration_seconds",
+        label: Some(("row_lethality_duration", "Lethality Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "rite_of_ruin",
+        field: "effect_shield_seconds",
+        label: Some(("row_shield_duration", "Shield Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "rite_of_ruin",
+        field: "effect_duration_seconds",
+        label: Some(("row_stack_duration", "Stack Duration")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "haunting_guise",
+        field: "effect_out_of_combat_seconds",
+        label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "warmogs_armor",
+        field: "effect_duration_seconds",
+        label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+    RowFormat {
+        item: "stormsurge",
+        field: "effect_duration_seconds",
+        label: Some(("row_burst_window", "Burst Window")),
+        unit: Some(("unit_seconds", " seconds")),
+    },
+];
+
+// A row's line: the numbers under what they are called.
+fn row_text(label: &str, numbers: String) -> String {
+    if label.is_empty() {
+        numbers
     } else {
-        let name = texts.name(lang, key);
-        let word = name.replace(&texts.name(lang, lead), "").trim().to_string();
-        if word.is_empty() {
-            name
-        } else {
-            word
-        }
-    };
-    match (label.is_empty(), tier.is_empty()) {
-        (true, true) => numbers,
-        (true, false) => format!("{tier}: {numbers}"),
-        (false, true) => format!("{label}: {numbers}"),
-        (false, false) => format!("{label} ({tier}): {numbers}"),
+        format!("{label}: {numbers}")
     }
 }
 
@@ -1280,10 +1324,11 @@ fn standing(state: &State, member: &super::base::Member, field: &str) -> Option<
 }
 
 // The rows of a range that grows with level, `low` to `high` of `change`'s
-// item: a row a tier, the whole range as it was and as it is, "40 - 100
-// (based on level) -> 45 - 110 (based on level)", whichever of its ends the
-// patch moved. An end the patch left where it was is read at the balance
-// the save has, which is `state` before the patch is taken into it.
+// item: a row a tier, with the tier it is of, the whole range as it was and
+// as it is, "40 - 100 (based on level) -> 45 - 110 (based on level)",
+// whichever of its ends the patch moved. An end the patch left where it was
+// is read at the balance the save has, which is `state` before the patch is
+// taken into it.
 //
 // Nothing where a tier has one end and not the other, or no tier's range
 // moved: the ends then get rows of their own.
@@ -1294,7 +1339,7 @@ fn range_rows(
     lang: &str,
     change: &Change,
     (low, high): (&str, &str),
-) -> Option<Vec<NoteRow>> {
+) -> Option<Vec<(String, NoteRow)>> {
     let family = super::base::base().families.get(&change.family)?;
     let lead = family.members.first()?;
     // What the patch says of `field` in the tier `key`: each tier's change
@@ -1309,9 +1354,6 @@ fn range_rows(
     };
     let (label, percent) = label_of(texts, lang, change);
     let (between, tail) = texts.range_words(lang, &lead.key, low, high);
-    let icon = texts
-        .passive_icon(&lead.key, low)
-        .or_else(|| texts.passive_icon(&lead.key, high));
     let mut rows = Vec::new();
     for member in &family.members {
         // An end as it was and as it is.
@@ -1336,90 +1378,95 @@ fn range_rows(
             note_number(low_is, percent),
             note_number(high_is, percent)
         );
-        rows.push(NoteRow {
-            icon: icon.clone(),
-            text: row_text(texts, lang, &lead.key, &member.key, &label, numbers),
-            rank: super::fields::FLAT.len(),
-        });
+        rows.push((
+            member.key.clone(),
+            NoteRow {
+                icon: None,
+                text: row_text(&label, numbers),
+                rank: super::fields::FLAT.len(),
+            },
+        ));
     }
     (!rows.is_empty()).then_some(rows)
 }
 
 // A patch's items, an entry an item: the ones it set out to buff and then
 // the ones it set out to nerf, each lot in the order the patch has them. A
-// row is one changed number in one tier: the legendary's reads
-// "Attack Damage: 20 -> 21", the radiant's "Attack Damage (Radiant): 33 ->
-// 34", the legendary's first. An entry's flat stats come first and its
-// passives' numbers after them, each lot in a set order, and a passive's
-// number is written with the words its sentence has after it: "Flurry: 15
-// seconds -> 16 seconds". The two ends of a range that grows with level
-// are one row ([`range_rows`]).
+// legendary and its radiant are two items here, each with the numbers of
+// its own that moved, and a patch that moved one of them lists that one.
+//
+// A row is one changed number: "Attack Damage: 20 -> 21". An entry's flat
+// stats come first and its passives' numbers after them, each lot in a set
+// order. A passive's number is worded by its row format ([`ROW_FORMATS`]),
+// "Flux - Base Ultimate Haste: 10 -> 12", or by its field's
+// ([`FIELD_FORMATS`]). The two ends of a range that grows with level are one
+// row ([`range_rows`]).
 fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     let texts = texts();
     let base = super::base::base();
     let mut entries: Vec<NoteEntry> = Vec::new();
-    // The ranges written so far, by item and low end: the second end to
-    // come up has its numbers in the row the first one made.
+    // The ranges written so far, by item family and low end: the second end
+    // to come up has its numbers in the row the first one made.
     let mut ranged: Vec<(&str, &str)> = Vec::new();
     // Reasons given so far, so that no two items share one while another
     // fits.
     let mut used: Vec<&'static str> = Vec::new();
+    // Where the entry of the item `key` is among `entries`, made where it
+    // has none yet. `change` is one of the patch's changes to the item, or
+    // to another tier of it: what it was touched for is the same.
+    let mut entry_of = |entries: &mut Vec<NoteEntry>, key: &str, change: &Change| -> usize {
+        if let Some(at) = entries.iter().position(|entry| entry.key == key) {
+            return at;
+        }
+        // One of the sentences that fit the item, a different one for
+        // every item of the article as far as the pool goes, and the same
+        // one whenever this patch's notes are written.
+        let family = base.families.get(&change.family);
+        let chosen = family.map_or(true, |family| family.chosen);
+        let component = family.is_some_and(|family| family.component);
+        let pool = reason_pool(
+            change.buff,
+            chosen,
+            component,
+            base.tempo(key),
+            change,
+            patch.matches,
+        );
+        let from = seed_of(patch.number, key) % pool.len().max(1);
+        let picked = (0..pool.len())
+            .map(|step| pool[(from + step) % pool.len()])
+            .find(|reason| !used.contains(reason))
+            .or_else(|| pool.get(from).copied());
+        let reason = picked.map_or_else(String::new, |reason| {
+            used.push(reason);
+            texts.ui(lang, reason, "")
+        });
+        entries.push(NoteEntry {
+            key: key.to_string(),
+            reason,
+            rows: Vec::new(),
+            stronger: false,
+            weaker: false,
+        });
+        entries.len() - 1
+    };
     let buffs = patch.changes.iter().filter(|change| change.buff);
     let nerfs = patch.changes.iter().filter(|change| !change.buff);
     for change in buffs.chain(nerfs) {
         let Some(first) = change.members.first() else {
             continue;
         };
-        let lead = base
-            .families
-            .get(&change.family)
-            .and_then(|family| family.members.first())
-            .map_or_else(|| first.key.clone(), |member| member.key.clone());
-        let at = match entries.iter().position(|entry| entry.family == change.family) {
-            Some(at) => at,
-            None => {
-                // One of the sentences that fit the item, a different one
-                // for every item of the article as far as the pool goes, and
-                // the same one whenever this patch's notes are written.
-                let family = base.families.get(&change.family);
-                let chosen = family.map_or(true, |family| family.chosen);
-                let component = family.is_some_and(|family| family.component);
-                let pool = reason_pool(
-                    change.buff,
-                    chosen,
-                    component,
-                    base.tempo(&lead),
-                    change,
-                    patch.matches,
-                );
-                let from = seed_of(patch.number, &change.family) % pool.len().max(1);
-                let key = (0..pool.len())
-                    .map(|step| pool[(from + step) % pool.len()])
-                    .find(|key| !used.contains(key))
-                    .or_else(|| pool.get(from).copied());
-                let reason = key.map_or_else(String::new, |key| {
-                    used.push(key);
-                    texts.ui(lang, key, "")
-                });
-                entries.push(NoteEntry {
-                    family: change.family.clone(),
-                    key: lead.clone(),
-                    reason,
-                    rows: Vec::new(),
-                    stronger: false,
-                    weaker: false,
-                });
-                entries.len() - 1
-            }
-        };
         // Which way this number went, as strength: a cooldown that got
-        // shorter is stronger.
-        let grew = first.after.abs() > first.before.abs();
+        // shorter is stronger. Told of each tier it moved, in that tier's
+        // own entry.
         let lower = super::fields::rule(&change.field).is_some_and(|rule| rule.lower_is_stronger);
-        if grew != lower {
-            entries[at].stronger = true;
-        } else {
-            entries[at].weaker = true;
+        for moved in &change.members {
+            let at = entry_of(&mut entries, &moved.key, change);
+            if (moved.after.abs() > moved.before.abs()) != lower {
+                entries[at].stronger = true;
+            } else {
+                entries[at].weaker = true;
+            }
         }
         if let Some((low, high)) = super::fields::range_of(&change.field) {
             if ranged.contains(&(change.family.as_str(), low)) {
@@ -1427,7 +1474,10 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             }
             if let Some(rows) = range_rows(texts, state, patch, lang, change, (low, high)) {
                 ranged.push((change.family.as_str(), low));
-                entries[at].rows.extend(rows);
+                for (key, row) in rows {
+                    let at = entry_of(&mut entries, &key, change);
+                    entries[at].rows.push(row);
+                }
                 continue;
             }
         }
@@ -1435,40 +1485,56 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         let flat = super::fields::FLAT
             .iter()
             .position(|field| *field == change.field);
-        // A stat's own icon; a passive's number has the icon of what it is
-        // an amount of (lethality armour penetration's, Axiom Arc's Flux
-        // haste's), which is the one its text puts by it.
-        let icon = if flat.is_some() {
-            texts.line_icon(&change.field)
-        } else {
-            None
-        }
-        .or_else(|| texts.passive_icon(&first.key, &change.field));
-        // What a passive's number is a number of, in its sentence's own
-        // words. A flat stat's label is that already, and so is a label
-        // that is the sentence itself ("Gain Lethality").
-        let unit = if flat.is_some() {
+        // A flat stat's row opens with the stat's icon. A passive's number
+        // has none: its row is named for the passive.
+        let icon = flat.and_then(|_| texts.line_icon(&change.field));
+        // A passive's number is called by its passive's name and then by
+        // what it does, with the words that follow it: both as the item's
+        // row format has them, or failing one as the format of the number's
+        // field has. One with neither is the bare number under the
+        // passive's name.
+        let slug = crate::build_config::base_slug(&first.key);
+        let worded = if flat.is_some() {
             None
         } else {
-            texts.passive_unit(lang, &first.key, &change.field)
-        }
-        .filter(|unit| !label.to_lowercase().contains(&unit.trim().to_lowercase()))
-        .unwrap_or_default();
+            ROW_FORMATS
+                .iter()
+                .find(|format| format.item == slug && format.field == change.field)
+                .map(|format| (format.label, format.unit))
+                .or_else(|| {
+                    FIELD_FORMATS
+                        .iter()
+                        .find(|format| format.fields.contains(&change.field.as_str()))
+                        .map(|format| (Some(format.label), format.unit))
+                })
+        };
+        let said = |words: Option<(&str, &str)>| {
+            words.map_or_else(String::new, |(key, english)| texts.ui(lang, key, english))
+        };
+        let (what, unit) = worded.map(|(what, unit)| (said(what), said(unit))).unwrap_or_default();
+        let label = if what.is_empty() {
+            label
+        } else if label.is_empty() {
+            what
+        } else {
+            format!("{label} - {what}")
+        };
         for moved in &change.members {
             let numbers = format!(
                 "{}{unit} {ARROW} {}{unit}",
                 note_number(moved.before, percent),
                 note_number(moved.after, percent)
             );
+            let at = entry_of(&mut entries, &moved.key, change);
             entries[at].rows.push(NoteRow {
                 icon: icon.clone(),
-                text: row_text(texts, lang, &lead, &moved.key, &label, numbers),
+                text: row_text(&label, numbers),
                 rank: flat.unwrap_or(super::fields::FLAT.len()),
             });
         }
     }
     // The stats first and the passives' numbers after. The rows of one
-    // rank stay as the patch has them, a legendary's before its radiant's.
+    // rank stay as the patch has them.
     for entry in &mut entries {
         entry.rows.sort_by_key(|row| row.rank);
     }
@@ -1489,10 +1555,13 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
 // <icon> Trinity Force
 // <reason>
 //     <stat icon> Attack Damage: 20 -> 21
-//     <stat icon> Attack Damage (Radiant): 33 -> 34
+//     Spellblade: 40 - 100 (based on level) -> 45 - 110 (based on level)
 // ```
 //
-// An item is one entry, its radiant's numbers in it and marked as such. It
+// A flat stat's row opens with the stat's icon. A passive's number has no
+// icon: its row opens with the passive's name.
+//
+// Every item is an entry, a radiant apart from its legendary. An item
 // is a buff where every number of it got stronger, a nerf where every one
 // got weaker, and an adjustment where it has both. Only where it is listed
 // goes by that: its reason is still the one for what the patch set out to
@@ -1552,10 +1621,10 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
             }
             for row in &entry.rows {
                 let mark = match &row.icon {
-                    Some((sheet, tag)) => format!("<i#{sheet}:{tag}>"),
-                    None => "-".to_string(),
+                    Some((sheet, tag)) => format!("<i#{sheet}:{tag}> "),
+                    None => String::new(),
                 };
-                body.push_str(&format!("\n<s#18>        {mark} {}<s>", row.text));
+                body.push_str(&format!("\n<s#18>        {mark}{}<s>", row.text));
             }
         }
     }
