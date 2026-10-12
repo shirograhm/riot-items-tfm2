@@ -4292,8 +4292,11 @@ const O_SERVER_STATE_DATABASE: usize = 0x10;
 // The Database's `mod_items`: a `Vec<ModItemEntry>` as capacity, pointer,
 // length (0.6.3: the item settings are at +0x136c0 and the list 0x3028 into
 // them; handler 0x2dc7670 drops the old one through
-// `[r12+0x166e8] / [r12+0x166f0] / [r12+0x166f8]`).
-const O_DATABASE_MOD_ITEMS: usize = 0x166e8;
+// `[r12+0x166e8] / [r12+0x166f0] / [r12+0x166f8]`). 0.7.0-beta: 0x16890,
+// as `tools/lift_sites.py` reads it off that exe (the drop at 0x3115b9d).
+// This branch is the beta's: on 0.6.3 the value is 0x166e8, and with the
+// wrong one for the build the list never checks out and nothing is written.
+const O_DATABASE_MOD_ITEMS: usize = 0x16890;
 
 // Size of one `ModItemEntry` (0.6.3: `lea rsi,[rcx+0x1a8]` steps that drop
 // loop). Its key, a `String`, is the first field: capacity, pointer, length.
