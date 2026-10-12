@@ -169,9 +169,11 @@ impl Annul {
         attack_type: AttackTypeV1,
         cooldown_seconds: f64,
     ) {
+        // A tick of damage over time is ability damage like a skill's hit. An
+        // `Item` hit only counts when the shield took it to nothing.
         let blocked = match attack_type {
-            AttackTypeV1::Skill => true,
-            AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield | AttackTypeV1::Item => damage == 0,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield => true,
+            AttackTypeV1::Item => damage == 0,
             _ => false,
         };
         if blocked {

@@ -27,6 +27,22 @@
 //! as matches are simmed, instead of quietly mixing two different meanings of
 //! "the items in this match".
 //!
+//! # The matches the seed cannot place
+//!
+//! The seed join only ever found the player's own league. A set played in
+//! another league is simulated here like any other and gets a record like any
+//! other, but in the run that measured it (2026-09-27) 18 captures from other
+//! leagues' series found no record and 17 new records found no capture: those
+//! records do not seem to carry the simulation's seed.
+//!
+//! A server pre-sim also says which match it belongs to and which set of it
+//! (`StableSim::sim_origin`), and the server can read any match's `replays`
+//! list, which holds the replay record of each set. So such a capture keeps a
+//! [`Fixture`], the server finds its patch from that
+//! ([`crate::item_stats::place_captures`]) and the client folds it. Every
+//! league goes into the one table: nothing kept says which league a match was
+//! played in.
+//!
 //! # Why nothing here is written to a file
 //!
 //! A capture is a **queue entry**, not history: it waits for a record to vouch
@@ -47,6 +63,7 @@
 //! statistic only fills in from matches simmed after it is added.
 
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::ops::Bound;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Mutex;
 
@@ -72,6 +89,11 @@ const MAX_QUEUED: usize = 4_000;
 /// from three seasons back.
 const MAX_COUNTED: usize = 4_000;
 
+/// Sets remembered after the server has placed a capture of them. See
+/// [`Queue::vouched`]. Short, because match and replay ids are both re-used
+/// over a long save, and what this covers is a set simulated twice in a row.
+const MAX_VOUCHED: usize = 512;
+
 /// Ticks between roster top-ups.
 ///
 /// This is the only work the module does inside the simulation loop, and it used
@@ -93,6 +115,37 @@ pub(crate) struct CapturedPlayer {
     /// Such a player still counts in the unfiltered table rather than being
     /// dropped — the loadout is real either way, it just cannot be placed.
     pub lane: Option<usize>,
+}
+
+/// Where a server pre-sim sits in the server's match table, as the simulation
+/// itself reports it.
+#[derive(Clone, Copy)]
+pub(crate) struct Fixture {
+    /// The match's id, and the index of this set in it.
+    pub set: Option<(u64, u64)>,
+    /// The set's replay record, where the simulation already names one.
+    pub replay: Option<u64>,
+}
+
+impl Fixture {
+    /// `None` for anything but a server pre-sim that names its match or its
+    /// replay. A replay, a spectated match or a tool run is not a match being
+    /// played, and must not come to be counted because a record can be found
+    /// for it.
+    fn of(origin: SimOriginV1) -> Option<Self> {
+        if !matches!(
+            SimOriginKindV1::from_code(origin.kind),
+            Some(SimOriginKindV1::ServerPresim)
+        ) {
+            return None;
+        }
+        let known = |id: u64| (id != SimOriginV1::NONE).then_some(id);
+        let fixture = Self {
+            set: known(origin.match_id).zip(known(origin.set_index)),
+            replay: known(origin.replay_id),
+        };
+        (fixture.set.is_some() || fixture.replay.is_some()).then_some(fixture)
+    }
 }
 
 /// Matches captured but not yet counted, and the seeds of those that have been.
@@ -121,6 +174,20 @@ struct Queue {
     /// sim, and a linear walk of [`MAX_COUNTED`] seeds there would be a tax on the
     /// simulation loop — the one place this module must not cost anything.
     counted_set: BTreeSet<u64>,
+    /// The waiting captures the server can look up: seed -> where the set sits
+    /// in its match table. An entry leaves when its capture is placed, counted
+    /// or evicted.
+    fixtures: BTreeMap<u64, Fixture>,
+    /// The last seed [`unplaced`] handed out. Each call goes on from there, so
+    /// a set whose record never comes cannot keep the ones behind it waiting.
+    cursor: u64,
+    /// Captures the server has found the patch of, waiting for the client to
+    /// fold them: seed -> patch.
+    placed: BTreeMap<u64, String>,
+    /// The match, set and replay record of every capture placed lately, oldest
+    /// first. A second simulation of a set already placed runs on another
+    /// seed, so the seed cannot tell that it is the same set. This can.
+    vouched: VecDeque<(Option<(u64, u64)>, u64)>,
 }
 
 impl Queue {
@@ -287,12 +354,77 @@ pub(crate) fn take(seed: u64) -> Option<Vec<CapturedPlayer>> {
     let taken = with_queue(|queue| {
         let players = queue.by_seed.remove(&seed)?;
         queue.order.retain(|queued| *queued != seed);
+        queue.fixtures.remove(&seed);
+        queue.placed.remove(&seed);
         queue.mark_counted(seed);
         Some(players)
     })
     .flatten();
 
     taken
+}
+
+/// The next `limit` waiting captures the server has yet to find the patch of.
+pub(crate) fn unplaced(limit: usize) -> Vec<(u64, Fixture)> {
+    with_queue(|queue| {
+        let after = (Bound::Excluded(queue.cursor), Bound::Unbounded);
+        let next: Vec<(u64, Fixture)> = queue
+            .fixtures
+            .range(after)
+            .chain(queue.fixtures.range(..=queue.cursor))
+            .take(limit)
+            .map(|(seed, fixture)| (*seed, *fixture))
+            .collect();
+        if let Some((seed, _)) = next.last() {
+            queue.cursor = *seed;
+        }
+        next
+    })
+    .unwrap_or_default()
+}
+
+/// Files a waiting capture under the patch the server found for it, for the
+/// client to fold. `replay` is the record that named the patch.
+pub(crate) fn place(seed: u64, replay: u64, patch: String) {
+    let _ = with_queue(|queue| {
+        // Gone when the capture was counted or evicted while the server was
+        // looking. Taken out either way: the capture is placed, or it is a
+        // second run of a set that has been.
+        let Some(fixture) = queue.fixtures.remove(&seed) else {
+            return;
+        };
+        let vouch = (fixture.set, replay);
+        if queue.vouched.contains(&vouch) {
+            return;
+        }
+        queue.vouched.push_back(vouch);
+        while queue.vouched.len() > MAX_VOUCHED {
+            queue.vouched.pop_front();
+        }
+        queue.placed.insert(seed, patch);
+    });
+}
+
+/// Hands over every capture the server has placed, each with its patch, and
+/// remembers that it did: [`take`], for the captures no record's seed asks for.
+pub(crate) fn take_placed() -> Vec<(String, Vec<CapturedPlayer>)> {
+    with_queue(|queue| {
+        // The usual answer, on every frame this is asked.
+        if queue.placed.is_empty() {
+            return Vec::new();
+        }
+        let mut taken = Vec::new();
+        for (seed, patch) in std::mem::take(&mut queue.placed) {
+            if let Some(players) = queue.by_seed.remove(&seed) {
+                queue.mark_counted(seed);
+                taken.push((patch, players));
+            }
+        }
+        let Queue { order, by_seed, .. } = queue;
+        order.retain(|queued| by_seed.contains_key(queued));
+        taken
+    })
+    .unwrap_or_default()
 }
 
 /// The match hook. Registered for every match the game simulates.
@@ -376,12 +508,20 @@ impl StableMatchHook for EndOfMatchItems {
             return;
         }
 
+        // What lets the server place this set when no record carries its seed.
+        let fixture = sim.sim_origin().and_then(Fixture::of);
+
         let _ = with_queue(|queue| {
             queue.by_seed.insert(seed, players);
+            if let Some(fixture) = fixture {
+                queue.fixtures.insert(seed, fixture);
+            }
             queue.order.push_back(seed);
             while queue.order.len() > MAX_QUEUED {
                 if let Some(oldest) = queue.order.pop_front() {
                     queue.by_seed.remove(&oldest);
+                    queue.fixtures.remove(&oldest);
+                    queue.placed.remove(&oldest);
                 }
             }
         });

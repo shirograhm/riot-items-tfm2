@@ -26,6 +26,15 @@
 //! registered in. Taking the loadout from the sim instead makes both problems
 //! disappear at once: real keys, and the real end state.
 //!
+//! # The other leagues
+//!
+//! The seed only joins the player's own league: the records of a set played in
+//! another one do not seem to carry the simulation's seed (see
+//! [`crate::item_stats::sim`]). Those captures are placed by the server, which
+//! reads the set's replay record off its match ([`place_captures`]) and takes
+//! the same one field from it, `version`. Either way a capture is counted once,
+//! and only when a replay record stands behind it.
+//!
 //! # Why the totals are kept, and not the matches
 //!
 //! These counters **are** the stored history: a match is folded in once and its
@@ -70,8 +79,9 @@ pub(crate) mod ui;
 
 use std::borrow::Cow;
 use std::collections::{BTreeMap, HashMap, HashSet};
-use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 use std::sync::{Mutex, OnceLock};
+use std::time::{Duration, Instant};
 
 use mod_api_stable::*;
 use serde_json::Value;
@@ -330,6 +340,13 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     if !with_agg(|agg| agg.loaded).unwrap_or(false) {
         return false;
     }
+    // First the captures the server has found the patch of
+    // ([`place_captures`]): there is no record to read for those.
+    let mut folded = false;
+    for (patch, players) in crate::item_stats::sim::take_placed() {
+        fold(&patch, &players);
+        folded = true;
+    }
     // Every capture has been matched: the rest of the pass would read records
     // for nothing.
     if crate::item_stats::sim::pending() == 0 {
@@ -337,10 +354,13 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
             agg.pending.clear();
             agg.rematch = false;
         });
-        return false;
+        if folded {
+            DIRTY.store(true, Ordering::Relaxed);
+        }
+        return folded;
     }
 
-    // First the records already read, which need no reading to be matched: a
+    // Then the records already read, which need no reading to be matched: a
     // capture often arrives after its record was read for an earlier pass.
     let known: Vec<(String, u64)> = with_agg(|agg| {
         if std::mem::take(&mut agg.rematch) {
@@ -350,7 +370,6 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         }
     })
     .unwrap_or_default();
-    let mut folded = false;
     for (patch, seed) in &known {
         if let Some(players) = crate::item_stats::sim::take(*seed) {
             fold(patch, &players);
@@ -397,6 +416,7 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
 /// so nothing is recomputed and nothing is walked twice — which is the whole
 /// point of keeping numbers rather than matches.
 fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
+    FOLDS.fetch_add(1, Ordering::Relaxed);
     let _ = with_agg(|agg| {
         *agg.matches.entry(patch.to_string()).or_default() += 1;
 
@@ -435,6 +455,131 @@ fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
         }
     });
 }
+
+/// Matches folded since the game started.
+static FOLDS: AtomicU64 = AtomicU64::new(0);
+
+/// How many matches have been folded since the game started. The statistics
+/// screen repaints when this moves: most folds happen in [`sync`], not in the
+/// screen's own [`pump`], which is all it used to hear from.
+pub(crate) fn folds() -> u64 {
+    FOLDS.load(Ordering::Relaxed)
+}
+
+/// Sets the server looks up in one pass. With [`PLACE_EVERY`] that is 32 a
+/// second, so a game day of every league's sets is placed within a few
+/// seconds of being recorded, at two small reads a set.
+const PLACE_BATCH: usize = 8;
+
+/// The least time between two passes. By the clock, since how often the
+/// server ticks is not something this can count on.
+const PLACE_EVERY: Duration = Duration::from_millis(250);
+
+/// Lines the test log gets for each way a look-up can end. A set whose record
+/// never comes is asked about again on every round.
+const PLACINGS_TO_LOG: u32 = 8;
+
+/// What the server's records said about one captured set.
+struct Placing {
+    /// The match record's `replays`, as the server gave it.
+    listed: Option<String>,
+    /// The set's replay record.
+    replay: Option<u64>,
+    /// That record's `version`.
+    patch: Option<String>,
+}
+
+/// Looks one captured set up in the server's records.
+///
+/// `RecordKindV1::Match` is the whole match table on the server, and a match
+/// record's `replays` holds the replay id of each of its sets (both from the
+/// stable API's own notes). A set that has not been recorded yet is simply
+/// not in the list, and is asked about again on a later pass.
+fn look_up(ctx: &StableServerCtx<'_>, fixture: &sim::Fixture) -> Placing {
+    let version = |replay: u64| {
+        ctx.record_get_string(RecordKindV1::MatchReplay, replay as usize, "version")
+            .filter(|version| !version.is_empty())
+    };
+    // The simulation's own answer first, where it has one.
+    if let Some(replay) = fixture.replay {
+        if let Some(patch) = version(replay) {
+            return Placing {
+                listed: None,
+                replay: Some(replay),
+                patch: Some(patch),
+            };
+        }
+    }
+    let listed = fixture.set.and_then(|(match_id, _)| {
+        ctx.record_get_json(RecordKindV1::Match, match_id as usize, "replays")
+    });
+    let replay = fixture
+        .set
+        .zip(listed.as_deref())
+        .and_then(|((_, set_index), listed)| {
+            serde_json::from_str::<Value>(listed)
+                .ok()?
+                .get(set_index as usize)?
+                .as_u64()
+        });
+    let patch = replay.and_then(version);
+    Placing {
+        listed,
+        replay,
+        patch,
+    }
+}
+
+/// Finds the patch of the captures no record's seed asks for, which is what
+/// the sets played outside the player's own league have been, so that
+/// [`pump`] can fold them.
+///
+/// Called from the server's management tick, because the server is where
+/// `RecordKindV1::Match` is the whole match table: the client is given views
+/// of it by category. A few sets a pass, four passes a second at most, and on
+/// the other ticks nothing but a lock and a clock read. No capture is given up
+/// on, for the reason none is expired by age: a set's record is written when
+/// its game day is committed, however long that takes.
+pub(crate) fn place_captures(ctx: &StableServerCtx<'_>) {
+    static LAST_PASS: Mutex<Option<Instant>> = Mutex::new(None);
+    static LOGGED: [AtomicU32; 4] = [
+        AtomicU32::new(0),
+        AtomicU32::new(0),
+        AtomicU32::new(0),
+        AtomicU32::new(0),
+    ];
+    {
+        let Ok(mut last) = LAST_PASS.lock() else {
+            return;
+        };
+        if last.is_some_and(|at| at.elapsed() < PLACE_EVERY) {
+            return;
+        }
+        *last = Some(Instant::now());
+    }
+    for (seed, fixture) in sim::unplaced(PLACE_BATCH) {
+        let placing = look_up(ctx, &fixture);
+        let (outcome, said) = match (&placing.patch, placing.replay, &placing.listed) {
+            (Some(_), _, _) => (0, "placed"),
+            (None, Some(_), _) => (1, "its replay record names no version"),
+            (None, None, Some(_)) => (2, "the match does not list this set"),
+            (None, None, None) => (3, "no match record"),
+        };
+        if LOGGED[outcome].load(Ordering::Relaxed) < PLACINGS_TO_LOG {
+            LOGGED[outcome].fetch_add(1, Ordering::Relaxed);
+            crate::match_builds::log("placing", || {
+                format!(
+                    "{said}: set {:?}, replay named by the simulation {:?}, replays {:?}, replay {:?}, version {:?}",
+                    fixture.set, fixture.replay, placing.listed, placing.replay, placing.patch
+                )
+            });
+        }
+        if let (Some(replay), Some(patch)) = (placing.replay, placing.patch) {
+            sim::place(seed, replay, patch);
+        }
+    }
+}
+
 /// The patches seen in the records, newest first.
 ///
 /// Populated from the records themselves rather than from the game's own patch

@@ -32,9 +32,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 
 [h1] Known Issues [/h1]
 - Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
-- The SoloQ page may sometimes show incorrect item builds.  
 - The build editor only shows item and champion names in English.  
-- Saves from older versions of this mod may lag during the BP phase and in-game. For now, use a new save.  
 - Largely untested in multiplayer. It should work, but custom item builds only follow the host's choices.  
 
 [h1] Custom Item Values [/h1]
@@ -69,7 +67,7 @@ During a match, you can see both sides' planned builds using the [b]Check Tactic
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
 - melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
 - items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion (Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn only get built on marksmen).
-- additionally, supports get a World Atlas item in the first slot: Solstice Sleigh for tanks whose kit immobilizes for a second or more in total, Celestial Opposition for other tanks, Dream Maker for supports that heal, shield or buff allies, Zaz'Zak's Realmspike for mages and other AP supports, and Bloodsong for the rest.  
+- additionally, supports get a World Atlas item in the first slot: Solstice Sleigh for tanks whose kit immobilizes for a second or more in total, Celestial Opposition for other tanks, Dream Maker for supports that heal, shield or buff allies, Zaz'Zak's Realmspike for mages and other AP supports, and Bloodsong for the rest. Chef and Monk are exceptions and get Dream Maker despite being tagged as Tank.  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 

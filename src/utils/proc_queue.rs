@@ -73,7 +73,9 @@ impl ProcQueue {
     /// off an `Item` hit feeds its own procs and cycles forever -- the
     /// stagger cap only paces that loop, it does not end it. Gate on
     /// `attack_type` first: most items take `BaseAttack` only, and the ones
-    /// that want skills too still have to reject `Item` explicitly.
+    /// that want skills too still have to reject `Item` explicitly. Serpent's
+    /// Fang takes `Item` hits as well and turns away only its own procs, by
+    /// flagging the call to [`ProcQueue::update`] that lands them.
     pub(crate) fn push(
         &mut self,
         ctx: &mut StableSim<'_>,

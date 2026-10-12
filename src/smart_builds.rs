@@ -111,7 +111,9 @@
 //!    Zaz'Zak's Realmspike on a mage (the game's `Magician` class), whose
 //!    abilities are there to hurt; else Zaz'Zak's Realmspike on any other AP
 //!    champion, for the same reason; else Bloodsong, whose Spellblade any
-//!    cast readies. The AI's
+//!    cast readies. Chef and Monk are named Dream Maker ahead of all that
+//!    ([`ATLAS_BY_CHAMPION`]): tanks by their tag, heal, shield and buff
+//!    supports by the user's word (2026-10-10). The AI's
 //!    other Atlas items make way, all of them when the player pinned one. A
 //!    build with none, pinned or picked, has the AI's
 //!    last pick swapped for it, one that is not a support item rule 9 prefers
@@ -584,6 +586,10 @@ pub(crate) struct Fit {
     /// Rule 16: whether this is a support with the `Tank` tag, which builds
     /// tank and support items and no others.
     tank_support: bool,
+    /// Rule 12: the World Atlas item the user named for this champion as a
+    /// support, where they named one ([`ATLAS_BY_CHAMPION`]). It is the
+    /// answer, whatever the tests would say.
+    atlas_named: Option<&'static str>,
     /// Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
     /// Realmspike without being a mage: an AP champion none of the tests
     /// before it took, so its abilities are there to deal damage.
@@ -627,6 +633,10 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
             && (mage || traits.is_some_and(|traits| !traits.aids_allies())),
         celestial: role == Role::Support && traits.is_some_and(|traits| traits.tank),
         tank_support: role == Role::Support && traits.is_some_and(|traits| traits.tank),
+        atlas_named: ATLAS_BY_CHAMPION
+            .iter()
+            .find(|(key, _)| role == Role::Support && *key == champion)
+            .map(|&(_, item)| item),
         realmspike: role == Role::Support
             && traits.is_some_and(|traits| traits.scaling == Some(Scaling::Ap)),
         ranged: traits.and_then(|traits| traits.ranged),
@@ -649,9 +659,9 @@ impl Fit {
 
     /// Rule 17: whether this is a heal, shield and buff support, which is one
     /// whose World Atlas item is Dream Maker: the user's own way of naming
-    /// them. Not a tank whose kit aids allies, whose Atlas item is another
-    /// (Shield Bearer, Monk, Chef): rule 16 holds it to the two classes,
-    /// without the preference.
+    /// them. Chef and Monk with the rest ([`ATLAS_BY_CHAMPION`]). Not a tank
+    /// whose kit aids allies but whose Atlas item is another (Shield Bearer):
+    /// rule 16 holds it to the two classes, without the preference.
     fn aid_support(&self) -> bool {
         self.support_items && self.atlas_item() == DREAM_MAKER
     }
@@ -757,11 +767,12 @@ impl Fit {
     /// second or more, else Celestial Opposition for any other tank, else
     /// Dream Maker when its kit aids allies, else Zaz'Zak's Realmspike for a
     /// mage, else Zaz'Zak's Realmspike for an AP champion, Bloodsong for the
-    /// rest and for a champion nothing is known about. No champion is named
-    /// an item ahead of that: Chef and Monk were, for a day (Dream Maker,
-    /// 2026-10-08), and the user took the exception back out.
+    /// rest and for a champion nothing is known about. A champion the user
+    /// named an item for has that one, ahead of all of it.
     fn atlas_item(&self) -> &'static str {
-        if self.sleigh {
+        if let Some(named) = self.atlas_named {
+            named
+        } else if self.sleigh {
             SOLSTICE_SLEIGH
         } else if self.celestial {
             CELESTIAL_OPPOSITION
@@ -1013,6 +1024,16 @@ const CELESTIAL_OPPOSITION: &str = "celestial_opposition";
 
 /// Rule 12: the World Atlas item of a support that heals or shields.
 const DREAM_MAKER: &str = "dream_maker";
+
+/// Rule 12: champions whose World Atlas item the user named outright, ahead
+/// of the five tests in [`Fit::atlas_item`]. Both are tagged `Tank` and aid
+/// their allies, and the tests look at the tag first: Chef has no immobilize,
+/// which they answer with Celestial Opposition, and Monk immobilizes for a
+/// second, which they answer with Solstice Sleigh. The user wanted the two
+/// in with the Dream Maker builders, as exceptions to the order of the tests
+/// (2026-10-08, taken out the same day, back 2026-10-10). Rule 17 follows
+/// the Atlas item, so they look to the heal, shield and buff items first.
+const ATLAS_BY_CHAMPION: [(&str, &str); 2] = [("chef", DREAM_MAKER), ("monk", DREAM_MAKER)];
 
 /// Rule 12: the World Atlas item of a tank that immobilizes.
 const SOLSTICE_SLEIGH: &str = "solstice_sleigh";

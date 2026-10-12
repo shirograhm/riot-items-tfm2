@@ -5,8 +5,12 @@ use rand::{RngExt, SeedableRng};
 use crate::config::ItemConfig;
 use crate::{add_stack, apply_config, ticks, ItemMeta};
 
-// Wrath and Ruin: Landing an Ability on an enemy champion grants 5% critical strike chance for 5 seconds (max 5 stacks).
-// Salvage the Wreckage: Landing an Ability on an enemy champion has a <crit_icon> chance to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage.
+// Wrath and Ruin: Using an Ability grants 5% critical strike chance for 5 seconds (max 5 stacks).
+// Salvage the Wreckage: Using an Ability has a <crit_icon> chance to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage.
+//
+// Both answer to the cast, whatever it hits. No hook reports one, so it is
+// read the way Eternity reads it: an ability's remaining cooldown going up
+// between two ticks.
 #[derive(Clone, Debug)]
 pub struct RiteOfRuin {
     meta: ItemMeta,
@@ -21,6 +25,11 @@ pub struct RiteOfRuin {
     effect_shield_seconds: f64,
     effect_min_shield: usize,
     effect_max_shield: usize,
+    // Non-vital stats (internals)
+    /// The carrier's remaining ability cooldowns (skill, skill2, ult) last
+    /// tick. `None` until the first reading after a spawn, which is only a
+    /// baseline.
+    last_cooldowns: Option<(usize, usize, usize)>,
 }
 
 impl RiteOfRuin {
@@ -42,6 +51,8 @@ impl RiteOfRuin {
             effect_shield_seconds: 3.0,
             effect_min_shield: 35,
             effect_max_shield: 90,
+            // Non-vital stats (internals)
+            last_cooldowns: None,
         }
     }
 
@@ -147,31 +158,41 @@ impl StableItem for RiteOfRuin {
         }
     }
 
-    fn on_skill_hit(
-        &mut self,
-        ctx: &mut StableSim<'_>,
-        rng_seed: u64,
-        caster: usize,
-        target: usize,
-        is_ally: bool,
-    ) {
-        let Some(entity_ref) = ctx.get_entity(caster) else {
-            return;
-        };
-        let Some(target_ref) = ctx.get_entity(target) else {
-            return;
-        };
-        if is_ally || !target_ref.is_champion() {
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.last_cooldowns = None;
+    }
+
+    fn update(&mut self, ctx: &mut StableSim<'_>, rng_seed: u64, player: usize) {
+        let cooldowns = ctx
+            .get_player(player)
+            .and_then(|p| p.cooldowns())
+            .map(|(_, skill, skill2, ult)| (skill, skill2, ult));
+        let cast = matches!(
+            (cooldowns, self.last_cooldowns),
+            (Some(now), Some(before))
+                if now.0 > before.0 || now.1 > before.1 || now.2 > before.2
+        );
+        self.last_cooldowns = cooldowns;
+        if !cast {
             return;
         }
+
+        let Some((caster, level, crit_chance)) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .filter(|c| c.is_alive())
+            .map(|c| (c.id(), c.level(), c.stat().crit_chance))
+        else {
+            return;
+        };
 
         let mut rng = StdRng::seed_from_u64(rng_seed);
         let roll: f64 = rng.random::<f64>();
 
-        if roll < (entity_ref.stat().crit_chance as f64 / 100.0) {
+        if roll < (crit_chance as f64 / 100.0) {
             ctx.entity_add_shield(
                 caster,
-                self.shield_amount(entity_ref.level()),
+                self.shield_amount(level),
                 ticks(self.effect_shield_seconds),
             );
         }

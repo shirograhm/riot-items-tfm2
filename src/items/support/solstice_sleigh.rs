@@ -246,8 +246,9 @@ impl StableItem for SolsticeSleigh {
         }
     }
 
-    /// A skill's hit again, as `on_attack` tells of it: it is not known that
-    /// `on_skill_hit` hears of every one (see [`ImmobilizeWatch`]).
+    /// A skill's hit again, as `on_attack` tells of it, a tick of its damage
+    /// over time included: it is not known that `on_skill_hit` hears of every
+    /// one (see [`ImmobilizeWatch`]).
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -258,7 +259,11 @@ impl StableItem for SolsticeSleigh {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if matches!(attack_type, AttackTypeV1::Skill) && self.watch.skill_hit(ctx, target, false) {
+        let ability = matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        );
+        if ability && self.watch.skill_hit(ctx, target, false) {
             self.sled(ctx, caster);
         }
     }

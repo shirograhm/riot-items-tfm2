@@ -392,6 +392,8 @@ struct State {
     /// Counts every frame the screen is up, which `tick` does not — it only
     /// advances while probing for the screen or while this tab is showing.
     sweep_tick: u32,
+    /// [`item_stats::folds`] when the table was last marked for a repaint.
+    folds: u64,
     /// The last event acted on, as `(path, frame)`. See [`already_handled`].
     last_event: Option<(String, u32)>,
 }
@@ -481,6 +483,15 @@ pub fn sync(ctx: &mut StableClient<'_>) {
     if item_stats::pump(ctx) {
         let _ = with_state(|state| state.dirty = true);
     }
+    // A match folded by `item_stats::sync`, earlier in the frame, is one that
+    // `pump` has nothing left to say about here.
+    let folds = item_stats::folds();
+    let _ = with_state(|state| {
+        if state.folds != folds {
+            state.folds = folds;
+            state.dirty = true;
+        }
+    });
 
     if frame % SWEEP_EVERY == 0 {
         item_stats::sweep(ctx);
