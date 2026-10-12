@@ -220,9 +220,7 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 // state as it loads, each patch as it lands, every tooltip found and whether
 // its text could be rewritten. On while something is being tried in game.
 // Turn it off before a release.
-//
-// ON while the news article's scroll is being looked into.
-const LOG: bool = true;
+const LOG: bool = false;
 
 // Lines written in one session at most.
 const LOG_LINES: usize = 600;
