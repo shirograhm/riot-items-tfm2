@@ -237,6 +237,8 @@ impl StableServerExtension for NativeTapExtension {
         patches::server_tick(ctx);
         // One atomic load once the server's item settings have been seen to.
         item_stats::sync_server_items(ctx);
+        // And one once its game settings have the mod's match rules.
+        utils::match_rules::sync_server(ctx);
         // The patch of the sets the Item Stats tab cannot place by seed: every
         // league's but the player's own.
         item_stats::place_captures(ctx);
@@ -268,6 +270,10 @@ impl StableServerExtension for NativeTapExtension {
         // server's item settings, before it creates a match.
         item_stats::server_started();
         item_stats::sync_server_items(ctx);
+        // The mod's match rules, starting gold first of them, into this
+        // server's game settings, before it creates a match.
+        utils::match_rules::server_started();
+        utils::match_rules::sync_server(ctx);
         // What the server's side of the save has of the item patches, for
         // the test log.
         patches::server_started(ctx);
