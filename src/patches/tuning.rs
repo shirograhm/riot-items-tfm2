@@ -6,6 +6,7 @@
 //! ```json
 //! {
 //!     "enabled": true,
+//!     "automatic": true,
 //!     "step_size": { "health": 50, "attack_damage": 5, "attack_speed": 1 },
 //!     "limits": {
 //!         "min_games": 16, "max_nerfs": 4, "max_buffs": 5,
@@ -34,6 +35,9 @@ const FILE: &str = "config-autopatch.json";
 pub(crate) struct Tuning {
     // Off, no patch is made or applied. Tooltips still follow `config.json`.
     pub enabled: bool,
+    // Off, the game's champion patches bring no item patch: the only one
+    // made is the one the player queues. The patches a save has stay on.
+    pub automatic: bool,
     // Config field -> the step its number moves in. One not named here has
     // the step of its kind (`fields::step`).
     pub steps: HashMap<String, f64>,
@@ -89,6 +93,7 @@ fn read() -> Tuning {
     let players = super::base::read_object(FILE);
     let mut tuning = Tuning {
         enabled: true,
+        automatic: true,
         steps: HashMap::new(),
         frozen: HashSet::new(),
         min_games: 16,
@@ -110,10 +115,11 @@ fn read() -> Tuning {
         let mut frozen: Vec<&String> = tuning.frozen.iter().collect();
         frozen.sort();
         format!(
-            "{DEFAULT_FILE} read={} {FILE} read={}: enabled={} min_games={} max_nerfs={} max_buffs={} band={}..{} never moved: {frozen:?} steps: {}",
+            "{DEFAULT_FILE} read={} {FILE} read={}: enabled={} automatic={} min_games={} max_nerfs={} max_buffs={} band={}..{} never moved: {frozen:?} steps: {}",
             !defaults.is_empty(),
             !players.is_empty(),
             tuning.enabled,
+            tuning.automatic,
             tuning.min_games,
             tuning.max_nerfs,
             tuning.max_buffs,
@@ -129,6 +135,9 @@ fn read() -> Tuning {
 fn lay(tuning: &mut Tuning, root: &serde_json::Map<String, Value>) {
     if let Some(enabled) = root.get("enabled").and_then(Value::as_bool) {
         tuning.enabled = enabled;
+    }
+    if let Some(automatic) = root.get("automatic").and_then(Value::as_bool) {
+        tuning.automatic = automatic;
     }
     if let Some(Value::Object(steps)) = root.get("step_size") {
         for (name, step) in steps {

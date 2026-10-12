@@ -49,12 +49,13 @@ Your config.json is your item information save. If you lose it, you can re-copy 
 Both files (config-default.json & config.json) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
 
 [h1] Item Patches [/h1]
-Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b]. Boots, jungle items and support-only items are judged on win rate alone, since Smart Builds decides who builds them. A patch may change an item's base version, its Radiant version, or both, and not always in the same stats.  
+Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b]. Boots, jungle items and support-only items are judged on win rate alone, since Smart Builds decides who builds them. A patch may change an item's base version, its Radiant version, or both, and not always in the same stats. A Radiant item's passive is never left weaker than its base item's.  
 
 Don't want to wait for the next champion patch? Open [b]Options > Competition[/b] from the pause menu and click [b]Queue[/b] next to [b]Run Manual Item Patch[/b]. A manual item patch is released with the next news that reaches your inbox, as a hotfix of the current version. The button stays greyed out until it has been released.  
 
 To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
 - [b]enabled[/b]: set to false to turn item patches off.  
+- [b]automatic[/b]: set to false to stop item patches from arriving with the champion patches. Run Manual Item Patch still works, and patches you already have stay in effect.  
 - [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
 - [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (65% to 140% by default).  
 

@@ -2555,6 +2555,80 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     entries
 }
 
+// The size a row of a patch's notes is written in.
+const ROW_SIZE: u32 = 18;
+
+// A style tag at the head of `text`: a colour, a font or a size, or the
+// close of one. An inline icon is not one.
+fn style_tag(text: &str) -> Option<&str> {
+    let end = text.strip_prefix('<')?.find('>')? + 2;
+    let tag = &text[..end];
+    let style = matches!(tag, "<>" | "<f>" | "<s>")
+        || tag.starts_with("<#")
+        || tag.starts_with("<f#")
+        || tag.starts_with("<s#");
+    style.then_some(tag)
+}
+
+// `text` as a line of one size. Every run of it between two style tags is
+// written out whole and by itself, `<s#size><f#font><#colour>run<><f><s>`,
+// with the font and the colour that are open around it; a run is words and
+// inline icons, and an icon is drawn the size of the words.
+//
+// One size span around the line does not do: the game draws what follows
+// the close of a colour at the label's own size again, size span or not.
+// Written this way nothing is drawn after a tag has closed, which is how
+// the article's headings are written.
+fn sized(text: &str, size: u32) -> String {
+    let mut out = String::new();
+    // The colour and the font tags open where the text has got to.
+    let mut colours: Vec<&str> = Vec::new();
+    let mut fonts: Vec<&str> = Vec::new();
+    let mut rest = text;
+    while !rest.is_empty() {
+        if let Some(tag) = style_tag(rest) {
+            if tag == "<>" {
+                colours.pop();
+            } else if tag == "<f>" {
+                fonts.pop();
+            } else if tag.starts_with("<#") {
+                colours.push(tag);
+            } else if tag.starts_with("<f#") {
+                fonts.push(tag);
+            }
+            // A size of the text's own is dropped: the line has one.
+            rest = &rest[tag.len()..];
+            continue;
+        }
+        // The run: up to the next style tag, icons whole.
+        let mut end = 0;
+        loop {
+            let ahead = &rest[end..];
+            if ahead.is_empty() || style_tag(ahead).is_some() {
+                break;
+            }
+            end += if ahead.starts_with("<i#") {
+                ahead.find('>').map_or(ahead.len(), |close| close + 1)
+            } else {
+                ahead.chars().next().map_or(1, char::len_utf8)
+            };
+        }
+        out.push_str(&format!("<s#{size}>"));
+        out.push_str(fonts.last().copied().unwrap_or_default());
+        out.push_str(colours.last().copied().unwrap_or_default());
+        out.push_str(&rest[..end]);
+        if !colours.is_empty() {
+            out.push_str("<>");
+        }
+        if !fonts.is_empty() {
+            out.push_str("<f>");
+        }
+        out.push_str("<s>");
+        rest = &rest[end..];
+    }
+    out
+}
+
 // The news article for one patch: title, body, author. In the game's
 // language as it is when the patch lands; an article is text once written.
 // `state` is the save's balance before the patch is taken into it, which
@@ -2641,7 +2715,9 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
                     Some((sheet, tag)) => format!("<i#{sheet}:{tag}> "),
                     None => String::new(),
                 };
-                body.push_str(&format!("\n<s#18>        {mark}{}<s>", row.text));
+                let line = format!("        {mark}{}", row.text);
+                body.push_str("\n");
+                body.push_str(&sized(&line, ROW_SIZE));
             }
         }
     }

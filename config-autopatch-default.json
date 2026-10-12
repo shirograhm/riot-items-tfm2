@@ -1,5 +1,6 @@
 {
     "enabled": true,
+    "automatic": true,
     "step_size": {
         "health": 50,
         "health_regen": 1,

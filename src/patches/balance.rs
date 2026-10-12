@@ -556,13 +556,162 @@ fn crosses(
     })
 }
 
+// Whether `key` is an item's radiant, and not its legendary.
+fn is_radiant(key: &str) -> bool {
+    crate::build_config::base_slug(key) != key
+}
+
+// The number of `member`'s `field` that is level with `value`: `value`
+// itself where the tier counts in the same steps, and failing that the
+// nearest of its own steps that is no weaker.
+fn level_with(member: &Member, field: &str, value: f64, lower: bool) -> Option<f64> {
+    let unpatched = *member.values.get(field)?;
+    let whole = member.whole.contains(field);
+    let near = fields::quantize(&member.key, field, unpatched, value, whole);
+    let weaker = if lower {
+        near > value + 1e-9
+    } else {
+        near < value - 1e-9
+    };
+    if !weaker {
+        return Some(near);
+    }
+    let step = fields::step(&member.key, field, unpatched, whole);
+    Some(if lower { near - step } else { near + step })
+}
+
+// Keeps a radiant's passive no weaker than its legendary's, in the numbers
+// `changes` moved: the changes of one patch to one item.
+//
+// A passive the two tiers share is one passive. Where the patch leaves the
+// legendary's number the stronger of the two, the radiant's comes level
+// with it; and where it leaves the radiant's the weaker by moving the
+// radiant alone, the legendary's comes level with that. So a buff to the
+// legendary's Rapids is a buff to the radiant's as well, and a nerf to it
+// leaves the radiant's where it is.
+//
+// The stats an item gives are not a passive, and stay as the patch has
+// them. The tier that comes level gets a change of its own for the number,
+// or has the one the patch already made for it set to the level.
+fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec<Change>) {
+    let family = judged.family;
+    let (Some(legendary), Some(radiant)) = (
+        family.members.iter().find(|member| !is_radiant(&member.key)),
+        family.members.iter().find(|member| is_radiant(&member.key)),
+    ) else {
+        return;
+    };
+    let shared: Vec<&String> = legendary
+        .values
+        .keys()
+        .filter(|field| radiant.values.contains_key(*field))
+        .collect();
+    for field in shared {
+        let Some(rule) = fields::rule_for(&legendary.key, field).filter(|rule| !rule.flat) else {
+            continue;
+        };
+        // Where the patch's change to a tier's number is among `changes`.
+        let moved_at = |member: &Member, changes: &[Change]| {
+            changes.iter().position(|change| {
+                change.field == *field && change.members.iter().any(|moved| moved.key == member.key)
+            })
+        };
+        // What a tier's number reads: as its change leaves it, or as the
+        // state has it.
+        let reads = |member: &Member, changes: &[Change], index: Option<usize>| -> Option<f64> {
+            if let Some(index) = index {
+                return changes[index]
+                    .members
+                    .iter()
+                    .find(|moved| moved.key == member.key)
+                    .map(|moved| moved.after);
+            }
+            let unpatched = *member.values.get(field.as_str())?;
+            Some(fields::quantize(
+                &member.key,
+                field,
+                unpatched,
+                unpatched * state.ratio(&member.key, field),
+                member.whole.contains(field.as_str()),
+            ))
+        };
+        let (low_at, high_at) = (moved_at(legendary, &changes[..]), moved_at(radiant, &changes[..]));
+        if low_at.is_none() && high_at.is_none() {
+            continue;
+        }
+        let (Some(low), Some(high)) = (
+            reads(legendary, &changes[..], low_at),
+            reads(radiant, &changes[..], high_at),
+        ) else {
+            continue;
+        };
+        let lower = rule.lower_is_stronger;
+        let weaker = if lower {
+            high > low + 1e-9
+        } else {
+            high < low - 1e-9
+        };
+        if !weaker {
+            continue;
+        }
+        // The legendary leads where the patch moved it, and the radiant
+        // where the patch moved the radiant alone.
+        let (level, follower, follower_at, read) = if low_at.is_some() {
+            (low, radiant, high_at, high)
+        } else {
+            (high, legendary, low_at, low)
+        };
+        let (Some(after), Some(&unpatched)) = (
+            level_with(follower, field, level, lower),
+            follower.values.get(field.as_str()),
+        ) else {
+            continue;
+        };
+        let ratio = after / unpatched;
+        let Some(index) = follower_at else {
+            changes.push(Change {
+                family: judged.id.to_string(),
+                field: field.clone(),
+                buff,
+                ratio,
+                members: vec![Moved {
+                    key: follower.key.clone(),
+                    before: read,
+                    after,
+                }],
+                games: judged.tally.games,
+                wins: judged.tally.wins,
+            });
+            continue;
+        };
+        // The patch moved this tier's number too: its change ends at the
+        // level, and is no change where that is where the number was.
+        let before = changes[index]
+            .members
+            .iter()
+            .find(|moved| moved.key == follower.key)
+            .map_or(read, |moved| moved.before);
+        if (after - before).abs() < 1e-9 {
+            changes.remove(index);
+            continue;
+        }
+        changes[index].ratio = ratio;
+        for moved in &mut changes[index].members {
+            if moved.key == follower.key {
+                moved.after = after;
+            }
+        }
+    }
+}
+
 // The changes to one item: the steps of each tier a patch moves
 // ([`tiers_to_move`]), every tier planned by itself ([`plan_for`]). So a
 // patch may move the legendary and leave its radiant, or the other way
 // round, and where it moves both they need not move in the same numbers:
 // as it falls for the item in the patch, the tiers try their numbers in one
 // order, and then mostly move the same ones, or each in an order of its
-// own. What they may not do is change places ([`crosses`]).
+// own. What they may not do is change places ([`crosses`]), and a passive
+// the two share is never left the weaker on the radiant ([`level_tiers`]).
 //
 // Every row a change brings is the item's, under its buff or its nerf: what
 // makes up for a buff is a number going down in the list of buffs.
@@ -620,6 +769,7 @@ fn changes_for(
             });
         }
     }
+    level_tiers(state, judged, buff, &mut changes);
     changes
 }
 

@@ -54,6 +54,9 @@
 //! had. The queue is the save's ([`State::queued`]). A patch the game's own
 //! brings in the meantime empties it: that is the patch it was waiting for.
 //!
+//! With `automatic` off in the patch settings ([`tuning`]) a hotfix is the
+//! only patch there is: the game's own patches bring none.
+//!
 //! With `match_builds::LOG` on, `match-builds.log` has a `patch.` line for
 //! everything this does.
 
@@ -493,6 +496,15 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
         // The game has patched its champions since the items were settled:
         // the version that ended is judged, and the patch is the new one's.
         Some(settled) if version_order(&current, &settled) == Order::Greater => {
+            if !tuning::tuning().automatic {
+                // The game's patches bring none of the items' (`automatic`
+                // is off). The new version is still the one the items are
+                // on, for a queued hotfix to be a hotfix of.
+                session.state.version = Some(current);
+                session.state.hotfixes = 0;
+                session.dirty = true;
+                return;
+            }
             (settled, current, false)
         }
         // Queued by the player, and the calendar has moved: a hotfix of the
