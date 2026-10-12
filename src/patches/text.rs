@@ -1168,15 +1168,24 @@ const OFTEN_HELD: f64 = 0.8;
 // An item builds do not choose (`Family::chosen`: boots, the jungle items,
 // what only a support builds) is in every build it can be in, and is judged
 // on how it wins alone. Nothing is said of how often it is built: it is too
-// strong, or it is too weak.
+// strong, or it is too weak. And a component is patched for the items it is
+// built into, which is all there is to say of it.
 fn reason_pool(
     buff: bool,
     chosen: bool,
+    component: bool,
     tempo: super::base::Tempo,
     change: &Change,
     matches: u32,
 ) -> Vec<&'static str> {
     use super::base::Tempo;
+    if component {
+        return if buff {
+            vec!["why_buff_component_1", "why_buff_component_2"]
+        } else {
+            vec!["why_nerf_component_1", "why_nerf_component_2"]
+        };
+    }
     let games = f64::from(change.games);
     let share = if change.games > 0 {
         f64::from(change.wins) / games
@@ -1372,12 +1381,17 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
                 // One of the sentences that fit the item, a different one
                 // for every item of the article as far as the pool goes, and
                 // the same one whenever this patch's notes are written.
-                let chosen = base
-                    .families
-                    .get(&change.family)
-                    .map_or(true, |family| family.chosen);
-                let pool =
-                    reason_pool(change.buff, chosen, base.tempo(&lead), change, patch.matches);
+                let family = base.families.get(&change.family);
+                let chosen = family.map_or(true, |family| family.chosen);
+                let component = family.is_some_and(|family| family.component);
+                let pool = reason_pool(
+                    change.buff,
+                    chosen,
+                    component,
+                    base.tempo(&lead),
+                    change,
+                    patch.matches,
+                );
                 let from = seed_of(patch.number, &change.family) % pool.len().max(1);
                 let key = (0..pool.len())
                     .map(|step| pool[(from + step) % pool.len()])

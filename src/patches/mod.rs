@@ -132,6 +132,8 @@ pub(crate) fn note_mod_item<T: StableItem>(
         key,
         base::ModItem {
             tier: item.tier(),
+            next: item.next_tier(),
+            previous: item.previous_tier(),
             registered: item.stat(),
             stat_of: Box::new(move |config| build(config).stat()),
         },

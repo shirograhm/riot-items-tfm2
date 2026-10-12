@@ -1,9 +1,17 @@
 //! What a balance patch has to work with: which items it may touch, which of
 //! their numbers, and what those numbers are before any patch.
 //!
-//! An item is patched as a family, the legendary and its radiant together,
-//! and only finished items are: a component is held at the end of a match by
-//! whoever did not get to finish it, so its win rate says nothing about it.
+//! An item is kept as a family, the legendary and its radiant together,
+//! and a patch plans each of its tiers by itself (`balance`). Every item of
+//! the third tier and up is one a patch may touch ([`PATCHED_FROM_TIER`]):
+//! the legendaries and radiants, the boots, which are finished at the third
+//! tier, and the third tier's components, each a family of its one tier.
+//!
+//! A component is counted like any item, when it is held at the end of a
+//! match, and that is by whoever did not get to finish what it builds into:
+//! its own record says little about it. So it is not judged on that at all.
+//! It is patched for the finished items it is built into
+//! ([`Family::built_into`]), where they all go one way (`balance::decide`).
 //!
 //! A number is patched only where the player can see it afterwards. For one
 //! of this mod's items that is a flat stat with a line in the tooltip, or a
@@ -24,6 +32,10 @@ use crate::config::ItemConfig;
 // macros in `lib.rs`.
 pub(crate) struct ModItem {
     pub tier: usize,
+    // The items it is built into, and the ones it is built from, as the
+    // item itself names them.
+    pub next: Vec<String>,
+    pub previous: Vec<String>,
     // The stats the game took a copy of, and holds for the item ever after.
     pub registered: BuffV1,
     // The stats the item would have with another config.
@@ -57,6 +69,12 @@ pub(crate) fn note_refresh(key: &'static str, refresh: Refresh) {
     }
 }
 
+// The lowest tier a patch touches, counted from 0 as an item's own `tier`
+// is: the third.
+const PATCHED_FROM_TIER: usize = 2;
+// The tier an item is finished at, from which builds choose it.
+const FINISHED_TIER: usize = 3;
+
 // One tier of an item.
 #[derive(Clone)]
 pub(crate) struct Member {
@@ -75,9 +93,16 @@ pub(crate) struct Family {
     // Whether builds choose it. Boots, the jungle items and the World Atlas
     // line are handed out by Smart Builds' rules, and the other items only a
     // support builds are kept to that one role by them, so how often any of
-    // these is held says nothing about it. They are judged on how they win
+    // these is held says nothing about it. Nor does it of a component, which
+    // comes with the item it is built into. They are judged on how they win
     // and on nothing else.
     pub chosen: bool,
+    // An item of a tier no build ends on, boots apart: it is patched for
+    // what it is built into, and not on a record of its own.
+    pub component: bool,
+    // For a component, the finished items it is built into that a patch can
+    // touch, by family.
+    pub built_into: Vec<String>,
 }
 
 pub(crate) struct Base {
@@ -235,14 +260,23 @@ impl Base {
         }
 
         let mut families: BTreeMap<String, Family> = BTreeMap::new();
+        // What each item is built into, by key: an item names what it grows
+        // into, and what it is grown from.
+        let mut into: HashMap<String, Vec<String>> = HashMap::new();
+        for (key, item) in &items {
+            for next in &item.next {
+                into.entry(key.to_string()).or_default().push(next.clone());
+            }
+            for previous in &item.previous {
+                into.entry(previous.clone()).or_default().push(key.to_string());
+            }
+        }
         // Asked of the config type once a field, not once an item.
         let mut whole_fields: HashMap<String, bool> = HashMap::new();
         let mut config_fields: HashMap<String, bool> = HashMap::new();
 
         for (key, item) in &items {
-            let finished = item.tier >= 3
-                || (crate::strategy_ui::is_mod_final_item(key) && crate::smart_builds::is_boots(key));
-            if !finished {
+            if item.tier < PATCHED_FROM_TIER {
                 continue;
             }
             let Some(numbers) = config.get(*key) else {
@@ -296,26 +330,32 @@ impl Base {
             if member.values.is_empty() {
                 continue;
             }
-            let chosen = !(crate::smart_builds::is_boots(key)
-                || crate::smart_builds::is_jungle_item(key)
-                || crate::smart_builds::is_atlas_item(key)
-                || crate::smart_builds::is_support_item(key));
+            let chosen = item.tier >= FINISHED_TIER
+                && !(crate::smart_builds::is_boots(key)
+                    || crate::smart_builds::is_jungle_item(key)
+                    || crate::smart_builds::is_atlas_item(key)
+                    || crate::smart_builds::is_support_item(key));
+            let component = item.tier < FINISHED_TIER && !crate::smart_builds::is_boots(key);
             families
                 .entry(id)
                 .or_insert_with(|| Family {
                     members: Vec::new(),
                     chosen,
+                    component,
+                    built_into: Vec::new(),
                 })
                 .members
                 .push(member);
         }
 
-        // The game's own finals: its six lines' last two tiers, which the mod
-        // draws as a legendary and its radiant. A patch is the difference
-        // from the settings file's numbers, so those have to be the numbers
-        // the game runs with, which they are where the native half can write
-        // them into the server (`item_stats::sync_server_items`). Where it
-        // cannot, these items are left out.
+        // The game's own items of the same tiers: its six lines' last two,
+        // which the mod draws as a legendary and its radiant, and the tier
+        // before them, each item of it a family of its own. A patch is the
+        // difference from the settings file's numbers, so those have to be
+        // the numbers the game runs with, which they are where the native
+        // half can write them into the server
+        // (`item_stats::sync_server_items`). Where it cannot, these items
+        // are left out.
         if crate::tactics::driver::can_lift() {
             let file = crate::item_stats::game_item_file();
             let key_of = |name: &String, object: &serde_json::Map<String, Value>| {
@@ -355,6 +395,27 @@ impl Base {
                 let Some(object) = object.as_object() else {
                     continue;
                 };
+                if tier_of(object) == Some(PATCHED_FROM_TIER as u64) {
+                    let member = member_of(key_of(name, object), object);
+                    if !member.values.is_empty() {
+                        let next = object.get("next_tier").and_then(Value::as_array);
+                        into.entry(member.key.clone()).or_default().extend(
+                            next.into_iter()
+                                .flatten()
+                                .filter_map(|next| next.as_str().map(str::to_string)),
+                        );
+                        families.insert(
+                            member.key.clone(),
+                            Family {
+                                members: vec![member],
+                                chosen: false,
+                                component: true,
+                                built_into: Vec::new(),
+                            },
+                        );
+                    }
+                    continue;
+                }
                 if tier_of(object) != Some(4) {
                     continue;
                 }
@@ -383,9 +444,37 @@ impl Base {
                         Family {
                             members,
                             chosen: true,
+                            component: false,
+                            built_into: Vec::new(),
                         },
                     );
                 }
+            }
+        }
+
+        // What each component is patched for: the families of the finished
+        // items it is built into.
+        let components: Vec<(String, String)> = families
+            .iter()
+            .filter(|(_, family)| family.component)
+            .filter_map(|(id, family)| Some((id.clone(), family.members.first()?.key.clone())))
+            .collect();
+        for (id, key) in &components {
+            let mut built: Vec<String> = into
+                .get(key)
+                .into_iter()
+                .flatten()
+                .filter_map(|target| {
+                    [crate::build_config::base_slug(target), target.as_str()]
+                        .into_iter()
+                        .find(|family| families.get(*family).is_some_and(|family| !family.component))
+                        .map(str::to_string)
+                })
+                .collect();
+            built.sort();
+            built.dedup();
+            if let Some(family) = families.get_mut(id) {
+                family.built_into = built;
             }
         }
 
@@ -395,9 +484,14 @@ impl Base {
                 .flat_map(|family| family.members.iter())
                 .map(|member| member.values.len())
                 .sum();
+            let shared = families
+                .values()
+                .filter(|family| family.built_into.len() >= 2)
+                .count();
             format!(
-                "{} item families can be patched, in {numbers} numbers; {} mod items registered",
+                "{} item families can be patched, in {numbers} numbers; {} are components, {shared} of them built into two finished items or more; {} mod items registered",
                 families.len(),
+                components.len(),
                 items.len()
             )
         });

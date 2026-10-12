@@ -36,6 +36,11 @@ const RATE_SPAN: (f64, f64) = (0.6, 1.5);
 // The score from which an item has two of its numbers moved, not one.
 const TWO_FIELDS_FROM: f64 = 2.0;
 
+// How seldom a component that is built into one finished item only is
+// patched in that item's place: in one patch out of this many of those the
+// item is over the mark in.
+const ALONE_ONE_IN: u64 = 4;
+
 // How one item did: times it was held at the end of a match, and how many
 // of those were on the winning side.
 #[derive(Clone, Copy, Default)]
@@ -78,6 +83,13 @@ struct Judged<'a> {
     family: &'a Family,
     tally: Tally,
     score: f64,
+    // How far its changes go: its score without the sign, and for a
+    // component the middle of the scores it stands in for.
+    size: f64,
+    // Where it falls among equal scores, ahead of the tiebreak: a component
+    // comes before the items it stands in for, whichever end the changes
+    // are picked from.
+    rank: u8,
     // Where equal scores fall: differently every patch, the same for the
     // same patch.
     tiebreak: u64,
@@ -561,7 +573,7 @@ fn changes_for(
     buff: bool,
     number: u32,
 ) -> Vec<Change> {
-    let size = judged.score.abs();
+    let size = judged.size;
     let rate = RATE * (size / 2.0).clamp(RATE_SPAN.0, RATE_SPAN.1);
     let wanted = if size >= TWO_FIELDS_FROM { 2 } else { 1 };
     let family = judged.family;
@@ -575,6 +587,8 @@ fn changes_for(
         let tier = Family {
             members: vec![member.clone()],
             chosen: family.chosen,
+            component: family.component,
+            built_into: Vec::new(),
         };
         let seed = if together {
             judged.id
@@ -641,9 +655,12 @@ pub(crate) fn decide(
         held.iter().sum::<f64>() / held.len() as f64
     };
 
+    let tuning = super::tuning::tuning();
+    // The finished items, each on its own record.
     let mut judged: Vec<Judged<'_>> = base
         .families
         .iter()
+        .filter(|(_, family)| !family.component)
         .map(|(id, family)| {
             let tally = of(family);
             let games = f64::from(tally.games);
@@ -655,39 +672,124 @@ pub(crate) fn decide(
             } else {
                 0.0
             };
+            let score = win / WIN_UNIT + PLAY_WEIGHT * play;
             Judged {
-                id,
+                id: id.as_str(),
                 family,
                 tally,
-                score: win / WIN_UNIT + PLAY_WEIGHT * play,
+                score,
+                size: score.abs(),
+                rank: 1,
                 tiebreak: Rng::seeded(number, id).next(),
             }
         })
         .collect();
+
+    // A component has no record worth judging: it is held at the end of a
+    // match by whoever did not finish what it builds into. It is patched
+    // for the finished items it is built into, and only where they say one
+    // thing: every one of them that has the games to be judged is over the
+    // mark to be nerfed, or every one is under the mark to be buffed, and
+    // there are two of them at least. Then the patch moves the component in
+    // their place: what they share, once, and none of them. Where they do
+    // not agree, the ones over the mark are patched themselves, like any
+    // item, and the component is left alone.
+    //
+    // A component built into one finished item only shares nothing, and as
+    // a rule that item is patched itself. Now and then the component is
+    // patched in its place all the same ([`ALONE_ONE_IN`]), or its numbers
+    // would never move: which patches, falls by the patch and the
+    // component, the same whenever that patch is made.
+    //
+    // Its score is the furthest of theirs, which puts it ahead of them all
+    // where the changes are picked, and its changes are sized by the middle
+    // of them. Its record, for the notes, is theirs added up.
+    let verdicts: HashMap<&str, (f64, Tally)> = judged
+        .iter()
+        .filter(|item| item.tally.games >= tuning.min_games)
+        .map(|item| (item.id, (item.score, item.tally)))
+        .collect();
+    for (id, family) in base.families.iter().filter(|(_, family)| family.component) {
+        let theirs: Vec<(f64, Tally)> = family
+            .built_into
+            .iter()
+            .filter_map(|target| verdicts.get(target.as_str()).copied())
+            .collect();
+        let mut lots = Rng::seeded(number, id);
+        let tiebreak = lots.next();
+        let alone = family.built_into.len() == 1;
+        let stands_in = if alone {
+            theirs.len() == 1 && lots.next() % ALONE_ONE_IN == 0
+        } else {
+            theirs.len() >= 2
+        };
+        if !stands_in {
+            continue;
+        }
+        let low = theirs.iter().map(|(score, _)| *score).fold(f64::INFINITY, f64::min);
+        let high = theirs.iter().map(|(score, _)| *score).fold(f64::NEG_INFINITY, f64::max);
+        let (score, rank) = if low >= THRESHOLD {
+            (high, 0)
+        } else if high <= -THRESHOLD {
+            (low, 2)
+        } else {
+            continue;
+        };
+        let size = theirs.iter().map(|(score, _)| score.abs()).sum::<f64>() / theirs.len() as f64;
+        let tally = theirs.iter().fold(Tally::default(), |sum, (_, tally)| Tally {
+            games: sum.games + tally.games,
+            wins: sum.wins + tally.wins,
+        });
+        judged.push(Judged {
+            id: id.as_str(),
+            family,
+            tally,
+            score,
+            size,
+            rank,
+            tiebreak,
+        });
+    }
     judged.sort_by(|a, b| {
         b.score
             .total_cmp(&a.score)
+            .then_with(|| a.rank.cmp(&b.rank))
             .then_with(|| a.tiebreak.cmp(&b.tiebreak))
     });
 
-    let tuning = super::tuning::tuning();
     let mut changes = Vec::new();
-    for item in judged
-        .iter()
-        .filter(|item| item.tally.games >= tuning.min_games)
-        .take_while(|item| item.score >= THRESHOLD)
-        .take(tuning.max_nerfs)
-    {
-        changes.extend(changes_for(state, item, tallies, false, number));
+    // The finished items a component's patch stands in for.
+    let mut covered: Vec<&str> = Vec::new();
+    let mut nerfs = 0;
+    for item in &judged {
+        if nerfs == tuning.max_nerfs || item.score < THRESHOLD {
+            break;
+        }
+        if item.tally.games < tuning.min_games || covered.contains(&item.id) {
+            continue;
+        }
+        nerfs += 1;
+        let made = changes_for(state, item, tallies, false, number);
+        // A component that had no step left to take stands in for nothing.
+        if !made.is_empty() {
+            covered.extend(item.family.built_into.iter().map(String::as_str));
+        }
+        changes.extend(made);
     }
-    for item in judged
-        .iter()
-        .rev()
-        .filter(|item| item.tally.games >= tuning.min_games)
-        .take_while(|item| item.score <= -THRESHOLD)
-        .take(tuning.max_buffs)
-    {
-        changes.extend(changes_for(state, item, tallies, true, number));
+    let mut buffs = 0;
+    for item in judged.iter().rev() {
+        if buffs == tuning.max_buffs || item.score > -THRESHOLD {
+            break;
+        }
+        if item.tally.games < tuning.min_games || covered.contains(&item.id) {
+            continue;
+        }
+        buffs += 1;
+        let made = changes_for(state, item, tallies, true, number);
+        if !made.is_empty() {
+            covered.extend(item.family.built_into.iter().map(String::as_str));
+        }
+        changes.extend(made);
     }
     Patch {
         number,
