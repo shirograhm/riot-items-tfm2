@@ -11,10 +11,6 @@
     "remapping": "asset/riot_items_tfm2/setting/item_setting",
     "type": "merge"
   },
-  "asset/base/setting/game_setting": {
-    "remapping": "asset/riot_items_tfm2/setting/game_setting",
-    "type": "merge"
-  },
   "asset/base/aseprite_resources/ingame/item_icons_18x18#sheet": {
     "remapping": "asset/riot_items_tfm2/aseprite_resources/ingame/item_icons_640X640#sheet",
     "type": "override"

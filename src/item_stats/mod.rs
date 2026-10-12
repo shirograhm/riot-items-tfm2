@@ -1165,7 +1165,7 @@ pub(crate) fn loaded() -> bool {
 
 // Whether two settings values say the same thing, a number being the same
 // whether the host wrote it `50` or `50.0`.
-fn same_setting(a: &Value, b: &Value) -> bool {
+pub(crate) fn same_setting(a: &Value, b: &Value) -> bool {
     match (a, b) {
         (Value::Number(a), Value::Number(b)) => a.as_f64() == b.as_f64(),
         (Value::Object(a), Value::Object(b)) => {
@@ -1351,7 +1351,10 @@ pub(crate) fn prime_game_items() {
 
 // Writes `over` onto `base` the way a `merge` override does: field by field,
 // objects merged in turn, anything else replaced.
-fn merge_over(base: &mut serde_json::Map<String, Value>, over: &serde_json::Map<String, Value>) {
+pub(crate) fn merge_over(
+    base: &mut serde_json::Map<String, Value>,
+    over: &serde_json::Map<String, Value>,
+) {
     for (name, value) in over {
         if let (Some(Value::Object(below)), Value::Object(above)) = (base.get_mut(name), value) {
             merge_over(below, above);
