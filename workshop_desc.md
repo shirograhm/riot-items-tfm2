@@ -34,7 +34,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 [h1] Known Issues [/h1]
 - Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
 - The build editor only shows item and champion names in English.  
-- Largely untested in multiplayer. It should work, but custom item builds only follow the host's choices.  
+- Largely untested in multiplayer. It may work, but custom item builds only follow the host's choices.  
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box! However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
@@ -42,26 +42,10 @@ This mod works directly out of the box! However, if any of the items feel too st
 1. Make a copy of the [b]config-default.json[/b] that ships with this mod, and name it [b]config.json[/b]. [i]Make sure to name it exactly or else this will not work.[/i]  
 2. Edit the new [b]config.json[/b] with the custom values that you want.  
 3. Re-run the game and open your save. No need to disable/re-enable the mod if you already had it running in the save!  
-4. If you changed any of the base game's own items (Bloodthirster, Thornmail and the like), start the game twice: the first start writes the new values, the second one loads them.  
 
 Your config.json is your item information save. If you lose it, you can re-copy the default values from config-default.json. Otherwise, the game will run with the default hardcoded values.  
 
 Both files (config-default.json & config.json) should be located in the mod's workshop folder in your SteamLibrary: [b]SteamLibrary/steamapps/workshop/content/3009300/3739568852/[/b]
-
-[h1] Item Patches [/h1]
-Whenever the game patches its champions, this mod patches its items too: items that won and were built too often are nerfed, and items that did neither are buffed. The changes arrive in your inbox as [b]Item Patch Notes[/b]. Boots, jungle items and support-only items are judged on win rate alone, since Smart Builds decides who builds them. A patch may change an item's base version, its Radiant version, or both, and not always in the same stats. No item is left with less of a flat stat than an item it is built from, and a Radiant item's passive is never weaker than its base item's.  
-
-Want to set the numbers yourself? Open [b]Options > Competition[/b] from the pause menu and click [b]Open[/b] next to [b]Item Patcher Settings[/b]: a window with every item a patch can change. Pick an item and type a [b]New Value[/b] for any of its numbers. The same window lets you give a number a [b]Minimum[/b] and a [b]Maximum[/b] that the automatic patches stay within, or turn on [b]Protected[/b] so that they never move it. These settings are kept in your save.  
-
-Your new values are released together as a manual item patch: click [b]Queue Manual Patch[/b] at the bottom of the window. The patch is released with the next news that reaches your inbox, as a hotfix of the current version, and changes nothing but the numbers you set. The button is greyed out while there are no new values to release, and after queueing until the patch has been released. [b]Changed Items Only[/b], at the bottom left, narrows the list to the items you have set new values for.  
-
-To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
-- [b]enabled[/b]: set to false to turn item patches off.  
-- [b]automatic[/b]: set to false to stop item patches from arriving with the champion patches. Manual item patches still work, and patches you already have stay in effect.  
-- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
-- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (65% to 140% by default).  
-
-Re-run the game after editing it. Without a config-autopatch.json, and for anything yours leaves out, the mod uses config-autopatch-default.json.  
 
 [h1] Custom Item Builds [/h1]
 Pick any item for any champion, in-game:
@@ -73,17 +57,36 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 
 During a match, you can see both sides' planned builds using the [b]Check Tactics[/b] tab. Pinned items will render with a teal border.  
 
+[h1] Item Patches [/h1]
+Whenever the game patches its champions, this mod patches its items too: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
+
+To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
+- [b]enabled[/b]: set to false to turn item patches off.  
+- [b]automatic[/b]: set to false to stop item patches from arriving with the champion patches. Manual item patches still work, and patches you already have stay in effect.  
+- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
+- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (80% to 125% by default).  
+
+Re-run the game after editing it. Without a config-autopatch.json, and for anything yours leaves out, the mod uses config-autopatch-default.json.  
+
 [h1] Smart Builds [/h1]
-[b]Enforce Smart Builds[/b] cleans up the AI's picks. The following items are swapped for another item of the same category:
-- duplicates, a second Grievous Wounds item, or crit past 100% (passive crit counts as fully stacked)
-- a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count.
-- 1 boots item per player in the second slot (unless pinned elsewhere in the build)
-- support items (except Protoplasm Harness) outside the support role. tank supports and heal/shield/buff supports (the ones that build Dream Maker) are restricted to Tank/Support items, and the latter prefer Ardent Censer, Echoes of Helia and Staff of Flowing Water
-- heal, shield and buff items (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on supports that don't heal, shield or buff allies, and on mages
-- jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) outside the jungle role
-- melee items (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone) on ranged champions, and ranged items (Runaan's Hurricane, Diamond Tipped Spear) on melee champions. Melee means an attack range of 35 or less.
-- items the champion doesn't scale with: attack items on an AP champion, AP items on an AD champion, and Hextech Gunblade (the one hybrid item) on anyone but a hybrid champion (Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn only get built on marksmen).
-- additionally, supports get a World Atlas item in the first slot: Solstice Sleigh for tanks whose kit immobilizes for a second or more in total, Celestial Opposition for other tanks, Dream Maker for supports that heal, shield or buff allies, Zaz'Zak's Realmspike for mages and other AP supports, and Bloodsong for the rest. Chef and Monk are exceptions and get Dream Maker despite being tagged as Tank.  
+[b]Enforce Smart Builds[/b] cleans up the AI's picks using the following rules:
+1. No duplicate items  
+2. One Grievous Wounds item  
+3. Crit capped at 100%, incl. passives  
+4. Support items only on supports  
+5. Items match the champion's scaling (AD/AP/hybrid)  
+6. Stacking items first, scaling items last  
+7. One pair of boots  
+8. One jungle item, junglers only  
+9. Role items bought first  
+10. Imperial Mandate on supports that immobilize  
+11. Melee/ranged items match the champion's reach  
+12. A World Atlas item for support builds  
+13. Heal/shield/buff items for supports that aid allies  
+14. Guinsoo's, Statikk Shiv and Sword of Blossoming Dawn for marksmen characters only  
+15. One Spellblade item  
+16. Tank supports build only Tank/Support items  
+17. Heal/shield/buff supports build only Tank/Support items, with Ardent/Helia/Staff prioritized  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 
@@ -93,10 +96,11 @@ The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, los
 Works alongside [b]Bows' Drafter's Toolbox[/b]. With both enabled, its Advanced Stats page becomes a fifth tab in the same bar.  
 
 [h2] Credits [/h2]
-Thank you to [b]@SUB[/b] from the Korean modding community for your help with the updated item builds hook and for allowing me to integrate the 4 item mode mod into this one, which carried the fourth item slot until the base game added its own in 0.6.0.
+Thank you to the modders that helped me with code and feature implementation:  
+[b]@SUB[/b] and [b]@toxicsnek[/b]  
 
-Special thanks to all the playtesters/modders that helped me out along the way by offering ideas, sending crash dumps and testing beta builds:
-[b]@toxicsnek[/b], [b]@Monsoon[/b], [b]@blasé[/b], [b]@Guardsman C[/b], [b]@kmrn[/b]
+Special thanks to all the playtesters that helped me out along the way by sending crash dumps and testing beta builds:  
+[b]@Monsoon[/b], [b]@blasé[/b], [b]@Guardsman C[/b], [b]@kmrn[/b]
 
 Thank you to all the translators:
 [b]@Formula Piggy[/b], [b]@Yuuroo[/b], [b]@GeoStelar[/b], [b]@Monsoon[/b], [b]@Dushnerd[/b], [b]@Flover[/b] 
