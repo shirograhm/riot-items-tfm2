@@ -1,6 +1,6 @@
 Adds 6 item slots & 237 new items (138 base + 99 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
-Champions start each match with 250 gold instead of 500.  
+Champions start each match with 250 gold instead of 500 (this can be adjusted in match-rules.json).  
 
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
 
