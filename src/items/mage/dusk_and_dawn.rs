@@ -89,7 +89,7 @@ impl DuskAndDawn {
         self
     }
 
-    /// What Spellblade adds to the empowered attack.
+    // What Spellblade adds to the empowered attack.
     pub(crate) fn spellblade_bonus(&self) -> SpellbladeBonus {
         SpellbladeBonus {
             flat: self.effect_bonus_flat_damage,
@@ -183,8 +183,8 @@ impl StableItem for DuskAndDawn {
             .spend(ctx, caster, target, self.effect_cooldown_seconds);
     }
 
-    /// Lands the Spellblade damage whose delay has run out, and watches for
-    /// the cast that readies the next one.
+    // Lands the Spellblade damage whose delay has run out, and watches for
+    // the cast that readies the next one.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.spellblade.update(ctx, player);

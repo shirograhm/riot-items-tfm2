@@ -3,9 +3,9 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, Annul, ItemMeta};
 
-/// What this is built from, which is also the upgrade line the Annul cooldown
-/// is noted under (`crate::upgrade_carry`). Both tiers take over the cooldown of
-/// the item they replace.
+// What this is built from, which is also the upgrade line the Annul cooldown
+// is noted under (`crate::upgrade_carry`). Both tiers take over the cooldown of
+// the item they replace.
 const ANNUL_LINE: &str = "verdant_barrier";
 
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second

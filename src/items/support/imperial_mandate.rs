@@ -6,11 +6,11 @@ use crate::{apply_config, refresh_buff, ticks, ImmobilizeWatch, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct ImperialMandate {
     meta: ItemMeta,
-    /// Shared by both variants: Vulnerable is a state on the target, and the
-    /// two variants grant the same amount, so a second carrier refreshes it
-    /// rather than doubling it. The name is also the `view_buffs` binding in
-    /// `view/effects.view_effects` that draws the mini flag over the target;
-    /// rename both together or the flag stops showing.
+    // Shared by both variants: Vulnerable is a state on the target, and the
+    // two variants grant the same amount, so a second carrier refreshes it
+    // rather than doubling it. The name is also the `view_buffs` binding in
+    // `view/effects.view_effects` that draws the mini flag over the target;
+    // rename both together or the flag stops showing.
     vulnerable_buff: &'static str,
     price: usize,
     hp: i32,
@@ -162,8 +162,9 @@ impl StableItem for ImperialMandate {
         }
     }
 
-    /// A skill's hit again, as `on_attack` tells of it: it is not known that
-    /// `on_skill_hit` hears of every one (see [`ImmobilizeWatch`]).
+    // A skill's hit again, as `on_attack` tells of it, a tick of its damage
+    // over time included: it is not known that `on_skill_hit` hears of every
+    // one (see [`ImmobilizeWatch`]).
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -174,7 +175,11 @@ impl StableItem for ImperialMandate {
         attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
-        if matches!(attack_type, AttackTypeV1::Skill) && self.watch.skill_hit(ctx, target, false) {
+        let ability = matches!(
+            attack_type,
+            AttackTypeV1::Skill | AttackTypeV1::Dot | AttackTypeV1::DotIgnoreShield
+        );
+        if ability && self.watch.skill_hit(ctx, target, false) {
             self.mark(ctx, target);
         }
     }

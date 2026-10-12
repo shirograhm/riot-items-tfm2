@@ -87,8 +87,8 @@ impl StableItem for SpiritStone {
         self.procs.clear();
     }
 
-    /// Butcher, the same passive as Grez's Spectral Lantern's: autos and
-    /// skills alike, with the heal taken off the whole hit, bonus included.
+    // Butcher, the same passive as Grez's Spectral Lantern's: autos and
+    // skills alike, with the heal taken off the whole hit, bonus included.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -120,7 +120,7 @@ impl StableItem for SpiritStone {
         ctx.heal(caster, caster, heal);
     }
 
-    /// Lands the Butcher bonus whose delay has run out.
+    // Lands the Butcher bonus whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }

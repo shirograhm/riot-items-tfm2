@@ -82,7 +82,7 @@ use game_core::{ChampionInfoSheet, ItemInfo, LogisticSGDAgent, Position};
 
 use crate::build_config;
 
-/// `push rbp; push r15; push r14; push r13; push r12; push rsi; push rdi; push rbx`
+// `push rbp; push r15; push r14; push r13; push r12; push rsi; push rdi; push rbx`
 const PROLOGUE_PUSHES: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
 ];
@@ -264,8 +264,8 @@ const FALLBACK_SIGNATURE: [u8; 48] = [
     0x00, 0x00, 0x48, 0xC7, 0x85, 0x98, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4D, 0x89, 0xCE,
 ];
 
-/// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
-/// diagnostic candidate list only; never used to choose a target.
+// Plausible size range for the target in bytes (1869 in SDK 0.5.2). Narrows the
+// diagnostic candidate list only; never used to choose a target.
 const CANDIDATE_SIZE_RANGE: (u32, u32) = (1200, 2800);
 
 const MEM_COMMIT: u32 = 0x1000;
@@ -305,12 +305,12 @@ static ORIGINAL: OnceLock<OriginalFn> = OnceLock::new();
 static INSTALL_LOCK: Mutex<()> = Mutex::new(());
 static INSTALLED: AtomicBool = AtomicBool::new(false);
 
-/// Contents of `hook-target.json`. Both fields are optional; `rva` wins.
+// Contents of `hook-target.json`. Both fields are optional; `rva` wins.
 #[derive(serde::Deserialize, Default)]
 struct TargetConfig {
-    /// Function start as a module-relative virtual address, e.g. `"0x10591f0"`.
+    // Function start as a module-relative virtual address, e.g. `"0x10591f0"`.
     rva: Option<String>,
-    /// Hex byte signature, e.g. `"554157..."`. Must match exactly once.
+    // Hex byte signature, e.g. `"554157..."`. Must match exactly once.
     signature: Option<String>,
 }
 
@@ -377,7 +377,7 @@ unsafe fn module_base() -> Result<*mut u8, String> {
     Ok(base)
 }
 
-/// Address and virtual size of a named section in the loaded main module.
+// Address and virtual size of a named section in the loaded main module.
 unsafe fn section(base: *mut u8, want: &[u8]) -> Result<(*mut u8, usize), String> {
     let nt = base.add(read_u32(base.add(0x3C)) as usize);
     let section_count = read_u16(nt.add(6)) as usize;
@@ -396,8 +396,8 @@ unsafe fn section(base: *mut u8, want: &[u8]) -> Result<(*mut u8, usize), String
     Err(format!("section {} not found", String::from_utf8_lossy(want)))
 }
 
-/// Every function in the main module as `(start_rva, end_rva)`, sorted by start,
-/// read from the PE exception table.
+// Every function in the main module as `(start_rva, end_rva)`, sorted by start,
+// read from the PE exception table.
 unsafe fn pdata_functions(base: *mut u8) -> Result<Vec<(u32, u32)>, String> {
     let (pdata, pdata_len) = section(base, b".pdata")?;
     let mut functions = Vec::with_capacity(pdata_len / 12);
@@ -416,14 +416,14 @@ unsafe fn pdata_functions(base: *mut u8) -> Result<Vec<(u32, u32)>, String> {
     Ok(functions)
 }
 
-/// The `.pdata` entry containing `rva`, if any.
+// The `.pdata` entry containing `rva`, if any.
 fn enclosing(functions: &[(u32, u32)], rva: u32) -> Option<(u32, u32)> {
     let index = functions.partition_point(|(start, _)| *start <= rva);
     let (start, end) = *functions.get(index.checked_sub(1)?)?;
     (start <= rva && rva < end).then_some((start, end))
 }
 
-/// Confirms `target` is a function start whose prologue is the expected pushes.
+// Confirms `target` is a function start whose prologue is the expected pushes.
 unsafe fn verify(
     base: *mut u8,
     functions: &[(u32, u32)],
@@ -471,7 +471,7 @@ unsafe fn find_signature(base: *mut u8, signature: &[u8]) -> Result<*mut u8, Str
     }
 }
 
-/// Resolves the function to detour. See the module docs for the order.
+// Resolves the function to detour. See the module docs for the order.
 unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut u8, String> {
     let config = load_target_config();
 
@@ -504,9 +504,9 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
     Ok(target)
 }
 
-/// Every function sharing the target's prologue and size range, as
-/// `rva=<start> size=<bytes>`. Diagnostic aid for re-deriving the target after a
-/// game update; see the module docs for why it never selects one.
+// Every function sharing the target's prologue and size range, as
+// `rva=<start> size=<bytes>`. Diagnostic aid for re-deriving the target after a
+// game update; see the module docs for why it never selects one.
 pub fn candidate_report() -> Result<Vec<String>, String> {
     unsafe {
         let base = module_base()?;
@@ -602,27 +602,26 @@ unsafe fn patch_target(target: *mut u8) -> Result<Vec<String>, String> {
     Ok(warnings)
 }
 
-/// # Only `ItemInfo::key` and `ItemInfo::next_tier` may be called here
-///
-/// `items` is a slice of **trait objects**, and a trait object's vtable is laid
-/// out in the order the trait declares its methods. This crate links the 0.5.2
-/// `game_core` rlib (see `.cargo/config.toml` for why no later one links), and
-/// `ItemInfo` has grown since: 0.5.6 declares `on_assist`, `on_base_attack` and
-/// `on_dead`, which 0.5.2 does not. Every slot at or past the first insertion
-/// point therefore points at the *wrong function* in the running game.
-///
-/// `key` and `next_tier` happen to sit ahead of it, which is why the catalog
-/// snapshot below has always worked. `category` and `tier` do not. Calling
-/// `category()` (2026-09-19, from the unique-items pass) dispatched into some
-/// other trait method with nonsense arguments; the game's own Rust code
-/// panicked and aborted the process with `0xc0000409` /
-/// `FAST_FAIL_FATAL_APP_EXIT` as soon as a 5v5 test began.
-///
-/// The `repr(Rust)` *layout* argument in `.cargo/config.toml` is sound and is
-/// not what this is about - layout is fixed by the compiler, vtable order is
-/// fixed by the SDK's trait declaration. Needing another fact about an item
-/// means deriving it from a key, not adding a call: `item_catalog`,
-/// `build_config` and `strategy_ui` all index by key and cost nothing.
+// # Only `ItemInfo::key` and `ItemInfo::next_tier` may be called here
+//
+// `items` is a slice of **trait objects**, and a trait object's vtable is laid
+// out in the order the trait declares its methods. This crate links the 0.5.2
+// `game_core` rlib (see `.cargo/config.toml` for why no later one links), and
+// `ItemInfo` has grown since: 0.5.6 declares `on_assist`, `on_base_attack` and
+// `on_dead`, which 0.5.2 does not. Every slot at or past the first insertion
+// point therefore points at the *wrong function* in the running game.
+//
+// `key` and `next_tier` happen to sit ahead of it, which is why the catalog
+// snapshot below has always worked. `category` and `tier` do not. Calling
+// `category()` dispatches into some other trait method with nonsense
+// arguments; the game's own Rust code panics and aborts the process with
+// `0xc0000409` / `FAST_FAIL_FATAL_APP_EXIT` as soon as a 5v5 test begins.
+//
+// The `repr(Rust)` *layout* argument in `.cargo/config.toml` is sound and is
+// not what this is about - layout is fixed by the compiler, vtable order is
+// fixed by the SDK's trait declaration. Needing another fact about an item
+// means deriving it from a key, not adding a call: `item_catalog`,
+// `build_config` and `strategy_ui` all index by key and cost nothing.
 unsafe fn detour(
     agent: &LogisticSGDAgent,
     items: &Vec<Box<dyn ItemInfo>>,
@@ -728,43 +727,43 @@ unsafe fn detour(
     routes
 }
 
-/// Applies the editor's builds *and* the Smart Builds pass to a
-/// training-screen match, which is the one place the stable hook never runs.
-///
-/// # Why this exists again
-///
-/// Rewriting routes here is what this detour did for *every* match before
-/// `crate::item_build_hook` took the job over on the stable API. The reason it
-/// has to come back for `mode == true` is measurable rather than theoretical.
-/// One session was instrumented end to end to settle it:
-///
-/// - **36 route calls with `mode == false`.** Every one is followed by a
-///   `decide_build` per player, and every configured champion in the resulting
-///   match finished holding its editor build - 44 of 45 exactly, the one
-///   exception being a blank slot the AI refilled, which is what blank slots
-///   are for.
-/// - **4 route calls with `mode == true`** - a 1v1 lane test and a 5v5
-///   composition test, each called twice as both sides. Between all four, *not
-///   one* `decide_build`. The engine does not consult mod item-build hooks on
-///   this path at all, so a build set in the editor was silently ignored in
-///   exactly the two screens a player uses to try builds out.
-///
-/// # Why in place
-///
-/// The routes were allocated by the game and are handed straight back to it.
-/// This mod is a separate cdylib with its own `std`, so replacing a `Vec` would
-/// mean freeing the game's allocation on the mod's allocator. Overwriting the
-/// existing elements touches no allocation at all, and keeping each route's
-/// original length means the engine sees exactly the shape it built - a build
-/// longer than the route simply loses its tail, the same way the stable hook's
-/// return is capped by the host.
-///
-/// # Why `team1`
-///
-/// Routes come back in `team1` order, position-ordered from Top, which is the
-/// same correspondence `record_lineup_roles` above relies on. So route `i`
-/// takes both its champion and its role from `team1[i]`. `team2` is only read
-/// as the enemy lineup, which picks a tank's boots.
+// Applies the editor's builds *and* the Smart Builds pass to a
+// training-screen match, which is the one place the stable hook never runs.
+//
+// # Why this exists again
+//
+// Rewriting routes here is what this detour did for *every* match before
+// `crate::item_build_hook` took the job over on the stable API. The reason it
+// has to come back for `mode == true` is measurable rather than theoretical.
+// One session was instrumented end to end to settle it:
+//
+// - **36 route calls with `mode == false`.** Every one is followed by a
+//   `decide_build` per player, and every configured champion in the resulting
+//   match finished holding its editor build - 44 of 45 exactly, the one
+//   exception being a blank slot the AI refilled, which is what blank slots
+//   are for.
+// - **4 route calls with `mode == true`** - a 1v1 lane test and a 5v5
+//   composition test, each called twice as both sides. Between all four, *not
+//   one* `decide_build`. The engine does not consult mod item-build hooks on
+//   this path at all, so a build set in the editor was silently ignored in
+//   exactly the two screens a player uses to try builds out.
+//
+// # Why in place
+//
+// The routes were allocated by the game and are handed straight back to it.
+// This mod is a separate cdylib with its own `std`, so replacing a `Vec` would
+// mean freeing the game's allocation on the mod's allocator. Overwriting the
+// existing elements touches no allocation at all, and keeping each route's
+// original length means the engine sees exactly the shape it built - a build
+// longer than the route simply loses its tail, the same way the stable hook's
+// return is capped by the host.
+//
+// # Why `team1`
+//
+// Routes come back in `team1` order, position-ordered from Top, which is the
+// same correspondence `record_lineup_roles` above relies on. So route `i`
+// takes both its champion and its role from `team1[i]`. `team2` is only read
+// as the enemy lineup, which picks a tank's boots.
 fn apply_training_builds(
     routes: &mut [Vec<usize>],
     items: &[Box<dyn ItemInfo>],
@@ -828,40 +827,40 @@ fn apply_training_builds(
     }
 }
 
-/// The training-screen twin of `crate::item_build_hook::enforce_smart_build`:
-/// the same [`crate::smart_builds`] pass, over the same build, with the catalog
-/// seen through the game's own `Vec<Box<dyn ItemInfo>>` instead of
-/// `StableItemBuildContext`'s flat index arrays. The indices in `route` are
-/// positions in *this* list, the same ones `index_of` above produces.
-///
-/// # Why it does not ask `ItemInfo` for the category or the tier
-///
-/// **Only `key()` and `next_tier()` may be called on a `dyn ItemInfo` here.**
-/// See the warning above `detour` for the whole story; the short version is
-/// that this crate links the 0.5.2 `game_core` rlib, whose `ItemInfo` is
-/// missing three methods the current game's trait has, so vtable slots past the
-/// insertion point resolve to the wrong function. `category()` and `tier()` are
-/// past it. Calling `category()` dispatched into an unrelated game method with
-/// nonsense arguments, which panicked inside the game's own Rust code and
-/// took the process down with `__fastfail(FAST_FAIL_FATAL_APP_EXIT)` the
-/// moment a 5v5 test started with a duplicate in a configured build.
-///
-/// Both facts are available without the vtable:
-///
-/// * **Category** - `item_catalog::category_of` on the normalized slug, which
-///   is the hand-kept grouping the build editor shows and covers vanilla finals
-///   too (`base_slug` maps the six reskins back onto their LoL slug). An item
-///   nobody classified comes back `None` and is left alone, exactly as an
-///   unclassifiable item is on the stable path.
-/// * **Final** - an item is final iff it upgrades into nothing, and
-///   `next_tier()` is one of the two slots that is safe to call. This is the
-///   same test `record_item_catalog` above already relies on.
-///
-/// Note the two paths therefore substitute within *different* groupings: the
-/// stable hook uses the engine's coarse `ItemCategoryV1`, this uses the
-/// editor's finer class. Both keep a stand-in "the same kind of item", which is
-/// what the rule is for, and the finer one is the better answer where it has
-/// one.
+// The training-screen twin of `crate::item_build_hook::enforce_smart_build`:
+// the same [`crate::smart_builds`] pass, over the same build, with the catalog
+// seen through the game's own `Vec<Box<dyn ItemInfo>>` instead of
+// `StableItemBuildContext`'s flat index arrays. The indices in `route` are
+// positions in *this* list, the same ones `index_of` above produces.
+//
+// # Why it does not ask `ItemInfo` for the category or the tier
+//
+// **Only `key()` and `next_tier()` may be called on a `dyn ItemInfo` here.**
+// See the warning above `detour` for the whole story; the short version is
+// that this crate links the 0.5.2 `game_core` rlib, whose `ItemInfo` is
+// missing three methods the current game's trait has, so vtable slots past the
+// insertion point resolve to the wrong function. `category()` and `tier()` are
+// past it. Calling `category()` dispatched into an unrelated game method with
+// nonsense arguments, which panicked inside the game's own Rust code and
+// took the process down with `__fastfail(FAST_FAIL_FATAL_APP_EXIT)` the
+// moment a 5v5 test started with a duplicate in a configured build.
+//
+// Both facts are available without the vtable:
+//
+// * **Category** - `item_catalog::category_of` on the normalized slug, which
+//   is the hand-kept grouping the build editor shows and covers vanilla finals
+//   too (`base_slug` maps the six reskins back onto their LoL slug). An item
+//   nobody classified comes back `None` and is left alone, exactly as an
+//   unclassifiable item is on the stable path.
+// * **Final** - an item is final iff it upgrades into nothing, and
+//   `next_tier()` is one of the two slots that is safe to call. This is the
+//   same test `record_item_catalog` above already relies on.
+//
+// Note the two paths therefore substitute within *different* groupings: the
+// stable hook uses the engine's coarse `ItemCategoryV1`, this uses the
+// editor's finer class. Both keep a stand-in "the same kind of item", which is
+// what the rule is for, and the finer one is the better answer where it has
+// one.
 fn enforce_smart_build(
     items: &[Box<dyn ItemInfo>],
     build: &mut [usize],

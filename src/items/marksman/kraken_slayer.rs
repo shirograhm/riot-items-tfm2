@@ -197,14 +197,14 @@ impl StableItem for KrakenSlayer {
         }
     }
 
-    /// Lands the hits whose delay has run out.
+    // Lands the hits whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }
 
-    /// Bring It Down counts attacks toward the next proc, so the progress made
-    /// on the base item survives the Radiant upgrade rather than resetting the
-    /// swing count to zero.
+    // Bring It Down counts attacks toward the next proc, so the progress made
+    // on the base item survives the Radiant upgrade rather than resetting the
+    // swing count to zero.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.attack_count as u64

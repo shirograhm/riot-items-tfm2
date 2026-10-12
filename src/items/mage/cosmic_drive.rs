@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{add_stack, apply_config, is_enemy_champion, ticks, ItemMeta};
 
-/// Spelldance's movement speed. The base item and its Radiant share the name,
-/// so an upgrade mid-buff replaces it rather than stacking a second one.
+// Spelldance's movement speed. The base item and its Radiant share the name,
+// so an upgrade mid-buff replaces it rather than stacking a second one.
 const SPELLDANCE_BUFF: &str = "cosmic_drive_spelldance";
 
 #[derive(Clone, Debug)]

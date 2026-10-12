@@ -7,8 +7,8 @@ use mod_api_stable::*;
 // into Banshee's Veil.
 
 const NEXT: &str = "banshees_veil";
-/// The upgrade line the Annul cooldown is noted under (`crate::upgrade_carry`):
-/// this item's key, which Banshee's Veil and its Radiant note theirs under too.
+// The upgrade line the Annul cooldown is noted under (`crate::upgrade_carry`):
+// this item's key, which Banshee's Veil and its Radiant note theirs under too.
 const ANNUL_LINE: &str = "verdant_barrier";
 
 #[derive(Clone, Debug)]

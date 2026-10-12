@@ -12,11 +12,11 @@ use std::time::Instant;
 
 pub const ENABLED: bool = false;
 
-/// The open file and when the session started, once the first line is written.
+// The open file and when the session started, once the first line is written.
 static LOG: Mutex<Option<(std::fs::File, Instant)>> = Mutex::new(None);
 
-/// Appends one line, prefixed with the seconds since the session's first line
-/// and the thread it came from.
+// Appends one line, prefixed with the seconds since the session's first line
+// and the thread it came from.
 pub fn line(text: impl FnOnce() -> String) {
     if !ENABLED {
         return;
@@ -45,11 +45,11 @@ pub fn line(text: impl FnOnce() -> String) {
     }
 }
 
-/// The last text [`on_change`] wrote under each key.
+// The last text [`on_change`] wrote under each key.
 static LAST: Mutex<Option<HashMap<String, String>>> = Mutex::new(None);
 
-/// [`line`], but only when `text` differs from what was last written under
-/// `key`: for state read every frame.
+// [`line`], but only when `text` differs from what was last written under
+// `key`: for state read every frame.
 pub fn on_change(key: &str, text: String) {
     if !ENABLED {
         return;

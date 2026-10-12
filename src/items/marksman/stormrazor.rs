@@ -170,8 +170,8 @@ impl StableItem for Stormrazor {
         self.energized.update(ctx, player, self.effect_max_stacks);
     }
 
-    /// The Energized meter carries across the Radiant upgrade, so buying it
-    /// mid-fight does not throw away a nearly full bar.
+    // The Energized meter carries across the Radiant upgrade, so buying it
+    // mid-fight does not throw away a nearly full bar.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.energized.stacks() as u64

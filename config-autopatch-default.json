@@ -1,0 +1,31 @@
+{
+    "enabled": true,
+    "automatic": true,
+    "step_size": {
+        "health": 50,
+        "health_regen": 1,
+        "attack_damage": 5,
+        "ability_power": 5,
+        "armor": 5,
+        "magic_resist": 5,
+        "ability_haste": 5,
+        "ultimate_haste": 1,
+        "attack_speed": 5,
+        "movement_speed": 0,
+        "crit_chance": 0,
+        "armor_penetration": 1,
+        "magic_penetration": 1,
+        "lethality": 1,
+        "omnivamp": 1,
+        "tenacity": 1,
+        "skill_damage_reduction": 1,
+        "basic_attack_damage_reduction": 1
+    },
+    "limits": {
+        "min_games": 10,
+        "max_nerfs": 6,
+        "max_buffs": 7,
+        "min_total_percent": 80,
+        "max_total_percent": 125
+    }
+}

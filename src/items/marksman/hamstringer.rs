@@ -18,7 +18,7 @@ pub struct Hamstringer {
     effect_crit_percent_damage: f64,
     effect_slow_amount: i32,
     effect_duration_seconds: f64,
-    /// `(target, ticks left, ticks until the next instance, damage per instance)`.
+    // `(target, ticks left, ticks until the next instance, damage per instance)`.
     bleeds: Vec<(usize, usize, usize, usize)>,
 }
 

@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, ticks, upgrade_carry, ItemMeta};
 
-/// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
-/// they follow the carrier into the Radiant item.
+// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
+// they follow the carrier into the Radiant item.
 const BASE_KEY: &str = "yun_tal_wildarrows";
 
 #[derive(Clone, Debug)]
@@ -22,9 +22,9 @@ pub struct YunTalWildarrows {
     effect_duration_seconds: f64,
     effect_cooldown_seconds: f64,
     accumulated_stacks: usize,
-    /// The stack count last noted for an upgrade to take over.
+    // The stack count last noted for an upgrade to take over.
     noted_stacks: usize,
-    /// Whether this instance has taken over the stacks of the item it replaced.
+    // Whether this instance has taken over the stacks of the item it replaced.
     inherited: bool,
 }
 
@@ -98,17 +98,17 @@ impl YunTalWildarrows {
         self
     }
 
-    /// Crit chance Practice grants at full stacks, for Smart Builds.
+    // Crit chance Practice grants at full stacks, for Smart Builds.
     pub fn max_passive_crit(&self) -> i32 {
         self.effect_stack_crit_chance * self.effect_max_stacks as i32
     }
 
-    /// Keeps the stacks where an upgrade can find them. The Radiant item
-    /// arrives as a fresh instance: it takes over the base item's stacks once,
-    /// clamped to its own ceiling, and every instance notes its count when it
-    /// grows. Only the counter moves. The crit chance earned this life is
-    /// already on the champion as `yun_tal_practice` buffs, and `on_spawn`
-    /// re-applies it from the count on the next respawn.
+    // Keeps the stacks where an upgrade can find them. The Radiant item
+    // arrives as a fresh instance: it takes over the base item's stacks once,
+    // clamped to its own ceiling, and every instance notes its count when it
+    // grows. Only the counter moves. The crit chance earned this life is
+    // already on the champion as `yun_tal_practice` buffs, and `on_spawn`
+    // re-applies it from the count on the next respawn.
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
             if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
@@ -252,13 +252,13 @@ impl StableItem for YunTalWildarrows {
         self.carry_stacks(ctx, player);
     }
 
-    /// Practice stacks are permanent, so they cross the Radiant upgrade. Only
-    /// the counter moves: the crit chance already granted this life is sitting
-    /// on the champion as `yun_tal_practice` buffs, and `on_spawn` re-applies it
-    /// from the carried count on the next respawn.
-    ///
-    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    /// `carry_stacks` does the carrying, and they stay for a host that does.
+    // Practice stacks are permanent, so they cross the Radiant upgrade. Only
+    // the counter moves: the crit chance already granted this life is sitting
+    // on the champion as `yun_tal_practice` buffs, and `on_spawn` re-applies it
+    // from the carried count on the next respawn.
+    //
+    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    // `carry_stacks` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.accumulated_stacks as u64

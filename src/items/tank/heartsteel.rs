@@ -36,31 +36,31 @@ use crate::{
 // `radius_mult`, a whole percent (another mod's Cho'Gath grows with it the
 // same way), so it steps up one percent at a time as the health comes in.
 
-/// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
-/// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
-/// sound names are looked up. The clip is `sfx/lol-heartsteel.mp3` turned up
-/// 2 dB with its peaks limited to -1 dBFS, its tail trimmed, and faded in and
-/// out; the first cut, 3 dB down, was too quiet in game.
+// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
+// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
+// sound names are looked up. The clip is `sfx/lol-heartsteel.mp3` turned up
+// 2 dB with its peaks limited to -1 dBFS, its tail trimmed, and faded in and
+// out; the first cut, 3 dB down, was too quiet in game.
 const IRONHEART_SFX: &str = "riot_heartsteel_ironheart";
-/// The picture for each stage, tags `stage1` to `stage3`. The last is the
-/// charged one: the next basic attack against them procs.
+// The picture for each stage, tags `stage1` to `stage3`. The last is the
+// charged one: the next basic attack against them procs.
 const STAGE_BUFFS: [&str; 3] = [
     "riot_heartsteel_stage1",
     "riot_heartsteel_stage2",
     "riot_heartsteel_stage3",
 ];
 const MAX_STAGES: u8 = 3;
-/// The stage picture is refreshed once a second, so it never lapses while the
-/// stage is up, and is gone half a second after a missed refresh: the item left.
+// The stage picture is refreshed once a second, so it never lapses while the
+// stage is up, and is gone half a second after a missed refresh: the item left.
 const STAGE_BUFF_TICKS: usize = 90;
-/// The burst where the orb was when the charged attack lands (a `view_effects`
-/// animation).
+// The burst where the orb was when the charged attack lands (a `view_effects`
+// animation).
 const TRIGGER_EFFECT: &str = "riot_heartsteel_trigger";
-/// Goliath's size on the carrier. One name for both tiers, so the Radiant
-/// upgrade replaces the base item's instead of adding a second.
+// Goliath's size on the carrier. One name for both tiers, so the Radiant
+// upgrade replaces the base item's instead of adding a second.
 const GOLIATH_BUFF: &str = "riot_heartsteel_goliath";
-/// The upgrade line the banked health is noted under (`crate::upgrade_carry`),
-/// so it follows the carrier into the Radiant item.
+// The upgrade line the banked health is noted under (`crate::upgrade_carry`),
+// so it follows the carrier into the Radiant item.
 const BASE_KEY: &str = "heartsteel";
 
 #[derive(Clone, Debug)]
@@ -79,24 +79,24 @@ pub struct Heartsteel {
     effect_size_per_thousand_hp: f64,
     effect_max_size_percent: i32,
     accumulated_bonus_hp: i32,
-    /// The banked total last noted for an upgrade to take over.
+    // The banked total last noted for an upgrade to take over.
     noted_bonus_hp: i32,
-    /// Whether this instance has taken over the total of the item it replaced.
+    // Whether this instance has taken over the total of the item it replaced.
     inherited: bool,
-    /// The size Goliath has on the carrier now, in percent; 0 before the
-    /// first update of each life.
+    // The size Goliath has on the carrier now, in percent; 0 before the
+    // first update of each life.
     goliath_percent: i32,
-    /// How much bigger than usual the carrier is, in percent, from every
-    /// source ([`crate::size_percent`]). Ironheart measures its range every
-    /// tick, so this is read back once a second and whenever Goliath changes
-    /// rather than each time.
+    // How much bigger than usual the carrier is, in percent, from every
+    // source ([`crate::size_percent`]). Ironheart measures its range every
+    // tick, so this is read back once a second and whenever Goliath changes
+    // rather than each time.
     size_percent: u64,
-    /// Ironheart on each enemy champion, by their player id: the player keeps
-    /// it across a respawn, their champion entity may not.
+    // Ironheart on each enemy champion, by their player id: the player keeps
+    // it across a respawn, their champion entity may not.
     targets: HashMap<usize, Target>,
     procs: ProcQueue,
-    /// Steps every enemy's cooldown by the time gone by, so they run through
-    /// the carrier's death.
+    // Steps every enemy's cooldown by the time gone by, so they run through
+    // the carrier's death.
     clock: Elapsed,
 }
 
@@ -180,9 +180,9 @@ impl Heartsteel {
         self
     }
 
-    /// Goliath: sizes the carrier to their maximum health. The buff is only
-    /// replaced when the whole percent changes, not every tick; returns
-    /// whether it was.
+    // Goliath: sizes the carrier to their maximum health. The buff is only
+    // replaced when the whole percent changes, not every tick; returns
+    // whether it was.
     fn goliath(&mut self, ctx: &mut StableSim<'_>, carrier: usize) -> bool {
         let Some(max_hp) = ctx.get_entity(carrier).map(|c| c.hp().1) else {
             return false;
@@ -207,12 +207,12 @@ impl Heartsteel {
         true
     }
 
-    /// Keeps the banked total where an upgrade can find it. The Radiant item
-    /// arrives as a fresh instance: it takes over the base item's total once,
-    /// before it first uses its own, and every instance notes the total when it
-    /// grows. Only the counter moves. The health banked this life is already on
-    /// the champion as `heartsteel_stack` buffs, and `on_spawn` re-applies it
-    /// from the total on the next respawn.
+    // Keeps the banked total where an upgrade can find it. The Radiant item
+    // arrives as a fresh instance: it takes over the base item's total once,
+    // before it first uses its own, and every instance notes the total when it
+    // grows. Only the counter moves. The health banked this life is already on
+    // the champion as `heartsteel_stack` buffs, and `on_spawn` re-applies it
+    // from the total on the next respawn.
     fn carry_bonus_hp(&mut self, ctx: &StableSim<'_>, player: usize) {
         if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
             if let Some((_, total)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
@@ -226,8 +226,8 @@ impl Heartsteel {
         }
     }
 
-    /// Clears every enemy's stages: the carrier respawned. The cooldowns keep
-    /// running.
+    // Clears every enemy's stages: the carrier respawned. The cooldowns keep
+    // running.
     fn clear_stages(&mut self, ctx: &mut StableSim<'_>) {
         for target in self.targets.values_mut() {
             set_stage(ctx, target, 0);
@@ -308,8 +308,8 @@ impl StableItem for Heartsteel {
         self.goliath_percent = 0;
     }
 
-    /// Spends the charge: a basic attack against an enemy champion at the last
-    /// stage.
+    // Spends the charge: a basic attack against an enemy champion at the last
+    // stage.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -365,9 +365,9 @@ impl StableItem for Heartsteel {
         self.accumulated_bonus_hp += bonus_hp;
     }
 
-    /// Lands the Ironheart damage whose delay has run out, keeps Goliath's
-    /// size in step with the carrier's health, then builds, drops and cools
-    /// down every enemy champion's stages.
+    // Lands the Ironheart damage whose delay has run out, keeps Goliath's
+    // size in step with the carrier's health, then builds, drops and cools
+    // down every enemy champion's stages.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         // One tick, or the whole of a death on the first update after it: no
         // `update` runs for a dead carrier, and the cooldowns are to keep running.
@@ -453,14 +453,14 @@ impl StableItem for Heartsteel {
         }
     }
 
-    /// Colossal Consumption's banked HP is permanent, so it crosses the Radiant
-    /// upgrade. Only the counter moves: the HP already granted this life is
-    /// sitting on the champion as `heartsteel_stack` buffs, and `on_spawn`
-    /// re-applies it from the carried total on the next respawn. The cast round
-    /// trips exactly for every `i32`, so the total needs no clamping.
-    ///
-    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    /// `carry_bonus_hp` does the carrying, and they stay for a host that does.
+    // Colossal Consumption's banked HP is permanent, so it crosses the Radiant
+    // upgrade. Only the counter moves: the HP already granted this life is
+    // sitting on the champion as `heartsteel_stack` buffs, and `on_spawn`
+    // re-applies it from the carried total on the next respawn. The cast round
+    // trips exactly for every `i32`, so the total needs no clamping.
+    //
+    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    // `carry_bonus_hp` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.accumulated_bonus_hp as u64
@@ -484,25 +484,25 @@ impl StableItem for Heartsteel {
     }
 }
 
-/// Ironheart's hold on one enemy champion.
+// Ironheart's hold on one enemy champion.
 #[derive(Clone, Copy, Debug, Default)]
 struct Target {
-    /// Their champion entity, as of the last update.
+    // Their champion entity, as of the last update.
     entity: usize,
-    /// 0 to `MAX_STAGES`; at the last one the carrier's next basic attack
-    /// against them procs.
+    // 0 to `MAX_STAGES`; at the last one the carrier's next basic attack
+    // against them procs.
     stages: u8,
-    /// Ticks in range toward the next stage.
+    // Ticks in range toward the next stage.
     progress: usize,
-    /// Ticks out of range since a stage was last gained or dropped; the top
-    /// one drops at `effect_duration_seconds`.
+    // Ticks out of range since a stage was last gained or dropped; the top
+    // one drops at `effect_duration_seconds`.
     idle: usize,
-    /// Ticks left before Ironheart can build stages on them again.
+    // Ticks left before Ironheart can build stages on them again.
     cooldown: usize,
 }
 
-/// Moves `target` to `stage`, swapping the picture over them: the old stage's
-/// comes off and the new one's goes on. Stage 0 has none.
+// Moves `target` to `stage`, swapping the picture over them: the old stage's
+// comes off and the new one's goes on. Stage 0 has none.
 fn set_stage(ctx: &mut StableSim<'_>, target: &mut Target, stage: u8) {
     if target.stages == stage {
         return;

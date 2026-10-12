@@ -12,11 +12,11 @@ use crate::{
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
 // killed, up to 15% (Radiant: up to 25%).
 
-/// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
-/// they follow the carrier into the Radiant item.
+// The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
+// they follow the carrier into the Radiant item.
 const BASE_KEY: &str = "philosophers_stone";
 
-/// The maximum health Cinderhulk has granted, worn by the carrier.
+// The maximum health Cinderhulk has granted, worn by the carrier.
 const CINDERHULK_BUFF: &str = "philosophers_stone_cinderhulk";
 
 #[derive(Clone, Debug)]
@@ -35,9 +35,9 @@ pub struct PhilosophersStone {
     // Non-vital stats (internals)
     until_next_burn: usize,
     cinderhulk_stacks: usize,
-    /// The stack count last noted for an upgrade to take over.
+    // The stack count last noted for an upgrade to take over.
     noted_stacks: usize,
-    /// Whether this instance has taken over the stacks of the item it replaced.
+    // Whether this instance has taken over the stacks of the item it replaced.
     inherited: bool,
 }
 
@@ -108,10 +108,10 @@ impl PhilosophersStone {
         self
     }
 
-    /// Cinderhulk: one more step of maximum health, capped. The buff carries
-    /// the step rather than the running total because same-name buffs stack:
-    /// putting a new total on would mean taking the old one off first, and
-    /// maximum health that dips mid-fight can cost the carrier current health.
+    // Cinderhulk: one more step of maximum health, capped. The buff carries
+    // the step rather than the running total because same-name buffs stack:
+    // putting a new total on would mean taking the old one off first, and
+    // maximum health that dips mid-fight can cost the carrier current health.
     fn grow(&mut self, ctx: &mut StableSim<'_>, entity: usize) {
         if self.cinderhulk_stacks >= self.effect_max_stacks {
             return;
@@ -126,12 +126,12 @@ impl PhilosophersStone {
         );
     }
 
-    /// Keeps the stacks where an upgrade can find them. The Radiant item
-    /// arrives as a fresh instance: it takes over the base item's stacks once,
-    /// clamped to its own ceiling, and every instance notes its count when it
-    /// grows. Only the counter moves. The health gained this life is already on
-    /// the champion as `cinderhulk` buffs, and `on_spawn` re-applies it from
-    /// the count on the next respawn.
+    // Keeps the stacks where an upgrade can find them. The Radiant item
+    // arrives as a fresh instance: it takes over the base item's stacks once,
+    // clamped to its own ceiling, and every instance notes its count when it
+    // grows. Only the counter moves. The health gained this life is already on
+    // the champion as `cinderhulk` buffs, and `on_spawn` re-applies it from
+    // the count on the next respawn.
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
             if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
@@ -276,12 +276,12 @@ impl StableItem for PhilosophersStone {
         self.grow(ctx, entity);
     }
 
-    /// Cinderhulk stacks survive the Radiant upgrade, clamped to the
-    /// successor's own ceiling in case the config gives the two variants
-    /// different caps.
-    ///
-    /// The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    /// `carry_stacks` does the carrying, and they stay for a host that does.
+    // Cinderhulk stacks survive the Radiant upgrade, clamped to the
+    // successor's own ceiling in case the config gives the two variants
+    // different caps.
+    //
+    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
+    // `carry_stacks` does the carrying, and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.cinderhulk_stacks as u64

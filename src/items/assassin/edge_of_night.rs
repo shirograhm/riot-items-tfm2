@@ -3,8 +3,8 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, Annul, ItemMeta};
 
-/// The upgrade line the Annul cooldown is noted under (`crate::upgrade_carry`),
-/// so it follows the carrier into the Radiant item.
+// The upgrade line the Annul cooldown is noted under (`crate::upgrade_carry`),
+// so it follows the carrier into the Radiant item.
 const BASE_KEY: &str = "edge_of_night";
 
 // Annul: Grants a Spell Shield that blocks the next enemy Ability (40 second

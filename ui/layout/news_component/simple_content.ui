@@ -1,0 +1,116 @@
+simple_container:empty {
+  width: 1083px;
+  height: 958px;
+
+  anchor_x: 0.5;
+  pivot_x: 0.5;
+  anchor_y: 0.5;
+  pivot_y: 0.5;
+
+  child_type: TopToBottom {
+    spacing: 0px;
+  }
+
+  #top:empty {
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+
+    y: 10px;
+    width: 1055px;
+    height: 60px;
+
+    #title:label {
+      @"asset/base/style/main#bold_label";
+      width: 1055px;
+      height: 36px;
+      
+      align_y: Center;
+      size: 24;
+      text: "title";
+    }
+
+    #author_logo:image {
+      y: 40px;
+      width: 18px;
+      height: 18px;
+      visible: false;
+      ignore_event: true;
+      source: "asset/base/aseprite_resources/team_logo";
+    }
+
+    #author:label {
+      @"asset/base/style/main#label";
+      y: 40px;
+      height: 18px;
+
+      size: 18;
+      text: "00:00";
+    }
+
+    #time:label {
+      @"asset/base/style/main#label";
+      anchor_x: 1;
+      pivot_x: 1;
+      y: 10px;
+      width: 400px;
+      height: 39px;
+
+      align_x: Right;
+      align_y: Center;
+      size: 18;
+      text: "00:00";
+    }
+  }
+
+  #bar:color {
+    width: 1055px;
+    height: 1px;
+
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+
+    y: 10px;
+
+    color: #4a4c56ff;
+  }
+
+  #contents:scroll_view {
+    focusable: true;
+    anchor_x: 0.5;
+    pivot_x: 0.5;
+
+    width: 1055px;
+    height: 774px;
+    y: 10px;
+
+    speed: 100;
+    bar_width: 4;
+    bar: {
+      source: "asset/base/sprite/white";
+      color: #37d5b3ff;
+
+      hover: {
+        color: #ecfbf8ff;
+      }
+    }
+
+    back: {
+      source: "asset/base/sprite/white";
+      color: #4a4c56ff;
+    }
+
+    #dummy:empty {
+      height: 2400px;
+    }
+
+    #text:label {
+      @"asset/base/style/main#label";
+      width: 1043px;
+      height: 2400px;
+
+      size: 20;
+      line_height: 36;
+      text: "text~~";
+    }
+  }
+}

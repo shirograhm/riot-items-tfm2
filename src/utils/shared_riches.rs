@@ -18,24 +18,24 @@ use mod_api_stable::StableSim;
 
 use crate::ticks;
 
-/// What one item pays its holder.
+// What one item pays its holder.
 #[derive(Clone, Debug)]
 struct Rate {
     key: &'static str,
     gold: usize,
-    /// Ticks between two payments.
+    // Ticks between two payments.
     every: usize,
 }
 
-/// The items that pay Shared Riches, each with the rate it was configured
-/// with. Filled as they are registered in `lib.rs`.
+// The items that pay Shared Riches, each with the rate it was configured
+// with. Filled as they are registered in `lib.rs`.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct SharedRiches {
     rates: Vec<Rate>,
 }
 
 impl SharedRiches {
-    /// Notes that the item `key` pays `gold` every `interval_seconds`.
+    // Notes that the item `key` pays `gold` every `interval_seconds`.
     pub(crate) fn add(&mut self, key: &'static str, (gold, interval_seconds): (usize, f64)) {
         self.rates.push(Rate {
             key,
@@ -44,8 +44,8 @@ impl SharedRiches {
         });
     }
 
-    /// Pays every player what the items they hold owe them this tick, dead or
-    /// alive. Call once per match tick.
+    // Pays every player what the items they hold owe them this tick, dead or
+    // alive. Call once per match tick.
     pub(crate) fn pay(&self, sim: &mut StableSim<'_>) {
         let tick = sim.tick();
         let due = |rate: &Rate| rate.gold > 0 && tick % rate.every == 0;

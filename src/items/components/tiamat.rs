@@ -3,18 +3,18 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, DISTANCE_UNITS_PER_RANGE};
 
-/// Tiamat — the Cleave component Ravenous Hydra upgrades from.
-///
-/// Carries the same Cleave passive as [`crate::items::fighter::RavenousHydra`] at
-/// a lower ratio (20% vs 30%), so a player who buys the component already has
-/// the behaviour the finished item scales up. The splash geometry, the tower
-/// exclusion and the ranged falloff are deliberately identical — only
-/// `effect_ad_percent_damage` differs — because the two read as one effect in
-/// the tooltip and any drift between them would show up there first.
-///
-/// It reuses `riot_ravenous_hydra_cleave` rather than declaring its own view
-/// effect: it is the same swing, and the effect table is keyed by name, so a
-/// second identical entry would only be another thing to keep in step.
+// Tiamat — the Cleave component Ravenous Hydra upgrades from.
+//
+// Carries the same Cleave passive as [`crate::items::fighter::RavenousHydra`] at
+// a lower ratio (20% vs 30%), so a player who buys the component already has
+// the behaviour the finished item scales up. The splash geometry, the tower
+// exclusion and the ranged falloff are deliberately identical — only
+// `effect_ad_percent_damage` differs — because the two read as one effect in
+// the tooltip and any drift between them would show up there first.
+//
+// It reuses `riot_ravenous_hydra_cleave` rather than declaring its own view
+// effect: it is the same swing, and the effect table is keyed by name, so a
+// second identical entry would only be another thing to keep in step.
 #[derive(Clone, Debug)]
 pub struct Tiamat {
     cleave_effect: &'static str,

@@ -3,45 +3,45 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS};
 
-/// Bandlepipes — Fanfare, a self-empower that turns into a short team aura.
-///
-/// # Why this is two buffs and not one
-///
-/// Fanfare is two different shapes of effect wearing one name. The movement
-/// speed is a plain timed self-buff, set whenever the trigger lands. The
-/// attack speed is an *aura*: the tooltip says "while empowered, you and nearby
-/// allied champions", so an ally who walks into range during the window has to
-/// pick it up, and one who walks out has to lose it. A single buff applied at
-/// trigger time would be a snapshot of whoever happened to be standing there.
-///
-/// So `fanfare_buff` is the timed self-buff and `anthem_buff` is re-applied on
-/// the shared aura cycle ([`AURA_REFRESH_TICKS`]) for as long as
-/// `fanfare_remaining` is non-zero, exactly as `LocketOfTheIronSolari` does for
-/// Legion.
-///
-/// # The ring on the ground
-///
-/// `fanfare_buff` is on the carrier for exactly as long as the aura runs, so
-/// the `view_buffs` binding of the same name in `view/effects.view_effects`
-/// (`effects/bandlepipes_aura`) draws the aura's edge under them for that
-/// long. The picture is a 100-range circle, the default `effect_max_distance`:
-/// a configured range or a bigger carrier reaches further than it shows.
-///
-/// # The residue when Fanfare ends
-///
-/// `anthem_buff` outlives its last refresh by up to
-/// `AURA_DURATION_TICKS - AURA_REFRESH_TICKS`, so the expiry tick clears it
-/// explicitly rather than letting it drain. That clear can only reach who is in
-/// range *now*, so an ally who left range mid-window keeps it for the remainder
-/// of the buff — the same residue Legion has, and the reason the duration is
-/// kept short.
-///
-/// # Both variants share the buff names
-///
-/// The passive is identical on base and Radiant (only the stat line grows), so
-/// they deliberately share `fanfare_buff`/`anthem_buff`: same-name buffs stack,
-/// and two instances granting the same amount would otherwise double it.
-/// `ArdentCenser` shares `sanctify_buff` for the same reason.
+// Bandlepipes — Fanfare, a self-empower that turns into a short team aura.
+//
+// # Why this is two buffs and not one
+//
+// Fanfare is two different shapes of effect wearing one name. The movement
+// speed is a plain timed self-buff, set whenever the trigger lands. The
+// attack speed is an *aura*: the tooltip says "while empowered, you and nearby
+// allied champions", so an ally who walks into range during the window has to
+// pick it up, and one who walks out has to lose it. A single buff applied at
+// trigger time would be a snapshot of whoever happened to be standing there.
+//
+// So `fanfare_buff` is the timed self-buff and `anthem_buff` is re-applied on
+// the shared aura cycle ([`AURA_REFRESH_TICKS`]) for as long as
+// `fanfare_remaining` is non-zero, exactly as `LocketOfTheIronSolari` does for
+// Legion.
+//
+// # The ring on the ground
+//
+// `fanfare_buff` is on the carrier for exactly as long as the aura runs, so
+// the `view_buffs` binding of the same name in `view/effects.view_effects`
+// (`effects/bandlepipes_aura`) draws the aura's edge under them for that
+// long. The picture is a 100-range circle, the default `effect_max_distance`:
+// a configured range or a bigger carrier reaches further than it shows.
+//
+// # The residue when Fanfare ends
+//
+// `anthem_buff` outlives its last refresh by up to
+// `AURA_DURATION_TICKS - AURA_REFRESH_TICKS`, so the expiry tick clears it
+// explicitly rather than letting it drain. That clear can only reach who is in
+// range *now*, so an ally who left range mid-window keeps it for the remainder
+// of the buff — the same residue Legion has, and the reason the duration is
+// kept short.
+//
+// # Both variants share the buff names
+//
+// The passive is identical on base and Radiant (only the stat line grows), so
+// they deliberately share `fanfare_buff`/`anthem_buff`: same-name buffs stack,
+// and two instances granting the same amount would otherwise double it.
+// `ArdentCenser` shares `sanctify_buff` for the same reason.
 #[derive(Clone, Debug)]
 pub struct Bandlepipes {
     meta: ItemMeta,
@@ -57,9 +57,9 @@ pub struct Bandlepipes {
     effect_attack_speed_mult: i32,
     effect_max_distance: usize,
     // Non-vital stats (internals)
-    /// Ticks of Fanfare left; zero means the aura is not running.
+    // Ticks of Fanfare left; zero means the aura is not running.
     fanfare_remaining: usize,
-    /// Ticks until the aura re-applies, on the shared cycle.
+    // Ticks until the aura re-applies, on the shared cycle.
     refresh_cooldown: usize,
 }
 
@@ -128,9 +128,9 @@ impl Bandlepipes {
         self
     }
 
-    /// The carrier plus every living allied champion inside the aura, carrier
-    /// first. Towers and minions are allied entities too, and Fanfare is not
-    /// meant for them.
+    // The carrier plus every living allied champion inside the aura, carrier
+    // first. Towers and minions are allied entities too, and Fanfare is not
+    // meant for them.
     fn anthem_targets(
         &self,
         ctx: &StableSim<'_>,
@@ -163,7 +163,7 @@ impl Bandlepipes {
         targets
     }
 
-    /// The carrier's champion id and team, if it exists and is alive.
+    // The carrier's champion id and team, if it exists and is alive.
     fn caster(ctx: &StableSim<'_>, player: usize) -> Option<(usize, usize)> {
         let champion = ctx.get_player(player)?.champion()?;
         champion
