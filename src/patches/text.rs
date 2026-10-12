@@ -2391,14 +2391,23 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         let family = base.families.get(&change.family);
         let chosen = family.map_or(true, |family| family.chosen);
         let component = family.is_some_and(|family| family.component);
-        let pool = reason_pool(
-            change.buff,
-            chosen,
-            component,
-            base.tempo(key),
-            change,
-            patch.matches,
-        );
+        // An item moved only to keep an upgrade no weaker than its part
+        // was not judged, and says so. One the player set by hand gives no
+        // reason at all: the article says whose patch it is.
+        let pool = if change.manual {
+            Vec::new()
+        } else if change.follows {
+            vec!["why_follow_1", "why_follow_2"]
+        } else {
+            reason_pool(
+                change.buff,
+                chosen,
+                component,
+                base.tempo(key),
+                change,
+                patch.matches,
+            )
+        };
         let from = seed_of(patch.number, key) % pool.len().max(1);
         let picked = (0..pool.len())
             .map(|step| pool[(from + step) % pool.len()])
@@ -2677,10 +2686,17 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
             .replace("{Title}", &title)
             .replace("{N}", &patch.hotfix.to_string());
     }
-    let mut body = texts
-        .ui(&lang, "intro", "Items were rebalanced after {Matches} matches on v{Version}.")
-        .replace("{Matches}", &patch.matches.to_string())
-        .replace("{Version}", &patch.version);
+    // A patch the player made by hand was judged on no matches, and says
+    // what it is.
+    let by_hand = !patch.changes.is_empty() && patch.changes.iter().all(|change| change.manual);
+    let mut body = if by_hand {
+        texts.ui(&lang, "intro_manual", "These items were adjusted by hand.")
+    } else {
+        texts
+            .ui(&lang, "intro", "Items were rebalanced after {Matches} matches on v{Version}.")
+            .replace("{Matches}", &patch.matches.to_string())
+            .replace("{Version}", &patch.version)
+    };
     let entries = note_entries(patch, state, &lang);
     for (stronger, weaker, heading, fallback, color) in [
         (true, false, "buffed", "Buffs", BUFF_COLOR),
@@ -2732,6 +2748,81 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
         .flatten()
         .unwrap_or_else(|| texts.ui(&lang, "author", "shirograhm"));
     (title, body, author)
+}
+
+// -- for the Item Patcher Settings window --------------------------------------
+
+// An item's name in the game's language.
+pub(crate) fn item_name(key: &str) -> String {
+    texts().name(&game_language(), key)
+}
+
+// The tag an item draws in the item sheet ([`ITEM_SHEET`]).
+pub(crate) fn item_frame(key: &str) -> String {
+    frame_of(key)
+}
+
+// One of the mod's `item_patch` strings in the game's language, or the
+// English given.
+pub(crate) fn ui_string(key: &str, english: &str) -> String {
+    texts().ui(&game_language(), key, english)
+}
+
+// What the window calls the number `field` of the item `key`, and whether
+// it reads as a percentage: as a patch note's row calls it, a stat by its
+// tooltip line, "Attack Damage", and a passive's number by the passive's
+// name and what the number does, "Flux - Ultimate Haste". The numbers that
+// make one amount in the notes share those words, and so do the two ends of
+// a range: the window tells them apart by the config field it shows under
+// each. Empty for a number nothing names.
+pub(crate) fn field_label(key: &str, field: &str) -> (String, bool) {
+    let texts = texts();
+    let lang = game_language();
+    let flat = super::fields::FLAT.contains(&field);
+    let named = if flat {
+        texts.line_label(&lang, field)
+    } else {
+        None
+    }
+    .or_else(|| {
+        [lang.as_str(), "en"].iter().find_map(|lang| {
+            texts
+                .templates
+                .get(*lang)
+                .and_then(|templates| templates.get(key))
+                .and_then(|template| template.passive_of(key, field))
+        })
+    });
+    let (name, percent) = named.unwrap_or_default();
+    if flat {
+        return (name, percent);
+    }
+    let slug = crate::build_config::base_slug(key);
+    let what = ROW_FORMATS
+        .iter()
+        .find(|format| format.item == slug && format.field == field)
+        .map(|format| format.label)
+        .or_else(|| {
+            FIELD_FORMATS
+                .iter()
+                .find(|format| format.fields.contains(&field))
+                .map(|format| Some(format.label))
+        })
+        .flatten()
+        .or_else(|| {
+            AMOUNT_FORMATS
+                .iter()
+                .find(|format| format.item == slug && format.fields.contains(&field))
+                .map(|format| format.label)
+        })
+        .map(|(key, english)| texts.ui(&lang, key, english))
+        .unwrap_or_default();
+    let label = match (name.is_empty(), what.is_empty()) {
+        (_, true) => name,
+        (true, false) => what,
+        (false, false) => format!("{name} - {what}"),
+    };
+    (label, percent)
 }
 
 // -- a plain article's scroll ---------------------------------------------------

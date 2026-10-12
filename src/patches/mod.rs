@@ -39,23 +39,38 @@
 //!
 //! # Hotfixes
 //!
-//! A patch waits for the game's next one, which is weeks of game time. The
-//! player can have one sooner: the Run Manual Item Patch row this mod adds
-//! to the Options dialog (`crate::ui::hotfix_row`) queues one, and it lands
-//! the moment the calendar next moves, so that its notes arrive with the
-//! news of that very move. The server's management tick is what says the
-//! calendar has moved: it runs only while it does ([`server_tick`]). A
-//! client with no server of its own, a guest in a shared league, has the
-//! hotfix when its inbox is next seen to take news ([`watch_news`]).
+//! A hotfix is the player's own patch, made by hand. The Item Patcher
+//! Settings window (`crate::ui::patch_settings`) is where the player sets
+//! an item's numbers themselves. A number typed there changes nothing yet:
+//! it waits in the save ([`State::staged`]). The window's Queue Manual
+//! Patch button queues a hotfix, which is made of the numbers waiting and
+//! of nothing else
+//! ([`balance::manual`]): no item is judged for it, and its notes say whose
+//! patch it is. With no number waiting there is no hotfix. None can be
+//! queued then, and one queued whose numbers have since been taken back
+//! comes to nothing when it is due: no patch, no notes.
 //!
-//! It is judged on the version being played, and is a hotfix of the game's
-//! current version: "Item Patch Notes v… - Hotfix 1", numbered from one for
-//! each version, and signed with the player's Steam name where that can be
-//! had. The queue is the save's ([`State::queued`]). A patch the game's own
-//! brings in the meantime empties it: that is the patch it was waiting for.
+//! A queued hotfix lands the moment the calendar next moves, so that its
+//! notes arrive with the news of that very move. The server's management
+//! tick is what says the calendar has moved: it runs only while it does
+//! ([`server_tick`]). A client with no server of its own, a guest in a
+//! shared league, has the hotfix when its inbox is next seen to take news
+//! ([`watch_news`]).
+//!
+//! It is a hotfix of the game's current version: "Item Patch Notes v… -
+//! Hotfix 1", numbered from one for each version, and signed with the
+//! player's Steam name where that can be had. The queue is the save's
+//! ([`State::queued`]). A patch the game's own brings in the meantime does
+//! not release the numbers waiting, and leaves the hotfix queued to land
+//! right behind it.
 //!
 //! With `automatic` off in the patch settings ([`tuning`]) a hotfix is the
 //! only patch there is: the game's own patches bring none.
+//!
+//! A number set by hand reads exactly as typed (`State::exact`), where a
+//! patch counts in steps. The same window holds what the player allows the
+//! automatic patches: a least and a most for a number, and numbers they are
+//! not to move at all ([`State::limits`]).
 //!
 //! With `match_builds::LOG` on, `match-builds.log` has a `patch.` line for
 //! everything this does.
@@ -165,6 +180,9 @@ struct Session {
     state: State,
     // The state has changed since it was last written to the save.
     dirty: bool,
+    // Frames until a change made in the Item Patcher Settings window is
+    // written ([`EDIT_SETTLE_FRAMES`]), 0 while none waits.
+    edited: u32,
     frame: u32,
     // The server's management ticks as last counted ([`CALENDAR_TICKS`]),
     // and the frames left of looking on every one ([`ALERT_FRAMES`]).
@@ -185,8 +203,12 @@ impl Session {
                 queued: false,
                 ratios: std::collections::BTreeMap::new(),
                 history: Vec::new(),
+                exact: std::collections::BTreeMap::new(),
+                staged: std::collections::BTreeMap::new(),
+                limits: std::collections::BTreeMap::new(),
             },
             dirty: false,
+            edited: 0,
             frame: 0,
             ticks: 0,
             alert: 0,
@@ -221,8 +243,9 @@ fn hand_to_server(state: &State) {
 }
 
 // Whether a hotfix is queued in the save that is loaded. In an atomic of
-// its own, beside [`State::queued`], for the Options row's click handler
-// and its painting, which have no business holding the session.
+// its own, beside [`State::queued`], for the queue button of the Item
+// Patcher Settings window, which has no business holding the session to
+// paint itself.
 static HOTFIX_QUEUED: AtomicBool = AtomicBool::new(false);
 // A click has changed the queue and the save has not been told yet.
 static QUEUE_CHANGED: AtomicBool = AtomicBool::new(false);
@@ -238,6 +261,16 @@ static QUEUED_AT_TICK: AtomicU32 = AtomicU32::new(0);
 static NEWS_CYCLES: AtomicU32 = AtomicU32::new(0);
 static QUEUED_AT_CYCLE: AtomicU32 = AtomicU32::new(0);
 
+// Whether the save that is loaded has numbers set by hand waiting for a
+// hotfix ([`State::staged`]): what a hotfix is made of, and without which
+// there is none to queue. In an atomic for the same reason as the queue.
+static STAGED_ANY: AtomicBool = AtomicBool::new(false);
+
+// Takes whether `state` has numbers waiting for a hotfix.
+fn note_staged(state: &State) {
+    STAGED_ANY.store(!state.staged.is_empty(), Ordering::Relaxed);
+}
+
 // Whether a hotfix can be queued at all: patches are on.
 pub(crate) fn hotfixes_offered() -> bool {
     enabled()
@@ -247,11 +280,18 @@ pub(crate) fn hotfix_queued() -> bool {
     HOTFIX_QUEUED.load(Ordering::Relaxed)
 }
 
-// Queues a hotfix for the calendar's next move. From the Options row's
-// click handler; [`sync`] puts it in the save. One that is queued already
-// stays as it is: it is not taken back, and there is nothing to queue twice.
+// Whether there is anything for a hotfix to release: a number the player
+// has set by hand in the Item Patcher Settings window.
+pub(crate) fn hotfix_ready() -> bool {
+    STAGED_ANY.load(Ordering::Relaxed)
+}
+
+// Queues a hotfix for the calendar's next move. From the Item Patcher
+// Settings window's queue button; [`sync`] puts it in the save. One that is
+// queued already stays as it is: it is not taken back, and there is nothing
+// to queue twice. Nor is one queued with nothing to release.
 pub(crate) fn queue_hotfix() {
-    if HOTFIX_QUEUED.load(Ordering::Relaxed) {
+    if HOTFIX_QUEUED.load(Ordering::Relaxed) || !hotfix_ready() {
         return;
     }
     QUEUED_AT_CYCLE.store(NEWS_CYCLES.load(Ordering::Relaxed), Ordering::Relaxed);
@@ -265,10 +305,45 @@ pub(crate) fn queue_hotfix() {
     log("patch.queue", || format!("hotfix queued, the {number}. time this session"));
 }
 
+// -- the Item Patcher Settings window -------------------------------------------
+
+// Frames a change made in the Item Patcher Settings window waits before it
+// is written to the save: a number is typed a digit at a time, and each
+// digit is a change.
+const EDIT_SETTLE_FRAMES: u32 = 30;
+
+// The save's patch state as the Item Patcher Settings window
+// (`crate::ui::patch_settings`) reads it. Nothing while patches are off or
+// no save's state has been read.
+pub(crate) fn settings<T>(read: impl FnOnce(&State) -> T) -> Option<T> {
+    let session = SESSION.lock().ok()?;
+    (enabled() && session.loaded).then(|| read(&session.state))
+}
+
+// Changes the save's patch state from that window: the numbers set by hand
+// that wait for the next manual patch ([`State::staged`]) and what the
+// player allows a patch to do ([`State::limits`]). Neither changes a number
+// a match reads, so nothing is worked out again; the save is told once the
+// window has been left alone for a moment ([`sync`]). Whether there was a
+// state to change.
+pub(crate) fn edit_settings(edit: impl FnOnce(&mut State)) -> bool {
+    let Ok(mut session) = SESSION.lock() else {
+        return false;
+    };
+    if !enabled() || !session.loaded {
+        return false;
+    }
+    edit(&mut session.state);
+    note_staged(&session.state);
+    session.edited = EDIT_SETTLE_FRAMES;
+    true
+}
+
 // The queue as `state` has it, for a save just read or left. A queued
 // hotfix waits for the calendar to move from here on: what came before is
 // not counted.
 fn take_queue(state: &State) {
+    note_staged(state);
     QUEUED_AT_TICK.store(CALENDAR_TICKS.load(Ordering::Relaxed), Ordering::Relaxed);
     HOTFIX_QUEUED.store(state.queued, Ordering::Relaxed);
     QUEUED_AT_CYCLE.store(NEWS_CYCLES.load(Ordering::Relaxed), Ordering::Relaxed);
@@ -475,7 +550,7 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
     let played = crate::item_stats::patches()
         .into_iter()
         .max_by(|a, b| version_order(a, b));
-    let Some(current) = [played.clone(), session.watch.newest.clone()]
+    let Some(current) = [played, session.watch.newest.clone()]
         .into_iter()
         .flatten()
         .max_by(|a, b| version_order(a, b))
@@ -508,11 +583,8 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
             (settled, current, false)
         }
         // Queued by the player, and the calendar has moved: a hotfix of the
-        // version the game is on, judged on the version being played as far
-        // as it has got.
-        Some(settled) if hotfix_due => {
-            (played.unwrap_or_else(|| settled.clone()), settled, true)
-        }
+        // version the game is on. It judges no version's matches.
+        Some(settled) if hotfix_due => (settled.clone(), settled, true),
         Some(_) => return,
     };
 
@@ -524,40 +596,65 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
     if !can_land(scene) {
         return;
     }
-    // Whichever patch this is, it is the one a queued hotfix was waiting
-    // for.
-    session.state.queued = false;
-    take_queue(&session.state);
+    // The game's own patch does not release what a queued hotfix is there
+    // to release: that hotfix stays queued, and lands right behind this
+    // patch. A hotfix itself empties the queue, whatever comes of it.
+    let still_queued = !hotfix
+        && HOTFIX_QUEUED.load(Ordering::Relaxed)
+        && !session.state.staged.is_empty();
+    if !still_queued {
+        session.state.queued = false;
+        take_queue(&session.state);
+    }
 
-    let window = crate::item_stats::snapshot(Some(judged.as_str()), None);
     let number = session.state.number + 1;
-    let tallies: HashMap<String, balance::Tally> = window
-        .rows
-        .iter()
-        .map(|(key, totals)| {
-            (
-                key.clone(),
-                balance::Tally {
-                    games: totals.games,
-                    wins: totals.wins,
-                },
-            )
-        })
-        .collect();
-    // Whether there is enough to judge an item on is asked item by item
-    // (`tuning`'s `min_games`), of a hotfix as of any other. A version
-    // of few matches has few such items, or none, and then no patch.
-    let mut patch = balance::decide(
-        base::base(),
-        &session.state,
-        &tallies,
-        window.matches,
-        number,
-        &judged,
-    );
+    let mut patch = if hotfix {
+        // A hotfix is the player's own patch: the numbers they set by hand
+        // in the Item Patcher Settings window, and nothing else. No item is
+        // judged for it. With no number waiting there is nothing to release
+        // and no hotfix: no patch, no notes, no number taken.
+        if session.state.staged.is_empty() {
+            session.dirty = true;
+            log("patch.landed", || {
+                "a hotfix came due with no number set by hand: none made".to_string()
+            });
+            return;
+        }
+        let patch = balance::manual(base::base(), &session.state, number, &judged);
+        // Released, or found to change nothing: either way no longer waiting.
+        session.state.staged.clear();
+        note_staged(&session.state);
+        patch
+    } else {
+        let window = crate::item_stats::snapshot(Some(judged.as_str()), None);
+        let tallies: HashMap<String, balance::Tally> = window
+            .rows
+            .iter()
+            .map(|(key, totals)| {
+                (
+                    key.clone(),
+                    balance::Tally {
+                        games: totals.games,
+                        wins: totals.wins,
+                    },
+                )
+            })
+            .collect();
+        // Whether there is enough to judge an item on is asked item by item
+        // (`tuning`'s `min_games`). A version of few matches has few such
+        // items, or none, and then no patch.
+        balance::decide(
+            base::base(),
+            &session.state,
+            &tallies,
+            window.matches,
+            number,
+            &judged,
+        )
+    };
     log("patch.landed", || {
         format!(
-            "patch {number} as v{announced} (hotfix={hotfix}), judged on v{judged} ({} matches): {} change(s){}",
+            "patch {number} as v{announced} (hotfix={hotfix}), on v{judged} ({} matches): {} change(s){}",
             patch.matches,
             patch.changes.len(),
             patch
@@ -675,7 +772,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
             )
         });
     }
-    // The Options row has been clicked since the last frame: the save is
+    // The queue button has been clicked since the last frame: the save is
     // told.
     if QUEUE_CHANGED.swap(false, Ordering::Relaxed) {
         session.state.queued = HOTFIX_QUEUED.load(Ordering::Relaxed);
@@ -694,6 +791,12 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     session.alert = session.alert.saturating_sub(1);
     if alert || session.frame % CHECK_FRAMES == 0 {
         consider(ctx, session, alert);
+    }
+    // What the player changed in the Item Patcher Settings window is written
+    // once they have left it alone for a moment.
+    if session.edited > 0 {
+        session.edited -= 1;
+        session.dirty |= session.edited == 0;
     }
     if session.dirty {
         // A state the save holds that is further along than this one means

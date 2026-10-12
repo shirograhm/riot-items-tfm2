@@ -155,13 +155,19 @@ fn strength(rule: fields::Rule, base: f64, value: f64) -> f64 {
 // its unpatched value, or one step from it. The one step is for the number
 // whose first step is already outside (10 Ability Haste in fives, the 33 of
 // Trinity Force in tens): it has that step each way and no more.
-fn in_bounds(family: &Family, field: &str, moved: &Moved) -> bool {
+//
+// A number the player gave a least or a most of its own (`State::limits`)
+// is held to those and not to the band: see [`State::within`].
+fn in_bounds(state: &State, family: &Family, field: &str, moved: &Moved) -> bool {
     let Some(member) = family.members.iter().find(|member| member.key == moved.key) else {
         return false;
     };
     let Some(&base) = member.values.get(field) else {
         return false;
     };
+    if let Some(within) = state.within(&moved.key, field, moved.before, moved.after) {
+        return within;
+    }
     let step = fields::step(&member.key, field, base, member.whole.contains(field));
     let tuning = super::tuning::tuning();
     (tuning.min_ratio - 1e-9..=tuning.max_ratio + 1e-9).contains(&(moved.after / base))
@@ -192,6 +198,13 @@ fn nudge(
     if frozen.contains(field) || fields::partner(field).is_some_and(|other| frozen.contains(other)) {
         return None;
     }
+    // Or one the player has protected on this item, in the Item Patcher
+    // Settings window.
+    if state.protected(id, field)
+        || fields::partner(field).is_some_and(|other| state.protected(id, other))
+    {
+        return None;
+    }
     let current = state.ratio(id, field);
     let lead = lead(family, field)?;
     let base = *lead.values.get(field)?;
@@ -219,10 +232,18 @@ fn nudge(
         else {
             continue;
         };
+        // The wrong way: a number set by hand can stand between two steps,
+        // and the nearest step to a little less of it is then the one above.
+        if members
+            .iter()
+            .any(|moved| (moved.after.abs() > moved.before.abs()) != up)
+        {
+            continue;
+        }
         if found.as_ref().is_some_and(|(_, settled)| *settled != after) {
             break;
         }
-        if !members.iter().all(|moved| in_bounds(family, field, moved)) {
+        if !members.iter().all(|moved| in_bounds(state, family, field, moved)) {
             break;
         }
         if found
@@ -580,19 +601,18 @@ fn level_with(member: &Member, field: &str, value: f64, lower: bool) -> Option<f
     Some(if lower { near - step } else { near + step })
 }
 
-// Keeps a radiant's passive no weaker than its legendary's, in the numbers
-// `changes` moved: the changes of one patch to one item.
+// Keeps a radiant no weaker than its legendary, in the numbers `changes`
+// moved: the changes of one patch to one item. Every number the two tiers
+// both have, a stat the item gives or a number of its passive.
 //
-// A passive the two tiers share is one passive. Where the patch leaves the
-// legendary's number the stronger of the two, the radiant's comes level
-// with it; and where it leaves the radiant's the weaker by moving the
-// radiant alone, the legendary's comes level with that. So a buff to the
-// legendary's Rapids is a buff to the radiant's as well, and a nerf to it
-// leaves the radiant's where it is.
+// Where the patch leaves the legendary's number the stronger of the two,
+// the radiant's comes level with it; and where it leaves the radiant's the
+// weaker by moving the radiant alone, the legendary's comes level with
+// that. So a buff to the legendary's Rapids is a buff to the radiant's as
+// well, and a nerf to it leaves the radiant's where it is.
 //
-// The stats an item gives are not a passive, and stay as the patch has
-// them. The tier that comes level gets a change of its own for the number,
-// or has the one the patch already made for it set to the level.
+// The tier that comes level gets a change of its own for the number, or
+// has the one the patch already made for it set to the level.
 fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec<Change>) {
     let family = judged.family;
     let (Some(legendary), Some(radiant)) = (
@@ -607,7 +627,7 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
         .filter(|field| radiant.values.contains_key(*field))
         .collect();
     for field in shared {
-        let Some(rule) = fields::rule_for(&legendary.key, field).filter(|rule| !rule.flat) else {
+        let Some(rule) = fields::rule_for(&legendary.key, field) else {
             continue;
         };
         // Where the patch's change to a tier's number is among `changes`.
@@ -667,6 +687,13 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
         ) else {
             continue;
         };
+        // Not a number the player has protected, nor past the least or the
+        // most they gave it: the tiers then stay as the player has them.
+        if state.protected(&follower.key, field)
+            || state.within(&follower.key, field, read, after) == Some(false)
+        {
+            continue;
+        }
         let ratio = after / unpatched;
         let Some(index) = follower_at else {
             changes.push(Change {
@@ -681,6 +708,8 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
                 }],
                 games: judged.tally.games,
                 wins: judged.tally.wins,
+                follows: false,
+                manual: false,
             });
             continue;
         };
@@ -710,8 +739,9 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
 // round, and where it moves both they need not move in the same numbers:
 // as it falls for the item in the patch, the tiers try their numbers in one
 // order, and then mostly move the same ones, or each in an order of its
-// own. What they may not do is change places ([`crosses`]), and a passive
-// the two share is never left the weaker on the radiant ([`level_tiers`]).
+// own. What they may not do is change places ([`crosses`]), or take a stat
+// under what a part of the item gives (`floors`, [`stat_floors`]); and no
+// number the two share is left the weaker on the radiant ([`level_tiers`]).
 //
 // Every row a change brings is the item's, under its buff or its nerf: what
 // makes up for a buff is a number going down in the list of buffs.
@@ -719,6 +749,7 @@ fn changes_for(
     state: &State,
     judged: &Judged<'_>,
     tallies: &HashMap<String, Tally>,
+    floors: &HashMap<String, HashMap<String, f64>>,
     buff: bool,
     number: u32,
 ) -> Vec<Change> {
@@ -752,7 +783,9 @@ fn changes_for(
             buff,
             rate,
             wanted,
-            &|steps: &[Step]| !crosses(state, family, at, steps, &landed),
+            &|steps: &[Step]| {
+                !crosses(state, family, at, steps, &landed) && !undercuts(floors, &member.key, steps)
+            },
         );
         for step in plan {
             if let Some(moved) = step.members.first() {
@@ -766,11 +799,283 @@ fn changes_for(
                 members: step.members,
                 games: judged.tally.games,
                 wins: judged.tally.wins,
+                follows: false,
+                manual: false,
             });
         }
     }
     level_tiers(state, judged, buff, &mut changes);
     changes
+}
+
+// The most times [`level_upgrades`] goes over the upgrades: a build path is
+// four items long, and a level set at one end has to reach the other.
+const LEVEL_ROUNDS: usize = 6;
+
+// Every tier a patch can move, by its key: its family, and itself.
+fn tiers_of(base: &Base) -> HashMap<&str, (&str, &Member)> {
+    base.families
+        .iter()
+        .flat_map(|(id, family)| {
+            family
+                .members
+                .iter()
+                .map(move |member| (member.key.as_str(), (id.as_str(), member)))
+        })
+        .collect()
+}
+
+// The stat `field` as the game holds it for the item `key`, 0 where the
+// item gives none.
+fn stat_held(base: &Base, key: &str, field: &str) -> f64 {
+    base.flat
+        .get(key)
+        .and_then(|stats| stats.get(field))
+        .copied()
+        .unwrap_or(0.0)
+}
+
+// The least each tier's stats may be taken down to: for every stat that a
+// tier and a part it is built from both give, what the part gives as the
+// state has it. A nerf is not planned under it, since the stat would only
+// be put back ([`level_upgrades`]). A radiant's legendary is no such part:
+// it comes down with its radiant ([`level_tiers`]), and the radiant has the
+// legendary's floors.
+fn stat_floors(base: &Base, state: &State) -> HashMap<String, HashMap<String, f64>> {
+    let members = tiers_of(base);
+    let family_of = |key: &str| members.get(key).map(|(family, _)| *family);
+    let mut floors: HashMap<String, HashMap<String, f64>> = HashMap::new();
+    // Twice: the second time round a radiant takes the floors its legendary
+    // got in the first.
+    for _ in 0..2 {
+        for (part, upgrade) in &base.upgrades {
+            let one_item = family_of(part).is_some() && family_of(part) == family_of(upgrade);
+            for &field in fields::FLAT {
+                let (part_held, upgrade_held) =
+                    (stat_held(base, part, field), stat_held(base, upgrade, field));
+                if part_held <= 0.0 || upgrade_held < part_held {
+                    continue;
+                }
+                let floor = if one_item {
+                    floors
+                        .get(part.as_str())
+                        .and_then(|stats| stats.get(field))
+                        .copied()
+                } else {
+                    Some(stat_now(&members, base, state, &[], part, field))
+                };
+                let Some(floor) = floor else {
+                    continue;
+                };
+                let known = floors
+                    .entry(upgrade.clone())
+                    .or_default()
+                    .entry(field.to_string())
+                    .or_insert(floor);
+                if floor > *known {
+                    *known = floor;
+                }
+            }
+        }
+    }
+    floors
+}
+
+// Whether `steps` take a stat of the tier `key` down under one of its
+// floors ([`stat_floors`]).
+fn undercuts(floors: &HashMap<String, HashMap<String, f64>>, key: &str, steps: &[Step]) -> bool {
+    let Some(floors) = floors.get(key) else {
+        return false;
+    };
+    steps.iter().any(|step| {
+        let (Some(floor), Some(moved)) = (floors.get(&step.field), step.members.first()) else {
+            return false;
+        };
+        moved.after < moved.before && moved.after < *floor - 1e-9
+    })
+}
+
+// What the stat `field` of the item `key` reads with `changes` in: a tier's
+// as its change leaves it or as the state has it, and what the game holds
+// for an item, or a stat of one, that no patch moves.
+fn stat_now(
+    members: &HashMap<&str, (&str, &Member)>,
+    base: &Base,
+    state: &State,
+    changes: &[Change],
+    key: &str,
+    field: &str,
+) -> f64 {
+    let moved = changes
+        .iter()
+        .filter(|change| change.field == field)
+        .flat_map(|change| change.members.iter())
+        .find(|moved| moved.key == key);
+    if let Some(moved) = moved {
+        return moved.after;
+    }
+    let patched = members.get(key).and_then(|(_, member)| {
+        let unpatched = *member.values.get(field)?;
+        Some(fields::quantize(
+            &member.key,
+            field,
+            unpatched,
+            unpatched * state.ratio(&member.key, field),
+            member.whole.contains(field),
+        ))
+    });
+    patched.unwrap_or_else(|| stat_held(base, key, field))
+}
+
+// Sets the stat `field` of the tier `key` level with `level`: the nearest
+// of its own steps that is no less where `up`, and no more where not. A
+// tier `changes` has already moved in the stat has that change end at the
+// level, and one it has not gets a change of its own. Whether anything was
+// changed.
+fn set_level(
+    members: &HashMap<&str, (&str, &Member)>,
+    state: &State,
+    changes: &mut Vec<Change>,
+    key: &str,
+    field: &str,
+    level: f64,
+    up: bool,
+) -> bool {
+    let Some(&(family, member)) = members.get(key) else {
+        return false;
+    };
+    let Some(&unpatched) = member.values.get(field) else {
+        return false;
+    };
+    let whole = member.whole.contains(field);
+    let step = fields::step(&member.key, field, unpatched, whole);
+    let near = fields::quantize(&member.key, field, unpatched, level, whole);
+    let after = if up && near < level - 1e-9 {
+        near + step
+    } else if !up && near > level + 1e-9 {
+        near - step
+    } else {
+        near
+    };
+    let ratio = after / unpatched;
+    let at = changes.iter().position(|change| {
+        change.field == field && change.members.iter().any(|moved| moved.key == key)
+    });
+    let Some(at) = at else {
+        let before = fields::quantize(
+            &member.key,
+            field,
+            unpatched,
+            unpatched * state.ratio(&member.key, field),
+            whole,
+        );
+        if (after - before).abs() < 1e-9 {
+            return false;
+        }
+        // Not past the least or the most the player gave the number.
+        if state.within(key, field, before, after) == Some(false) {
+            return false;
+        }
+        changes.push(Change {
+            family: family.to_string(),
+            field: field.to_string(),
+            buff: up,
+            ratio,
+            members: vec![Moved {
+                key: key.to_string(),
+                before,
+                after,
+            }],
+            games: 0,
+            wins: 0,
+            follows: true,
+            manual: false,
+        });
+        return true;
+    };
+    let Some((before, current)) = changes[at]
+        .members
+        .iter()
+        .find(|moved| moved.key == key)
+        .map(|moved| (moved.before, moved.after))
+    else {
+        return false;
+    };
+    if (current - after).abs() < 1e-9 {
+        return false;
+    }
+    // Back where the number was is no change at all.
+    if (before - after).abs() < 1e-9 {
+        changes.remove(at);
+        return true;
+    }
+    if state.within(key, field, before, after) == Some(false) {
+        return false;
+    }
+    changes[at].ratio = ratio;
+    for moved in &mut changes[at].members {
+        if moved.key == key {
+            moved.after = after;
+        }
+    }
+    true
+}
+
+// Keeps every upgrade at least what it is built from, in the stats an item
+// gives: with `changes` in, no item has less of a stat than a part it is
+// built from has. Every upgrade there is, a component and its legendary as
+// a legendary and its radiant, and the parts no patch moves as well: a
+// component's stat does not go under what the part under it gives.
+//
+// The upgrade comes up to its part. A buff to a component that takes it
+// over one of its legendaries is a buff to that legendary too, and a nerf
+// that would take an item under one of its parts stops at the part. Where
+// no patch can move the upgrade's stat, the part comes down to it.
+//
+// Not where the upgrade starts out with less of the stat than the part, or
+// with none of it: that is an item whose passive makes up for it, as
+// Overlord's Bloodmail gives its attack damage by its health, and the two
+// stay as they are.
+fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
+    let members = tiers_of(base);
+    let frozen = &super::tuning::tuning().frozen;
+    // Whether a patch can move the stat of the item: not one the player's
+    // settings hold still, for every item or for this one.
+    let moves = |key: &str, field: &str| {
+        !frozen.contains(field)
+            && !state.protected(key, field)
+            && members
+                .get(key)
+                .is_some_and(|(_, member)| member.values.contains_key(field))
+    };
+    for _ in 0..LEVEL_ROUNDS {
+        let mut settled = true;
+        for (part, upgrade) in &base.upgrades {
+            for &field in fields::FLAT {
+                let (part_held, upgrade_held) =
+                    (stat_held(base, part, field), stat_held(base, upgrade, field));
+                if part_held <= 0.0 || upgrade_held < part_held {
+                    continue;
+                }
+                let low = stat_now(&members, base, state, &changes[..], part, field);
+                let high = stat_now(&members, base, state, &changes[..], upgrade, field);
+                if high >= low - 1e-9 {
+                    continue;
+                }
+                let moved = if moves(upgrade, field) {
+                    set_level(&members, state, changes, upgrade, field, low, true)
+                } else if moves(part, field) {
+                    set_level(&members, state, changes, part, field, high, false)
+                } else {
+                    false
+                };
+                settled &= !moved;
+            }
+        }
+        if settled {
+            break;
+        }
+    }
 }
 
 // The patch for the matches of `version`: `tallies` by item key.
@@ -907,6 +1212,7 @@ pub(crate) fn decide(
             .then_with(|| a.tiebreak.cmp(&b.tiebreak))
     });
 
+    let floors = stat_floors(base, state);
     let mut changes = Vec::new();
     // The finished items a component's patch stands in for.
     let mut covered: Vec<&str> = Vec::new();
@@ -919,7 +1225,7 @@ pub(crate) fn decide(
             continue;
         }
         nerfs += 1;
-        let made = changes_for(state, item, tallies, false, number);
+        let made = changes_for(state, item, tallies, &floors, false, number);
         // A component that had no step left to take stands in for nothing.
         if !made.is_empty() {
             covered.extend(item.family.built_into.iter().map(String::as_str));
@@ -935,16 +1241,83 @@ pub(crate) fn decide(
             continue;
         }
         buffs += 1;
-        let made = changes_for(state, item, tallies, true, number);
+        let made = changes_for(state, item, tallies, &floors, true, number);
         if !made.is_empty() {
             covered.extend(item.family.built_into.iter().map(String::as_str));
         }
         changes.extend(made);
     }
+    level_upgrades(base, state, &mut changes);
     Patch {
         number,
         version: version.to_string(),
         matches,
+        changes,
+        ..Patch::default()
+    }
+}
+
+// What `field` of the tier `member` reads at the balance `state` has.
+pub(crate) fn reads(state: &State, member: &Member, field: &str) -> Option<f64> {
+    let unpatched = *member.values.get(field)?;
+    Some(fields::quantize(
+        &member.key,
+        field,
+        unpatched,
+        unpatched * state.ratio(&member.key, field),
+        member.whole.contains(field),
+    ))
+}
+
+// The patch the player made by hand: every number waiting in
+// [`State::staged`], set to what the player typed for it in the Item Patcher
+// Settings window.
+//
+// Nothing is judged and nothing is added. A number is taken as it was
+// typed, on a patch's steps or off them, inside the item's band or outside
+// it, and no other number is moved to go with it: what a patch otherwise
+// keeps in order (a radiant no weaker than its legendary, an upgrade no
+// weaker than its parts) is left as the player has it. One that reads what
+// was typed already, or that the mod no longer has, is no change.
+pub(crate) fn manual(base: &Base, state: &State, number: u32, version: &str) -> Patch {
+    let members = tiers_of(base);
+    let mut changes = Vec::new();
+    for (key, staged) in &state.staged {
+        let Some(&(family, member)) = members.get(key.as_str()) else {
+            continue;
+        };
+        for (field, &after) in staged {
+            let (Some(rule), Some(&unpatched), Some(before)) = (
+                fields::rule_for(key, field),
+                member.values.get(field),
+                reads(state, member, field),
+            ) else {
+                continue;
+            };
+            if unpatched == 0.0 || (after - before).abs() < 1e-9 {
+                continue;
+            }
+            changes.push(Change {
+                family: family.to_string(),
+                field: field.clone(),
+                buff: (after.abs() > before.abs()) != rule.lower_is_stronger,
+                ratio: after / unpatched,
+                members: vec![Moved {
+                    key: key.clone(),
+                    before,
+                    after,
+                }],
+                games: 0,
+                wins: 0,
+                follows: false,
+                manual: true,
+            });
+        }
+    }
+    // The version it is a hotfix of: no version's matches were judged.
+    Patch {
+        number,
+        version: version.to_string(),
         changes,
         ..Patch::default()
     }

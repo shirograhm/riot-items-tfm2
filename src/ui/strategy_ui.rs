@@ -1740,7 +1740,7 @@ fn toggle_style(lit: bool) -> String {
 }
 
 // [`toggle_style`] with the label at `size`: the footer's cells are 13, the
-// game's own option rows 16 (`crate::ui::hotfix_row`).
+// game's own option rows 16.
 pub(crate) fn toggle_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
@@ -1762,7 +1762,7 @@ fn toggle_off_style(lit: bool) -> String {
 }
 
 // [`toggle_off_style`] with the label at `size`, for the game's own option
-// rows (`crate::ui::hotfix_row`).
+// rows.
 pub(crate) fn toggle_off_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TOGGLE_OFF_SELECTED_FILL, TOGGLE_OFF_SELECTED_TEXT, 0)
@@ -3916,10 +3916,11 @@ impl StableExtension for StrategyPicker {
         // screen; one atomic read a frame while nothing is patched.
         crate::patches::sync(ctx);
 
-        // The Options dialog's Run Manual Item Patch row, which queues one
-        // of those patches. Unconditional because the dialog opens over any
-        // screen; one lookup a frame while it is closed.
-        crate::ui::hotfix_row::sync(ctx);
+        // The Options dialog's Item Patcher Settings row, and the window it
+        // opens, where the player sets item numbers by hand and queues the
+        // patch that releases them. Unconditional because the dialog opens
+        // over any screen; one lookup a frame while it is closed.
+        crate::ui::patch_settings::sync(ctx);
 
         // Champion facts for the Smart Builds rules, which only the client can
         // ask the host for. Unconditional: the build paths need them in every

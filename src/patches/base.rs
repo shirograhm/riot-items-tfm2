@@ -107,6 +107,13 @@ pub(crate) struct Family {
 
 pub(crate) struct Base {
     pub families: BTreeMap<String, Family>,
+    // Every upgrade there is, whatever the tiers: an item's key, and the
+    // key of an item it is built into. A legendary and its radiant are one.
+    pub upgrades: Vec<(String, String)>,
+    // The stats every item gives, as the game holds them: key -> stat ->
+    // number. The items no patch moves are here too, for what is built from
+    // them to be kept no weaker than they are.
+    pub flat: HashMap<String, HashMap<String, f64>>,
     // Config entry -> field -> number: `config.json` over
     // `config-default.json`.
     config: HashMap<String, HashMap<String, f64>>,
@@ -271,6 +278,17 @@ impl Base {
                 into.entry(previous.clone()).or_default().push(key.to_string());
             }
         }
+        let mut flat: HashMap<String, HashMap<String, f64>> = HashMap::new();
+        for (key, item) in &items {
+            for &field in fields::FLAT {
+                let held = live::stat_number(&item.registered, field).filter(|number| *number != 0);
+                if let Some(number) = held {
+                    flat.entry(key.to_string())
+                        .or_default()
+                        .insert(field.to_string(), number as f64);
+                }
+            }
+        }
         // Asked of the config type once a field, not once an item.
         let mut whole_fields: HashMap<String, bool> = HashMap::new();
         let mut config_fields: HashMap<String, bool> = HashMap::new();
@@ -391,6 +409,28 @@ impl Base {
                 }
                 member
             };
+            // Every one of the game's items, whatever its tier: what it is
+            // built into, and the stats it gives.
+            for (name, object) in file {
+                let Some(object) = object.as_object() else {
+                    continue;
+                };
+                let key = key_of(name, object);
+                let next = object.get("next_tier").and_then(Value::as_array);
+                into.entry(key.clone()).or_default().extend(
+                    next.into_iter()
+                        .flatten()
+                        .filter_map(|next| next.as_str().map(str::to_string)),
+                );
+                let stats = object.get("stat").and_then(Value::as_object);
+                for (field, number) in stats.into_iter().flatten() {
+                    let is_flat = fields::rule(field).is_some_and(|rule| rule.flat);
+                    let held = number.as_f64().filter(|number| is_flat && *number != 0.0);
+                    if let Some(number) = held {
+                        flat.entry(key.clone()).or_default().insert(field.clone(), number);
+                    }
+                }
+            }
             for (name, object) in file {
                 let Some(object) = object.as_object() else {
                     continue;
@@ -496,8 +536,17 @@ impl Base {
             )
         });
 
+        let mut upgrades: Vec<(String, String)> = into
+            .iter()
+            .flat_map(|(part, built)| built.iter().map(move |upgrade| (part.clone(), upgrade.clone())))
+            .collect();
+        upgrades.sort();
+        upgrades.dedup();
+
         Self {
             families,
+            upgrades,
+            flat,
             config,
             custom,
             raw,

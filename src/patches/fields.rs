@@ -1,3 +1,7 @@
+use std::collections::{BTreeMap, HashMap};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::RwLock;
+
 use serde_json::{json, Value};
 
 use crate::config::ItemConfig;
@@ -259,12 +263,55 @@ pub(crate) fn step(item: &str, field: &str, base: f64, whole: bool) -> f64 {
     }
 }
 
+// The numbers the player has set by hand in the save that is loaded, by
+// item and field (`State::exact`). Such a number reads exactly as it was
+// set, whatever steps a patch would count it in, and every reading of a
+// number goes through [`quantize`]: so it is kept where that can see it.
+static EXACT: RwLock<Option<HashMap<String, HashMap<String, f64>>>> = RwLock::new(None);
+// Whether there is any, so that asking costs one atomic read while there
+// is none.
+static ANY_EXACT: AtomicBool = AtomicBool::new(false);
+
+// Takes the numbers set by hand of the state now in force. Called wherever
+// that state changes (`live::rebuild`).
+pub(crate) fn set_exact(exact: &BTreeMap<String, BTreeMap<String, f64>>) {
+    let table: HashMap<String, HashMap<String, f64>> = exact
+        .iter()
+        .filter(|(_, fields)| !fields.is_empty())
+        .map(|(item, fields)| {
+            let fields = fields.iter().map(|(field, value)| (field.clone(), *value)).collect();
+            (item.clone(), fields)
+        })
+        .collect();
+    let any = !table.is_empty();
+    if let Ok(mut slot) = EXACT.write() {
+        *slot = any.then_some(table);
+    }
+    ANY_EXACT.store(any, Ordering::Relaxed);
+}
+
+// The number the player set `field` of `item` to by hand, where they did.
+fn exact(item: &str, field: &str) -> Option<f64> {
+    if !ANY_EXACT.load(Ordering::Relaxed) {
+        return None;
+    }
+    EXACT.read().ok()?.as_ref()?.get(item)?.get(field).copied()
+}
+
 pub(crate) fn quantize(item: &str, field: &str, base: f64, target: f64, whole: bool) -> f64 {
     if base == 0.0 {
         return 0.0;
     }
     if (target - base).abs() < 1e-9 {
         return base;
+    }
+    // A number set by hand, asked for where it stands: it is that number,
+    // on the steps or off them. Asked for anywhere else, it is stepped like
+    // any other, which is a patch moving it on.
+    if let Some(set) = exact(item, field) {
+        if (target - set).abs() <= 1e-6 * set.abs().max(1.0) {
+            return set;
+        }
     }
     let step = step(item, field, base, whole);
     let from_base = keeps_its_three(item, field, base);

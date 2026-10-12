@@ -51,6 +51,44 @@ pub(crate) struct State {
     // Newest last.
     #[serde(rename = "h")]
     pub history: Vec<Patch>,
+    // Item -> field -> the numbers the player has set by hand that read
+    // exactly as set, where a patch's own steps would read another
+    // (`fields::quantize`): 23 Attack Damage where patches count in fives.
+    // Gone again once a patch moves the number.
+    #[serde(rename = "x", skip_serializing_if = "BTreeMap::is_empty")]
+    pub exact: BTreeMap<String, BTreeMap<String, f64>>,
+    // Item -> field -> a number the player has set in the Item Patcher
+    // Settings window and that no patch has released yet: the next manual
+    // patch is made of these.
+    #[serde(rename = "s", skip_serializing_if = "BTreeMap::is_empty")]
+    pub staged: BTreeMap<String, BTreeMap<String, f64>>,
+    // Item -> field -> what the player allows a patch to do with the number.
+    #[serde(rename = "l", skip_serializing_if = "BTreeMap::is_empty")]
+    pub limits: BTreeMap<String, BTreeMap<String, Limit>>,
+}
+
+// What the player allows the automatic patches to do with one number of one
+// item, set in the Item Patcher Settings window. A number the player sets by
+// hand is the player's word and is held to none of it.
+#[derive(Serialize, Deserialize, Clone, Copy, Default, PartialEq)]
+#[serde(default)]
+pub(crate) struct Limit {
+    // The least and the most a patch may make the number. One that is not
+    // given is the band every number has (`tuning`).
+    #[serde(rename = "a", skip_serializing_if = "Option::is_none")]
+    pub min: Option<f64>,
+    #[serde(rename = "z", skip_serializing_if = "Option::is_none")]
+    pub max: Option<f64>,
+    // No automatic patch moves the number.
+    #[serde(rename = "p", skip_serializing_if = "std::ops::Not::not")]
+    pub protected: bool,
+}
+
+impl Limit {
+    // Whether it says anything: one that does not is not kept.
+    pub(crate) fn is_empty(&self) -> bool {
+        self.min.is_none() && self.max.is_none() && !self.protected
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
@@ -100,6 +138,15 @@ pub(crate) struct Change {
     pub games: u32,
     #[serde(rename = "w")]
     pub wins: u32,
+    // Made to keep an upgrade no weaker than what it is built from, and
+    // not for how the item did: an item no verdict was reached on.
+    #[serde(rename = "u")]
+    pub follows: bool,
+    // Set by the player in the Item Patcher Settings window, and not made
+    // by a patch: no verdict was reached on the item, and its number reads
+    // exactly as set.
+    #[serde(rename = "m")]
+    pub manual: bool,
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
@@ -128,7 +175,9 @@ impl State {
     }
 
     // Takes a patch in: its ratios, for the tiers each change moved, and
-    // its place in the history.
+    // its place in the history. A number the player set reads exactly as
+    // set from here on, and one a patch moved reads in the patch's steps
+    // again.
     pub(crate) fn adopt(&mut self, patch: Patch) {
         for change in &patch.changes {
             for moved in &change.members {
@@ -136,8 +185,17 @@ impl State {
                     .entry(moved.key.clone())
                     .or_default()
                     .insert(change.field.clone(), change.ratio);
+                if change.manual {
+                    self.exact
+                        .entry(moved.key.clone())
+                        .or_default()
+                        .insert(change.field.clone(), moved.after);
+                } else if let Some(exact) = self.exact.get_mut(&moved.key) {
+                    exact.remove(&change.field);
+                }
             }
         }
+        self.exact.retain(|_, fields| !fields.is_empty());
         self.number = patch.number;
         self.history.push(patch);
         if self.history.len() > HISTORY_KEPT {
@@ -153,5 +211,74 @@ impl State {
             .and_then(|fields| fields.get(field))
             .copied()
             .unwrap_or(1.0)
+    }
+
+    // What the player allows a patch to do with `field` of the item `key`.
+    pub(crate) fn limit(&self, key: &str, field: &str) -> Limit {
+        self.limits
+            .get(key)
+            .and_then(|fields| fields.get(field))
+            .copied()
+            .unwrap_or_default()
+    }
+
+    // Whether the player has put `field` of the item `key` out of the
+    // automatic patches' reach.
+    pub(crate) fn protected(&self, key: &str, field: &str) -> bool {
+        self.limit(key, field).protected
+    }
+
+    // Whether a patch may take `field` of the item `key` from `before` to
+    // `after`, by the least and the most the player gave the number: inside
+    // them, or on the way back to them from outside, which is where a number
+    // set by hand can be. Nothing where the player gave neither.
+    pub(crate) fn within(&self, key: &str, field: &str, before: f64, after: f64) -> Option<bool> {
+        let limit = self.limit(key, field);
+        if limit.min.is_none() && limit.max.is_none() {
+            return None;
+        }
+        let low = limit.min.is_none_or(|min| after >= min - 1e-9 || after > before);
+        let high = limit.max.is_none_or(|max| after <= max + 1e-9 || after < before);
+        Some(low && high)
+    }
+
+    // Keeps what the player allows a patch to do with `field` of the item
+    // `key`, or forgets it where `limit` says nothing.
+    pub(crate) fn set_limit(&mut self, key: &str, field: &str, limit: Limit) {
+        if limit.is_empty() {
+            if let Some(fields) = self.limits.get_mut(key) {
+                fields.remove(field);
+            }
+            self.limits.retain(|_, fields| !fields.is_empty());
+        } else {
+            self.limits
+                .entry(key.to_string())
+                .or_default()
+                .insert(field.to_string(), limit);
+        }
+    }
+
+    // Keeps `value` as the number the next manual patch sets `field` of the
+    // item `key` to, or with none takes the number out of that patch.
+    pub(crate) fn stage(&mut self, key: &str, field: &str, value: Option<f64>) {
+        match value {
+            Some(value) => {
+                self.staged
+                    .entry(key.to_string())
+                    .or_default()
+                    .insert(field.to_string(), value);
+            }
+            None => {
+                if let Some(fields) = self.staged.get_mut(key) {
+                    fields.remove(field);
+                }
+                self.staged.retain(|_, fields| !fields.is_empty());
+            }
+        }
+    }
+
+    // How many numbers wait for the next manual patch.
+    pub(crate) fn staged_count(&self) -> usize {
+        self.staged.values().map(BTreeMap::len).sum()
     }
 }

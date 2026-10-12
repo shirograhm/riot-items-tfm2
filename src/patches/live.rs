@@ -205,6 +205,9 @@ pub(crate) fn current() -> Option<Arc<Live>> {
 // keeps an item's numbers outside the item. With an empty state, which is
 // what leaving a save comes to, everything is as the mod loaded it.
 pub(crate) fn rebuild(base: &Base, state: &State) {
+    // First, since every number below is read through it: the numbers the
+    // player set by hand read exactly as set.
+    fields::set_exact(&state.exact);
     let texts = text::texts();
     // (item, field) -> patched number, where that is not the unpatched one.
     let mut values: HashMap<(String, String), f64> = HashMap::new();
