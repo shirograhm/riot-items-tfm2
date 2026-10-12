@@ -150,11 +150,104 @@ impl Template {
         Some((name.to_string(), percent))
     }
 
+    // How the text draws `item`'s `field`: the colour of the span the
+    // number is in, and the icon the text has for what it is a number of.
+    // That icon is the one of the number's colour, in a span of that colour
+    // or bare and followed by one ("of your <icon> <#60e84dff>maximum
+    // health<>"): the nearest after the number in its paragraph, or failing
+    // one the nearest before it. Neither for a number in no colour span.
+    fn tint_of(&self, item: &str, field: &str) -> Tint {
+        // The paragraph's icons: where each comes among its numbers and
+        // icons, the icon, and its colour.
+        let mut icons: Vec<(usize, &str, Option<String>)> = Vec::new();
+        // Where the number comes, and its colour.
+        let mut slot: Option<(usize, Option<String>)> = None;
+        let mut order = 0usize;
+        let mut colours: Vec<String> = Vec::new();
+        // The last icon is in no colour span, and nothing but blanks has
+        // come since: a span that opens now is its colour.
+        let mut bare = false;
+        'parts: for part in &self.parts {
+            let text = match part {
+                Part::Slot(terms) => {
+                    let wanted = terms.len() == 1 && terms[0].item == item && terms[0].field == field;
+                    if wanted && slot.is_none() {
+                        slot = Some((order, colours.last().cloned()));
+                    }
+                    order += 1;
+                    bare = false;
+                    continue;
+                }
+                Part::Text(text) => text,
+            };
+            let mut rest = text.as_str();
+            while let Some(at) = rest.find(['<', '\n']) {
+                if !rest[..at].trim().is_empty() {
+                    bare = false;
+                }
+                let tail = &rest[at..];
+                if tail.starts_with("\n\n") {
+                    if slot.is_some() {
+                        break 'parts;
+                    }
+                    icons.clear();
+                    colours.clear();
+                    bare = false;
+                    rest = &tail[2..];
+                    continue;
+                }
+                if tail.starts_with('\n') {
+                    rest = &tail[1..];
+                    continue;
+                }
+                let Some(end) = tail.find('>') else {
+                    break;
+                };
+                let tag = &tail[1..end];
+                if tag.is_empty() {
+                    colours.pop();
+                    bare = false;
+                } else if let Some(icon) = tag.strip_prefix("i#") {
+                    icons.push((order, icon, colours.last().cloned()));
+                    order += 1;
+                    bare = true;
+                } else if let Some(colour) = tag.strip_prefix('#') {
+                    let colour = colour.to_lowercase();
+                    if bare {
+                        if let Some(last) = icons.last_mut().filter(|icon| icon.2.is_none()) {
+                            last.2 = Some(colour.clone());
+                        }
+                    }
+                    colours.push(colour);
+                    bare = false;
+                }
+                rest = &tail[end + 1..];
+            }
+            if !rest.trim().is_empty() {
+                bare = false;
+            }
+        }
+        let Some((at, Some(colour))) = slot else {
+            return Tint::default();
+        };
+        let same = |icon: &&(usize, &str, Option<String>)| icon.2.as_deref() == Some(colour.as_str());
+        let icon = icons
+            .iter()
+            .filter(same)
+            .find(|icon| icon.0 > at)
+            .or_else(|| icons.iter().rev().filter(same).find(|icon| icon.0 < at))
+            .map(|icon| icon.1.to_string());
+        Tint {
+            colour: Some(colour),
+            icon,
+        }
+    }
+
     // How the text writes the range of `item` that runs from `low` to
     // `high`: what stands between the two numbers (" - "), and the bracket
     // that follows the second where it holds words and no number
-    // (" (based on level)"). Nothing where the two are not written one
-    // after the other.
+    // (" (based on level)"), with the colours and the icon the text has in
+    // it. Nothing where the two are not written one after the other.
     fn range_of(&self, item: &str, low: &str, high: &str) -> Option<(String, String)> {
         let is = |part: &Part, field: &str| {
             matches!(
@@ -176,7 +269,8 @@ impl Template {
         }
         let tail = match self.parts.get(at + 3) {
             Some(Part::Text(after)) => {
-                let after = plain(after);
+                // The span the second number is in closes first.
+                let after = after.strip_prefix("<>").unwrap_or(after);
                 let words = after.trim_start();
                 let bracket = words
                     .starts_with(['(', '\u{ff08}'])
@@ -184,10 +278,14 @@ impl Template {
                     .flatten()
                     .map(|end| {
                         let close = words[end..].chars().next().map_or(1, char::len_utf8);
-                        words[..end + close]
-                            .split_whitespace()
-                            .collect::<Vec<_>>()
-                            .join(" ")
+                        let bracket = &words[..end + close];
+                        // With its markup where every colour span in it
+                        // is whole, and without any of it otherwise.
+                        if bracket.matches("<#").count() == bracket.matches("<>").count() {
+                            bracket.to_string()
+                        } else {
+                            plain(bracket)
+                        }
                     });
                 match bracket {
                     Some(bracket) if after.starts_with(char::is_whitespace) => format!(" {bracket}"),
@@ -200,6 +298,39 @@ impl Template {
         Some((between, tail))
     }
 }
+
+// How an item's text draws one of its numbers ([`Template::tint_of`]),
+// which is how a patch note draws a passive's number that has a row format.
+#[derive(Clone, Default)]
+struct Tint {
+    // The colour, as its tag has it less the `#`.
+    colour: Option<String>,
+    // The icon, as `sheet:tag`.
+    icon: Option<String>,
+}
+
+impl Tint {
+    // `phrase` in the colour, behind the icon where `icon` asks for it:
+    // "<icon> <colour>10 health<>".
+    fn draw(&self, phrase: &str, icon: bool) -> String {
+        let mark = match &self.icon {
+            Some(mark) if icon => format!("<i#{mark}> "),
+            _ => String::new(),
+        };
+        match &self.colour {
+            Some(colour) => format!("{mark}<#{colour}>{phrase}<>"),
+            None => format!("{mark}{phrase}"),
+        }
+    }
+}
+
+// Numbers a patch note draws with no icon, whatever the text has by them,
+// as (base item, field): the flat part of an amount whose share of ability
+// power has the icon, "25 (+10% <icon> AP)".
+const NO_ICON: [(&str, &str); 2] = [
+    ("terminus", "effect_bonus_flat_damage"),
+    ("zazzaks_realmspike", "effect_bonus_flat_damage"),
+];
 
 // `text` without its markup: colour spans and inline icons are `<...>`.
 fn plain(text: &str) -> String {
@@ -529,6 +660,23 @@ impl Texts {
             .and_then(|template| template.range_of(key, low, high))
             .unwrap_or_else(|| (" - ".to_string(), String::new()))
     }
+
+    // How `key`'s effect text draws its `field` ([`Template::tint_of`]). Read
+    // off the English text whatever the language: the colours and icons are
+    // the same in every one, and a translation moves the words around them.
+    // Less the icon for a number of [`NO_ICON`].
+    fn tint(&self, key: &str, field: &str) -> Tint {
+        let mut tint = self
+            .templates
+            .get("en")
+            .and_then(|templates| templates.get(key))
+            .map_or_else(Tint::default, |template| template.tint_of(key, field));
+        let slug = crate::build_config::base_slug(key);
+        if NO_ICON.iter().any(|&(item, other)| item == slug && other == field) {
+            tint.icon = None;
+        }
+        tint
+    }
 }
 
 fn lines_of(value: &Value) -> HashMap<String, String> {
@@ -829,8 +977,10 @@ const NERF_COLOR: &str = "#ff6b6bff";
 const ADJUST_COLOR: &str = "#f0c05aff";
 const REASON_COLOR: &str = "#8b8d9aff";
 
-// One changed number of an entry: its icon, which a flat stat has where its
-// tooltip line has one and a passive's number never has, and the line.
+// One changed number of an entry: the icon the row opens with, which a
+// flat stat has where its tooltip line has one and a passive's number never
+// has, and the line. A passive's number that has a row format has its
+// colour and icon in the line itself ([`Tint`]).
 struct NoteRow {
     icon: Option<(String, String)>,
     text: String,
@@ -1029,7 +1179,7 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 61] = [
+const ROW_FORMATS: [RowFormat; 120] = [
     RowFormat {
         item: "deaths_dance",
         field: "effect_delayed_damage_percent",
@@ -1073,51 +1223,9 @@ const ROW_FORMATS: [RowFormat; 61] = [
         unit: Some(("unit_seconds", " seconds")),
     },
     RowFormat {
-        item: "axiom_arc",
-        field: "effect_ult_cooldown_mult",
-        label: Some(("row_base_ult_haste", "Base Ultimate Haste")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "endless_hunger",
-        field: "effect_skill_cooldown_mult",
-        label: Some(("row_base_ability_haste", "Base Ability Haste")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "feral_flare",
-        field: "effect_bonus_magic_damage",
-        label: Some(("row_flat_damage_on_hit", "Flat Damage On-Hit")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "feral_flare",
-        field: "effect_stack_magic_damage",
-        label: None,
-        lead: None,
-        unit: Some(("unit_per_feral_stack", " per Feral stack")),
-    },
-    RowFormat {
         item: "hubris",
         field: "effect_bonus_flat_attack",
         label: Some(("row_base_ad_kill_bonus", "Base AD Kill Bonus")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "terminus",
-        field: "effect_bonus_flat_damage",
-        label: Some(("row_flat_damage_on_hit", "Flat Damage On-Hit")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "zazzaks_realmspike",
-        field: "effect_bonus_flat_damage",
-        label: Some(("row_flat_damage", "Flat Damage")),
         lead: None,
         unit: None,
     },
@@ -1457,55 +1565,683 @@ const ROW_FORMATS: [RowFormat; 61] = [
         lead: None,
         unit: Some(("unit_max_hp_per_second", " max HP per second")),
     },
+    RowFormat {
+        item: "guinsoos_rageblade",
+        field: "effect_bonus_magic_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "wits_end",
+        field: "effect_bonus_magic_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "ravenous_hydra",
+        field: "effect_ad_percent_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: Some(("unit_ad", " AD")),
+    },
+    RowFormat {
+        item: "tiamat",
+        field: "effect_ad_percent_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: Some(("unit_ad", " AD")),
+    },
+    RowFormat {
+        item: "hextech_alternator",
+        field: "effect_bonus_flat_damage",
+        label: Some(("row_bonus_damage", "Bonus Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "scouts_slingshot",
+        field: "effect_bonus_flat_damage",
+        label: Some(("row_bonus_damage", "Bonus Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "ardent_censer",
+        field: "effect_attack_speed_mult",
+        label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "ardent_censer",
+        field: "effect_enemy_max_hp_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: Some(("unit_target_max_hp", " target max HP")),
+    },
+    RowFormat {
+        item: "blade_of_the_ruined_king",
+        field: "effect_hp_percent_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: Some(("unit_target_current_hp", " target current HP")),
+    },
+    RowFormat {
+        item: "dead_mans_plate",
+        field: "effect_max_bonus_damage",
+        label: Some(("row_on_hit_damage_cap", "On-Hit Damage Cap")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "deaths_dance",
+        field: "effect_burn_hp_percent_cap",
+        label: Some(("row_delayed_damage_cap", "Delayed Damage Cap")),
+        lead: None,
+        unit: Some(("unit_max_hp_per_second", " max HP per second")),
+    },
+    RowFormat {
+        item: "eclipse",
+        field: "effect_hp_percent_damage",
+        label: Some(("row_damage", "Damage")),
+        lead: None,
+        unit: Some(("unit_target_max_hp", " target max HP")),
+    },
+    RowFormat {
+        item: "essence_reaver",
+        field: "effect_ad_percent_damage",
+        label: Some(("row_on_hit_ad_ratio", "On-Hit Damage AD Ratio")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "essence_reaver",
+        field: "effect_crit_percent_damage",
+        label: Some(("row_on_hit_crit_ratio", "On-Hit Damage Crit Ratio")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "fiendhunter_bolts",
+        field: "effect_damage_conversion",
+        label: Some(("row_true_damage_ratio", "True Damage Ratio")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "hamstringer",
+        field: "effect_crit_percent_damage",
+        label: Some(("row_bleed_crit_ratio", "Bleed Crit Ratio")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "kraken_slayer",
+        field: "effect_bonus_flat_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "liandrys_torment",
+        field: "effect_hp_percent_damage",
+        label: Some(("row_burn_damage", "Burn Damage")),
+        lead: None,
+        unit: Some(("unit_target_max_hp", " target max HP")),
+    },
+    RowFormat {
+        item: "night_harvester",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "stormrazor",
+        field: "effect_bonus_flat_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "stormrazor",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "titanic_hydra",
+        field: "effect_caster_hp_percent_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: Some(("unit_max_hp", " max HP")),
+    },
+    RowFormat {
+        item: "titanic_hydra",
+        field: "effect_splash_caster_hp_percent",
+        label: Some(("row_aoe_damage", "AoE Damage")),
+        lead: None,
+        unit: Some(("unit_max_hp", " max HP")),
+    },
+    RowFormat {
+        item: "voltaic_cyclosword",
+        field: "effect_hp_percent_damage",
+        label: Some(("row_on_hit_damage", "On-Hit Damage")),
+        lead: None,
+        unit: Some(("unit_target_current_hp", " target current HP")),
+    },
+    RowFormat {
+        item: "zekes_herald",
+        field: "effect_bonus_magic_damage",
+        label: Some(("row_storm_damage", "Storm Damage")),
+        lead: None,
+        unit: Some(("unit_per_second", " per second")),
+    },
+    RowFormat {
+        item: "atmas_reckoning",
+        field: "effect_stack_crit_chance",
+        label: Some(("row_crit_chance", "Crit Chance")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "bandlepipes",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "bandlepipes",
+        field: "effect_attack_speed_mult",
+        label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "blackfire_torch",
+        field: "effect_stack_magic_power",
+        label: Some(("row_ability_power", "Ability Power")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "cosmic_drive",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "dead_mans_plate",
+        field: "effect_move_speed_per_stack",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: Some(("unit_per_momentum_stack", " per <#92dc7bff>Momentum<> stack")),
+    },
+    RowFormat {
+        item: "dream_maker",
+        field: "effect_skill_damaged_reduce",
+        label: Some(("row_skill_damage_reduction", "Skill Damage Reduction")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "endless_hunger",
+        field: "effect_vamp",
+        label: Some(("row_omnivamp", "Omnivamp")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "experimental_hexplate",
+        field: "effect_attack_speed_mult",
+        label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "experimental_hexplate",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "fiendhunter_bolts",
+        field: "effect_attack_speed_mult",
+        label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "grezs_spectral_lantern",
+        field: "effect_stack_magic_power",
+        label: Some(("row_ability_power", "Ability Power")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "guinsoos_rageblade",
+        field: "effect_stack_attack_speed_mult",
+        label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "hullbreaker",
+        field: "effect_bonus_defence",
+        label: Some(("row_armor", "Armor")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "hullbreaker",
+        field: "effect_bonus_magic_resistance",
+        label: Some(("row_magic_resistance", "Magic Resistance")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "jaksho_the_protean",
+        field: "effect_stack_defence_mult",
+        label: Some(("row_armor", "Armor")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "jaksho_the_protean",
+        field: "effect_stack_magic_resistance_mult",
+        label: Some(("row_magic_resistance", "Magic Resistance")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "locket_of_the_iron_solari",
+        field: "effect_bonus_defence",
+        label: Some(("row_armor", "Armor")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "locket_of_the_iron_solari",
+        field: "effect_bonus_magic_resistance",
+        label: Some(("row_magic_resistance", "Magic Resistance")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "locket_of_the_iron_solari",
+        field: "effect_bonus_hp_regen",
+        label: Some(("row_health_regeneration", "Health Regeneration")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "mirage_blade",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "overlords_bloodmail",
+        field: "effect_caster_hp_percent_attack",
+        label: Some(("row_attack_damage", "Attack Damage")),
+        lead: None,
+        unit: Some(("unit_max_hp", " max HP")),
+    },
+    RowFormat {
+        item: "phage",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "philosophers_stone",
+        field: "effect_stack_hp_mult",
+        label: Some(("row_bonus_health", "Bonus Health")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "riftmaker",
+        field: "effect_vamp",
+        label: Some(("row_omnivamp", "Omnivamp")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "riftmaker",
+        field: "effect_caster_hp_percent_power",
+        label: Some(("row_ability_power", "Ability Power")),
+        lead: None,
+        unit: Some(("unit_max_hp", " max HP")),
+    },
+    RowFormat {
+        item: "rite_of_ruin",
+        field: "effect_stack_crit_chance",
+        label: Some(("row_crit_chance", "Crit Chance")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "rod_of_ages",
+        field: "effect_growth_hp",
+        label: Some(("row_max_health", "Max Health")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "rod_of_ages",
+        field: "effect_growth_magic_power",
+        label: Some(("row_ability_power", "Ability Power")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "rod_of_ages",
+        field: "effect_growth_skill_cooldown_mult",
+        label: Some(("row_ability_haste", "Ability Haste")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "seekers_armguard",
+        field: "effect_stack_defence",
+        label: Some(("row_armor", "Armor")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "solstice_sleigh",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "spear_of_shojin",
+        field: "effect_stack_attack_mult",
+        label: Some(("row_attack_damage", "Attack Damage")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "staff_of_flowing_water",
+        field: "effect_magic_power",
+        label: Some(("row_ability_power", "Ability Power")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "staff_of_flowing_water",
+        field: "effect_skill_cooldown_mult",
+        label: Some(("row_ability_haste", "Ability Haste")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "terminus",
+        field: "effect_armor_pen_per_stack",
+        label: Some(("row_armor_penetration", "Armor Penetration")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "terminus",
+        field: "effect_magic_pen_per_stack",
+        label: Some(("row_mr_penetration", "Magic Resistance Penetration")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
+    RowFormat {
+        item: "warmogs_armor",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "yun_tal_wildarrows",
+        field: "effect_flurry_attack_speed_mult",
+        label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "yun_tal_wildarrows",
+        field: "effect_stack_crit_chance",
+        label: Some(("row_crit_chance", "Crit Chance")),
+        lead: None,
+        unit: Some(("unit_per_stack", " per stack")),
+    },
 ];
 
-// A row of two of a passive's numbers that make one amount, a flat part
-// and a share or two shares: "Defy - Healing: 45 + 15% missing HP -> 50 +
-// 15% missing HP". Both numbers are written whichever of them the patch
-// moved, as the ends of a level range are ([`pair_rows`]).
+// A row of two or three of a passive's numbers that make one amount, a
+// flat part and its shares: "Defy - Healing: 45 + 15% missing HP -> 50 +
+// 15% missing HP", "Shadow - On-Hit Damage: 30 (+5% AD) (+10% AP) -> ...".
+// Every number of it is written whichever of them the patch moved, as the
+// ends of a level range are ([`amount_rows`]).
 //
-// `amount` is the amount with `{A}` and `{B}` where the two numbers go, in
-// the order of `fields`, percent signs and all. `item` is the base key, and
-// the strings are `item_patch` ones, by key and the English.
-struct PairFormat {
+// `amount` is the amount with `{A}`, `{B}` and `{C}` where the numbers go,
+// in the order of `fields`, percent signs and all, and with each number's
+// part of it in square brackets ([`amount_text`]): "[{A}] + [{B}% missing
+// HP]". `item` is the base key, and the strings are `item_patch` ones, by
+// key and the English.
+struct AmountFormat {
     item: &'static str,
-    fields: (&'static str, &'static str),
+    fields: &'static [&'static str],
     label: (&'static str, &'static str),
     amount: (&'static str, &'static str),
 }
 
-const PAIR_FORMATS: [PairFormat; 5] = [
-    PairFormat {
+// The placeholders of an amount's numbers, in the order of its fields.
+const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
+
+const AMOUNT_FORMATS: [AmountFormat; 26] = [
+    AmountFormat {
         item: "deaths_dance",
-        fields: ("effect_bonus_flat_heal", "effect_kill_heal_missing_percent"),
+        fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
         label: ("row_healing", "Healing"),
-        amount: ("amount_flat_missing_hp", "{A} + {B}% missing HP"),
+        amount: ("amount_flat_missing_hp", "[{A}] + [{B}% missing HP]"),
     },
-    PairFormat {
+    AmountFormat {
         item: "dusk_and_dawn",
-        fields: ("effect_caster_ap_percent_heal", "effect_caster_hp_percent_heal"),
+        fields: &["effect_caster_ap_percent_heal", "effect_caster_hp_percent_heal"],
         label: ("row_healing", "Healing"),
-        amount: ("amount_ap_and_max_hp", "{A}% AP and {B}% max HP"),
+        amount: ("amount_ap_and_max_hp", "[{A}% AP] and [{B}% max HP]"),
     },
-    PairFormat {
+    AmountFormat {
         item: "eclipse",
-        fields: ("effect_bonus_flat_shield", "effect_ad_percent_shield"),
+        fields: &["effect_bonus_flat_shield", "effect_ad_percent_shield"],
         label: ("row_shielding", "Shielding"),
-        amount: ("amount_flat_ad", "{A} + {B}% AD"),
+        amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
     },
-    PairFormat {
+    AmountFormat {
         item: "sundered_sky",
-        fields: ("effect_bonus_flat_heal", "effect_caster_hp_percent_heal"),
+        fields: &["effect_bonus_flat_heal", "effect_caster_hp_percent_heal"],
         label: ("row_healing", "Healing"),
-        amount: ("amount_flat_missing_hp", "{A} + {B}% missing HP"),
+        amount: ("amount_flat_missing_hp", "[{A}] + [{B}% missing HP]"),
     },
-    PairFormat {
+    AmountFormat {
         item: "unending_despair",
-        fields: ("effect_bonus_flat_heal", "effect_caster_hp_percent_heal"),
+        fields: &["effect_bonus_flat_heal", "effect_caster_hp_percent_heal"],
         label: ("row_healing", "Healing"),
-        amount: ("amount_flat_max_hp", "{A} + {B}% max HP"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "bamis_cinder",
+        fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
+        label: ("row_burn_damage", "Burn Damage"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "hollow_radiance",
+        fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
+        label: ("row_burn_damage", "Burn Damage"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "philosophers_stone",
+        fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
+        label: ("row_burn_damage", "Burn Damage"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "dusk_and_dawn",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
+        item: "lich_bane",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
+        item: "bastionbreaker",
+        fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
+    },
+    AmountFormat {
+        item: "heartsteel",
+        fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "hollow_radiance",
+        fields: &["effect_explosion_flat_damage", "effect_explosion_caster_hp_percent"],
+        label: ("row_damage", "Damage"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "feral_flare",
+        fields: &["effect_bonus_magic_damage", "effect_stack_magic_damage"],
+        label: ("row_damage", "Damage"),
+        amount: ("amount_flat_per_feral_stack", "[{A}] ([+{B}] per <#92dc7bff>Feral<> stack)"),
+    },
+    AmountFormat {
+        item: "hullbreaker",
+        fields: &["effect_ad_percent_damage", "effect_caster_hp_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_ad_max_hp", "[{A}% AD] ([+{B}% max HP])"),
+    },
+    AmountFormat {
+        item: "nashors_tooth",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
+        item: "night_harvester",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: ("row_damage", "Damage"),
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
+        item: "serpents_fang",
+        fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
+        label: ("row_bonus_damage", "Bonus Damage"),
+        amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
+    },
+    AmountFormat {
+        item: "stormsurge",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: ("row_damage", "Damage"),
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
+        item: "trinity_force",
+        fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
+    },
+    AmountFormat {
+        item: "terminus",
+        fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage", "effect_ap_percent_damage"],
+        label: ("row_on_hit_damage", "On-Hit Damage"),
+        amount: ("amount_flat_ad_ap", "[{A}] ([+{B}% AD]) ([+{C}% AP])"),
+    },
+    AmountFormat {
+        item: "zazzaks_realmspike",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage", "effect_enemy_max_hp_damage"],
+        label: ("row_damage", "Damage"),
+        amount: ("amount_flat_ap_target_max_hp", "[{A}] ([+{B}% AP]) ([+{C}% target max HP])"),
+    },
+    AmountFormat {
+        item: "axiom_arc",
+        fields: &["effect_ult_cooldown_mult", "effect_ult_cooldown_per_lethality"],
+        label: ("row_ultimate_haste", "Ultimate Haste"),
+        amount: ("amount_flat_per_lethality", "[{A}] ([+{B}] per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>)"),
+    },
+    AmountFormat {
+        item: "endless_hunger",
+        fields: &["effect_skill_cooldown_mult", "effect_ad_percent_haste"],
+        label: ("row_ability_haste", "Ability Haste"),
+        amount: ("amount_flat_ad_bracket", "[{A}] ([+{B}% AD])"),
+    },
+    AmountFormat {
+        item: "protectors_vow",
+        fields: &["effect_bonus_flat_hp", "effect_caster_defence_percent_hp"],
+        label: ("row_bonus_health", "Bonus Health"),
+        amount: ("amount_flat_armor", "[{A}] + [{B}% Armor]"),
+    },
+    AmountFormat {
+        item: "protoplasm_harness",
+        fields: &["effect_bonus_flat_hp", "effect_hp_percent_boost"],
+        label: ("row_bonus_health", "Bonus Health"),
+        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
 ];
+
+// The amount `pattern` makes of `numbers`: [`AMOUNT_SLOTS`] are the
+// numbers, and what stands in square brackets is drawn as the item's text
+// draws the number in it ([`Tint::draw`]), the rest as it is written. An
+// icon two parts in a row share is put in once, ahead of the first.
+fn amount_text(pattern: &str, numbers: &[String], tints: &[Tint]) -> String {
+    let fill = |text: &str| {
+        let mut text = text.to_string();
+        for (slot, number) in AMOUNT_SLOTS.iter().zip(numbers) {
+            text = text.replace(slot, number);
+        }
+        text
+    };
+    let mut out = String::new();
+    let mut rest = pattern;
+    // The icon of the part before.
+    let mut shown: Option<&str> = None;
+    while let Some(open) = rest.find('[') {
+        let Some(close) = rest[open..].find(']') else {
+            break;
+        };
+        out.push_str(&fill(&rest[..open]));
+        let inside = &rest[open + 1..open + close];
+        let tint = AMOUNT_SLOTS
+            .iter()
+            .zip(tints)
+            .find(|part| inside.contains(*part.0))
+            .map(|part| part.1);
+        match tint {
+            Some(tint) => {
+                let icon = tint.icon.as_deref();
+                out.push_str(&tint.draw(&fill(inside), icon != shown));
+                shown = icon;
+            }
+            None => out.push_str(&fill(inside)),
+        }
+        rest = &rest[open + close + 1..];
+    }
+    out.push_str(&fill(rest));
+    out
+}
 
 // A row's line: the numbers under what they are called.
 fn row_text(label: &str, numbers: String) -> String {
@@ -1531,22 +2267,22 @@ fn standing(state: &State, member: &super::base::Member, field: &str) -> Option<
     ))
 }
 
-// The rows of two numbers of `change`'s item that a note writes as one
-// amount, `first` and `second`: a row a tier, with the tier it is of, the
-// whole amount as it was and as it is, whichever of the two the patch moved.
-// `write` makes the amount of the two numbers. A number the patch left
-// where it was is read at the balance the save has, which is `state` before
-// the patch is taken into it.
+// The rows of the numbers of `change`'s item that a note writes as one
+// amount, `fields`: a row a tier, with the tier it is of, the whole amount
+// as it was and as it is, whichever of its numbers the patch moved. `write`
+// makes the amount of the numbers, which it is given in the order of
+// `fields`. A number the patch left where it was is read at the balance the
+// save has, which is `state` before the patch is taken into it.
 //
-// Nothing where a tier has one of the numbers and not the other, or no
+// Nothing where a tier has some of the numbers and not the others, or no
 // tier's amount moved: the numbers then get rows of their own.
-fn pair_rows(
+fn amount_rows(
     state: &State,
     patch: &Patch,
     change: &Change,
-    (first, second): (&str, &str),
+    fields: &[&str],
     label: &str,
-    write: &dyn Fn(f64, f64) -> String,
+    write: &dyn Fn(&[f64]) -> String,
 ) -> Option<Vec<(String, NoteRow)>> {
     let family = super::base::base().families.get(&change.family)?;
     // What the patch says of `field` in the tier `key`: each tier's change
@@ -1561,31 +2297,29 @@ fn pair_rows(
     };
     let mut rows = Vec::new();
     for member in &family.members {
-        // A number as it was and as it is.
-        let number = |field: &str| -> Option<(f64, f64)> {
-            match moved(field, &member.key) {
+        // Each number as it was and as it is, where the tier has it.
+        let numbers: Vec<Option<(f64, f64)>> = fields
+            .iter()
+            .map(|&field| match moved(field, &member.key) {
                 Some(moved) => Some((moved.before, moved.after)),
                 None => standing(state, member, field).map(|value| (value, value)),
-            }
-        };
-        let ((first_was, first_is), (second_was, second_is)) = match (number(first), number(second)) {
-            (Some(first), Some(second)) => (first, second),
-            (None, None) => continue,
-            _ => return None,
-        };
-        if first_was == first_is && second_was == second_is {
+            })
+            .collect();
+        if numbers.iter().all(Option::is_none) {
             continue;
         }
-        let numbers = format!(
-            "{} {ARROW} {}",
-            write(first_was, second_was),
-            write(first_is, second_is)
-        );
+        let numbers = numbers.into_iter().collect::<Option<Vec<(f64, f64)>>>()?;
+        if numbers.iter().all(|(was, is)| was == is) {
+            continue;
+        }
+        let was: Vec<f64> = numbers.iter().map(|number| number.0).collect();
+        let is: Vec<f64> = numbers.iter().map(|number| number.1).collect();
+        let text = format!("{} {ARROW} {}", write(&was), write(&is));
         rows.push((
             member.key.clone(),
             NoteRow {
                 icon: None,
-                text: row_text(label, numbers),
+                text: row_text(label, text),
                 rank: super::fields::FLAT.len(),
             },
         ));
@@ -1595,7 +2329,9 @@ fn pair_rows(
 
 // The rows of a range that grows with level, `low` to `high` of `change`'s
 // item, under the passive's name: "40 - 100 (based on level) -> 45 - 110
-// (based on level)", whichever of its ends the patch moved ([`pair_rows`]).
+// (based on level)", whichever of its ends the patch moved
+// ([`amount_rows`]). Each end is in its colour, behind the icon the text
+// has for the amount: once, where the two ends have the same one.
 fn range_rows(
     texts: &Texts,
     state: &State,
@@ -1608,11 +2344,13 @@ fn range_rows(
     let lead = family.members.first()?;
     let (label, percent) = label_of(texts, lang, change);
     let (between, tail) = texts.range_words(lang, &lead.key, low, high);
-    pair_rows(state, patch, change, (low, high), &label, &|from: f64, to: f64| {
+    let (low_tint, high_tint) = (texts.tint(&lead.key, low), texts.tint(&lead.key, high));
+    let again = low_tint.icon != high_tint.icon;
+    amount_rows(state, patch, change, &[low, high], &label, &|ends: &[f64]| {
         format!(
             "{}{between}{}{tail}",
-            note_number(from, percent),
-            note_number(to, percent)
+            low_tint.draw(&note_number(ends[0], percent), true),
+            high_tint.draw(&note_number(ends[1], percent), again)
         )
     })
 }
@@ -1627,15 +2365,15 @@ fn range_rows(
 // order. A passive's number is worded by its row format ([`ROW_FORMATS`]),
 // "Flux - Base Ultimate Haste: 10 -> 12", or by its field's
 // ([`FIELD_FORMATS`]). The two ends of a range that grows with level are one
-// row ([`range_rows`]), and so are two numbers that make one amount
-// ([`PAIR_FORMATS`]).
+// row ([`range_rows`]), and so are the numbers that make one amount
+// ([`AMOUNT_FORMATS`]).
 fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     let texts = texts();
     let base = super::base::base();
     let mut entries: Vec<NoteEntry> = Vec::new();
-    // The ranges and the two-number amounts written so far, by item family
-    // and first number: the second number to come up is in the row the
-    // first one made.
+    // The ranges and the amounts written so far, by item family and first
+    // number: another of their numbers that comes up is in the row the first
+    // one made.
     let mut ranged: Vec<(&str, &str)> = Vec::new();
     // Reasons given so far, so that no two items share one while another
     // fits.
@@ -1712,30 +2450,34 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             }
         }
         let slug = crate::build_config::base_slug(&first.key);
-        // Two numbers that make one amount are one row as well, written
+        // The numbers that make one amount are one row as well, written
         // when the first of them comes up.
-        let pair = PAIR_FORMATS.iter().find(|pair| {
-            pair.item == slug && (pair.fields.0 == change.field || pair.fields.1 == change.field)
-        });
-        if let Some(pair) = pair {
-            if ranged.contains(&(change.family.as_str(), pair.fields.0)) {
+        let amount = AMOUNT_FORMATS
+            .iter()
+            .find(|format| format.item == slug && format.fields.contains(&change.field.as_str()));
+        if let Some(format) = amount {
+            if ranged.contains(&(change.family.as_str(), format.fields[0])) {
                 continue;
             }
             let (name, _) = label_of(texts, lang, change);
-            let what = texts.ui(lang, pair.label.0, pair.label.1);
+            let what = texts.ui(lang, format.label.0, format.label.1);
             let label = if name.is_empty() {
                 what
             } else {
                 format!("{name} - {what}")
             };
-            let amount = texts.ui(lang, pair.amount.0, pair.amount.1);
-            let write = |first: f64, second: f64| {
-                amount
-                    .replace("{A}", &number_text(first))
-                    .replace("{B}", &number_text(second))
+            let pattern = texts.ui(lang, format.amount.0, format.amount.1);
+            let tints: Vec<Tint> = format
+                .fields
+                .iter()
+                .map(|field| texts.tint(&first.key, field))
+                .collect();
+            let write = |numbers: &[f64]| {
+                let numbers: Vec<String> = numbers.iter().map(|number| number_text(*number)).collect();
+                amount_text(&pattern, &numbers, &tints)
             };
-            if let Some(rows) = pair_rows(state, patch, change, pair.fields, &label, &write) {
-                ranged.push((change.family.as_str(), pair.fields.0));
+            if let Some(rows) = amount_rows(state, patch, change, format.fields, &label, &write) {
+                ranged.push((change.family.as_str(), format.fields[0]));
                 for (key, row) in rows {
                     let at = entry_of(&mut entries, &key, change);
                     entries[at].rows.push(row);
@@ -1782,12 +2524,21 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         } else {
             format!("{label} - {what}")
         };
+        // A passive's number that has a format is drawn as the item's text
+        // draws it, in its colour and behind its icon, with the words that
+        // follow it. A flat stat's number, and a passive's that has no
+        // format yet, are left as they are.
+        let tint = if worded.is_some() {
+            texts.tint(&first.key, &change.field)
+        } else {
+            Tint::default()
+        };
+        let phrase = |number: f64| {
+            let amount = format!("{}{unit}", note_number(number, percent));
+            format!("{lead}{}", tint.draw(&amount, true))
+        };
         for moved in &change.members {
-            let numbers = format!(
-                "{lead}{}{unit} {ARROW} {lead}{}{unit}",
-                note_number(moved.before, percent),
-                note_number(moved.after, percent)
-            );
+            let numbers = format!("{} {ARROW} {}", phrase(moved.before), phrase(moved.after));
             let at = entry_of(&mut entries, &moved.key, change);
             entries[at].rows.push(NoteRow {
                 icon: icon.clone(),
@@ -1822,7 +2573,10 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
 // ```
 //
 // A flat stat's row opens with the stat's icon. A passive's number has no
-// icon: its row opens with the passive's name.
+// icon there: its row opens with the passive's name. The number, with the
+// words that follow it where it is written as a phrase, "10 health" or "30
+// + 3% max HP", is in the colour the item's text has it in, behind the icon
+// the text has for it.
 //
 // Every item is an entry, a radiant apart from its legendary. An item
 // is a buff where every number of it got stronger, a nerf where every one

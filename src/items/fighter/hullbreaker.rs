@@ -7,7 +7,7 @@ use crate::{
 };
 
 // Skipper: Every fifth basic attack against champions and monsters deals bonus
-// physical damage, increased against turrets.
+// physical damage on-hit, increased against turrets.
 //
 // Boarding Party: Allied minions nearby gain armor and magic resistance.
 
@@ -211,10 +211,10 @@ impl StableItem for Hullbreaker {
         ctx: &mut StableSim<'_>,
         caster: usize,
         target: usize,
-        _damage: &mut usize,
-        _damage_type: DamageTypeV1,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
         attack_type: AttackTypeV1,
-        _is_crit: bool,
+        is_crit: bool,
     ) {
         if attack_type != AttackTypeV1::BaseAttack {
             return;
@@ -255,12 +255,14 @@ impl StableItem for Hullbreaker {
         if ctx.distance_sq(caster, target) > reach * reach {
             bonus = percent_of(bonus, self.effect_ranged_percent);
         }
-        self.procs.push_physical(ctx, target, bonus);
+        self.procs
+            .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus);
         self.attack_count = 0;
     }
 
-    // Lands the Skipper hits whose delay has run out, and keeps Boarding
-    // Party on the minions around the carrier.
+    // Lands the Skipper hits that could not go into their swing, once their
+    // delay has run out, and keeps Boarding Party on the minions around the
+    // carrier.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
         self.boarding_party(ctx, player);
