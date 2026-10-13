@@ -20,7 +20,6 @@ Mod v0.11.3-0.11.10 - 0.6.2
 Mod v0.10.1-0.11.2 - 0.6.1  
 Mod v0.9.11-0.10.0 - 0.6.0  
 
-Manual releases: https://github.com/shirograhm/riot-items-tfm2/releases
 Manual releases (includes beta releases): https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Instructions [/h1]
