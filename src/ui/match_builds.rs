@@ -123,7 +123,7 @@ const TIP_NAME: &str = "riot_build_tip";
 const TIP: &str = "ingame.riot_build_tip";
 
 // Lanes, from Top, with the icon the layout draws for each.
-const LANES: usize = 5;
+pub(super) const LANES: usize = 5;
 const LANE_ICONS: [&str; LANES] = ["top", "jungle", "mid", "bottom", "support"];
 // The two sides' cells in a line, their colour, and the heading over each.
 const SIDE_NODES: [&str; 2] = ["blue", "red"];
@@ -401,6 +401,8 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
             .get_or_insert_with(HashMap::new)
             .insert(key.to_string(), card);
     }
+    // And its place in the build paths, for what it costs in all.
+    super::item_spend::note_mod_item(key, item.price(), item.previous_tier(), item.next_tier());
 }
 
 static ENGINE_CARDS: AtomicBool = AtomicBool::new(false);
@@ -917,7 +919,7 @@ type Athletes = [[Option<String>; LANES]; 2];
 // The lane a camera button's node is named for. The layout names it like
 // its lane icon ("mid", seen in game); the rest are what else it might call
 // one.
-fn lane_of(node: &str) -> Option<usize> {
+pub(super) fn lane_of(node: &str) -> Option<usize> {
     let node = node.to_lowercase();
     LANE_ICONS
         .iter()
@@ -1631,6 +1633,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
             if let Ok(mut screen) = SCREEN.lock() {
                 *screen = None;
             }
+            super::item_spend::clear();
             if let Ok(mut set) = REGISTERED.lock() {
                 set.clear();
             }
@@ -2149,7 +2152,7 @@ fn canvas(ctx: &StableClient<'_>) -> (f32, f32, f32, f32) {
 // Taken as the layout scaled by one factor to fit the window and centred in
 // it, which on a window of the layout's own shape is plain proportion. Not
 // confirmed in game on any window.
-fn cursor(ctx: &StableClient<'_>) -> Option<(f32, f32)> {
+pub(super) fn cursor(ctx: &StableClient<'_>) -> Option<(f32, f32)> {
     let (x, y, client_w, client_h) = client_cursor()?;
     let (left, top, width, height) = canvas(ctx);
     let scale = (width / client_w).max(height / client_h);
@@ -2397,7 +2400,9 @@ fn estimate_lines(text: &str) -> usize {
 }
 
 // Writes one item into the tooltip and says how its body is laid out.
-fn fill_tip(ctx: &mut StableClient<'_>, key: &str) -> TipBody {
+// `cost` is what the item comes to in all for the athlete it is planned for
+// (`item_spend::planned`), where that could be worked out.
+fn fill_tip(ctx: &mut StableClient<'_>, key: &str, cost: Option<usize>) -> TipBody {
     let card = card(key);
     let frame = card
         .as_ref()
@@ -2417,7 +2422,9 @@ fn fill_tip(ctx: &mut StableClient<'_>, key: &str) -> TipBody {
             .map_or(key, |(reference, _)| reference.as_str()),
     );
 
-    let price = card.as_ref().map_or(0, |card| card.price);
+    // Every step on the way up to the item, and not only the last, which is
+    // all the item's own price is.
+    let price = cost.or(card.as_ref().map(|card| card.price)).unwrap_or(0);
     ctx.ui_set_visible(&format!("{TIP}.gold"), price > 0);
     ctx.ui_set_visible(&format!("{TIP}.price"), price > 0);
     ctx.ui_set_text(&format!("{TIP}.price"), &price.to_string());
@@ -2635,7 +2642,9 @@ fn show_tip(ctx: &mut StableClient<'_>, board: &Rows, target: Option<Spot>) {
         if !ctx.ui_exists(TIP) && !ctx.ui_spawn_source(INGAME, &tip_source()) {
             return;
         }
-        let body = fill_tip(ctx, &key);
+        let seed = with(|panel| panel.game.as_ref().and_then(|game| game.seed)).flatten();
+        let cost = super::item_spend::planned(seed, spot, &key);
+        let body = fill_tip(ctx, &key, cost);
         ctx.ui_set_properties(
             TIP,
             &format!("y: {PARKED_Y}px; visible: true; color: {line};"),

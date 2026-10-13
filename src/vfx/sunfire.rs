@@ -176,6 +176,9 @@ impl StableMatchHook for MatchHooks {
         // Which match is on screen, for the Check Tactics panel's builds. One
         // tick read and a return for every simulation but the client's own.
         crate::match_builds::on_match_tick(sim);
+        // And what its athletes buy, for what the item tooltips say each
+        // item has cost. One origin read and a return for the same ones.
+        crate::item_spend::on_match_tick(sim);
         if perf::ENABLED {
             perf::sim_tick(sim.seed(), sim.tick(), sim.is_end());
         }

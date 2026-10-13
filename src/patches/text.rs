@@ -592,7 +592,7 @@ impl Texts {
 
     // The key of the item a tooltip's name label is showing: the name in
     // whatever language, or the reference a label was handed to resolve.
-    fn key_of_name(&self, label: &str) -> Option<&str> {
+    pub(crate) fn key_of_name(&self, label: &str) -> Option<&str> {
         if let Some(key) = label
             .strip_prefix("#asset/base/text/item?")
             .and_then(|path| path.strip_suffix(".name"))
