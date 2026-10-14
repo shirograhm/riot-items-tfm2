@@ -6,11 +6,11 @@
   "contains_code": true,
   "version": "1.0.1",
   "description": "Adds items from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.",
-  "last_updated": "2026-10-12",
+  "last_updated": "2026-10-14",
   "dependencies": [
     {
       "mod_id": "base",
-      "version": "=0.6.3"
+      "version": "=0.6.4"
     }
   ]
 }
