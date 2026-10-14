@@ -3305,6 +3305,125 @@ fn buy_memo_store(inputs: BuyInputs) {
     });
 }
 
+// -- Control's shop picks ------------------------------------------------------
+//
+// Control (`tft2_pov` on the Workshop) lets the player take over one of their
+// own champions mid-match, with a shop that writes the chosen item straight
+// into the athlete's build `Vec`. The game then buys it part by part, as it
+// buys anything there. The pin passes in `buy_replace_ctx` rewrite every
+// unbought pinned slot that does not hold its pin, which undid such a pick on
+// the champion's next trip to base. The user's call (2026-10-13): Control's
+// choice beats a pin.
+//
+// A pick is told apart as a change made by nobody here: a slot holding
+// something else than this detour left in it at its last full pass. Nothing
+// else writes a build mid-match (the spawn injector runs before the first
+// pass, growth inside one), and none of this runs unless Control is enabled,
+// so without it pins behave exactly as before.
+//
+// What was left is remembered per sim copy, under the buy memo's key (seed,
+// athlete id, build `Vec`): Control replays a match's picks into later copies
+// of the same seed, and each copy has to decide as the one played did. It is
+// global rather than per thread because a sim can move between workers, and
+// a forgotten build would have its picks pinned over again.
+const CONTROL_MOD_ID: &str = "tft2_pov";
+
+// Whether Control is enabled this session. Asked once, from `tactics_init`:
+// the game reads its list once too. A list that cannot be read is a no, and
+// pins behave as they always have.
+fn control_enabled() -> bool {
+    static ENABLED: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *ENABLED.get_or_init(|| {
+        std::env::current_exe()
+            .ok()
+            .and_then(|exe| {
+                exe.parent()
+                    .map(|game| game.join(crate::item_stats::toolbox_tab::MODS_JSON))
+            })
+            .and_then(|path| fs::read_to_string(path).ok())
+            .and_then(|document| {
+                crate::item_stats::toolbox_tab::listed_enabled(&document, CONTROL_MOD_ID)
+            })
+            .unwrap_or(false)
+    })
+}
+
+// One athlete's build as the last full pass left it, and the slots picked
+// through Control since, a bit a slot.
+struct LeftBuild {
+    slots: Vec<u64>,
+    picked: u64,
+}
+
+// Builds remembered at most, oldest dropped first. Under `own_team_only` only
+// the player's athletes are tracked; with it off, every athlete a pin can
+// reach is, a league day's worth of them.
+const LEFT_BUILDS_KEPT: usize = 512;
+
+struct LeftBuilds {
+    by_key: HashMap<[u64; 3], LeftBuild>,
+    order: std::collections::VecDeque<[u64; 3]>,
+}
+
+static LEFT_BUILDS: Mutex<Option<LeftBuilds>> = Mutex::new(None);
+
+// An athlete's build `Vec` and its targets, read without a syscall.
+unsafe fn read_build(athlete: usize) -> Option<(u64, Vec<u64>)> {
+    let ptr = safe_read_u64(athlete + O_ATHLETE_BUILD_PTR)?;
+    let len = safe_read_u64(athlete + O_ATHLETE_BUILD_LEN)?;
+    if ptr < 0x10000 || len > 16 {
+        return None;
+    }
+    let slots = (0..len as usize)
+        .map(|j| safe_read_u64(ptr as usize + j * 8))
+        .collect::<Option<Vec<u64>>>()?;
+    Some((ptr, slots))
+}
+
+// The slots of `build` picked through Control: those found before, and any
+// holding something else than the last full pass left there. An athlete
+// that owns nothing yet is at the start of a sim copy, with nothing picked.
+fn control_picks(key: [u64; 3], owned: u64, build: &[u64]) -> u64 {
+    if owned == 0 {
+        return 0;
+    }
+    let Ok(guard) = LEFT_BUILDS.lock() else {
+        return 0;
+    };
+    let Some(left) = guard.as_ref().and_then(|builds| builds.by_key.get(&key)) else {
+        return 0;
+    };
+    build
+        .iter()
+        .zip(&left.slots)
+        .enumerate()
+        .filter(|(_, (now, was))| now != was)
+        .fold(left.picked, |picked, (slot, _)| picked | (1 << slot))
+}
+
+// Remembers what a full pass left in a build, with the picks found in it.
+fn note_left_build(key: [u64; 3], slots: Vec<u64>, picked: u64) {
+    let Ok(mut guard) = LEFT_BUILDS.lock() else {
+        return;
+    };
+    let builds = guard.get_or_insert_with(|| LeftBuilds {
+        by_key: HashMap::new(),
+        order: std::collections::VecDeque::new(),
+    });
+    if builds
+        .by_key
+        .insert(key, LeftBuild { slots, picked })
+        .is_none()
+    {
+        builds.order.push_back(key);
+        while builds.order.len() > LEFT_BUILDS_KEPT {
+            if let Some(old) = builds.order.pop_front() {
+                builds.by_key.remove(&old);
+            }
+        }
+    }
+}
+
 unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     // * Hot path (parallel rayon workers) - global atomic counters would make the measurement itself expensive through cache-line contention,
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
@@ -3534,6 +3653,19 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // is a per-buy-decision path and both the pins for the game's four
         // slots below and the 5th and 6th further down need the same answer.
         let own_team_only = crate::build_config::own_team_only_enabled();
+        // The slots of this build the player has picked through Control's
+        // shop, which no pin below takes back (see `control_picks`). Tracked
+        // for the athletes those pins reach: the player's under
+        // `own_team_only`, and everyone's without it.
+        let aid = safe_read_u64(athlete + O_ATHLETE_ID).unwrap_or(0);
+        let track = (is_player || !own_team_only) && control_enabled();
+        let picked = if track {
+            read_build(athlete).map_or(0, |(ptr, build)| {
+                control_picks([seed_r9, aid, ptr], owned, &build)
+            })
+        } else {
+            0
+        };
         // This branch used to publish the player's lineup to `crate::my_team`,
         // which is how the host half guessed whether a set of item-build routes
         // belonged to the player. Nothing consumes that guess any more: the host
@@ -3594,6 +3726,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     if owned > si as u64 {
                         continue;
                     } // slot already purchased -> too late
+                    if picked & (1 << si) != 0 {
+                        continue;
+                    } // picked through Control -> the player's choice stands
                       // By key, vanilla included: name scan + recipe validation.
                     let idx = slot_n_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
                     if let Some(t) = idx {
@@ -3629,7 +3764,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                     && pin_at(j) != Some(there)
                             });
                         if let Some(j) = elsewhere {
-                            if j < si as usize {
+                            // A later slot picked through Control holding the
+                            // pinned item honours the pin too, by the player's
+                            // hand, and is not moved.
+                            if j < si as usize || picked & (1 << j) != 0 {
                                 continue;
                             }
                             if writable(bptr, (blen as usize) * 8) {
@@ -3651,7 +3789,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                 .any(|j| pin_at(j).is_some_and(|pin| buy_is_boots(ctx012, pin)))
                         {
                             let free =
-                                displaced_boots_slot(champ, si as usize, blen as usize, owned == 0);
+                                displaced_boots_slot(champ, si as usize, blen as usize, owned == 0)
+                                    .filter(|&j| picked & (1 << j) == 0);
                             if let Some(j) = free {
                                 if writable(bptr + j * 8, 8) {
                                     wr_u64(bptr + j * 8, here);
@@ -3725,7 +3864,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 // Their automatic picks were made once, at growth, and stand.
                 if designate {
                     for si in 4..slots.len().min(target as usize) {
-                        if owned > si as u64 {
+                        if owned > si as u64 || picked & (1 << si) != 0 {
                             continue;
                         }
                         let Some(t) = pinned_extra_slot(ctx, champ, si, &slots[..si]) else {
@@ -3757,7 +3896,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     }
                     if slots.len() as u64 > build_len {
                         let old_len = build_len as usize;
-                        if smart {
+                        // Not over a Control pick, which stays where it was put.
+                        if smart && picked == 0 {
                             reorder_unbought(ctx, champ, &mut slots, owned, designate);
                         }
                         build_len = grow_build(athlete, ptr, cap_now, build_len, &slots);
@@ -3826,6 +3966,13 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         }
                     }
                 }
+            }
+        }
+        // What this pass left, for the next one to tell Control's picks by.
+        // After growth, under the `Vec` it grew into.
+        if track {
+            if let Some((ptr, build)) = read_build(athlete) {
+                note_left_build([seed_r9, aid, ptr], build, picked);
             }
         }
         // The memo's other half: inputs unchanged by the whole pass above mean
@@ -4541,5 +4688,8 @@ If the game has updated, please wait for a mod update. The rest of the mod is un
             let _ = fs::write(d.join("4items_patches.txt"), &patch_report);
         }
     }
+    // Asked here, where a file read costs nothing, and not first on a sim
+    // thread inside the buy detour.
+    let _ = control_enabled();
     true
 }
