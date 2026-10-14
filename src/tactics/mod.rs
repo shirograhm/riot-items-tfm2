@@ -991,9 +991,9 @@ unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
 //   CL_LAUNCHER_PROLOGUE therefore needs its last 4 bytes changed with the frame; that is the only edit.
 const CL_LAUNCHER_RVA: usize = 0x16cd4e0; // 0.7.0-beta (2026-10-07; 0.6.3 was 0x13f3950). exe2exe strict unique at 160 bytes, a function start, and the frame did not move this time (0x25ef8, so CL_LAUNCHER_PROLOGUE is unchanged); the body shrank 4367 -> 4319 past the head, whose first 39 instructions are 0.6.3's (`mov r12,r8` still saves the seed). Confirmed from the seedctor callers: 3 sites inside 0x16cd4e0 at +0x1c5/+0x298/+0x36f plus 1 in 0x16cf120 (+0x113); 10 caller sites now (4445/5757 identical; the match-sim megafunction 80906 -> 80806 is again the hook.rs target's caller). 0.6.3 notes follow: (2026-10-06; 0.6.2 was 0x17277c0). From the seedctor callers once more: 3 sites inside 0x13f3950 at +0x1c8/+0x29b/+0x372 (0.6.2: +0x1c5/+0x298/+0x36f) plus 1 in 0x13f55c0 (+0x116), 60 direct calls and 9 caller sites in 8 functions on both sides (4445/5757 identical; the match-sim megafunction 79953 -> 80906 is again the hook.rs target's caller), size 4490 -> 4367, frame 0x25478 -> 0x25ef8. `mov r12,r8` still saves the seed at +0x41 and the seedctor call still gets it in rdx. 0.6.2 notes follow: (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0x98, 0xed, 0x01,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0xf8, 0x5e, 0x02,
     0x00,
-]; // 0.6.4: 8 push + mov eax,0x1ed98 (0.6.3 was 0x25ef8, 0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
+]; // 0.7.0-beta, and 0.6.3 before it: 8 push + mov eax,0x25ef8, the same frame on both (0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
 // * Is the current match a comp test? Comp test is a sandbox where the user composes both blue and red themselves, so
 //   there is no notion of "my team" -> bypass the team gate and apply to both sides for designated champions.
@@ -4262,25 +4262,21 @@ unsafe fn patch_bytes(
 //   The 11-byte form below, through the spill reload after the jbe, is unique
 //   in .text. 0.6.3 recompiled the resolver (1007 -> 917 bytes): the count is in
 //   rbx and the reload is `mov r14,[rsp+0x48]`, where 0.6.2 had `cmp rax,3` and
-//   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes. 0.6.4 grew the
-//   resolver again (917 -> 2173 bytes) and made the count a call (`0x16e55e0`,
-//   the athlete in rcx, reading its items at +0x310/+0x318): `cmp rax,3 / jbe`,
-//   then `cmp r14,rsi / jae` ahead of the `[vt+0x70]` test. The `jbe` lands on
-//   the gold-against-price check (`[athlete+0x868]` vs `[vt+0x68]`), as before.
+//   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes.
 unsafe fn patch_final_gate() -> String {
     let sig = exe_base_addr() + 0xe94a4a; // 0.7.0-beta, container 0xe94780 +0x2ca (a strict exe2exe match at identical size 917, pairdiff clean; bytes unchanged, form still unique) (0.6.3 0xea216a, container 0xea1ea0 +0x2ca) (buy_item's second callee again; the form changed with the address, see above) (0.6.2 0xe83251, container 0xe82f30 +0x321) (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
     const EXPECT: [(usize, u8); 11] = [
         (0, 0x48),
         (1, 0x83),
-        (2, 0xf8),
-        (3, 0x03), //  cmp rax, 3
+        (2, 0xfb),
+        (3, 0x03), //  cmp rbx, 3
         (4, 0x76),
-        (5, 0x21), //  jbe +0x21   <- opcode at +4
-        (6, 0x49),
-        (7, 0x39),
-        (8, 0xf6), //  cmp r14, rsi
-        (9, 0x0f),
-        (10, 0x83), // jae rel32
+        (5, 0x37), //                       jbe +0x37   <- opcode at +4
+        (6, 0x4c),
+        (7, 0x8b),
+        (8, 0x74),
+        (9, 0x24),
+        (10, 0x48), // mov r14, [rsp+0x48]
     ];
     patch_bytes("final_gate", sig, &EXPECT, &[(4, 0xEB)])
 }
