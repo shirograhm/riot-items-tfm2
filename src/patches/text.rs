@@ -18,14 +18,14 @@
 //!
 //! # Where the patched sentences come from
 //!
-//! `item-templates.json`, beside the DLL: every item's effect text in every
-//! language, with a slot naming the config field where each number goes. It
-//! is the source of those texts: `text/item.i18n` is written from it
+//! `item-templates.json`, compiled into the DLL: every item's effect text in
+//! every language, with a slot naming the config field where each number
+//! goes. It is the source of those texts: `text/item.i18n` is written from it
 //! (`tools/item_i18n.py`), so filled with the numbers of
 //! `config-default.json` it gives that file back, letter for letter. The
-//! same check is run here at start-up against the files as the player has
-//! them ([`Texts::unverified`]), and an item that fails it is not patched in
-//! any number its text shows.
+//! same check is run here at start-up against the text file as the player
+//! has it ([`Texts::unverified`]), and an item that fails it is not patched
+//! in any number its text shows.
 //!
 //! The text the game holds is that default one, whatever the player's
 //! `config.json` says. So a tooltip is rewritten for a number the player
@@ -417,6 +417,10 @@ fn read_json(path: &Path) -> Option<Value> {
     serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()
 }
 
+// Compiled in rather than read from the mod folder, so the templates are
+// always the ones this DLL was built with.
+const TEMPLATES: &str = include_str!("../../item-templates.json");
+
 pub(crate) fn texts() -> &'static Texts {
     static TEXTS: OnceLock<Texts> = OnceLock::new();
     TEXTS.get_or_init(Texts::load)
@@ -464,7 +468,7 @@ impl Texts {
             }
         }
 
-        if let Some(file) = read_json(&dir.join("item-templates.json")) {
+        if let Ok(file) = serde_json::from_str::<Value>(TEMPLATES) {
             let open = file.get("open").and_then(Value::as_str).unwrap_or("[[~");
             let close = file.get("close").and_then(Value::as_str).unwrap_or("~]]");
             if let Some(Value::Object(langs)) = file.get("t") {
