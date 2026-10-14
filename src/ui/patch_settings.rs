@@ -29,6 +29,10 @@
 //! while there is nothing to release and from when a patch is queued until
 //! it has gone out; the line on the left says which.
 //!
+//! Over the page, beside the cross, **Import** and **Export** carry all of
+//! it from one save to another, through a file beside the game's saves
+//! ([`transfer`]). What they did is said on the footer's line.
+//!
 //! # Where the window hangs
 //!
 //! Under the layout root the dialog is in, the pause menu's, as its last
@@ -65,6 +69,8 @@ use super::options_dialog;
 use crate::patches::base::{self, Member};
 use crate::patches::state::Limit;
 use crate::patches::{balance, fields, text, tuning};
+
+mod transfer;
 
 // The row's node in the Options dialog, and its button under it.
 const ROW: &str = "riot_patcher_settings";
@@ -257,6 +263,46 @@ const WINDOW_SOURCE: &str = r##"%NODE%:empty {
       active: {
         color: #e8e8e8ff;
       }
+    }
+
+    #import:color_icon_button {
+      @"asset/base/style/main#secondary_button";
+      anchor_x: 1;
+      pivot_x: 1;
+      x: -238px;
+      y: 18px;
+      width: 160px;
+      height: 40px;
+
+      text: {
+        font: "asset/base/font/set/bold";
+        text: "%IMPORT%";
+        align_x: Center;
+        align_y: Center;
+        size: 15;
+      }
+
+      hint: "%IMPORT_HINT%";
+    }
+
+    #export:color_icon_button {
+      @"asset/base/style/main#secondary_button";
+      anchor_x: 1;
+      pivot_x: 1;
+      x: -66px;
+      y: 18px;
+      width: 160px;
+      height: 40px;
+
+      text: {
+        font: "asset/base/font/set/bold";
+        text: "%EXPORT%";
+        align_x: Center;
+        align_y: Center;
+        size: 15;
+      }
+
+      hint: "%EXPORT_HINT%";
     }
 
     #sidebar:empty {
@@ -1056,6 +1102,9 @@ struct Window {
     paged_at: u32,
     // What the footer says.
     status: String,
+    // What an import or an export did, which the footer says in place of
+    // how the manual patch stands until the player changes something.
+    notice: Option<String>,
 }
 
 impl Window {
@@ -1107,21 +1156,22 @@ fn band(unpatched: f64, whole: bool) -> (f64, f64) {
     }
 }
 
-// Whether the player may set `row`'s number to `value` by hand, or why not.
-fn settable(row: &Row, value: f64) -> Result<(), String> {
-    if row.whole && value.fract() != 0.0 {
+// Whether the player may set a number of `unpatched` to `value` by hand, or
+// why not: one kept `whole`, or `unsigned` (see [`Row`]).
+fn settable(whole: bool, unsigned: bool, unpatched: f64, value: f64) -> Result<(), String> {
+    if whole && value.fract() != 0.0 {
         return Err(said("settings_err_whole", "Whole numbers only"));
     }
     // On the side of zero it is on, and not zero: an item that had the
     // number would have it no longer, which no tooltip can say.
-    if value == 0.0 || (value > 0.0) != (row.unpatched > 0.0) || value.abs() > LARGEST {
+    if value == 0.0 || (value > 0.0) != (unpatched > 0.0) || value.abs() > LARGEST {
         return Err(said("settings_err_sign", "Must be above 0"));
     }
-    if row.unsigned && value < row.unpatched {
+    if unsigned && value < unpatched {
         return Err(said_of(
             "settings_err_floor",
             "Cannot go below {N}",
-            &number(row.unpatched),
+            &number(unpatched),
         ));
     }
     Ok(())
@@ -1132,7 +1182,7 @@ fn take_value(row: &mut Row, typed_text: &str) {
     let (staged, error) = match typed(typed_text) {
         Typed::Empty => (None, None),
         Typed::Unreadable => (None, Some(said("settings_err_number", "Not a number"))),
-        Typed::Number(value) => match settable(row, value) {
+        Typed::Number(value) => match settable(row.whole, row.unsigned, row.unpatched, value) {
             // What the number reads already is nothing to release.
             Ok(()) => (((value - row.current).abs() > 1e-9).then_some(value), None),
             Err(error) => (None, Some(error)),
@@ -1203,11 +1253,14 @@ fn paint_pill(ctx: &mut StableClient<'_>, row: &Row) {
 }
 
 // Says in the footer how the manual patch stands: that one is queued, or
-// how many numbers wait for the next.
+// how many numbers wait for the next. Or what an import or an export did,
+// while there is that to say.
 fn write_status(ctx: &mut StableClient<'_>, window: &mut Window) {
-    let queued = crate::patches::hotfix_queued();
+    let queued = crate::patches::hotfix_queued() && window.notice.is_none();
     let waiting = crate::patches::settings(|state| state.staged_count()).unwrap_or(0);
-    let status = if queued {
+    let status = if let Some(notice) = &window.notice {
+        notice.clone()
+    } else if queued {
         format!(
             "<{QUEUED_COLOR}>{}<>",
             said(
@@ -1524,6 +1577,24 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
             ("%ONLY%", said("settings_only", "Changed Items Only").as_str()),
             ("%BACK%", said("settings_back", "Back").as_str()),
             ("%QUEUE%", said("settings_queue", "Queue Manual Patch").as_str()),
+            ("%IMPORT%", said("settings_import", "Import").as_str()),
+            (
+                "%IMPORT_HINT%",
+                said(
+                    "settings_import_hint",
+                    "Replace this save's settings with the ones last exported.",
+                )
+                .as_str(),
+            ),
+            ("%EXPORT%", said("settings_export", "Export").as_str()),
+            (
+                "%EXPORT_HINT%",
+                said(
+                    "settings_export_hint",
+                    "Write this save's settings to a file that other saves can import.",
+                )
+                .as_str(),
+            ),
         ],
     );
     let parent = parents
@@ -1561,6 +1632,7 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
         opened_at: frame,
         paged_at: frame,
         status: String::new(),
+        notice: None,
     };
     let list = window.list();
     for (index, entry) in window.entries.iter().enumerate() {
@@ -1582,6 +1654,8 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
     lay_list(ctx, &window);
     for node in [
         ".popup.close",
+        ".popup.import",
+        ".popup.export",
         ".popup.footer.back",
         ".popup.footer.only",
         ".popup.footer.queue",
@@ -1787,6 +1861,28 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
             changed = true;
         }
     }
+    // What an import or an export said is old news once anything changes.
+    if changed {
+        window.notice = None;
+    }
+
+    // Import and Export. An import puts other numbers in the boxes, so the
+    // page is made again from what the save has now.
+    let export = window.under(".popup.export");
+    if settled && clicks.iter().any(|path| *path == export) {
+        window.notice = Some(transfer::export());
+        changed = true;
+    }
+    let import = window.under(".popup.import");
+    if settled && clicks.iter().any(|path| *path == import) {
+        let notice = transfer::import();
+        if let Some(index) = window.picked {
+            show_page(ctx, window, index, frame);
+        }
+        window.notice = notice;
+        changed = true;
+    }
+
     // A number set or taken back can put its item into the narrowed list,
     // or take it out.
     if changed && window.only {
@@ -1804,6 +1900,7 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
         && clicks.iter().any(|path| *path == queue)
     {
         crate::patches::queue_hotfix();
+        window.notice = None;
     }
     // As the queue stands now: it empties under an open window when its
     // patch goes out, and what can be queued follows what has been typed.
