@@ -4426,14 +4426,16 @@ unsafe fn patch_result_row_floor(slots: u8) -> String {
 // that were there, untouched. The base items' `next_tier` lists name mod
 // items by key, as text, and pass through the write as they are.
 //
-// All four constants are unchanged from 0.6.3 to 0.6.4 (2026-10-14: the
-// handler 0x2e6c220 now drops the old settings through 0x24fad0, which
-// reads the list at settings +0x3028/+0x3030/+0x3038 and steps it by 0x1a8;
-// the thunk still loads the Database with `mov rcx,[rdi+0x10]`, and the
-// object check is `cmp qword [rcx+0x190],0` at 0x15ce6e0). They are only used behind the version gate
-// (`driver::lift_server_mod_items`). They are also checked against the
-// server's own account of the list before anything is written, so a build
-// they are wrong for gets no write rather than a wrong one.
+// All four constants are 0.7.0-beta's (re-read 2026-10-14 with
+// `tools/lift_sites.py` against the 0.7.0-beta exe: the thunk at 0x311aa83
+// loads the Database with `mov rcx,[rdi+0x10]`, the handler's drop at
+// 0x3115b9d reads the list at +0x16890 and steps it by 0x1a8, and the object
+// check is `cmp qword [rcx+0x190],0` at 0x12d6210). Three of them are 0.6.3's
+// values as well; `O_DATABASE_MOD_ITEMS` is not (see below). They are only
+// used behind the version gate (`driver::lift_server_mod_items`). They are
+// also checked against the server's own account of the list before anything
+// is written, so a build they are wrong for gets no write rather than a
+// wrong one.
 
 // Where the state the host hands every server call keeps its `Database`
 // (0.6.3: the vtable's own `setting_set_json`, 0x2dccbe0, loads it with
