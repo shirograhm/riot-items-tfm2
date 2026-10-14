@@ -12,11 +12,11 @@
 //! Tyranny gives ([`note_with`]).
 //!
 //! And some count the fight the carrier is in rather than the match:
-//! Haunting Guise's Madness, and the stacks Riftmaker, Spear of Shojin,
-//! Guinsoo's Rageblade and Jak'Sho keep on the champion ([`note_in_combat`]).
-//! Those
-//! show only while there is a fight to count, and a death ends one: an item
-//! is not updated while its carrier is dead, so it cannot say so itself, and
+//! Haunting Guise's Madness, the damage Death's Dance has stored, and the
+//! stacks Riftmaker, Spear of Shojin, Blackfire Torch, Guinsoo's Rageblade
+//! and Jak'Sho keep on the champion ([`note_in_combat`]). Those show only
+//! while there is a fight to count, and a death ends one: an item is not
+//! updated while its carrier is dead, so it cannot say so itself, and
 //! [`on_match_tick`] notes 0 for it.
 //!
 //! # The moment on screen
@@ -233,7 +233,8 @@ pub(crate) fn note_with(
 
 // How many copies of the buff `name` the champion of `player` wears: the
 // stacks of an item that keeps them on the champion (`crate::add_stack`),
-// Riftmaker's, Spear of Shojin's, Guinsoo's Rageblade's and Jak'Sho's.
+// Riftmaker's, Spear of Shojin's, Guinsoo's Rageblade's, Jak'Sho's and
+// Blackfire Torch's.
 pub(crate) fn buff_copies(ctx: &StableSim<'_>, player: usize, name: &str) -> u64 {
     ctx.get_player(player)
         .and_then(|player| player.champion())

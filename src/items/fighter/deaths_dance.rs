@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, item_counts, percent_of, ticks, ItemMeta};
 
 const BURN_PROCS_PER_SECOND: f64 = 5.0;
 
@@ -166,6 +166,10 @@ impl StableItem for DeathsDance {
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // The damage stored and not yet bled, for the number on the item's
+        // icon: gone once it has bled out or Defy has cleansed it.
+        let stored = self.accumulated_damage.max(0) as u64;
+        item_counts::note_in_combat(ctx, player, self.meta.key, || stored);
         // Ignore Pain: bleed the stored damage back over time.
         if self.accumulated_damage <= 0 {
             return;
