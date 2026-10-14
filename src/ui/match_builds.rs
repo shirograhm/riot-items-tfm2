@@ -221,7 +221,7 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 // its text could be rewritten. And the `counts.` lines of
 // `crate::item_counts`, each step of drawing the item counts. On while
 // something is being tried in game. Turn it off before a release.
-const LOG: bool = true;
+const LOG: bool = false;
 
 // Lines written in one session at most.
 const LOG_LINES: usize = 600;

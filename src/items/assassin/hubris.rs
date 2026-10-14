@@ -79,13 +79,18 @@ impl Hubris {
     }
 
     // The Radiant item arrives as a fresh instance: it takes over the base
-    // item's stacks, once, before it first counts anything.
+    // item's stacks, once, before it first counts anything. Only stacks of
+    // the carrier's life now: a death ends them.
     fn inherit_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
-        if std::mem::replace(&mut self.inherited, true) || !self.meta.upgrades_from(BASE_KEY) {
+        if self.inherited || !self.meta.upgrades_from(BASE_KEY) {
             return;
         }
-        if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
-            self.eminence_stacks = self.eminence_stacks.max(stacks as usize);
+        let Some(entity) = champion_of(ctx, player) else {
+            return;
+        };
+        self.inherited = true;
+        if let Some(stacks) = noted_stacks(ctx, player, entity) {
+            self.eminence_stacks = self.eminence_stacks.max(stacks);
         }
     }
 
@@ -95,7 +100,7 @@ impl Hubris {
         let bonus_ad =
             self.effect_bonus_flat_attack + self.effect_stack_attack * self.eminence_stacks as i32;
         self.eminence_stacks += 1;
-        upgrade_carry::note(BASE_KEY, ctx, player, self.eminence_stacks as u64);
+        upgrade_carry::note(BASE_KEY, ctx, player, pack(entity, self.eminence_stacks));
 
         ctx.add_buff(
             entity,
@@ -105,6 +110,23 @@ impl Hubris {
             },
         );
     }
+}
+
+// What a note under the upgrade line carries: the carrier's champion entity
+// and the stacks, in one number. The game makes the champion a new entity on
+// every respawn, so the entity tells this life's note from an earlier one's.
+fn pack(entity: usize, stacks: usize) -> u64 {
+    ((entity as u64) << 32) | (stacks as u64 & 0xffff_ffff)
+}
+
+fn champion_of(ctx: &StableSim<'_>, player: usize) -> Option<usize> {
+    ctx.get_player(player)?.champion().map(|champion| champion.id())
+}
+
+// The stacks noted in the life of the champion `entity`, where any were.
+fn noted_stacks(ctx: &StableSim<'_>, player: usize, entity: usize) -> Option<usize> {
+    let (_, value) = upgrade_carry::latest(BASE_KEY, ctx, player)?;
+    ((value >> 32) as usize == entity).then_some((value & 0xffff_ffff) as usize)
 }
 
 impl Default for Hubris {
@@ -150,19 +172,23 @@ impl StableItem for Hubris {
         }
     }
 
+    // A respawn ends Eminence: its bonuses and its stacks. But the host tells
+    // an item bought in the middle of a life `on_spawn` too, and an upgrade
+    // to the Radiant item is one: that lost every stack and bonus (user,
+    // 2026-10-14). A note from the champion as it is now is this life's, so
+    // there the stacks are taken over and the bonuses left running.
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        let Some(player_ref) = ctx.get_player(player) else {
+        let Some(entity) = champion_of(ctx, player) else {
             return;
         };
-        let Some(champion_ref) = player_ref.champion() else {
-            return;
-        };
-
-        ctx.entity_remove_buff(champion_ref.id(), "hubris_bonus");
-        self.eminence_stacks = 0;
-        // Nothing left to take over, and nothing for a later upgrade to either.
         self.inherited = true;
-        upgrade_carry::note(BASE_KEY, ctx, player, 0);
+        if let Some(stacks) = noted_stacks(ctx, player, entity) {
+            self.eminence_stacks = self.eminence_stacks.max(stacks);
+            return;
+        }
+        ctx.entity_remove_buff(entity, "hubris_bonus");
+        self.eminence_stacks = 0;
+        upgrade_carry::note(BASE_KEY, ctx, player, pack(entity, 0));
     }
 
     // The stacks are taken over first, so a Radiant item has the base item's
