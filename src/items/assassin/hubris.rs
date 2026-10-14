@@ -165,13 +165,18 @@ impl StableItem for Hubris {
         upgrade_carry::note(BASE_KEY, ctx, player, 0);
     }
 
-    // Eminence's stacks, for the number on the item's icon. Taken over first,
-    // so a Radiant item shows the base item's from its first tick and not
-    // only from its first takedown, which is when it would take them over
-    // anyway.
+    // The stacks are taken over first, so a Radiant item has the base item's
+    // from its first tick and not only from its first takedown, which is
+    // when it would take them over anyway.
+    //
+    // The number on the item's icon is the Attack Damage Eminence gives now:
+    // every takedown's `hubris_bonus` still running, added up. It goes up
+    // with each takedown and down as each runs out, and a death clears them.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.inherit_stacks(ctx, player);
-        item_counts::note(ctx, player, self.meta.key, self.eminence_stacks as u64);
+        item_counts::note_in_combat(ctx, player, self.meta.key, || {
+            item_counts::buff_sum(ctx, player, "hubris_bonus", |buff| buff.attack)
+        });
     }
 
     fn on_attack(

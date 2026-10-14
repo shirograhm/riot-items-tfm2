@@ -72,7 +72,7 @@
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::Mutex;
 
-use mod_api_stable::{StableClient, StableSim};
+use mod_api_stable::{BuffV1, StableClient, StableSim};
 
 use super::item_spend::{self, HALVES, ROW_HOSTS};
 use super::match_builds::{self, LANES};
@@ -229,6 +229,27 @@ pub(crate) fn note_with(
     count: impl FnOnce() -> u64,
 ) {
     note_as(ctx, player, key, false, count);
+}
+
+// What the copies of the buff `name` the champion of `player` wears add up
+// to in one stat, `value` picking it out of each: Hubris's Eminence, a copy
+// a takedown, each its own Attack Damage.
+pub(crate) fn buff_sum(
+    ctx: &StableSim<'_>,
+    player: usize,
+    name: &str,
+    value: impl Fn(&BuffV1) -> i32,
+) -> u64 {
+    ctx.get_player(player)
+        .and_then(|player| player.champion())
+        .map_or(0, |champion| {
+            (0..champion.buff_count())
+                .filter_map(|index| champion.buff_at(index))
+                .filter(|buff| buff.name() == name)
+                .map(|buff| value(&buff))
+                .sum::<i32>()
+                .max(0) as u64
+        })
 }
 
 // How many copies of the buff `name` the champion of `player` wears: the
