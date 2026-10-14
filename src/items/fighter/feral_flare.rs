@@ -1,7 +1,9 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, upgrade_carry, ItemMeta, ProcQueue};
+use crate::{
+    apply_config, is_monster, item_counts, percent_of, upgrade_carry, ItemMeta, ProcQueue,
+};
 
 // The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
 // they follow the carrier into the Radiant item.
@@ -43,7 +45,7 @@ impl FeralFlare {
             effect_bonus_magic_damage: 25,
             effect_stack_magic_damage: 1,
             effect_bonus_flat_heal: 10,
-            effect_max_stacks: 50,
+            effect_max_stacks: 30,
             effect_minion_percent: 150.0,
             feral_stacks: 0,
             noted_stacks: 0,
@@ -164,10 +166,11 @@ impl StableItem for FeralFlare {
         }
     }
 
-    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
-        self.feral_stacks = 0;
-        // The stacks start over each life, so there is nothing left to take over.
-        self.inherited = true;
+    // Feral stacks are permanent: they outlast a death, and a Radiant item
+    // bought while dead takes them over here, before its first `update`,
+    // which a dead carrier does not get.
+    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
+        self.carry_stacks(ctx, player);
         self.procs.clear();
     }
 
@@ -215,6 +218,8 @@ impl StableItem for FeralFlare {
     // Lands the on-hit damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.carry_stacks(ctx, player);
+        // The Feral stacks, for the number on the item's icon.
+        item_counts::note(ctx, player, self.meta.key, self.feral_stacks as u64);
         self.procs.update(ctx, player);
     }
 

@@ -2,7 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
+    apply_config, item_counts, percent_of, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS,
 };
 
 #[derive(Clone, Debug)]
@@ -143,6 +144,14 @@ impl StableItem for OverlordsBloodmail {
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_tyranny(ctx, player);
+        // The Attack Damage Tyranny gives, for the number on the item's icon:
+        // what its buff carries, worked out from the health it is now.
+        let percent = self.effect_caster_hp_percent_attack;
+        item_counts::note_with(ctx, player, self.meta.key, || {
+            ctx.get_player(player)
+                .and_then(|player| player.champion())
+                .map_or(0, |champion| percent_of(champion.hp().1, percent) as u64)
+        });
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

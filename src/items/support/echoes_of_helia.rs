@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ItemMeta, SelfCastWatch};
+use crate::{apply_config, item_counts, ItemMeta, SelfCastWatch};
 
 #[derive(Clone, Debug)]
 pub struct EchoesOfHelia {
@@ -218,6 +218,9 @@ impl StableItem for EchoesOfHelia {
     // A self-cast that healed allies as well spends the charges on the most
     // wounded of them: the charges are spent whole, on one ally.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // The Soul Charges stored, for the number on the item's icon: gone
+        // again once they are spent on an ally.
+        item_counts::note(ctx, player, self.meta.key, self.charge_stored as u64);
         let healed = self.self_cast.poll(ctx);
         let most_wounded = healed
             .into_iter()

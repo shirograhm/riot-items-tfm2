@@ -3963,6 +3963,11 @@ impl StableExtension for StrategyPicker {
         // and as cheap outside one.
         crate::item_spend::sync(ctx);
 
+        // What an item has built up over the match, on its icon in the
+        // player rows. Unconditional for the same reason; outside a match it
+        // looks nothing up.
+        crate::item_counts::sync(ctx);
+
         // Everything from here to whichever return this frame takes.
         let _editor = perf::Probe::start(Section::FrameEditor);
 

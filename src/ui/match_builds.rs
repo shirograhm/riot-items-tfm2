@@ -218,9 +218,10 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 // the server's item settings held when the mod went over them and how the
 // write went. And the `patch.` lines of `crate::patches`: the save's patch
 // state as it loads, each patch as it lands, every tooltip found and whether
-// its text could be rewritten. On while something is being tried in game.
-// Turn it off before a release.
-const LOG: bool = false;
+// its text could be rewritten. And the `counts.` lines of
+// `crate::item_counts`, each step of drawing the item counts. On while
+// something is being tried in game. Turn it off before a release.
+const LOG: bool = true;
 
 // Lines written in one session at most.
 const LOG_LINES: usize = 600;

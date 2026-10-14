@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, ticks, upgrade_carry, ItemMeta};
+use crate::{apply_config, apply_lethality, item_counts, ticks, upgrade_carry, ItemMeta};
 
 // The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
 // they follow the carrier into the Radiant item.
@@ -163,6 +163,15 @@ impl StableItem for Hubris {
         // Nothing left to take over, and nothing for a later upgrade to either.
         self.inherited = true;
         upgrade_carry::note(BASE_KEY, ctx, player, 0);
+    }
+
+    // Eminence's stacks, for the number on the item's icon. Taken over first,
+    // so a Radiant item shows the base item's from its first tick and not
+    // only from its first takedown, which is when it would take them over
+    // anyway.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.inherit_stacks(ctx, player);
+        item_counts::note(ctx, player, self.meta.key, self.eminence_stacks as u64);
     }
 
     fn on_attack(

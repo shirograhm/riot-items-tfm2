@@ -234,15 +234,9 @@ struct Ledger {
 
 static LEDGER: Mutex<Option<Ledger>> = Mutex::new(None);
 
-// Follows what the athletes of the match on screen hold. Called from the
-// mod's match hook on every tick of every simulation: one read of where the
-// simulation runs and a return for any but the client's own.
-//
-// On every tick and not now and then, because an athlete with the gold for
-// it buys a step a tick, and the way it went is only known while each step
-// is seen.
-pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
-    let on_screen = sim.sim_origin().is_some_and(|origin| {
+// Whether `sim` is the simulation the client is showing, as the host has it.
+pub(super) fn on_screen(sim: &StableSim<'_>) -> bool {
+    sim.sim_origin().is_some_and(|origin| {
         matches!(
             SimOriginKindV1::from_code(origin.kind),
             Some(
@@ -251,8 +245,18 @@ pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
                     | SimOriginKindV1::ClientReplay
             )
         )
-    });
-    if !on_screen {
+    })
+}
+
+// Follows what the athletes of the match on screen hold. Called from the
+// mod's match hook on every tick of every simulation: one read of where the
+// simulation runs and a return for any but the client's own.
+//
+// On every tick and not now and then, because an athlete with the gold for
+// it buys a step a tick, and the way it went is only known while each step
+// is seen.
+pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
+    if !on_screen(sim) {
         return;
     }
 
@@ -417,18 +421,42 @@ const PRICE: &str = "ingame.item_tooltip.data.price";
 // Where the two views put their player rows: the node that is shown while
 // the view is up, and the one game code spawns the rows into, one a lane,
 // each with a half for either side and its item slots in `items`.
-const ROW_HOSTS: [(&str, &str); 2] = [
+pub(super) const ROW_HOSTS: [(&str, &str); 2] = [
     ("ingame.player_info", "ingame.player_info"),
     ("ingame.wide_data", "ingame.wide_data.player_info"),
 ];
-const HALVES: [&str; 2] = ["blue_player", "red_player"];
+pub(super) const HALVES: [&str; 2] = ["blue_player", "red_player"];
+
+// The lane of the player row at `place` among `rows`, a host's children: the
+// one the row is named for, as the camera buttons' nodes are, or the row's
+// place where there are five of them; nothing where neither says.
+pub(super) fn row_lane(rows: &[String], place: usize) -> Option<usize> {
+    match_builds::lane_of(rows.get(place)?).or((rows.len() == LANES).then_some(place))
+}
+
+// The item slots game code has spawned into `items`, a half of a player row,
+// by path and in the order of the items they show: by the number their
+// names end in where they all have one, and else as they come. What game
+// code calls them is not taken for granted: `slot0` was, and in game
+// (2026-10-14) no `items.slot0` was there to be found.
+pub(super) fn slot_nodes(ctx: &StableClient<'_>, items: &str) -> Vec<String> {
+    let mut names = ctx.ui_child_names(items);
+    let number = |name: &str| {
+        name.trim_start_matches(|c: char| !c.is_ascii_digit())
+            .parse::<usize>()
+            .ok()
+    };
+    if names.iter().all(|name| number(name).is_some()) {
+        names.sort_by_key(|name| number(name));
+    }
+    names.into_iter().map(|name| format!("{items}.{name}")).collect()
+}
 
 // The item slot of a player row the cursor is over: side, lane, slot.
 //
-// The lane is the one the row is named for, as the camera buttons' nodes
-// are, or the row's place where there are five of them; nothing where
-// neither says. [`spent`] checks the answer against what that athlete holds,
-// so a row placed wrongly costs nothing but the check.
+// The lane is the row's ([`row_lane`]). [`spent`] checks the answer against
+// what that athlete holds, so a row placed wrongly costs nothing but the
+// check.
 fn hovered(ctx: &StableClient<'_>) -> Option<(usize, Option<usize>, usize)> {
     let (x, y) = match_builds::cursor(ctx)?;
     let under = |path: &str| {
@@ -448,15 +476,15 @@ fn hovered(ctx: &StableClient<'_>) -> Option<(usize, Option<usize>, usize)> {
             if !under(&row_path) {
                 continue;
             }
-            let lane = match_builds::lane_of(row).or((rows.len() == LANES).then_some(place));
+            let lane = row_lane(&rows, place);
             for (side, half) in HALVES.iter().enumerate() {
                 let items = format!("{row_path}.{half}.items");
                 if !under(&items) {
                     continue;
                 }
-                let slots = ctx.ui_child_count(&items).unwrap_or(0);
-                return (0..slots)
-                    .find(|slot| under(&format!("{items}.slot{slot}")))
+                return slot_nodes(ctx, &items)
+                    .iter()
+                    .position(|slot| under(slot))
                     .map(|slot| (side, lane, slot));
             }
             return None;
