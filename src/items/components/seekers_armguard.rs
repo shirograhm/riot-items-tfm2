@@ -1,7 +1,10 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS};
+use crate::{
+    apply_config, item_counts, refresh_buff, BUFF_REFRESH_DURATION_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS,
+};
 
 // Witch's Path: Killing a unit grants 0.5 armor, up to a maximum of 15.
 //
@@ -134,6 +137,8 @@ impl StableItem for SeekersArmguard {
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        // The Witch's Path stacks, for the number on the item's icon.
+        item_counts::note(ctx, player, "seekers_armguard", self.stacks as u64);
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;
             return;

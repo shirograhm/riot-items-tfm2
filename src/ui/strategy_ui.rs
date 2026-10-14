@@ -3958,6 +3958,16 @@ impl StableExtension for StrategyPicker {
         // lookup.
         crate::match_builds::sync(ctx);
 
+        // What the item under the cursor has cost its athlete, in the game's
+        // own item tooltip of a match. Unconditional for the same reason,
+        // and as cheap outside one.
+        crate::item_spend::sync(ctx);
+
+        // What an item has built up over the match, on its icon in the
+        // player rows. Unconditional for the same reason; outside a match it
+        // looks nothing up.
+        crate::item_counts::sync(ctx);
+
         // Everything from here to whichever return this frame takes.
         let _editor = perf::Probe::start(Section::FrameEditor);
 

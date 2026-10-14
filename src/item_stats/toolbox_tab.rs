@@ -148,7 +148,7 @@ const _: () = assert!(BAR_W + 8 <= SCREEN_W - DROPDOWNS_W);
 
 const TOOLBOX_ID: &str = "drafters_toolkit";
 // The game's record of which mods are enabled, relative to the game folder.
-const MODS_JSON: &str = "config/game/mods.json";
+pub(crate) const MODS_JSON: &str = "config/game/mods.json";
 // The Toolbox's settings, beside its DLL, and the one that turns its tab off.
 const TOOLBOX_CONFIG: &str = "config.ini";
 const TOOLBOX_TAB_KEY: &str = "advanced_stats";
@@ -280,7 +280,7 @@ static STATE: Mutex<Option<State>> = Mutex::new(None);
 
 // Whether `id` is in the `enabled_mods` array of the game's `mods.json`, or
 // `None` if the document has no such array.
-fn listed_enabled(document: &str, id: &str) -> Option<bool> {
+pub(crate) fn listed_enabled(document: &str, id: &str) -> Option<bool> {
     let rest = &document[document.find("\"enabled_mods\"")?..];
     let open = rest.find('[')?;
     let close = open + rest[open..].find(']')?;

@@ -393,7 +393,10 @@ unsafe fn section(base: *mut u8, want: &[u8]) -> Result<(*mut u8, usize), String
             return Ok((base.add(virtual_address), virtual_size));
         }
     }
-    Err(format!("section {} not found", String::from_utf8_lossy(want)))
+    Err(format!(
+        "section {} not found",
+        String::from_utf8_lossy(want)
+    ))
 }
 
 // Every function in the main module as `(start_rva, end_rva)`, sorted by start,
@@ -710,14 +713,23 @@ unsafe fn detour(
     // and 6th slots are only set there), so it has to know a test is on.
     build_config::record_route_call(
         mode,
-        team1.iter().chain(team2.iter()).map(|(_, champion)| champion.as_str()),
+        team1
+            .iter()
+            .chain(team2.iter())
+            .map(|(_, champion)| champion.as_str()),
     );
     crate::own_team_log::line(|| {
         format!(
             "route call: training={} team1={:?} team2={:?}",
             mode,
-            team1.iter().map(|(_, champion)| champion.as_str()).collect::<Vec<_>>(),
-            team2.iter().map(|(_, champion)| champion.as_str()).collect::<Vec<_>>()
+            team1
+                .iter()
+                .map(|(_, champion)| champion.as_str())
+                .collect::<Vec<_>>(),
+            team2
+                .iter()
+                .map(|(_, champion)| champion.as_str())
+                .collect::<Vec<_>>()
         )
     });
     if mode {
@@ -783,8 +795,14 @@ fn apply_training_builds(
     // - so an allocation per comparison is not worth pinning the return type
     // over.
     let index_of = |key: &str| items.iter().position(|item| item.key().to_string() == key);
-    let enemies: Vec<&str> = team2.iter().map(|(_, champion)| champion.as_str()).collect();
-    let allies: Vec<&str> = team1.iter().map(|(_, champion)| champion.as_str()).collect();
+    let enemies: Vec<&str> = team2
+        .iter()
+        .map(|(_, champion)| champion.as_str())
+        .collect();
+    let allies: Vec<&str> = team1
+        .iter()
+        .map(|(_, champion)| champion.as_str())
+        .collect();
 
     for (position, route) in routes.iter_mut().enumerate() {
         let Some((_, champion)) = team1.get(position) else {

@@ -991,9 +991,9 @@ unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
 //   CL_LAUNCHER_PROLOGUE therefore needs its last 4 bytes changed with the frame; that is the only edit.
 const CL_LAUNCHER_RVA: usize = 0x16cd4e0; // 0.7.0-beta (2026-10-07; 0.6.3 was 0x13f3950). exe2exe strict unique at 160 bytes, a function start, and the frame did not move this time (0x25ef8, so CL_LAUNCHER_PROLOGUE is unchanged); the body shrank 4367 -> 4319 past the head, whose first 39 instructions are 0.6.3's (`mov r12,r8` still saves the seed). Confirmed from the seedctor callers: 3 sites inside 0x16cd4e0 at +0x1c5/+0x298/+0x36f plus 1 in 0x16cf120 (+0x113); 10 caller sites now (4445/5757 identical; the match-sim megafunction 80906 -> 80806 is again the hook.rs target's caller). 0.6.3 notes follow: (2026-10-06; 0.6.2 was 0x17277c0). From the seedctor callers once more: 3 sites inside 0x13f3950 at +0x1c8/+0x29b/+0x372 (0.6.2: +0x1c5/+0x298/+0x36f) plus 1 in 0x13f55c0 (+0x116), 60 direct calls and 9 caller sites in 8 functions on both sides (4445/5757 identical; the match-sim megafunction 79953 -> 80906 is again the hook.rs target's caller), size 4490 -> 4367, frame 0x25478 -> 0x25ef8. `mov r12,r8` still saves the seed at +0x41 and the seedctor call still gets it in rdx. 0.6.2 notes follow: (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0xf8, 0x5e, 0x02,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0x98, 0xed, 0x01,
     0x00,
-]; // 0.6.3: 8 push + mov eax,0x25ef8 (0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
+]; // 0.6.4: 8 push + mov eax,0x1ed98 (0.6.3 was 0x25ef8, 0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
 // * Is the current match a comp test? Comp test is a sandbox where the user composes both blue and red themselves, so
 //   there is no notion of "my team" -> bypass the team gate and apply to both sides for designated champions.
@@ -3333,6 +3333,125 @@ fn buy_memo_store(inputs: BuyInputs) {
     });
 }
 
+// -- Control's shop picks ------------------------------------------------------
+//
+// Control (`tft2_pov` on the Workshop) lets the player take over one of their
+// own champions mid-match, with a shop that writes the chosen item straight
+// into the athlete's build `Vec`. The game then buys it part by part, as it
+// buys anything there. The pin passes in `buy_replace_ctx` rewrite every
+// unbought pinned slot that does not hold its pin, which undid such a pick on
+// the champion's next trip to base. The user's call (2026-10-13): Control's
+// choice beats a pin.
+//
+// A pick is told apart as a change made by nobody here: a slot holding
+// something else than this detour left in it at its last full pass. Nothing
+// else writes a build mid-match (the spawn injector runs before the first
+// pass, growth inside one), and none of this runs unless Control is enabled,
+// so without it pins behave exactly as before.
+//
+// What was left is remembered per sim copy, under the buy memo's key (seed,
+// athlete id, build `Vec`): Control replays a match's picks into later copies
+// of the same seed, and each copy has to decide as the one played did. It is
+// global rather than per thread because a sim can move between workers, and
+// a forgotten build would have its picks pinned over again.
+const CONTROL_MOD_ID: &str = "tft2_pov";
+
+// Whether Control is enabled this session. Asked once, from `tactics_init`:
+// the game reads its list once too. A list that cannot be read is a no, and
+// pins behave as they always have.
+fn control_enabled() -> bool {
+    static ENABLED: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *ENABLED.get_or_init(|| {
+        std::env::current_exe()
+            .ok()
+            .and_then(|exe| {
+                exe.parent()
+                    .map(|game| game.join(crate::item_stats::toolbox_tab::MODS_JSON))
+            })
+            .and_then(|path| fs::read_to_string(path).ok())
+            .and_then(|document| {
+                crate::item_stats::toolbox_tab::listed_enabled(&document, CONTROL_MOD_ID)
+            })
+            .unwrap_or(false)
+    })
+}
+
+// One athlete's build as the last full pass left it, and the slots picked
+// through Control since, a bit a slot.
+struct LeftBuild {
+    slots: Vec<u64>,
+    picked: u64,
+}
+
+// Builds remembered at most, oldest dropped first. Under `own_team_only` only
+// the player's athletes are tracked; with it off, every athlete a pin can
+// reach is, a league day's worth of them.
+const LEFT_BUILDS_KEPT: usize = 512;
+
+struct LeftBuilds {
+    by_key: HashMap<[u64; 3], LeftBuild>,
+    order: std::collections::VecDeque<[u64; 3]>,
+}
+
+static LEFT_BUILDS: Mutex<Option<LeftBuilds>> = Mutex::new(None);
+
+// An athlete's build `Vec` and its targets, read without a syscall.
+unsafe fn read_build(athlete: usize) -> Option<(u64, Vec<u64>)> {
+    let ptr = safe_read_u64(athlete + O_ATHLETE_BUILD_PTR)?;
+    let len = safe_read_u64(athlete + O_ATHLETE_BUILD_LEN)?;
+    if ptr < 0x10000 || len > 16 {
+        return None;
+    }
+    let slots = (0..len as usize)
+        .map(|j| safe_read_u64(ptr as usize + j * 8))
+        .collect::<Option<Vec<u64>>>()?;
+    Some((ptr, slots))
+}
+
+// The slots of `build` picked through Control: those found before, and any
+// holding something else than the last full pass left there. An athlete
+// that owns nothing yet is at the start of a sim copy, with nothing picked.
+fn control_picks(key: [u64; 3], owned: u64, build: &[u64]) -> u64 {
+    if owned == 0 {
+        return 0;
+    }
+    let Ok(guard) = LEFT_BUILDS.lock() else {
+        return 0;
+    };
+    let Some(left) = guard.as_ref().and_then(|builds| builds.by_key.get(&key)) else {
+        return 0;
+    };
+    build
+        .iter()
+        .zip(&left.slots)
+        .enumerate()
+        .filter(|(_, (now, was))| now != was)
+        .fold(left.picked, |picked, (slot, _)| picked | (1 << slot))
+}
+
+// Remembers what a full pass left in a build, with the picks found in it.
+fn note_left_build(key: [u64; 3], slots: Vec<u64>, picked: u64) {
+    let Ok(mut guard) = LEFT_BUILDS.lock() else {
+        return;
+    };
+    let builds = guard.get_or_insert_with(|| LeftBuilds {
+        by_key: HashMap::new(),
+        order: std::collections::VecDeque::new(),
+    });
+    if builds
+        .by_key
+        .insert(key, LeftBuild { slots, picked })
+        .is_none()
+    {
+        builds.order.push_back(key);
+        while builds.order.len() > LEFT_BUILDS_KEPT {
+            if let Some(old) = builds.order.pop_front() {
+                builds.by_key.remove(&old);
+            }
+        }
+    }
+}
+
 unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     // * Hot path (parallel rayon workers) - global atomic counters would make the measurement itself expensive through cache-line contention,
     //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
@@ -3562,6 +3681,19 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // is a per-buy-decision path and both the pins for the game's four
         // slots below and the 5th and 6th further down need the same answer.
         let own_team_only = crate::build_config::own_team_only_enabled();
+        // The slots of this build the player has picked through Control's
+        // shop, which no pin below takes back (see `control_picks`). Tracked
+        // for the athletes those pins reach: the player's under
+        // `own_team_only`, and everyone's without it.
+        let aid = safe_read_u64(athlete + O_ATHLETE_ID).unwrap_or(0);
+        let track = (is_player || !own_team_only) && control_enabled();
+        let picked = if track {
+            read_build(athlete).map_or(0, |(ptr, build)| {
+                control_picks([seed_r9, aid, ptr], owned, &build)
+            })
+        } else {
+            0
+        };
         // This branch used to publish the player's lineup to `crate::my_team`,
         // which is how the host half guessed whether a set of item-build routes
         // belonged to the player. Nothing consumes that guess any more: the host
@@ -3622,6 +3754,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     if owned > si as u64 {
                         continue;
                     } // slot already purchased -> too late
+                    if picked & (1 << si) != 0 {
+                        continue;
+                    } // picked through Control -> the player's choice stands
                       // By key, vanilla included: name scan + recipe validation.
                     let idx = slot_n_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
                     if let Some(t) = idx {
@@ -3657,7 +3792,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                     && pin_at(j) != Some(there)
                             });
                         if let Some(j) = elsewhere {
-                            if j < si as usize {
+                            // A later slot picked through Control holding the
+                            // pinned item honours the pin too, by the player's
+                            // hand, and is not moved.
+                            if j < si as usize || picked & (1 << j) != 0 {
                                 continue;
                             }
                             if writable(bptr, (blen as usize) * 8) {
@@ -3679,7 +3817,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                 .any(|j| pin_at(j).is_some_and(|pin| buy_is_boots(ctx012, pin)))
                         {
                             let free =
-                                displaced_boots_slot(champ, si as usize, blen as usize, owned == 0);
+                                displaced_boots_slot(champ, si as usize, blen as usize, owned == 0)
+                                    .filter(|&j| picked & (1 << j) == 0);
                             if let Some(j) = free {
                                 if writable(bptr + j * 8, 8) {
                                     wr_u64(bptr + j * 8, here);
@@ -3753,7 +3892,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 // Their automatic picks were made once, at growth, and stand.
                 if designate {
                     for si in 4..slots.len().min(target as usize) {
-                        if owned > si as u64 {
+                        if owned > si as u64 || picked & (1 << si) != 0 {
                             continue;
                         }
                         let Some(t) = pinned_extra_slot(ctx, champ, si, &slots[..si]) else {
@@ -3785,7 +3924,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     }
                     if slots.len() as u64 > build_len {
                         let old_len = build_len as usize;
-                        if smart {
+                        // Not over a Control pick, which stays where it was put.
+                        if smart && picked == 0 {
                             reorder_unbought(ctx, champ, &mut slots, owned, designate);
                         }
                         build_len = grow_build(athlete, ptr, cap_now, build_len, &slots);
@@ -3854,6 +3994,13 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         }
                     }
                 }
+            }
+        }
+        // What this pass left, for the next one to tell Control's picks by.
+        // After growth, under the `Vec` it grew into.
+        if track {
+            if let Some((ptr, build)) = read_build(athlete) {
+                note_left_build([seed_r9, aid, ptr], build, picked);
             }
         }
         // The memo's other half: inputs unchanged by the whole pass above mean
@@ -4115,21 +4262,25 @@ unsafe fn patch_bytes(
 //   The 11-byte form below, through the spill reload after the jbe, is unique
 //   in .text. 0.6.3 recompiled the resolver (1007 -> 917 bytes): the count is in
 //   rbx and the reload is `mov r14,[rsp+0x48]`, where 0.6.2 had `cmp rax,3` and
-//   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes.
+//   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes. 0.6.4 grew the
+//   resolver again (917 -> 2173 bytes) and made the count a call (`0x16e55e0`,
+//   the athlete in rcx, reading its items at +0x310/+0x318): `cmp rax,3 / jbe`,
+//   then `cmp r14,rsi / jae` ahead of the `[vt+0x70]` test. The `jbe` lands on
+//   the gold-against-price check (`[athlete+0x868]` vs `[vt+0x68]`), as before.
 unsafe fn patch_final_gate() -> String {
     let sig = exe_base_addr() + 0xe94a4a; // 0.7.0-beta, container 0xe94780 +0x2ca (a strict exe2exe match at identical size 917, pairdiff clean; bytes unchanged, form still unique) (0.6.3 0xea216a, container 0xea1ea0 +0x2ca) (buy_item's second callee again; the form changed with the address, see above) (0.6.2 0xe83251, container 0xe82f30 +0x321) (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
     const EXPECT: [(usize, u8); 11] = [
         (0, 0x48),
         (1, 0x83),
-        (2, 0xfb),
-        (3, 0x03), //  cmp rbx, 3
+        (2, 0xf8),
+        (3, 0x03), //  cmp rax, 3
         (4, 0x76),
-        (5, 0x37), //                       jbe +0x37   <- opcode at +4
-        (6, 0x4c),
-        (7, 0x8b),
-        (8, 0x74),
-        (9, 0x24),
-        (10, 0x48), // mov r14, [rsp+0x48]
+        (5, 0x21), //  jbe +0x21   <- opcode at +4
+        (6, 0x49),
+        (7, 0x39),
+        (8, 0xf6), //  cmp r14, rsi
+        (9, 0x0f),
+        (10, 0x83), // jae rel32
     ];
     patch_bytes("final_gate", sig, &EXPECT, &[(4, 0xEB)])
 }
@@ -4279,7 +4430,11 @@ unsafe fn patch_result_row_floor(slots: u8) -> String {
 // that were there, untouched. The base items' `next_tier` lists name mod
 // items by key, as text, and pass through the write as they are.
 //
-// All four constants are 0.6.3's and are only used behind the version gate
+// All four constants are unchanged from 0.6.3 to 0.6.4 (2026-10-14: the
+// handler 0x2e6c220 now drops the old settings through 0x24fad0, which
+// reads the list at settings +0x3028/+0x3030/+0x3038 and steps it by 0x1a8;
+// the thunk still loads the Database with `mov rcx,[rdi+0x10]`, and the
+// object check is `cmp qword [rcx+0x190],0` at 0x15ce6e0). They are only used behind the version gate
 // (`driver::lift_server_mod_items`). They are also checked against the
 // server's own account of the list before anything is written, so a build
 // they are wrong for gets no write rather than a wrong one.
@@ -4572,5 +4727,8 @@ If the game has updated, please wait for a mod update. The rest of the mod is un
             let _ = fs::write(d.join("4items_patches.txt"), &patch_report);
         }
     }
+    // Asked here, where a file read costs nothing, and not first on a sim
+    // thread inside the buy detour.
+    let _ = control_enabled();
     true
 }

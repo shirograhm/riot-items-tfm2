@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, upgrade_carry, Elapsed, Eternity, ItemMeta};
+use crate::{apply_config, item_counts, ticks, upgrade_carry, Elapsed, Eternity, ItemMeta};
 
 // Timeless: the item grows while it is held. Every
 // `effect_growth_interval_seconds` it gains a stack of health, Ability Power
@@ -234,6 +234,8 @@ impl StableItem for RodOfAges {
         let full = self.effect_max_growth_stacks * self.growth_every();
         self.held_ticks = (self.held_ticks + gone).min(full);
         let stacks = self.timeless_stacks();
+        // The Timeless stacks, for the number on the item's icon.
+        item_counts::note(ctx, player, self.meta.key, stacks as u64);
         if stacks > before {
             upgrade_carry::note(BASE_KEY, ctx, player, stacks as u64);
             // Added on top of the stacks already worn rather than replacing

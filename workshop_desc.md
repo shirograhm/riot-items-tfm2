@@ -14,13 +14,14 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.6.3. Older game versions need an older build of the mod:  
-Mod v0.11.11+ - 0.6.3  
+Currently updated for game version 0.6.4. Older game versions need an older build of the mod:  
+Mod v1.0.1+ - 0.6.4  
+Mod v0.11.11-1.0.0 - 0.6.3  
 Mod v0.11.3-0.11.10 - 0.6.2  
 Mod v0.10.1-0.11.2 - 0.6.1  
 Mod v0.9.11-0.10.0 - 0.6.0  
 
-Manual releases: https://github.com/shirograhm/riot-items-tfm2/releases
+Manual releases (includes beta releases): https://github.com/shirograhm/riot-items-tfm2/releases
 
 [h1] Instructions [/h1]
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:

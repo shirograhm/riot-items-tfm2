@@ -1,11 +1,6 @@
-//! The match rules the mod changes: `match-rules.json` beside the DLL, a few
-//! keys of the game's own game settings (`setting/game_setting` in the base
-//! game: starting gold, gold a kill, respawn times, the minion and camp
-//! blocks) with the mod's numbers for them.
-//!
-//! ```json
-//! { "start_gold": 250 }
-//! ```
+//! The match rules the mod changes: keys of the game's own game settings
+//! (`setting/game_setting` in the base game) with the mod's numbers for them,
+//! set in [`RULES`]. Today that is the starting gold alone.
 //!
 //! # Why the server is told, and not the asset
 //!
@@ -22,34 +17,24 @@
 //! So the numbers are written into the server's settings, which the stable
 //! API calls the game rule settings and which "affect matches created
 //! afterwards": once for each server, from its start, before it creates a
-//! match and before the client takes its copy of them. A key whose value is
-//! an object is merged over what the server holds, so a block can be given
-//! by the numbers it changes; anything else replaces what is there. A write
-//! the server refuses changes nothing: its settings must still read as
-//! settings.
+//! match and before the client takes its copy of them. A write the server
+//! refuses changes nothing: its settings must still read as settings.
 //!
-//! The file lists only what the mod changes. A whole copy of the game's
-//! settings would put back, at every start, whatever a game update or the
-//! game's own patches had changed since the copy was made.
+//! Only what the mod changes is listed. A whole copy of the game's settings
+//! would put back, at every start, whatever a game update or the game's own
+//! patches had changed since the copy was made.
 
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::OnceLock;
 
 use mod_api_stable::{SettingTargetV1, StableServerCtx};
 use serde_json::Value;
 
-// The rules the mod ships, beside the DLL.
-const FILE: &str = "match-rules.json";
+// The game settings the mod changes, and its number for each: starting gold
+// 250, where the base game gives 500.
+const RULES: &[(&str, i64)] = &[("start_gold", 250)];
 
 // Whether the server of the save now loaded has been given the rules.
 static SYNCED: AtomicBool = AtomicBool::new(false);
-
-// The file's keys and what the mod wants each to be. Read once; empty where
-// the file cannot be read.
-fn rules() -> &'static serde_json::Map<String, Value> {
-    static RULES: OnceLock<serde_json::Map<String, Value>> = OnceLock::new();
-    RULES.get_or_init(|| crate::patches::base::read_object(FILE))
-}
 
 // A new server: its settings have not been looked at.
 pub(crate) fn server_started() {
@@ -63,14 +48,9 @@ pub(crate) fn sync_server(ctx: &mut StableServerCtx<'_>) {
     if SYNCED.load(Ordering::Relaxed) {
         return;
     }
-    let rules = rules();
-    if rules.is_empty() {
-        SYNCED.store(true, Ordering::Relaxed);
-        return;
-    }
     let mut read = 0;
     let mut report: Vec<String> = Vec::new();
-    for (name, wanted) in rules {
+    for &(name, wanted) in RULES {
         let held = ctx
             .setting_get_json(SettingTargetV1::GameSetting, name)
             .and_then(|json| serde_json::from_str::<Value>(&json).ok());
@@ -79,14 +59,7 @@ pub(crate) fn sync_server(ctx: &mut StableServerCtx<'_>) {
             continue;
         };
         read += 1;
-        let wanted = match (&held, wanted) {
-            (Value::Object(held), Value::Object(over)) => {
-                let mut merged = held.clone();
-                crate::item_stats::merge_over(&mut merged, over);
-                Value::Object(merged)
-            }
-            _ => wanted.clone(),
-        };
+        let wanted = Value::from(wanted);
         if crate::item_stats::same_setting(&wanted, &held) {
             report.push(format!("{name} is {held} already"));
             continue;
@@ -101,6 +74,6 @@ pub(crate) fn sync_server(ctx: &mut StableServerCtx<'_>) {
     }
     SYNCED.store(true, Ordering::Relaxed);
     crate::match_builds::log("server rules", || {
-        format!("{read} of {} read; {}", rules.len(), report.join("; "))
+        format!("{read} of {} read; {}", RULES.len(), report.join("; "))
     });
 }

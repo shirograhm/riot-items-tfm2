@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{add_stack, apply_config, ticks, ItemMeta, ProcQueue};
+use crate::{add_stack, apply_config, item_counts, ticks, ItemMeta, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct GuinsoosRageblade {
@@ -168,6 +168,13 @@ impl StableItem for GuinsoosRageblade {
     // Lands the on-hit damage whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
+        // The Seething Strike stacks on the carrier, for the number on the
+        // item's icon. They are copies of one buff (`add_stack`), so it goes
+        // down and away again as they run out.
+        let stacks = self.stack_buff;
+        item_counts::note_in_combat(ctx, player, self.meta.key, || {
+            item_counts::buff_copies(ctx, player, stacks)
+        });
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

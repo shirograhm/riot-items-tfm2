@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    add_stack, apply_config, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
-    BUFF_REFRESH_PERIOD_TICKS,
+    add_stack, apply_config, item_counts, percent_of, ticks, ItemMeta,
+    BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
 };
 
 #[derive(Clone, Debug)]
@@ -161,6 +161,13 @@ impl StableItem for Riftmaker {
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.apply_infusion(ctx, player);
+        // The Corruption stacks on the carrier, for the number on the item's
+        // icon. They are copies of one buff (`add_stack`), so it goes down
+        // and away again as they run out.
+        let corruption = self.corruption_buff;
+        item_counts::note_in_combat(ctx, player, self.meta.key, || {
+            item_counts::buff_copies(ctx, player, corruption)
+        });
     }
 
     // Corruption. Ability damage to an enemy champion sets it off, a tick of

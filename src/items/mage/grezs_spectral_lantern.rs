@@ -1,7 +1,9 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, upgrade_carry, ItemMeta, ProcQueue};
+use crate::{
+    apply_config, is_monster, item_counts, percent_of, upgrade_carry, ItemMeta, ProcQueue,
+};
 
 // The upgrade line the drained power is noted under (`crate::upgrade_carry`),
 // so it follows the carrier into the Radiant item.
@@ -256,6 +258,8 @@ impl StableItem for GrezsSpectralLantern {
     // Lands the Butcher bonus whose delay has run out.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.carry_power(ctx, player);
+        // The Ability Power drained, for the number on the item's icon.
+        item_counts::note(ctx, player, self.meta.key, self.drained_power as u64);
         self.procs.update(ctx, player);
     }
 

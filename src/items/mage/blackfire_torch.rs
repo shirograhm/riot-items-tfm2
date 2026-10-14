@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{add_stack, apply_config, ticks, ItemMeta};
+use crate::{add_stack, apply_config, item_counts, ticks, ItemMeta};
 
 // Landing an Ability on an enemy champion grants 5 AP for 4 seconds (max 4 stacks).
 #[derive(Clone, Debug)]
@@ -154,6 +154,16 @@ impl StableItem for BlackfireTorch {
             },
             self.effect_max_stacks,
         );
+    }
+
+    // The Maleficent stacks on the carrier, for the number on the item's
+    // icon. They are copies of one buff (`add_stack`), so it goes down and
+    // away again as they run out.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        let stacks = self.stack_buff;
+        item_counts::note_in_combat(ctx, player, self.meta.key, || {
+            item_counts::buff_copies(ctx, player, stacks)
+        });
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

@@ -1,5 +1,5 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, is_enemy_champion, ticks, TICKS_PER_SECOND};
+use crate::{apply_config, is_enemy_champion, item_counts, ticks, TICKS_PER_SECOND};
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
@@ -138,16 +138,19 @@ impl StableItem for HauntingGuise {
         self.stack_progress = 0;
     }
 
-    fn update(&mut self, _ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         if self.combat_ticks == 0 {
             // Madness is lost outright on leaving combat, not decayed a stack
             // at a time: the bar restarts from zero on the next fight.
             self.madness = 0;
             self.stack_progress = 0;
-            return;
+        } else {
+            self.combat_ticks -= 1;
+            self.build_madness();
         }
-        self.combat_ticks -= 1;
-        self.build_madness();
+        // The Madness stacks held, for the number on the item's icon: none
+        // out of combat, so it shows only in a fight.
+        item_counts::note_in_combat(ctx, player, "haunting_guise", || self.madness as u64);
     }
 
     // Fires for every hit the wielder lands, basic attack or ability, so
