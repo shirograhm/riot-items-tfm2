@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, ticks, upgrade_carry, ItemMeta};
+use crate::{apply_config, has_buff, item_counts, ticks, upgrade_carry, ItemMeta};
 
 // The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
 // they follow the carrier into the Radiant item.
@@ -26,6 +26,8 @@ pub struct YunTalWildarrows {
     noted_stacks: usize,
     // Whether this instance has taken over the stacks of the item it replaced.
     inherited: bool,
+    // The tick the last Practice stack was gained on.
+    stacked_at: Option<usize>,
 }
 
 impl YunTalWildarrows {
@@ -51,6 +53,7 @@ impl YunTalWildarrows {
             accumulated_stacks: 0,
             noted_stacks: 0,
             inherited: false,
+            stacked_at: None,
         }
     }
 
@@ -212,8 +215,14 @@ impl StableItem for YunTalWildarrows {
         };
         let is_flurry_on_cooldown = has_buff(&caster_ref, self.yun_tal_flurry_cooldown_buff);
 
-        // Practice: base attacks grants permanent crit chance, capped.
-        if self.accumulated_stacks < self.effect_max_stacks {
+        // Practice: base attacks grants permanent crit chance, capped. One
+        // stack an attack, and not one a hit: `on_attack` fires for every hit
+        // the carrier lands, and an attack that lands several (a second
+        // on-hit damage instance, splash) gave a stack for each. Its hits all
+        // land on one tick, and two attacks never do.
+        let tick = ctx.tick();
+        if self.accumulated_stacks < self.effect_max_stacks && self.stacked_at != Some(tick) {
+            self.stacked_at = Some(tick);
             ctx.add_buff(
                 caster,
                 &BuffV1 {
@@ -250,6 +259,10 @@ impl StableItem for YunTalWildarrows {
     // noted, and taken over by a new Radiant instance, from here.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.carry_stacks(ctx, player);
+        // The crit chance Practice has granted, in percent, for the number
+        // on the item's icon.
+        let gained = self.accumulated_stacks as i32 * self.effect_stack_crit_chance;
+        item_counts::note(ctx, player, self.meta.key, gained.max(0) as u64);
     }
 
     // Practice stacks are permanent, so they cross the Radiant upgrade. Only

@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, immolate_burn, is_monster, mark_immolate, percent_of, upgrade_carry, ItemMeta,
-    TICKS_PER_SECOND,
+    apply_config, immolate_burn, is_monster, item_counts, mark_immolate, percent_of,
+    upgrade_carry, ItemMeta, TICKS_PER_SECOND,
 };
 
 // Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies
@@ -223,6 +223,10 @@ impl StableItem for PhilosophersStone {
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.carry_stacks(ctx, player);
+        // The maximum health Cinderhulk has granted, in percent, for the
+        // number on the item's icon.
+        let gained = self.cinderhulk_stacks as i32 * self.effect_stack_hp_mult;
+        item_counts::note(ctx, player, self.meta.key, gained.max(0) as u64);
 
         // Immolate, once a second while alive, the same burn as Bami's Cinder.
         self.until_next_burn = self.until_next_burn.saturating_sub(1);

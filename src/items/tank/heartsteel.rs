@@ -4,8 +4,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, refresh_buff, size_percent, ticks, upgrade_carry, Elapsed, ItemMeta,
-    ProcQueue, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
+    apply_config, item_counts, percent_of, refresh_buff, size_percent, ticks, upgrade_carry,
+    Elapsed, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
 // Ironheart, League's Colossal Consumption: an enemy champion within
@@ -373,6 +373,9 @@ impl StableItem for Heartsteel {
         // `update` runs for a dead carrier, and the cooldowns are to keep running.
         let gone = self.clock.since_last(ctx);
         self.carry_bonus_hp(ctx, player);
+        // The health banked, for the number on the item's icon.
+        let banked = self.accumulated_bonus_hp.max(0) as u64;
+        item_counts::note(ctx, player, self.meta.key, banked);
         self.procs.update(ctx, player);
 
         let Some(team) = ctx.get_player(player).map(|p| p.team()) else {
