@@ -701,7 +701,7 @@ impl Fit {
 // Rule 6
 const EARLY_ITEMS: [&str; 7] = [
     "heartsteel",             // permanent bonus health per charged hit on a champion
-    "yun_tal_wildarrows",     // permanent crit chance per basic attack
+    "yun_tal_wildarrows",     // permanent crit chance every third basic attack
     "hubris",                 // permanent stack per takedown
     "feral_flare",            // a stack per takedown and monster killed
     "grezs_spectral_lantern", // ability power per takedown and monster killed

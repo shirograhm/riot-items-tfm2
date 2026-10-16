@@ -18,16 +18,21 @@ pub struct YunTalWildarrows {
     attack_speed_mult: i32,
     effect_stack_crit_chance: i32,
     effect_max_stacks: usize,
+    // Not read from the config: the tooltip spells the count out ("Every
+    // third basic attack").
+    effect_attack_interval: usize,
     effect_flurry_attack_speed_mult: i32,
     effect_duration_seconds: f64,
     effect_cooldown_seconds: f64,
     accumulated_stacks: usize,
+    // Basic attacks counted toward the next Practice stack.
+    attack_count: usize,
     // The stack count last noted for an upgrade to take over.
     noted_stacks: usize,
     // Whether this instance has taken over the stacks of the item it replaced.
     inherited: bool,
-    // The tick the last Practice stack was gained on.
-    stacked_at: Option<usize>,
+    // The tick the last basic attack was counted on.
+    counted_at: Option<usize>,
 }
 
 impl YunTalWildarrows {
@@ -46,14 +51,16 @@ impl YunTalWildarrows {
             attack_speed_mult: 20,
             effect_stack_crit_chance: 1,
             effect_max_stacks: 25,
+            effect_attack_interval: 3,
             effect_flurry_attack_speed_mult: 30,
             effect_duration_seconds: 6.0,
             effect_cooldown_seconds: 15.0,
             // Non-vital stats (internals)
             accumulated_stacks: 0,
+            attack_count: 0,
             noted_stacks: 0,
             inherited: false,
-            stacked_at: None,
+            counted_at: None,
         }
     }
 
@@ -68,6 +75,7 @@ impl YunTalWildarrows {
             attack_speed_mult: 50,
             effect_stack_crit_chance: 1,
             effect_max_stacks: 25,
+            effect_attack_interval: 3,
             effect_flurry_attack_speed_mult: 30,
             effect_duration_seconds: 6.0,
             effect_cooldown_seconds: 15.0,
@@ -215,22 +223,26 @@ impl StableItem for YunTalWildarrows {
         };
         let is_flurry_on_cooldown = has_buff(&caster_ref, self.yun_tal_flurry_cooldown_buff);
 
-        // Practice: base attacks grants permanent crit chance, capped. One
-        // stack an attack, and not one a hit: `on_attack` fires for every hit
-        // the carrier lands, and an attack that lands several (a second
-        // on-hit damage instance, splash) gave a stack for each. Its hits all
+        // Practice: every third base attack grants permanent crit chance,
+        // capped. Attacks are counted, not hits: `on_attack` fires for every
+        // hit the carrier lands, and an attack that lands several (a second
+        // on-hit damage instance, splash) counted once for each. Its hits all
         // land on one tick, and two attacks never do.
         let tick = ctx.tick();
-        if self.accumulated_stacks < self.effect_max_stacks && self.stacked_at != Some(tick) {
-            self.stacked_at = Some(tick);
-            ctx.add_buff(
-                caster,
-                &BuffV1 {
-                    crit_chance: self.effect_stack_crit_chance,
-                    ..BuffV1::named(self.yun_tal_practice_buff)
-                },
-            );
-            self.accumulated_stacks += 1;
+        if self.accumulated_stacks < self.effect_max_stacks && self.counted_at != Some(tick) {
+            self.counted_at = Some(tick);
+            self.attack_count += 1;
+            if self.attack_count >= self.effect_attack_interval {
+                self.attack_count = 0;
+                ctx.add_buff(
+                    caster,
+                    &BuffV1 {
+                        crit_chance: self.effect_stack_crit_chance,
+                        ..BuffV1::named(self.yun_tal_practice_buff)
+                    },
+                );
+                self.accumulated_stacks += 1;
+            }
         }
 
         // Flurry: on attack, gain a burst of attack speed on an internal cooldown.
