@@ -818,11 +818,11 @@
         },
         "bandlepipes": {
             "name": "Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and nearby allied champions also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "radiant_bandlepipes": {
             "name": "Radiant Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and nearby allied champions also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "tiamat": {
             "name": "Tiamat",
@@ -1058,11 +1058,11 @@
         },
         "abyssal_mask": {
             "name": "Abyssal Mask",
-            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of nearby enemy champions by <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Radiant Abyssal Mask",
-            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of nearby enemy champions by <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "World Atlas",
@@ -1948,11 +1948,11 @@
         },
         "bandlepipes": {
             "name": "Kèn Túi Bandle",
-            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh lân cận cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         },
         "radiant_bandlepipes": {
             "name": "Kèn Túi Bandle Ánh Sáng",
-            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh lân cận cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         },
         "seryldas_grudge": {
             "name": "Thương Phục Hận Serylda",
@@ -2184,11 +2184,11 @@
         },
         "abyssal_mask": {
             "name": "Mặt Nạ Vực Thẳm",
-            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch lân cận đi <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Mặt Nạ Vực Thẳm Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch lân cận đi <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "Bản Đồ Thế Giới",
@@ -3074,11 +3074,11 @@
         },
         "bandlepipes": {
             "name": "班德尔音管",
-            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和附近的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         },
         "radiant_bandlepipes": {
             "name": "光明版班德尔音管",
-            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和附近的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         },
         "seryldas_grudge": {
             "name": "赛瑞尔达的怨恨",
@@ -3310,11 +3310,11 @@
         },
         "abyssal_mask": {
             "name": "深渊面具",
-            "option": "\n<#ff7a3eff>损毁<>：使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
+            "option": "\n<#ff7a3eff>损毁<>：使附近敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
         },
         "radiant_abyssal_mask": {
             "name": "光明版深渊面具",
-            "option": "\n<#ff7a3eff>损毁<>：使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
+            "option": "\n<#ff7a3eff>损毁<>：使附近敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
         },
         "world_atlas": {
             "name": "云游图鉴",
@@ -4200,11 +4200,11 @@
         },
         "bandlepipes": {
             "name": "Bandocanos",
-            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados próximos também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         },
         "radiant_bandlepipes": {
             "name": "Bandocanos Radiante",
-            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados próximos também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         },
         "seryldas_grudge": {
             "name": "Rancor de Serylda",
@@ -4436,11 +4436,11 @@
         },
         "abyssal_mask": {
             "name": "Máscara Abissal",
-            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos próximos em <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Máscara Abissal Radiante",
-            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos próximos em <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "Atlas Mundial",
@@ -5326,11 +5326,11 @@
         },
         "bandlepipes": {
             "name": "Бандл-трубы",
-            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы поблизости также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         },
         "radiant_bandlepipes": {
             "name": "Лучезарные Бандл-трубы",
-            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы поблизости также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         },
         "seryldas_grudge": {
             "name": "Злоба Серильды",
@@ -5562,11 +5562,11 @@
         },
         "abyssal_mask": {
             "name": "Маска пустоты",
-            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов поблизости на <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Лучезарная Маска пустоты",
-            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов поблизости на <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "Атлас мира",
@@ -6452,11 +6452,11 @@
         },
         "bandlepipes": {
             "name": "밴들파이프",
-            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 주변 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         },
         "radiant_bandlepipes": {
             "name": "찬란한 밴들파이프",
-            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 주변 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         },
         "seryldas_grudge": {
             "name": "세릴다의 원한",
@@ -6688,11 +6688,11 @@
         },
         "abyssal_mask": {
             "name": "심연의 가면",
-            "option": "\n<#ff7a3eff>파괴<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
+            "option": "\n<#ff7a3eff>파괴<>: 주변 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
         },
         "radiant_abyssal_mask": {
             "name": "찬란한 심연의 가면",
-            "option": "\n<#ff7a3eff>파괴<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
+            "option": "\n<#ff7a3eff>파괴<>: 주변 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
         },
         "world_atlas": {
             "name": "세계 지도집",

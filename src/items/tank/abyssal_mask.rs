@@ -7,6 +7,9 @@ use crate::{
 
 const AURA_BUFF: &str = "abyssal_mask_aura";
 
+// Unmake's reach. Not configurable: the ring art is drawn at this size.
+const UNMAKE_RANGE: usize = 50;
+
 // Abyssal Mask — Unmake, an aura that lowers the magic resistance of the
 // enemy champions around the carrier.
 //
@@ -32,7 +35,6 @@ pub struct AbyssalMask {
     magic_resistance: i32,
     skill_cooldown_mult: i32,
     effect_percent_mr_shred: i32,
-    effect_max_distance: usize,
     // Non-vital stats (internals)
     // Ticks until the aura re-applies, on the shared cycle.
     refresh_cooldown: usize,
@@ -48,7 +50,6 @@ impl AbyssalMask {
             magic_resistance: 50,
             skill_cooldown_mult: 10,
             effect_percent_mr_shred: 20,
-            effect_max_distance: 50,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
@@ -83,8 +84,7 @@ impl AbyssalMask {
                 hp,
                 magic_resistance,
                 skill_cooldown_mult,
-                effect_percent_mr_shred,
-                effect_max_distance
+                effect_percent_mr_shred
             ]
         );
         self
@@ -108,7 +108,7 @@ impl AbyssalMask {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range = sized_range(ctx, caster_id, self.effect_max_distance);
+        let range = sized_range(ctx, caster_id, UNMAKE_RANGE);
         let range_sq = range * range;
 
         let mut targets: Vec<usize> = Vec::new();

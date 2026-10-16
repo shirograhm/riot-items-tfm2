@@ -3,6 +3,9 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS};
 
+// Fanfare's reach. Not configurable: the ring art is drawn at this size.
+const FANFARE_RANGE: usize = 100;
+
 // Bandlepipes — Fanfare, a self-empower that turns into a short team aura.
 //
 // # Why this is two buffs and not one
@@ -24,8 +27,8 @@ use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AUR
 // `fanfare_buff` is on the carrier for exactly as long as the aura runs, so
 // the `view_buffs` binding of the same name in `view/effects.view_effects`
 // (`effects/bandlepipes_aura`) draws the aura's edge under them for that
-// long. The picture is a 100-range circle, the default `effect_max_distance`:
-// a configured range or a bigger carrier reaches further than it shows.
+// long. The picture is a circle at [`FANFARE_RANGE`]; a bigger carrier reaches
+// further than it shows.
 //
 // # The residue when Fanfare ends
 //
@@ -55,7 +58,6 @@ pub struct Bandlepipes {
     effect_duration_seconds: f64,
     effect_move_speed_mult: i32,
     effect_attack_speed_mult: i32,
-    effect_max_distance: usize,
     // Non-vital stats (internals)
     // Ticks of Fanfare left; zero means the aura is not running.
     fanfare_remaining: usize,
@@ -81,7 +83,6 @@ impl Bandlepipes {
             effect_duration_seconds: 4.0,
             effect_move_speed_mult: 12,
             effect_attack_speed_mult: 20,
-            effect_max_distance: 100,
             // Non-vital stats (internals)
             fanfare_remaining: 0,
             refresh_cooldown: 0,
@@ -121,8 +122,7 @@ impl Bandlepipes {
                 skill_cooldown_mult,
                 effect_duration_seconds,
                 effect_move_speed_mult,
-                effect_attack_speed_mult,
-                effect_max_distance
+                effect_attack_speed_mult
             ]
         );
         self
@@ -137,7 +137,7 @@ impl Bandlepipes {
         caster_id: usize,
         caster_team: usize,
     ) -> Vec<usize> {
-        let range = sized_range(ctx, caster_id, self.effect_max_distance);
+        let range = sized_range(ctx, caster_id, FANFARE_RANGE);
         let range_sq = range * range;
 
         let mut targets = vec![caster_id];

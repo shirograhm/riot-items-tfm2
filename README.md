@@ -121,11 +121,11 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 #### Tier 4
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Abyssal Mask** | 700G | +250 HP<br>+50 MR<br>+10 Ability Haste | Unmake: Reduce the magic resistance of enemy champions within 50 range by 20%. |
+| **Abyssal Mask** | 700G | +250 HP<br>+50 MR<br>+10 Ability Haste | Unmake: Reduce the magic resistance of nearby enemy champions by 20%. |
 | **Ardent Censer** | 700G | +150 HP<br>+1 HP Regen<br>+25 AP<br>+10 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 750G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
-| **Bandlepipes** | 500G | +150 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% attack speed. |
+| **Bandlepipes** | 500G | +150 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and nearby allied champions also gain 20% attack speed. |
 | **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Bastionbreaker** | 650G | +35 AD<br>+15 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus true damage. |
 | **Black Cleaver** | 750G | +25 AD<br>+250 HP<br>+5 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
@@ -225,11 +225,11 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 #### Tier 5  
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Radiant Abyssal Mask** | 950G | +350 HP<br>+75 MR<br>+15 Ability Haste | Unmake: Reduce the magic resistance of enemy champions within 50 range by 20%. |
+| **Radiant Abyssal Mask** | 950G | +350 HP<br>+75 MR<br>+15 Ability Haste | Unmake: Reduce the magic resistance of nearby enemy champions by 20%. |
 | **Radiant Ardent Censer** | 850G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+10 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Radiant Atma's Reckoning** | 1050G | +700 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
-| **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and allied champions within 100 range also gain 20% attack speed. |
+| **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and nearby allied champions also gain 20% attack speed. |
 | **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Bastionbreaker** | 1000G | +55 AD<br>+20 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus true damage. |
 | **Radiant Black Cleaver** | 1100G | +35 AD<br>+350 HP<br>+10 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |

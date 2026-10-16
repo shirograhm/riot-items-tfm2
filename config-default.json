@@ -1553,8 +1553,7 @@
     "skill_cooldown_mult": 15,
     "effect_duration_seconds": 4,
     "effect_move_speed_mult": 12,
-    "effect_attack_speed_mult": 20,
-    "effect_max_distance": 100
+    "effect_attack_speed_mult": 20
   },
   "radiant_bandlepipes": {
     "price": 750,
@@ -1564,8 +1563,7 @@
     "skill_cooldown_mult": 20,
     "effect_duration_seconds": 4,
     "effect_move_speed_mult": 12,
-    "effect_attack_speed_mult": 20,
-    "effect_max_distance": 100
+    "effect_attack_speed_mult": 20
   },
   "seryldas_grudge": {
     "price": 700,
@@ -2093,16 +2091,14 @@
     "hp": 250,
     "magic_resistance": 50,
     "skill_cooldown_mult": 10,
-    "effect_percent_mr_shred": 20,
-    "effect_max_distance": 50
+    "effect_percent_mr_shred": 20
   },
   "radiant_abyssal_mask": {
     "price": 950,
     "hp": 350,
     "magic_resistance": 75,
     "skill_cooldown_mult": 15,
-    "effect_percent_mr_shred": 20,
-    "effect_max_distance": 50
+    "effect_percent_mr_shred": 20
   },
   "world_atlas": {
     "price": 250,
