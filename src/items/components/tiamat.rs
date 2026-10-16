@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, cleave_targets, percent_of, DISTANCE_UNITS_PER_RANGE};
 
 // Tiamat — the Cleave component Ravenous Hydra upgrades from.
 //
@@ -56,31 +56,6 @@ impl Tiamat {
             ]
         );
         item
-    }
-
-    fn splash_targets(&self, ctx: &StableSim<'_>, caster_team: usize, target: usize) -> Vec<usize> {
-        let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
-        let range_sq = range * range;
-
-        let mut splashed = Vec::new();
-        for index in 0..ctx.entity_count() {
-            let Some(entity_ref) = ctx.entity_at(index) else {
-                continue;
-            };
-            let id = entity_ref.id();
-            if id == target {
-                continue;
-            }
-            // Towers are enemy entities too, and Cleave is not meant for them.
-            if !entity_ref.is_alive() || entity_ref.is_tower() || entity_ref.team() == caster_team {
-                continue;
-            }
-            if ctx.distance_sq(target, id) > range_sq {
-                continue;
-            }
-            splashed.push(id);
-        }
-        splashed
     }
 }
 
@@ -153,7 +128,7 @@ impl StableItem for Tiamat {
             return;
         }
 
-        let splashed = self.splash_targets(ctx, caster_team, target);
+        let splashed = cleave_targets(ctx, caster_team, target, self.effect_max_distance);
         ctx.play_view_effect(
             self.cleave_effect,
             caster,

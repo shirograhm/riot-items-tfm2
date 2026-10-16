@@ -94,14 +94,11 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use state::State;
 
-// The whole feature. Off, nothing is read, patched or written, and a save
-// that has a patch state keeps it untouched.
-pub(crate) const ENABLED: bool = true;
-
-// Whether patches are on: the switch above, and the one in the patch
-// settings (`tuning`).
+// Whether patches are on: the `enabled` switch of the patch settings
+// (`tuning`). Off, nothing is read, patched or written, and a save that has
+// a patch state keeps it untouched.
 fn enabled() -> bool {
-    ENABLED && tuning::tuning().enabled
+    tuning::tuning().enabled
 }
 
 // The key the patch state lives under, in the mod's namespace of the save.

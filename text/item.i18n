@@ -290,11 +290,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Yun Tal Wildarrows",
-            "option": "\n<#ff7a3eff>Practice Makes Lethal<>: Basic attacks <#ffff99ff>on-attack<> grant <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\n<#ff7a3eff>Flurry<>: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
+            "option": "\n<#ff7a3eff>Practice Makes Lethal<>: Every third basic attack <#ffff99ff>on-attack<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\n<#ff7a3eff>Flurry<>: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Radiant Yun Tal Wildarrows",
-            "option": "\n<#ff7a3eff>Practice Makes Lethal<>: Basic attacks <#ffff99ff>on-attack<> grant <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\n<#ff7a3eff>Flurry<>: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
+            "option": "\n<#ff7a3eff>Practice Makes Lethal<>: Every third basic attack <#ffff99ff>on-attack<> grants <#d45656ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critical strike chance<> permanently, up to <#d45656ff>25%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0>.\n\n<#ff7a3eff>Flurry<>: Every <#e8a800ff>15 seconds<>, your next basic attack grants <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>6 seconds<>."
         },
         "unending_despair": {
             "name": "Unending Despair",
@@ -1416,11 +1416,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Mũi Tên Yun Tal",
-            "option": "\n<#ff7a3eff>Chí Mạng Tay Quen<>: Đòn đánh thường <#ffff99ff>khi tung ra<> tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\n<#ff7a3eff>Chuyển Động Liên Hoàn<>: Mỗi <#e8a800ff>15 giây<>, đòn đánh thường tiếp theo cấp <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<>."
+            "option": "\n<#ff7a3eff>Chí Mạng Tay Quen<>: Mỗi đòn đánh thường thứ ba <#ffff99ff>khi tung ra<> tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\n<#ff7a3eff>Chuyển Động Liên Hoàn<>: Mỗi <#e8a800ff>15 giây<>, đòn đánh thường tiếp theo cấp <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Mũi Tên Yun Tal Ánh Sáng",
-            "option": "\n<#ff7a3eff>Chí Mạng Tay Quen<>: Đòn đánh thường <#ffff99ff>khi tung ra<> tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\n<#ff7a3eff>Chuyển Động Liên Hoàn<>: Mỗi <#e8a800ff>15 giây<>, đòn đánh thường tiếp theo cấp <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<>."
+            "option": "\n<#ff7a3eff>Chí Mạng Tay Quen<>: Mỗi đòn đánh thường thứ ba <#ffff99ff>khi tung ra<> tăng <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>tỉ lệ chí mạng<> vĩnh viễn, tối đa <#e8a800ff>25%<>.\n\n<#ff7a3eff>Chuyển Động Liên Hoàn<>: Mỗi <#e8a800ff>15 giây<>, đòn đánh thường tiếp theo cấp <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>6 giây<>."
         },
         "unending_despair": {
             "name": "Áo Choàng Diệt Vong",
@@ -2542,11 +2542,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "育恩塔尔荒野箭",
-            "option": "\n<#ff7a3eff>熟能生巧<>：普通攻击<#ffff99ff>出手时<>永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n<#ff7a3eff>疾风骤雨<>：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>。"
+            "option": "\n<#ff7a3eff>熟能生巧<>：每第三次普通攻击<#ffff99ff>出手时<>永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n<#ff7a3eff>疾风骤雨<>：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>。"
         },
         "radiant_yun_tal_wildarrows": {
             "name": "光明版育恩塔尔荒野箭",
-            "option": "\n<#ff7a3eff>熟能生巧<>：普通攻击<#ffff99ff>出手时<>永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n<#ff7a3eff>疾风骤雨<>：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>。"
+            "option": "\n<#ff7a3eff>熟能生巧<>：每第三次普通攻击<#ffff99ff>出手时<>永久获得 <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>暴击几率<>，最多 <#e8a800ff>25%<>。\n\n<#ff7a3eff>疾风骤雨<>：每隔 <#e8a800ff>15秒<>，你的下一次普通攻击获得 <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>6秒<>。"
         },
         "unending_despair": {
             "name": "无终恨意",
@@ -3668,11 +3668,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Flechatroz de Yun Tal",
-            "option": "\n<#ff7a3eff>Praticar e Matar<>: Ataques básicos <#ffff99ff>ao atacar<> concedem <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\n<#ff7a3eff>Agitação<>: A cada <#e8a800ff>15 segundos<>, seu próximo ataque básico concede <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<>."
+            "option": "\n<#ff7a3eff>Praticar e Matar<>: A cada terceiro ataque básico <#ffff99ff>ao atacar<>, concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\n<#ff7a3eff>Agitação<>: A cada <#e8a800ff>15 segundos<>, seu próximo ataque básico concede <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Flechatroz de Yun Tal Radiante",
-            "option": "\n<#ff7a3eff>Praticar e Matar<>: Ataques básicos <#ffff99ff>ao atacar<> concedem <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\n<#ff7a3eff>Agitação<>: A cada <#e8a800ff>15 segundos<>, seu próximo ataque básico concede <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<>."
+            "option": "\n<#ff7a3eff>Praticar e Matar<>: A cada terceiro ataque básico <#ffff99ff>ao atacar<>, concede <#e8a800ff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>Chance de Acerto Crítico<> permanentemente, até <#e8a800ff>25%<>.\n\n<#ff7a3eff>Agitação<>: A cada <#e8a800ff>15 segundos<>, seu próximo ataque básico concede <#ceff99ff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>6 segundos<>."
         },
         "unending_despair": {
             "name": "Desespero Eterno",
@@ -4794,11 +4794,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "Дикие стрелы Юнталь",
-            "option": "\n<#ff7a3eff>Убийственная практика<>: Базовые атаки <#ffff99ff>при атаке<> навсегда дают <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\n<#ff7a3eff>Шквал<>: Каждые <#e8a800ff>15 секунд<> ваша следующая базовая атака даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<>."
+            "option": "\n<#ff7a3eff>Убийственная практика<>: Каждая третья базовая атака <#ffff99ff>при атаке<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\n<#ff7a3eff>Шквал<>: Каждые <#e8a800ff>15 секунд<> ваша следующая базовая атака даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<>."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "Лучезарные Дикие стрелы Юнталь",
-            "option": "\n<#ff7a3eff>Убийственная практика<>: Базовые атаки <#ffff99ff>при атаке<> навсегда дают <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\n<#ff7a3eff>Шквал<>: Каждые <#e8a800ff>15 секунд<> ваша следующая базовая атака даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<>."
+            "option": "\n<#ff7a3eff>Убийственная практика<>: Каждая третья базовая атака <#ffff99ff>при атаке<> навсегда даёт <#e8a800ff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#e8a800ff>шанса критического удара<>, вплоть до <#e8a800ff>25%<>.\n\n<#ff7a3eff>Шквал<>: Каждые <#e8a800ff>15 секунд<> ваша следующая базовая атака даёт <#ceff99ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>6 секунд<>."
         },
         "unending_despair": {
             "name": "Бесконечное Отчаяние",
@@ -5920,11 +5920,11 @@
         },
         "yun_tal_wildarrows": {
             "name": "윤 탈 야생화살",
-            "option": "\n<#ff7a3eff>치명적인 연습<>: 기본 <#ffff99ff>공격 시<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n<#ff7a3eff>연타<>: <#e8a800ff>15초<>마다 다음 기본 공격이 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#ceff99ff>30%<> 증가시킵니다."
+            "option": "\n<#ff7a3eff>치명적인 연습<>: 세 번째 기본 공격마다 <#ffff99ff>공격 시<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n<#ff7a3eff>연타<>: <#e8a800ff>15초<>마다 다음 기본 공격이 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#ceff99ff>30%<> 증가시킵니다."
         },
         "radiant_yun_tal_wildarrows": {
             "name": "찬란한 윤 탈 야생화살",
-            "option": "\n<#ff7a3eff>치명적인 연습<>: 기본 <#ffff99ff>공격 시<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n<#ff7a3eff>연타<>: <#e8a800ff>15초<>마다 다음 기본 공격이 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#ceff99ff>30%<> 증가시킵니다."
+            "option": "\n<#ff7a3eff>치명적인 연습<>: 세 번째 기본 공격마다 <#ffff99ff>공격 시<> <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타 확률<>이 영구적으로 <#d45656ff>1%<> 증가하며, 최대 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>25%<>까지 증가합니다.\n\n<#ff7a3eff>연타<>: <#e8a800ff>15초<>마다 다음 기본 공격이 <#e8a800ff>6초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>를 <#ceff99ff>30%<> 증가시킵니다."
         },
         "unending_despair": {
             "name": "끝없는 절망",

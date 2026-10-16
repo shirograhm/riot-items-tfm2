@@ -13,6 +13,8 @@ pub struct KrakenSlayer {
     effect_bonus_flat_damage: usize,
     effect_max_percent_bonus: f64,
     effect_hp_percent_threshold: f64,
+    // Not read from the config: the tooltip spells the count out ("Every
+    // third basic attack").
     effect_attack_interval: usize,
     attack_count: usize,
     procs: ProcQueue,
@@ -104,7 +106,6 @@ impl KrakenSlayer {
                 effect_bonus_flat_damage,
                 effect_max_percent_bonus,
                 effect_hp_percent_threshold,
-                effect_attack_interval,
             ]
         );
         self

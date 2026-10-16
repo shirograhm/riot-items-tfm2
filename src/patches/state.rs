@@ -147,6 +147,12 @@ pub(crate) struct Change {
     // exactly as set.
     #[serde(rename = "m")]
     pub manual: bool,
+    // The other tier of the item this change brings level with that tier's
+    // own change: a radiant raised with its legendary, a legendary taken
+    // down with its radiant. Its notes are in that tier's entry. Empty for
+    // every other change, and in a patch from before this was kept.
+    #[serde(rename = "l")]
+    pub leader: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]

@@ -950,42 +950,6 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     }
 }
 
-// The game's own thirty items by the names `config.json` is written in,
-// which are their League ones, and the name each has at the root of the
-// settings file.
-const GAME_ITEM_NAMES: [(&str, &str); 30] = [
-    ("long_sword", "iron_blade"),
-    ("pickaxe", "soldiers_longsword"),
-    ("vampiric_scepter", "ruinous_blade"),
-    ("bloodthirster", "conquerors_greatsword"),
-    ("radiant_bloodthirster", "warlords_final_judgement"),
-    ("dagger", "dagger"),
-    ("recurve_bow", "wind_dagger"),
-    ("zeal", "twin_stormblade"),
-    ("phantom_dancer", "thunderclaw"),
-    ("radiant_phantom_dancer", "storm_sovereign"),
-    ("cloth_armor", "steel_armor"),
-    ("chain_vest", "gatekeepers_armor"),
-    ("bramble_vest", "black_knights_heavy_plate"),
-    ("thornmail", "eternal_iron_plate"),
-    ("radiant_thornmail", "impregnable_fortress"),
-    ("null_magic_mantle", "mystic_cloak"),
-    ("negatron_cloak", "night_hood"),
-    ("spectres_cowl", "dusk_raven"),
-    ("dragons_claw", "souls_edge"),
-    ("radiant_dragons_claw", "veil_of_annihilation"),
-    ("amplifying_tome", "arcane_crystal"),
-    ("blasting_wand", "spirit_crystal"),
-    ("lost_chapter", "staff_of_rapture"),
-    ("ludens_tempest", "angels_fang"),
-    ("radiant_ludens_tempest", "prophet_of_the_abyss"),
-    ("ruby_crystal", "vital_orb"),
-    ("kindlegem", "hardened_heart"),
-    ("giants_belt", "ring_of_reincarnation"),
-    ("sunfire_cape", "hourglass_of_eternity"),
-    ("radiant_sunfire_cape", "giants_horn_shard"),
-];
-
 // Passive numbers the engine keeps outside the stat block: config entry,
 // config field, the settings field, and what one of the config's is of the
 // setting's (a range is written in thousandths of a distance unit).
@@ -1023,7 +987,7 @@ fn apply_game_item_config(root: &mut serde_json::Map<String, Value>) -> bool {
     let defaults = crate::patches::base::read_object("config-default.json");
     let overrides = crate::patches::base::read_object("config.json");
     let mut changed = false;
-    for (name, key) in GAME_ITEM_NAMES {
+    for (name, key) in crate::item_catalog::GAME_ITEM_NAMES {
         let Some(Value::Object(entry)) = root.get_mut(key) else {
             continue;
         };

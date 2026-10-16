@@ -49,7 +49,7 @@
 //! total, which is a different shape of aggregate than [`crate::item_stats`]
 //! keeps.
 
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 use std::sync::Mutex;
 
 use mod_api_stable::*;
@@ -423,28 +423,7 @@ fn with_state<T>(f: impl FnOnce(&mut State) -> T) -> Option<T> {
 // node it was registered for, so registering twice on one live path runs the
 // handler twice, and a process-lifetime set would leave the *second* visit to
 // this screen unwired. Cleared only on teardown.
-static REGISTERED: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
-
-fn register_once(ctx: &mut StableClient<'_>, path: &str) {
-    let fresh = REGISTERED
-        .lock()
-        .map(|mut set| set.insert(path.to_string()))
-        .unwrap_or(false);
-    if !fresh {
-        return;
-    }
-    if !ctx.ui_register_path_events(path, handle_event) {
-        if let Ok(mut set) = REGISTERED.lock() {
-            set.remove(path);
-        }
-    }
-}
-
-fn forget_registrations() {
-    if let Ok(mut set) = REGISTERED.lock() {
-        set.clear();
-    }
-}
+static REGISTERED: crate::ui::Registered = crate::ui::Registered::new(handle_event);
 
 // Per-frame entry point, called from the mod's one client hook.
 //
@@ -668,7 +647,7 @@ fn resolve_screen(ctx: &mut StableClient<'_>) -> Option<String> {
         let _ = with_state(|state| {
             *state = State::new();
         });
-        forget_registrations();
+        REGISTERED.forget();
         return None;
     }
 
@@ -784,7 +763,7 @@ fn wire(ctx: &mut StableClient<'_>, screen: &str) {
     }
 
     for path in &paths {
-        register_once(ctx, path);
+        REGISTERED.register(ctx, path);
     }
 
     // The id list is refreshed per screen entry rather than per frame: it copies
@@ -841,7 +820,7 @@ fn handler_paths(screen: &str) -> Vec<String> {
 // `ui_register_path_events` registers a handler for **every** event whose path
 // equals the one given, and the closure it takes is leaked — "handlers live
 // until process exit". A registration is therefore permanent and keyed by the
-// *path*, not by the node that happens to sit at it. [`forget_registrations`]
+// *path*, not by the node that happens to sit at it. `REGISTERED.forget()`
 // clears only this module's own bookkeeping when the screen goes away, so the
 // next visit registers the same paths again and leaves **two** live handlers on
 // each of them.

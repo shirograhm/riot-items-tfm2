@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, immolate_burn, mark_immolate, percent_of, ItemMeta, DISTANCE_UNITS_PER_RANGE,
+    apply_config, enemies_near, immolate_burn, mark_immolate, percent_of, ItemMeta,
     TICKS_PER_SECOND,
 };
 
@@ -115,29 +115,6 @@ impl HollowRadiance {
         );
         self
     }
-
-    // Enemy units (not turrets) within `range` of a point, with whether each
-    // is a champion.
-    fn enemies_near(
-        ctx: &StableSim<'_>,
-        team: usize,
-        (x, y): (u64, u64),
-        range: usize,
-    ) -> Vec<(usize, bool)> {
-        let range = (range * DISTANCE_UNITS_PER_RANGE) as i128;
-        let range_sq = range * range;
-        (0..ctx.entity_count())
-            .filter_map(|index| ctx.entity_at(index))
-            .filter(|e| e.is_alive() && !e.is_tower() && e.team() != team)
-            .filter(|e| {
-                let (ex, ey) = e.pos();
-                let dx = ex as i128 - x as i128;
-                let dy = ey as i128 - y as i128;
-                dx * dx + dy * dy <= range_sq
-            })
-            .map(|e| (e.id(), e.is_champion()))
-            .collect()
-    }
 }
 
 impl Default for HollowRadiance {
@@ -210,7 +187,9 @@ impl StableItem for HollowRadiance {
         for at in std::mem::take(&mut self.eruptions) {
             let damage = self.effect_explosion_flat_damage
                 + percent_of(max_hp, self.effect_explosion_caster_hp_percent);
-            let targets = Self::enemies_near(ctx, team, at, self.effect_explosion_distance);
+            let targets = enemies_near(ctx, team, at, self.effect_explosion_distance, |e| {
+                (e.id(), e.is_champion())
+            });
             ctx.play_view_effect(
                 DESOLATE_EFFECT,
                 caster,

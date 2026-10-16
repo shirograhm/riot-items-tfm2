@@ -22,6 +22,8 @@ pub struct Hullbreaker {
     attack: i32,
     hp: i32,
     move_speed_mult: i32,
+    // Not read from the config: the tooltip spells the count out ("Every
+    // fifth basic attack").
     effect_attack_interval: usize,
     effect_ad_percent_damage: f64,
     effect_caster_hp_percent_damage: f64,
@@ -95,7 +97,6 @@ impl Hullbreaker {
                 attack,
                 hp,
                 move_speed_mult,
-                effect_attack_interval,
                 effect_ad_percent_damage,
                 effect_caster_hp_percent_damage,
                 effect_tower_ad_percent_damage,

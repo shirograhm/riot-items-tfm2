@@ -30,8 +30,9 @@
 //! it has gone out; the line on the left says which.
 //!
 //! Over the page, beside the cross, **Import** and **Export** carry all of
-//! it from one save to another, through a file beside the game's saves
-//! ([`transfer`]). What they did is said on the footer's line.
+//! it from one save to another, through a file the player picks in a Windows
+//! file dialog that opens in the mod's folder ([`transfer`]). What they did
+//! is said on the footer's line.
 //!
 //! # Where the window hangs
 //!
@@ -1582,7 +1583,7 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
                 "%IMPORT_HINT%",
                 said(
                     "settings_import_hint",
-                    "Replace this save's settings with the ones last exported.",
+                    "Replace this save's settings with the ones in a file you choose.",
                 )
                 .as_str(),
             ),
@@ -1736,6 +1737,14 @@ fn sync_row(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
     let contents = format!("{dialog}.contents");
     let row = format!("{contents}.{ROW}");
     let fresh = !ctx.ui_exists(&row);
+    // Rows stand in the order they were appended, and this one goes under
+    // Item Rules (the user, 2026-10-16: "I would like to have this toggle
+    // option above the option for patch data"). That row is spawned first in
+    // the frame, so this waits a frame at most: only when the two finders
+    // came upon the dialog on different frames.
+    if fresh && !ctx.ui_exists(&format!("{contents}.{}", super::options_row::ROW)) {
+        return;
+    }
     if fresh {
         let worded =
             |words: (&str, &str)| options_dialog::escape(&options_dialog::text(ctx, words));
@@ -1770,6 +1779,9 @@ fn sync_row(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
 // its clicks and its boxes. It closes on its cross and on Back, and with the
 // dialog under it.
 fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
+    // A file dialog that has closed is acted on whether the window is up or
+    // not: a file chosen is never written or read late.
+    let transferred = transfer::finished();
     let wanted = OPEN.swap(false, Ordering::Relaxed);
     let clicks = CLICKS
         .lock()
@@ -1866,20 +1878,31 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
         window.notice = None;
     }
 
-    // Import and Export. An import puts other numbers in the boxes, so the
-    // page is made again from what the save has now.
+    // Import and Export each open a file dialog, which the footer points to
+    // while it is up. Once a file is chosen it is written or read
+    // (`transfer::finished`), and an import puts other numbers in the boxes,
+    // so the page is made again from what the save has now.
     let export = window.under(".popup.export");
     if settled && clicks.iter().any(|path| *path == export) {
-        window.notice = Some(transfer::export());
-        changed = true;
+        if let Some(notice) = transfer::start_export() {
+            window.notice = Some(notice);
+            changed = true;
+        }
     }
     let import = window.under(".popup.import");
     if settled && clicks.iter().any(|path| *path == import) {
-        let notice = transfer::import();
-        if let Some(index) = window.picked {
-            show_page(ctx, window, index, frame);
+        if let Some(notice) = transfer::start_import() {
+            window.notice = Some(notice);
+            changed = true;
         }
-        window.notice = notice;
+    }
+    if let Some(done) = transferred {
+        if done.imported {
+            if let Some(index) = window.picked {
+                show_page(ctx, window, index, frame);
+            }
+        }
+        window.notice = done.notice;
         changed = true;
     }
 

@@ -35,10 +35,8 @@ pub struct PhilosophersStone {
     // Non-vital stats (internals)
     until_next_burn: usize,
     cinderhulk_stacks: usize,
-    // The stack count last noted for an upgrade to take over.
-    noted_stacks: usize,
-    // Whether this instance has taken over the stacks of the item it replaced.
-    inherited: bool,
+    // What carries the stacks into an upgrade.
+    carry: upgrade_carry::StackCarry,
 }
 
 impl PhilosophersStone {
@@ -58,8 +56,7 @@ impl PhilosophersStone {
             // Non-vital stats (internals)
             until_next_burn: TICKS_PER_SECOND as usize,
             cinderhulk_stacks: 0,
-            noted_stacks: 0,
-            inherited: false,
+            carry: upgrade_carry::StackCarry::default(),
         }
     }
 
@@ -126,24 +123,19 @@ impl PhilosophersStone {
         );
     }
 
-    // Keeps the stacks where an upgrade can find them. The Radiant item
-    // arrives as a fresh instance: it takes over the base item's stacks once,
-    // clamped to its own ceiling, and every instance notes its count when it
-    // grows. Only the counter moves. The health gained this life is already on
-    // the champion as `cinderhulk` buffs, and `on_spawn` re-applies it from
-    // the count on the next respawn.
+    // Keeps the stacks where an upgrade can find them
+    // (`upgrade_carry::StackCarry`). Only the counter moves. The health
+    // gained this life is already on the champion as `cinderhulk` buffs, and
+    // `on_spawn` re-applies it from the count on the next respawn.
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
-        if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
-            if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
-                let stacks = (stacks as usize).min(self.effect_max_stacks);
-                self.cinderhulk_stacks = self.cinderhulk_stacks.max(stacks);
-                self.noted_stacks = self.cinderhulk_stacks;
-            }
-        }
-        if self.cinderhulk_stacks != self.noted_stacks {
-            self.noted_stacks = self.cinderhulk_stacks;
-            upgrade_carry::note(BASE_KEY, ctx, player, self.cinderhulk_stacks as u64);
-        }
+        self.carry.carry(
+            BASE_KEY,
+            &self.meta,
+            ctx,
+            player,
+            &mut self.cinderhulk_stacks,
+            self.effect_max_stacks,
+        );
     }
 }
 

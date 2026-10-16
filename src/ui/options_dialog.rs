@@ -1,6 +1,7 @@
 //! The game's Options dialog as the mod finds it: where it is in the UI
 //! tree, whether it is showing, and whether its Competition tab is the one
-//! up. For the row the mod adds to that tab (`super::patch_settings`).
+//! up. For the rows the mod adds to that tab: `super::options_row`'s Item
+//! Rules and, under it, `super::patch_settings`' Item Patcher Settings.
 //!
 //! # The dialog
 //!

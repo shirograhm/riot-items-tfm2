@@ -82,7 +82,6 @@ pub struct ItemConfig {
     pub effect_min_stacks: Option<usize>,
     pub effect_max_stacks: Option<usize>,
     pub effect_hp_per_stack: Option<usize>,
-    pub effect_attack_interval: Option<usize>,
     pub effect_bonus_flat_hp: Option<i32>,
     pub effect_hp_percent_boost: Option<f64>,
     pub effect_hp_percent_threshold: Option<f64>,

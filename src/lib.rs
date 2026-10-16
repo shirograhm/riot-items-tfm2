@@ -6,6 +6,7 @@ mod champion_traits;
 mod hooks;
 mod item_catalog;
 mod item_stats;
+mod item_tiers;
 mod items;
 mod patches;
 mod smart_builds;
@@ -26,7 +27,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
-pub(crate) use ui::{item_counts, item_spend, match_builds, solo_rank_ui, strategy_ui};
+pub(crate) use ui::{item_counts, item_spend, match_builds, options_row, solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
@@ -227,6 +228,82 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
     ctx.add_buff(champion_id, &buff);
 }
 
+// Adaptive force from a tier whose lesser tier gives some too
+// (`upgrades_from`: that tier's buff and its force). While the lesser tier's
+// buff is still on the champion, only what this tier adds over it.
+fn apply_tiered_adaptive_force(
+    ctx: &mut StableSim<'_>,
+    player: usize,
+    adaptive_force: i32,
+    name: &str,
+    upgrades_from: Option<(&str, i32)>,
+) {
+    let mut force = adaptive_force;
+    if let Some((prior_buff, prior_force)) = upgrades_from {
+        let Some(player_ref) = ctx.get_player(player) else {
+            return;
+        };
+        let Some(champion_ref) = player_ref.champion() else {
+            return;
+        };
+        if has_buff(&champion_ref, prior_buff) {
+            force = adaptive_force - prior_force;
+        }
+    }
+    apply_adaptive_force(ctx, player, force, name);
+}
+
+// Enemy units (not turrets) within `range` of a spot, each as `with` makes
+// it: its id, or its id and what the caller needs of it.
+fn enemies_near<T>(
+    ctx: &StableSim<'_>,
+    team: usize,
+    (x, y): (u64, u64),
+    range: usize,
+    with: impl Fn(&StableEntity<'_, '_>) -> T,
+) -> Vec<T> {
+    let range = (range * DISTANCE_UNITS_PER_RANGE) as i128;
+    let range_sq = range * range;
+    (0..ctx.entity_count())
+        .filter_map(|index| ctx.entity_at(index))
+        .filter(|e| e.is_alive() && !e.is_tower() && e.team() != team)
+        .filter(|e| {
+            let (ex, ey) = e.pos();
+            let dx = ex as i128 - x as i128;
+            let dy = ey as i128 - y as i128;
+            dx * dx + dy * dy <= range_sq
+        })
+        .map(|e| with(&e))
+        .collect()
+}
+
+// The enemies a Cleave splashes (Tiamat, Ravenous Hydra): every one other
+// than `target` within `range` of it, by the game's own distance.
+fn cleave_targets(ctx: &StableSim<'_>, caster_team: usize, target: usize, range: usize) -> Vec<usize> {
+    let range = (range * DISTANCE_UNITS_PER_RANGE) as u64;
+    let range_sq = range * range;
+
+    let mut splashed = Vec::new();
+    for index in 0..ctx.entity_count() {
+        let Some(entity_ref) = ctx.entity_at(index) else {
+            continue;
+        };
+        let id = entity_ref.id();
+        if id == target {
+            continue;
+        }
+        // Towers are enemy entities too, and Cleave is not meant for them.
+        if !entity_ref.is_alive() || entity_ref.is_tower() || entity_ref.team() == caster_team {
+            continue;
+        }
+        if ctx.distance_sq(target, id) > range_sq {
+            continue;
+        }
+        splashed.push(id);
+    }
+    splashed
+}
+
 struct NativeTapExtension;
 
 impl StableServerExtension for NativeTapExtension {
@@ -277,6 +354,8 @@ impl StableServerExtension for NativeTapExtension {
         // What the server's side of the save has of the item patches, for
         // the test log.
         patches::server_started(ctx);
+        // And its own Item Rules setting, not the last save's.
+        item_tiers::server_started();
 
         match hook::install_hook() {
             Ok(address) => {
