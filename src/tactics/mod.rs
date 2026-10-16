@@ -22,7 +22,6 @@ use std::sync::Mutex;
 pub mod driver;
 
 const TRACE_FILES: bool = false;
-const TACTICS_ENABLED: bool = true;
 
 // ===========================================================================
 //  WinAPI FFI
@@ -4430,10 +4429,6 @@ fn check_game_version() -> bool {
 // exactly 0.5.3 — so the loader will happily attach this DLL on 0.5.4 and this
 // gate is the only thing standing between that and a corrupted game.
 fn tactics_init() -> bool {
-    // Bisect switch: behave exactly as a closed version gate (see TACTICS_ENABLED).
-    if !TACTICS_ENABLED {
-        return false;
-    }
     // Register the VEH before anything else. `safe_copy` returns `false` on
     // entry while `SEH_INSTALLED` is false, so until this runs EVERY protected
     // read in this module fails — `safe_read_u64`, `safe_read_bytes`, all of it.
