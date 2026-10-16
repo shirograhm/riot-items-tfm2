@@ -25,8 +25,8 @@
         "min_games": 15,
         "max_nerfs": 3,
         "max_buffs": 4,
-        "min_total_percent": 40,
-        "max_total_percent": 165,
-        "max_changes_per_item": 2
+        "min_total_percent": 30,
+        "max_total_percent": 175,
+        "max_changes_per_item": 3
     }
 }
