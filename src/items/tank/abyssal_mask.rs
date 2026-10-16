@@ -1,7 +1,11 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, sized_range, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS};
+use crate::{
+    apply_config, refresh_buff, sized_range, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
+};
+
+const AURA_BUFF: &str = "abyssal_mask_aura";
 
 // Abyssal Mask — Unmake, an aura that lowers the magic resistance of the
 // enemy champions around the carrier.
@@ -123,6 +127,15 @@ impl AbyssalMask {
                 continue;
             }
             targets.push(id);
+        }
+
+        if !targets.is_empty() {
+            refresh_buff(
+                ctx,
+                caster_id,
+                AURA_BUFF,
+                &BuffV1::timed(AURA_BUFF, AURA_DURATION_TICKS),
+            );
         }
 
         for id in targets {
