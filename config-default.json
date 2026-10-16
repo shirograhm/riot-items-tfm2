@@ -606,8 +606,7 @@
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
-    "effect_hp_percent_threshold": 25.0,
-    "effect_attack_interval": 3
+    "effect_hp_percent_threshold": 25.0
   },
   "radiant_kraken_slayer": {
     "price": 1000,
@@ -616,8 +615,7 @@
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
-    "effect_hp_percent_threshold": 25.0,
-    "effect_attack_interval": 3
+    "effect_hp_percent_threshold": 25.0
   },
   "atmas_reckoning": {
     "price": 750,
@@ -1992,7 +1990,6 @@
     "attack": 20,
     "hp": 200,
     "move_speed_mult": 4,
-    "effect_attack_interval": 5,
     "effect_ad_percent_damage": 80.0,
     "effect_caster_hp_percent_damage": 5.0,
     "effect_tower_ad_percent_damage": 200.0,
@@ -2008,7 +2005,6 @@
     "attack": 35,
     "hp": 300,
     "move_speed_mult": 4,
-    "effect_attack_interval": 5,
     "effect_ad_percent_damage": 80.0,
     "effect_caster_hp_percent_damage": 5.0,
     "effect_tower_ad_percent_damage": 200.0,

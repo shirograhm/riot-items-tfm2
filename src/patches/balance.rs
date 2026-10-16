@@ -400,7 +400,8 @@ fn with_partner(state: &State, id: &str, family: &Family, first: Step) -> Vec<St
 //
 // `tier` is the item with that one tier in it, and `id` the tier's own key,
 // which its ratios are kept under. `seed` is what orders the numbers that
-// are tried, and `allowed` is asked of every step before it is taken.
+// are tried, and `allowed` is asked of every step before it is taken, with
+// the plan so far.
 #[allow(clippy::too_many_arguments)]
 fn plan_for(
     state: &State,
@@ -410,7 +411,7 @@ fn plan_for(
     buff: bool,
     rate: f64,
     wanted: usize,
-    allowed: &dyn Fn(&[Step]) -> bool,
+    allowed: &dyn Fn(&[Step], &[Step]) -> bool,
 ) -> Vec<Step> {
     let family = tier;
     let mut candidates: Vec<&str> = Vec::new();
@@ -461,7 +462,7 @@ fn plan_for(
             };
             steps.push(made_up);
         }
-        if !fits(state, id, family, &plan, &steps, buff) || !allowed(&steps) {
+        if !fits(state, id, family, &plan, &steps, buff) || !allowed(&plan, &steps) {
             continue;
         }
         plan.extend(steps);
@@ -483,7 +484,7 @@ fn plan_for(
             continue;
         }
         let steps = with_partner(state, id, family, first);
-        if !fits(state, id, family, &plan, &steps, buff) || !allowed(&steps) {
+        if !fits(state, id, family, &plan, &steps, buff) || !allowed(&plan, &steps) {
             continue;
         }
         plan.extend(steps);
@@ -555,22 +556,14 @@ fn crosses(
             if other_at == at || their_base == my_base {
                 return false;
             }
-            let theirs = landed
+            let landed_at = landed
                 .iter()
                 .rev()
                 .find(|(tier, moved, _)| *tier == other_at && moved == field)
-                .map_or_else(
-                    || {
-                        fields::quantize(
-                            &other.key,
-                            field,
-                            their_base,
-                            their_base * state.ratio(&other.key, field),
-                            other.whole.contains(field),
-                        )
-                    },
-                    |(_, _, value)| *value,
-                );
+                .map(|(_, _, value)| *value);
+            let Some(theirs) = landed_at.or_else(|| reads(state, other, field)) else {
+                return false;
+            };
             // On the other side of the other tier's number than unpatched.
             (after - theirs) * (my_base - their_base) < 0.0
         })
@@ -612,7 +605,9 @@ fn level_with(member: &Member, field: &str, value: f64, lower: bool) -> Option<f
 // well, and a nerf to it leaves the radiant's where it is.
 //
 // The tier that comes level gets a change of its own for the number, or
-// has the one the patch already made for it set to the level.
+// has the one the patch already made for it set to the level. A change of
+// its own follows the other tier's (`Change::leader`), and the notes list
+// it in that tier's entry.
 fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec<Change>) {
     let family = judged.family;
     let (Some(legendary), Some(radiant)) = (
@@ -638,7 +633,7 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
         };
         // What a tier's number reads: as its change leaves it, or as the
         // state has it.
-        let reads = |member: &Member, changes: &[Change], index: Option<usize>| -> Option<f64> {
+        let reading = |member: &Member, changes: &[Change], index: Option<usize>| -> Option<f64> {
             if let Some(index) = index {
                 return changes[index]
                     .members
@@ -646,22 +641,15 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
                     .find(|moved| moved.key == member.key)
                     .map(|moved| moved.after);
             }
-            let unpatched = *member.values.get(field.as_str())?;
-            Some(fields::quantize(
-                &member.key,
-                field,
-                unpatched,
-                unpatched * state.ratio(&member.key, field),
-                member.whole.contains(field.as_str()),
-            ))
+            reads(state, member, field)
         };
         let (low_at, high_at) = (moved_at(legendary, &changes[..]), moved_at(radiant, &changes[..]));
         if low_at.is_none() && high_at.is_none() {
             continue;
         }
         let (Some(low), Some(high)) = (
-            reads(legendary, &changes[..], low_at),
-            reads(radiant, &changes[..], high_at),
+            reading(legendary, &changes[..], low_at),
+            reading(radiant, &changes[..], high_at),
         ) else {
             continue;
         };
@@ -676,10 +664,10 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
         }
         // The legendary leads where the patch moved it, and the radiant
         // where the patch moved the radiant alone.
-        let (level, follower, follower_at, read) = if low_at.is_some() {
-            (low, radiant, high_at, high)
+        let (level, leader, follower, follower_at, read) = if low_at.is_some() {
+            (low, legendary, radiant, high_at, high)
         } else {
-            (high, legendary, low_at, low)
+            (high, radiant, legendary, low_at, low)
         };
         let (Some(after), Some(&unpatched)) = (
             level_with(follower, field, level, lower),
@@ -710,6 +698,7 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
                 wins: judged.tally.wins,
                 follows: false,
                 manual: false,
+                leader: leader.key.clone(),
             });
             continue;
         };
@@ -745,6 +734,15 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
 //
 // Every row a change brings is the item's, under its buff or its nerf: what
 // makes up for a buff is a number going down in the list of buffs.
+//
+// And no more of those rows than the player's settings allow an item
+// (`max_changes_per_item`, [`within_rows`]), counted as the notes write
+// them: a number made up for another is a row of its own, the two ends of
+// a range are one. The tiers share the count, so each tier's notes keep to
+// it too, and still do once a tier left the weaker is brought level
+// ([`level_tiers`]), which only moves a number the other tier moved. The
+// upgrades kept no weaker than their parts afterwards (`level_upgrades`)
+// are not held to it.
 fn changes_for(
     state: &State,
     judged: &Judged<'_>,
@@ -758,9 +756,12 @@ fn changes_for(
     let wanted = if size >= TWO_FIELDS_FROM { 2 } else { 1 };
     let family = judged.family;
     let together = Rng::seeded(number, judged.id).next() % 2 == 0;
+    let cap = super::tuning::tuning().max_changes_per_item;
 
     // What the tiers moved so far read: tier, field, number.
     let mut landed: Vec<(usize, String, f64)> = Vec::new();
+    // The rows they have taken so far, by the number that names each.
+    let mut rows: Vec<String> = Vec::new();
     let mut changes = Vec::new();
     for at in tiers_to_move(family, tallies, buff) {
         let member = &family.members[at];
@@ -783,13 +784,19 @@ fn changes_for(
             buff,
             rate,
             wanted,
-            &|steps: &[Step]| {
-                !crosses(state, family, at, steps, &landed) && !undercuts(floors, &member.key, steps)
+            &|plan: &[Step], steps: &[Step]| {
+                !crosses(state, family, at, steps, &landed)
+                    && !undercuts(floors, &member.key, steps)
+                    && within_rows(&rows, &member.key, plan, steps, cap)
             },
         );
         for step in plan {
             if let Some(moved) = step.members.first() {
                 landed.push((at, step.field.clone(), moved.after));
+            }
+            let row = super::text::row_of(&member.key, &step.field);
+            if !rows.iter().any(|taken| taken == row) {
+                rows.push(row.to_string());
             }
             changes.push(Change {
                 family: judged.id.to_string(),
@@ -801,11 +808,27 @@ fn changes_for(
                 wins: judged.tally.wins,
                 follows: false,
                 manual: false,
+                leader: String::new(),
             });
         }
     }
     level_tiers(state, judged, buff, &mut changes);
     changes
+}
+
+// Whether an item's notes keep to `cap` rows with `steps` taken on top of
+// `plan`, the steps of its tier `key` so far, and `rows`, what the tiers
+// planned before took ([`super::text::row_of`] names a row). A number whose
+// row is taken already, by this tier or another, takes none.
+fn within_rows(rows: &[String], key: &str, plan: &[Step], steps: &[Step], cap: usize) -> bool {
+    let mut taken: Vec<&str> = rows.iter().map(String::as_str).collect();
+    for step in plan.iter().chain(steps) {
+        let row = super::text::row_of(key, &step.field);
+        if !taken.contains(&row) {
+            taken.push(row);
+        }
+    }
+    taken.len() <= cap
 }
 
 // The most times [`level_upgrades`] goes over the upgrades: a build path is
@@ -914,24 +937,19 @@ fn stat_now(
     if let Some(moved) = moved {
         return moved.after;
     }
-    let patched = members.get(key).and_then(|(_, member)| {
-        let unpatched = *member.values.get(field)?;
-        Some(fields::quantize(
-            &member.key,
-            field,
-            unpatched,
-            unpatched * state.ratio(&member.key, field),
-            member.whole.contains(field),
-        ))
-    });
+    let patched = members
+        .get(key)
+        .and_then(|(_, member)| reads(state, member, field));
     patched.unwrap_or_else(|| stat_held(base, key, field))
 }
 
 // Sets the stat `field` of the tier `key` level with `level`: the nearest
 // of its own steps that is no less where `up`, and no more where not. A
 // tier `changes` has already moved in the stat has that change end at the
-// level, and one it has not gets a change of its own. Whether anything was
-// changed.
+// level, and one it has not gets a change of its own: one that follows
+// `leader`, the item the level is read off, where that is another tier of
+// the same item. Whether anything was changed.
+#[allow(clippy::too_many_arguments)]
 fn set_level(
     members: &HashMap<&str, (&str, &Member)>,
     state: &State,
@@ -940,6 +958,7 @@ fn set_level(
     field: &str,
     level: f64,
     up: bool,
+    leader: &str,
 ) -> bool {
     let Some(&(family, member)) = members.get(key) else {
         return false;
@@ -962,13 +981,9 @@ fn set_level(
         change.field == field && change.members.iter().any(|moved| moved.key == key)
     });
     let Some(at) = at else {
-        let before = fields::quantize(
-            &member.key,
-            field,
-            unpatched,
-            unpatched * state.ratio(&member.key, field),
-            whole,
-        );
+        let Some(before) = reads(state, member, field) else {
+            return false;
+        };
         if (after - before).abs() < 1e-9 {
             return false;
         }
@@ -976,6 +991,9 @@ fn set_level(
         if state.within(key, field, before, after) == Some(false) {
             return false;
         }
+        let sister = members
+            .get(leader)
+            .is_some_and(|(other, _)| *other == family);
         changes.push(Change {
             family: family.to_string(),
             field: field.to_string(),
@@ -990,6 +1008,11 @@ fn set_level(
             wins: 0,
             follows: true,
             manual: false,
+            leader: if sister {
+                leader.to_string()
+            } else {
+                String::new()
+            },
         });
         return true;
     };
@@ -1063,9 +1086,9 @@ fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
                     continue;
                 }
                 let moved = if moves(upgrade, field) {
-                    set_level(&members, state, changes, upgrade, field, low, true)
+                    set_level(&members, state, changes, upgrade, field, low, true, part)
                 } else if moves(part, field) {
-                    set_level(&members, state, changes, part, field, high, false)
+                    set_level(&members, state, changes, part, field, high, false, upgrade)
                 } else {
                     false
                 };
@@ -1257,7 +1280,9 @@ pub(crate) fn decide(
     }
 }
 
-// What `field` of the tier `member` reads at the balance `state` has.
+// What `field` of the tier `member` reads at the balance `state` has: its
+// unpatched number at the field's ratio, in the steps a patch moves it by.
+// Nothing for a tier that has no such number.
 pub(crate) fn reads(state: &State, member: &Member, field: &str) -> Option<f64> {
     let unpatched = *member.values.get(field)?;
     Some(fields::quantize(
@@ -1311,6 +1336,7 @@ pub(crate) fn manual(base: &Base, state: &State, number: u32, version: &str) -> 
                 wins: 0,
                 follows: false,
                 manual: true,
+                leader: String::new(),
             });
         }
     }

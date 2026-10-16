@@ -22,7 +22,6 @@ use std::sync::Mutex;
 pub mod driver;
 
 const TRACE_FILES: bool = false;
-const TACTICS_ENABLED: bool = true;
 
 // ===========================================================================
 //  WinAPI FFI
@@ -45,23 +44,6 @@ extern "system" {
     fn FlushInstructionCache(proc: usize, addr: usize, size: usize) -> BOOL;
     fn GetCurrentProcess() -> usize;
     fn AddVectoredExceptionHandler(first: u32, handler: VehHandler) -> usize;
-    fn GetCurrentThreadId() -> u32;
-    fn GetCurrentThread() -> isize;
-    fn GetThreadContext(h: isize, ctx: *mut u8) -> BOOL;
-    fn SetThreadContext(h: isize, ctx: *const u8) -> BOOL;
-    fn OpenThread(access: u32, inherit: BOOL, tid: u32) -> isize;
-    fn SuspendThread(h: isize) -> u32;
-    fn ResumeThread(h: isize) -> u32;
-    fn CloseHandle(h: isize) -> BOOL;
-    fn CreateThread(
-        sa: *const u8,
-        stack: usize,
-        start: extern "system" fn(*mut u8) -> u32,
-        param: *mut u8,
-        flags: u32,
-        tid: *mut u32,
-    ) -> isize;
-    fn Sleep(ms: u32);
 }
 #[repr(C)]
 #[derive(Default)]
@@ -328,180 +310,6 @@ fn exe_path() -> Option<PathBuf> {
 // those users, which silently disabled every file this reads.
 fn mod_dir() -> Option<PathBuf> {
     crate::config::dll_dir()
-}
-
-// ===========================================================================
-//  JSON parser (for mods.json / item.i18n, ported from scrim)
-// ===========================================================================
-enum JsonValue {
-    Null,
-    Bool(bool),
-    Num(f64),
-    Str(String),
-    Arr(Vec<JsonValue>),
-    Obj(Vec<(String, JsonValue)>),
-}
-impl JsonValue {
-    fn as_obj(&self) -> Option<&Vec<(String, JsonValue)>> {
-        if let JsonValue::Obj(o) = self {
-            Some(o)
-        } else {
-            None
-        }
-    }
-    fn get<'b>(&'b self, key: &str) -> Option<&'b JsonValue> {
-        self.as_obj()?
-            .iter()
-            .find(|(k, _)| k == key)
-            .map(|(_, v)| v)
-    }
-    fn as_str(&self) -> Option<&str> {
-        if let JsonValue::Str(s) = self {
-            Some(s.as_str())
-        } else {
-            None
-        }
-    }
-}
-struct JsonParser<'a> {
-    b: &'a [u8],
-    i: usize,
-}
-impl<'a> JsonParser<'a> {
-    fn new(s: &'a str) -> Self {
-        JsonParser {
-            b: s.as_bytes(),
-            i: 0,
-        }
-    }
-    fn skip_ws(&mut self) {
-        while self.i < self.b.len() {
-            match self.b[self.i] {
-                b' ' | b'\t' | b'\r' | b'\n' | b',' => self.i += 1,
-                _ => break,
-            }
-        }
-    }
-    fn parse_value(&mut self) -> Option<JsonValue> {
-        self.skip_ws();
-        if self.i >= self.b.len() {
-            return None;
-        }
-        match self.b[self.i] {
-            b'{' => self.parse_object(),
-            b'[' => self.parse_array(),
-            b'"' => self.parse_string().map(JsonValue::Str),
-            b't' => {
-                self.i += 4;
-                Some(JsonValue::Bool(true))
-            }
-            b'f' => {
-                self.i += 5;
-                Some(JsonValue::Bool(false))
-            }
-            b'n' => {
-                self.i += 4;
-                Some(JsonValue::Null)
-            }
-            _ => self.parse_number(),
-        }
-    }
-    fn parse_string(&mut self) -> Option<String> {
-        if self.b.get(self.i) != Some(&b'"') {
-            return None;
-        }
-        self.i += 1;
-        let mut out: Vec<u8> = Vec::new();
-        while self.i < self.b.len() {
-            let c = self.b[self.i];
-            self.i += 1;
-            match c {
-                b'"' => return Some(String::from_utf8_lossy(&out).into_owned()),
-                b'\\' => {
-                    let e = *self.b.get(self.i)?;
-                    self.i += 1;
-                    match e {
-                        b'n' => out.push(b'\n'),
-                        b't' => out.push(b'\t'),
-                        b'r' => out.push(b'\r'),
-                        b'b' => out.push(0x08),
-                        b'f' => out.push(0x0c),
-                        b'"' => out.push(b'"'),
-                        b'\\' => out.push(b'\\'),
-                        b'/' => out.push(b'/'),
-                        b'u' => {
-                            if self.i + 4 <= self.b.len() {
-                                if let Ok(hex) = std::str::from_utf8(&self.b[self.i..self.i + 4]) {
-                                    if let Ok(cp) = u32::from_str_radix(hex, 16) {
-                                        if let Some(ch) = char::from_u32(cp) {
-                                            let mut buf = [0u8; 4];
-                                            out.extend_from_slice(
-                                                ch.encode_utf8(&mut buf).as_bytes(),
-                                            );
-                                        }
-                                    }
-                                }
-                                self.i += 4;
-                            }
-                        }
-                        other => out.push(other),
-                    }
-                }
-                _ => out.push(c),
-            }
-        }
-        None
-    }
-    fn parse_number(&mut self) -> Option<JsonValue> {
-        let start = self.i;
-        while self.i < self.b.len() {
-            match self.b[self.i] {
-                b'0'..=b'9' | b'-' | b'+' | b'.' | b'e' | b'E' => self.i += 1,
-                _ => break,
-            }
-        }
-        let tok = std::str::from_utf8(&self.b[start..self.i]).ok()?;
-        tok.parse::<f64>().ok().map(JsonValue::Num)
-    }
-    fn parse_array(&mut self) -> Option<JsonValue> {
-        self.i += 1;
-        let mut arr = Vec::new();
-        loop {
-            self.skip_ws();
-            if self.i >= self.b.len() {
-                return None;
-            }
-            if self.b[self.i] == b']' {
-                self.i += 1;
-                break;
-            }
-            arr.push(self.parse_value()?);
-        }
-        Some(JsonValue::Arr(arr))
-    }
-    fn parse_object(&mut self) -> Option<JsonValue> {
-        self.i += 1;
-        let mut pairs = Vec::new();
-        loop {
-            self.skip_ws();
-            if self.i >= self.b.len() {
-                return None;
-            }
-            if self.b[self.i] == b'}' {
-                self.i += 1;
-                break;
-            }
-            let k = self.parse_string()?;
-            self.skip_ws();
-            if self.b.get(self.i) != Some(&b':') {
-                return None;
-            }
-            self.i += 1;
-            let v = self.parse_value()?;
-            pairs.push((k, v));
-        }
-        Some(JsonValue::Obj(pairs))
-    }
 }
 
 // ===========================================================================
@@ -1319,7 +1127,10 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if game < 0x10000 || athlete < 0x10000 {
             return;
         }
-        // -- (1) Rendered (spectated) match gate: provider = *(Game+0x1dc0) - offset confirmed unchanged in 0.5.3 (07-29). WARNING the buy hook uses r9 (a separate path) --
+        // -- (1) The match's provider: *(Game+0x1dc0) - offset confirmed unchanged in 0.5.3 (07-29). WARNING the buy hook uses r9 (a separate path) --
+        // Watched or simulated alike: under `own_team_only` the only athletes
+        // this path writes to are the player's own five, and whether the
+        // player is watching does not change whose they are.
         let provider = match safe_read_u64(game + O_GAME_PROVIDER) {
             Some(p) => p,
             None => return,
@@ -1327,28 +1138,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if provider < 0x10000 || provider >= 0x0000_8000_0000_0000 {
             return;
         }
-        // Whether this athlete belongs to the match currently on screen.
-        //
-        // This used to `return` here, so nothing was injected unless the match
-        // was being watched. That was right when the team decision below could
-        // fall back on scene state — a scene answer is worthless off-screen —
-        // but it is too strict for the athlete-id gate, which is scene-free by
-        // construction and is the whole reason v15 exists. Under
-        // `own_team_only` the only athletes this path ever writes to are the
-        // player's own five, and whether the player happens to be watching does
-        // not change whose they are. Keeping the old behaviour would have left
-        // slot 0 correct in spectated matches and wrong in every simulated one,
-        // which is a worse bug than the one being fixed because it looks
-        // intermittent.
-        //
-        // So it is now a *fact* rather than a gate: definite roster membership
-        // is honoured either way, and only the uncertain scene fallback still
-        // requires it. See the team decision below.
-        let lseed = LIVE_SEED.load(Ordering::Relaxed);
-        let seed_ok =
-            lseed != 0 && safe_read_u64(provider as usize + O_PROVIDER_SEED) == Some(lseed);
-        let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
-        let rendered = seed_ok || (rp != 0 && provider == rp);
         // -- (2) Is this a designated champion? --
         if !readable(athlete, ATHLETE_COPY_SIZE) {
             return;
@@ -1378,70 +1167,49 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         // -- (3) Is it my team (v15): athlete_id (+0x810) in my starting roster = no scene tag9 needed -> holds at spawn time.
         //     WARNING because static analysis A2 established the sim has no team_id, this membership test is the only deterministic path.
         //     If the roster is not obtained yet (before visiting the management screen), stay undecided -> skip injection (avoiding enemy-team contamination > coverage). The buy path covers it.
-        //     Also run the scene side as a fallback (for early frames where the roster exists but aid is not filled in).
         let mine = is_my_athlete(athlete);
         crate::own_team_log::line(|| {
             format!(
-                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} rendered={} mine={:?} roster_n={}",
+                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} mine={:?} roster_n={}",
                 champ,
                 safe_read_u64(athlete + O_ATHLETE_ID),
                 provider,
                 safe_read_u64(provider as usize + O_PROVIDER_SEED).unwrap_or(0),
                 athlete_lane(athlete),
-                rendered,
                 mine,
                 MY_ATH_N.load(Ordering::Relaxed)
             )
         });
-        let ok = match mine {
-            Some(true) => true,
-            Some(false) => return, // definitely another team = do not inject
-            None => {
-                // Roster/aid unavailable -> scene fallback, which is only
-                // meaningful for the match actually on screen. Off-screen there
-                // is no scene side to compare against, so stay undecided and
-                // leave it to the buy path (slots 1/2), exactly as before:
-                // avoiding enemy-team contamination beats coverage.
-                //
-                // ** Observed cost of that choice (2026-09-08): slot 0 can be
-                // wrong for the *first* match of a session and correct from the
-                // second on. `MY_ATHLETES` is published from the Team record's
-                // `last_starting` on the roster poll in `tactics_post_update`,
-                // so until that first publish lands `is_my_athlete` answers
-                // `None` and this arm declines — and the buy path, which does
-                // cover slots 1/2, is structurally too late for slot 0. It is
-                // the safe failure, not a bug to paper over: guessing here puts
-                // the player's build on the enemy. If it needs tightening, the
-                // fix belongs at the publish end (poll every frame until the
-                // roster is first obtained, then back off to ROSTER_POLL),
-                // not here.
-                //
-                // (2026-09-25, logged: the roster published about a second after
-                // the save loaded and 25 s before the first spawn, and every
-                // spawn of the player's athletes that session read `Some(true)`.
-                // The miss above was not reproduced, so the poll is unchanged.)
-                //
-                // (2026-09-29, reproduced on a new save: `last_starting` stayed
-                // empty until the first match began, so the starters were
-                // published two seconds after they spawned. The fix was at the
-                // publish end, as predicted, but in *what* is published rather
-                // than how often: the roster now comes from every athlete's
-                // contract, which exists from load. See `roster_scan_step`.)
-                if !rendered {
-                    return;
-                }
-                let side = if readable(athlete + O_ATHLETE_TEAM, 8) {
-                    rd_u64(athlete + O_ATHLETE_TEAM)
-                } else {
-                    u64::MAX
-                };
-                match scene_player_side() {
-                    Some(ps) => side == ps,
-                    None => false,
-                }
-            }
-        };
-        if !ok {
+        // `Some(false)` is definitely another team: no injection. `None`
+        // (roster or athlete id unavailable) stays undecided and is left to
+        // the buy path (slots 1/2): avoiding enemy-team contamination beats
+        // coverage.
+        //
+        // ** Observed cost of that choice (2026-09-08): slot 0 can be
+        // wrong for the *first* match of a session and correct from the
+        // second on. `MY_ATHLETES` is published from the Team record's
+        // `last_starting` on the roster poll in `tactics_post_update`,
+        // so until that first publish lands `is_my_athlete` answers
+        // `None` and this declines — and the buy path, which does
+        // cover slots 1/2, is structurally too late for slot 0. It is
+        // the safe failure, not a bug to paper over: guessing here puts
+        // the player's build on the enemy. If it needs tightening, the
+        // fix belongs at the publish end (poll every frame until the
+        // roster is first obtained, then back off to ROSTER_POLL),
+        // not here.
+        //
+        // (2026-09-25, logged: the roster published about a second after
+        // the save loaded and 25 s before the first spawn, and every
+        // spawn of the player's athletes that session read `Some(true)`.
+        // The miss above was not reproduced, so the poll is unchanged.)
+        //
+        // (2026-09-29, reproduced on a new save: `last_starting` stayed
+        // empty until the first match began, so the starters were
+        // published two seconds after they spawned. The fix was at the
+        // publish end, as predicted, but in *what* is published rather
+        // than how often: the roster now comes from every athlete's
+        // contract, which exists from load. See `roster_scan_step`.)
+        if mine != Some(true) {
             return;
         }
         // -- (4) Inject the build[] targets --
@@ -2002,35 +1770,6 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     }
                 }
             }
-            // ** lean (07-18): spectate identification = launcher (LIVE_SEED) + seed-ctor (RENDER_PROVIDER) + buy r9 comparison (v13).
-            //   The old db scan (v10), P6 probe and link scan are all gone. Only the scene side (my-team decision) and LIVE_DB/PID remain here.
-            if !DIAG_BUY_OFF {
-                {
-                    let pu = PLAYER_TEAM_ID.load(Ordering::Relaxed);
-                    if pu != u64::MAX && pu < 10000 {
-                        LIVE_PID.store(pu, Ordering::Relaxed);
-                    }
-                }
-                // MERGE GAP — the direct scene read is off.
-                //
-                // `LIVE_DB` was the `ClientDatabase` pointer, and `quick_scene_side`
-                // reads the live scene's team ids straight out of it (+0x1338 tag,
-                // +0x17A0/+0x17C0 team tags, +0x1900 is_team1_blue) to decide which
-                // sim side is the player's. A stable-ABI mod is never handed that
-                // pointer, and unlike the `Database` there is no argument anywhere
-                // in this mod that leaks it, so `LIVE_DB` stays 0 and `SCENE_SIDE`
-                // stays undetermined.
-                //
-                // That is a documented, supported state rather than a break:
-                // `scene_player_side()` returning `None` means "use the roster
-                // fallback", and the roster (`MY_ATHLETES`, published just above
-                // from the stable record API) is what the team gate then uses. The
-                // cost is the fast path — the spawn hook's early side decision,
-                // which existed to cover the owned=0 injection window.
-                //
-                // Restoring it needs the `ClientDatabase` address from somewhere,
-                // such as another detour argument.
-            }
         }
     }
 }
@@ -2078,14 +1817,12 @@ fn stable_last_starting(
     let Some(json) = client.record_get_json(RecordKindV1::Team, team_id, "last_starting") else {
         return out;
     };
-    let Some(JsonValue::Arr(slots)) = JsonParser::new(&json).parse_value() else {
+    let Ok(serde_json::Value::Array(slots)) = serde_json::from_str::<serde_json::Value>(&json) else {
         return out;
     };
-    for slot in slots {
-        if let JsonValue::Num(id) = slot {
-            if id >= 0.0 {
-                out.insert(id as u64);
-            }
+    for id in slots.iter().filter_map(serde_json::Value::as_f64) {
+        if id >= 0.0 {
+            out.insert(id as u64);
         }
     }
     out
@@ -2707,11 +2444,6 @@ unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
     )
 }
 
-// ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
-//   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
-//   WARNING false = restores the old behaviour (is_live gate, no background injection). Kept for an immediate rollback on trouble.
-const FIXB: bool = true;
-
 // What goes into build slot `si` when the Vec grows -- `si` 4 and 5 are the
 // 5th and 6th items, and 3 the 4th of the rare build the engine left three
 // long.
@@ -2742,7 +2474,11 @@ unsafe fn extra_slot_pick(
             } else {
                 Vec::new()
             };
-            auto_extra_pick(ctx, buyer, champ, si, taken, &reserved)
+            // The player's first slot pinned: no jungle or World Atlas item
+            // (Smart Builds rules 9 and 12).
+            let first_pinned = designate
+                && slot_n_catalog_index(champ, 0, |key| scan_idx_cached(ctx, key)).is_some();
+            auto_extra_pick(ctx, buyer, champ, si, taken, &reserved, first_pinned)
         })
 }
 
@@ -2834,15 +2570,18 @@ unsafe fn later_pins(ctx: usize, champ: &str, from: usize) -> Vec<u64> {
 // An index the catalog scan cannot name contributes nothing — the same way an
 // unclassifiable item is passed over on the other two paths.
 //
-// `champ` decides what the champion may hold at all (support items, what it
-// scales with); its role is the one the last lineup gave it, since this path
-// is not told the lane.
-unsafe fn spent_budget(ctx: usize, champ: &str, taken: &[u64]) -> crate::smart_builds::Budget {
+// `fit` decides what the champion may hold at all (support items, what it
+// scales with), for the role the last lineup gave it, since this path is not
+// told the lane.
+unsafe fn spent_budget(
+    ctx: usize,
+    fit: crate::smart_builds::Fit,
+    taken: &[u64],
+) -> crate::smart_builds::Budget {
     let keys: Vec<String> = taken
         .iter()
         .filter_map(|&index| catalog_name_at(ctx, index))
         .collect();
-    let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
     crate::smart_builds::Budget::spent(keys.iter().map(String::as_str), fit)
 }
 
@@ -2869,7 +2608,8 @@ struct Buyer {
 // rules accept, from a start spread by champion, and only then to any final
 // at all. Never a duplicate: `taken` is every slot before this one, and
 // `reserved` the player's pins for the slots after it, which count exactly
-// as if placed.
+// as if placed. `first_pinned`: the player pinned the build's first slot,
+// so while the toggle is on it gets no jungle or World Atlas item.
 unsafe fn auto_extra_pick(
     ctx: usize,
     buyer: Buyer,
@@ -2877,6 +2617,7 @@ unsafe fn auto_extra_pick(
     si: usize,
     taken: &[u64],
     reserved: &[u64],
+    first_pinned: bool,
 ) -> Option<u64> {
     // `taken` stays the build in slot order, for the network; everything else
     // works from the whole build, pins still to come included.
@@ -2892,13 +2633,23 @@ unsafe fn auto_extra_pick(
     // 5th item that cuts healing a second time, or pushes the build past the crit
     // cap, is the same wasted slot either way. `None` while the toggle is off,
     // which leaves the test above as the only one.
+    // A jungler's jungle item and a support's World Atlas item go in the
+    // first slot or not at all (rules 9 and 12).
+    let rule_fit = if first_pinned {
+        fit.starter_slot_pinned()
+    } else {
+        fit
+    };
     let budget =
-        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, &spoken));
+        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, rule_fit, &spoken));
+    // Rule 6 too: these slots are past the first two, where an early item
+    // goes.
     let allowed = |candidate: &str| {
         suits.rejects(candidate).is_none()
-            && budget
-                .as_ref()
-                .is_none_or(|budget| budget.rejects(candidate).is_none())
+            && budget.as_ref().is_none_or(|budget| {
+                budget.rejects(candidate).is_none()
+                    && crate::smart_builds::fits_slot(candidate, si)
+            })
     };
     // Smart Builds rule 17: a support that looks to the heal, shield and buff
     // items first takes these two slots from them while one is left, picked
@@ -2925,13 +2676,16 @@ unsafe fn auto_extra_pick(
             pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed)
                 .inspect(|_| picked_by("first the rules allow"))
         })
-        // Last resort, unconstrained but for the one rule that holds even
-        // here while the toggle is on: a 5th item that breaks a rule still
-        // beats an empty slot, a jungle item on a champion that is not
-        // jungling does not. With the toggle off it is any final at all.
+        // Last resort, unconstrained but for the rules that hold even here
+        // while the toggle is on: a 5th item that breaks a rule still beats
+        // an empty slot, a jungle item on a champion that is not jungling
+        // does not, and neither does the jungle or World Atlas item of a
+        // build whose first slot is pinned. With the toggle off it is any
+        // final at all.
         .or_else(|| {
             pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
-                budget.is_none() || !fit.off_role_jungle_item(candidate)
+                budget.is_none()
+                    || !(fit.off_role_jungle_item(candidate) || rule_fit.skips_starter(candidate))
             })
             .inspect(|_| picked_by("last resort, no rule held"))
         })
@@ -2946,7 +2700,7 @@ const NET_NO_CHAMPION: u64 = 9999;
 // scores and moves the weights, so the same question can get a different
 // answer an hour later, and a match is played more than once: in the
 // background for its result and again on screen, each copy buying for itself
-// (see [`FIXB`]). What a seat was given the first time is what it gets every
+// (fix B, in `buy_replace_ctx`). What a seat was given the first time is what it gets every
 // time after, or the match the player watches stops being the one that was
 // recorded. By key, because a catalog index is only good for the catalog it
 // was read from.
@@ -3085,6 +2839,114 @@ unsafe fn network_pick(
     Some(index)
 }
 
+// Whether [`retier_unstarted`] has capped a build this session. Until it
+// has, no build can hold a legendary target and nothing needs putting back,
+// so a session that never leaves All Radiants runs none of this.
+static TIERS_RULED: AtomicBool = AtomicBool::new(false);
+
+// Item Rules (`crate::item_tiers`): rewrites the target of every build slot
+// from `from` on to the form `form` gives for the item it names, where it
+// gives one and the catalog has it.
+//
+// `from` is never less than the athlete's owned count, and that is the
+// whole of the safety here. The engine buys a build in order and upgrades
+// the last item it owns until that item's key equals its slot's target. A
+// slot it has not reached is only a number it has not read yet. A slot it
+// is on is not: were its target lowered under an item already upgraded past
+// it, the engine would look for an upgrade from the radiant to the
+// legendary, find none, and the athlete would buy nothing for the rest of
+// the match. So a slot already started keeps whatever target it has, and a
+// setting flipped during a match only reaches the slots after it.
+unsafe fn retier_unstarted(
+    ctx: usize,
+    athlete: usize,
+    from: u64,
+    form: impl Fn(&str) -> Option<String>,
+) {
+    let (Some(ptr), Some(len)) = (
+        safe_read_u64(athlete + O_ATHLETE_BUILD_PTR),
+        safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
+    ) else {
+        return;
+    };
+    let (ptr, len) = (ptr as usize, len as usize);
+    if ptr < 0x10000 || len > BUY_MEMO_BUILD_MAX || !readable(ptr, len * 8) {
+        return;
+    }
+    for si in (from as usize)..len {
+        let index = rd_u64(ptr + si * 8);
+        let Some(wanted) = catalog_name_at(ctx, index).and_then(|key| form(&key)) else {
+            continue;
+        };
+        let Some(other) = scan_idx_cached(ctx, wanted.as_bytes()) else {
+            continue;
+        };
+        if other != index && writable(ptr + si * 8, 8) {
+            wr_u64(ptr + si * 8, other);
+        }
+    }
+}
+
+// Item Rules, No Radiants: holds the slot the athlete is on, `owned - 1`, at
+// its legendary too. The one slot [`retier_unstarted`] must leave alone,
+// because its target may only be lowered while the item in hand has not gone
+// past it. So the item in hand is read (the athlete's items stand one to a
+// build slot, in order), and the slot is left as it is when that item is the
+// radiant already, or cannot be read. Anything else in hand is a component
+// on the way up, or the legendary itself, and either is finished by the
+// lower target.
+//
+// At a match's first buy decision this is the first slot, one component in:
+// the detour never sees an athlete with nothing bought.
+unsafe fn cap_slot_in_hand(ctx: usize, athlete: usize, owned: u64) {
+    let Some(slot) = owned.checked_sub(1) else {
+        return;
+    };
+    let (Some(ptr), Some(len), Some(items), Some(items_len)) = (
+        safe_read_u64(athlete + O_ATHLETE_BUILD_PTR),
+        safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
+        safe_read_u64(athlete + O_ATHLETE_ITEMS_PTR),
+        safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN),
+    ) else {
+        return;
+    };
+    if (ptr as usize) < 0x10000 || slot >= len || len as usize > BUY_MEMO_BUILD_MAX {
+        return;
+    }
+    // After the bounds: `slot` is under the build's length here.
+    let at = ptr as usize + slot as usize * 8;
+    if !readable(at, 8) {
+        return;
+    }
+    let index = rd_u64(at);
+    let Some(target) = catalog_name_at(ctx, index) else {
+        return;
+    };
+    let Some(legendary) = crate::item_tiers::legendary_of(&target) else {
+        return;
+    };
+    match catalog_name_in(items as usize, items_len, slot) {
+        Some(in_hand) if in_hand != target => {}
+        _ => return,
+    }
+    let Some(other) = scan_idx_cached(ctx, legendary.as_bytes()) else {
+        return;
+    };
+    if other != index && writable(at, 8) {
+        wr_u64(at, other);
+    }
+}
+
+// The catalog index of the radiant over the item at `index`, where that
+// item is a legendary with one; `index` itself otherwise. For reading a
+// slot Item Rules holds at its legendary the way the build was decided.
+unsafe fn radiant_index(ctx: usize, index: u64) -> u64 {
+    catalog_name_at(ctx, index)
+        .and_then(|key| crate::item_tiers::radiant_of(&key))
+        .and_then(|radiant| scan_idx_cached(ctx, radiant.as_bytes()))
+        .unwrap_or(index)
+}
+
 // Smart Builds' rules 6 and 9 over a build just grown to its 5th and 6th
 // slots, which the stable hook's pass never saw: the automatic picks not
 // bought yet, role items first, then early items, late items last
@@ -3104,8 +2966,9 @@ unsafe fn reorder_unbought(
         .filter(|&j| !buy_is_boots(ctx, slots[j]))
         .collect();
     let mut picks: Vec<u64> = movable.iter().map(|&j| slots[j]).collect();
-    // The fit too, so a support's or jungler's role item (rule 9) stays ahead
-    // of the early items this sort pulls forward.
+    // The fit too, so a jungler's role item (rule 9) stays ahead of the early
+    // items this sort pulls forward, and a support's World Atlas item ahead of
+    // everything (`smart_builds::buy_order`).
     let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
     crate::smart_builds::sort_by_timing(&mut picks, fit, |&index| catalog_name_at(ctx, index));
     for (&j, index) in movable.iter().zip(picks) {
@@ -3194,7 +3057,7 @@ unsafe fn needs_build_extension(athlete: usize) -> bool {
 }
 
 // Fixed words at the front of [`BuyInputs`]; the build targets follow.
-const BUY_INPUT_FIXED: usize = 14;
+const BUY_INPUT_FIXED: usize = 13;
 // Longest build [`BuyInputs`] holds. The detour grows builds to
 // `build_config::picker_slots()` (6); a longer one is never memoized.
 const BUY_MEMO_BUILD_MAX: usize = 8;
@@ -3209,8 +3072,8 @@ struct BuyInputs([u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX]);
 //
 // It covers what the full path reads: the athlete's identity, champion,
 // side, lane, owned count and build Vec (header and every target), the
-// catalog context, the team-gate flags, both settings, the scene side, and
-// which pin snapshot is live. Not gold: nothing below decides anything from
+// catalog context, the team-gate flags, both settings, and which pin
+// snapshot is live. Not gold: nothing below decides anything from
 // it. The network's pick for a slot being grown is covered through its inputs
 // (the build so far, the champion and lane, and the match's seed).
 unsafe fn buy_inputs(
@@ -3235,7 +3098,8 @@ unsafe fn buy_inputs(
         | (crate::build_config::is_test_match(seed) as u64) << 2
         | mine << 3
         | (crate::build_config::own_team_only_enabled() as u64) << 5
-        | (crate::build_config::smart_builds_enabled() as u64) << 6;
+        | (crate::build_config::smart_builds_enabled() as u64) << 6
+        | (crate::item_tiers::rule().code() as u64) << 7;
     let fixed: [u64; BUY_INPUT_FIXED] = [
         seed,
         read(O_ATHLETE_ID)?,
@@ -3249,7 +3113,6 @@ unsafe fn buy_inputs(
         len,
         safe_read_u64(rsp_entry + 0x30)?, // ctx: the catalog every pick resolves in
         flags,
-        SCENE_SIDE.load(Ordering::Relaxed),
         crate::build_config::pins_generation(),
     ];
     let mut words = [0u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX];
@@ -3489,14 +3352,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let seed_match_r9 = lseed != 0 && seed_r9 == lseed;
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let is_live = seed_match_r9 || (rp != 0 && provider_now != 0 && provider_now == rp);
-        if !is_live && !FIXB {
-            // (FIXB=false, old behaviour) background league sim = passthrough with no injection.
-            return 0;
-        }
+        // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
+        //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
         // ** fix B performance (2026-07-27): in background buys only my players (is_my_athlete) are injection targets -> a background buy by anyone else
         //   passes through immediately after a cheap VEH read (+0x810) + HashSet lookup, before the expensive readable (= VirtualQuery kernel call).
         //   This restores the background early exit that 07-22 removed, in a way compatible with the fix (~94% of background buys exit here). None (roster unavailable) =
-        //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (they need the by_scene decision).
+        //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (a comp test's athletes are not mine; see `is_comptest_live`).
         //
         // ** 4th-item parity fix (2026-08-05) — `&& !needs_build_extension`.
         //   The gate above is about *designation* scope: only my players get an item
@@ -3520,8 +3381,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   its match's seed (`build_config::note_test_spawn`), so a league
         //   fixture simulating alongside it still exits here, as cheaply as
         //   before.
-        if FIXB
-            && !is_live
+        if !is_live
             && !crate::build_config::is_test_match(seed_r9)
             && !matches!(is_my_athlete(athlete), Some(true))
             && !needs_build_extension(athlete)
@@ -3578,45 +3438,15 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let champ: &str = champ_cow.as_ref();
         // Before any pin is looked up: the lane every lookup below resolves in.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
-        // (`let champ_designated = is_champ_designated(champ)` used to sit here.
-        //  Nothing read it — it was the safety net described at the `by_scene`
-        //  comment below, and the team gate replaced it — so every buy that got
-        //  this far paid two global mutex acquisitions, and sometimes a rebuild of
-        //  the designated-champion `HashSet`, to compute a value it dropped.
-        //  `is_champ_designated` itself is still used by the spawn path.)
-        let side = safe_read_u64(athlete + O_ATHLETE_TEAM).unwrap_or(u64::MAX);
-        // * Deciding the side: prefer the direct scene read (SCENE_SIDE, refreshed on the main thread) -> if undecided, decide on the spot from LIVE_DB (protects the owned=0 injection window).
-        //   Undecided = no injection (prevents enemy/background contamination - the fallback vote is definitively abandoned).
-        let scene_ps = scene_player_side().or_else(|| {
-            if !is_live {
-                return None;
-            }
-            let db = LIVE_DB.load(Ordering::Relaxed) as usize;
-            let pid = LIVE_PID.load(Ordering::Relaxed);
-            if db == 0 {
-                return None;
-            }
-            let r = quick_scene_side(db, pid);
-            if let Some(s) = r {
-                SCENE_SIDE.store(s, Ordering::Relaxed);
-            }
-            r
-        });
-        // The `None` arm used to fall back to `player_side_for_match`, a majority
-        // vote over champions the user had designated in the `SEL` dropdowns.
-        // That went with `SEL`, so an undecided scene side is simply undecided —
-        // which is what it already meant everywhere else, and what `FIXB` makes
-        // moot anyway (`is_player` below takes the `is_my_athlete` branch).
-        let by_scene: bool = is_live && scene_ps.is_some_and(|ps| side == ps);
-        // * Comp test: both sides are user-composed, so bypass the scene side gate (apply to any designated champion).
+        // * Comp test: both sides are user-composed, so bypass the team gate (apply to any designated champion).
         // ** fix B: team scope = athlete_id membership (is_my_athlete, +0x810). The same decision in background and spectated sims -> convergence.
         //   If MY_ATHLETES is not published yet (before spectating) None = false = network. Only my players are designated; AI vs AI = my 0 = no designation.
         // ** Comp-test regression fix (2026-07-30 user report "item injection doesn't work in comp test"):
-        //   the FIXB (= athlete_id membership) path **was missing the comp-test bypass**.
+        //   the fix B (= athlete_id membership) path **was missing the comp-test bypass**.
         //   Comp test is a sandbox where the user composes both sides, so those players are **not in** `MY_ATHLETES`
         //   (= db.team(pid).last_starting = my team's starters) => is_my_athlete = false
-        //   => designated item injection was silently skipped. (The old FIXB=false path had the COMPTEST_MATCH bypass, but that
-        //    condition disappeared when switching to FIXB=true = an omission introduced with fix B, not by a migration.)
+        //   => designated item injection was silently skipped. (The path before fix B had the COMPTEST_MATCH bypass, but that
+        //    condition disappeared with fix B = an omission introduced with fix B, not by a migration.)
         //   => for a match judged to be comp test (launcher retaddr measured = 0x1925f12), **apply designations to both sides**.
         //     Bypassing the team gate on a screen that has no notion of "my team" was the original design intent (see the comment at line 2409).
         // *** 2026-07-30 second fix - **blocking background contamination** (`&& is_live`):
@@ -3640,10 +3470,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let is_training = crate::build_config::is_test_match(seed_r9);
         let is_player = if is_comptest_live || is_training {
             true // comp test = both sides user-composed -> bypass the team gate
-        } else if FIXB {
-            matches!(is_my_athlete(athlete), Some(true))
         } else {
-            is_live && by_scene
+            matches!(is_my_athlete(athlete), Some(true))
         };
         if crate::own_team_log::ENABLED && crate::build_config::has_pins(champ) {
             let ctx = rd_u64(rsp_entry + 0x30) as usize;
@@ -3676,6 +3504,18 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 ),
             );
         }
+        // Item Rules (`crate::item_tiers`). Everything below decides on a
+        // build of radiant targets, as it always has: the pins, the clash
+        // checks between them, the growth and its picks all compare catalog
+        // indices. So the slots an earlier pass held at their legendary are
+        // put back first, and capped again when the pass is done (after the
+        // growth, below). Only slots not started yet: see `retier_unstarted`.
+        // A started slot keeps its target in memory and is read as its
+        // radiant where the build is copied out to decide on.
+        let tiers_rule = crate::item_tiers::rule();
+        let tiers_ctx = rd_u64(rsp_entry + 0x30) as usize;
+        let tiers_put_back = tiers_rule != crate::item_tiers::Rule::AllRadiants
+            || TIERS_RULED.load(Ordering::Relaxed);
         // The editor's scope toggle, read once here rather than per slot: it is
         // an atomic load (see `build_config::own_team_only_enabled`), but this
         // is a per-buy-decision path and both the pins for the game's four
@@ -3694,6 +3534,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             0
         };
+        // Item Rules' put-back, after Control's check: that compares the build
+        // as this pass found it with what the last one left, capped slots and
+        // all, and this is the pass's first write.
+        if tiers_put_back {
+            retier_unstarted(tiers_ctx, athlete, owned, crate::item_tiers::radiant_of);
+        }
         // This branch used to publish the player's lineup to `crate::my_team`,
         // which is how the host half guessed whether a set of item-build routes
         // belonged to the player. Nothing consumes that guess any more: the host
@@ -3884,8 +3730,21 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 let designate = !own_team_only || is_player;
                 let smart = crate::build_config::smart_builds_enabled();
                 // The whole build as it will stand, starting from the live
-                // slots. Only `slots[build_len..]` is new memory.
-                let mut slots: Vec<u64> = (0..live).map(|i| rd_u64(ptr + i * 8)).collect();
+                // slots. Only `slots[build_len..]` is new memory. A started
+                // slot Item Rules holds at its legendary is read as the
+                // radiant it was decided as, so that a pin or a pick for a
+                // later slot is still known to be in the build already.
+                // Nothing below writes a started slot back.
+                let mut slots: Vec<u64> = (0..live)
+                    .map(|i| {
+                        let index = rd_u64(ptr + i * 8);
+                        if tiers_put_back && (i as u64) < owned {
+                            radiant_index(ctx, index)
+                        } else {
+                            index
+                        }
+                    })
+                    .collect();
                 // Slots 5 and 6 that an earlier buy already grew: only a pin,
                 // only where it changed, and only while that slot is not
                 // bought yet -- the same `owned > si` rule the game's four follow.
@@ -3955,6 +3814,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             && writable(new_ptr, old_len * 8)
                         {
                             for (j, &index) in slots.iter().enumerate().take(old_len) {
+                                // Rule 6 moves nothing at or before the slot
+                                // in hand, and a started slot's target is
+                                // not this copy's to restore (Item Rules).
+                                if (j as u64) < owned {
+                                    continue;
+                                }
                                 if rd_u64(new_ptr + j * 8) != index {
                                     wr_u64(new_ptr + j * 8, index);
                                 }
@@ -3996,6 +3861,32 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 }
             }
         }
+        // Item Rules, the other half: the slots the setting holds back are
+        // capped at their legendary. Under First Item Radiant every slot
+        // after the first that is not started yet; the first is never
+        // touched, so it is the build's one radiant. Under No Radiants every
+        // slot not started yet, and the one in hand while that is still safe
+        // (`cap_slot_in_hand`). A pass that only put back and capped again
+        // leaves the build as it found it, and is remembered below like any
+        // other that wrote nothing.
+        match tiers_rule {
+            crate::item_tiers::Rule::AllRadiants => {}
+            crate::item_tiers::Rule::FirstItemRadiant => {
+                TIERS_RULED.store(true, Ordering::Relaxed);
+                retier_unstarted(
+                    tiers_ctx,
+                    athlete,
+                    owned.max(1),
+                    crate::item_tiers::legendary_of,
+                );
+            }
+            crate::item_tiers::Rule::NoRadiants => {
+                TIERS_RULED.store(true, Ordering::Relaxed);
+                retier_unstarted(tiers_ctx, athlete, owned, crate::item_tiers::legendary_of);
+                cap_slot_in_hand(tiers_ctx, athlete, owned);
+            }
+        }
+
         // What this pass left, for the next one to tell Control's picks by.
         // After growth, under the `Vec` it grew into.
         if track {
@@ -4082,70 +3973,11 @@ unsafe fn install_replace_buy(
     FlushInstructionCache(GetCurrentProcess(), fn_addr, orig_len);
     Ok(stub)
 }
-// ===========================================================================
-//  ** Direct scene reading = a deterministic team gate (no hooking; ghidra-re + crm anchors, confirmed on 0.5.0_3)
-//  During a live match, the client scene (ClientScene::InGame, tag=9) keeps both teams' team_id + is_team1_blue in its match_info.
-//  Read directly every frame in post_update (main thread) -> compare with player_team_id() -> determine the PLAYER SIDE (0/1).
-//  Absolute db offsets (0.5.0_3, a uniform -0xA0 shift, triple-checked): scene tag (u32)@+0x1338 == 9 /
-//  team1 tag(u64,Normal=0)@+0x17A0·id@+0x17A8 / team2 tag@+0x17C0·id@+0x17C8 / is_team1_blue(u8)@+0x1900.
-//  is_team1_blue is updated to reflect the per-set side swap -> reading it always reflects the current set.
-//  WARNING the old GameStart packet deserializer hook (0x3217f0) is a dead end (never fires in a single live process; crossbeam delivers directly) -> removed.
-// ===========================================================================
-const SCENE_GATE_ENABLED: bool = true; // * v5 (07-11): after confirming live (tid), decide the side by reading the scene directly -> ON. update_scene_side refreshes SCENE_SIDE every frame (main thread).
-                                       // ** Confirmed (07-11, in game): the sim athlete side (`O_ATHLETE_TEAM`, then 0x820) is fixed at blue=0 / red=1. In a spectated match (my team blue), KT Aiming = meiling was
-                                       //   dumped as sim side1 (red) -> confirming side0 = blue = my team. So the scene player <-> sim side mapping = blue is side0.
-                                       //   WARNING this is a side-independent fixed mapping (not a constant inversion) - matching scene team_id <-> pid returns the correct sim side even when sides swap.
-const SCENE_BLUE_IS_SIDE0: bool = true; // blue team = sim side0 (confirmed in game). update_scene_side matches pid with (s0,s1) = (blue,red).
-static SCENE_SIDE: AtomicU64 = AtomicU64::new(u64::MAX); // 0/1 = the player's side in a live match, MAX = undetermined (not a match / not spectating)
-static LIVE_DB: AtomicU64 = AtomicU64::new(0); // * v6: the absolute db address stored by the InGame post_update (for the spawn hook's early side decision)
-static LIVE_PID: AtomicU64 = AtomicU64::new(u64::MAX); // * v6: the stored PLAYER_TEAM_ID
-
-// * v6 lightweight side-only decision (called from the spawn hook = a sim thread; VEH-safe reads only, no file I/O or locks).
-//   scene tag9 + team_id Normal + is_team1_blue + pid matching -> player side (0/1). Same offsets as update_scene_side.
-unsafe fn quick_scene_side(db: usize, pid: u64) -> Option<u64> {
-    if db < 0x10000 || pid == u64::MAX {
-        return None;
-    }
-    if safe_read_u64(db + 0x1338).map(|v| v & 0xffff_ffff) != Some(9) {
-        return None;
-    }
-    let t1_tag = safe_read_u64(db + 0x17A0)?;
-    let t2_tag = safe_read_u64(db + 0x17C0)?;
-    if t1_tag != 0 || t2_tag != 0 {
-        return None;
-    } // Normal (team_id) only
-    let t1 = safe_read_u64(db + 0x17A8)?;
-    let t2 = safe_read_u64(db + 0x17C8)?;
-    let blue_b = safe_read_u64(db + 0x1900)? & 0xff;
-    let t1_blue = blue_b != 0;
-    let (blue, red) = if t1_blue { (t1, t2) } else { (t2, t1) };
-    let (s0, s1) = if SCENE_BLUE_IS_SIDE0 {
-        (blue, red)
-    } else {
-        (red, blue)
-    };
-    if s0 == pid {
-        Some(0)
-    } else if s1 == pid {
-        Some(1)
-    } else {
-        None
-    }
-}
 // * 2026-07-30: have we ever seen a valid **non-zero** pid? If 1, ignore later reports of 0 (prevents pid regression - measurement showed
 //   the same save alternating between 105 and 0 depending on the moment, and trusting the 0 breaks the team gate).
 static PID_NONZERO_SEEN: AtomicU64 = AtomicU64::new(0);
 static PID_ZERO_CLEAN: AtomicU64 = AtomicU64::new(0); // * times pid=0 was observed in an InGame unrelated to comp test
                                                       //   (>=600 accepts it as "a save whose real team id is 0" = MY_ATHLETES publication allowed)
-fn scene_player_side() -> Option<u64> {
-    if !SCENE_GATE_ENABLED {
-        return None;
-    } // when OFF, use the roster fallback
-    match SCENE_SIDE.load(Ordering::Relaxed) {
-        v @ 0..=1 => Some(v),
-        _ => None,
-    }
-}
 const DIAG_BUY_OFF: bool = false; // master switch for buy injection (true = injection/identification OFF)
 fn install_replace_4th() {
     if DIAG_BUY_OFF {
@@ -4644,10 +4476,6 @@ fn check_game_version() -> bool {
 // exactly 0.5.3 — so the loader will happily attach this DLL on 0.5.4 and this
 // gate is the only thing standing between that and a corrupted game.
 fn tactics_init() -> bool {
-    // Bisect switch: behave exactly as a closed version gate (see TACTICS_ENABLED).
-    if !TACTICS_ENABLED {
-        return false;
-    }
     // Register the VEH before anything else. `safe_copy` returns `false` on
     // entry while `SEH_INSTALLED` is false, so until this runs EVERY protected
     // read in this module fails — `safe_read_u64`, `safe_read_bytes`, all of it.

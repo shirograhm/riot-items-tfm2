@@ -116,3 +116,40 @@ pub(crate) fn latest(
         .find(|&(noted_at, _, noted_history)| history(&kills, noted_at) == noted_history)
         .map(|(noted_at, value, _)| (noted_at, value))
 }
+
+// What an item that carries a stack count across its upgrade keeps besides
+// the count itself ([`StackCarry::carry`]).
+#[derive(Clone, Debug, Default)]
+pub(crate) struct StackCarry {
+    // The stack count last noted for an upgrade to take over.
+    noted: usize,
+    // Whether this instance has taken over the stacks of the item it replaced.
+    inherited: bool,
+}
+
+impl StackCarry {
+    // Keeps `stacks` where an upgrade can find them, on the upgrade line
+    // `line` (the base item's key). The Radiant item arrives as a fresh
+    // instance: it takes over the base item's stacks once, clamped to its
+    // own ceiling `max`, and every instance notes its count when it changes.
+    pub(crate) fn carry(
+        &mut self,
+        line: &'static str,
+        meta: &crate::ItemMeta,
+        ctx: &StableSim<'_>,
+        player: usize,
+        stacks: &mut usize,
+        max: usize,
+    ) {
+        if !std::mem::replace(&mut self.inherited, true) && meta.upgrades_from(line) {
+            if let Some((_, carried)) = latest(line, ctx, player) {
+                *stacks = (*stacks).max((carried as usize).min(max));
+                self.noted = *stacks;
+            }
+        }
+        if *stacks != self.noted {
+            self.noted = *stacks;
+            note(line, ctx, player, *stacks as u64);
+        }
+    }
+}

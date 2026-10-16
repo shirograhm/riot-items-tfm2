@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
+use crate::{apply_config, enemies_near, percent_of, ticks, ItemMeta};
 
 // Zaz'Zak's Realmspike — what World Atlas grows into for a support that
 // fights with its abilities: Void Explosion, and the gold the Atlas line pays
@@ -120,29 +120,6 @@ impl ZazzaksRealmspike {
         self
     }
 
-    // Enemy units (not turrets) within `range` of a spot, each with its
-    // maximum health.
-    fn enemies_near(
-        ctx: &StableSim<'_>,
-        team: usize,
-        (x, y): (u64, u64),
-        range: usize,
-    ) -> Vec<(usize, usize)> {
-        let range = (range * DISTANCE_UNITS_PER_RANGE) as i128;
-        let range_sq = range * range;
-        (0..ctx.entity_count())
-            .filter_map(|index| ctx.entity_at(index))
-            .filter(|e| e.is_alive() && !e.is_tower() && e.team() != team)
-            .filter(|e| {
-                let (ex, ey) = e.pos();
-                let dx = ex as i128 - x as i128;
-                let dy = ey as i128 - y as i128;
-                dx * dx + dy * dy <= range_sq
-            })
-            .map(|e| (e.id(), e.hp().1))
-            .collect()
-    }
-
     // Counts every marked spot down and sets off the ones whose delay has
     // run out.
     fn run_blasts(&mut self, ctx: &mut StableSim<'_>, player: usize) {
@@ -183,7 +160,8 @@ impl ZazzaksRealmspike {
                 0,
                 0,
             );
-            for (target, max_hp) in Self::enemies_near(ctx, team, at, self.effect_max_distance) {
+            let hit = enemies_near(ctx, team, at, self.effect_max_distance, |e| (e.id(), e.hp().1));
+            for (target, max_hp) in hit {
                 let amount = damage + percent_of(max_hp, self.effect_enemy_max_hp_damage as f64);
                 if amount > 0 {
                     ctx.deal_damage(carrier, target, 0, amount, AttackTypeV1::Item);
