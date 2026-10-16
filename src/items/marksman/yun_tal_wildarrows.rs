@@ -27,10 +27,8 @@ pub struct YunTalWildarrows {
     accumulated_stacks: usize,
     // Basic attacks counted toward the next Practice stack.
     attack_count: usize,
-    // The stack count last noted for an upgrade to take over.
-    noted_stacks: usize,
-    // Whether this instance has taken over the stacks of the item it replaced.
-    inherited: bool,
+    // What carries the stacks into an upgrade.
+    carry: upgrade_carry::StackCarry,
     // The tick the last basic attack was counted on.
     counted_at: Option<usize>,
 }
@@ -58,8 +56,7 @@ impl YunTalWildarrows {
             // Non-vital stats (internals)
             accumulated_stacks: 0,
             attack_count: 0,
-            noted_stacks: 0,
-            inherited: false,
+            carry: upgrade_carry::StackCarry::default(),
             counted_at: None,
         }
     }
@@ -114,24 +111,19 @@ impl YunTalWildarrows {
         self.effect_stack_crit_chance * self.effect_max_stacks as i32
     }
 
-    // Keeps the stacks where an upgrade can find them. The Radiant item
-    // arrives as a fresh instance: it takes over the base item's stacks once,
-    // clamped to its own ceiling, and every instance notes its count when it
-    // grows. Only the counter moves. The crit chance earned this life is
-    // already on the champion as `yun_tal_practice` buffs, and `on_spawn`
-    // re-applies it from the count on the next respawn.
+    // Keeps the stacks where an upgrade can find them
+    // (`upgrade_carry::StackCarry`). Only the counter moves. The crit chance
+    // earned this life is already on the champion as `yun_tal_practice`
+    // buffs, and `on_spawn` re-applies it from the count on the next respawn.
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
-        if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
-            if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
-                let stacks = (stacks as usize).min(self.effect_max_stacks);
-                self.accumulated_stacks = self.accumulated_stacks.max(stacks);
-                self.noted_stacks = self.accumulated_stacks;
-            }
-        }
-        if self.accumulated_stacks != self.noted_stacks {
-            self.noted_stacks = self.accumulated_stacks;
-            upgrade_carry::note(BASE_KEY, ctx, player, self.accumulated_stacks as u64);
-        }
+        self.carry.carry(
+            BASE_KEY,
+            &self.meta,
+            ctx,
+            player,
+            &mut self.accumulated_stacks,
+            self.effect_max_stacks,
+        );
     }
 }
 

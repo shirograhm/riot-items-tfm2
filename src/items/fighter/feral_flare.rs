@@ -23,10 +23,8 @@ pub struct FeralFlare {
     effect_minion_percent: f64,
     // Non-vital stats (internals)
     feral_stacks: usize,
-    // The stack count last noted for an upgrade to take over.
-    noted_stacks: usize,
-    // Whether this instance has taken over the stacks of the item it replaced.
-    inherited: bool,
+    // What carries the stacks into an upgrade.
+    carry: upgrade_carry::StackCarry,
     procs: ProcQueue,
 }
 
@@ -48,8 +46,7 @@ impl FeralFlare {
             effect_max_stacks: 30,
             effect_minion_percent: 150.0,
             feral_stacks: 0,
-            noted_stacks: 0,
-            inherited: false,
+            carry: upgrade_carry::StackCarry::default(),
             procs: ProcQueue::new(),
         }
     }
@@ -103,22 +100,16 @@ impl FeralFlare {
         }
     }
 
-    // Keeps the stacks where an upgrade can find them. The Radiant item
-    // arrives as a fresh instance: it takes over the base item's stacks once,
-    // clamped to its own ceiling, and every instance notes its count when it
-    // changes.
+    // Keeps the stacks where an upgrade can find them (`upgrade_carry::StackCarry`).
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
-        if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
-            if let Some((_, stacks)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
-                let stacks = (stacks as usize).min(self.effect_max_stacks);
-                self.feral_stacks = self.feral_stacks.max(stacks);
-                self.noted_stacks = self.feral_stacks;
-            }
-        }
-        if self.feral_stacks != self.noted_stacks {
-            self.noted_stacks = self.feral_stacks;
-            upgrade_carry::note(BASE_KEY, ctx, player, self.feral_stacks as u64);
-        }
+        self.carry.carry(
+            BASE_KEY,
+            &self.meta,
+            ctx,
+            player,
+            &mut self.feral_stacks,
+            self.effect_max_stacks,
+        );
     }
 }
 

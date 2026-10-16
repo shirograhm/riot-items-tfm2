@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_adaptive_force, apply_config, has_buff, ticks, ItemMeta};
+use crate::{apply_config, apply_tiered_adaptive_force, has_buff, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct MirageBlade {
@@ -75,22 +75,6 @@ impl MirageBlade {
         );
         self
     }
-
-    fn apply_buff(&self, ctx: &mut StableSim<'_>, player: usize) {
-        let mut force = self.adaptive_force;
-        if let Some((prior_buff, prior_force)) = self.upgrades_from {
-            let Some(player_ref) = ctx.get_player(player) else {
-                return;
-            };
-            let Some(champion_ref) = player_ref.champion() else {
-                return;
-            };
-            if has_buff(&champion_ref, prior_buff) {
-                force = self.adaptive_force - prior_force;
-            }
-        }
-        apply_adaptive_force(ctx, player, force, self.adaptive_force_buff);
-    }
 }
 
 impl Default for MirageBlade {
@@ -137,11 +121,23 @@ impl StableItem for MirageBlade {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        self.apply_buff(ctx, player);
+        apply_tiered_adaptive_force(
+            ctx,
+            player,
+            self.adaptive_force,
+            self.adaptive_force_buff,
+            self.upgrades_from,
+        );
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
-        self.apply_buff(ctx, player);
+        apply_tiered_adaptive_force(
+            ctx,
+            player,
+            self.adaptive_force,
+            self.adaptive_force_buff,
+            self.upgrades_from,
+        );
     }
 
     fn on_kill(

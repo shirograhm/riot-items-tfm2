@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade, SpellbladeBonus,
-    DISTANCE_UNITS_PER_RANGE,
+    apply_config, enemies_near, refresh_buff, ticks, ItemMeta, ProcQueue, Spellblade,
+    SpellbladeBonus,
 };
 
 // Spellblade: Using an Ability causes your next basic attack within 10 seconds
@@ -168,28 +168,6 @@ impl IcebornGauntlet {
         });
     }
 
-    // Enemy units (not turrets) within `range` of a spot.
-    fn enemies_near(
-        ctx: &StableSim<'_>,
-        team: usize,
-        (x, y): (u64, u64),
-        range: usize,
-    ) -> Vec<usize> {
-        let range = (range * DISTANCE_UNITS_PER_RANGE) as i128;
-        let range_sq = range * range;
-        (0..ctx.entity_count())
-            .filter_map(|index| ctx.entity_at(index))
-            .filter(|e| e.is_alive() && !e.is_tower() && e.team() != team)
-            .filter(|e| {
-                let (ex, ey) = e.pos();
-                let dx = ex as i128 - x as i128;
-                let dy = ey as i128 - y as i128;
-                dx * dx + dy * dy <= range_sq
-            })
-            .map(|e| e.id())
-            .collect()
-    }
-
     // Runs every zone lying in the world: its picture, its slow, its timer.
     fn run_zones(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.zones.is_empty() {
@@ -229,7 +207,7 @@ impl IcebornGauntlet {
 
             if zone.until_slow == 0 {
                 zone.until_slow = slow_every;
-                for target in Self::enemies_near(ctx, team, (zone.x, zone.y), range) {
+                for target in enemies_near(ctx, team, (zone.x, zone.y), range, |e| e.id()) {
                     refresh_buff(ctx, target, SLOW_BUFF, &slow);
                 }
             }
