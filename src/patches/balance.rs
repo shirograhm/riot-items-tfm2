@@ -556,22 +556,14 @@ fn crosses(
             if other_at == at || their_base == my_base {
                 return false;
             }
-            let theirs = landed
+            let landed_at = landed
                 .iter()
                 .rev()
                 .find(|(tier, moved, _)| *tier == other_at && moved == field)
-                .map_or_else(
-                    || {
-                        fields::quantize(
-                            &other.key,
-                            field,
-                            their_base,
-                            their_base * state.ratio(&other.key, field),
-                            other.whole.contains(field),
-                        )
-                    },
-                    |(_, _, value)| *value,
-                );
+                .map(|(_, _, value)| *value);
+            let Some(theirs) = landed_at.or_else(|| reads(state, other, field)) else {
+                return false;
+            };
             // On the other side of the other tier's number than unpatched.
             (after - theirs) * (my_base - their_base) < 0.0
         })
@@ -641,7 +633,7 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
         };
         // What a tier's number reads: as its change leaves it, or as the
         // state has it.
-        let reads = |member: &Member, changes: &[Change], index: Option<usize>| -> Option<f64> {
+        let reading = |member: &Member, changes: &[Change], index: Option<usize>| -> Option<f64> {
             if let Some(index) = index {
                 return changes[index]
                     .members
@@ -649,22 +641,15 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
                     .find(|moved| moved.key == member.key)
                     .map(|moved| moved.after);
             }
-            let unpatched = *member.values.get(field.as_str())?;
-            Some(fields::quantize(
-                &member.key,
-                field,
-                unpatched,
-                unpatched * state.ratio(&member.key, field),
-                member.whole.contains(field.as_str()),
-            ))
+            reads(state, member, field)
         };
         let (low_at, high_at) = (moved_at(legendary, &changes[..]), moved_at(radiant, &changes[..]));
         if low_at.is_none() && high_at.is_none() {
             continue;
         }
         let (Some(low), Some(high)) = (
-            reads(legendary, &changes[..], low_at),
-            reads(radiant, &changes[..], high_at),
+            reading(legendary, &changes[..], low_at),
+            reading(radiant, &changes[..], high_at),
         ) else {
             continue;
         };
@@ -952,16 +937,9 @@ fn stat_now(
     if let Some(moved) = moved {
         return moved.after;
     }
-    let patched = members.get(key).and_then(|(_, member)| {
-        let unpatched = *member.values.get(field)?;
-        Some(fields::quantize(
-            &member.key,
-            field,
-            unpatched,
-            unpatched * state.ratio(&member.key, field),
-            member.whole.contains(field),
-        ))
-    });
+    let patched = members
+        .get(key)
+        .and_then(|(_, member)| reads(state, member, field));
     patched.unwrap_or_else(|| stat_held(base, key, field))
 }
 
@@ -1003,13 +981,9 @@ fn set_level(
         change.field == field && change.members.iter().any(|moved| moved.key == key)
     });
     let Some(at) = at else {
-        let before = fields::quantize(
-            &member.key,
-            field,
-            unpatched,
-            unpatched * state.ratio(&member.key, field),
-            whole,
-        );
+        let Some(before) = reads(state, member, field) else {
+            return false;
+        };
         if (after - before).abs() < 1e-9 {
             return false;
         }
@@ -1306,7 +1280,9 @@ pub(crate) fn decide(
     }
 }
 
-// What `field` of the tier `member` reads at the balance `state` has.
+// What `field` of the tier `member` reads at the balance `state` has: its
+// unpatched number at the field's ratio, in the steps a patch moves it by.
+// Nothing for a tier that has no such number.
 pub(crate) fn reads(state: &State, member: &Member, field: &str) -> Option<f64> {
     let unpatched = *member.values.get(field)?;
     Some(fields::quantize(

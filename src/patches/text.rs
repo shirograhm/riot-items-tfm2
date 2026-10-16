@@ -2300,21 +2300,6 @@ fn row_text(label: &str, numbers: String) -> String {
     }
 }
 
-// What a tier's `field` reads at the balance `state` has: its unpatched
-// number at the field's ratio, in the steps a patch moves it by. Nothing
-// for a tier that has no such number.
-fn standing(state: &State, member: &super::base::Member, field: &str) -> Option<f64> {
-    let unpatched = *member.values.get(field)?;
-    let whole = member.whole.contains(field);
-    Some(super::fields::quantize(
-        &member.key,
-        field,
-        unpatched,
-        unpatched * state.ratio(&member.key, field),
-        whole,
-    ))
-}
-
 // The rows of the numbers of `change`'s item that a note writes as one
 // amount, `fields`: a row a tier, with the tier it is of, the whole amount
 // as it was and as it is, whichever of its numbers the patch moved. `write`
@@ -2350,7 +2335,7 @@ fn amount_rows(
             .iter()
             .map(|&field| match moved(field, &member.key) {
                 Some(moved) => Some((moved.before, moved.after)),
-                None => standing(state, member, field).map(|value| (value, value)),
+                None => super::balance::reads(state, member, field).map(|value| (value, value)),
             })
             .collect();
         if numbers.iter().all(Option::is_none) {
