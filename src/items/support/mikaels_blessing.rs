@@ -34,7 +34,7 @@ impl MikaelsBlessing {
                 &["radiant_mikaels_blessing"],
             ),
             price: 550,
-            hp: 200,
+            hp: 250,
             hp_regen: 2,
             magic_power: 10,
             skill_cooldown_mult: 10,

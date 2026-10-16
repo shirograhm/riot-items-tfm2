@@ -13,7 +13,7 @@ impl Default for WingedMoonplate {
     fn default() -> Self {
         Self {
             price: 400,
-            hp: 150,
+            hp: 250,
             move_speed_mult: 4,
         }
     }

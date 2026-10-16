@@ -41,7 +41,7 @@ impl GrezsSpectralLantern {
             meta: ItemMeta::base(BASE_KEY, &["spirit_stone"], &["radiant_grezs_spectral_lantern"]),
             spirit_drain_buff: "grezs_spectral_lantern_spirit_drain",
             price: 700,
-            hp: 150,
+            hp: 250,
             magic_power: 30,
             skill_cooldown_mult: 10,
             effect_stack_magic_power: 1,
@@ -60,7 +60,7 @@ impl GrezsSpectralLantern {
         Self {
             meta: ItemMeta::radiant("radiant_grezs_spectral_lantern", &[BASE_KEY]),
             price: 1000,
-            hp: 200,
+            hp: 300,
             magic_power: 60,
             skill_cooldown_mult: 10,
             effect_stack_magic_power: 1,

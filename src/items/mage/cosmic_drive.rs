@@ -28,7 +28,7 @@ impl CosmicDrive {
                 &["radiant_cosmic_drive"],
             ),
             price: 850,
-            hp: 150,
+            hp: 250,
             magic_power: 50,
             skill_cooldown_mult: 10,
             move_speed_mult: 4,
@@ -41,7 +41,7 @@ impl CosmicDrive {
         Self {
             meta: ItemMeta::radiant("radiant_cosmic_drive", &["cosmic_drive"]),
             price: 1000,
-            hp: 250,
+            hp: 350,
             magic_power: 75,
             skill_cooldown_mult: 15,
             move_speed_mult: 4,

@@ -38,7 +38,7 @@ impl FiendhunterBolts {
                 &["radiant_fiendhunter_bolts"],
             ),
             price: 700,
-            attack_speed_mult: 35,
+            attack_speed_mult: 30,
             crit_chance: 20,
             move_speed_mult: 4,
             ult_cooldown_mult: 15,
@@ -61,7 +61,7 @@ impl FiendhunterBolts {
         Self {
             meta: ItemMeta::radiant("radiant_fiendhunter_bolts", &["fiendhunter_bolts"]),
             price: 1000,
-            attack_speed_mult: 55,
+            attack_speed_mult: 50,
             crit_chance: 25,
             move_speed_mult: 4,
             ult_cooldown_mult: 25,

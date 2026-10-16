@@ -40,7 +40,7 @@ impl AbyssalMask {
             meta: ItemMeta::base("abyssal_mask", &["dusk_raven"], &["radiant_abyssal_mask"]),
             unmake_buff: "abyssal_mask_unmake",
             price: 700,
-            hp: 150,
+            hp: 250,
             magic_resistance: 50,
             skill_cooldown_mult: 10,
             effect_percent_mr_shred: 20,
@@ -54,7 +54,7 @@ impl AbyssalMask {
         Self {
             meta: ItemMeta::radiant("radiant_abyssal_mask", &["abyssal_mask"]),
             price: 950,
-            hp: 250,
+            hp: 350,
             magic_resistance: 75,
             skill_cooldown_mult: 15,
             // Unmake itself is unchanged — Radiant buys the stat line only.

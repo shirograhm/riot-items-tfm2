@@ -14,7 +14,7 @@ impl Default for AegisOfTheLegion {
     fn default() -> Self {
         Self {
             price: 700,
-            hp: 100,
+            hp: 150,
             defence: 20,
             magic_resistance: 30,
         }

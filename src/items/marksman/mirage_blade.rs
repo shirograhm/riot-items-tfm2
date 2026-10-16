@@ -31,7 +31,7 @@ impl MirageBlade {
             adaptive_force_buff: "mirage_blade_adaptive_force",
             upgrades_from: None,
             price: 750,
-            attack_speed_mult: 40,
+            attack_speed_mult: 35,
             move_speed_mult: 10,
             adaptive_force: 30,
             effect_move_speed_mult: 20,
@@ -45,7 +45,7 @@ impl MirageBlade {
             adaptive_force_buff: "radiant_mirage_blade_adaptive_force",
             upgrades_from: Some(("mirage_blade_adaptive_force", 30)),
             price: 1050,
-            attack_speed_mult: 65,
+            attack_speed_mult: 60,
             move_speed_mult: 15,
             adaptive_force: 50,
             ..Self::base()

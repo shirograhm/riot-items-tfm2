@@ -14,7 +14,7 @@ impl Default for ForbiddenIdol {
     fn default() -> Self {
         Self {
             price: 350,
-            hp: 100,
+            hp: 150,
             magic_power: 10,
             skill_cooldown_mult: 10,
         }

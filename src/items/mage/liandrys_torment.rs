@@ -57,7 +57,7 @@ impl LiandrysTorment {
                 &["radiant_liandrys_torment"],
             ),
             price: 700,
-            hp: 200,
+            hp: 300,
             magic_power: 40,
             effect_hp_percent_damage: 6.0,
             effect_minion_damage_cap: 40,
@@ -70,7 +70,7 @@ impl LiandrysTorment {
         Self {
             meta: ItemMeta::radiant("radiant_liandrys_torment", &["liandrys_torment"]),
             price: 1000,
-            hp: 300,
+            hp: 400,
             magic_power: 75,
             effect_hp_percent_damage: 6.0,
             effect_minion_damage_cap: 40,

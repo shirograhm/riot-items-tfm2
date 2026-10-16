@@ -50,7 +50,7 @@ impl RunaansHurricane {
             ),
             bolt_hit: "riot_runaans_bolt_hit",
             price: 700,
-            attack_speed_mult: 40,
+            attack_speed_mult: 35,
             crit_chance: 20,
             move_speed_mult: 5,
             effect_ad_percent_damage: 50.0,
@@ -66,7 +66,7 @@ impl RunaansHurricane {
             meta: ItemMeta::radiant("radiant_runaans_hurricane", &["runaans_hurricane"]),
             bolt_hit: "riot_radiant_runaans_bolt_hit",
             price: 950,
-            attack_speed_mult: 70,
+            attack_speed_mult: 65,
             crit_chance: 25,
             move_speed_mult: 5,
             ..Self::base()

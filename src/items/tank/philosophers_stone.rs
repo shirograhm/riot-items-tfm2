@@ -44,7 +44,7 @@ impl PhilosophersStone {
         Self {
             meta: ItemMeta::base(BASE_KEY, &["bamis_cinder"], &["radiant_philosophers_stone"]),
             price: 750,
-            hp: 250,
+            hp: 350,
             defence: 15,
             magic_resistance: 25,
             effect_bonus_flat_damage: 10,
@@ -64,7 +64,7 @@ impl PhilosophersStone {
         Self {
             meta: ItemMeta::radiant("radiant_philosophers_stone", &[BASE_KEY]),
             price: 1050,
-            hp: 350,
+            hp: 450,
             defence: 30,
             magic_resistance: 45,
             effect_bonus_flat_damage: 10,

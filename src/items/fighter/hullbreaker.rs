@@ -50,7 +50,7 @@ impl Hullbreaker {
             ),
             price: 800,
             attack: 20,
-            hp: 200,
+            hp: 300,
             move_speed_mult: 4,
             effect_attack_interval: 5,
             effect_ad_percent_damage: 80.0,
@@ -74,7 +74,7 @@ impl Hullbreaker {
             meta: ItemMeta::radiant("radiant_hullbreaker", &["hullbreaker"]),
             price: 1000,
             attack: 35,
-            hp: 300,
+            hp: 400,
             move_speed_mult: 4,
             ..Self::base()
         }

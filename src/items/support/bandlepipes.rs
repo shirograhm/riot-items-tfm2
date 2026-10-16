@@ -74,7 +74,7 @@ impl Bandlepipes {
             fanfare_buff: "bandlepipes_fanfare",
             anthem_buff: "bandlepipes_anthem",
             price: 500,
-            hp: 100,
+            hp: 150,
             defence: 20,
             magic_resistance: 30,
             skill_cooldown_mult: 15,

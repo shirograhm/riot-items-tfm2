@@ -26,7 +26,7 @@ impl EchoesOfHelia {
                 &["bandleglass_mirror", "forbidden_idol"],
                 &["radiant_echoes_of_helia"],
             ),
-            price: 550,
+            price: 750,
             hp: 150,
             hp_regen: 2,
             magic_power: 25,

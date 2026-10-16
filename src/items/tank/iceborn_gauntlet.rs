@@ -78,9 +78,9 @@ impl IcebornGauntlet {
         Self {
             meta: ItemMeta::base("iceborn_gauntlet", &["sheen"], &["radiant_iceborn_gauntlet"]),
             price: 750,
-            hp: 150,
+            hp: 250,
             defence: 15,
-            attack_speed_mult: 20,
+            attack_speed_mult: 15,
             skill_cooldown_mult: 10,
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,
@@ -99,9 +99,9 @@ impl IcebornGauntlet {
         Self {
             meta: ItemMeta::radiant("radiant_iceborn_gauntlet", &["iceborn_gauntlet"]),
             price: 1000,
-            hp: 250,
+            hp: 350,
             defence: 25,
-            attack_speed_mult: 25,
+            attack_speed_mult: 20,
             skill_cooldown_mult: 15,
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,

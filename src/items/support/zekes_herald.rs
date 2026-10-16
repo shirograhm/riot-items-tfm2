@@ -59,7 +59,7 @@ impl ZekesHerald {
                 &["radiant_zekes_herald"],
             ),
             price: 550,
-            hp: 100,
+            hp: 150,
             defence: 20,
             magic_resistance: 30,
             skill_cooldown_mult: 10,

@@ -25,7 +25,7 @@ impl Default for HauntingGuise {
         Self {
             price: 500,
             magic_power: 30,
-            hp: 100,
+            hp: 200,
             effect_stack_percent_damage: 2.0,
             effect_stacks_per_second: 1,
             effect_max_stacks: 3,

@@ -20,9 +20,9 @@ pub struct CatalystOfAeons {
 impl Default for CatalystOfAeons {
     fn default() -> Self {
         Self {
-            price: 500,
-            hp: 100,
-            magic_power: 20,
+            price: 650,
+            hp: 200,
+            magic_power: 30,
             skill_cooldown_mult: 5,
             effect_min_heal: 15,
             effect_max_heal: 40,

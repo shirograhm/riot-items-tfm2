@@ -14,7 +14,7 @@ impl Default for HearthboundAxe {
         Self {
             price: 500,
             attack: 20,
-            attack_speed_mult: 20,
+            attack_speed_mult: 15,
         }
     }
 }

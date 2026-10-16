@@ -49,7 +49,7 @@ impl RodOfAges {
         Self {
             meta: ItemMeta::base(BASE_KEY, &["catalyst_of_aeons"], &["radiant_rod_of_ages"]),
             price: 700,
-            hp: 150,
+            hp: 250,
             magic_power: 40,
             skill_cooldown_mult: 5,
             effect_growth_hp: 10,
@@ -71,7 +71,7 @@ impl RodOfAges {
         Self {
             meta: ItemMeta::radiant("radiant_rod_of_ages", &[BASE_KEY]),
             price: 1000,
-            hp: 250,
+            hp: 350,
             magic_power: 65,
             skill_cooldown_mult: 10,
             effect_growth_hp: 10,

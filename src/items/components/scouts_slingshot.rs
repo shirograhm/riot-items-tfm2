@@ -17,7 +17,7 @@ impl Default for ScoutsSlingshot {
     fn default() -> Self {
         Self {
             price: 400,
-            attack_speed_mult: 30,
+            attack_speed_mult: 25,
             effect_bonus_flat_damage: 40,
             effect_cooldown_seconds: 20.0,
             // Non-vital stats (internals)

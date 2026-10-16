@@ -69,7 +69,7 @@ impl MoonstoneRenewer {
                 &["bandleglass_mirror"],
                 &["radiant_moonstone_renewer"],
             ),
-            price: 550,
+            price: 750,
             hp: 150,
             hp_regen: 2,
             magic_power: 20,

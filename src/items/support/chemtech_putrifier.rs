@@ -23,7 +23,7 @@ impl ChemtechPutrifier {
                 &["bandleglass_mirror"],
                 &["radiant_chemtech_putrifier"],
             ),
-            price: 500,
+            price: 700,
             hp: 150,
             hp_regen: 2,
             magic_power: 15,

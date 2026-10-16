@@ -51,7 +51,7 @@ impl StableItem for GlowingMote {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["sheen".to_string()]
+        vec!["sheen".to_string(), "bandleglass_mirror".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {
