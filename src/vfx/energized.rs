@@ -1,40 +1,25 @@
-//! Energized: moving and basic attacking fill a meter, and the basic attack
-//! that lands with it full spends it. Shared by Statikk Shiv, Stormrazor and
-//! Voltaic Cyclosword; each item owns its numbers and what its charged hit
-//! does.
+//! Energized: moving and basic attacking fill a meter, and the next basic
+//! attack with it full spends it. Shared by Statikk Shiv, Stormrazor and
+//! Voltaic Cyclosword.
 //!
-//! There is no hook for moving, so the meter gains a stack as time passes and
-//! a few more on every basic attack. While the carrier is charged they hold
-//! `CHARGED_BUFF`, which draws the lightning crackling round them.
-//!
-//! # One charge for the champion
-//!
-//! Every Energized item keeps its own meter, since an item cannot see into
-//! another, and `CHARGED_BUFF` is what ties them together: an item whose meter
-//! fills puts it up, and an item that finds it up counts as charged whatever
-//! its own meter says. So a champion holding two of them is charged once, the
-//! charged attack sets off both, both meters start over together, and from
-//! then on they fill in step.
-//!
-//! A buff is read a few ticks late, both as it goes up and as it comes down.
-//! So an item that has just spent a charge goes by its own meter alone for
-//! `SHARE_LOCKOUT_TICKS`, which is shorter than the meter takes to fill.
+//! Time passing stands in for moving, since there is no movement hook. Each
+//! item keeps its own meter and the shared `CHARGED_BUFF` ties them together,
+//! so a champion with two is charged once and both fire; after spending, an
+//! item ignores the buff for `SHARE_LOCKOUT_TICKS`, since buffs are read a few
+//! ticks late.
 
 use mod_api_stable::*;
 
 use crate::{has_buff, refresh_buff};
 
-// Statless marker on a charged champion. It is the `view_buffs` binding in
-// `view/effects.view_effects` that draws the crackle
-// (`effects/energized_charge`).
+// Statless marker on a charged champion; its `view_buffs` binding draws the
+// crackle.
 const CHARGED_BUFF: &str = "riot_energized";
-// Refreshed every `MARK_EVERY_TICKS` while an item is charged, so it never
-// lapses between refreshes, and gone within a second of the last one: the
-// champion died, or the item left.
+// Refreshed every `MARK_EVERY_TICKS` while charged, so it lapses within a
+// second of the last refresh.
 const CHARGED_TICKS: usize = 60;
 const MARK_EVERY_TICKS: usize = 20;
-// The meter gains one stack each time this many ticks have gone by since the
-// last, which is a stack every 13 ticks.
+// The meter gains a stack every 13 ticks for time passing.
 const STACK_EVERY_TICKS: usize = 12;
 // Stacks a basic attack adds.
 const ATTACK_STACKS: usize = 5;

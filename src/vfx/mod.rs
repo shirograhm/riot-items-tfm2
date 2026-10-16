@@ -1,9 +1,6 @@
-//! Buffs and the effects drawn from them: the buff helpers every item uses,
-//! the Immolate flames marker and burn, the shared Annul spell shield (whose
-//! buff draws the shield bubble), the shared Spellblade (whose buff draws the
-//! sparks), the shared Energized (whose buff draws the crackle), the shared
-//! Eternity (a buff with nothing to draw), Lifeline's shield bubble and Sunfire
-//! Cape's Immolate, which runs as the match hook.
+//! Buff helpers every item uses, and the shared buff-driven effects: Immolate,
+//! Annul, Spellblade, Energized, Eternity and Lifeline, plus Sunfire Cape's
+//! Immolate in the match hook.
 
 mod annul;
 mod energized;
@@ -25,18 +22,17 @@ pub(crate) fn refresh_buff(ctx: &mut StableSim<'_>, entity: usize, name: &str, b
     ctx.add_buff(entity, buff);
 }
 
-// Statless marker on a champion whose Immolate is burning, shared by every
-// Immolate the mod runs (Bami's Cinder, Hollow Radiance, Sunfire Cape). It is
-// the `view_buffs` binding in `view/effects.view_effects` that draws flames at
-// the champion's feet.
+// Statless marker on a champion whose Immolate is burning (Bami's Cinder,
+// Hollow Radiance, Sunfire Cape); its `view_buffs` binding draws flames at the
+// champion's feet.
 const IMMOLATE_BUFF: &str = "riot_immolate";
-// Refreshed once a second as the burn ticks, so it never lapses between burns,s
-// and goes half a second after the last one: death, or the item leaving.
+// Refreshed every second while the burn ticks, so it lapses half a second after
+// the last one.
 const IMMOLATE_MARKER_TICKS: usize = 90;
 
-// Puts up (or keeps up) the Immolate flames on `entity`. Replacing rather than
-// adding keeps exactly one instance however many Immolate items it holds, and
-// the view does not restart an animation whose buff was replaced in one tick.
+// Puts up or keeps up the Immolate flames on `entity`. Replacing keeps one
+// instance however many Immolate items it holds, and does not restart the
+// animation.
 pub(crate) fn mark_immolate(ctx: &mut StableSim<'_>, entity: usize) {
     refresh_buff(
         ctx,
@@ -46,10 +42,8 @@ pub(crate) fn mark_immolate(ctx: &mut StableSim<'_>, entity: usize) {
     );
 }
 
-// How much bigger than usual `entity` is, in percent: the `radius_mult` of
-// every buff on it, which is how anything in this game changes a champion's
-// size (Heartsteel's Goliath, another mod's Cho'Gath). Never below zero, so a
-// shrunken champion keeps the ranges its tooltips state.
+// How much bigger than usual `entity` is, in percent: the sum of its buffs'
+// `radius_mult`, never below zero.
 pub(crate) fn size_percent(ctx: &StableSim<'_>, entity: usize) -> u64 {
     let Some(entity) = ctx.get_entity(entity) else {
         return 0;
@@ -61,22 +55,15 @@ pub(crate) fn size_percent(ctx: &StableSim<'_>, entity: usize) -> u64 {
     total.max(0) as u64
 }
 
-// A range measured from `carrier`, in world units: `range` (the range units
-// tooltips use) stretched by the carrier's size, so a champion 30% bigger
-// reaches 30% further. Every effect that covers an area around its carrier
-// goes through this; one measured from somewhere else (a cleave around the
-// target, an eruption where a unit died) does not.
-//
-// It reads the carrier's buffs, so it is for effects that fire now and then
-// (an aura refresh, a proc, a burn once a second), not for every tick.
+// A range around `carrier` in world units, stretched by the carrier's size (30%
+// bigger reaches 30% further). It reads the carrier's buffs, so use it for
+// occasional effects, not every tick.
 pub(crate) fn sized_range(ctx: &StableSim<'_>, carrier: usize, range: usize) -> u64 {
     (range * crate::DISTANCE_UNITS_PER_RANGE) as u64 * (100 + size_percent(ctx, carrier)) / 100
 }
 
-// One second of Immolate from `caster`: every enemy unit within `range`,
-// stretched by the caster's size ([`sized_range`]), takes `champion_damage` as
-// magic damage if it is a champion and `other_damage` otherwise (minions and
-// monsters).
+// One second of Immolate from `caster`: enemies within `range` (stretched by
+// size) take `champion_damage` if they are champions, else `other_damage`.
 pub(crate) fn immolate_burn(
     ctx: &mut StableSim<'_>,
     caster: usize,
@@ -89,10 +76,8 @@ pub(crate) fn immolate_burn(
     immolate_burn_between(ctx, caster, caster_team, 0, reach, champion_damage, other_damage);
 }
 
-// [`immolate_burn`] over an explicit band, in world units: enemies further
-// than `beyond` and no further than `reach` (everyone within `reach` when
-// `beyond` is 0). Towers are enemy entities too, and Immolate is not meant
-// for them. A zero amount is skipped, which lets a caller hit only the
+// [`immolate_burn`] over a band in world units: enemies past `beyond` and
+// within `reach`. Towers and zero amounts are skipped, so a caller can hit only
 // minions and monsters.
 pub(crate) fn immolate_burn_between(
     ctx: &mut StableSim<'_>,
@@ -126,19 +111,10 @@ pub(crate) fn immolate_burn_between(
     }
 }
 
-// Adds one stack of `buff` to `entity`, capped at `max`, and restarts the
-// duration of every stack already there. `buff` carries the value of ONE
-// stack; the engine counts same-name buffs as stacks and sums them.
-//
-// The stacks live on the entity, not on the item: an item-side counter
-// feeding one buff of `per_stack * count` only ever shows a single stack in
-// game. On the entity the engine owns the count and the expiry, and two
-// holders of the same item share one stack pool on a target instead of
-// overwriting each other's buff -- the way LoL caps a shred.
-//
-// Returns the stack count after adding; 0 when `max` is 0. On a host older
-// than ABI level 8 (no `entity_stack_buff`) it falls back to one refreshed
-// stack.
+// Adds one stack of `buff` to `entity`, capped at `max`, refreshing every
+// stack's duration; `buff` carries one stack's value. Stacks live on the entity
+// so the engine shows the count and two holders share one pool; before ABI 8
+// this falls back to one refreshed stack.
 pub(crate) fn add_stack(ctx: &mut StableSim<'_>, entity: usize, buff: &BuffV1, max: usize) -> usize {
     if max == 0 {
         return 0;

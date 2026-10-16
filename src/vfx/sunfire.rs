@@ -1,25 +1,11 @@
-//! Immolate on the vanilla Sunfire Cape.
+//! Immolate on the vanilla Sunfire Cape (`hourglass_of_eternity`), which has no
+//! `StableItem` to hang a passive on, so the match hook burns around its
+//! holders once a second.
 //!
-//! Sunfire Cape is the base game's `hourglass_of_eternity`, renamed in
-//! `text/item.i18n`. It is an engine item, so there is no `StableItem` to hang
-//! the passive on: its Mending regen is the data field `flat_regen`, and
-//! registering a mod item under the same key is not a documented override for
-//! items. Instead the match hook looks for holders every tick and burns their
-//! surroundings once a second, which leaves the vanilla item itself untouched.
-//!
-//! Radiant Sunfire Cape (`giants_horn_shard`) already has this aura built into
-//! the engine (`flat_aoe_damage` / `max_hp_aoe_ratio` / `aoe_range`), so its
-//! burn is deliberately not handled here. The hook gives its holders the same
-//! Immolate flames, and adds the part the engine lacks: the bonus against
-//! minions and monsters, as a second hit on them alone. That assumes the
-//! engine burns once a second like every other Immolate. The other part it
-//! lacks is the reach a bigger holder gets: the engine's range is fixed, so the
-//! hook burns the band past it itself, which assumes the engine measures
-//! centre to centre the way the mod does. Its numbers, like the
-//! rest of the HP line's stats, are written into
-//! `setting/item_setting.item_setting` from the config
-//! (`item_stats::game_item_file`). The hook reads
-//! the same config entries, `sunfire_cape` and `radiant_sunfire_cape`.
+//! Radiant Sunfire Cape (`giants_horn_shard`) burns through its built-in engine
+//! aura; the hook only adds the flames, the bonus against minions and monsters,
+//! and the reach past the engine's fixed range for a bigger holder. Both read
+//! the `sunfire_cape` and `radiant_sunfire_cape` config entries.
 
 use mod_api_stable::*;
 
@@ -173,14 +159,12 @@ impl StableMatchHook for MatchHooks {
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         use crate::perf::{self, Section};
-        // Which match is on screen, for the Check Tactics panel's builds. One
-        // tick read and a return for every simulation but the client's own.
+        // Which match is on screen, for the Check Tactics panel's builds; other
+        // simulations return at once.
         crate::match_builds::on_match_tick(sim);
-        // And what its athletes buy, for what the item tooltips say each
-        // item has cost. One origin read and a return for the same ones.
+        // What its athletes buy, for the item tooltips' cost.
         crate::item_spend::on_match_tick(sim);
-        // And what they hold as the match goes, for the counts drawn on
-        // their item icons. The same return for the same ones.
+        // What they hold, for the counts drawn on their item icons.
         crate::item_counts::on_match_tick(sim);
         if perf::ENABLED {
             perf::sim_tick(sim.seed(), sim.tick(), sim.is_end());

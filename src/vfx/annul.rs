@@ -1,31 +1,18 @@
-//! Annul: Grants a Spell Shield that blocks the next enemy Ability. Shared by
-//! Verdant Barrier, Banshee's Veil and Edge of Night; each item owns its
-//! cooldown and hands it to the item it upgrades into.
+//! Annul: a Spell Shield that blocks the next enemy Ability, shared by Verdant
+//! Barrier, Banshee's Veil and Edge of Night.
 //!
-//! Item hooks run after a hit has resolved, so the block has to be in place
-//! before the ability lands. While Annul is up the carrier holds `ANNUL_BUFF`:
-//! `skill_damaged_reduce` takes ability damage to nothing and `cc_immune` stops
-//! its crowd control. Basic attacks are reduced by a separate stat
-//! (`base_attack_damaged_reduce`), so they land in full and never pop it.
-//!
-//! The first enemy ability to reach the carrier pops the shield, and the buff
-//! comes off on the next `update` rather than in the hook: an ability that
-//! deals its damage before its stun would otherwise lose the immunity between
-//! the two. Everything else landing in that same tick is blocked with it.
-//!
-//! The host of game 0.6.2 never calls the upgrade hooks, so the hand-over runs
-//! through `crate::upgrade_carry`: every pop notes the tick the shield is ready
-//! again under the item's upgrade line, and an item built from another on that
-//! line starts from the latest one.
+//! Item hooks run after a hit resolves, so the block is a buff held in advance:
+//! full ability damage reduction plus `cc_immune`. The first enemy ability pops
+//! it and it comes off on the next `update`, so a damage-then-stun ability is
+//! blocked whole; the cooldown carries across upgrades through `upgrade_carry`,
+//! since the host never calls the upgrade hooks.
 
 use mod_api_stable::*;
 
 use crate::{refresh_buff, ticks, upgrade_carry};
 
-// One name for every Annul item, so a champion holding two has one shield:
-// the hit that pops it reaches both items and starts both cooldowns. Also the
-// `view_buffs` name in `view/effects.view_effects` that draws the shield
-// bubble (`effects/annul_spell_shield`) for as long as it is up.
+// One name for every Annul item, so two of them share one shield; also the
+// `view_buffs` binding that draws the shield bubble.
 const ANNUL_BUFF: &str = "riot_annul";
 
 #[derive(Clone, Debug, Default)]
@@ -85,9 +72,8 @@ impl Annul {
         upgrade_carry::note(self.line, ctx, player, 0);
     }
 
-    // What an upgrade hands its successor, so building the next tier neither
-    // resets the cooldown nor strands a popped shield on the carrier: the old
-    // item is gone before its `update` could take the buff off.
+    // What an upgrade hands its successor, so the cooldown is not reset and a
+    // popped shield is not stranded on the carrier.
     pub(crate) fn carry(&self) -> u64 {
         let mut carry = self.cooldown as u64;
         if self.up {
@@ -106,10 +92,9 @@ impl Annul {
         self.popped = carry & CARRY_POPPED != 0;
     }
 
-    // Takes a popped shield off, then keeps a ready one on the carrier. The
-    // buff is re-checked every tick rather than added once: death can strip
-    // it, and its size follows the carrier's other ability damage reduction
-    // (Cloak of Starry Night's grows with magic resistance).
+    // Takes a popped shield off, then keeps a ready one on the carrier, checked
+    // every tick since death strips it and its size follows the carrier's other
+    // ability damage reduction.
     pub(crate) fn update(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         // An item built from another arrives as a fresh instance: it takes over
         // what is left of that one's cooldown, once.
