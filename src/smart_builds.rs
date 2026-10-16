@@ -23,14 +23,20 @@
 //!    items (rule 14).
 //! 6. **Items bought when they pay off** — an item whose value builds up the
 //!    longer it is owned ([`EARLY_ITEMS`]: Heartsteel, Hubris) is bought
-//!    before the AI's other picks, and one that scales with the stats the
-//!    rest of the build brings ([`LATE_ITEMS`]: Riftmaker, Rabadon's) after
-//!    them. This rule only reorders.
+//!    before the AI's other picks, and only in the first two slots
+//!    ([`EARLY_SLOTS`]); one that scales with the stats the rest of the build
+//!    brings ([`LATE_ITEMS`]: Riftmaker, Rabadon's) after them, and only from
+//!    the third slot on. The order does most of it. A pick it still leaves on
+//!    the wrong side (more early items than the first two slots hold, or too
+//!    few other picks to keep a late one out of them) makes way for an item of
+//!    no timing: of its own category, else of the build's style. A jungler's
+//!    jungle item is its role item (rule 9) and stays wherever it lands, and
+//!    the 5th and 6th items are never early ones.
 //! 7. **One pair of boots** — a build with no boots gets the pair
 //!    [`boots_for`] picks for its champion: in the second slot, or the first
-//!    open slot after it when a pin holds that one (the 5th and 6th
-//!    included), else the first slot. Boots the player pinned anywhere count,
-//!    and no other rule swaps an AI pick for boots.
+//!    open slot after it when a pin or an early item (rule 6) holds that one
+//!    (the 5th and 6th included), else the first slot. Boots the player
+//!    pinned anywhere count, and no other rule swaps an AI pick for boots.
 //! 8. **Jungle items stay in the jungle, one to a build** — only whoever
 //!    plays jungle keeps a jungle item ([`JUNGLE_ITEMS`]: Feral Flare, Grez's
 //!    Spectral Lantern, Philosopher's Stone). A jungler's is the one for its
@@ -38,13 +44,16 @@
 //!    Flare or Grez's by damage type (rule 5). The AI's other jungle items
 //!    make way, all of them when the player pinned one.
 //! 9. **Role items first** — a jungler's build holds the jungle item rule 8
-//!    names, bought before the AI's other picks. When neither a pin nor an AI
-//!    pick is one, the AI's last pick makes way for it. A support is
-//!    guaranteed only its World Atlas item (rule 12). Past that it prefers
-//!    Support-class items (Protoplasm Harness included) without being held to
-//!    one: the item-build hook pushes them harder than the mod's other items,
-//!    the AI's picks among them are bought right after the Atlas item, and
-//!    they are the first place a stand-in is looked for (rules 5, 10 and 13).
+//!    names, in the first slot. When neither a pin nor an AI pick is one, the
+//!    AI's last pick makes way for it. When the player pinned the first
+//!    slot, the build goes without: one the AI picked makes way, and none
+//!    is added, the 5th and 6th items included ([`Fit::starter_slot_pinned`]).
+//!    A support is guaranteed only its World Atlas item (rule 12). Past that
+//!    it prefers Support-class items (Protoplasm Harness included) without
+//!    being held to one: the item-build hook pushes them harder than the
+//!    mod's other items, the AI's picks among them are bought right after the
+//!    Atlas item and any early item (rule 6), and they are the first place a
+//!    stand-in is looked for (rules 5, 10 and 13).
 //!    Rule 5 still matches them to the champion. A mage support prefers none:
 //!    past its World Atlas item it builds AP items like any other mage.
 //! 10. **Imperial Mandate for supports that immobilize** — a support whose
@@ -67,8 +76,9 @@
 //!    reaches 35 or less. The stand-in comes from the item's own category. A
 //!    champion whose reach nothing states is left alone.
 //! 12. **A World Atlas item for every support** — a support's build holds one
-//!    of [`ATLAS_ITEMS`], the one for its champion, bought before everything
-//!    else. Which one, the first that applies:
+//!    of [`ATLAS_ITEMS`], the one for its champion, in the first slot. When
+//!    the player pinned that slot, the build goes without, as a jungler's
+//!    does its jungle item (rule 9). Which one, the first that applies:
 //!    - Dream Maker for Chef and Monk ([`ATLAS_BY_CHAMPION`]);
 //!    - Solstice Sleigh on a champion tagged `Tank` whose kit immobilizes for
 //!      a second or more in all, ultimate included;
@@ -121,7 +131,8 @@
 //!    same two classes, and among them prefers [`PREFERRED_AID_ITEMS`] (the
 //!    heal, shield and buff items bar Moonstone Renewer): a stand-in for any
 //!    of its picks is looked for there first, the AI buys them right after
-//!    the Atlas item, the item-build hook pushes them hardest, and the
+//!    the Atlas item and any early item (rule 6), the item-build hook pushes
+//!    them hardest, and the
 //!    automatic 5th and 6th items come from them while one is left. A
 //!    preference, not a quota: a tank or support item the AI picked itself
 //!    stays.
@@ -508,6 +519,10 @@ pub(crate) struct Fit {
     realmspike: bool,
     // Rule 11: whether the champion attacks from range, `None` when unknown.
     ranged: Option<bool>,
+    // Rules 9 and 12: a pin holds the build's first slot, the only one a
+    // jungler's jungle item and a support's World Atlas item go in, so the
+    // build goes without that item ([`Fit::starter_slot_pinned`]).
+    no_starter: bool,
 }
 
 // The [`Fit`] for `champion` playing `role`.
@@ -552,10 +567,29 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
         realmspike: role == Role::Support
             && traits.is_some_and(|traits| traits.scaling == Some(Scaling::Ap)),
         ranged: traits.and_then(|traits| traits.ranged),
+        no_starter: false,
     }
 }
 
 impl Fit {
+    // This [`Fit`] for a build whose first slot the player pinned. A
+    // jungler's jungle item and a support's World Atlas item only ever go in
+    // that slot (rules 9 and 12), so such a build goes without them: none is
+    // added, and one the AI picked makes way like a second one would.
+    pub(crate) fn starter_slot_pinned(self) -> Self {
+        Self {
+            no_starter: self.jungle_items || self.support_items,
+            ..self
+        }
+    }
+
+    // Whether `key` is the item a build with its first slot pinned goes
+    // without ([`Fit::starter_slot_pinned`]): a jungler's jungle item, or a
+    // support's World Atlas item.
+    pub(crate) fn skips_starter(&self, key: &str) -> bool {
+        self.no_starter && ((self.jungle_items && is_jungle_item(key)) || self.is_atlas_pick(key))
+    }
+
     // Rules 16 and 17 for one item: whether `key` is of a class this
     // support does not build. Boots are rule 7's, and an item no class is
     // written down for is left alone, like any item the rules cannot place.
@@ -636,11 +670,11 @@ impl Fit {
     }
 
     // Rule 9: whether the champion's build is guaranteed an item of its role:
-    // a jungler's jungle item. A support's one dedicated item is its World
-    // Atlas item (rule 12); past that it only prefers support items
-    // ([`Fit::prefers_support_items`]).
+    // a jungler's jungle item, unless the player pinned the slot it goes in.
+    // A support's one dedicated item is its World Atlas item (rule 12); past
+    // that it only prefers support items ([`Fit::prefers_support_items`]).
     fn guarantees_role_item(&self) -> bool {
-        self.jungle_items
+        self.jungle_items && !self.no_starter
     }
 
     // Rule 9: whether this is a support that prefers Support-class items past
@@ -660,7 +694,8 @@ impl Fit {
     // Rule 9: whether `key` is an item of the role this champion plays — a
     // support item it prefers ([`Fit::is_preferred_support_item`]), a jungle
     // item for a jungler, nothing in any other role. What the AI buys right
-    // after the World Atlas item, and looks to first for a stand-in.
+    // after the World Atlas item (and a support's early items, rule 6), and
+    // looks to first for a stand-in.
     fn is_role_item(&self, key: &str) -> bool {
         self.is_preferred_support_item(key) || (self.jungle_items && is_jungle_item(key))
     }
@@ -740,21 +775,40 @@ fn timing(key: &str) -> Timing {
     }
 }
 
+// Rule 6: the build slots, from the first, that an early item may be bought
+// in. A late item only goes in the ones after them.
+const EARLY_SLOTS: usize = 2;
+
+// Rule 6: whether `key` may be bought in build slot `slot` (from 0).
+pub(crate) fn fits_slot(key: &str, slot: usize) -> bool {
+    match timing(key) {
+        Timing::Early => slot < EARLY_SLOTS,
+        Timing::Late => slot >= EARLY_SLOTS,
+        Timing::Any => true,
+    }
+}
+
 // The order rules 6, 9, 12 and 17 buy AI picks in: a support's World Atlas
-// item (rule 12) before anything, then the heal, shield and buff items of a
-// support that looks to them first (rule 17), then the role's own items
-// (rule 9), then by [`timing`]. Sorted on, so smaller is sooner. The order is
-// also what decides which pick drops off the end when rule 7 puts the boots
-// in, so it is never one of the first two kinds while another is left.
-fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, Timing) {
+// item (rule 12) before anything, then a support's early items, then the
+// heal, shield and buff items of a support that looks to them first (rule
+// 17), then the role's own items (rule 9), then by [`timing`]. Sorted on, so
+// smaller is sooner. The order is also what decides which pick drops off the
+// end when rule 7 puts the boots in, so it is never one of the first two
+// kinds while another is left.
+//
+// A support's early items come before its support items so that they still
+// get one of the first two slots, the only ones rule 6 lets them have. A
+// jungler's jungle item stays ahead of them: it is first of all its picks.
+fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, bool, Timing) {
     match key {
         Some(key) => (
             !fit.is_atlas_pick(key),
+            !(fit.support_items && timing(key) == Timing::Early),
             !fit.is_preferred_aid_item(key),
             !fit.is_role_item(key),
             timing(key),
         ),
-        None => (true, true, true, Timing::Any),
+        None => (true, true, true, true, Timing::Any),
     }
 }
 
@@ -787,9 +841,10 @@ const UPGRADED_BOOTS: [&str; 7] = [
 ];
 
 // The build slot rule 7 puts boots in: the second, which is where League
-// players finish theirs. A pin always wins the slot: when one holds it, the
-// boots take the first open slot after it (up to the 6th), then the first
-// slot, and with every slot pinned there are no boots.
+// players finish theirs. A pin always wins the slot, and so does an early
+// item (rule 6): when one holds it, the boots take the first open slot after
+// it (up to the 6th), then the first slot, and with every slot pinned there
+// are no boots.
 const BOOTS_SLOT: usize = 1;
 
 // Whether `key` is a pair of boots, tier 1 or upgraded.
@@ -1097,21 +1152,24 @@ impl Budget {
             // is replaced the way rule 5 does it, in the build's style, not by
             // another item of a kind the champion cannot use.
             Some(Reason::Reach)
-        } else if self.jungle_item && is_jungle_item(key) {
+        } else if (self.jungle_item || self.fit.no_starter) && is_jungle_item(key) {
             // After the rules about the champion: what is left here is a
             // jungle item this jungler could hold, were it the build's first.
+            // A build whose first slot is pinned holds none (rule 9).
             Some(Reason::SecondJungle)
-        } else if self.atlas_item && self.fit.is_atlas_pick(key) {
-            // The same for a support's World Atlas item.
+        } else if (self.atlas_item || self.fit.no_starter) && self.fit.is_atlas_pick(key) {
+            // The same for a support's World Atlas item (rule 12).
             Some(Reason::SecondAtlas)
         } else if is_spellblade_item(key)
             && !self.fit.is_atlas_pick(key)
-            && (self.spellblade_item || (self.fit.holds_bloodsong() && !self.atlas_item))
+            && (self.spellblade_item
+                || (self.fit.holds_bloodsong() && !self.atlas_item && !self.fit.no_starter))
         {
             // Rule 15. A support's Bloodsong is rule 12's to place, so it is
             // never the one turned away, and a build still waiting for it
-            // counts as holding it. One with another Atlas item pinned is not
-            // getting a Bloodsong, and is judged like anyone's.
+            // counts as holding it. One with another Atlas item pinned, or its
+            // first slot pinned, is not getting a Bloodsong, and is judged
+            // like anyone's.
             Some(Reason::SecondSpellblade)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
@@ -1222,9 +1280,14 @@ impl Budget {
 // Then rule 7: `boots` is the catalog index of the pair [`boots_for`] picked
 // (`None` when the catalog has none). A build with no boots in any slot or in
 // `reserved` gets them in the second slot, or the first open slot after it
-// when a pin holds that one, else the first ([`BOOTS_SLOT`]); the AI picks from there on move
-// one AI slot later and the last one drops off. Boots are never a stand-in for
-// the other rules, whatever `is_final` says about them.
+// when a pin or an early item holds that one, else the first
+// ([`BOOTS_SLOT`]); the AI picks from there on move one AI slot later and the
+// last one drops off. Boots are never a stand-in for the other rules, whatever
+// `is_final` says about them.
+//
+// And rule 6's line between the first two slots and the rest
+// ([`fits_slot`]): an AI pick the order left on the wrong side of it makes
+// way for an item of no timing.
 //
 // `later_open`: a slot past the end of `build` — the 5th or 6th, which exist
 // only once the buy detour grows the build — that no pin holds
@@ -1251,9 +1314,16 @@ pub(crate) fn enforce<C, K, G, F>(
     if count == 0 {
         return;
     }
+    let is_pinned = |slot: usize| pinned.get(slot).copied().unwrap_or(false);
+    // A jungler's jungle item and a support's World Atlas item go in the
+    // first slot or not at all (rules 9 and 12).
+    let fit = if is_pinned(0) {
+        fit.starter_slot_pinned()
+    } else {
+        fit
+    };
     let mut budget = Budget::empty(fit);
     let mut seen: HashSet<usize> = HashSet::new();
-    let is_pinned = |slot: usize| pinned.get(slot).copied().unwrap_or(false);
 
     let pins = build
         .iter()
@@ -1429,8 +1499,10 @@ pub(crate) fn enforce<C, K, G, F>(
     // holds its jungle item: its champion's, which is the only one the budget
     // lets through. The AI's last pick makes way for it, and one that is not
     // an item rule 9 prefers where there is a choice. Ahead of rules 9, 10
-    // and 13, which look past this item.
+    // and 13, which look past this item. Not where the player pinned the
+    // first slot, the one the Atlas item goes in: the build goes without.
     let needs_atlas_item = fit.support_items
+        && !fit.no_starter
         && !build
             .iter()
             .chain(reserved)
@@ -1463,7 +1535,8 @@ pub(crate) fn enforce<C, K, G, F>(
     // Rule 9, for a jungler: a support's one guaranteed item is rule 12's. The
     // AI's last pick is the one the engine wanted least, so it is the one that
     // makes way. The stand-in is judged against the rest of the build, which
-    // is why the budget is rebuilt without that slot.
+    // is why the budget is rebuilt without that slot. Not where the player
+    // pinned the first slot ([`Fit::guarantees_role_item`]).
     let needs_role_item = fit.guarantees_role_item()
         && !build
             .iter()
@@ -1571,6 +1644,26 @@ pub(crate) fn enforce<C, K, G, F>(
     let open: Vec<usize> = (0..build.len()).filter(|&slot| !is_pinned(slot)).collect();
     let mut picks: Vec<usize> = open.iter().map(|&slot| build[slot]).collect();
     picks.sort_by_key(|&index| buy_order(key(index).as_deref(), fit));
+    // An early item the first two slots cannot hold goes to the back: the
+    // first pick rule 7's boots push off, and swapped below where they do
+    // not. The AI's other picks keep their places ahead of it. A role item
+    // (rule 9's jungle item) keeps its place.
+    let overflows = |pick: usize, at: usize| {
+        open[at] >= EARLY_SLOTS
+            && key(pick).is_some_and(|key| {
+                timing(&key) == Timing::Early && !fit.is_role_item(&key)
+            })
+    };
+    let (mut kept, mut overflow) = (Vec::new(), Vec::new());
+    for (at, &pick) in picks.iter().enumerate() {
+        if overflows(pick, at) {
+            overflow.push(pick);
+        } else {
+            kept.push(pick);
+        }
+    }
+    kept.append(&mut overflow);
+    let mut picks = kept;
 
     // Rule 7.
     let has_boots = build
@@ -1588,6 +1681,18 @@ pub(crate) fn enforce<C, K, G, F>(
         None if later_open => None,
         None => (!open.is_empty()).then_some(0),
     };
+    // An early item that lands in one of the first two slots keeps it, and
+    // the boots go after it (rule 6). With no slot left after it, they are
+    // left to the 5th or 6th.
+    let at = at.map(|mut at| {
+        while at < picks.len()
+            && open[at] < EARLY_SLOTS
+            && key(picks[at]).is_some_and(|key| timing(&key) == Timing::Early)
+        {
+            at += 1;
+        }
+        at
+    });
     if let (Some(boots), Some(at), false) = (boots, at, has_boots) {
         picks.insert(at, boots);
         picks.truncate(open.len());
@@ -1595,5 +1700,45 @@ pub(crate) fn enforce<C, K, G, F>(
 
     for (&slot, index) in open.iter().zip(picks) {
         build[slot] = index;
+    }
+
+    // Rule 6's line: an early item only in the first two slots, a late one
+    // only after them. The order above keeps to it where the AI's picks allow;
+    // a pick still on the wrong side makes way for an item of no timing, of
+    // its own category, else of the build's style, else any the rest of the
+    // build can hold. A role item (rule 9's jungle item) stays where it is.
+    for &slot in &open {
+        let offender = build[slot];
+        let Some(current) = key(offender) else {
+            continue;
+        };
+        if fits_slot(&current, slot) || fit.is_role_item(&current) {
+            continue;
+        }
+        let rest = budget_without(build, slot);
+        let search = |matches: &dyn Fn(usize) -> bool| {
+            (1..count)
+                .map(|step| (offender + step) % count)
+                .find(|&candidate| {
+                    is_final(candidate)
+                        && !build.contains(&candidate)
+                        && !reserved.contains(&candidate)
+                        && matches(candidate)
+                        && key(candidate).is_some_and(|candidate| {
+                            timing(&candidate) == Timing::Any
+                                && !is_boots(&candidate)
+                                && rest.rejects(&candidate).is_none()
+                        })
+                })
+        };
+        let in_category =
+            |wanted: &C| search(&|candidate| category(candidate).as_ref() == Some(wanted));
+        let stand_in = category(offender)
+            .and_then(|own| in_category(&own))
+            .or_else(|| styles.iter().find_map(in_category))
+            .or_else(|| search(&|_| true));
+        if let Some(stand_in) = stand_in {
+            build[slot] = stand_in;
+        }
     }
 }

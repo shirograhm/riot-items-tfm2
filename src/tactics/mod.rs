@@ -2451,7 +2451,11 @@ unsafe fn extra_slot_pick(
             } else {
                 Vec::new()
             };
-            auto_extra_pick(ctx, buyer, champ, si, taken, &reserved)
+            // The player's first slot pinned: no jungle or World Atlas item
+            // (Smart Builds rules 9 and 12).
+            let first_pinned = designate
+                && slot_n_catalog_index(champ, 0, |key| scan_idx_cached(ctx, key)).is_some();
+            auto_extra_pick(ctx, buyer, champ, si, taken, &reserved, first_pinned)
         })
 }
 
@@ -2543,15 +2547,18 @@ unsafe fn later_pins(ctx: usize, champ: &str, from: usize) -> Vec<u64> {
 // An index the catalog scan cannot name contributes nothing — the same way an
 // unclassifiable item is passed over on the other two paths.
 //
-// `champ` decides what the champion may hold at all (support items, what it
-// scales with); its role is the one the last lineup gave it, since this path
-// is not told the lane.
-unsafe fn spent_budget(ctx: usize, champ: &str, taken: &[u64]) -> crate::smart_builds::Budget {
+// `fit` decides what the champion may hold at all (support items, what it
+// scales with), for the role the last lineup gave it, since this path is not
+// told the lane.
+unsafe fn spent_budget(
+    ctx: usize,
+    fit: crate::smart_builds::Fit,
+    taken: &[u64],
+) -> crate::smart_builds::Budget {
     let keys: Vec<String> = taken
         .iter()
         .filter_map(|&index| catalog_name_at(ctx, index))
         .collect();
-    let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
     crate::smart_builds::Budget::spent(keys.iter().map(String::as_str), fit)
 }
 
@@ -2578,7 +2585,8 @@ struct Buyer {
 // rules accept, from a start spread by champion, and only then to any final
 // at all. Never a duplicate: `taken` is every slot before this one, and
 // `reserved` the player's pins for the slots after it, which count exactly
-// as if placed.
+// as if placed. `first_pinned`: the player pinned the build's first slot,
+// so while the toggle is on it gets no jungle or World Atlas item.
 unsafe fn auto_extra_pick(
     ctx: usize,
     buyer: Buyer,
@@ -2586,6 +2594,7 @@ unsafe fn auto_extra_pick(
     si: usize,
     taken: &[u64],
     reserved: &[u64],
+    first_pinned: bool,
 ) -> Option<u64> {
     // `taken` stays the build in slot order, for the network; everything else
     // works from the whole build, pins still to come included.
@@ -2601,13 +2610,23 @@ unsafe fn auto_extra_pick(
     // 5th item that cuts healing a second time, or pushes the build past the crit
     // cap, is the same wasted slot either way. `None` while the toggle is off,
     // which leaves the test above as the only one.
+    // A jungler's jungle item and a support's World Atlas item go in the
+    // first slot or not at all (rules 9 and 12).
+    let rule_fit = if first_pinned {
+        fit.starter_slot_pinned()
+    } else {
+        fit
+    };
     let budget =
-        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, champ, &spoken));
+        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, rule_fit, &spoken));
+    // Rule 6 too: these slots are past the first two, where an early item
+    // goes.
     let allowed = |candidate: &str| {
         suits.rejects(candidate).is_none()
-            && budget
-                .as_ref()
-                .is_none_or(|budget| budget.rejects(candidate).is_none())
+            && budget.as_ref().is_none_or(|budget| {
+                budget.rejects(candidate).is_none()
+                    && crate::smart_builds::fits_slot(candidate, si)
+            })
     };
     // Smart Builds rule 17: a support that looks to the heal, shield and buff
     // items first takes these two slots from them while one is left, picked
@@ -2634,13 +2653,16 @@ unsafe fn auto_extra_pick(
             pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed)
                 .inspect(|_| picked_by("first the rules allow"))
         })
-        // Last resort, unconstrained but for the one rule that holds even
-        // here while the toggle is on: a 5th item that breaks a rule still
-        // beats an empty slot, a jungle item on a champion that is not
-        // jungling does not. With the toggle off it is any final at all.
+        // Last resort, unconstrained but for the rules that hold even here
+        // while the toggle is on: a 5th item that breaks a rule still beats
+        // an empty slot, a jungle item on a champion that is not jungling
+        // does not, and neither does the jungle or World Atlas item of a
+        // build whose first slot is pinned. With the toggle off it is any
+        // final at all.
         .or_else(|| {
             pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
-                budget.is_none() || !fit.off_role_jungle_item(candidate)
+                budget.is_none()
+                    || !(fit.off_role_jungle_item(candidate) || rule_fit.skips_starter(candidate))
             })
             .inspect(|_| picked_by("last resort, no rule held"))
         })
@@ -2921,8 +2943,9 @@ unsafe fn reorder_unbought(
         .filter(|&j| !buy_is_boots(ctx, slots[j]))
         .collect();
     let mut picks: Vec<u64> = movable.iter().map(|&j| slots[j]).collect();
-    // The fit too, so a support's or jungler's role item (rule 9) stays ahead
-    // of the early items this sort pulls forward.
+    // The fit too, so a jungler's role item (rule 9) stays ahead of the early
+    // items this sort pulls forward, and a support's World Atlas item ahead of
+    // everything (`smart_builds::buy_order`).
     let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
     crate::smart_builds::sort_by_timing(&mut picks, fit, |&index| catalog_name_at(ctx, index));
     for (&j, index) in movable.iter().zip(picks) {

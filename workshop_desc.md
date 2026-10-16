@@ -76,13 +76,13 @@ Re-run the game after editing it. Without a config-autopatch.json, and for anyth
 3. Crit capped at 100%, incl. passives  
 4. Support items only on supports  
 5. Items match the champion's scaling (AD/AP/hybrid)  
-6. Stacking items first, scaling items last  
+6. Stacking items only in the first two slots, scaling items only from the third on  
 7. One pair of boots  
 8. One jungle item, junglers only  
-9. Role items bought first  
+9. Role items bought first, a jungler's jungle item in slot 1 (none if you pin slot 1)  
 10. Imperial Mandate on supports that immobilize  
 11. Melee/ranged items match the champion's reach  
-12. A World Atlas item for support builds  
+12. A World Atlas item in slot 1 of support builds (none if you pin slot 1)  
 13. Heal/shield/buff items for supports that aid allies  
 14. Guinsoo's, Statikk Shiv and Sword of Blossoming Dawn for marksmen characters only  
 15. One Spellblade item  
