@@ -80,7 +80,7 @@ impl ZekesHerald {
         Self {
             meta: ItemMeta::radiant("radiant_zekes_herald", &["zekes_herald"]),
             price: 750,
-            hp: 150,
+            hp: 350,
             defence: 30,
             magic_resistance: 40,
             skill_cooldown_mult: 15,

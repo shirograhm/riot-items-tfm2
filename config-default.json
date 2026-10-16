@@ -78,7 +78,7 @@
     "effect_bonus_gold": 25
   },
   "experimental_hexplate": {
-    "price": 600,
+    "price": 800,
     "hp": 300,
     "attack_speed_mult": 25,
     "ult_cooldown_mult": 15,
@@ -321,8 +321,8 @@
   },
   "radiant_experimental_hexplate": {
     "price": 950,
-    "hp": 300,
-    "attack_speed_mult": 45,
+    "hp": 450,
+    "attack_speed_mult": 35,
     "move_speed_mult": 5,
     "ult_cooldown_mult": 25,
     "effect_attack_speed_mult": 32,
@@ -719,7 +719,7 @@
   },
   "radiant_zekes_herald": {
     "price": 750,
-    "hp": 150,
+    "hp": 350,
     "defence": 30,
     "magic_resistance": 40,
     "skill_cooldown_mult": 15,
@@ -790,7 +790,7 @@
   },
   "echoes_of_helia": {
     "price": 750,
-    "hp": 150,
+    "hp": 200,
     "hp_regen": 2,
     "magic_power": 25,
     "skill_cooldown_mult": 15,
@@ -1201,16 +1201,15 @@
     "effect_ult_cooldown_per_lethality": 0.2
   },
   "forbidden_idol": {
-    "price": 350,
-    "hp": 150,
-    "magic_power": 10,
-    "skill_cooldown_mult": 10
+    "price": 150,
+    "hp": 200,
+    "hp_regen": 2
   },
   "sword_of_blossoming_dawn": {
-    "price": 500,
+    "price": 700,
     "attack_speed_mult": 20,
-    "hp": 100,
-    "magic_power": 20,
+    "hp": 200,
+    "magic_power": 15,
     "skill_cooldown_mult": 10,
     "effect_min_heal": 15,
     "effect_max_heal": 60,
@@ -1221,8 +1220,8 @@
   "radiant_sword_of_blossoming_dawn": {
     "price": 850,
     "attack_speed_mult": 35,
-    "hp": 150,
-    "magic_power": 35,
+    "hp": 200,
+    "magic_power": 45,
     "skill_cooldown_mult": 15,
     "effect_min_heal": 15,
     "effect_max_heal": 60,
@@ -1235,7 +1234,7 @@
     "hp": 150,
     "hp_regen": 1,
     "magic_power": 25,
-    "skill_cooldown_mult": 5,
+    "skill_cooldown_mult": 10,
     "move_speed_mult": 5,
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
@@ -1246,7 +1245,7 @@
     "hp": 200,
     "hp_regen": 2,
     "magic_power": 45,
-    "skill_cooldown_mult": 5,
+    "skill_cooldown_mult": 10,
     "move_speed_mult": 5,
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
@@ -1590,7 +1589,7 @@
     "price": 700,
     "hp": 150,
     "hp_regen": 2,
-    "magic_power": 15,
+    "magic_power": 25,
     "skill_cooldown_mult": 15,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
@@ -1599,7 +1598,7 @@
     "price": 750,
     "hp": 250,
     "hp_regen": 3,
-    "magic_power": 25,
+    "magic_power": 35,
     "skill_cooldown_mult": 15,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
@@ -1681,8 +1680,8 @@
   },
   "staff_of_flowing_water": {
     "price": 750,
-    "hp": 150,
-    "hp_regen": 1,
+    "hp": 200,
+    "hp_regen": 2,
     "magic_power": 30,
     "skill_cooldown_mult": 10,
     "effect_magic_power": 25,
@@ -1691,7 +1690,7 @@
   },
   "radiant_staff_of_flowing_water": {
     "price": 750,
-    "hp": 150,
+    "hp": 250,
     "hp_regen": 2,
     "magic_power": 50,
     "skill_cooldown_mult": 15,
@@ -1741,16 +1740,16 @@
     "price": 750,
     "hp": 150,
     "hp_regen": 1,
-    "magic_power": 25,
+    "magic_power": 35,
     "skill_cooldown_mult": 15,
     "effect_damaged_amplify": 9,
     "effect_duration_seconds": 3
   },
   "radiant_imperial_mandate": {
     "price": 750,
-    "hp": 150,
+    "hp": 250,
     "hp_regen": 2,
-    "magic_power": 40,
+    "magic_power": 50,
     "skill_cooldown_mult": 20,
     "effect_damaged_amplify": 9,
     "effect_duration_seconds": 3
@@ -2251,10 +2250,10 @@
     "effect_max_heal": 40
   },
   "mikaels_blessing": {
-    "price": 550,
+    "price": 750,
     "hp": 250,
     "hp_regen": 2,
-    "magic_power": 10,
+    "magic_power": 20,
     "skill_cooldown_mult": 10,
     "effect_hp_percent_threshold": 50.0,
     "effect_min_heal": 100,
@@ -2266,7 +2265,7 @@
     "price": 750,
     "hp": 300,
     "hp_regen": 3,
-    "magic_power": 20,
+    "magic_power": 30,
     "skill_cooldown_mult": 15,
     "effect_hp_percent_threshold": 50.0,
     "effect_min_heal": 100,

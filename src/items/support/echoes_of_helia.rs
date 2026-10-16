@@ -27,7 +27,7 @@ impl EchoesOfHelia {
                 &["radiant_echoes_of_helia"],
             ),
             price: 750,
-            hp: 150,
+            hp: 200,
             hp_regen: 2,
             magic_power: 25,
             skill_cooldown_mult: 15,

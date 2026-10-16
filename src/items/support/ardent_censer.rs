@@ -35,7 +35,7 @@ impl ArdentCenser {
             hp: 150,
             hp_regen: 1,
             magic_power: 25,
-            skill_cooldown_mult: 5,
+            skill_cooldown_mult: 10,
             move_speed_mult: 5,
             effect_attack_speed_mult: 20,
             effect_enemy_max_hp_damage: 2,
@@ -52,7 +52,7 @@ impl ArdentCenser {
             hp: 200,
             hp_regen: 2,
             magic_power: 45,
-            skill_cooldown_mult: 5,
+            skill_cooldown_mult: 10,
             move_speed_mult: 5,
             ..Self::base()
         }
