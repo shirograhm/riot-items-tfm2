@@ -5,7 +5,8 @@
 //!
 //! Both open a Windows file dialog in the mod's own folder, beside the DLL
 //! (`config::mod_dir`, so the Workshop's copy and one put in the mods folder
-//! by hand each start in their own): Export a Save As dialog with
+//! by hand each start in their own), every time, whichever folder the player
+//! chose the time before ([`show_dialog`]): Export a Save As dialog with
 //! `item-patch-settings.json` filled in, Import an Open dialog. The player can
 //! take either anywhere else, and Import any file an export wrote.
 //!
@@ -111,55 +112,145 @@ static PICKING: AtomicBool = AtomicBool::new(false);
 // What the last dialog gave back, until [`finished`] takes it.
 static PICKED: Mutex<Option<Picked>> = Mutex::new(None);
 
-// `OPENFILENAMEW` (commdlg.h), the dialog's whole description.
+// The dialogs are the shell's `IFileOpenDialog` and `IFileSaveDialog`, both
+// driven through `IFileDialog` (shobjidl.h), and not `GetOpenFileNameW`: that
+// one opens in the folder it is given the first time only, and every time
+// after in whatever folder the player last chose in a file dialog of the
+// game's. `IFileDialog::SetFolder` opens in the folder given every time.
+
+// A COM GUID.
 #[repr(C)]
-struct OpenFileName {
-    struct_size: u32,
-    owner: *mut c_void,
-    instance: *mut c_void,
-    filter: *const u16,
-    custom_filter: *mut u16,
-    max_custom_filter: u32,
-    filter_index: u32,
-    file: *mut u16,
-    max_file: u32,
-    file_title: *mut u16,
-    max_file_title: u32,
-    initial_dir: *const u16,
-    title: *const u16,
-    flags: u32,
-    file_offset: u16,
-    file_extension: u16,
-    default_ext: *const u16,
-    custom_data: isize,
-    hook: *mut c_void,
-    template_name: *const u16,
-    reserved_pointer: *mut c_void,
-    reserved: u32,
-    flags_ex: u32,
+struct Guid(u32, u16, u16, [u8; 8]);
+
+const CLSID_FILE_OPEN_DIALOG: Guid = Guid(
+    0xdc1c_5a9c,
+    0xe88a,
+    0x4dde,
+    [0xa5, 0xa1, 0x60, 0xf8, 0x2a, 0x20, 0xae, 0xf7],
+);
+const CLSID_FILE_SAVE_DIALOG: Guid = Guid(
+    0xc0b4_e2f3,
+    0xba21,
+    0x4773,
+    [0x8d, 0xba, 0x33, 0x5e, 0xc9, 0x46, 0xeb, 0x8b],
+);
+const IID_FILE_DIALOG: Guid = Guid(
+    0x42f8_5136,
+    0xdb7e,
+    0x439c,
+    [0x85, 0xf1, 0xe4, 0x07, 0x5d, 0x13, 0x5f, 0xc8],
+);
+const IID_SHELL_ITEM: Guid = Guid(
+    0x4382_6d1e,
+    0xe718,
+    0x42ee,
+    [0xbc, 0x55, 0xa1, 0xe2, 0x61, 0xc3, 0x7b, 0xfe],
+);
+
+// `IFileDialog`'s methods up to the last one called, in their order; a
+// method not called is a pointer this never reads.
+#[repr(C)]
+struct FileDialogCalls {
+    query_interface: usize,
+    add_ref: usize,
+    release: unsafe extern "system" fn(*mut FileDialog) -> u32,
+    show: unsafe extern "system" fn(*mut FileDialog, *mut c_void) -> i32,
+    set_file_types: unsafe extern "system" fn(*mut FileDialog, u32, *const FilterSpec) -> i32,
+    set_file_type_index: usize,
+    get_file_type_index: usize,
+    advise: usize,
+    unadvise: usize,
+    set_options: unsafe extern "system" fn(*mut FileDialog, u32) -> i32,
+    get_options: unsafe extern "system" fn(*mut FileDialog, *mut u32) -> i32,
+    set_default_folder: usize,
+    set_folder: unsafe extern "system" fn(*mut FileDialog, *mut ShellItem) -> i32,
+    get_folder: usize,
+    get_current_selection: usize,
+    set_file_name: unsafe extern "system" fn(*mut FileDialog, *const u16) -> i32,
+    get_file_name: usize,
+    set_title: unsafe extern "system" fn(*mut FileDialog, *const u16) -> i32,
+    set_ok_button_label: usize,
+    set_file_name_label: usize,
+    get_result: unsafe extern "system" fn(*mut FileDialog, *mut *mut ShellItem) -> i32,
+    add_place: usize,
+    set_default_extension: unsafe extern "system" fn(*mut FileDialog, *const u16) -> i32,
 }
 
-const OFN_OVERWRITEPROMPT: u32 = 0x2;
+#[repr(C)]
+struct FileDialog {
+    calls: *const FileDialogCalls,
+}
+
+// `IShellItem`'s methods up to `GetDisplayName`.
+#[repr(C)]
+struct ShellItemCalls {
+    query_interface: usize,
+    add_ref: usize,
+    release: unsafe extern "system" fn(*mut ShellItem) -> u32,
+    bind_to_handler: usize,
+    get_parent: usize,
+    get_display_name: unsafe extern "system" fn(*mut ShellItem, u32, *mut *mut u16) -> i32,
+}
+
+#[repr(C)]
+struct ShellItem {
+    calls: *const ShellItemCalls,
+}
+
+// `COMDLG_FILTERSPEC`: one entry of the file type list.
+#[repr(C)]
+struct FilterSpec {
+    name: *const u16,
+    spec: *const u16,
+}
+
+// A COM object this thread holds, let go of when this is dropped.
+struct Held<T>(*mut T, unsafe extern "system" fn(*mut T) -> u32);
+
+impl<T> Drop for Held<T> {
+    fn drop(&mut self) {
+        // SAFETY: the pointer is a live object this holds one reference on.
+        unsafe {
+            (self.1)(self.0);
+        }
+    }
+}
+
+const FOS_OVERWRITEPROMPT: u32 = 0x2;
 // The dialog leaves the process's working folder where it was: the game
 // finds its own files from it.
-const OFN_NOCHANGEDIR: u32 = 0x8;
-const OFN_PATHMUSTEXIST: u32 = 0x800;
-const OFN_FILEMUSTEXIST: u32 = 0x1000;
-const OFN_EXPLORER: u32 = 0x80000;
+const FOS_NOCHANGEDIR: u32 = 0x8;
+const FOS_FORCEFILESYSTEM: u32 = 0x40;
+const FOS_PATHMUSTEXIST: u32 = 0x800;
+const FOS_FILEMUSTEXIST: u32 = 0x1000;
+const SIGDN_FILESYSPATH: u32 = 0x8005_8000;
+const CLSCTX_INPROC_SERVER: u32 = 0x1;
 
 const COINIT_APARTMENTTHREADED: u32 = 0x2;
 const COINIT_DISABLE_OLE1DDE: u32 = 0x4;
-
-#[link(name = "comdlg32")]
-extern "system" {
-    fn GetOpenFileNameW(dialog: *mut OpenFileName) -> i32;
-    fn GetSaveFileNameW(dialog: *mut OpenFileName) -> i32;
-}
 
 #[link(name = "ole32")]
 extern "system" {
     fn CoInitializeEx(reserved: *mut c_void, model: u32) -> i32;
     fn CoUninitialize();
+    fn CoCreateInstance(
+        class: *const Guid,
+        outer: *mut c_void,
+        context: u32,
+        interface: *const Guid,
+        object: *mut *mut c_void,
+    ) -> i32;
+    fn CoTaskMemFree(memory: *mut c_void);
+}
+
+#[link(name = "shell32")]
+extern "system" {
+    fn SHCreateItemFromParsingName(
+        path: *const u16,
+        bind: *mut c_void,
+        interface: *const Guid,
+        item: *mut *mut c_void,
+    ) -> i32;
 }
 
 #[link(name = "user32")]
@@ -233,47 +324,104 @@ unsafe fn file_dialog(
     files: &str,
 ) -> Option<PathBuf> {
     let com = CoInitializeEx(std::ptr::null_mut(), COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE) >= 0;
-    let wide = |text: &OsStr| -> Vec<u16> { text.encode_wide().chain(Some(0)).collect() };
-    // Pairs of strings, each ended by a NUL, and one more NUL after the last.
-    let filter: Vec<u16> = format!("{files} (*.json)\0*.json\0\0").encode_utf16().collect();
-    let folder = wide(folder.as_os_str());
-    let title = wide(OsStr::new(title));
-    let extension = wide(OsStr::new("json"));
-    let mut file = [0u16; 4096];
-    if kind == Kind::Export {
-        for (slot, unit) in file.iter_mut().zip(FILE.encode_utf16()) {
-            *slot = unit;
-        }
-    }
-    let mut dialog: OpenFileName = std::mem::zeroed();
-    dialog.struct_size = std::mem::size_of::<OpenFileName>() as u32;
-    dialog.owner = owner as *mut c_void;
-    dialog.filter = filter.as_ptr();
-    dialog.filter_index = 1;
-    dialog.file = file.as_mut_ptr();
-    dialog.max_file = file.len() as u32;
-    dialog.initial_dir = folder.as_ptr();
-    dialog.title = title.as_ptr();
-    dialog.default_ext = extension.as_ptr();
-    dialog.flags = OFN_EXPLORER
-        | OFN_PATHMUSTEXIST
-        | OFN_NOCHANGEDIR
-        | match kind {
-            Kind::Export => OFN_OVERWRITEPROMPT,
-            Kind::Import => OFN_FILEMUSTEXIST,
-        };
-    let chosen = match kind {
-        Kind::Export => GetSaveFileNameW(&mut dialog),
-        Kind::Import => GetOpenFileNameW(&mut dialog),
-    } != 0;
+    // Every object the dialog made is let go of inside, before COM is.
+    let file = show_dialog(kind, owner, folder, title, files);
     if com {
         CoUninitialize();
     }
-    if !chosen {
+    file
+}
+
+unsafe fn show_dialog(
+    kind: Kind,
+    owner: usize,
+    folder: &Path,
+    title: &str,
+    files: &str,
+) -> Option<PathBuf> {
+    let class = match kind {
+        Kind::Export => &CLSID_FILE_SAVE_DIALOG,
+        Kind::Import => &CLSID_FILE_OPEN_DIALOG,
+    };
+    let mut object: *mut c_void = std::ptr::null_mut();
+    let made = CoCreateInstance(
+        class,
+        std::ptr::null_mut(),
+        CLSCTX_INPROC_SERVER,
+        &IID_FILE_DIALOG,
+        &mut object,
+    );
+    if made < 0 || object.is_null() {
         return None;
     }
-    let len = file.iter().position(|&unit| unit == 0).unwrap_or(file.len());
-    Some(PathBuf::from(OsString::from_wide(&file[..len])))
+    let dialog = object.cast::<FileDialog>();
+    let calls = &*(*dialog).calls;
+    let _dialog = Held(dialog, calls.release);
+
+    let wide = |text: &OsStr| -> Vec<u16> { text.encode_wide().chain(Some(0)).collect() };
+    let type_name = wide(OsStr::new(&format!("{files} (*.json)")));
+    let type_spec = wide(OsStr::new("*.json"));
+    let types = [FilterSpec {
+        name: type_name.as_ptr(),
+        spec: type_spec.as_ptr(),
+    }];
+    (calls.set_file_types)(dialog, 1, types.as_ptr());
+    let title = wide(OsStr::new(title));
+    (calls.set_title)(dialog, title.as_ptr());
+    let extension = wide(OsStr::new("json"));
+    (calls.set_default_extension)(dialog, extension.as_ptr());
+    if kind == Kind::Export {
+        let name = wide(OsStr::new(FILE));
+        (calls.set_file_name)(dialog, name.as_ptr());
+    }
+    let mut options = 0u32;
+    (calls.get_options)(dialog, &mut options);
+    options |= FOS_FORCEFILESYSTEM
+        | FOS_PATHMUSTEXIST
+        | FOS_NOCHANGEDIR
+        | match kind {
+            Kind::Export => FOS_OVERWRITEPROMPT,
+            Kind::Import => FOS_FILEMUSTEXIST,
+        };
+    (calls.set_options)(dialog, options);
+
+    // The DLL's folder, whichever the player chose last time. A folder the
+    // shell cannot find leaves the dialog where it would have opened.
+    let path = wide(folder.as_os_str());
+    let mut item: *mut c_void = std::ptr::null_mut();
+    let found = SHCreateItemFromParsingName(
+        path.as_ptr(),
+        std::ptr::null_mut(),
+        &IID_SHELL_ITEM,
+        &mut item,
+    );
+    if found >= 0 && !item.is_null() {
+        let item = item.cast::<ShellItem>();
+        let _item = Held(item, (*(*item).calls).release);
+        (calls.set_folder)(dialog, item);
+    }
+
+    // Cancelled is a failure too.
+    if (calls.show)(dialog, owner as *mut c_void) < 0 {
+        return None;
+    }
+    let mut result: *mut ShellItem = std::ptr::null_mut();
+    if (calls.get_result)(dialog, &mut result) < 0 || result.is_null() {
+        return None;
+    }
+    let result_calls = &*(*result).calls;
+    let _result = Held(result, result_calls.release);
+    let mut name: *mut u16 = std::ptr::null_mut();
+    if (result_calls.get_display_name)(result, SIGDN_FILESYSPATH, &mut name) < 0 || name.is_null() {
+        return None;
+    }
+    let mut len = 0;
+    while *name.add(len) != 0 {
+        len += 1;
+    }
+    let file = OsString::from_wide(std::slice::from_raw_parts(name, len));
+    CoTaskMemFree(name.cast());
+    Some(PathBuf::from(file))
 }
 
 // -- what the window asks -----------------------------------------------------------
