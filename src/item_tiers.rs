@@ -68,23 +68,23 @@ use mod_api_stable::StableClient;
 
 const RADIANT_PREFIX: &str = "radiant_";
 
-/// The setting's three sides.
+// The setting's three sides.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Rule {
-    /// Every slot is bought up to its radiant.
+    // Every slot is bought up to its radiant.
     AllRadiants,
-    /// The first slot is; every other stops at its legendary.
+    // The first slot is; every other stops at its legendary.
     FirstItemRadiant,
-    /// Every slot stops at its legendary.
+    // Every slot stops at its legendary.
     NoRadiants,
 }
 
 impl Rule {
-    /// Every side, in the order the Options row shows them.
+    // Every side, in the order the Options row shows them.
     pub(crate) const ALL: [Rule; 3] = [Rule::AllRadiants, Rule::FirstItemRadiant, Rule::NoRadiants];
 
-    /// A small number for the side: what an atomic and the buy detour's memo
-    /// hold. All Radiants is 0, and nothing else is.
+    // A small number for the side: what an atomic and the buy detour's memo
+    // hold. All Radiants is 0, and nothing else is.
     pub(crate) const fn code(self) -> u8 {
         match self {
             Rule::AllRadiants => 0,
@@ -101,8 +101,8 @@ impl Rule {
         }
     }
 
-    /// What the save holds for the side. A save holding anything else is on
-    /// All Radiants.
+    // What the save holds for the side. A save holding anything else is on
+    // All Radiants.
     fn saved(self) -> &'static str {
         match self {
             Rule::AllRadiants => "all_radiants",
@@ -119,47 +119,43 @@ impl Rule {
     }
 }
 
-/// The setting's key in the save.
+// The setting's key in the save.
 const SAVE_KEY: &str = "item_rules";
 
-/// Frames between two looks at the save for the setting.
+// Frames between two looks at the save for the setting.
 const READ_EVERY: u32 = 30;
 
-/// Frames the save has to have had no setting, or not been there at all, for
-/// that to count: `item_stats::LOAD_GRACE`'s ten seconds, for its reason.
+// Frames the save has to have had no setting, or not been there at all, for
+// that to count: `item_stats::LOAD_GRACE`'s ten seconds, for its reason.
 const ABSENT_GRACE: u32 = 600;
 
-/// The side the save now loaded is on, as [`Rule::code`]. An atomic because
-/// the buy detour reads it, on whichever thread a match is simulating.
+// The side the save now loaded is on, as [`Rule::code`]. An atomic because
+// the buy detour reads it, on whichever thread a match is simulating.
 static RULE: AtomicU8 = AtomicU8::new(0);
 
-/// A choice made in the Options dialog that the save has not been read back
-/// agreeing with yet, as [`Rule::code`] plus one (0 is none), and whether the
-/// save has taken the write of it.
+// A choice made in the Options dialog that the save has not been read back
+// agreeing with yet, as [`Rule::code`] plus one (0 is none), and whether the
+// save has taken the write of it.
 const NO_CHOICE: u8 = 0;
 static CHOICE: AtomicU8 = AtomicU8::new(NO_CHOICE);
 static WRITTEN: AtomicBool = AtomicBool::new(false);
 
-/// Whether `match-builds.log` gets a line when the setting's dealings with
-/// the save change: a click, whether the save took the write, what a look at
-/// it returned. Off since the setting was seen to switch both ways and to
-/// last through a save and a load (2026-10-08).
-const LOG: bool = false;
-
+// The `rules.` lines of `match-builds.log`, when its one switch is on
+// (`crate::match_builds::log`): a click, whether the save took the write,
+// what a look at it returned. The setting was seen to switch both ways and
+// to last through a save and a load (2026-10-08).
 fn log(key: &str, text: impl FnOnce() -> String) {
-    if LOG {
-        crate::match_builds::log_note(key, text);
-    }
+    crate::match_builds::log(key, text);
 }
 
-/// Frames [`sync`] has run, and how many of them on end found no setting.
+// Frames [`sync`] has run, and how many of them on end found no setting.
 static FRAME: AtomicU32 = AtomicU32::new(0);
 static ABSENT: AtomicU32 = AtomicU32::new(0);
 
-/// The game's own radiants and the legendary under each: the top two tiers of
-/// its attack, attack speed, armor, magic resistance, magic power and health
-/// lines (Bloodthirster, Phantom Dancer, Thornmail, Dragon's Claw, Luden's
-/// Tempest and Sunfire Cape, as the mod draws them).
+// The game's own radiants and the legendary under each: the top two tiers of
+// its attack, attack speed, armor, magic resistance, magic power and health
+// lines (Bloodthirster, Phantom Dancer, Thornmail, Dragon's Claw, Luden's
+// Tempest and Sunfire Cape, as the mod draws them).
 const GAME_TIERS: [(&str, &str); 6] = [
     ("warlords_final_judgement", "conquerors_greatsword"),
     ("storm_sovereign", "thunderclaw"),
@@ -169,14 +165,14 @@ const GAME_TIERS: [(&str, &str); 6] = [
     ("giants_horn_shard", "hourglass_of_eternity"),
 ];
 
-/// The side the save now loaded is on.
+// The side the save now loaded is on.
 pub(crate) fn rule() -> Rule {
     Rule::from_code(RULE.load(Ordering::Relaxed))
 }
 
-/// The player's click on the Options row. It rules from this moment, and
-/// [`sync`] writes it to the save on the next frame: a click handler is the
-/// one place the save cannot be written from.
+// The player's click on the Options row. It rules from this moment, and
+// [`sync`] writes it to the save on the next frame: a click handler is the
+// one place the save cannot be written from.
 pub(crate) fn choose(rule: Rule) {
     RULE.store(rule.code(), Ordering::Relaxed);
     WRITTEN.store(false, Ordering::Relaxed);
@@ -184,17 +180,17 @@ pub(crate) fn choose(rule: Rule) {
     log("rules.click", || format!("{rule:?}"));
 }
 
-/// A save's server has started: another save, or this one loaded again. A
-/// click that had not reached the last one is not this one's.
+// A save's server has started: another save, or this one loaded again. A
+// click that had not reached the last one is not this one's.
 pub(crate) fn server_started() {
     CHOICE.store(NO_CHOICE, Ordering::Relaxed);
     WRITTEN.store(false, Ordering::Relaxed);
     ABSENT.store(0, Ordering::Relaxed);
 }
 
-/// Counts `frames` more without a setting, and falls back to All Radiants
-/// once that has gone on for [`ABSENT_GRACE`]: a click still waiting for a
-/// save goes with it.
+// Counts `frames` more without a setting, and falls back to All Radiants
+// once that has gone on for [`ABSENT_GRACE`]: a click still waiting for a
+// save goes with it.
 fn absent_for(frames: u32) {
     let absent = ABSENT.load(Ordering::Relaxed).saturating_add(frames);
     ABSENT.store(absent, Ordering::Relaxed);
@@ -204,7 +200,7 @@ fn absent_for(frames: u32) {
     }
 }
 
-/// Keeps the setting in step with the save. Every client frame.
+// Keeps the setting in step with the save. Every client frame.
 pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     let writable = ctx.save_can_write();
     log("rules.save", || format!("can be written={writable}"));
@@ -254,17 +250,17 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     }
 }
 
-/// Whether `key` is one of the game's own radiants or the legendary under
-/// one: an item whose other form is known for certain, not guessed from a
-/// prefix, so a caller need not check that it exists.
+// Whether `key` is one of the game's own radiants or the legendary under
+// one: an item whose other form is known for certain, not guessed from a
+// prefix, so a caller need not check that it exists.
 pub(crate) fn is_game_tier(key: &str) -> bool {
     GAME_TIERS
         .iter()
         .any(|(radiant, legendary)| *radiant == key || *legendary == key)
 }
 
-/// The legendary under the radiant `key`, by key. `None` for anything that is
-/// not a radiant. The key it gives may not exist: see the module notes.
+// The legendary under the radiant `key`, by key. `None` for anything that is
+// not a radiant. The key it gives may not exist: see the module notes.
 pub(crate) fn legendary_of(key: &str) -> Option<String> {
     if let Some(&(_, legendary)) = GAME_TIERS.iter().find(|(radiant, _)| *radiant == key) {
         return Some(legendary.to_string());
@@ -272,9 +268,9 @@ pub(crate) fn legendary_of(key: &str) -> Option<String> {
     key.strip_prefix(RADIANT_PREFIX).map(str::to_string)
 }
 
-/// The radiant over the legendary `key`, by key. `None` for a radiant. For
-/// anything else it is a guess at a key that may not exist: see the module
-/// notes.
+// The radiant over the legendary `key`, by key. `None` for a radiant. For
+// anything else it is a guess at a key that may not exist: see the module
+// notes.
 pub(crate) fn radiant_of(key: &str) -> Option<String> {
     if let Some(&(radiant, _)) = GAME_TIERS.iter().find(|(_, legendary)| *legendary == key) {
         return Some(radiant.to_string());
@@ -285,9 +281,9 @@ pub(crate) fn radiant_of(key: &str) -> Option<String> {
     Some(format!("{RADIANT_PREFIX}{key}"))
 }
 
-/// The other form of `key` that the setting has a build hold in `slot`, where
-/// `key` is not that form already and the setting holds anything back at
-/// all: the legendary in a slot it caps, the radiant in the one it does not.
+// The other form of `key` that the setting has a build hold in `slot`, where
+// `key` is not that form already and the setting holds anything back at
+// all: the legendary in a slot it caps, the radiant in the one it does not.
 pub(crate) fn for_slot(key: &str, slot: usize) -> Option<String> {
     match rule() {
         Rule::AllRadiants => None,

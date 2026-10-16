@@ -10,7 +10,8 @@
 //!     "step_size": { "health": 50, "attack_damage": 5, "attack_speed": 1 },
 //!     "limits": {
 //!         "min_games": 16, "max_nerfs": 4, "max_buffs": 5,
-//!         "min_total_percent": 65, "max_total_percent": 140
+//!         "min_total_percent": 65, "max_total_percent": 140,
+//!         "max_changes_per_item": 2
 //!     }
 //! }
 //! ```
@@ -48,6 +49,10 @@ pub(crate) struct Tuning {
     pub min_games: u32,
     pub max_nerfs: usize,
     pub max_buffs: usize,
+    // The rows of the notes one patch gives an item at most: the numbers it
+    // moves, the two ends of a range as one. A legendary and its radiant
+    // share them (`balance::changes_for`).
+    pub max_changes_per_item: usize,
     // The band of an item's total, as shares of its unpatched numbers.
     pub min_ratio: f64,
     pub max_ratio: f64,
@@ -99,6 +104,7 @@ fn read() -> Tuning {
         min_games: 16,
         max_nerfs: 4,
         max_buffs: 5,
+        max_changes_per_item: 2,
         min_ratio: fields::MIN_RATIO,
         max_ratio: fields::MAX_RATIO,
     };
@@ -115,7 +121,7 @@ fn read() -> Tuning {
         let mut frozen: Vec<&String> = tuning.frozen.iter().collect();
         frozen.sort();
         format!(
-            "{DEFAULT_FILE} read={} {FILE} read={}: enabled={} automatic={} min_games={} max_nerfs={} max_buffs={} band={}..{} never moved: {frozen:?} steps: {}",
+            "{DEFAULT_FILE} read={} {FILE} read={}: enabled={} automatic={} min_games={} max_nerfs={} max_buffs={} max_changes_per_item={} band={}..{} never moved: {frozen:?} steps: {}",
             !defaults.is_empty(),
             !players.is_empty(),
             tuning.enabled,
@@ -123,6 +129,7 @@ fn read() -> Tuning {
             tuning.min_games,
             tuning.max_nerfs,
             tuning.max_buffs,
+            tuning.max_changes_per_item,
             tuning.min_ratio,
             tuning.max_ratio,
             steps.join(" ")
@@ -186,6 +193,9 @@ fn lay(tuning: &mut Tuning, root: &serde_json::Map<String, Value>) {
         }
         if let Some(items) = count("max_buffs") {
             tuning.max_buffs = items as usize;
+        }
+        if let Some(rows) = count("max_changes_per_item") {
+            tuning.max_changes_per_item = rows as usize;
         }
         if let Some(low) = percent("min_total_percent").filter(|low| (1.0..=100.0).contains(low)) {
             tuning.min_ratio = low / 100.0;

@@ -65,7 +65,7 @@ To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b
 - [b]enabled[/b]: set to false to turn item patches off.  
 - [b]automatic[/b]: set to false to stop item patches from arriving with the champion patches. Manual item patches still work, and patches you already have stay in effect.  
 - [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
-- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, and how far an item's numbers may move from the original in total (80% to 125% by default).  
+- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, how far an item's numbers may move from the original in total (40% to 165% by default), and how many changes one patch can make to an item ([b]max_changes_per_item[/b], 2 by default). An item and its Radiant share that number.  
 
 Re-run the game after editing it. Without a config-autopatch.json, and for anything yours leaves out, the mod uses config-autopatch-default.json.  
 

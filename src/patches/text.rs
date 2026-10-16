@@ -1002,12 +1002,56 @@ struct NoteEntry {
     // [`reason_pool`]. Empty where the text file has no such sentence.
     reason: String,
     rows: Vec<NoteRow>,
+    // The other tier's numbers brought level with this one's
+    // ([`Change::leader`]), under that tier's key: the same change carried
+    // over, and not one the patch made of the other tier by itself.
+    followers: Vec<(String, Vec<NoteRow>)>,
     // Whether any of its numbers got stronger, and whether any got weaker.
     // The section it is listed under goes by these, and not by which way
     // the patch meant the item to go: a nerf made up for in another number
     // has both.
     stronger: bool,
     weaker: bool,
+}
+
+impl NoteEntry {
+    // Adds `row`, of the tier `key`: to the entry's own rows where that is
+    // this tier, and to that tier's among the followers where not.
+    fn add(&mut self, key: &str, row: NoteRow) {
+        if key == self.key {
+            self.rows.push(row);
+            return;
+        }
+        match self.followers.iter_mut().find(|(known, _)| known == key) {
+            Some((_, rows)) => rows.push(row),
+            None => self.followers.push((key.to_string(), vec![row])),
+        }
+    }
+}
+
+// The other tier of the item whose entry lists the row of the tier `key`
+// that writes `fields`, and that tier's change of them: where every change
+// `patch` makes of `key` in them follows that tier ([`Change::leader`]), and
+// that tier has a change of them in the patch as well. Nothing where the
+// row is `key`'s own.
+fn followed<'a>(patch: &'a Patch, key: &str, fields: &[&str]) -> Option<(&'a str, &'a Change)> {
+    let has = |change: &Change, key: &str| {
+        fields.contains(&change.field.as_str())
+            && change.members.iter().any(|moved| moved.key == key)
+    };
+    let mut leader: Option<&'a str> = None;
+    for change in patch.changes.iter().filter(|change| has(change, key)) {
+        if change.leader.is_empty() || leader.is_some_and(|known| known != change.leader.as_str()) {
+            return None;
+        }
+        leader = Some(change.leader.as_str());
+    }
+    let leader = leader?;
+    patch
+        .changes
+        .iter()
+        .find(|change| has(change, leader))
+        .map(|change| (leader, change))
 }
 
 // The tag an item draws in the item sheet: one of the mod's is its own key,
@@ -2359,10 +2403,30 @@ fn range_rows(
     })
 }
 
+// The number that names the row of a patch's notes the number `field` of
+// the item `key` is written in: the low end of a range ([`range_rows`]),
+// the first number of an amount ([`AMOUNT_FORMATS`]), and any other number
+// itself. So the rows an item gets are counted the way they are written,
+// for the most a patch gives one (`max_changes_per_item`).
+pub(crate) fn row_of<'a>(key: &str, field: &'a str) -> &'a str {
+    if let Some((low, _)) = super::fields::range_of(field) {
+        return low;
+    }
+    let slug = crate::build_config::base_slug(key);
+    AMOUNT_FORMATS
+        .iter()
+        .find(|format| format.item == slug && format.fields.contains(&field))
+        .map_or(field, |format| format.fields[0])
+}
+
 // A patch's items, an entry an item: the ones it set out to buff and then
 // the ones it set out to nerf, each lot in the order the patch has them. A
 // legendary and its radiant are two items here, each with the numbers of
 // its own that moved, and a patch that moved one of them lists that one.
+// A number of one that was only brought level with the other's
+// ([`Change::leader`]) is no number of its own: it is listed in the other's
+// entry, under the tier's name ([`NoteEntry::followers`]), and has no say
+// in which section that entry is in.
 //
 // A row is one changed number: "Attack Damage: 20 -> 21". An entry's flat
 // stats come first and its passives' numbers after them, each lot in a set
@@ -2425,6 +2489,7 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             key: key.to_string(),
             reason,
             rows: Vec::new(),
+            followers: Vec::new(),
             stronger: false,
             weaker: false,
         });
@@ -2442,6 +2507,11 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         let lower = super::fields::rule_for(&first.key, &change.field)
             .is_some_and(|rule| rule.lower_is_stronger);
         for moved in &change.members {
+            // A number brought level with the other tier's went that tier's
+            // way, and is told in that tier's entry.
+            if followed(patch, &moved.key, &[change.field.as_str()]).is_some() {
+                continue;
+            }
             let at = entry_of(&mut entries, &moved.key, change);
             if (moved.after.abs() > moved.before.abs()) != lower {
                 entries[at].stronger = true;
@@ -2456,8 +2526,10 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             if let Some(rows) = range_rows(texts, state, patch, lang, change, (low, high)) {
                 ranged.push((change.family.as_str(), low));
                 for (key, row) in rows {
-                    let at = entry_of(&mut entries, &key, change);
-                    entries[at].rows.push(row);
+                    let (owner, why) =
+                        followed(patch, &key, &[low, high]).unwrap_or((key.as_str(), change));
+                    let at = entry_of(&mut entries, owner, why);
+                    entries[at].add(&key, row);
                 }
                 continue;
             }
@@ -2492,8 +2564,10 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             if let Some(rows) = amount_rows(state, patch, change, format.fields, &label, &write) {
                 ranged.push((change.family.as_str(), format.fields[0]));
                 for (key, row) in rows {
-                    let at = entry_of(&mut entries, &key, change);
-                    entries[at].rows.push(row);
+                    let (owner, why) =
+                        followed(patch, &key, format.fields).unwrap_or((key.as_str(), change));
+                    let at = entry_of(&mut entries, owner, why);
+                    entries[at].add(&key, row);
                 }
                 continue;
             }
@@ -2552,24 +2626,36 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         };
         for moved in &change.members {
             let numbers = format!("{} {ARROW} {}", phrase(moved.before), phrase(moved.after));
-            let at = entry_of(&mut entries, &moved.key, change);
-            entries[at].rows.push(NoteRow {
-                icon: icon.clone(),
-                text: row_text(&label, numbers),
-                rank: flat.unwrap_or(super::fields::FLAT.len()),
-            });
+            let (owner, why) = followed(patch, &moved.key, &[change.field.as_str()])
+                .unwrap_or((moved.key.as_str(), change));
+            let at = entry_of(&mut entries, owner, why);
+            entries[at].add(
+                &moved.key,
+                NoteRow {
+                    icon: icon.clone(),
+                    text: row_text(&label, numbers),
+                    rank: flat.unwrap_or(super::fields::FLAT.len()),
+                },
+            );
         }
     }
     // The stats first and the passives' numbers after. The rows of one
     // rank stay as the patch has them.
     for entry in &mut entries {
         entry.rows.sort_by_key(|row| row.rank);
+        for (_, rows) in &mut entry.followers {
+            rows.sort_by_key(|row| row.rank);
+        }
     }
     entries
 }
 
 // The size a row of a patch's notes is written in.
 const ROW_SIZE: u32 = 18;
+// How far in an entry's rows start, and the rows of the other tier that
+// came level with them ([`NoteEntry::followers`]).
+const ROW_INDENT: &str = "        ";
+const FOLLOW_INDENT: &str = "                ";
 
 // A style tag at the head of `text`: a colour, a font or a size, or the
 // close of one. An inline icon is not one.
@@ -2657,6 +2743,8 @@ fn sized(text: &str, size: u32) -> String {
 // <reason>
 //     <stat icon> Attack Damage: 20 -> 21
 //     Spellblade: 40 - 100 (based on level) -> 45 - 110 (based on level)
+//     <icon> Radiant Trinity Force (to match):
+//         <stat icon> Attack Damage: 25 -> 26
 // ```
 //
 // A flat stat's row opens with the stat's icon. A passive's number has no
@@ -2665,9 +2753,11 @@ fn sized(text: &str, size: u32) -> String {
 // + 3% max HP", is in the colour the item's text has it in, behind the icon
 // the text has for it.
 //
-// Every item is an entry, a radiant apart from its legendary. An item
-// is a buff where every number of it got stronger, a nerf where every one
-// got weaker, and an adjustment where it has both. Only where it is listed
+// Every item is an entry, a radiant apart from its legendary, but for the
+// numbers one tier only had brought level with the other's: those are the
+// last rows of the other's entry, under a grey line with the tier's name.
+// An item is a buff where every number of it got stronger, a nerf where
+// every one got weaker, and an adjustment where it has both. Only where it is listed
 // goes by that: its reason is still the one for what the patch set out to
 // do with it.
 //
@@ -2730,14 +2820,31 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
                     entry.reason
                 ));
             }
-            for row in &entry.rows {
+            let row_line = |row: &NoteRow, indent: &str| {
                 let mark = match &row.icon {
                     Some((sheet, tag)) => format!("<i#{sheet}:{tag}> "),
                     None => String::new(),
                 };
-                let line = format!("        {mark}{}", row.text);
+                format!("\n{}", sized(&format!("{indent}{mark}{}", row.text), ROW_SIZE))
+            };
+            for row in &entry.rows {
+                body.push_str(&row_line(row, ROW_INDENT));
+            }
+            // The other tier's numbers that came level with these: under
+            // that tier's name and a step further in, as part of this entry.
+            for (key, rows) in &entry.followers {
+                let head = texts
+                    .ui(&lang, "follow_tier", "{Item} (to match):")
+                    .replace("{Item}", &texts.name(&lang, key));
+                let line = format!(
+                    "{ROW_INDENT}<i#{ITEM_SHEET}:{frame}> <{REASON_COLOR}>{head}<>",
+                    frame = frame_of(key),
+                );
                 body.push_str("\n");
                 body.push_str(&sized(&line, ROW_SIZE));
+                for row in rows {
+                    body.push_str(&row_line(row, FOLLOW_INDENT));
+                }
             }
         }
     }

@@ -1737,6 +1737,14 @@ fn sync_row(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
     let contents = format!("{dialog}.contents");
     let row = format!("{contents}.{ROW}");
     let fresh = !ctx.ui_exists(&row);
+    // Rows stand in the order they were appended, and this one goes under
+    // Item Rules (the user, 2026-10-16: "I would like to have this toggle
+    // option above the option for patch data"). That row is spawned first in
+    // the frame, so this waits a frame at most: only when the two finders
+    // came upon the dialog on different frames.
+    if fresh && !ctx.ui_exists(&format!("{contents}.{}", super::options_row::ROW)) {
+        return;
+    }
     if fresh {
         let worded =
             |words: (&str, &str)| options_dialog::escape(&options_dialog::text(ctx, words));
@@ -1773,7 +1781,7 @@ fn sync_row(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
 fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
     // A file dialog that has closed is acted on whether the window is up or
     // not: a file chosen is never written or read late.
-    let picked = transfer::finished();
+    let transferred = transfer::finished();
     let wanted = OPEN.swap(false, Ordering::Relaxed);
     let clicks = CLICKS
         .lock()
@@ -1888,7 +1896,7 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
             changed = true;
         }
     }
-    if let Some(done) = picked {
+    if let Some(done) = transferred {
         if done.imported {
             if let Some(index) = window.picked {
                 show_page(ctx, window, index, frame);
