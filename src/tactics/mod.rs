@@ -1296,7 +1296,10 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if game < 0x10000 || athlete < 0x10000 {
             return;
         }
-        // -- (1) Rendered (spectated) match gate: provider = *(Game+0x1dc0) - offset confirmed unchanged in 0.5.3 (07-29). WARNING the buy hook uses r9 (a separate path) --
+        // -- (1) The match's provider: *(Game+0x1dc0) - offset confirmed unchanged in 0.5.3 (07-29). WARNING the buy hook uses r9 (a separate path) --
+        // Watched or simulated alike: under `own_team_only` the only athletes
+        // this path writes to are the player's own five, and whether the
+        // player is watching does not change whose they are.
         let provider = match safe_read_u64(game + O_GAME_PROVIDER) {
             Some(p) => p,
             None => return,
@@ -1304,28 +1307,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if provider < 0x10000 || provider >= 0x0000_8000_0000_0000 {
             return;
         }
-        // Whether this athlete belongs to the match currently on screen.
-        //
-        // This used to `return` here, so nothing was injected unless the match
-        // was being watched. That was right when the team decision below could
-        // fall back on scene state — a scene answer is worthless off-screen —
-        // but it is too strict for the athlete-id gate, which is scene-free by
-        // construction and is the whole reason v15 exists. Under
-        // `own_team_only` the only athletes this path ever writes to are the
-        // player's own five, and whether the player happens to be watching does
-        // not change whose they are. Keeping the old behaviour would have left
-        // slot 0 correct in spectated matches and wrong in every simulated one,
-        // which is a worse bug than the one being fixed because it looks
-        // intermittent.
-        //
-        // So it is now a *fact* rather than a gate: definite roster membership
-        // is honoured either way, and only the uncertain scene fallback still
-        // requires it. See the team decision below.
-        let lseed = LIVE_SEED.load(Ordering::Relaxed);
-        let seed_ok =
-            lseed != 0 && safe_read_u64(provider as usize + O_PROVIDER_SEED) == Some(lseed);
-        let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
-        let rendered = seed_ok || (rp != 0 && provider == rp);
         // -- (2) Is this a designated champion? --
         if !readable(athlete, ATHLETE_COPY_SIZE) {
             return;
@@ -1355,70 +1336,49 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         // -- (3) Is it my team (v15): athlete_id (+0x810) in my starting roster = no scene tag9 needed -> holds at spawn time.
         //     WARNING because static analysis A2 established the sim has no team_id, this membership test is the only deterministic path.
         //     If the roster is not obtained yet (before visiting the management screen), stay undecided -> skip injection (avoiding enemy-team contamination > coverage). The buy path covers it.
-        //     Also run the scene side as a fallback (for early frames where the roster exists but aid is not filled in).
         let mine = is_my_athlete(athlete);
         crate::own_team_log::line(|| {
             format!(
-                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} rendered={} mine={:?} roster_n={}",
+                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} mine={:?} roster_n={}",
                 champ,
                 safe_read_u64(athlete + O_ATHLETE_ID),
                 provider,
                 safe_read_u64(provider as usize + O_PROVIDER_SEED).unwrap_or(0),
                 athlete_lane(athlete),
-                rendered,
                 mine,
                 MY_ATH_N.load(Ordering::Relaxed)
             )
         });
-        let ok = match mine {
-            Some(true) => true,
-            Some(false) => return, // definitely another team = do not inject
-            None => {
-                // Roster/aid unavailable -> scene fallback, which is only
-                // meaningful for the match actually on screen. Off-screen there
-                // is no scene side to compare against, so stay undecided and
-                // leave it to the buy path (slots 1/2), exactly as before:
-                // avoiding enemy-team contamination beats coverage.
-                //
-                // ** Observed cost of that choice (2026-09-08): slot 0 can be
-                // wrong for the *first* match of a session and correct from the
-                // second on. `MY_ATHLETES` is published from the Team record's
-                // `last_starting` on the roster poll in `tactics_post_update`,
-                // so until that first publish lands `is_my_athlete` answers
-                // `None` and this arm declines — and the buy path, which does
-                // cover slots 1/2, is structurally too late for slot 0. It is
-                // the safe failure, not a bug to paper over: guessing here puts
-                // the player's build on the enemy. If it needs tightening, the
-                // fix belongs at the publish end (poll every frame until the
-                // roster is first obtained, then back off to ROSTER_POLL),
-                // not here.
-                //
-                // (2026-09-25, logged: the roster published about a second after
-                // the save loaded and 25 s before the first spawn, and every
-                // spawn of the player's athletes that session read `Some(true)`.
-                // The miss above was not reproduced, so the poll is unchanged.)
-                //
-                // (2026-09-29, reproduced on a new save: `last_starting` stayed
-                // empty until the first match began, so the starters were
-                // published two seconds after they spawned. The fix was at the
-                // publish end, as predicted, but in *what* is published rather
-                // than how often: the roster now comes from every athlete's
-                // contract, which exists from load. See `roster_scan_step`.)
-                if !rendered {
-                    return;
-                }
-                let side = if readable(athlete + O_ATHLETE_TEAM, 8) {
-                    rd_u64(athlete + O_ATHLETE_TEAM)
-                } else {
-                    u64::MAX
-                };
-                match scene_player_side() {
-                    Some(ps) => side == ps,
-                    None => false,
-                }
-            }
-        };
-        if !ok {
+        // `Some(false)` is definitely another team: no injection. `None`
+        // (roster or athlete id unavailable) stays undecided and is left to
+        // the buy path (slots 1/2): avoiding enemy-team contamination beats
+        // coverage.
+        //
+        // ** Observed cost of that choice (2026-09-08): slot 0 can be
+        // wrong for the *first* match of a session and correct from the
+        // second on. `MY_ATHLETES` is published from the Team record's
+        // `last_starting` on the roster poll in `tactics_post_update`,
+        // so until that first publish lands `is_my_athlete` answers
+        // `None` and this declines — and the buy path, which does
+        // cover slots 1/2, is structurally too late for slot 0. It is
+        // the safe failure, not a bug to paper over: guessing here puts
+        // the player's build on the enemy. If it needs tightening, the
+        // fix belongs at the publish end (poll every frame until the
+        // roster is first obtained, then back off to ROSTER_POLL),
+        // not here.
+        //
+        // (2026-09-25, logged: the roster published about a second after
+        // the save loaded and 25 s before the first spawn, and every
+        // spawn of the player's athletes that session read `Some(true)`.
+        // The miss above was not reproduced, so the poll is unchanged.)
+        //
+        // (2026-09-29, reproduced on a new save: `last_starting` stayed
+        // empty until the first match began, so the starters were
+        // published two seconds after they spawned. The fix was at the
+        // publish end, as predicted, but in *what* is published rather
+        // than how often: the roster now comes from every athlete's
+        // contract, which exists from load. See `roster_scan_step`.)
+        if mine != Some(true) {
             return;
         }
         // -- (4) Inject the build[] targets --
@@ -1978,35 +1938,6 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                         publish_my_athletes(my);
                     }
                 }
-            }
-            // ** lean (07-18): spectate identification = launcher (LIVE_SEED) + seed-ctor (RENDER_PROVIDER) + buy r9 comparison (v13).
-            //   The old db scan (v10), P6 probe and link scan are all gone. Only the scene side (my-team decision) and LIVE_DB/PID remain here.
-            if !DIAG_BUY_OFF {
-                {
-                    let pu = PLAYER_TEAM_ID.load(Ordering::Relaxed);
-                    if pu != u64::MAX && pu < 10000 {
-                        LIVE_PID.store(pu, Ordering::Relaxed);
-                    }
-                }
-                // MERGE GAP — the direct scene read is off.
-                //
-                // `LIVE_DB` was the `ClientDatabase` pointer, and `quick_scene_side`
-                // reads the live scene's team ids straight out of it (+0x1338 tag,
-                // +0x17A0/+0x17C0 team tags, +0x1900 is_team1_blue) to decide which
-                // sim side is the player's. A stable-ABI mod is never handed that
-                // pointer, and unlike the `Database` there is no argument anywhere
-                // in this mod that leaks it, so `LIVE_DB` stays 0 and `SCENE_SIDE`
-                // stays undetermined.
-                //
-                // That is a documented, supported state rather than a break:
-                // `scene_player_side()` returning `None` means "use the roster
-                // fallback", and the roster (`MY_ATHLETES`, published just above
-                // from the stable record API) is what the team gate then uses. The
-                // cost is the fast path — the spawn hook's early side decision,
-                // which existed to cover the owned=0 injection window.
-                //
-                // Restoring it needs the `ClientDatabase` address from somewhere,
-                // such as another detour argument.
             }
         }
     }
@@ -3279,7 +3210,7 @@ unsafe fn needs_build_extension(athlete: usize) -> bool {
 }
 
 // Fixed words at the front of [`BuyInputs`]; the build targets follow.
-const BUY_INPUT_FIXED: usize = 14;
+const BUY_INPUT_FIXED: usize = 13;
 // Longest build [`BuyInputs`] holds. The detour grows builds to
 // `build_config::picker_slots()` (6); a longer one is never memoized.
 const BUY_MEMO_BUILD_MAX: usize = 8;
@@ -3294,8 +3225,8 @@ struct BuyInputs([u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX]);
 //
 // It covers what the full path reads: the athlete's identity, champion,
 // side, lane, owned count and build Vec (header and every target), the
-// catalog context, the team-gate flags, both settings, the scene side, and
-// which pin snapshot is live. Not gold: nothing below decides anything from
+// catalog context, the team-gate flags, both settings, and which pin
+// snapshot is live. Not gold: nothing below decides anything from
 // it. The network's pick for a slot being grown is covered through its inputs
 // (the build so far, the champion and lane, and the match's seed).
 unsafe fn buy_inputs(
@@ -3335,7 +3266,6 @@ unsafe fn buy_inputs(
         len,
         safe_read_u64(rsp_entry + 0x30)?, // ctx: the catalog every pick resolves in
         flags,
-        SCENE_SIDE.load(Ordering::Relaxed),
         crate::build_config::pins_generation(),
     ];
     let mut words = [0u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX];
@@ -3582,7 +3512,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // ** fix B performance (2026-07-27): in background buys only my players (is_my_athlete) are injection targets -> a background buy by anyone else
         //   passes through immediately after a cheap VEH read (+0x810) + HashSet lookup, before the expensive readable (= VirtualQuery kernel call).
         //   This restores the background early exit that 07-22 removed, in a way compatible with the fix (~94% of background buys exit here). None (roster unavailable) =
-        //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (they need the by_scene decision).
+        //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (a comp test's athletes are not mine; see `is_comptest_live`).
         //
         // ** 4th-item parity fix (2026-08-05) — `&& !needs_build_extension`.
         //   The gate above is about *designation* scope: only my players get an item
@@ -3664,37 +3594,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let champ: &str = champ_cow.as_ref();
         // Before any pin is looked up: the lane every lookup below resolves in.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
-        // (`let champ_designated = is_champ_designated(champ)` used to sit here.
-        //  Nothing read it — it was the safety net described at the `by_scene`
-        //  comment below, and the team gate replaced it — so every buy that got
-        //  this far paid two global mutex acquisitions, and sometimes a rebuild of
-        //  the designated-champion `HashSet`, to compute a value it dropped.
-        //  `is_champ_designated` itself is still used by the spawn path.)
-        let side = safe_read_u64(athlete + O_ATHLETE_TEAM).unwrap_or(u64::MAX);
-        // * Deciding the side: prefer the direct scene read (SCENE_SIDE, refreshed on the main thread) -> if undecided, decide on the spot from LIVE_DB (protects the owned=0 injection window).
-        //   Undecided = no injection (prevents enemy/background contamination - the fallback vote is definitively abandoned).
-        let scene_ps = scene_player_side().or_else(|| {
-            if !is_live {
-                return None;
-            }
-            let db = LIVE_DB.load(Ordering::Relaxed) as usize;
-            let pid = LIVE_PID.load(Ordering::Relaxed);
-            if db == 0 {
-                return None;
-            }
-            let r = quick_scene_side(db, pid);
-            if let Some(s) = r {
-                SCENE_SIDE.store(s, Ordering::Relaxed);
-            }
-            r
-        });
-        // The `None` arm used to fall back to `player_side_for_match`, a majority
-        // vote over champions the user had designated in the `SEL` dropdowns.
-        // That went with `SEL`, so an undecided scene side is simply undecided —
-        // which is what it already meant everywhere else, and what `FIXB` makes
-        // moot anyway (`is_player` below takes the `is_my_athlete` branch).
-        let by_scene: bool = is_live && scene_ps.is_some_and(|ps| side == ps);
-        // * Comp test: both sides are user-composed, so bypass the scene side gate (apply to any designated champion).
+        // * Comp test: both sides are user-composed, so bypass the team gate (apply to any designated champion).
         // ** fix B: team scope = athlete_id membership (is_my_athlete, +0x810). The same decision in background and spectated sims -> convergence.
         //   If MY_ATHLETES is not published yet (before spectating) None = false = network. Only my players are designated; AI vs AI = my 0 = no designation.
         // ** Comp-test regression fix (2026-07-30 user report "item injection doesn't work in comp test"):
@@ -3726,10 +3626,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let is_training = crate::build_config::is_test_match(seed_r9);
         let is_player = if is_comptest_live || is_training {
             true // comp test = both sides user-composed -> bypass the team gate
-        } else if FIXB {
-            matches!(is_my_athlete(athlete), Some(true))
         } else {
-            is_live && by_scene
+            matches!(is_my_athlete(athlete), Some(true))
         };
         if crate::own_team_log::ENABLED && crate::build_config::has_pins(champ) {
             let ctx = rd_u64(rsp_entry + 0x30) as usize;
@@ -4231,70 +4129,11 @@ unsafe fn install_replace_buy(
     FlushInstructionCache(GetCurrentProcess(), fn_addr, orig_len);
     Ok(stub)
 }
-// ===========================================================================
-//  ** Direct scene reading = a deterministic team gate (no hooking; ghidra-re + crm anchors, confirmed on 0.5.0_3)
-//  During a live match, the client scene (ClientScene::InGame, tag=9) keeps both teams' team_id + is_team1_blue in its match_info.
-//  Read directly every frame in post_update (main thread) -> compare with player_team_id() -> determine the PLAYER SIDE (0/1).
-//  Absolute db offsets (0.5.0_3, a uniform -0xA0 shift, triple-checked): scene tag (u32)@+0x1338 == 9 /
-//  team1 tag(u64,Normal=0)@+0x17A0·id@+0x17A8 / team2 tag@+0x17C0·id@+0x17C8 / is_team1_blue(u8)@+0x1900.
-//  is_team1_blue is updated to reflect the per-set side swap -> reading it always reflects the current set.
-//  WARNING the old GameStart packet deserializer hook (0x3217f0) is a dead end (never fires in a single live process; crossbeam delivers directly) -> removed.
-// ===========================================================================
-const SCENE_GATE_ENABLED: bool = true; // * v5 (07-11): after confirming live (tid), decide the side by reading the scene directly -> ON. update_scene_side refreshes SCENE_SIDE every frame (main thread).
-                                       // ** Confirmed (07-11, in game): the sim athlete side (`O_ATHLETE_TEAM`, then 0x820) is fixed at blue=0 / red=1. In a spectated match (my team blue), KT Aiming = meiling was
-                                       //   dumped as sim side1 (red) -> confirming side0 = blue = my team. So the scene player <-> sim side mapping = blue is side0.
-                                       //   WARNING this is a side-independent fixed mapping (not a constant inversion) - matching scene team_id <-> pid returns the correct sim side even when sides swap.
-const SCENE_BLUE_IS_SIDE0: bool = true; // blue team = sim side0 (confirmed in game). update_scene_side matches pid with (s0,s1) = (blue,red).
-static SCENE_SIDE: AtomicU64 = AtomicU64::new(u64::MAX); // 0/1 = the player's side in a live match, MAX = undetermined (not a match / not spectating)
-static LIVE_DB: AtomicU64 = AtomicU64::new(0); // * v6: the absolute db address stored by the InGame post_update (for the spawn hook's early side decision)
-static LIVE_PID: AtomicU64 = AtomicU64::new(u64::MAX); // * v6: the stored PLAYER_TEAM_ID
-
-// * v6 lightweight side-only decision (called from the spawn hook = a sim thread; VEH-safe reads only, no file I/O or locks).
-//   scene tag9 + team_id Normal + is_team1_blue + pid matching -> player side (0/1). Same offsets as update_scene_side.
-unsafe fn quick_scene_side(db: usize, pid: u64) -> Option<u64> {
-    if db < 0x10000 || pid == u64::MAX {
-        return None;
-    }
-    if safe_read_u64(db + 0x1338).map(|v| v & 0xffff_ffff) != Some(9) {
-        return None;
-    }
-    let t1_tag = safe_read_u64(db + 0x17A0)?;
-    let t2_tag = safe_read_u64(db + 0x17C0)?;
-    if t1_tag != 0 || t2_tag != 0 {
-        return None;
-    } // Normal (team_id) only
-    let t1 = safe_read_u64(db + 0x17A8)?;
-    let t2 = safe_read_u64(db + 0x17C8)?;
-    let blue_b = safe_read_u64(db + 0x1900)? & 0xff;
-    let t1_blue = blue_b != 0;
-    let (blue, red) = if t1_blue { (t1, t2) } else { (t2, t1) };
-    let (s0, s1) = if SCENE_BLUE_IS_SIDE0 {
-        (blue, red)
-    } else {
-        (red, blue)
-    };
-    if s0 == pid {
-        Some(0)
-    } else if s1 == pid {
-        Some(1)
-    } else {
-        None
-    }
-}
 // * 2026-07-30: have we ever seen a valid **non-zero** pid? If 1, ignore later reports of 0 (prevents pid regression - measurement showed
 //   the same save alternating between 105 and 0 depending on the moment, and trusting the 0 breaks the team gate).
 static PID_NONZERO_SEEN: AtomicU64 = AtomicU64::new(0);
 static PID_ZERO_CLEAN: AtomicU64 = AtomicU64::new(0); // * times pid=0 was observed in an InGame unrelated to comp test
                                                       //   (>=600 accepts it as "a save whose real team id is 0" = MY_ATHLETES publication allowed)
-fn scene_player_side() -> Option<u64> {
-    if !SCENE_GATE_ENABLED {
-        return None;
-    } // when OFF, use the roster fallback
-    match SCENE_SIDE.load(Ordering::Relaxed) {
-        v @ 0..=1 => Some(v),
-        _ => None,
-    }
-}
 const DIAG_BUY_OFF: bool = false; // master switch for buy injection (true = injection/identification OFF)
 fn install_replace_4th() {
     if DIAG_BUY_OFF {
