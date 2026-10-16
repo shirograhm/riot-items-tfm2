@@ -785,6 +785,11 @@ const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3 (0.6.0-beta2..0.6.2 0xa90, 0
 // 0.6.3 moved every one, so they are named like the fields above. How each
 // was measured is in the 0.6.3 notes there and at `SPAWN_RVA`.
 const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3 (0.6.0-beta2..0.6.2 0x518)
+// The items `Vec`'s pointer: the word before its length, as the build's is
+// (`cap, ptr, len`). 0x310 in 0.6.3, where the buy resolver reads the two
+// together (`[rdx+0x310]`, `[rdx+0x318]`). Elements are 16 bytes, an item
+// and its vtable, the shape of a catalog entry.
+const O_ATHLETE_ITEMS_PTR: usize = O_ATHLETE_ITEMS_LEN - 8;
 const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3 (0.6.0-beta2..0.6.2 0x550)
 const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3 (0.6.0-beta2..0.6.2 0x558)
 const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3 (0.6.0-beta2..0.6.2 0x560)
@@ -3057,6 +3062,114 @@ unsafe fn network_pick(
     Some(index)
 }
 
+// Whether [`retier_unstarted`] has capped a build this session. Until it
+// has, no build can hold a legendary target and nothing needs putting back,
+// so a session that never leaves All Radiants runs none of this.
+static TIERS_RULED: AtomicBool = AtomicBool::new(false);
+
+// Item Rules (`crate::item_tiers`): rewrites the target of every build slot
+// from `from` on to the form `form` gives for the item it names, where it
+// gives one and the catalog has it.
+//
+// `from` is never less than the athlete's owned count, and that is the
+// whole of the safety here. The engine buys a build in order and upgrades
+// the last item it owns until that item's key equals its slot's target. A
+// slot it has not reached is only a number it has not read yet. A slot it
+// is on is not: were its target lowered under an item already upgraded past
+// it, the engine would look for an upgrade from the radiant to the
+// legendary, find none, and the athlete would buy nothing for the rest of
+// the match. So a slot already started keeps whatever target it has, and a
+// setting flipped during a match only reaches the slots after it.
+unsafe fn retier_unstarted(
+    ctx: usize,
+    athlete: usize,
+    from: u64,
+    form: impl Fn(&str) -> Option<String>,
+) {
+    let (Some(ptr), Some(len)) = (
+        safe_read_u64(athlete + O_ATHLETE_BUILD_PTR),
+        safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
+    ) else {
+        return;
+    };
+    let (ptr, len) = (ptr as usize, len as usize);
+    if ptr < 0x10000 || len > BUY_MEMO_BUILD_MAX || !readable(ptr, len * 8) {
+        return;
+    }
+    for si in (from as usize)..len {
+        let index = rd_u64(ptr + si * 8);
+        let Some(wanted) = catalog_name_at(ctx, index).and_then(|key| form(&key)) else {
+            continue;
+        };
+        let Some(other) = scan_idx_cached(ctx, wanted.as_bytes()) else {
+            continue;
+        };
+        if other != index && writable(ptr + si * 8, 8) {
+            wr_u64(ptr + si * 8, other);
+        }
+    }
+}
+
+// Item Rules, No Radiants: holds the slot the athlete is on, `owned - 1`, at
+// its legendary too. The one slot [`retier_unstarted`] must leave alone,
+// because its target may only be lowered while the item in hand has not gone
+// past it. So the item in hand is read (the athlete's items stand one to a
+// build slot, in order), and the slot is left as it is when that item is the
+// radiant already, or cannot be read. Anything else in hand is a component
+// on the way up, or the legendary itself, and either is finished by the
+// lower target.
+//
+// At a match's first buy decision this is the first slot, one component in:
+// the detour never sees an athlete with nothing bought.
+unsafe fn cap_slot_in_hand(ctx: usize, athlete: usize, owned: u64) {
+    let Some(slot) = owned.checked_sub(1) else {
+        return;
+    };
+    let (Some(ptr), Some(len), Some(items), Some(items_len)) = (
+        safe_read_u64(athlete + O_ATHLETE_BUILD_PTR),
+        safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
+        safe_read_u64(athlete + O_ATHLETE_ITEMS_PTR),
+        safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN),
+    ) else {
+        return;
+    };
+    if (ptr as usize) < 0x10000 || slot >= len || len as usize > BUY_MEMO_BUILD_MAX {
+        return;
+    }
+    // After the bounds: `slot` is under the build's length here.
+    let at = ptr as usize + slot as usize * 8;
+    if !readable(at, 8) {
+        return;
+    }
+    let index = rd_u64(at);
+    let Some(target) = catalog_name_at(ctx, index) else {
+        return;
+    };
+    let Some(legendary) = crate::item_tiers::legendary_of(&target) else {
+        return;
+    };
+    match catalog_name_in(items as usize, items_len, slot) {
+        Some(in_hand) if in_hand != target => {}
+        _ => return,
+    }
+    let Some(other) = scan_idx_cached(ctx, legendary.as_bytes()) else {
+        return;
+    };
+    if other != index && writable(at, 8) {
+        wr_u64(at, other);
+    }
+}
+
+// The catalog index of the radiant over the item at `index`, where that
+// item is a legendary with one; `index` itself otherwise. For reading a
+// slot Item Rules holds at its legendary the way the build was decided.
+unsafe fn radiant_index(ctx: usize, index: u64) -> u64 {
+    catalog_name_at(ctx, index)
+        .and_then(|key| crate::item_tiers::radiant_of(&key))
+        .and_then(|radiant| scan_idx_cached(ctx, radiant.as_bytes()))
+        .unwrap_or(index)
+}
+
 // Smart Builds' rules 6 and 9 over a build just grown to its 5th and 6th
 // slots, which the stable hook's pass never saw: the automatic picks not
 // bought yet, role items first, then early items, late items last
@@ -3207,7 +3320,8 @@ unsafe fn buy_inputs(
         | (crate::build_config::is_test_match(seed) as u64) << 2
         | mine << 3
         | (crate::build_config::own_team_only_enabled() as u64) << 5
-        | (crate::build_config::smart_builds_enabled() as u64) << 6;
+        | (crate::build_config::smart_builds_enabled() as u64) << 6
+        | (crate::item_tiers::rule().code() as u64) << 7;
     let fixed: [u64; BUY_INPUT_FIXED] = [
         seed,
         read(O_ATHLETE_ID)?,
@@ -3648,6 +3762,18 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 ),
             );
         }
+        // Item Rules (`crate::item_tiers`). Everything below decides on a
+        // build of radiant targets, as it always has: the pins, the clash
+        // checks between them, the growth and its picks all compare catalog
+        // indices. So the slots an earlier pass held at their legendary are
+        // put back first, and capped again when the pass is done (after the
+        // growth, below). Only slots not started yet: see `retier_unstarted`.
+        // A started slot keeps its target in memory and is read as its
+        // radiant where the build is copied out to decide on.
+        let tiers_rule = crate::item_tiers::rule();
+        let tiers_ctx = rd_u64(rsp_entry + 0x30) as usize;
+        let tiers_put_back = tiers_rule != crate::item_tiers::Rule::AllRadiants
+            || TIERS_RULED.load(Ordering::Relaxed);
         // The editor's scope toggle, read once here rather than per slot: it is
         // an atomic load (see `build_config::own_team_only_enabled`), but this
         // is a per-buy-decision path and both the pins for the game's four
@@ -3666,6 +3792,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             0
         };
+        // Item Rules' put-back, after Control's check: that compares the build
+        // as this pass found it with what the last one left, capped slots and
+        // all, and this is the pass's first write.
+        if tiers_put_back {
+            retier_unstarted(tiers_ctx, athlete, owned, crate::item_tiers::radiant_of);
+        }
         // This branch used to publish the player's lineup to `crate::my_team`,
         // which is how the host half guessed whether a set of item-build routes
         // belonged to the player. Nothing consumes that guess any more: the host
@@ -3856,8 +3988,21 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 let designate = !own_team_only || is_player;
                 let smart = crate::build_config::smart_builds_enabled();
                 // The whole build as it will stand, starting from the live
-                // slots. Only `slots[build_len..]` is new memory.
-                let mut slots: Vec<u64> = (0..live).map(|i| rd_u64(ptr + i * 8)).collect();
+                // slots. Only `slots[build_len..]` is new memory. A started
+                // slot Item Rules holds at its legendary is read as the
+                // radiant it was decided as, so that a pin or a pick for a
+                // later slot is still known to be in the build already.
+                // Nothing below writes a started slot back.
+                let mut slots: Vec<u64> = (0..live)
+                    .map(|i| {
+                        let index = rd_u64(ptr + i * 8);
+                        if tiers_put_back && (i as u64) < owned {
+                            radiant_index(ctx, index)
+                        } else {
+                            index
+                        }
+                    })
+                    .collect();
                 // Slots 5 and 6 that an earlier buy already grew: only a pin,
                 // only where it changed, and only while that slot is not
                 // bought yet -- the same `owned > si` rule the game's four follow.
@@ -3927,6 +4072,12 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             && writable(new_ptr, old_len * 8)
                         {
                             for (j, &index) in slots.iter().enumerate().take(old_len) {
+                                // Rule 6 moves nothing at or before the slot
+                                // in hand, and a started slot's target is
+                                // not this copy's to restore (Item Rules).
+                                if (j as u64) < owned {
+                                    continue;
+                                }
                                 if rd_u64(new_ptr + j * 8) != index {
                                     wr_u64(new_ptr + j * 8, index);
                                 }
@@ -3968,6 +4119,32 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 }
             }
         }
+        // Item Rules, the other half: the slots the setting holds back are
+        // capped at their legendary. Under First Item Radiant every slot
+        // after the first that is not started yet; the first is never
+        // touched, so it is the build's one radiant. Under No Radiants every
+        // slot not started yet, and the one in hand while that is still safe
+        // (`cap_slot_in_hand`). A pass that only put back and capped again
+        // leaves the build as it found it, and is remembered below like any
+        // other that wrote nothing.
+        match tiers_rule {
+            crate::item_tiers::Rule::AllRadiants => {}
+            crate::item_tiers::Rule::FirstItemRadiant => {
+                TIERS_RULED.store(true, Ordering::Relaxed);
+                retier_unstarted(
+                    tiers_ctx,
+                    athlete,
+                    owned.max(1),
+                    crate::item_tiers::legendary_of,
+                );
+            }
+            crate::item_tiers::Rule::NoRadiants => {
+                TIERS_RULED.store(true, Ordering::Relaxed);
+                retier_unstarted(tiers_ctx, athlete, owned, crate::item_tiers::legendary_of);
+                cap_slot_in_hand(tiers_ctx, athlete, owned);
+            }
+        }
+
         // What this pass left, for the next one to tell Control's picks by.
         // After growth, under the `Vec` it grew into.
         if track {

@@ -1740,7 +1740,7 @@ fn toggle_style(lit: bool) -> String {
 }
 
 // [`toggle_style`] with the label at `size`: the footer's cells are 13, the
-// game's own option rows 16.
+// game's own option rows 16 (`crate::options_row`).
 pub(crate) fn toggle_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
@@ -1762,7 +1762,7 @@ fn toggle_off_style(lit: bool) -> String {
 }
 
 // [`toggle_off_style`] with the label at `size`, for the game's own option
-// rows.
+// rows (`crate::options_row`).
 pub(crate) fn toggle_off_style_sized(lit: bool, size: u32) -> String {
     let (fill, text, stroke) = if lit {
         (TOGGLE_OFF_SELECTED_FILL, TOGGLE_OFF_SELECTED_TEXT, 0)
@@ -3915,6 +3915,14 @@ impl StableExtension for StrategyPicker {
         // has been read. Unconditional because a tooltip can be on any
         // screen; one atomic read a frame while nothing is patched.
         crate::patches::sync(ctx);
+
+        // Item Rules: the save's own setting, read and written here, where
+        // the save can be reached. Then the row that shows it, in the game's
+        // Options dialog, which can be opened over any screen: one failed
+        // lookup while it has not been. Ahead of the patcher row below, which
+        // goes under it.
+        crate::item_tiers::sync(ctx);
+        crate::options_row::sync(ctx);
 
         // The Options dialog's Item Patcher Settings row, and the window it
         // opens, where the player sets item numbers by hand and queues the

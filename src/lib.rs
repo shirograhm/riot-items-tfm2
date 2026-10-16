@@ -6,6 +6,7 @@ mod champion_traits;
 mod hooks;
 mod item_catalog;
 mod item_stats;
+mod item_tiers;
 mod items;
 mod patches;
 mod smart_builds;
@@ -26,7 +27,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // Re-exported under their old names, so paths like `crate::config::ItemConfig`
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
-pub(crate) use ui::{item_counts, item_spend, match_builds, solo_rank_ui, strategy_ui};
+pub(crate) use ui::{item_counts, item_spend, match_builds, options_row, solo_rank_ui, strategy_ui};
 pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
@@ -277,6 +278,8 @@ impl StableServerExtension for NativeTapExtension {
         // What the server's side of the save has of the item patches, for
         // the test log.
         patches::server_started(ctx);
+        // And its own Item Rules setting, not the last save's.
+        item_tiers::server_started();
 
         match hook::install_hook() {
             Ok(address) => {

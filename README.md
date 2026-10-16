@@ -54,6 +54,9 @@ It covers all six slots, but only ever changes items the AI picked: an item you 
 
 It also gives every AI build a pair of boots, as its second pick, unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Boots of Swiftness goes to champions none of that fits. Boots are also in the Build Editor under their own **Boots** group.
 
+##### Item Rules
+The game's **Options** menu has an **Item Rules** setting on its Competition tab. **All Radiants** is the default: every item in a build is upgraded all the way to Radiant. **First Item Radiant** upgrades only the first item of each build to Radiant and stops every other item at Legendary. **No Radiants** stops every item at Legendary. Both apply to both teams and to pinned items alike. It can only be changed between matches: during a draft or a match the option is greyed out. The setting is stored in your save file, so each save has its own: save the game after changing it, and a save that has never been set is on All Radiants.
+
 ##### Builds in Check Tactics
 During a match, **Check Tactics** shows both teams' item builds as icons, in place of the base game's four "Let Player Decide" columns: one line per lane, with the Blue Team on the left and the Red Team on the right. An item you pinned has a teal border, and one the AI picked has a grey one. All six slots are shown, in the order the items will be bought; the fifth and sixth appear a moment after the match starts, when the AI picks them. Hover an icon to see the item's price, stats and effect. It works for matches you watch and matches you spectate. The base game's columns stay when the mod can't tell which builds the match was given.
 
