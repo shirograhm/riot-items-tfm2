@@ -615,6 +615,11 @@ const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3..0.7.0-beta (0.6.0-beta2..0.
 /// 0.6.3 moved every one, so they are named like the fields above. How each
 /// was measured is in the 0.6.3 notes there and at `SPAWN_RVA`.
 const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x518)
+/// The items `Vec`'s pointer: the word before its length, as the build's is
+/// (`cap, ptr, len`). 0x310 in 0.6.3, where the buy resolver reads the two
+/// together (`[rdx+0x310]`, `[rdx+0x318]`). Elements are 16 bytes, an item
+/// and its vtable, the shape of a catalog entry.
+const O_ATHLETE_ITEMS_PTR: usize = O_ATHLETE_ITEMS_LEN - 8;
 const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x550)
 const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x558)
 const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x560)
