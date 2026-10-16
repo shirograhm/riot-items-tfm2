@@ -45,23 +45,6 @@ extern "system" {
     fn FlushInstructionCache(proc: usize, addr: usize, size: usize) -> BOOL;
     fn GetCurrentProcess() -> usize;
     fn AddVectoredExceptionHandler(first: u32, handler: VehHandler) -> usize;
-    fn GetCurrentThreadId() -> u32;
-    fn GetCurrentThread() -> isize;
-    fn GetThreadContext(h: isize, ctx: *mut u8) -> BOOL;
-    fn SetThreadContext(h: isize, ctx: *const u8) -> BOOL;
-    fn OpenThread(access: u32, inherit: BOOL, tid: u32) -> isize;
-    fn SuspendThread(h: isize) -> u32;
-    fn ResumeThread(h: isize) -> u32;
-    fn CloseHandle(h: isize) -> BOOL;
-    fn CreateThread(
-        sa: *const u8,
-        stack: usize,
-        start: extern "system" fn(*mut u8) -> u32,
-        param: *mut u8,
-        flags: u32,
-        tid: *mut u32,
-    ) -> isize;
-    fn Sleep(ms: u32);
 }
 #[repr(C)]
 #[derive(Default)]
@@ -328,180 +311,6 @@ fn exe_path() -> Option<PathBuf> {
 // those users, which silently disabled every file this reads.
 fn mod_dir() -> Option<PathBuf> {
     crate::config::dll_dir()
-}
-
-// ===========================================================================
-//  JSON parser (for mods.json / item.i18n, ported from scrim)
-// ===========================================================================
-enum JsonValue {
-    Null,
-    Bool(bool),
-    Num(f64),
-    Str(String),
-    Arr(Vec<JsonValue>),
-    Obj(Vec<(String, JsonValue)>),
-}
-impl JsonValue {
-    fn as_obj(&self) -> Option<&Vec<(String, JsonValue)>> {
-        if let JsonValue::Obj(o) = self {
-            Some(o)
-        } else {
-            None
-        }
-    }
-    fn get<'b>(&'b self, key: &str) -> Option<&'b JsonValue> {
-        self.as_obj()?
-            .iter()
-            .find(|(k, _)| k == key)
-            .map(|(_, v)| v)
-    }
-    fn as_str(&self) -> Option<&str> {
-        if let JsonValue::Str(s) = self {
-            Some(s.as_str())
-        } else {
-            None
-        }
-    }
-}
-struct JsonParser<'a> {
-    b: &'a [u8],
-    i: usize,
-}
-impl<'a> JsonParser<'a> {
-    fn new(s: &'a str) -> Self {
-        JsonParser {
-            b: s.as_bytes(),
-            i: 0,
-        }
-    }
-    fn skip_ws(&mut self) {
-        while self.i < self.b.len() {
-            match self.b[self.i] {
-                b' ' | b'\t' | b'\r' | b'\n' | b',' => self.i += 1,
-                _ => break,
-            }
-        }
-    }
-    fn parse_value(&mut self) -> Option<JsonValue> {
-        self.skip_ws();
-        if self.i >= self.b.len() {
-            return None;
-        }
-        match self.b[self.i] {
-            b'{' => self.parse_object(),
-            b'[' => self.parse_array(),
-            b'"' => self.parse_string().map(JsonValue::Str),
-            b't' => {
-                self.i += 4;
-                Some(JsonValue::Bool(true))
-            }
-            b'f' => {
-                self.i += 5;
-                Some(JsonValue::Bool(false))
-            }
-            b'n' => {
-                self.i += 4;
-                Some(JsonValue::Null)
-            }
-            _ => self.parse_number(),
-        }
-    }
-    fn parse_string(&mut self) -> Option<String> {
-        if self.b.get(self.i) != Some(&b'"') {
-            return None;
-        }
-        self.i += 1;
-        let mut out: Vec<u8> = Vec::new();
-        while self.i < self.b.len() {
-            let c = self.b[self.i];
-            self.i += 1;
-            match c {
-                b'"' => return Some(String::from_utf8_lossy(&out).into_owned()),
-                b'\\' => {
-                    let e = *self.b.get(self.i)?;
-                    self.i += 1;
-                    match e {
-                        b'n' => out.push(b'\n'),
-                        b't' => out.push(b'\t'),
-                        b'r' => out.push(b'\r'),
-                        b'b' => out.push(0x08),
-                        b'f' => out.push(0x0c),
-                        b'"' => out.push(b'"'),
-                        b'\\' => out.push(b'\\'),
-                        b'/' => out.push(b'/'),
-                        b'u' => {
-                            if self.i + 4 <= self.b.len() {
-                                if let Ok(hex) = std::str::from_utf8(&self.b[self.i..self.i + 4]) {
-                                    if let Ok(cp) = u32::from_str_radix(hex, 16) {
-                                        if let Some(ch) = char::from_u32(cp) {
-                                            let mut buf = [0u8; 4];
-                                            out.extend_from_slice(
-                                                ch.encode_utf8(&mut buf).as_bytes(),
-                                            );
-                                        }
-                                    }
-                                }
-                                self.i += 4;
-                            }
-                        }
-                        other => out.push(other),
-                    }
-                }
-                _ => out.push(c),
-            }
-        }
-        None
-    }
-    fn parse_number(&mut self) -> Option<JsonValue> {
-        let start = self.i;
-        while self.i < self.b.len() {
-            match self.b[self.i] {
-                b'0'..=b'9' | b'-' | b'+' | b'.' | b'e' | b'E' => self.i += 1,
-                _ => break,
-            }
-        }
-        let tok = std::str::from_utf8(&self.b[start..self.i]).ok()?;
-        tok.parse::<f64>().ok().map(JsonValue::Num)
-    }
-    fn parse_array(&mut self) -> Option<JsonValue> {
-        self.i += 1;
-        let mut arr = Vec::new();
-        loop {
-            self.skip_ws();
-            if self.i >= self.b.len() {
-                return None;
-            }
-            if self.b[self.i] == b']' {
-                self.i += 1;
-                break;
-            }
-            arr.push(self.parse_value()?);
-        }
-        Some(JsonValue::Arr(arr))
-    }
-    fn parse_object(&mut self) -> Option<JsonValue> {
-        self.i += 1;
-        let mut pairs = Vec::new();
-        loop {
-            self.skip_ws();
-            if self.i >= self.b.len() {
-                return None;
-            }
-            if self.b[self.i] == b'}' {
-                self.i += 1;
-                break;
-            }
-            let k = self.parse_string()?;
-            self.skip_ws();
-            if self.b.get(self.i) != Some(&b':') {
-                return None;
-            }
-            self.i += 1;
-            let v = self.parse_value()?;
-            pairs.push((k, v));
-        }
-        Some(JsonValue::Obj(pairs))
-    }
 }
 
 // ===========================================================================
@@ -1986,14 +1795,12 @@ fn stable_last_starting(
     let Some(json) = client.record_get_json(RecordKindV1::Team, team_id, "last_starting") else {
         return out;
     };
-    let Some(JsonValue::Arr(slots)) = JsonParser::new(&json).parse_value() else {
+    let Ok(serde_json::Value::Array(slots)) = serde_json::from_str::<serde_json::Value>(&json) else {
         return out;
     };
-    for slot in slots {
-        if let JsonValue::Num(id) = slot {
-            if id >= 0.0 {
-                out.insert(id as u64);
-            }
+    for id in slots.iter().filter_map(serde_json::Value::as_f64) {
+        if id >= 0.0 {
+            out.insert(id as u64);
         }
     }
     out
@@ -2615,11 +2422,6 @@ unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
     )
 }
 
-// ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
-//   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
-//   WARNING false = restores the old behaviour (is_live gate, no background injection). Kept for an immediate rollback on trouble.
-const FIXB: bool = true;
-
 // What goes into build slot `si` when the Vec grows -- `si` 4 and 5 are the
 // 5th and 6th items, and 3 the 4th of the rare build the engine left three
 // long.
@@ -2854,7 +2656,7 @@ const NET_NO_CHAMPION: u64 = 9999;
 // scores and moves the weights, so the same question can get a different
 // answer an hour later, and a match is played more than once: in the
 // background for its result and again on screen, each copy buying for itself
-// (see [`FIXB`]). What a seat was given the first time is what it gets every
+// (fix B, in `buy_replace_ctx`). What a seat was given the first time is what it gets every
 // time after, or the match the player watches stops being the one that was
 // recorded. By key, because a catalog index is only good for the catalog it
 // was read from.
@@ -3505,10 +3307,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let seed_match_r9 = lseed != 0 && seed_r9 == lseed;
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let is_live = seed_match_r9 || (rp != 0 && provider_now != 0 && provider_now == rp);
-        if !is_live && !FIXB {
-            // (FIXB=false, old behaviour) background league sim = passthrough with no injection.
-            return 0;
-        }
+        // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
+        //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
         // ** fix B performance (2026-07-27): in background buys only my players (is_my_athlete) are injection targets -> a background buy by anyone else
         //   passes through immediately after a cheap VEH read (+0x810) + HashSet lookup, before the expensive readable (= VirtualQuery kernel call).
         //   This restores the background early exit that 07-22 removed, in a way compatible with the fix (~94% of background buys exit here). None (roster unavailable) =
@@ -3536,8 +3336,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         //   its match's seed (`build_config::note_test_spawn`), so a league
         //   fixture simulating alongside it still exits here, as cheaply as
         //   before.
-        if FIXB
-            && !is_live
+        if !is_live
             && !crate::build_config::is_test_match(seed_r9)
             && !matches!(is_my_athlete(athlete), Some(true))
             && !needs_build_extension(athlete)
@@ -3598,11 +3397,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // ** fix B: team scope = athlete_id membership (is_my_athlete, +0x810). The same decision in background and spectated sims -> convergence.
         //   If MY_ATHLETES is not published yet (before spectating) None = false = network. Only my players are designated; AI vs AI = my 0 = no designation.
         // ** Comp-test regression fix (2026-07-30 user report "item injection doesn't work in comp test"):
-        //   the FIXB (= athlete_id membership) path **was missing the comp-test bypass**.
+        //   the fix B (= athlete_id membership) path **was missing the comp-test bypass**.
         //   Comp test is a sandbox where the user composes both sides, so those players are **not in** `MY_ATHLETES`
         //   (= db.team(pid).last_starting = my team's starters) => is_my_athlete = false
-        //   => designated item injection was silently skipped. (The old FIXB=false path had the COMPTEST_MATCH bypass, but that
-        //    condition disappeared when switching to FIXB=true = an omission introduced with fix B, not by a migration.)
+        //   => designated item injection was silently skipped. (The path before fix B had the COMPTEST_MATCH bypass, but that
+        //    condition disappeared with fix B = an omission introduced with fix B, not by a migration.)
         //   => for a match judged to be comp test (launcher retaddr measured = 0x1925f12), **apply designations to both sides**.
         //     Bypassing the team gate on a screen that has no notion of "my team" was the original design intent (see the comment at line 2409).
         // *** 2026-07-30 second fix - **blocking background contamination** (`&& is_live`):
