@@ -62,7 +62,7 @@
 //! While [`LOG`] is on, `match-builds.log` beside the DLL says how each match
 //! was identified and what the rules make of every item shown.
 
-use std::collections::{BTreeSet, HashMap, VecDeque};
+use std::collections::{HashMap, VecDeque};
 use std::ffi::c_void;
 use std::io::Write;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
@@ -1615,22 +1615,7 @@ fn with<T>(f: impl FnOnce(&mut Panel) -> T) -> Option<T> {
 // Paths a handler has been registered on in this match. A handler outlives
 // the node it was registered for and dies with the layout, so each path is
 // registered once per match (the rule `item_stats::ui` keeps).
-static REGISTERED: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
-
-fn register_once(ctx: &mut StableClient<'_>, path: &str) {
-    let fresh = REGISTERED
-        .lock()
-        .map(|mut set| set.insert(path.to_string()))
-        .unwrap_or(false);
-    if !fresh {
-        return;
-    }
-    if !ctx.ui_register_path_events(path, handle_event) {
-        if let Ok(mut set) = REGISTERED.lock() {
-            set.remove(path);
-        }
-    }
-}
+static REGISTERED: super::Registered = super::Registered::new(handle_event);
 
 // Whether the cursor has ever been found over a slot. Until it has, a click
 // stands in for hovering.
@@ -1661,9 +1646,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
                 *screen = None;
             }
             super::item_spend::clear();
-            if let Ok(mut set) = REGISTERED.lock() {
-                set.clear();
-            }
+            REGISTERED.forget();
         }
         return;
     };
@@ -1883,7 +1866,7 @@ fn paint(ctx: &mut StableClient<'_>, board: &Rows) -> bool {
                 }
                 for (slot, held) in cell.slots.iter().enumerate() {
                     if held.key.is_some() {
-                        register_once(ctx, &slot_path((side, lane, slot)));
+                        REGISTERED.register(ctx, &slot_path((side, lane, slot)));
                     }
                 }
             }

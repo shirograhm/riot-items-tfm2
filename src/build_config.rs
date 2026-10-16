@@ -1311,16 +1311,6 @@ fn radiant_key(key: &str) -> Cow<'_, str> {
     }
 }
 
-// Maps a `radiant_`-normalized item slug to the game's internal item key, for
-// renamed items whose registered key differs from the LoL name shown in
-// `text/item.i18n`. The input is the output of `radiant_key`, so both
-// `"bloodthirster"` and `"radiant_bloodthirster"` arrive here as
-// `"radiant_bloodthirster"` and resolve to the same internal key. Slugs with no
-// alias pass through unchanged (covers items whose registered key already
-// matches their slug, like `radiant_collector`).
-//
-// Add a new arm per renamed item in `text/item.i18n` (lines 58-177): key the arm
-// on the `radiant_` form of the LoL name, value is the i18n object key.
 // Normalizes any spelling of an item back to the plain LoL slug the item
 // catalog is keyed by: the inverse of [`alias_key`] followed by dropping the
 // `radiant_` prefix. `"warlords_final_judgement"`, `"radiant_bloodthirster"`
@@ -1335,34 +1325,26 @@ pub fn base_slug(key: &str) -> &str {
         .unwrap_or_else(|| unalias_key(key))
 }
 
-// Inverse of [`alias_key`]: the game's internal key for a renamed item back to
+// Inverse of [`alias_key`]: the game's key for one of its own radiants back to
 // the `radiant_` form of its LoL name. Keys with no alias pass through.
 fn unalias_key(key: &str) -> &str {
-    match key {
-        "warlords_final_judgement" => "radiant_bloodthirster",
-        "storm_sovereign" => "radiant_phantom_dancer",
-        "impregnable_fortress" => "radiant_thornmail",
-        "veil_of_annihilation" => "radiant_dragons_claw",
-        "prophet_of_the_abyss" => "radiant_ludens_tempest",
-        "giants_horn_shard" => "radiant_sunfire_cape",
-        other => other,
-    }
+    crate::item_catalog::GAME_RADIANTS
+        .iter()
+        .find(|&&(_, game, _)| game == key)
+        .map_or(key, |&(name, _, _)| name)
 }
 
+// Maps a `radiant_`-normalized item slug to the game's key, for the game's own
+// radiants, whose key is not their LoL name (`radiant_bloodthirster` is
+// `warlords_final_judgement`: [`crate::item_catalog::GAME_RADIANTS`]). The
+// input is the output of `radiant_key`, so both `"bloodthirster"` and
+// `"radiant_bloodthirster"` arrive here as `"radiant_bloodthirster"` and
+// resolve to the same key. Slugs with no alias pass through unchanged (covers
+// items whose registered key already matches their slug, like
+// `radiant_collector`).
 fn alias_key(key: &str) -> &str {
-    match key {
-        // Radiant Bloodthirster
-        "radiant_bloodthirster" => "warlords_final_judgement",
-        // Radiant Phantom Dancer
-        "radiant_phantom_dancer" => "storm_sovereign",
-        // Radiant Thornmail
-        "radiant_thornmail" => "impregnable_fortress",
-        // Radiant Dragon's Claw
-        "radiant_dragons_claw" => "veil_of_annihilation",
-        // Radiant Luden's Tempest
-        "radiant_ludens_tempest" => "prophet_of_the_abyss",
-        // Radiant Sunfire Cape
-        "radiant_sunfire_cape" => "giants_horn_shard",
-        other => other,
-    }
+    crate::item_catalog::GAME_RADIANTS
+        .iter()
+        .find(|&&(name, _, _)| name == key)
+        .map_or(key, |&(_, game, _)| game)
 }

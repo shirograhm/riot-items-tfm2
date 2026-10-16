@@ -74,3 +74,92 @@ pub fn category_rank(category: &str) -> usize {
         .position(|name| *name == category)
         .unwrap_or(CATEGORY_ORDER.len())
 }
+
+// The game's own thirty items: the name the mod calls each by, its League
+// one (what `config.json` and builds are written in), and its key in the
+// game (the name at the root of the game's item settings). The one place
+// the two are paired: [`GAME_RADIANTS`] is read off it.
+pub const GAME_ITEM_NAMES: [(&str, &str); 30] = [
+    ("long_sword", "iron_blade"),
+    ("pickaxe", "soldiers_longsword"),
+    ("vampiric_scepter", "ruinous_blade"),
+    ("bloodthirster", "conquerors_greatsword"),
+    ("radiant_bloodthirster", "warlords_final_judgement"),
+    ("dagger", "dagger"),
+    ("recurve_bow", "wind_dagger"),
+    ("zeal", "twin_stormblade"),
+    ("phantom_dancer", "thunderclaw"),
+    ("radiant_phantom_dancer", "storm_sovereign"),
+    ("cloth_armor", "steel_armor"),
+    ("chain_vest", "gatekeepers_armor"),
+    ("bramble_vest", "black_knights_heavy_plate"),
+    ("thornmail", "eternal_iron_plate"),
+    ("radiant_thornmail", "impregnable_fortress"),
+    ("null_magic_mantle", "mystic_cloak"),
+    ("negatron_cloak", "night_hood"),
+    ("spectres_cowl", "dusk_raven"),
+    ("dragons_claw", "souls_edge"),
+    ("radiant_dragons_claw", "veil_of_annihilation"),
+    ("amplifying_tome", "arcane_crystal"),
+    ("blasting_wand", "spirit_crystal"),
+    ("lost_chapter", "staff_of_rapture"),
+    ("ludens_tempest", "angels_fang"),
+    ("radiant_ludens_tempest", "prophet_of_the_abyss"),
+    ("ruby_crystal", "vital_orb"),
+    ("kindlegem", "hardened_heart"),
+    ("giants_belt", "ring_of_reincarnation"),
+    ("sunfire_cape", "hourglass_of_eternity"),
+    ("radiant_sunfire_cape", "giants_horn_shard"),
+];
+
+// The game's own radiants, the top tier of its attack, attack speed, armor,
+// magic resistance, magic power and health lines: the mod's name for each
+// (`radiant_bloodthirster`), its key in the game (`warlords_final_judgement`)
+// and the game key of the legendary under it (`conquerors_greatsword`). Read
+// off [`GAME_ITEM_NAMES`] when the mod is built: every `radiant_` entry there
+// whose legendary is there too.
+pub const GAME_RADIANTS: [(&str, &str, &str); 6] = game_radiants();
+
+// Whether `name` is `radiant_` followed by `of`.
+const fn is_radiant_of(name: &str, of: &str) -> bool {
+    let (name, of, prefix) = (name.as_bytes(), of.as_bytes(), b"radiant_");
+    if name.len() != prefix.len() + of.len() {
+        return false;
+    }
+    let mut i = 0;
+    while i < name.len() {
+        let wanted = if i < prefix.len() {
+            prefix[i]
+        } else {
+            of[i - prefix.len()]
+        };
+        if name[i] != wanted {
+            return false;
+        }
+        i += 1;
+    }
+    true
+}
+
+// [`GAME_RADIANTS`], in the order of [`GAME_ITEM_NAMES`]. A table that gives
+// other than six stops the build.
+const fn game_radiants() -> [(&'static str, &'static str, &'static str); 6] {
+    let items = GAME_ITEM_NAMES;
+    let mut out = [("", "", ""); 6];
+    let mut found = 0;
+    let mut i = 0;
+    while i < items.len() {
+        let mut j = 0;
+        while j < items.len() {
+            if is_radiant_of(items[i].0, items[j].0) {
+                assert!(found < out.len(), "GAME_ITEM_NAMES has more radiants than GAME_RADIANTS");
+                out[found] = (items[i].0, items[i].1, items[j].1);
+                found += 1;
+            }
+            j += 1;
+        }
+        i += 1;
+    }
+    assert!(found == out.len(), "GAME_ITEM_NAMES has fewer radiants than GAME_RADIANTS");
+    out
+}

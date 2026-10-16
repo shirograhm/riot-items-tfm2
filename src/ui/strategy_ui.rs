@@ -124,8 +124,8 @@
 //! removed row 2, then the new row 2 (which had been row 3), and so on to the
 //! end of the list.
 //!
-//! Everything therefore registers through [`register_once`], which keeps a set
-//! of the paths already registered.
+//! Everything therefore registers through `REGISTERED` ([`super::Registered`]),
+//! which keeps a set of the paths already registered.
 //!
 //! That set must *not* outlive the screen, which is what this originally got
 //! wrong. The assumption was that a handler surviving its node meant the ones
@@ -133,7 +133,7 @@
 //! was kept for the whole process. In practice the editor worked on the first
 //! strategy screen of a session and was completely inert on every screen after
 //! it: nothing re-registered, because the set said everything already had a
-//! handler. [`forget_registrations`] therefore clears it when the screen goes
+//! handler. `REGISTERED.forget()` therefore clears it when the screen goes
 //! away, and only then — while a screen is up, registering a live path twice is
 //! still the double-fire hazard described above.
 
@@ -816,47 +816,22 @@ pub(crate) fn note_final_item(key: &str) {
 //
 // Registering once per path is what both facts ask for, and it also bounds
 // the closures registered, which would otherwise pile up leaked.
-static REGISTERED: Mutex<std::collections::BTreeSet<String>> =
-    Mutex::new(std::collections::BTreeSet::new());
-
-// Registers [`handle_event`] for `path`, unless it already has one.
-fn register_once(ctx: &mut StableClient<'_>, path: &str) {
-    let fresh = REGISTERED
-        .lock()
-        .map(|mut set| set.insert(path.to_string()))
-        .unwrap_or(false);
-    if !fresh {
-        return;
-    }
-    if !ctx.ui_register_path_events(path, handle_event) {
-        // Forget it again so a later attempt can retry rather than silently
-        // leaving a dead control behind.
-        if let Ok(mut set) = REGISTERED.lock() {
-            set.remove(path);
-        }
-    }
-}
-
-// Forgets every registration, so the next screen registers from scratch.
 //
-// Called once when the strategy screen goes away. Every path this module
-// registers lives under `main.contents` — the tabs inside the screen itself,
-// and the spawned editor beside them — so all of them die with it, and a
-// process-lifetime set of "already registered" would keep the second visit's
-// controls from ever being wired. That is the shape of the bug this fixes: the
-// editor worked on the first strategy screen of a session and was inert on
-// every one after, because `register_once` had nothing left to do and the
-// handlers it was trusting had gone with the nodes.
+// `REGISTERED.forget()` forgets every registration, so the next screen
+// registers from scratch. It is called once when the strategy screen goes
+// away. Every path this module registers lives under `main.contents` — the
+// tabs inside the screen itself, and the spawned editor beside them — so all
+// of them die with it, and a process-lifetime set of "already registered"
+// would keep the second visit's controls from ever being wired. That is the
+// shape of the bug this fixes: the editor worked on the first strategy screen
+// of a session and was inert on every one after, because registering had
+// nothing left to do and the handlers it was trusting had gone with the nodes.
 //
 // This is the one thing the process-wide set must not outlive. Registering the
 // same *live* path twice is still the hazard the set exists to prevent (one
 // click running a handler twice, which is how deleting row 2 once deleted rows
 // 2 and 3), so this clears only on teardown, never while a screen is up.
-fn forget_registrations() {
-    if let Ok(mut set) = REGISTERED.lock() {
-        set.clear();
-    }
-}
+static REGISTERED: super::Registered = super::Registered::new(handle_event);
 
 fn is_mod_item(key: &str) -> bool {
     MOD_FINALS
@@ -2455,15 +2430,15 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
             break;
         }
         spawned.push(row);
-        register_once(ctx, &champ_path(row));
-        register_once(ctx, &role_path(row));
-        register_once(ctx, &delete_path(row));
+        REGISTERED.register(ctx, &champ_path(row));
+        REGISTERED.register(ctx, &role_path(row));
+        REGISTERED.register(ctx, &delete_path(row));
         for slot in 0..picker_slots() {
-            register_once(ctx, &combo_path(row, slot));
-            register_once(ctx, &clear_path(row, slot));
+            REGISTERED.register(ctx, &combo_path(row, slot));
+            REGISTERED.register(ctx, &clear_path(row, slot));
         }
         for slot in 0..picker_slots().saturating_sub(1) {
-            register_once(ctx, &format!("{}.swap{slot}", editor_row_path(row)));
+            REGISTERED.register(ctx, &format!("{}.swap{slot}", editor_row_path(row)));
         }
     }
     let count = spawned.len();
@@ -3009,7 +2984,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
             break;
         }
         if !matches!(entry, ListEntry::Header(_)) {
-            register_once(ctx, &entry_path(index));
+            REGISTERED.register(ctx, &entry_path(index));
         }
     }
     let content_height: i32 = entries.iter().map(entry_height).sum();
@@ -3020,7 +2995,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         if !ctx.ui_spawn_source(&champ_contents, &champ_entry_source(index, choice)) {
             break;
         }
-        register_once(ctx, &champ_entry_path(index));
+        REGISTERED.register(ctx, &champ_entry_path(index));
     }
     ctx.ui_set_properties(
         &champ_contents,
@@ -3034,7 +3009,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         if !ctx.ui_spawn_source(&role_contents, &role_entry_source(index, *role)) {
             break;
         }
-        register_once(ctx, &role_entry_path(index));
+        REGISTERED.register(ctx, &role_entry_path(index));
     }
     ctx.ui_set_properties(
         &role_contents,
@@ -3069,7 +3044,7 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         side_blue_path(),
         side_red_path(),
     ] {
-        register_once(ctx, path);
+        REGISTERED.register(ctx, path);
     }
     // Authored hidden, so this is what puts them up: the lineup was worked out
     // before the subtree it is shown in existed.
@@ -4028,7 +4003,7 @@ impl StableExtension for StrategyPicker {
             if stale {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
-                forget_registrations();
+                REGISTERED.forget();
                 // The lineup that screen was for has gone into its match, where
                 // the Check Tactics panel picks the player's builds out by it.
                 // The next strategy screen gets the draft before it, or no
@@ -4057,7 +4032,7 @@ impl StableExtension for StrategyPicker {
             // observation only — game code's own handling for that path is
             // untouched.
             for path in [BUILDS_TAB, TEAM_TAB] {
-                register_once(ctx, path);
+                REGISTERED.register(ctx, path);
             }
             let _ = with_state(|state| state.wired = true);
         }

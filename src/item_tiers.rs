@@ -56,7 +56,8 @@
 //!
 //! Every radiant this mod registers is `radiant_<key>` over a legendary
 //! registered as `<key>` (checked across `lib.rs`, 98 of 98), so the prefix is
-//! the map. The game's own six radiants keep the game's keys and are listed.
+//! the map. The game's own six radiants keep the game's keys and are listed
+//! (`item_catalog::GAME_RADIANTS`).
 //! An item with no other form (boots, which top out at their third tier, or a
 //! component) is not mapped, and neither is another mod's unless it follows
 //! the same prefix: callers check that the other form exists before they use
@@ -65,6 +66,8 @@
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU8, Ordering};
 
 use mod_api_stable::StableClient;
+
+use crate::item_catalog::GAME_RADIANTS;
 
 const RADIANT_PREFIX: &str = "radiant_";
 
@@ -152,19 +155,6 @@ fn log(key: &str, text: impl FnOnce() -> String) {
 static FRAME: AtomicU32 = AtomicU32::new(0);
 static ABSENT: AtomicU32 = AtomicU32::new(0);
 
-// The game's own radiants and the legendary under each: the top two tiers of
-// its attack, attack speed, armor, magic resistance, magic power and health
-// lines (Bloodthirster, Phantom Dancer, Thornmail, Dragon's Claw, Luden's
-// Tempest and Sunfire Cape, as the mod draws them).
-const GAME_TIERS: [(&str, &str); 6] = [
-    ("warlords_final_judgement", "conquerors_greatsword"),
-    ("storm_sovereign", "thunderclaw"),
-    ("impregnable_fortress", "eternal_iron_plate"),
-    ("veil_of_annihilation", "souls_edge"),
-    ("prophet_of_the_abyss", "angels_fang"),
-    ("giants_horn_shard", "hourglass_of_eternity"),
-];
-
 // The side the save now loaded is on.
 pub(crate) fn rule() -> Rule {
     Rule::from_code(RULE.load(Ordering::Relaxed))
@@ -251,18 +241,21 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
 }
 
 // Whether `key` is one of the game's own radiants or the legendary under
-// one: an item whose other form is known for certain, not guessed from a
-// prefix, so a caller need not check that it exists.
+// one ([`GAME_RADIANTS`]: Bloodthirster, Phantom Dancer, Thornmail, Dragon's
+// Claw, Luden's Tempest and Sunfire Cape, as the mod draws them): an item
+// whose other form is known for certain, not guessed from a prefix, so a
+// caller need not check that it exists.
 pub(crate) fn is_game_tier(key: &str) -> bool {
-    GAME_TIERS
+    GAME_RADIANTS
         .iter()
-        .any(|(radiant, legendary)| *radiant == key || *legendary == key)
+        .any(|&(_, radiant, legendary)| radiant == key || legendary == key)
 }
 
 // The legendary under the radiant `key`, by key. `None` for anything that is
 // not a radiant. The key it gives may not exist: see the module notes.
 pub(crate) fn legendary_of(key: &str) -> Option<String> {
-    if let Some(&(_, legendary)) = GAME_TIERS.iter().find(|(radiant, _)| *radiant == key) {
+    let game = GAME_RADIANTS.iter().find(|&&(_, radiant, _)| radiant == key);
+    if let Some(&(_, _, legendary)) = game {
         return Some(legendary.to_string());
     }
     key.strip_prefix(RADIANT_PREFIX).map(str::to_string)
@@ -272,10 +265,12 @@ pub(crate) fn legendary_of(key: &str) -> Option<String> {
 // anything else it is a guess at a key that may not exist: see the module
 // notes.
 pub(crate) fn radiant_of(key: &str) -> Option<String> {
-    if let Some(&(radiant, _)) = GAME_TIERS.iter().find(|(_, legendary)| *legendary == key) {
+    let game = GAME_RADIANTS.iter().find(|&&(_, _, legendary)| legendary == key);
+    if let Some(&(_, radiant, _)) = game {
         return Some(radiant.to_string());
     }
-    if key.starts_with(RADIANT_PREFIX) || GAME_TIERS.iter().any(|(radiant, _)| *radiant == key) {
+    let a_radiant = GAME_RADIANTS.iter().any(|&(_, radiant, _)| radiant == key);
+    if key.starts_with(RADIANT_PREFIX) || a_radiant {
         return None;
     }
     Some(format!("{RADIANT_PREFIX}{key}"))

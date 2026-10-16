@@ -227,8 +227,7 @@ fn locked_now(ctx: &StableClient<'_>) -> bool {
 // Registers the click handler on one cell of a row just spawned.
 //
 // Every time the row is spawned or the dialog opens, not once a path as the
-// Builds tab does it
-// (`strategy_ui::register_once`). There a handler was seen to outlive its
+// Builds tab does it (`super::Registered`). There a handler was seen to outlive its
 // node and fire for whatever stood at the path next. Here it did not: the
 // first version registered once, and after the pause menu had been closed
 // and opened again a click on a cell never arrived (the test log,
