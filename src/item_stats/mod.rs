@@ -1,74 +1,12 @@
-//! Per-item win/loss totals over the matches [`crate::item_stats::sim`] captured.
+//! Per-item win/loss totals over the loadouts [`sim`] captured. A match record
+//! supplies only its patch (`version`) and the `seed` that joins it to a
+//! capture; other leagues' captures are placed by the server
+//! ([`place_captures`]).
 //!
-//! # Where the numbers come from
-//!
-//! The loadouts come from the simulation, not from the match record. The
-//! record's per-player `items` is the build the game *assigned*, not what the
-//! champion finished holding — proven by its shape: every player carried exactly
-//! 3 or 4 items, never fewer, and never a component. `StablePlayer::item_keys`
-//! on the last tick is the real end state, and it hands back real item keys
-//! rather than numbers indexing a table the API does not expose.
-//!
-//! So a match is counted once, when a record vouches for it, and the record
-//! answers only what the simulation cannot: which patch it was played on, and
-//! whether it was a league match at all.
-//!
-//! # What the record is used for
-//!
-//! Only two fields: `version`, which is the patch the match was played on and
-//! what the patch filter groups by, and `seed`, which joins it to the loadout
-//! [`crate::item_stats::sim`] captured from the simulation.
-//!
-//! Its per-player `items` is deliberately **not** read. That field holds the
-//! build the game *assigned*, not what was finished with, and it is stored as
-//! bare numbers indexing a table the API does not expose — which previously
-//! meant inferring the whole id space from the order items are declared and
-//! registered in. Taking the loadout from the sim instead makes both problems
-//! disappear at once: real keys, and the real end state.
-//!
-//! # The other leagues
-//!
-//! The seed only joins the player's own league: the records of a set played in
-//! another one do not seem to carry the simulation's seed (see
-//! [`crate::item_stats::sim`]). Those captures are placed by the server, which
-//! reads the set's replay record off its match ([`place_captures`]) and takes
-//! the same one field from it, `version`. Either way a capture is counted once,
-//! and only when a replay record stands behind it.
-//!
-//! # Why the totals are kept, and not the matches
-//!
-//! These counters **are** the stored history: a match is folded in once and its
-//! loadouts are dropped. The alternative, keeping every match and re-folding them
-//! whenever one was added, cost two passes over the whole save — the fold itself
-//! and the write that followed it — and both got slower the longer the save was
-//! played, which is exactly backwards for a feature that only becomes useful once
-//! a lot has been played. What is stored is now proportional to the number of
-//! items, patches and lanes, all of which are fixed.
-//!
-//! # Where they are stored
-//!
-//! In the save file, under this mod's own namespace — see [`sync`]. Data kept
-//! inside the save is tied to it by construction: the mod never has to work
-//! out *which save is this*, and a save loaded from an earlier point shows the
-//! numbers it had then instead of a future it was rolled back from.
-//!
-//! Two things follow, both worth knowing. The table reaches disk only when the
-//! player saves, so quitting without saving drops the session's matches along
-//! with everything else that session. And the namespace answers empty on some
-//! frames while it is already writable, which is why nothing folds or writes
-//! before a load has been confirmed — see [`LOAD_GRACE`].
-//!
-//! The trade is that nothing can be recomputed. A column added later starts
-//! empty and fills from new matches, where a stored history could have answered
-//! it at once — that is how the first-item rate was added retroactively. Worth
-//! knowing before adding the next column.
-//!
-//! Records still cannot be trusted to persist or to keep their ids: the count was
-//! seen going 126 -> 28 -> 77 inside one session, so the game prunes and recycles
-//! them freely. Re-reading every record on every pass stays safe because a record
-//! contributes no numbers, only a patch, and a match can be counted only once —
-//! [`crate::item_stats::sim::take`] hands each one over exactly once and remembers
-//! that it did.
+//! Only the running totals are kept, in the save under this mod's namespace
+//! (see [`sync`]): a match is folded in once and dropped, so nothing can be
+//! recomputed and a new column fills only from new matches. Record ids are
+//! pruned and reused, which is harmless because records contribute no numbers.
 
 pub(crate) mod sim;
 pub(crate) mod toolbox_tab;
@@ -83,27 +21,17 @@ use std::time::{Duration, Instant};
 use mod_api_stable::*;
 use serde_json::Value;
 
-// Records read per [`pump`] call.
-//
-// Two fields are wanted from each, but the whole record still crosses the ABI
-// and is parsed — ten players' match statistics included — and this runs on the
-// UI thread. Measured at roughly half a millisecond a record, so a batch of
-// 24 is a 12-14 ms frame. Most passes read only the records that are new
-// since the last one (see [`Aggregate::read`]); this bounds the ones
-// that re-read everything.
+// Records read per [`pump`] call: each costs about half a millisecond on the UI
+// thread, and most passes read only new records anyway.
 const CHUNK: usize = 8;
 
 #[derive(Clone, Copy, Default)]
 pub(crate) struct Totals {
     pub games: u32,
     pub wins: u32,
-    // Games where this item was the one in the player's **first** item slot.
-    //
-    // "First" is slot order: `StablePlayer::item_keys` enumerates the player's
-    // items by index, and a champion's items are appended as they are
-    // completed, so slot 0 is the item they finished first. That is the closest
-    // thing to a purchase order the simulation exposes — there is no timestamp
-    // on an item — and it is the same order the assigned build is written in.
+    // Games where this item was in the player's first slot. Items are appended
+    // as they are completed, so slot 0 is the one finished first, the only
+    // purchase order the simulation exposes.
     pub firsts: u32,
 }
 
@@ -112,27 +40,19 @@ impl Totals {
         self.games.saturating_sub(self.wins)
     }
 
-    // Win rate in percent, or `None` for an item with no games — which is not
-    // the same as 0% and must not print as it.
+    // Win rate in percent; `None` for no games, which must not print as 0%.
     pub fn win_rate(&self) -> Option<f64> {
         (self.games > 0).then(|| self.wins as f64 * 100.0 / self.games as f64)
     }
 
-    // Share of this item's buys where it was bought first, in percent.
-    //
-    // Same `None`-for-no-games rule as [`Totals::win_rate`], and for the same
-    // reason: an item nobody has bought has no first-item rate, and printing
-    // 0.0% for it would claim it is never rushed.
+    // Share of this item's buys where it was bought first, in percent; `None`
+    // for no games, as for [`Totals::win_rate`].
     pub fn first_rate(&self) -> Option<f64> {
         (self.games > 0).then(|| self.firsts as f64 * 100.0 / self.games as f64)
     }
 
-    // Times this item was built per match, in percent: `games` counts one per
-    // player who finished with it, so 200% means two players a match on
-    // average. `None` when no match has been counted, which is no rate at all
-    // rather than 0%.
-    //
-    // `matches` is every match in the patch filter, whatever the lane filter —
+    // Times built per match, in percent (`games` counts players, so 200% is two
+    // a match); `None` with no matches. `matches` ignores the lane filter, so
     // with a lane picked this reads "built in that lane, per match".
     pub fn play_rate(&self, matches: u32) -> Option<f64> {
         (matches > 0).then(|| self.games as f64 * 100.0 / matches as f64)
@@ -143,38 +63,20 @@ impl Totals {
 struct Aggregate {
     // Record ids still to read for their patch, newest first.
     pending: Vec<usize>,
-    // What each record read so far said: its patch and seed, or `None` for one
-    // that cannot be placed.
-    //
-    // A pass reads only the ids missing from here and matches the rest from
-    // memory. Re-reading every record on every pass was the cost that remained
-    // once passes stopped running every frame: most captures never get a
-    // record, so while any waits, each finished match set off a pass through
-    // the whole list. An id that leaves the list is forgotten, since it may
-    // come back holding a different match. One that is pruned and re-used
-    // between two looks at the list would read stale, which is what the
-    // periodic verify pass is for (see [`due_pass`]).
+    // Each read record's patch and seed (`None` if it cannot be placed), so a
+    // pass reads only new ids. An id that leaves the list is forgotten, since
+    // it may come back as another match; the periodic verify pass catches ids
+    // reused in between (see [`due_pass`]).
     read: HashMap<usize, Option<(String, u64)>>,
     // The queued pass has not yet matched captures against [`Self::read`].
     rematch: bool,
-    // Whether the save's counters have been read into this table yet.
-    //
-    // Nothing may be written back before this is true. A read can come back
-    // empty on a frame where `save_can_write` already answers true, and folding
-    // into an empty table and then saving it would overwrite the save's real
-    // history — see [`sync`].
+    // Whether the save's counters have been read in. Nothing may be written
+    // before then: a read can come back empty while `save_can_write` is already
+    // true, and saving that would wipe the history.
     loaded: bool,
-    // Patch -> (lane, item) -> totals.
-    //
-    // Keyed by patch first so the filter is a map lookup rather than a re-scan:
-    // picking one reads its submap, and "All" merges them. The record's
-    // `version` is what a patch is here — it sits beside `seed` in the replay
-    // data, which is what a replay would need to reproduce the balance a match
-    // was played under.
-    //
-    // The lane rides in the inner key rather than adding a third level of map,
-    // so both filters are one pass over the same entries and "All" on either
-    // axis is the same merge with one term dropped.
+    // Patch -> (lane, item) -> totals. Keyed by patch first so the patch filter
+    // is a lookup and "All" a merge; the lane rides in the inner key so both
+    // filters are one pass.
     counts: BTreeMap<String, BTreeMap<(Option<usize>, String), Totals>>,
     // Patch -> (lane, item) -> champion -> times that champion was holding it.
     // Feeds the "purchased on" column, which is the top few of these by count.
@@ -202,25 +104,13 @@ pub(crate) struct Snapshot {
     pub champions: BTreeMap<String, Vec<String>>,
 }
 
-// How many champions the "purchased on" column shows.
-//
-// Three, because that is what the vanilla "Most Used Champ" column shows and
-// the cell it borrows its shape from is 132px wide — three 40px slots and two
-// 4px gaps, with nothing left over.
+// How many champions the "purchased on" column shows: as many as the vanilla
+// "Most Used Champ" column, whose 132px cell they fill exactly.
 pub(crate) const TOP_CHAMPIONS: usize = 3;
 
-// Queues a patch-backfill pass over the match records.
-//
-// Record ids are **reused**: the count was observed going 126 -> 28 -> 77
-// inside one session, so the game prunes and recycles them, and "id 12 is
-// already scanned" is not a fact that stays true. That is why an id that
-// leaves the list is forgotten here, and why [`due_pass`] still re-reads
-// everything now and then.
-//
-// Re-reading is harmless because a record is read for two fields and nothing
-// is folded from it — the totals come from the captures, which are
-// deduplicated by match seed and cannot be double counted however often a
-// record is re-read.
+// Queues a pass over the match records to backfill patches. Record ids are
+// pruned and reused, so ids that leave the list are forgotten; re-reading is
+// harmless since captures are deduplicated by seed.
 pub(crate) fn sweep(ctx: &StableClient<'_>) {
     let ids = crate::perf::time(crate::perf::Section::RecordIds, || {
         ctx.record_ids(RecordKindV1::MatchReplay)
@@ -254,13 +144,9 @@ fn queue_pass(ids: &[usize], verify: bool) {
 // Frames between looks at the record list while captures are waiting.
 const SWEEP_CHECK_FRAMES: u32 = 30;
 
-// Frames between passes that re-read every record. A new record can take an id
-// a pruned one left behind between two looks at the list, and then the one
-// [`Aggregate::read`] remembers for it is stale. This catches that, rarely
-// enough that the reads it costs do not matter.
-//
-// A verify pass reads every record, and a long save holds thousands (~2000
-// measured, ~0.3 ms each), so it runs every five minutes or so of frames.
+// Frames between passes that re-read every record, to catch an id reused
+// between two looks at the list. A long save holds thousands of records, so
+// this runs about every five minutes.
 const SWEEP_VERIFY_FRAMES: u32 = 18_000;
 
 // What the records looked like when the last pass was queued.
@@ -268,7 +154,6 @@ const SWEEP_VERIFY_FRAMES: u32 = 18_000;
 struct SweepMark {
     // [`crate::item_stats::sim::captures`] at the time.
     captures: u64,
-    // The record ids at the time.
     ids: Vec<usize>,
     // Frames since the id list was last looked at.
     since_check: u32,
@@ -278,23 +163,11 @@ struct SweepMark {
 
 static SWEEP_MARK: Mutex<Option<SweepMark>> = Mutex::new(None);
 
-// The record ids to pass over when a pass could find something the last one
-// did not, or `None` when it could not.
-//
-// # Why passes are not queued every frame
-//
-// A capture waits until its record is written, which happens when its game
-// day is committed and can be many minutes later, and some never get one at
-// all. Queuing a pass on every frame a capture is waiting would, from the
-// first capture on, read the newest [`CHUNK`] records in full every frame:
-// ~10 ms a frame on the main thread, which halves the frame rate for the rest
-// of the session.
-//
-// A pass can only find something new if a capture has arrived since the last
-// one, or the record list has changed. The first is an atomic read; the second
-// is one `record_ids` call every [`SWEEP_CHECK_FRAMES`].
-//
-// Returns the ids and whether the pass is a verify pass.
+// The record ids to pass over, and whether it is a verify pass, when a pass
+// could find something new; `None` otherwise. A pass every frame while a
+// capture waits for its record would read records in full each frame (~10 ms),
+// so it needs a new capture or a changed id list (checked every
+// [`SWEEP_CHECK_FRAMES`]).
 fn due_pass(ctx: &StableClient<'_>) -> Option<(Vec<usize>, bool)> {
     let captures = crate::item_stats::sim::captures();
     let mut guard = SWEEP_MARK.lock().ok()?;
@@ -321,30 +194,23 @@ fn due_pass(ctx: &StableClient<'_>) -> Option<(Vec<usize>, bool)> {
     Some((ids, verify))
 }
 
-// Reads a bounded batch of records to backfill patches, then re-folds the
-// totals if the captures have changed.
-//
-// Records no longer contribute any numbers. They answer one question — which
-// patch was this match played on — and the answer is written onto the capture
-// so it survives the record being pruned.
+// Reads a bounded batch of records for their patches and folds any captures
+// they vouch for. Returns whether anything was folded, or the pass just
+// finished.
 pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
-    // Nothing folds into a table that has not been read back from the save yet.
-    // The fold would be overwritten by the load that follows it, and the capture
-    // it consumed is dropped as it is handed over — so the match would be lost
-    // rather than merely delayed. `sync` loads first for the same reason; this
-    // guard is for the statistics screen, which pumps on its own.
+    // Never fold before the save's table is loaded: the load would overwrite
+    // the fold, and the capture would be lost.
     if !with_agg(|agg| agg.loaded).unwrap_or(false) {
         return false;
     }
-    // First the captures the server has found the patch of
-    // ([`place_captures`]): there is no record to read for those.
+    // First the captures the server placed ([`place_captures`]), which need no
+    // record.
     let mut folded = false;
     for (patch, players) in crate::item_stats::sim::take_placed() {
         fold(&patch, &players);
         folded = true;
     }
-    // Every capture has been matched: the rest of the pass would read records
-    // for nothing.
+    // Every capture is matched, so there is nothing to read records for.
     if crate::item_stats::sim::pending() == 0 {
         let _ = with_agg(|agg| {
             agg.pending.clear();
@@ -356,8 +222,8 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         return folded;
     }
 
-    // Then the records already read, which need no reading to be matched: a
-    // capture often arrives after its record was read for an earlier pass.
+    // Then records already read: a capture often arrives after its record was
+    // read.
     let known: Vec<(String, u64)> = with_agg(|agg| {
         if std::mem::take(&mut agg.rematch) {
             agg.read.values().flatten().cloned().collect()
@@ -385,10 +251,8 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
         let Some((patch, seed)) = entry else {
             continue;
         };
-        // A seed with no capture waiting is either a match simmed before
-        // capturing began — the loadout it would need does not exist, and the
-        // record carries no usable substitute — or one already counted, which
-        // `take` declines a second time. Both are nothing to do.
+        // No capture waiting: simmed before capturing began, or already
+        // counted.
         let Some(players) = crate::item_stats::sim::take(seed) else {
             continue;
         };
@@ -406,11 +270,7 @@ pub(crate) fn pump(ctx: &StableClient<'_>) -> bool {
     !batch.is_empty() && finished
 }
 
-// Folds one vouched match into the running totals.
-//
-// Called once per match, ever. The counters it adds to are the stored history,
-// so nothing is recomputed and nothing is walked twice — which is the whole
-// point of keeping numbers rather than matches.
+// Folds one vouched match into the running totals; called once per match, ever.
 fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
     FOLDS.fetch_add(1, Ordering::Relaxed);
     let _ = with_agg(|agg| {
@@ -422,22 +282,16 @@ fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
                 let entry = per_item.entry((player.lane, key.clone())).or_default();
                 entry.games += 1;
                 entry.wins += u32::from(player.won);
-                // Slot order is completion order, so the first slot is the item
-                // this player rushed. There is no timestamp on an item; this is
-                // the only purchase order the simulation exposes.
+                // Slot 0 is the item finished first (see [`Totals::firsts`]).
                 entry.firsts += u32::from(slot == 0);
             }
         }
 
         let per_champion = agg.champions.entry(patch.to_string()).or_default();
         for player in players {
-            // A player whose champion could not be read still counts toward the
-            // item's games and wins — the loadout is real — but it must not be
-            // tallied as a champion: under the empty key `top_champions` would
-            // rank it like any other name, and on an item bought mostly by
-            // champions that were dead at the final tick the blank would
-            // outrank every real name and take a column slot that then draws
-            // nothing.
+            // A nameless player still counts toward games and wins, but not as
+            // a champion, or the blank would outrank real names in the
+            // "purchased on" column.
             if player.champion.is_empty() {
                 continue;
             }
@@ -455,24 +309,22 @@ fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
 // Matches folded since the game started.
 static FOLDS: AtomicU64 = AtomicU64::new(0);
 
-// How many matches have been folded since the game started. The statistics
-// screen repaints when this moves: most folds happen in [`sync`], not in the
-// screen's own [`pump`].
+// Matches folded so far; the statistics screen repaints when this moves, since
+// most folds happen in [`sync`].
 pub(crate) fn folds() -> u64 {
     FOLDS.load(Ordering::Relaxed)
 }
 
-// Sets the server looks up in one pass. With [`PLACE_EVERY`] that is 32 a
-// second, so a game day of every league's sets is placed within a few
-// seconds of being recorded, at two small reads a set.
+// Sets the server looks up per pass: 32 a second with [`PLACE_EVERY`], at two
+// small reads each.
 const PLACE_BATCH: usize = 8;
 
-// The least time between two passes. By the clock, since how often the
-// server ticks is not something this can count on.
+// Least time between passes, by the clock, since the server's tick rate cannot
+// be counted on.
 const PLACE_EVERY: Duration = Duration::from_millis(250);
 
-// Lines the test log gets for each way a look-up can end. A set whose record
-// never comes is asked about again on every round.
+// Test-log lines per look-up outcome; a set whose record never comes is asked
+// about every round.
 const PLACINGS_TO_LOG: u32 = 8;
 
 // What the server's records said about one captured set.
@@ -485,12 +337,9 @@ struct Placing {
     patch: Option<String>,
 }
 
-// Looks one captured set up in the server's records.
-//
-// `RecordKindV1::Match` is the whole match table on the server, and a match
-// record's `replays` holds the replay id of each of its sets (both from the
-// stable API's own notes). A set that has not been recorded yet is simply
-// not in the list, and is asked about again on a later pass.
+// Looks a captured set up in the server's records: its replay record via the
+// match record's `replays` list, unless the simulation already named it. An
+// unrecorded set is asked about again later.
 fn look_up(ctx: &StableServerCtx<'_>, fixture: &sim::Fixture) -> Placing {
     let version = |replay: u64| {
         ctx.record_get_string(RecordKindV1::MatchReplay, replay as usize, "version")
@@ -526,16 +375,10 @@ fn look_up(ctx: &StableServerCtx<'_>, fixture: &sim::Fixture) -> Placing {
     }
 }
 
-// Finds the patch of the captures no record's seed asks for, which is what
-// the sets played outside the player's own league have been, so that
-// [`pump`] can fold them.
-//
-// Called from the server's management tick, because the server is where
-// `RecordKindV1::Match` is the whole match table: the client is given views
-// of it by category. A few sets a pass, four passes a second at most, and on
-// the other ticks nothing but a lock and a clock read. No capture is given up
-// on, for the reason none is expired by age: a set's record is written when
-// its game day is committed, however long that takes.
+// Finds the patch of captures no record's seed asks for (other leagues' sets)
+// so [`pump`] can fold them. Runs on the server, where `RecordKindV1::Match` is
+// the whole table, a few sets up to four times a second; none is given up on,
+// since records arrive when a game day is committed.
 pub(crate) fn place_captures(ctx: &StableServerCtx<'_>) {
     static LAST_PASS: Mutex<Option<Instant>> = Mutex::new(None);
     static LOGGED: [AtomicU32; 4] = [
@@ -576,11 +419,8 @@ pub(crate) fn place_captures(ctx: &StableServerCtx<'_>) {
     }
 }
 
-// The patches seen in the records, newest first.
-//
-// Populated from the records themselves rather than from the game's own patch
-// list, which the stable API does not expose. That also makes it exactly the
-// right set: a patch nothing was played on has nothing to filter to.
+// Patches seen in the records, newest first: exactly the patches there is
+// something to filter to.
 pub(crate) fn patches() -> Vec<String> {
     with_agg(|agg| {
         let mut out: Vec<String> = agg.counts.keys().cloned().collect();
@@ -590,25 +430,17 @@ pub(crate) fn patches() -> Vec<String> {
     .unwrap_or_default()
 }
 
-// The current table, in key order, for one patch and lane or for all of them.
-//
-// Deliberately *not* sorted for display: the column the player picked can be
-// the item's name, which lives in the catalog, so ordering is the UI's job.
-// Key order makes it a stable starting point, which is what keeps equal rows
-// from reshuffling between repaints mid-scan.
+// The table for one patch and lane, or all, in key order: sorting is the UI's
+// job, and key order keeps equal rows from reshuffling between repaints.
 pub(crate) fn snapshot(patch: Option<&str>, lane: Option<usize>) -> Snapshot {
     with_agg(|agg| {
-        // One patch reads its own submap; "All" merges them. Merging here rather
-        // than keeping a second running total means there is one set of numbers
-        // to be wrong, and it costs a walk of at most items x patches.
+        // One patch reads its own submap; "All" merges them, so there is one
+        // set of numbers to be wrong.
         let mut counts: BTreeMap<String, Totals> = BTreeMap::new();
         let mut champions: BTreeMap<String, BTreeMap<String, u32>> = BTreeMap::new();
         let mut matches = 0;
 
-        // A lane filter keeps only the entries recorded under it. A player the
-        // host would not give a lane for is `None`, which no lane selection
-        // matches — the same rule the category filter follows for an item with
-        // no role, and the reason such a player still shows up under "All".
+        // A player with no lane matches no lane filter, only "All".
         let wanted_lane = |recorded: Option<usize>| lane.is_none_or(|want| recorded == Some(want));
 
         for (key, per_item) in &agg.counts {
@@ -660,10 +492,8 @@ pub(crate) fn snapshot(patch: Option<&str>, lane: Option<usize>) -> Snapshot {
     })
 }
 
-// The most frequent champions per item, best first.
-//
-// Ties break on the champion key so the three shown do not swap places between
-// repaints while the scan is still folding records.
+// The most frequent champions per item, best first; ties break on key so they
+// do not swap places between repaints.
 fn top_champions(tally: &BTreeMap<String, BTreeMap<String, u32>>) -> BTreeMap<String, Vec<String>> {
     tally
         .iter()
@@ -687,25 +517,18 @@ fn rows(counts: &BTreeMap<String, Totals>) -> Vec<(String, Totals)> {
         .collect()
 }
 
-// One match as `(item keys, did that side win)`, one entry per side.
-//
-// Two fields are wanted — the patch and the join key — but the whole record is
-// fetched in one call where the host allows it, because one round trip beats
-// two and the parse is the same either way.
+// One record's patch and seed, or `None` when it cannot be placed. The whole
+// record is fetched in one call where the host allows it.
 fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
-    // Measured: a named read ("seed") costs about half a full read,
-    // so the two named reads this needs would cost what one full read does.
-    // The full read stays first.
+    // A named read costs about half a full read, so the full read stays first.
     let full = crate::perf::time(crate::perf::Section::RecordRead, || {
         ctx.record_get_json(RecordKindV1::MatchReplay, id, "")
             .and_then(|json| serde_json::from_str::<Value>(&json).ok())
     });
     let record = match full {
         Some(record) => record,
-        // Older hosts, or a path grammar that does not accept the empty path for
-        // this record kind. Named reads say the same thing, and are reassembled
-        // into the same shape so that everything below has one case to handle
-        // rather than two.
+        // Fallback for hosts that refuse the empty path: named reads, rebuilt
+        // into the same shape.
         None => {
             let field = |name: &str| {
                 ctx.record_get_json(RecordKindV1::MatchReplay, id, name)
@@ -717,18 +540,15 @@ fn read_record(ctx: &StableClient<'_>, id: usize) -> Option<(String, u64)> {
             })
         }
     };
-    // A league match always names its version, so one that does not is not a
-    // record this table can place — skipped rather than filed under a catch-all
-    // bucket that would only ever collect things that should not be there.
+    // A league match always names its version; one that does not cannot be
+    // placed.
     let patch = record
         .get("version")
         .and_then(Value::as_str)
         .filter(|version| !version.is_empty())?
         .to_string();
 
-    // The seed joins this record to the loadout the simulation captured for the
-    // same match. `serde_json` keeps integers as `u64`, so a match seed survives
-    // the round trip that an `f64` would round off.
+    // `as_u64` keeps the seed exact, where an `f64` would round it.
     let seed = record.get("seed").and_then(Value::as_u64)?;
     Some((patch, seed))
 }
@@ -741,49 +561,27 @@ pub(crate) struct ItemInfo {
     pub name: String,
     // `rect_tag` into the item sheet, or `None` for an item with no art.
     pub frame: Option<String>,
-    // 0..=4, which the tier filter reads as starter/basic/epic/legendary/
-    // radiant. `None` for an item neither the settings document nor this mod
-    // describes.
+    // 0..=4 for starter/basic/epic/legendary/radiant; `None` if nothing
+    // describes the item.
     pub tier: Option<usize>,
 }
 
 static CATALOG: Mutex<Option<BTreeMap<String, ItemInfo>>> = Mutex::new(None);
 
-// This mod's item keys, in the order `init` registered them — the second half
-// of the id space.
-//
-// Recorded as they are registered rather than read back from anywhere, because
-// there is nowhere to read it from: `ItemSetting` contains only the 30 base
-// items (confirmed — the document parses to exactly 30 entries), so a mod's
-// items are absent from the one document that describes items at all.
+// This mod's item keys and tiers in registration order, since the settings
+// document describes only the 30 base items.
 static REGISTERED: Mutex<Vec<(String, usize)>> = Mutex::new(Vec::new());
 
-// Notes one item key and its tier at registration time. Called from `init` for
-// every item the mod adds.
-//
-// The tier has to come from here because the settings document describes only
-// the game's own items — a mod's are absent from the one place items are
-// described, so `StableItem::tier` at registration is the only source.
+// Notes one item key and tier; called from `init` for every item the mod adds.
 pub(crate) fn note_registered(key: &str, tier: usize) {
     if let Ok(mut keys) = REGISTERED.lock() {
         keys.push((key.to_string(), tier));
     }
 }
 
-// Builds the item table from the settings document, once.
-//
-// Unlike the build editor's list this keeps **every** item, not just finals: a
-// match record holds whatever a player was carrying when it ended, and a board
-// full of half-finished components is a normal way for a game to end. Filtering
-// them out here would silently drop games from the totals.
-//
-// Split from [`catalog`] and called from `post_update` because
-// `setting_get_json` does **not** work inside a UI click handler — the trait
-// notes only ui/asset calls are live there, and the build editor already paid
-// for learning that. Building it lazily from the first repaint would mean the
-// first repaint is the one inside the click that opens the tab, which would
-// cache nothing, draw every row under its raw key, and then have no reason to
-// repaint again once the scan had finished.
+// Builds the item table from the settings document, once, keeping every item
+// (components too, since a match can end on them). Called from `post_update`,
+// because `setting_get_json` does not work inside a UI click handler.
 pub(crate) fn prime_catalog(ctx: &StableClient<'_>) {
     if CATALOG
         .lock()
@@ -800,23 +598,16 @@ pub(crate) fn prime_catalog(ctx: &StableClient<'_>) {
         }
     }
 
-    // An empty result is not cached: it means the document could not be read
-    // this frame, which a later frame may well manage.
+    // An empty result is not cached: the document may be readable on a later
+    // frame.
     if out.is_empty() {
         return;
     }
 
-    // The settings document holds only the base items, so every one of this
-    // mod's has to be described from what the mod itself knows: its name from
-    // the merged item text, its sprite frame from its own key.
-    //
-    // The key *is* the frame — `StableItem::icon` returns it verbatim, and all
-    // 153 registered keys have a byte-identical tag in the sheet. Resolving it
-    // through `item_catalog::icon_frame` instead is wrong here, because that
-    // takes a base slug: it strips `radiant_`, and the sheet stores the plain
-    // and radiant art of an item as two separate tags, with the gold border
-    // being what makes a radiant look radiant. So every one of the mod's 66
-    // radiant items drew its own non-radiant twin.
+    // The mod's items are not in the settings document, so they come from the
+    // mod: names from the item text, and the key itself as the sprite frame.
+    // Not `icon_frame`'s `base_slug`, which strips `radiant_` and would draw
+    // the plain art.
     if let Ok(keys) = REGISTERED.lock() {
         for (key, tier) in keys.iter() {
             out.entry(key.clone()).or_insert_with(|| ItemInfo {
@@ -842,34 +633,21 @@ pub(crate) fn catalog() -> BTreeMap<String, ItemInfo> {
         .unwrap_or_default()
 }
 
-// One of the game's own thirty items, by its key in the settings document
-// (the mod draws it as Radiant Luden's Tempest). A settings document that
-// describes it has the game's items in it, not only the ones mods registered.
+// One of the game's own thirty items (drawn as Radiant Luden's Tempest): a
+// settings document that describes it has the game's items, not only mods'.
 pub(crate) const A_GAME_ITEM: &str = "prophet_of_the_abyss";
 
-// The game's finals that give attack, attack speed or ability power (the
-// mod draws them as Radiant Bloodthirster, Phantom Dancer and Luden's
-// Tempest): what [`prime_item_traits`] reports its readings of in the test
-// log, since the rules were found holding blank records of them.
+// The game's finals that give attack, attack speed or ability power, which
+// [`prime_item_traits`] logs since the rules once read blank records of them.
 const GAME_DAMAGE_FINALS: [&str; 3] = ["warlords_final_judgement", "storm_sovereign", A_GAME_ITEM];
 
 // Frames between two tries of [`prime_item_traits`] while the settings
 // document cannot be read: half a second at 60 frames a second.
 const TRAITS_RETRY_FRAMES: u32 = 30;
 
-// Hands the stats of the game's own items to the Smart Builds rules, once.
-//
-// Called every client frame, on every screen, until it succeeds. The rules
-// learn this mod's items as `init` registers them, but the game's are
-// described only in the settings document, which [`prime_catalog`] reads
-// only on the statistics screen. Without this, a player who had not opened
-// that screen would play with rules that know nothing about the thirty
-// vanilla items: none would give ability power, attack or crit as far as
-// rule 5 and the crit cap could tell.
-//
-// Its own function rather than an earlier [`prime_catalog`]: that one also
-// caches every item's display name, which must not happen on a screen where
-// the item text may not be loaded yet.
+// Hands the game's own item stats from the settings document to the Smart
+// Builds rules, retrying until it settles. Separate from [`prime_catalog`],
+// which also caches display names and must wait for the item text.
 pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     static PRIMED: AtomicBool = AtomicBool::new(false);
     static FRAME: AtomicU32 = AtomicU32::new(0);
@@ -885,8 +663,7 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
         return;
     };
     let mut games = false;
-    // For the test log: every object read under the key of one of the game's
-    // three damage finals, in the order the document has them.
+    // For the test log: what was read under the game's three damage finals.
     let mut read: Vec<String> = Vec::new();
     each_item(
         &root,
@@ -916,9 +693,8 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
                     object.get("price"),
                 ));
             }
-            // Read, and read with what it gives, in the document's own words
-            // and not the merged ones: a pass that found it with no ability
-            // power there has only seen the placeholder (see below).
+            // Settled only by real numbers in the document's own words, not the
+            // merged ones (see below).
             games |= key == A_GAME_ITEM && item_stat(in_document, "magic_power") > 0;
         },
     );
@@ -936,15 +712,9 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
             read.join(" ")
         )
     });
-    // Settled only once the document describes the game's own items with
-    // real numbers, however long that takes. Before that it holds all
-    // thirty keys from the first frame, each with a stat block of zeros and
-    // a price of 0, and an empty `mod_items` array. So the keys being there
-    // says nothing: settling on "the key is in it", on "something was
-    // described" or on a time limit would record blanks. The game's items
-    // do not wait on this (`prime_game_items`). What does is whatever else
-    // the document comes to hold, other mods' items among it, which is why
-    // the pass goes on until it is real.
+    // Settle only once the document has real numbers for the game's items:
+    // until then it holds all thirty with zeroed stats, so key presence or a
+    // time limit would record blanks.
     if games {
         PRIMED.store(true, Ordering::Relaxed);
     }
@@ -975,14 +745,10 @@ const GAME_DLL_FIELDS: [(&str, &str); 5] = [
     ("radiant_sunfire_cape", "effect_minion_bonus_percent"),
 ];
 
-// Writes the config's numbers for the game's own thirty items into `root`,
-// the settings file as read: `config.json` over `config-default.json`.
-// Whether anything changed.
-//
-// A price is the entry's `price`, the passive numbers the engine keeps
-// outside the stat block are [`GAME_PASSIVE_FIELDS`], and any other field is
-// a stat of the item's stat block, where it is one. All whole numbers, a
-// half rounded to the even one.
+// Writes the config's numbers for the game's thirty items (`config.json` over
+// `config-default.json`) into the settings file `root`, and returns whether
+// anything changed. Prices, [`GAME_PASSIVE_FIELDS`] and stat-block stats,
+// rounded half to even.
 fn apply_game_item_config(root: &mut serde_json::Map<String, Value>) -> bool {
     let defaults = crate::patches::base::read_object("config-default.json");
     let overrides = crate::patches::base::read_object("config.json");
@@ -1017,8 +783,7 @@ fn apply_game_item_config(root: &mut serde_json::Map<String, Value>) -> bool {
                         .and_then(|stat| stat.get_mut(field))
                         .map(|slot| (slot, whole))
                 };
-                // A field the item has no place for is left out, as it
-                // always was.
+                // A field the item has no place for is skipped.
                 let Some((slot, wanted)) = slot else {
                     continue;
                 };
@@ -1032,18 +797,11 @@ fn apply_game_item_config(root: &mut serde_json::Map<String, Value>) -> bool {
     changed
 }
 
-// The mod's own copy of the game's thirty items:
-// `setting/item_setting.item_setting` beside the DLL, which `mod.override_info`
-// has the game merge over its own, with the player's config in it
-// ([`apply_game_item_config`]). By the name each item has in the settings
-// document, which is not always its key (`iron_blade` calls itself
-// `ironsword`). Read once: the game loads it once too. Empty where it cannot
-// be read.
-//
-// Where the config changes anything the file is written back, so that the
-// game's own copy has the same numbers from its next reading of it. Until
-// then the numbers here are still the ones the server is given
-// ([`sync_server_items`]), which are the ones matches are played on.
+// The mod's copy of the game's thirty items
+// (`setting/item_setting.item_setting`, merged by `mod.override_info`) with the
+// player's config applied, read once. Written back when the config changed it,
+// so the game's copy matches from its next read; until then
+// [`sync_server_items`] gives the server these numbers.
 pub(crate) fn game_item_file() -> &'static serde_json::Map<String, Value> {
     static FILE: OnceLock<serde_json::Map<String, Value>> = OnceLock::new();
     FILE.get_or_init(|| {
@@ -1081,35 +839,14 @@ fn game_item_overrides() -> &'static HashMap<String, serde_json::Map<String, Val
     })
 }
 
-// Whether [`sync_server_items`] writes anything. Off, it still reads and
+// Whether [`sync_server_items`] writes anything; off, it only reads and
 // reports.
 //
-// # What a write does to the server, and why it needs [`lift_mod_items`]
-//
-// `setting_set_json` does not change the one item it is given. The host
-// serializes the server's WHOLE item settings to JSON, swaps the fragment
-// in, deserializes the lot, drops the old settings and puts the new ones in
-// their place (0.6.3: handler `0x2dc7670`, out through `0x2e376a0`, back in
-// through `0x2d8b670`). Every mod's items are in that document, under
-// `mod_items`, and the JSON form of one is eight plain fields (the exe's own
-// "struct ModItemEntry with 8 elements": key, icon, price, tier, stat,
-// next_tier, tags, category). What an entry holds besides those is the
-// mod's item itself, the object its hooks are called on, and that does not
-// come back: the rebuilt entry has none, the game takes an item without one
-// for inactive, and the old entry, the one that had it, is dropped.
-//
-// An unguarded write here leaves the matches the server plays by itself,
-// solo rank first of all, with the game's own items and nothing else: no
-// boots and no jungle item either, since those builds are then made from a
-// list with none of the mod's items in it. And there is something to write
-// at every load: a save keeps the stats it is given and not the prices. The
-// match a player watches is played by the client from its own copy, so it
-// looks right there while the server's run of the same match does not.
-//
-// So a write happens with the mod items lifted out of the settings and put
-// back after it, and not at all where they cannot be, which makes it safe
-// however often it happens; and `next_tier` is left as the server has it.
-// The host takes a write made while the list is out.
+// `setting_set_json` rebuilds the server's whole item settings from JSON, and a
+// mod item rebuilt that way loses the item object its hooks run on, leaving
+// server-played matches without mod items. So writes happen only with the mod
+// items lifted out and put back after ([`lift_mod_items`]), and `next_tier` is
+// left as the server has it.
 const SYNC_SERVER_ITEMS: bool = true;
 
 // Whether the server of the save now loaded has been through
@@ -1145,36 +882,17 @@ pub(crate) fn same_setting(a: &Value, b: &Value) -> bool {
     }
 }
 
-// Makes the server's item settings hold the mod's numbers for the game's
-// thirty items: each item of the mod's settings file ([`game_item_file`]) is
-// merged over what the server holds for it and written back where that
-// changes anything. Once for each server, from its start and then from its
-// ticks until its settings could be read.
-//
-// The server's settings are the authoritative ones: the stable API calls
-// them the game rule settings, which "affect matches created afterwards",
-// and the client's settings document is its read-only view of them. That
-// view gives the base game's numbers (Radiant Bloodthirster at 2000 gold and
-// 100 attack, where the mod's file says 1000 and 50), so the `merge` in
-// `mod.override_info` cannot be relied on to have reached them. This says
-// what the server held, in the test log, and from here on it holds the
-// mod's either way.
-//
-// A write the server refuses changes nothing there (its document must still
-// deserialize), and is counted.
-//
-// Only the numbers are written. An item's `next_tier` is the server's to
-// keep: the file knows the base game's tree alone, and what the game has
-// added to those lists for the mods' items is not this function's to undo
-// (see [`SYNC_SERVER_ITEMS`]).
+// Makes the server's item settings hold the mod's numbers for the game's thirty
+// items, once per server, merging each from [`game_item_file`] and writing only
+// what changed. Matches use the server's settings, and the client's view shows
+// base-game numbers, so the `mod.override_info` merge cannot be relied on.
 pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
     if SERVER_ITEMS_SYNCED.load(Ordering::Relaxed) {
         return;
     }
     let (mut read, mut written, mut refused) = (0, 0, 0);
     let mut before: Vec<String> = Vec::new();
-    // What there is to write, worked out before any of it is written: the
-    // mod items come out of the settings once, for all of it.
+    // Work out every write first, so the mod items are lifted out only once.
     let mut writes: Vec<(&str, String)> = Vec::new();
     for (name, over) in game_item_file() {
         let Some(over) = over.as_object() else {
@@ -1208,9 +926,8 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
         }
         writes.push((name.as_str(), merged.to_string()));
     }
-    // Nothing read: the server has no item settings to show yet, or the
-    // mod's file could not be read. The next tick asks again, which costs a
-    // file's worth of lookups in an empty map in the second case.
+    // Nothing read: the server has no settings yet or the file is unreadable.
+    // The next tick asks again.
     if read == 0 {
         return;
     }
@@ -1246,16 +963,10 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
     });
 }
 
-// Takes every mod's items out of the server's item settings for the length
-// of a write there, which would otherwise rebuild each of them without the
-// item it stands for (see [`SYNC_SERVER_ITEMS`]). They go back in when what
-// this returns is dropped.
-//
-// Nothing to lift where the server holds no mod items, and then a write
-// harms nothing. An error where it holds some and they could not be taken
-// out: the caller must not write. The list the server itself reports is what
-// the native half checks its reading of the settings against, entry by
-// entry, before it touches them (`tactics::lift_server_mod_items`).
+// Takes every mod's items out of the server's item settings for the length of a
+// write (see [`SYNC_SERVER_ITEMS`]); they go back when the result is dropped.
+// `Ok(None)` when there are none, `Err` when they could not be lifted, and then
+// the caller must not write.
 fn lift_mod_items(ctx: &StableServerCtx<'_>) -> Result<Option<crate::tactics::ModItemsLift>, ()> {
     let listed = ctx
         .setting_get_json(SettingTargetV1::ItemSetting, "mod_items")
@@ -1290,16 +1001,9 @@ pub(crate) fn item_stat(object: &serde_json::Map<String, Value>, name: &str) -> 
         .unwrap_or(0)
 }
 
-// Hands the Smart Builds rules the game's own thirty items at start-up,
-// straight from the mod's settings file ([`game_item_overrides`]): all of
-// them, with the numbers the game runs with and the player's config in
-// them.
-//
-// The client's settings document only describes those items around a
-// match, and with the base game's numbers ([`prime_item_traits`]). The file
-// is on disk from the start and is the one place those numbers are written
-// down, so it is read instead of a list of them being kept in the code.
-// `smart_builds::GAME_ITEMS` is what is left for a file that cannot be read.
+// Hands the Smart Builds rules the game's thirty items at start-up, from the
+// mod's settings file with the player's config applied. The client's settings
+// document describes them only around a match, and with base-game numbers.
 pub(crate) fn prime_game_items() {
     for (key, object) in game_item_overrides() {
         let stat = |name: &str| item_stat(object, name) as i32;
@@ -1328,14 +1032,9 @@ pub(crate) fn merge_over(
     }
 }
 
-// One item's settings as the game holds them, from its `object` in the
-// client's settings document.
-//
-// For the game's own thirty items that document gives the base game's
-// numbers, not what the mod's file makes of them: Radiant Bloodthirster at
-// 2000 gold and 100 attack, where the game charges 1000 for 50. So the mod's
-// file is merged over the object here, as the game does it. An item the file
-// does not have, which is every mod's own, comes back as it is.
+// One item's settings as the game holds them: the client's document shows
+// base-game numbers for the game's own items, so the mod's file is merged over
+// them. Mod items come back unchanged.
 pub(crate) fn merged_item<'a>(
     key: &str,
     object: &'a serde_json::Map<String, Value>,
@@ -1372,12 +1071,9 @@ pub(crate) fn each_item(
             }
             continue;
         }
-        // Filed under the item's own `key` field, not the map key it sits
-        // under. They are the same for all but one item — `iron_blade` calls
-        // itself `ironsword` — and the inner one is the identity that matters:
-        // it is what `StablePlayer::item_keys` returns and what the item text
-        // document is keyed by. Using the map key left that row with a raw
-        // `ironsword` and no icon.
+        // Filed under the item's own `key` field, which differs from the map
+        // key only for `iron_blade` (`ironsword`) and is what `item_keys` and
+        // the item text use.
         let key = object
             .get("key")
             .and_then(Value::as_str)
@@ -1411,29 +1107,17 @@ fn collect_items(
     );
 }
 
-// The item's own name, tier word included.
-//
-// The build editor deliberately strips "Radiant" because every row in its list
-// is a final and the prefix distinguishes nothing. Here it distinguishes a
-// great deal: `infinity_edge` and `radiant_infinity_edge` are separate keys
-// with separate win rates, and two rows reading "Infinity Edge" would be a
-// table nobody could act on.
+// The item's own name, "Radiant" included: unlike the build editor, this table
+// lists both versions as separate rows.
 fn display_name(ctx: &StableClient<'_>, key: &str) -> String {
     ctx.i18n(&format!("#asset/base/text/item?{key}.name"))
         .filter(|name| !name.is_empty() && !name.starts_with('#'))
         .unwrap_or_else(|| key.to_string())
 }
 
-// The frame a base item draws from the (mod-overridden) item sheet.
-//
-// The settings document's own `icon` is the authority: base items carry a
-// tier-slot name like `t5_0`, which the mod's sheet fills with its reskin of
-// that item — gold border included, since the game's tier-5 items are the ones
-// this mod presents as radiant.
-//
-// The fallback is the key itself, never `base_slug`. Stripping `radiant_` picks
-// the plain twin of an item whose radiant art is a separate tag, which is
-// precisely the bug that made 66 items draw as non-radiant.
+// The item's frame in the (mod-overridden) sheet: the settings document's
+// `icon`, else the key itself. Never `base_slug`, which strips `radiant_` and
+// picks the plain art.
 fn icon_frame(object: &serde_json::Map<String, Value>, key: &str) -> Option<String> {
     object
         .get("icon")
@@ -1446,56 +1130,32 @@ fn icon_frame(object: &serde_json::Map<String, Value>, key: &str) -> Option<Stri
 // Set when the counters change, cleared when they reach disk.
 static DIRTY: AtomicBool = AtomicBool::new(false);
 
-// The totals format this build writes and is willing to read.
-//
-// A table that does not match is ignored rather than migrated, and that save's
-// counters start over. These cannot be recomputed from anything — the matches
-// behind them are long gone — so a shape change is the one case where history is
-// lost, and worth weighing before bumping this.
+// The totals format this build reads and writes. A mismatched table is ignored,
+// not migrated, and totals cannot be recomputed, so bumping this loses history.
 const FORMAT: u32 = 1;
 
-// The key the whole table lives under, inside this mod's own namespace in the
-// save file. One key: the table is written whole, so splitting it would only add
-// a way for the halves to disagree.
+// Key of the whole table in this mod's save namespace; one key, since the table
+// is written whole.
 const KEY: &str = "item_stats";
 
-// Frames to wait for the save's namespace to answer before believing it.
-//
-// The namespace reads empty on some frames while `save_can_write` already
-// answers true — mid-load, or across a scene change. Believing the first empty
-// read would start this save's table from nothing and then write that over its
-// real history, so an absent key is only accepted after it has stayed absent
-// this long. A genuinely new save simply waits these frames out once.
+// Frames to wait for the save namespace before believing an absent table: it
+// reads empty on some frames while `save_can_write` is already true, and
+// starting empty would overwrite the history. A new save waits this out once.
 const LOAD_GRACE: u32 = 600;
 
 // Frames spent waiting for that answer.
 static WAITED: Mutex<u32> = Mutex::new(0);
 
-// Loads the save's table, folds anything the simulation has captured, and
-// writes the result back.
+// Loads the save's table, folds new captures and writes the result, from the
+// management tick so the capture queue drains within a tick or two of a match.
 //
-// # Why folding happens here rather than on the statistics screen
-//
-// Run only while that screen is open, a season could be played with every
-// match still sitting in the capture queue. Driven from the management tick
-// instead, the queue drains within a tick or two of a match ending and never
-// needs to persist at all.
-//
-// A pass is only queued when it could find something new (see [`due_pass`]),
-// so a frame with captures waiting on records that never come costs an atomic
-// read, and a `record_ids` call every [`SWEEP_CHECK_FRAMES`].
-//
-// # What "saved" means now
-//
-// `save_set_string` writes the *in-memory* save. It reaches disk when the player
-// saves, and not before — quit without saving and the session's matches are gone
-// along with everything else that session. That is the trade for the table being
-// tied to the save rather than to a folder beside the DLL, and it is what makes
-// loading an older save show that save's numbers instead of a future's.
+// `save_set_string` writes the in-memory save, which reaches disk only when the
+// player saves; that ties the table to the save, so loading an older save shows
+// its own numbers.
 pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     if !ctx.save_can_write() {
-        // Back at the menu, or between saves. Drop everything so the next save
-        // loads its own table rather than inheriting this one's.
+        // Back at the menu or between saves: drop everything so the next save
+        // loads its own table.
         if with_agg(|agg| agg.loaded).unwrap_or(false) {
             let _ = with_agg(|agg| *agg = Aggregate::default());
             crate::item_stats::sim::forget();
@@ -1511,27 +1171,22 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    // Not while a pass is in flight: queuing one resets it to the newest record,
-    // so captures arriving faster than a pass finishes would keep it re-reading
-    // the same batch. What arrives meanwhile is still new to `due_pass` once the
-    // pass ends, and gets a pass of its own then.
+    // Not while a pass is in flight: re-queuing restarts it at the newest
+    // record. New captures get a pass of their own once it ends.
     let in_flight = with_agg(|agg| !agg.pending.is_empty()).unwrap_or(false);
     if !in_flight && crate::item_stats::sim::pending() > 0 {
         if let Some((ids, verify)) = due_pass(ctx) {
             queue_pass(&ids, verify);
         }
     }
-    // A pass in flight goes on from where the last frame left it, rather than
-    // being queued afresh. With none in flight this reads nothing.
+    // Continue any pass in flight; with none this reads nothing.
     while pump(ctx) {}
 
     flush(ctx);
 }
 
-// Reads the save's table into the aggregate, or decides it has none.
-//
-// Returns whether the table may now be folded into. See [`LOAD_GRACE`] for why
-// an empty answer is not taken at face value.
+// Reads the save's table into the aggregate, or decides it has none; returns
+// whether it may be folded into (see [`LOAD_GRACE`]).
 fn load_from_save(ctx: &StableClient<'_>) -> bool {
     if ctx.save_version() as u32 == FORMAT {
         if let Some(text) = ctx.save_get_string(KEY) {
@@ -1542,8 +1197,8 @@ fn load_from_save(ctx: &StableClient<'_>) -> bool {
             return true;
         }
     } else if ctx.save_contains_key(KEY) {
-        // A table this build will not read. Left where it is rather than
-        // removed: a downgrade should still find its own numbers.
+        // A table this build cannot read: left in place so a downgrade still
+        // finds it.
         let _ = with_agg(|agg| agg.loaded = true);
         return true;
     }
@@ -1558,24 +1213,19 @@ fn load_from_save(ctx: &StableClient<'_>) -> bool {
     if waited < LOAD_GRACE {
         return false;
     }
-    // Nothing there after the grace period: a save that has never carried this
-    // table. Starting empty is now safe.
+    // Still nothing after the grace period: a save that never had the table.
     let _ = with_agg(|agg| agg.loaded = true);
     true
 }
 
-// Writes the counters out if they changed since the last call.
-//
-// Driven from the management tick beside the queue's own flush. The file is a
-// few thousand rows whatever the save has been through, so unlike the history it
-// replaced this costs the same on the first match and the ten-thousandth.
+// Writes the counters out if they changed. Their size is bounded by items,
+// patches and lanes, so this costs the same however long the save.
 pub(crate) fn flush(ctx: &mut StableClient<'_>) {
     if !DIRTY.swap(false, Ordering::Relaxed) {
         return;
     }
-    // Never before the save's own table has been read, or this writes an empty
-    // one over it. `sync` will not fold either until then, so in practice this
-    // guard only fires if something else marks the table dirty first.
+    // Never before the save's table is read, or this would write an empty one
+    // over it.
     if !with_agg(|agg| agg.loaded).unwrap_or(false) {
         return;
     }
@@ -1586,17 +1236,10 @@ pub(crate) fn flush(ctx: &mut StableClient<'_>) {
     ctx.save_set_string(KEY, &text);
 }
 
-// `{"v": 1, "t": {"<patch>": {"m": matches, "i": [entry, ...]}}}`, where an
-// entry is `{"n": lane, "k": item, "g": games, "w": wins, "f": firsts,
-// "c": {champion: count}}`.
-//
-// The champion tally rides inside the entry rather than in a map of its own
-// because both are keyed by the same `(lane, item)` pair — every champion count
-// came from a player whose items were counted in the same pass, so the item map
-// is always a superset and there is no second key space to keep in step.
-//
-// `n` is omitted for a player the host gave no lane for, and `c` when no champion
-// on the entry could be named.
+// `{"v": 1, "t": {"<patch>": {"m": matches, "i": [entry, ...]}}}`, an entry
+// being `{"n": lane, "k": item, "g": games, "w": wins, "f": firsts, "c":
+// {champion: count}}`. `n` is omitted when the lane is unknown and `c` when no
+// champion was named.
 fn serialise(agg: &mut Aggregate) -> String {
     let mut out = format!("{{\"v\":{FORMAT},\"t\":{{");
     for (slot, (patch, per_item)) in agg.counts.iter().enumerate() {
