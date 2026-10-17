@@ -400,6 +400,18 @@ pub(crate) fn texts() -> &'static Texts {
     TEXTS.get_or_init(Texts::load)
 }
 
+// The English name of the passive `item`'s `field` belongs to
+// ([`Template::passive_of`]), or nothing for a number in no named passive.
+pub(crate) fn passive_name(item: &str, field: &str) -> Option<String> {
+    texts()
+        .templates
+        .get("en")?
+        .get(item)?
+        .passive_of(item, field)
+        .map(|(name, _)| name)
+        .filter(|name| !name.is_empty())
+}
+
 impl Texts {
     fn load() -> Self {
         let dir = crate::config::mod_dir();

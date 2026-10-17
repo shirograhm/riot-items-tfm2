@@ -942,10 +942,12 @@ fn set_level(
         let sister = members
             .get(leader)
             .is_some_and(|(other, _)| *other == family);
+        // Up is a buff, but for a number where the smaller is the stronger.
+        let lower = fields::rule_for(key, field).is_some_and(|rule| rule.lower_is_stronger);
         changes.push(Change {
             family: family.to_string(),
             field: field.to_string(),
-            buff: up,
+            buff: up != lower,
             ratio,
             members: vec![Moved {
                 key: key.to_string(),
@@ -992,20 +994,62 @@ fn set_level(
     true
 }
 
-// Passive numbers a part keeps at or under the same number of what it builds
-// into, as (part, upgrade, field): where the part ends higher, it comes down
-// to the upgrade's, or where it cannot move, the upgrade comes up. Madred's
-// Razors' Maim heal tracks Feral Flare's (the user's, 2026-10-17).
-const TRACKED_PASSIVES: [(&str, &str, &str); 1] =
-    [("madreds_razors", "feral_flare", "effect_bonus_flat_heal")];
+// The passive numbers a part shares with what it builds into, under one
+// passive name ([`super::text::passive_name`]): Sheen's and Trinity Force's
+// Spellblade cooldown, Madred's Razors' and Feral Flare's Maim heal. A number
+// only counts where both items keep it in the same field, so Spellblade's
+// damage is compared on Iceborn Gauntlet alone. As (part, upgrade, field,
+// whether the smaller number is the stronger), for patched items whose rule
+// reads the field the same way on both.
+fn tracked_passives(
+    base: &Base,
+    members: &HashMap<&str, (&str, &Member)>,
+) -> Vec<(String, String, String, bool)> {
+    let mut tracked = Vec::new();
+    for (part, upgrade) in &base.upgrades {
+        let (Some((_, part_member)), Some((_, upgrade_member))) =
+            (members.get(part.as_str()), members.get(upgrade.as_str()))
+        else {
+            continue;
+        };
+        for field in part_member.values.keys() {
+            if fields::FLAT.contains(&field.as_str()) || !upgrade_member.values.contains_key(field) {
+                continue;
+            }
+            let (Some(part_rule), Some(upgrade_rule)) =
+                (fields::rule_for(part, field), fields::rule_for(upgrade, field))
+            else {
+                continue;
+            };
+            if part_rule.lower_is_stronger != upgrade_rule.lower_is_stronger {
+                continue;
+            }
+            let name = super::text::passive_name(part, field);
+            if name.is_none() || name != super::text::passive_name(upgrade, field) {
+                continue;
+            }
+            tracked.push((
+                part.clone(),
+                upgrade.clone(),
+                field.clone(),
+                part_rule.lower_is_stronger,
+            ));
+        }
+    }
+    tracked
+}
 
 // Keeps every upgrade at least as strong as its parts in each stat both give,
 // components and unmoved parts included: the upgrade comes up to the part, or
 // where it cannot move, the part comes down. Not where the upgrade starts with
 // less or none of the stat, as when a passive makes up for it (Overlord's
-// Bloodmail). And the [`TRACKED_PASSIVES`] the other way round.
+// Bloodmail). And a part's passive numbers no stronger than the same passive's
+// on what it builds into ([`tracked_passives`]): there the part follows,
+// coming down to the upgrade (the user's, 2026-10-17), and the upgrade comes up
+// only where the part cannot move.
 fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
     let members = tiers_of(base);
+    let tracked = tracked_passives(base, &members);
     let frozen = &super::tuning::tuning().frozen;
     // Whether a patch can move the stat of the item: not one the player's
     // settings hold still, for every item or for this one.
@@ -1040,16 +1084,23 @@ fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
                 settled &= !moved;
             }
         }
-        for (part, upgrade, field) in TRACKED_PASSIVES {
-            let low = stat_now(&members, base, state, &changes[..], part, field);
-            let high = stat_now(&members, base, state, &changes[..], upgrade, field);
-            if low <= high + 1e-9 {
+        for (part, upgrade, field, lower) in &tracked {
+            let held = stat_now(&members, base, state, &changes[..], part, field);
+            let bar = stat_now(&members, base, state, &changes[..], upgrade, field);
+            let stronger = if *lower {
+                held < bar - 1e-9
+            } else {
+                held > bar + 1e-9
+            };
+            if !stronger {
                 continue;
             }
+            // `up` is the way toward the weaker number for the part and the
+            // stronger one for the upgrade.
             let moved = if moves(part, field) {
-                set_level(&members, state, changes, part, field, high, false, upgrade)
+                set_level(&members, state, changes, part, field, bar, *lower, upgrade)
             } else if moves(upgrade, field) {
-                set_level(&members, state, changes, upgrade, field, low, true, part)
+                set_level(&members, state, changes, upgrade, field, held, !*lower, part)
             } else {
                 false
             };
