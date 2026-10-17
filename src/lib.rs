@@ -568,6 +568,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("fiendhunter_bolts" => FiendhunterBolts));
+    reg.add_item(configured!("force_of_nature" => ForceOfNature));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
@@ -671,6 +672,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_fiendhunter_bolts" => FiendhunterBolts));
+    reg.add_item(configured_radiant!("radiant_force_of_nature" => ForceOfNature));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_grezs_spectral_lantern" => GrezsSpectralLantern));

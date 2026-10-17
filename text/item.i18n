@@ -1123,6 +1123,14 @@
         "radiant_mikaels_blessing": {
             "name": "Radiant Mikael's Blessing",
             "option": "\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+        },
+        "force_of_nature": {
+            "name": "Force of Nature",
+            "option": "\n<#ff7a3eff>Steadfast<>: Taking <#a974ffff>magic damage<> from champions grants a stack of <#92dc7bff>Steadfast<> for <#e8a800ff>7 seconds<>, up to 1 stack per second (max 8 stacks). Being <#d94c49ff>immobilized<> by an enemy champion grants 2 stacks. At maximum stacks, gain <#88ccffff>70<> bonus <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> and <#ffffffff>6%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Radiant Force of Nature",
+            "option": "\n<#ff7a3eff>Steadfast<>: Taking <#a974ffff>magic damage<> from champions grants a stack of <#92dc7bff>Steadfast<> for <#e8a800ff>7 seconds<>, up to 1 stack per second (max 8 stacks). Being <#d94c49ff>immobilized<> by an enemy champion grants 2 stacks. At maximum stacks, gain <#88ccffff>70<> bonus <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> and <#ffffffff>6%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>."
         }
     },
     "vi": {
@@ -2249,6 +2257,14 @@
         "radiant_mikaels_blessing": {
             "name": "Chuông Bảo Hộ Mikael Ánh Sáng",
             "option": "\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+        },
+        "force_of_nature": {
+            "name": "Giáp Thiên Nhiên",
+            "option": "\n<#ff7a3eff>Vững Chãi<>: Nhận <#a974ffff>sát thương phép<> từ tướng sẽ nhận một cộng dồn <#92dc7bff>Vững Chãi<> trong <#e8a800ff>7 giây<>, tối đa 1 cộng dồn mỗi giây (tối đa 8 cộng dồn). Bị một tướng địch <#d94c49ff>Làm Bất Động<> sẽ nhận 2 cộng dồn. Khi đạt tối đa cộng dồn, nhận <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép cộng thêm<> và <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Giáp Thiên Nhiên Ánh Sáng",
+            "option": "\n<#ff7a3eff>Vững Chãi<>: Nhận <#a974ffff>sát thương phép<> từ tướng sẽ nhận một cộng dồn <#92dc7bff>Vững Chãi<> trong <#e8a800ff>7 giây<>, tối đa 1 cộng dồn mỗi giây (tối đa 8 cộng dồn). Bị một tướng địch <#d94c49ff>Làm Bất Động<> sẽ nhận 2 cộng dồn. Khi đạt tối đa cộng dồn, nhận <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép cộng thêm<> và <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<>."
         }
     },
     "zh-hans": {
@@ -3375,6 +3391,14 @@
         "radiant_mikaels_blessing": {
             "name": "光明版米凯尔的祝福",
             "option": "\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
+        },
+        "force_of_nature": {
+            "name": "自然之力",
+            "option": "\n<#ff7a3eff>坚定<>：受到英雄的<#a974ffff>魔法伤害<>时获得一层<#92dc7bff>坚定<>，持续 <#e8a800ff>7秒<>，每秒最多获得1层（最多叠加8层）。被敌方英雄<#d94c49ff>定身<>时获得2层。达到最大层数时，获得 <#88ccffff>70 点<><i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>额外魔法抗性<>和 <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。"
+        },
+        "radiant_force_of_nature": {
+            "name": "光明版自然之力",
+            "option": "\n<#ff7a3eff>坚定<>：受到英雄的<#a974ffff>魔法伤害<>时获得一层<#92dc7bff>坚定<>，持续 <#e8a800ff>7秒<>，每秒最多获得1层（最多叠加8层）。被敌方英雄<#d94c49ff>定身<>时获得2层。达到最大层数时，获得 <#88ccffff>70 点<><i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>额外魔法抗性<>和 <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。"
         }
     },
     "pt-BR": {
@@ -4501,6 +4525,14 @@
         "radiant_mikaels_blessing": {
             "name": "Bênção de Mikael Radiante",
             "option": "\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+        },
+        "force_of_nature": {
+            "name": "Força da Natureza",
+            "option": "\n<#ff7a3eff>Impassível<>: Receber <#a974ffff>dano mágico<> de campeões concede um acúmulo de <#92dc7bff>Impassível<> por <#e8a800ff>7 segundos<>, até 1 acúmulo por segundo (acumula 8x). Ser <#d94c49ff>imobilizado<> por um campeão inimigo concede 2 acúmulos. Com o máximo de acúmulos, recebe <#88ccffff>70<> de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica bônus<> e <#ffffffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Força da Natureza Radiante",
+            "option": "\n<#ff7a3eff>Impassível<>: Receber <#a974ffff>dano mágico<> de campeões concede um acúmulo de <#92dc7bff>Impassível<> por <#e8a800ff>7 segundos<>, até 1 acúmulo por segundo (acumula 8x). Ser <#d94c49ff>imobilizado<> por um campeão inimigo concede 2 acúmulos. Com o máximo de acúmulos, recebe <#88ccffff>70<> de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica bônus<> e <#ffffffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>."
         }
     },
     "ru": {
@@ -5627,6 +5659,14 @@
         "radiant_mikaels_blessing": {
             "name": "Лучезарное Благословение Микаэля",
             "option": "\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+        },
+        "force_of_nature": {
+            "name": "Сила природы",
+            "option": "\n<#ff7a3eff>Непоколебимость<>: Получение <#a974ffff>магического урона<> от чемпионов даёт заряд <#92dc7bff>Непоколебимости<> на <#e8a800ff>7 секунд<>, не чаще 1 заряда в секунду (макс. 8 зарядов). Когда вражеский чемпион вас <#d94c49ff>обездвиживает<>, вы получаете 2 заряда. При максимальном количестве зарядов вы получаете <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>дополнительного сопротивления магии<> и <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Лучезарная Сила природы",
+            "option": "\n<#ff7a3eff>Непоколебимость<>: Получение <#a974ffff>магического урона<> от чемпионов даёт заряд <#92dc7bff>Непоколебимости<> на <#e8a800ff>7 секунд<>, не чаще 1 заряда в секунду (макс. 8 зарядов). Когда вражеский чемпион вас <#d94c49ff>обездвиживает<>, вы получаете 2 заряда. При максимальном количестве зарядов вы получаете <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>дополнительного сопротивления магии<> и <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>."
         }
     },
     "ko": {
@@ -6753,6 +6793,14 @@
         "radiant_mikaels_blessing": {
             "name": "찬란한 미카엘의 축복",
             "option": "\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
+        },
+        "force_of_nature": {
+            "name": "대자연의 힘",
+            "option": "\n<#ff7a3eff>굳건함<>: 챔피언에게 <#a974ffff>마법 피해<>를 받으면 <#e8a800ff>7초<> 동안 <#92dc7bff>굳건함<> 중첩을 1회 얻습니다. 1초에 최대 1회 얻으며, 최대 8회 중첩됩니다. 적 챔피언에 의해 <#d94c49ff>이동 불가<> 상태가 되면 중첩을 2회 얻습니다. 최대 중첩 시 <#88ccffff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>추가 마법 저항력<> 및 <#ffffffff>6%<>의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>추가 이동 속도<>를 얻습니다."
+        },
+        "radiant_force_of_nature": {
+            "name": "찬란한 대자연의 힘",
+            "option": "\n<#ff7a3eff>굳건함<>: 챔피언에게 <#a974ffff>마법 피해<>를 받으면 <#e8a800ff>7초<> 동안 <#92dc7bff>굳건함<> 중첩을 1회 얻습니다. 1초에 최대 1회 얻으며, 최대 8회 중첩됩니다. 적 챔피언에 의해 <#d94c49ff>이동 불가<> 상태가 되면 중첩을 2회 얻습니다. 최대 중첩 시 <#88ccffff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>추가 마법 저항력<> 및 <#ffffffff>6%<>의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>추가 이동 속도<>를 얻습니다."
         }
     }
 }

@@ -2268,5 +2268,29 @@
     "effect_max_heal": 265,
     "effect_max_distance": 65,
     "effect_cooldown_seconds": 120
+  },
+  "force_of_nature": {
+    "price": 700,
+    "hp": 300,
+    "magic_resistance": 50,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 8,
+    "effect_stacks_per_second": 1,
+    "effect_immobilize_stacks": 2,
+    "effect_duration_seconds": 7,
+    "effect_bonus_magic_resistance": 70,
+    "effect_move_speed_mult": 6
+  },
+  "radiant_force_of_nature": {
+    "price": 950,
+    "hp": 500,
+    "magic_resistance": 75,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 8,
+    "effect_stacks_per_second": 1,
+    "effect_immobilize_stacks": 2,
+    "effect_duration_seconds": 7,
+    "effect_bonus_magic_resistance": 70,
+    "effect_move_speed_mult": 6
   }
 }

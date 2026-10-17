@@ -146,6 +146,7 @@ pub struct ItemConfig {
     pub effect_growth_skill_cooldown_mult: Option<i32>,
     pub effect_growth_interval_seconds: Option<f64>,
     pub effect_max_growth_stacks: Option<usize>,
+    pub effect_immobilize_stacks: Option<usize>,
 }
 
 // Overwrites the listed fields of an item with the config file's values,

@@ -1159,7 +1159,7 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 120] = [
+const ROW_FORMATS: [RowFormat; 122] = [
     RowFormat {
         item: "deaths_dance",
         field: "effect_delayed_damage_percent",
@@ -1794,6 +1794,20 @@ const ROW_FORMATS: [RowFormat; 120] = [
         item: "fiendhunter_bolts",
         field: "effect_attack_speed_mult",
         label: Some(("row_attack_speed", "Attack Speed")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "force_of_nature",
+        field: "effect_bonus_magic_resistance",
+        label: Some(("row_magic_resistance", "Magic Resistance")),
+        lead: None,
+        unit: None,
+    },
+    RowFormat {
+        item: "force_of_nature",
+        field: "effect_move_speed_mult",
+        label: Some(("row_movement_speed", "Movement Speed")),
         lead: None,
         unit: None,
     },
