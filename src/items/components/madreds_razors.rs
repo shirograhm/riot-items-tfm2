@@ -2,7 +2,6 @@ use crate::config::ItemConfig;
 use crate::{apply_config, is_monster, ProcQueue};
 use mod_api_stable::*;
 
-// Madred's Razors: the jungle part of Feral Flare, with Maim against monsters.
 #[derive(Clone, Debug)]
 pub struct MadredsRazors {
     price: usize,
@@ -21,7 +20,7 @@ impl Default for MadredsRazors {
             attack: 15,
             attack_speed_mult: 15,
             effect_bonus_magic_damage: 25,
-            effect_bonus_flat_heal: 10,
+            effect_bonus_flat_heal: 5,
             // Non-vital stats (internals)
             procs: ProcQueue::new(),
         }
@@ -87,9 +86,6 @@ impl StableItem for MadredsRazors {
         self.procs.clear();
     }
 
-    // Maim: basic attacks against monsters only. The bonus is part of the
-    // swing where it can be (`ProcQueue::on_hit_magic`); the heal lands with
-    // the hit, on the carrier.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -103,7 +99,10 @@ impl StableItem for MadredsRazors {
         if attack_type != AttackTypeV1::BaseAttack {
             return;
         }
-        if !ctx.get_entity(target).is_some_and(|target_ref| is_monster(&target_ref)) {
+        if !ctx
+            .get_entity(target)
+            .is_some_and(|target_ref| is_monster(&target_ref))
+        {
             return;
         }
         self.procs.on_hit_magic(
@@ -117,7 +116,6 @@ impl StableItem for MadredsRazors {
         ctx.heal(caster, caster, self.effect_bonus_flat_heal.max(0) as usize);
     }
 
-    // Lands the Maim bonus a crit or a swing of another type had to queue.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.procs.update(ctx, player);
     }

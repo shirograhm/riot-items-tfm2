@@ -1142,7 +1142,7 @@
         },
         "madreds_razors": {
             "name": "Madred's Razors",
-            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
+            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
         }
     },
     "vi": {
@@ -2288,7 +2288,7 @@
         },
         "madreds_razors": {
             "name": "Móng Vuốt Madred",
-            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
+            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
         }
     },
     "zh-hans": {
@@ -3434,7 +3434,7 @@
         },
         "madreds_razors": {
             "name": "麦瑞德之爪",
-            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>5 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
         }
     },
     "pt-BR": {
@@ -4580,7 +4580,7 @@
         },
         "madreds_razors": {
             "name": "Navalhas de Madred",
-            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
+            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>5 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
         }
     },
     "ru": {
@@ -5726,7 +5726,7 @@
         },
         "madreds_razors": {
             "name": "Когти Мадреда",
-            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
+            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
         }
     },
     "ko": {
@@ -6872,7 +6872,7 @@
         },
         "madreds_razors": {
             "name": "마드레드의 갈퀴손",
-            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>5<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
         }
     }
 }

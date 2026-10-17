@@ -992,11 +992,18 @@ fn set_level(
     true
 }
 
+// Passive numbers a part keeps at or under the same number of what it builds
+// into, as (part, upgrade, field): where the part ends higher, it comes down
+// to the upgrade's, or where it cannot move, the upgrade comes up. Madred's
+// Razors' Maim heal tracks Feral Flare's (the user's, 2026-10-17).
+const TRACKED_PASSIVES: [(&str, &str, &str); 1] =
+    [("madreds_razors", "feral_flare", "effect_bonus_flat_heal")];
+
 // Keeps every upgrade at least as strong as its parts in each stat both give,
 // components and unmoved parts included: the upgrade comes up to the part, or
 // where it cannot move, the part comes down. Not where the upgrade starts with
 // less or none of the stat, as when a passive makes up for it (Overlord's
-// Bloodmail).
+// Bloodmail). And the [`TRACKED_PASSIVES`] the other way round.
 fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
     let members = tiers_of(base);
     let frozen = &super::tuning::tuning().frozen;
@@ -1032,6 +1039,21 @@ fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
                 };
                 settled &= !moved;
             }
+        }
+        for (part, upgrade, field) in TRACKED_PASSIVES {
+            let low = stat_now(&members, base, state, &changes[..], part, field);
+            let high = stat_now(&members, base, state, &changes[..], upgrade, field);
+            if low <= high + 1e-9 {
+                continue;
+            }
+            let moved = if moves(part, field) {
+                set_level(&members, state, changes, part, field, high, false, upgrade)
+            } else if moves(upgrade, field) {
+                set_level(&members, state, changes, upgrade, field, low, true, part)
+            } else {
+                false
+            };
+            settled &= !moved;
         }
         if settled {
             break;

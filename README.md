@@ -101,7 +101,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Hextech Alternator** | 400G | +50 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Ionian Boots of Lucidity** | 650G | +15 Ability Haste<br>+10% MS | — |
 | **Last Whisper** | 500G | +25 AD<br>+10% Armor Pen | — |
-| **Madred's Razors** | 400G | +15 AD<br>+15% AS | Maim: Basic attacks against monsters deal 25 bonus magic damage on-hit and restore 10 health. |
+| **Madred's Razors** | 400G | +15 AD<br>+15% AS | Maim: Basic attacks against monsters deal 25 bonus magic damage on-hit and restore 5 health. |
 | **Mercury's Treads** | 650G | +20 MR<br>+20% Tenacity<br>+10% MS | — |
 | **Needlessly Large Rod** | 450G | +60 Ability Power | — |
 | **Noonquiver** | 400G | +25 AD<br>+10% Crit Chance | — |

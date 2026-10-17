@@ -89,10 +89,6 @@ impl StableItem for HextechAlternator {
         self.cooldown = 0;
     }
 
-    // Revved: set off by any damage the carrier's champion deals itself (a
-    // basic attack, a skill's hit, or a damage-over-time tick). `Item` hits are
-    // turned away so the bolt, which comes back through this hook, cannot pay
-    // for itself.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -123,9 +119,6 @@ impl StableItem for HextechAlternator {
             return;
         }
 
-        // Set before the damage goes out, not after: the hit re-enters the
-        // attack pipeline, and a cooldown written afterwards would be written
-        // over whatever that pipeline did in between.
         self.cooldown = ticks(self.effect_cooldown_seconds);
         ctx.deal_damage(
             caster,
