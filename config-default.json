@@ -1319,7 +1319,7 @@
   },
   "fated_ashes": {
     "price": 250,
-    "magic_power": 30,
+    "magic_power": 25,
     "effect_bonus_flat_damage": 15,
     "effect_duration_seconds": 3,
     "effect_minion_percent": 400.0

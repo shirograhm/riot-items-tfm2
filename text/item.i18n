@@ -726,11 +726,11 @@
         },
         "axiom_arc": {
             "name": "Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your <#4b7cffff>ultimate ability's total cooldown<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>total cooldown<>."
         },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your <#4b7cffff>ultimate ability's total cooldown<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>total cooldown<>."
         },
         "hearthbound_axe": {
             "name": "Hearthbound Axe",
@@ -1134,11 +1134,11 @@
         },
         "navori_flickerblade": {
             "name": "Navori Flickerblade",
-            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the remaining <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown<> of your basic abilities by <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>remaining cooldown<> of your basic abilities by <#4b7cffff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Radiant Navori Flickerblade",
-            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the remaining <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown<> of your basic abilities by <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>remaining cooldown<> of your basic abilities by <#4b7cffff>15%<>."
         }
     },
     "vi": {
@@ -1868,11 +1868,11 @@
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại 10% (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) tổng thời gian hồi chiêu của chiêu cuối."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>tổng thời gian hồi chiêu<> của chiêu cuối."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại 10% (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) tổng thời gian hồi chiêu của chiêu cuối."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>tổng thời gian hồi chiêu<> của chiêu cuối."
         },
         "hearthbound_axe": {
             "name": "Rìu Nhanh Nhẹn",
@@ -2276,11 +2276,11 @@
         },
         "navori_flickerblade": {
             "name": "Đao Chớp Navori",
-            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu<> còn lại của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Đao Chớp Navori Ánh Sáng",
-            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu<> còn lại của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
         }
     },
     "zh-hans": {
@@ -3010,11 +3010,11 @@
         },
         "axiom_arc": {
             "name": "公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能总冷却时间的 10%（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>总冷却时间<>的 <#4b7cffff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
         },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能总冷却时间的 10%（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>总冷却时间<>的 <#4b7cffff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
         },
         "hearthbound_axe": {
             "name": "缚炉之斧",
@@ -3418,11 +3418,11 @@
         },
         "navori_flickerblade": {
             "name": "纳沃利烁刃",
-            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的剩余<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却时间<>缩短 <#4b7cffff>15%<>。"
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>剩余冷却时间<>缩短 <#4b7cffff>15%<>。"
         },
         "radiant_navori_flickerblade": {
             "name": "光明版纳沃利烁刃",
-            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的剩余<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却时间<>缩短 <#4b7cffff>15%<>。"
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>剩余冷却时间<>缩短 <#4b7cffff>15%<>。"
         }
     },
     "pt-BR": {
@@ -4152,11 +4152,11 @@
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa 10% (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do Tempo de Recarga total da sua Ultimate."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga total<> da sua Ultimate."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa 10% (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do Tempo de Recarga total da sua Ultimate."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga total<> da sua Ultimate."
         },
         "hearthbound_axe": {
             "name": "Machado Termestre",
@@ -4560,11 +4560,11 @@
         },
         "navori_flickerblade": {
             "name": "Adaga Oscilante Navori",
-            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga<> restante das suas Habilidades básicas em <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga restante<> das suas Habilidades básicas em <#4b7cffff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Adaga Oscilante Navori Radiante",
-            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga<> restante das suas Habilidades básicas em <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga restante<> das suas Habilidades básicas em <#4b7cffff>15%<>."
         }
     },
     "ru": {
@@ -5294,11 +5294,11 @@
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает 10% (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от полной перезарядки вашего абсолютного умения."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>полной перезарядки<> вашего абсолютного умения."
         },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает 10% (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от полной перезарядки вашего абсолютного умения."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>полной перезарядки<> вашего абсолютного умения."
         },
         "hearthbound_axe": {
             "name": "Топор Теплолюбивых",
@@ -5702,11 +5702,11 @@
         },
         "navori_flickerblade": {
             "name": "Летающий нож Навори",
-            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают оставшуюся <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>оставшуюся перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Лучезарный Летающий нож Навори",
-            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают оставшуюся <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>оставшуюся перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
         }
     },
     "ko": {
@@ -6436,11 +6436,11 @@
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 전체 재사용 대기시간의 10%(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>전체 재사용 대기시간<>의 <#4b7cffff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 전체 재사용 대기시간의 10%(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>전체 재사용 대기시간<>의 <#4b7cffff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
         },
         "hearthbound_axe": {
             "name": "온기가 필요한 자의 도끼",
@@ -6844,11 +6844,11 @@
         },
         "navori_flickerblade": {
             "name": "나보리 명멸검",
-            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 남은 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>남은 재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
         },
         "radiant_navori_flickerblade": {
             "name": "찬란한 나보리 명멸검",
-            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 남은 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>남은 재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
         }
     }
 }

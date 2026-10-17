@@ -77,7 +77,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 #### Tier 2
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
-| **Fated Ashes** | 250G | +30 AP | Inflame: Dealing Ability damage burns enemies for 15 magic damage over 3 seconds. This effect is 400% as effective against minions and monsters. |
+| **Fated Ashes** | 250G | +25 AP | Inflame: Dealing Ability damage burns enemies for 15 magic damage over 3 seconds. This effect is 400% as effective against minions and monsters. |
 | **Runic Compass** | 450G | +150 HP<br>+3 HP Regen | Shared Riches: Gain 3 gold every 5 seconds. |
 
 #### Tier 3
