@@ -368,6 +368,13 @@
             "anim": "asset/riot_items_tfm2/effects/rylais_frost_small",
             "tag": "frost",
             "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "solstice_sleigh_sledding",
+            "anim": "asset/riot_items_tfm2/effects/solstice_sleigh_aura",
+            "tag": "aura",
+            "z": -1
         }
     ]
 }
