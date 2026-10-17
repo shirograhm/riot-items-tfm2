@@ -1968,12 +1968,11 @@ unsafe fn auto_extra_pick(
     let budget =
         crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, rule_fit, &spoken));
     // Rule 6 too: these slots are past the first two, where an early item
-    // goes.
+    // goes (supports are exempt).
     let allowed = |candidate: &str| {
         suits.rejects(candidate).is_none()
             && budget.as_ref().is_none_or(|budget| {
-                budget.rejects(candidate).is_none()
-                    && crate::smart_builds::fits_slot(candidate, si)
+                budget.rejects(candidate).is_none() && fit.fits_slot(candidate, si)
             })
     };
     // Rule 17: a support that looks to the heal, shield and buff items first

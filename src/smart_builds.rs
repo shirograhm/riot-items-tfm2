@@ -12,15 +12,16 @@
 //!    14's items are not judged here.
 //! 6. **Items bought when they pay off**: [`EARLY_ITEMS`] go first and only in
 //!    the first [`EARLY_SLOTS`] slots, [`LATE_ITEMS`] only after them. A pick
-//!    still on the wrong side makes way for an item of no timing.
+//!    still on the wrong side makes way for an item of no timing. Supports are
+//!    exempt.
 //! 7. **One pair of boots**: a build without any gets [`boots_for`]'s pair in
 //!    the second slot, or the first open slot after a pin or early item there.
 //! 8. **Jungle items stay in the jungle, one to a build**: Philosopher's Stone
 //!    on a `Tank`, else Feral Flare or Grez's by damage type.
 //! 9. **Role items first**: a jungler's jungle item goes in the first slot,
 //!    unless the player pinned it ([`Fit::starter_slot_pinned`]). A support
-//!    other than a mage prefers Support-class items past its World Atlas item,
-//!    without being held to one.
+//!    other than a mage looks to Support-class items first, right after its
+//!    World Atlas item.
 //! 10. **Imperial Mandate for supports that immobilize**: the AI's first
 //!     support item makes way for Mandate, and a support known not to
 //!     immobilize keeps none. A pinned support item stays, and a build with no
@@ -36,11 +37,12 @@
 //!     [`MARKSMAN_ONLY_ITEMS`], whatever it scales with.
 //! 15. **One Spellblade item** of [`SPELLBLADE_ITEMS`]; a support whose World
 //!     Atlas item is Bloodsong keeps no other.
-//! 16. **Tank and support items for tank supports**: a `Tank`-tagged support
-//!     keeps only Tank- and Support-class items, plus boots.
-//! 17. **Tank and support items for heal, shield and buff supports**: a Dream
-//!     Maker support is held to the same classes and looks to
-//!     [`PREFERRED_AID_ITEMS`] first, as a preference, not a quota.
+//! 16. **Tank and support items for supports**: a support keeps only Tank- and
+//!     Support-class items, plus boots. A `Magician`-class support is held to
+//!     them only when tagged `Tank` or building Dream Maker.
+//! 17. **Heal, shield and buff items first for heal, shield and buff
+//!     supports**: a Dream Maker support looks to [`PREFERRED_AID_ITEMS`]
+//!     first, as a preference, not a quota.
 //!
 //! The rules only replace AI picks: a pinned slot is kept and counts toward the
 //! budgets like any other item, and an earlier slot wins over a later one.
@@ -281,8 +283,8 @@ pub(crate) enum Reason {
     AllyAidWithoutAid,
     // An item only a marksman keeps (rule 14) on a champion that is none.
     MarksmanOnly,
-    // Not a Tank or Support item, on a support held to those classes (rules 16
-    // and 17).
+    // Not a Tank or Support item, on a support held to those classes (rule
+    // 16).
     SupportClasses,
     Reach,
 }
@@ -335,8 +337,8 @@ pub(crate) struct Fit {
     // Sleigh.
     sleigh: bool,
     // A `Magician`-class support: Zaz'Zak's Realmspike unless tagged `Tank`
-    // (rule 12), treated as not aiding allies (rule 13), and preferring no
-    // support items (rule 9).
+    // (rule 12), treated as not aiding allies (rule 13), preferring no support
+    // items (rule 9), and the one support rule 16 lets build other classes.
     mage: bool,
     // Rule 13: a support other than a mage whose kit heals, shields or buffs
     // allies; rule 12 gives it Dream Maker.
@@ -421,11 +423,12 @@ impl Fit {
         self.no_starter && ((self.jungle_items && is_jungle_item(key)) || self.is_atlas_pick(key))
     }
 
-    // Rules 16 and 17: whether `key` is of a class this support does not build.
-    // Boots and items with no class are left alone; `base_slug` gives the
-    // game's six finals a class.
+    // Rule 16: whether `key` is of a class this support does not build. Every
+    // support is held to tank and support items but a mage, which is only when
+    // tagged `Tank` or building Dream Maker. Boots and items with no class are
+    // left alone; `base_slug` gives the game's six finals a class.
     fn off_support_classes(&self, key: &str) -> bool {
-        (self.tank_support || self.aid_support())
+        (self.tank_support || self.aid_support() || (self.support_items && !self.mage))
             && !matches!(
                 crate::item_catalog::category_of(crate::build_config::base_slug(key)),
                 None | Some("Tank" | "Support" | "Boots")
@@ -592,29 +595,41 @@ fn timing(key: &str) -> Timing {
 // after them.
 const EARLY_SLOTS: usize = 2;
 
-// Rule 6: whether `key` may be bought in build slot `slot` (from 0).
-pub(crate) fn fits_slot(key: &str, slot: usize) -> bool {
-    match timing(key) {
-        Timing::Early => slot < EARLY_SLOTS,
-        Timing::Late => slot >= EARLY_SLOTS,
-        Timing::Any => true,
+impl Fit {
+    // Rule 6's timing of `key` for this champion. Supports are exempt: to one,
+    // every item is of no timing.
+    fn timing(&self, key: &str) -> Timing {
+        if self.support_items {
+            Timing::Any
+        } else {
+            timing(key)
+        }
+    }
+
+    // Rule 6: whether this champion may buy `key` in build slot `slot` (from
+    // 0).
+    pub(crate) fn fits_slot(&self, key: &str, slot: usize) -> bool {
+        match self.timing(key) {
+            Timing::Early => slot < EARLY_SLOTS,
+            Timing::Late => slot >= EARLY_SLOTS,
+            Timing::Any => true,
+        }
     }
 }
 
 // The order AI picks are bought in, smallest first: a support's World Atlas
-// item, its early items, rule 17's preferred items, the role's own items, then
-// [`timing`]. Rule 7's boots push the last pick off, so it is never one of the
-// first kinds while another is left.
-fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, bool, Timing) {
+// item, rule 17's preferred items, the role's own items, then rule 6's timing
+// ([`Fit::timing`]). Rule 7's boots push the last pick off, so it is never one
+// of the first kinds while another is left.
+fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, Timing) {
     match key {
         Some(key) => (
             !fit.is_atlas_pick(key),
-            !(fit.support_items && timing(key) == Timing::Early),
             !fit.is_preferred_aid_item(key),
             !fit.is_role_item(key),
-            timing(key),
+            fit.timing(key),
         ),
-        None => (true, true, true, true, Timing::Any),
+        None => (true, true, true, Timing::Any),
     }
 }
 
@@ -1305,8 +1320,9 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 6, behind rule 12's World Atlas item and rule 9's role items.
-    // Stable, so equal timings keep the engine's order.
+    // Rule 6, behind rule 12's World Atlas item and rule 9's role items; a
+    // support is exempt ([`Fit::timing`]). Stable, so equal timings keep the
+    // engine's order.
     let open: Vec<usize> = (0..build.len()).filter(|&slot| !is_pinned(slot)).collect();
     let mut picks: Vec<usize> = open.iter().map(|&slot| build[slot]).collect();
     picks.sort_by_key(|&index| buy_order(key(index).as_deref(), fit));
@@ -1316,7 +1332,7 @@ pub(crate) fn enforce<C, K, G, F>(
     let overflows = |pick: usize, at: usize| {
         open[at] >= EARLY_SLOTS
             && key(pick).is_some_and(|key| {
-                timing(&key) == Timing::Early && !fit.is_role_item(&key)
+                fit.timing(&key) == Timing::Early && !fit.is_role_item(&key)
             })
     };
     let (mut kept, mut overflow) = (Vec::new(), Vec::new());
@@ -1348,7 +1364,7 @@ pub(crate) fn enforce<C, K, G, F>(
     let at = at.map(|mut at| {
         while at < picks.len()
             && open[at] < EARLY_SLOTS
-            && key(picks[at]).is_some_and(|key| timing(&key) == Timing::Early)
+            && key(picks[at]).is_some_and(|key| fit.timing(&key) == Timing::Early)
         {
             at += 1;
         }
@@ -1371,7 +1387,7 @@ pub(crate) fn enforce<C, K, G, F>(
         let Some(current) = key(offender) else {
             continue;
         };
-        if fits_slot(&current, slot) || fit.is_role_item(&current) {
+        if fit.fits_slot(&current, slot) || fit.is_role_item(&current) {
             continue;
         }
         let rest = budget_without(build, slot);
@@ -1384,7 +1400,7 @@ pub(crate) fn enforce<C, K, G, F>(
                         && !reserved.contains(&candidate)
                         && matches(candidate)
                         && key(candidate).is_some_and(|candidate| {
-                            timing(&candidate) == Timing::Any
+                            fit.timing(&candidate) == Timing::Any
                                 && !is_boots(&candidate)
                                 && rest.rejects(&candidate).is_none()
                         })
