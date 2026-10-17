@@ -1,12 +1,9 @@
 //! How long it has been since an item's last `update`.
 //!
-//! The engine runs no `update` for an item whose carrier is dead, so a
-//! countdown stepped once per `update` stands still through a death and picks
-//! up where it was after the respawn. Most items clear theirs in `on_spawn`
-//! and never notice. One that is meant to keep running through a death takes
-//! off what [`Elapsed::since_last`] answers instead of one: a single tick from
-//! one `update` to the next, and the whole of the death on the first `update`
-//! after it.
+//! The engine runs no `update` while the carrier is dead, so a per-`update`
+//! countdown pauses through a death. One meant to keep running takes off
+//! [`Elapsed::since_last`] instead of one, which includes the whole death on
+//! the first `update` after it.
 
 use mod_api_stable::StableSim;
 
@@ -17,10 +14,9 @@ pub(crate) struct Elapsed {
 }
 
 impl Elapsed {
-    // Ticks gone by since this was last asked. Call once per `update`. One
-    // tick the first time, and whenever the clock does not read later than it
-    // did (a copy of the match played on from an earlier point), which is the
-    // plain once-per-`update` step.
+    // Ticks since this was last asked; call once per `update`. One the first
+    // time, or when the clock has not moved forward (a copy of the match
+    // replayed from earlier).
     pub(crate) fn since_last(&mut self, ctx: &StableSim<'_>) -> usize {
         let now = ctx.tick();
         let gone = match self.last {

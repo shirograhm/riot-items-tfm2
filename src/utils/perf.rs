@@ -1,29 +1,16 @@
-//! Timing for the paths that run every sim tick or every frame, to find what
-//! slows matches down by measurement rather than by reading code.
+//! Timing for the paths that run every sim tick or frame, to find what slows
+//! matches down by measurement. Keep [`ENABLED`] off for releases; off, every
+//! [`Probe`] and [`Timed`] item compiles down to the call it wraps.
 //!
-//! Turn [`ENABLED`] off before a release. While it is off, every [`Probe`] and
-//! [`Timed`] item compiles down to the call it wraps.
+//! While on, a block goes to `riot-items.log` every [`REPORT_SECONDS`] of
+//! simulating: per section, calls, time per second, average and slowest, then
+//! the costliest items. Times are inclusive; only `sim: mod total` counts
+//! nothing twice, and `sim: whole tick` is the engine's tick with every mod's
+//! hooks, frame-paced waits split off as `sim: tick gap`.
 //!
-//! While it is on, one block is appended to `riot-items.log` next to the DLL
-//! every [`REPORT_SECONDS`] of wall time in which a match was simulating: for
-//! each section, how often it ran, how much time it took per wall-clock second,
-//! and its average and slowest call; then the items that cost the most. Times
-//! are inclusive: an item hook that deals damage also contains every hook that
-//! damage sets off, and `frame` contains the `frame:` rows under it. The one
-//! row that counts nothing twice is `sim: mod total`, which times only the
-//! outermost of the mod's calls on a sim thread ([`Probe::sim`]).
-//!
-//! `sim: whole tick` is the time from one match tick hook to the next for the
-//! same match on the same thread, so the engine's tick with every mod's hooks
-//! in it. A match the player watches is paced by the frame rate, and those
-//! waits are kept apart as `sim: tick gap` ([`TICK_GAP_NANOS`]).
-//!
-//! Counts are gathered per thread and folded into the shared totals every
-//! [`FLUSH_CALLS`] calls, at once for a call slower than [`FLUSH_NANOS`], and
-//! from the match hook every [`FLUSH_TICKS`] ticks. The buy detour runs on
-//! every rayon worker at tens of thousands of calls a second, and a shared
-//! atomic per call would contend on one cache line and slow down the thing
-//! being measured.
+//! Counts gather per thread and fold into the totals in batches
+//! ([`FLUSH_CALLS`], [`FLUSH_NANOS`], [`FLUSH_TICKS`]), since a shared atomic
+//! per call would slow the buy detour being measured.
 
 use std::cell::{Cell, RefCell};
 use std::io::Write;
@@ -183,9 +170,8 @@ impl Total {
 static TOTALS: [Total; SLOTS] = [const { Total::ZERO }; SLOTS];
 
 thread_local! {
-    // `const` and no `Drop`, like `BUY_MEMO`: the buy and spawn detours run
-    // this on the game's worker threads, where lazy TLS init and destructor
-    // registration are best avoided.
+    // `const` and no `Drop`, like `BUY_MEMO`: no lazy TLS init on the game's
+    // worker threads.
     static LOCAL: RefCell<[Acc; SLOTS]> = const { RefCell::new([Acc::ZERO; SLOTS]) };
     // How many [`Probe::sim`] probes are open on this thread.
     static DEPTH: Cell<u32> = const { Cell::new(0) };
@@ -231,10 +217,8 @@ fn flush_local() {
     });
 }
 
-// Counts one occurrence of `section`, with no time attached.
-//
-// Straight into the totals rather than through the per-thread batch: counted
-// events are far rarer than timed calls.
+// Counts one occurrence of `section`, with no time attached, straight into the
+// totals (events are rare).
 pub fn count(section: Section) {
     if ENABLED {
         TOTALS[section as usize]
@@ -491,16 +475,10 @@ fn write_report(at: f64, seconds: f64, totals: &[Acc]) {
     });
 }
 
-// An item with its hooks timed, both by hook kind and under its own key.
-// Derefs to the item, so what registration asks of it still reaches it.
-//
-// It is also where an item balance patch reaches the item (`crate::patches`),
-// being the one thing every item registers in. The game copies the
-// registered item for each purchase; the first time any hook of a copy
-// runs, the copy is built again from its config with the patch in it. Once,
-// before the copy has done anything, so it holds no state to lose, and it
-// keeps those numbers for as long as it lives: a patch that lands does not
-// change an item somebody is holding.
+// An item with its hooks timed, by hook kind and under its own key; derefs to
+// the item. Also where an item balance patch reaches it (`crate::patches`): the
+// first hook of each purchased copy rebuilds it from its patched config, so a
+// patch never changes an item someone already holds.
 #[derive(Clone)]
 pub struct Timed<T> {
     inner: T,

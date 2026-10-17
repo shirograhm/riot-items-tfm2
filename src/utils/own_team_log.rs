@@ -1,9 +1,6 @@
 //! Test log for `own_team_only`: why the player's athletes do or do not get
-//! their pin-aware build at spawn, the first match of a session especially.
-//!
-//! Writes `own-team-debug.log` next to the DLL, truncated at the first line of
-//! a session. Turn [`ENABLED`] off before a release: the spawn and buy detours
-//! call this from the sim thread.
+//! their pin-aware build at spawn. Writes `own-team-debug.log` beside the DLL,
+//! truncated each session; keep [`ENABLED`] off for releases.
 
 use std::collections::HashMap;
 use std::io::Write;

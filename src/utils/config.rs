@@ -148,11 +148,8 @@ pub struct ItemConfig {
     pub effect_max_growth_stacks: Option<usize>,
 }
 
-// Overwrites the listed fields of an item with whatever the config file set,
-// leaving the item's built-in default in place for every key the file omits.
-//
-// The field names are identical on both sides — `ItemConfig` mirrors the item
-// structs — so the list is just the set of stats a given item exposes to config:
+// Overwrites the listed fields of an item with the config file's values,
+// keeping the built-in default for every key the file omits:
 //
 // ```ignore
 // fn configured(mut self, cfg: &ItemConfig) -> Self {

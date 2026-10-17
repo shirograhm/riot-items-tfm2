@@ -1,28 +1,11 @@
-//! The match rules the mod changes: keys of the game's own game settings
-//! (`setting/game_setting` in the base game) with the mod's numbers for them,
-//! set in [`RULES`]. Today that is the starting gold alone.
+//! The match rules the mod changes: game settings keys (`setting/game_setting`)
+//! with the mod's numbers, in [`RULES`]; today only the starting gold.
 //!
-//! # Why the server is told, and not the asset
-//!
-//! The first try was the asset: a `setting/game_setting.game_setting` with
-//! the one key in it, merged over the game's by `mod.override_info`. It did
-//! nothing, twice over. The game reads such a file as the whole settings, so
-//! one that has a single key is refused when the assets load (the game's
-//! `log.log` says "missing field width"). And a merge that does load is
-//! still not what a
-//! match runs on: the server keeps settings of its own, which for the items
-//! were seen to be the base game's on a new game and a loaded one alike
-//! (`item_stats::sync_server_items`).
-//!
-//! So the numbers are written into the server's settings, which the stable
-//! API calls the game rule settings and which "affect matches created
-//! afterwards": once for each server, from its start, before it creates a
-//! match and before the client takes its copy of them. A write the server
-//! refuses changes nothing: its settings must still read as settings.
-//!
-//! Only what the mod changes is listed. A whole copy of the game's settings
-//! would put back, at every start, whatever a game update or the game's own
-//! patches had changed since the copy was made.
+//! They are written into the server's settings once per server, before it
+//! creates a match: an asset override was refused (a partial settings file
+//! fails to load), and matches run on the server's own settings anyway. Only
+//! changed keys are listed, so a game update's other changes are not
+//! overwritten.
 
 use std::sync::atomic::{AtomicBool, Ordering};
 
