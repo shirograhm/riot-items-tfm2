@@ -2292,5 +2292,19 @@
     "effect_duration_seconds": 7,
     "effect_bonus_magic_resistance": 70,
     "effect_move_speed_mult": 6
+  },
+  "navori_flickerblade": {
+    "price": 700,
+    "attack_speed_mult": 35,
+    "crit_chance": 20,
+    "move_speed_mult": 4,
+    "effect_remaining_cooldown_percent": 15.0
+  },
+  "radiant_navori_flickerblade": {
+    "price": 1000,
+    "attack_speed_mult": 55,
+    "crit_chance": 25,
+    "move_speed_mult": 4,
+    "effect_remaining_cooldown_percent": 15.0
   }
 }

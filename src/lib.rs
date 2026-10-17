@@ -597,6 +597,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("morellonomicon" => Morellonomicon));
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
     reg.add_item(configured!("nashors_tooth" => NashorsTooth));
+    reg.add_item(configured!("navori_flickerblade" => NavoriFlickerblade));
     reg.add_item(configured!("night_harvester" => NightHarvester));
     reg.add_item(configured!("opportunity" => Opportunity));
     reg.add_item(configured!("overlords_bloodmail" => OverlordsBloodmail));
@@ -701,6 +702,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_morellonomicon" => Morellonomicon));
     reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
     reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));
+    reg.add_item(configured_radiant!("radiant_navori_flickerblade" => NavoriFlickerblade));
     reg.add_item(configured_radiant!("radiant_night_harvester" => NightHarvester));
     reg.add_item(configured_radiant!("radiant_opportunity" => Opportunity));
     reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));

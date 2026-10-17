@@ -2167,8 +2167,8 @@ const AMOUNT_FORMATS: [AmountFormat; 26] = [
     AmountFormat {
         item: "axiom_arc",
         fields: &["effect_ult_cooldown_mult", "effect_ult_cooldown_per_lethality"],
-        label: ("row_ultimate_haste", "Ultimate Haste"),
-        amount: ("amount_flat_per_lethality", "[{A}] ([+{B}] per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>)"),
+        label: ("row_cooldown_refund", "Cooldown Refund"),
+        amount: ("amount_percent_per_lethality", "[{A}%] ([+{B}%] per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>)"),
     },
     AmountFormat {
         item: "endless_hunger",

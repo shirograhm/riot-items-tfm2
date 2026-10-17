@@ -1,5 +1,5 @@
 Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 239 new items (139 base + 100 Radiant) to the game.
+Reskins the 30 existing items and also adds 241 new items (140 base + 101 Radiant) to the game.
 
 ##### Instructions  
 If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
@@ -124,7 +124,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Abyssal Mask** | 700G | +250 HP<br>+50 MR<br>+10 Ability Haste | Unmake: Reduce the magic resistance of nearby enemy champions by 20%. |
 | **Ardent Censer** | 700G | +150 HP<br>+1 HP Regen<br>+25 AP<br>+10 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 750G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
-| **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
+| **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Scoring a takedown on an enemy champion refunds 10% (+0.2% per 1 Lethality) of your ultimate ability's total cooldown. |
 | **Bandlepipes** | 500G | +150 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and nearby allied champions also gain 20% attack speed. |
 | **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Bastionbreaker** | 650G | +35 AD<br>+15 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus true damage. |
@@ -182,6 +182,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Morellonomicon** | 650G | +200 HP<br>+60 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Mortal Reminder** | 700G | +25 AD<br>+20% Crit Chance<br>+20% Armor Pen | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Nashor's Tooth** | 750G | +60 AP<br>+25% AS | Icathian Bite: Basic attacks deal bonus magic damage on-hit equal to 35 + 3% Ability Power. |
+| **Navori Flickerblade** | 700G | +35% AS<br>+20% Crit Chance<br>+4% MS | Transcendence: Basic attacks on-attack reduce the remaining cooldown of your basic abilities by 15%. |
 | **Night Harvester** | 700G | +250 HP<br>+50 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 100 + 20% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Opportunity** | 650G | +45 AD | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Overlord's Bloodmail** | 700G | +15 AD<br>+550 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
@@ -229,7 +230,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Abyssal Mask** | 950G | +350 HP<br>+75 MR<br>+15 Ability Haste | Unmake: Reduce the magic resistance of nearby enemy champions by 20%. |
 | **Radiant Ardent Censer** | 850G | +200 HP<br>+2 HP Regen<br>+45 AP<br>+10 Ability Haste<br>+5% MS | Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Radiant Atma's Reckoning** | 1050G | +700 HP<br>+25% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
-| **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Gain 10 (+0.2 per 1 Lethality) Ultimate Ability Haste. |
+| **Radiant Axiom Arc** | 950G | +55 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Flux: Scoring a takedown on an enemy champion refunds 10% (+0.2% per 1 Lethality) of your ultimate ability's total cooldown. |
 | **Radiant Bandlepipes** | 750G | +200 HP<br>+30 Armor<br>+50 MR<br>+20 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and nearby allied champions also gain 20% attack speed. |
 | **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Bastionbreaker** | 1000G | +55 AD<br>+20 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus true damage. |
@@ -287,6 +288,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Radiant Morellonomicon** | 950G | +300 HP<br>+95 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Mortal Reminder** | 1000G | +45 AD<br>+25% Crit Chance<br>+30% Armor Pen | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Radiant Nashor's Tooth** | 1050G | +90 AP<br>+40% AS | Icathian Bite: Basic attacks deal bonus magic damage on-hit equal to 50 + 5% Ability Power. |
+| **Radiant Navori Flickerblade** | 1000G | +55% AS<br>+25% Crit Chance<br>+4% MS | Transcendence: Basic attacks on-attack reduce the remaining cooldown of your basic abilities by 15%. |
 | **Radiant Night Harvester** | 1000G | +350 HP<br>+80 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Opportunity** | 1000G | +65 AD<br>+5% MS | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Radiant Overlord's Bloodmail** | 1000G | +20 AD<br>+700 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |

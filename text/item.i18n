@@ -726,11 +726,11 @@
         },
         "axiom_arc": {
             "name": "Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10<> (<#4b7cffff>+0.2<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your <#4b7cffff>ultimate ability's total cooldown<>."
         },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10<> (<#4b7cffff>+0.2<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your <#4b7cffff>ultimate ability's total cooldown<>."
         },
         "hearthbound_axe": {
             "name": "Hearthbound Axe",
@@ -1131,6 +1131,14 @@
         "radiant_force_of_nature": {
             "name": "Radiant Force of Nature",
             "option": "\n<#ff7a3eff>Steadfast<>: Taking <#a974ffff>magic damage<> from champions grants a stack of <#92dc7bff>Steadfast<> for <#e8a800ff>7 seconds<>, up to 1 stack per second (max 8 stacks). Being <#d94c49ff>immobilized<> by an enemy champion grants 2 stacks. At maximum stacks, gain <#88ccffff>70<> bonus <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> and <#ffffffff>6%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>."
+        },
+        "navori_flickerblade": {
+            "name": "Navori Flickerblade",
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the remaining <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown<> of your basic abilities by <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Radiant Navori Flickerblade",
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the remaining <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>cooldown<> of your basic abilities by <#4b7cffff>15%<>."
         }
     },
     "vi": {
@@ -1860,11 +1868,11 @@
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10<> <#ffdd8eff>(+0.2 mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại 10% (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) tổng thời gian hồi chiêu của chiêu cuối."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10<> <#ffdd8eff>(+0.2 mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại 10% (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) tổng thời gian hồi chiêu của chiêu cuối."
         },
         "hearthbound_axe": {
             "name": "Rìu Nhanh Nhẹn",
@@ -2265,6 +2273,14 @@
         "radiant_force_of_nature": {
             "name": "Giáp Thiên Nhiên Ánh Sáng",
             "option": "\n<#ff7a3eff>Vững Chãi<>: Nhận <#a974ffff>sát thương phép<> từ tướng sẽ nhận một cộng dồn <#92dc7bff>Vững Chãi<> trong <#e8a800ff>7 giây<>, tối đa 1 cộng dồn mỗi giây (tối đa 8 cộng dồn). Bị một tướng địch <#d94c49ff>Làm Bất Động<> sẽ nhận 2 cộng dồn. Khi đạt tối đa cộng dồn, nhận <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép cộng thêm<> và <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<>."
+        },
+        "navori_flickerblade": {
+            "name": "Đao Chớp Navori",
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu<> còn lại của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Đao Chớp Navori Ánh Sáng",
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu<> còn lại của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
         }
     },
     "zh-hans": {
@@ -2994,11 +3010,11 @@
         },
         "axiom_arc": {
             "name": "公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：获得 <#4b7cffff>10<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能总冷却时间的 10%（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
         },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：获得 <#4b7cffff>10<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能总冷却时间的 10%（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
         },
         "hearthbound_axe": {
             "name": "缚炉之斧",
@@ -3399,6 +3415,14 @@
         "radiant_force_of_nature": {
             "name": "光明版自然之力",
             "option": "\n<#ff7a3eff>坚定<>：受到英雄的<#a974ffff>魔法伤害<>时获得一层<#92dc7bff>坚定<>，持续 <#e8a800ff>7秒<>，每秒最多获得1层（最多叠加8层）。被敌方英雄<#d94c49ff>定身<>时获得2层。达到最大层数时，获得 <#88ccffff>70 点<><i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>额外魔法抗性<>和 <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。"
+        },
+        "navori_flickerblade": {
+            "name": "纳沃利烁刃",
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的剩余<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却时间<>缩短 <#4b7cffff>15%<>。"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "光明版纳沃利烁刃",
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的剩余<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>冷却时间<>缩短 <#4b7cffff>15%<>。"
         }
     },
     "pt-BR": {
@@ -4128,11 +4152,11 @@
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10<> <#ffdd8eff>(+0.2 por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa 10% (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do Tempo de Recarga total da sua Ultimate."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10<> <#ffdd8eff>(+0.2 por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa 10% (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do Tempo de Recarga total da sua Ultimate."
         },
         "hearthbound_axe": {
             "name": "Machado Termestre",
@@ -4533,6 +4557,14 @@
         "radiant_force_of_nature": {
             "name": "Força da Natureza Radiante",
             "option": "\n<#ff7a3eff>Impassível<>: Receber <#a974ffff>dano mágico<> de campeões concede um acúmulo de <#92dc7bff>Impassível<> por <#e8a800ff>7 segundos<>, até 1 acúmulo por segundo (acumula 8x). Ser <#d94c49ff>imobilizado<> por um campeão inimigo concede 2 acúmulos. Com o máximo de acúmulos, recebe <#88ccffff>70<> de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica bônus<> e <#ffffffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>."
+        },
+        "navori_flickerblade": {
+            "name": "Adaga Oscilante Navori",
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga<> restante das suas Habilidades básicas em <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Adaga Oscilante Navori Radiante",
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga<> restante das suas Habilidades básicas em <#4b7cffff>15%<>."
         }
     },
     "ru": {
@@ -5262,11 +5294,11 @@
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10<> <#ffdd8eff>(+0.2 за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает 10% (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от полной перезарядки вашего абсолютного умения."
         },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10<> <#ffdd8eff>(+0.2 за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает 10% (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от полной перезарядки вашего абсолютного умения."
         },
         "hearthbound_axe": {
             "name": "Топор Теплолюбивых",
@@ -5667,6 +5699,14 @@
         "radiant_force_of_nature": {
             "name": "Лучезарная Сила природы",
             "option": "\n<#ff7a3eff>Непоколебимость<>: Получение <#a974ffff>магического урона<> от чемпионов даёт заряд <#92dc7bff>Непоколебимости<> на <#e8a800ff>7 секунд<>, не чаще 1 заряда в секунду (макс. 8 зарядов). Когда вражеский чемпион вас <#d94c49ff>обездвиживает<>, вы получаете 2 заряда. При максимальном количестве зарядов вы получаете <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>дополнительного сопротивления магии<> и <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>."
+        },
+        "navori_flickerblade": {
+            "name": "Летающий нож Навори",
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают оставшуюся <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Лучезарный Летающий нож Навори",
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают оставшуюся <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
         }
     },
     "ko": {
@@ -6396,11 +6436,11 @@
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>10<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2)<> 증가합니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 전체 재사용 대기시간의 10%(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>10<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2)<> 증가합니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 전체 재사용 대기시간의 10%(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
         },
         "hearthbound_axe": {
             "name": "온기가 필요한 자의 도끼",
@@ -6801,6 +6841,14 @@
         "radiant_force_of_nature": {
             "name": "찬란한 대자연의 힘",
             "option": "\n<#ff7a3eff>굳건함<>: 챔피언에게 <#a974ffff>마법 피해<>를 받으면 <#e8a800ff>7초<> 동안 <#92dc7bff>굳건함<> 중첩을 1회 얻습니다. 1초에 최대 1회 얻으며, 최대 8회 중첩됩니다. 적 챔피언에 의해 <#d94c49ff>이동 불가<> 상태가 되면 중첩을 2회 얻습니다. 최대 중첩 시 <#88ccffff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>추가 마법 저항력<> 및 <#ffffffff>6%<>의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>추가 이동 속도<>를 얻습니다."
+        },
+        "navori_flickerblade": {
+            "name": "나보리 명멸검",
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 남은 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "찬란한 나보리 명멸검",
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 남은 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
         }
     }
 }
