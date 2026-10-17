@@ -12,8 +12,8 @@ pub struct AxiomArc {
     effect_lethality: usize,
     effect_ult_cooldown_mult: i32,
     effect_ult_cooldown_per_lethality: f64,
-    // Name of the buff Flux applies. Distinct per variant so the base and the
-    // Radiant version cannot be mistaken for one another.
+    // Name of the buff Flux applies, distinct per variant so base and Radiant
+    // are told apart.
     flux_buff: &'static str,
 }
 
@@ -113,11 +113,9 @@ impl StableItem for AxiomArc {
         }
     }
 
-    // Flux. The wielder's lethality is fixed for the match — it comes from the
-    // items they bought — so this is resolved once on spawn rather than ticked.
-    // Guarded by `has_buff` the way `apply_adaptive_force` is: there is no
-    // remove API and same-name buffs stack, so a second application on respawn
-    // would double the reduction.
+    // Flux. The wielder's lethality is fixed by their items, so it is resolved
+    // once on spawn. Guarded by `has_buff`, since same-name buffs stack and
+    // cannot be removed.
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         let lethality = total_lethality(ctx, player);
 
