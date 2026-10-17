@@ -1,43 +1,27 @@
 //! Adapter between the host mod's stable-ABI extensions and the bodies in
-//! `super`. "Is a match on screen" is `StableClient::is_in_game()`, threaded
-//! in as a `bool`.
+//! `super`.
 
 use std::sync::atomic::{AtomicBool, Ordering};
 
-// Records the item recommendation network the host's item-build detour was
-// handed, for the 5th and 6th item (`super::network_pick`).
-//
-// The agent is an argument of the detoured function, so nothing is known
-// until the game first asks for an item build, which is why this runs from
-// `hook::detour` rather than from mod init. It is stored exactly as it came;
-// `network_pick` proves it before every use (`super::network_ready`).
+// Records the item network the host's item-build detour was handed, for the 5th
+// and 6th item (`super::network_pick`). It is only known once the game first
+// asks for a build, and `network_pick` proves it before every use
+// (`super::network_ready`).
 pub fn record_item_net(agent: usize) {
     super::NETWORK_AGENT.store(agent as u64, Ordering::Relaxed);
 }
 
-// Kill switch for this half.
-//
-// The half is here for what the stable API cannot do: `own_team_only`, since
-// restricting configured builds to the player's own athletes needs the
-// athlete pointer the native buy detour is handed (`StableItemBuildContext`
-// offers only a 0/1 lineup index), and the 5th and 6th item slots.
-//
-// Live, and re-derived every game update (`tools/verify_rvas.py`): the buy,
-// spawn, launcher and seed-ctor detours, `RVA_REALLOC`, the item network's
-// scorer and the four byte patches in `tactics_init`.
-//
-// `src/hooks/hook.rs` is unaffected either way -- it installs from
-// `lib.rs::on_server_start` independently, and is still the only route to
-// training/comp-test builds and the 60-champion roster.
+// Kill switch for this half, which does what the stable API cannot:
+// `own_team_only` (it needs the athlete pointer) and the 5th and 6th slots.
+// `hook.rs` installs independently either way.
 const RETIRED: bool = false;
 
 // ---------------------------------------------------------------------------
 // Entry points — called from the host's stable extensions in `src/lib.rs`.
 // ---------------------------------------------------------------------------
 
-// Runs the version gate and the byte patches (`tactics_init`), and records in
-// `ACTIVE` whether this half came up at all. Only this file's entry points
-// read it (see [`inert`]).
+// Runs the version gate and the byte patches (`tactics_init`), and records
+// whether this half came up.
 pub fn on_mod_init() {
     if RETIRED {
         return;
@@ -45,13 +29,9 @@ pub fn on_mod_init() {
     ACTIVE.store(super::tactics_init(), Ordering::Relaxed);
 }
 
-// Whether [`on_mod_init`] ran and its version gate passed.
-//
-// The runtime entry points below check it too, so that `on_server_start` and
-// `post_update` do not go on to install the buy, launcher, seed-ctor and
-// game-view detours on any build. Each of those checks its own prologue, but
-// the gate is the promise in `tactics_init`'s docs: on an unrecognised game
-// build, nothing gets patched.
+// Whether [`on_mod_init`] ran and its version gate passed. The runtime entry
+// points check it too, so that on an unrecognised game build nothing gets
+// installed or patched.
 static ACTIVE: AtomicBool = AtomicBool::new(false);
 
 // Retired, or the version gate did not pass: the runtime entry points do nothing.
@@ -59,9 +39,8 @@ fn inert() -> bool {
     RETIRED || !ACTIVE.load(Ordering::Relaxed)
 }
 
-// Whether [`lift_server_mod_items`] can work on this game build, which is
-// whether the server's item settings can be written at all: the item
-// balance patches leave the game's own items alone where they cannot
+// Whether [`lift_server_mod_items`] can work on this game build; where it
+// cannot, the item balance patches leave the game's own items alone
 // (`patches::base`).
 pub(crate) fn can_lift() -> bool {
     !inert()
@@ -85,8 +64,8 @@ pub fn before_management_tick() {
 
 // Called every client frame.
 pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
-    // Also the per-frame cost: the detour installs below are retried from
-    // here, and on an unrecognised game build each can only fail.
+    // Also the per-frame cost: on an unrecognised build every install retried
+    // from here can only fail.
     if inert() {
         return;
     }
@@ -94,14 +73,10 @@ pub fn post_update(client: &mut mod_api_stable::StableClient<'_>) {
     super::tactics_post_update(client, in_game);
 }
 
-// Takes every mod's items out of the server's item settings, for a write
-// to those settings that would otherwise rebuild them without their items
-// (`super::lift_server_mod_items`). They go back in when the result is
-// dropped. `keys` is the list as the server reports it.
-//
-// `None` on a game build this half does not know, where the offsets it
-// reads the settings through mean nothing, and wherever the settings do not
-// check out against `keys`. No write must be made then.
+// Takes every mod's items out of the server's item settings until the result is
+// dropped, for a write that would otherwise rebuild them without their items
+// (`super::lift_server_mod_items`). `None` on an unknown build or when the
+// settings do not match `keys`, and then no write must be made.
 pub(crate) fn lift_server_mod_items(
     ctx: &mod_api_stable::StableServerCtx<'_>,
     keys: &[String],
@@ -109,9 +84,8 @@ pub(crate) fn lift_server_mod_items(
     if inert() {
         return None;
     }
-    // The context is a pointer to the host's `ServerCtxV1` and a marker, and
-    // keeps the pointer to itself. The host state in it is what every call
-    // through the context passes back to the host.
+    // The context is a pointer to the host's `ServerCtxV1`; the host state in
+    // it is what every call through the context passes back.
     const _: () = assert!(
         core::mem::size_of::<mod_api_stable::StableServerCtx<'static>>()
             == core::mem::size_of::<usize>()
@@ -128,12 +102,8 @@ pub(crate) fn lift_server_mod_items(
 }
 
 // Hands over the game's item catalog, which the mod-item registry is built
-// from.
-//
-// Called from `hook::detour`, which receives the catalog as an argument. Like
-// [`record_item_net`], this is the only route to that data in a stable-ABI mod.
-//
-// Idempotent — every call after the first that sticks is ignored.
+// from, from `hook::detour` (the only route to it in a stable-ABI mod). Every
+// call after the first that sticks is ignored.
 pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     if RETIRED {
         return;
@@ -141,14 +111,11 @@ pub fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     super::record_item_catalog(catalog);
 }
 
-// Whether a catalog has already been recorded, so `hook::detour` can skip
-// building the argument for [`record_item_catalog`] — which would otherwise be
-// two `String` allocations per item, discarded, on every call after the first.
+// Whether a catalog is already recorded, so `hook::detour` can skip building
+// the argument (two `String`s per item).
 pub fn item_catalog_recorded() -> bool {
-    // While retired, claim the catalog is already in hand. Nothing consumes
-    // one, and the honest `false` would make `hook::detour` rebuild the
-    // argument on EVERY call — two `String` allocations per item, per call,
-    // immediately discarded — instead of only on the first.
+    // While retired, claim the catalog is in hand, so `hook::detour` does not
+    // rebuild the argument on every call.
     if RETIRED {
         return true;
     }
