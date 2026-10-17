@@ -1,50 +1,27 @@
-//! Spellblade: using an Ability empowers the next basic attack within
-//! `WINDOW_SECONDS`. Shared by Sheen and everything built from it, each item
-//! dealing its own bonus.
-//!
-//! A cast is read as an ability's remaining cooldown going up between ticks.
-//! While empowered the carrier holds `SPARKS_BUFF`, and the attack that spends
-//! it plays a burst on its target.
+use mod_api_stable::*;
 
 use std::cell::Cell;
 use std::sync::Mutex;
 
-use mod_api_stable::*;
-
 use crate::{has_buff, percent_of, refresh_buff, ticks, TICKS_PER_SECOND};
 
-// Shared cooldown after an empowered attack lands, during which a cast does not
-// ready the next one.
-const COOLDOWN_BUFF: &str = "spellblade_cooldown";
-// How long a cast keeps the next basic attack empowered; another cast restarts
-// it. Fixed at the tooltips' 10 seconds, not read from config.
 const WINDOW_SECONDS: f64 = 10.0;
-// Statless marker on an empowered champion; its `view_buffs` binding draws
-// sparks circling the hands.
-const SPARKS_BUFF: &str = "riot_spellblade";
-// Refreshed once a second while ready, so it lapses half a second after a
-// missed refresh.
 const SPARKS_TICKS: usize = 90;
-// The `view_effects` burst that plays on the target of the empowered attack
-// (`effects/spellblade_proc`), in the sparks' colours.
-const PROC_EFFECT: &str = "riot_spellblade_proc";
 
-// What a Spellblade item adds to the empowered attack, stated in parts so any
-// item can work out the others' bonus ([`Spellblade::wins`]).
+const SPARKS_BUFF: &str = "riot_spellblade";
+const PROC_EFFECT: &str = "riot_spellblade_proc";
+const COOLDOWN_BUFF: &str = "spellblade_cooldown";
+
 #[derive(Clone, Copy, Debug, Default)]
 pub(crate) struct SpellbladeBonus {
     pub(crate) flat: usize,
-    // Added once for every level past the first.
     pub(crate) per_level: usize,
     pub(crate) ad_percent: f64,
     pub(crate) ap_percent: f64,
-    // Percent of the carrier's critical strike chance (100 is a point for a
-    // point).
     pub(crate) crit_percent: f64,
 }
 
 impl SpellbladeBonus {
-    // A bonus that grows evenly from `min` at level 1 to `max` at level 12.
     pub(crate) fn by_level(min: usize, max: usize) -> Self {
         Self {
             flat: min,
@@ -64,17 +41,12 @@ impl SpellbladeBonus {
     }
 }
 
-// Every Spellblade item's bonus by item key, noted once when the mod
-// registers its items.
 static BONUSES: Mutex<Vec<(&'static str, SpellbladeBonus)>> = Mutex::new(Vec::new());
 
 thread_local! {
-    // The swing a Spellblade item last went off on, as (tick, champion), so a
-    // second copy of the winning item stands down. Cleared every `update`.
     static CLAIMED: Cell<Option<(usize, usize)>> = Cell::new(None);
 }
 
-// The Spellblade items `player` holds and what each adds, in inventory order.
 fn held(ctx: &StableSim<'_>, player: usize) -> Vec<(&'static str, SpellbladeBonus)> {
     let Some(keys) = ctx.get_player(player).map(|p| p.item_keys()) else {
         return Vec::new();
@@ -94,17 +66,10 @@ fn held(ctx: &StableSim<'_>, player: usize) -> Vec<(&'static str, SpellbladeBonu
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Spellblade {
-    // The next basic attack is empowered.
     ready: bool,
-    // Ticks left before an unused empowered attack is lost.
     window: usize,
-    // Remaining ability cooldowns (skill, skill2, ult) last tick; `None` until
-    // the first reading after a spawn.
     last_cooldowns: Option<(usize, usize, usize)>,
-    // The player whose champion carries this, as of the last `update`.
     holder: usize,
-    // The Spellblade items held when the cast readied this one; the strongest
-    // is picked among them.
     charged: Vec<&'static str>,
 }
 
@@ -117,7 +82,6 @@ impl Spellblade {
         self.ready
     }
 
-    // Notes what the Spellblade item `key` adds to the empowered attack.
     pub(crate) fn note_bonus(key: &'static str, bonus: SpellbladeBonus) {
         if let Ok(mut bonuses) = BONUSES.lock() {
             bonuses.retain(|&(noted, _)| noted != key);
@@ -125,9 +89,6 @@ impl Spellblade {
         }
     }
 
-    // Whether item `key` is the one whose Spellblade goes off on `caster`'s
-    // swing. Only the strongest fires (one copy if held twice); the others
-    // spend their empowered attack with it.
     pub(crate) fn wins(&mut self, ctx: &StableSim<'_>, caster: usize, key: &str) -> bool {
         let swing = (ctx.tick(), caster);
         let wins = self
@@ -140,9 +101,6 @@ impl Spellblade {
         wins
     }
 
-    // The charged item still held whose bonus is highest on the champion's
-    // current stats, earliest in the inventory on a tie; every charged item
-    // gets the same answer.
     fn strongest(&self, ctx: &StableSim<'_>, caster: usize) -> Option<&'static str> {
         let carrier = ctx.get_entity(caster)?;
         let mut best: Option<(&'static str, usize)> = None;
@@ -158,9 +116,6 @@ impl Spellblade {
         best.map(|(key, _)| key)
     }
 
-    // Readies Spellblade on a cast unless its cooldown is running (a cast while
-    // ready restarts the window), and keeps the sparks up while ready. Call
-    // once per `update`.
     pub(crate) fn update(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         CLAIMED.with(|claimed| claimed.set(None));
         self.holder = player;
@@ -203,9 +158,6 @@ impl Spellblade {
         }
     }
 
-    // Spends the empowered attack: starts the shared cooldown, takes the
-    // sparks off `caster` and plays the burst on `target`. For a Spellblade
-    // item's `on_attack`, alongside its bonus damage.
     pub(crate) fn spend(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -223,8 +175,6 @@ impl Spellblade {
     }
 }
 
-// Puts up or keeps up the sparks on `entity`; replacing keeps one instance and
-// does not restart the animation.
 fn mark(ctx: &mut StableSim<'_>, entity: usize) {
     refresh_buff(
         ctx,

@@ -1,27 +1,15 @@
-//! Eternity: every Ability the carrier casts heals them. Shared by Catalyst of
-//! Aeons and Rod of Ages.
-//!
-//! A cast is read as an ability's remaining cooldown going up between ticks,
-//! since no hook reports one. The first Eternity item to heal for a cast notes
-//! it in `HEALED`, so others on the same champion stand down.
+use mod_api_stable::*;
 
 use std::cell::Cell;
 
-use mod_api_stable::*;
-
-// Levels run from 1 to 12, so the heal grows over eleven steps.
 const LEVEL_STEPS: f64 = 11.0;
 
 thread_local! {
-    // The cast last healed for, as (match seed, tick, champion). A match is
-    // simulated on one thread, so the items of one champion all read it.
     static HEALED: Cell<Option<(u64, usize, usize)>> = const { Cell::new(None) };
 }
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Eternity {
-    // The carrier's remaining ability cooldowns (skill, skill2, ult) last tick;
-    // `None` until the first reading after a spawn.
     last_cooldowns: Option<(usize, usize, usize)>,
 }
 
@@ -30,9 +18,6 @@ impl Eternity {
         *self = Self::default();
     }
 
-    // Heals the carrier when they cast an Ability: `min_heal` at level 1 and
-    // `max_heal` at level 12, in a straight line between. Call once per
-    // `update`.
     pub(crate) fn update(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -67,8 +52,6 @@ impl Eternity {
             return;
         }
 
-        // Interpolated over the whole span and then rounded, so level 12
-        // reaches the tooltip's maximum.
         let steps = (level.saturating_sub(1) as f64).min(LEVEL_STEPS);
         let span = max_heal.saturating_sub(min_heal) as f64;
         let heal = min_heal + (span * steps / LEVEL_STEPS).round() as usize;
