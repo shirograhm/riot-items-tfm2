@@ -893,7 +893,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_bloodsong": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_min_bonus_damage": 70,
@@ -2126,7 +2126,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_solstice_sleigh": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_move_speed_mult": 20,
@@ -2151,7 +2151,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_zazzaks_realmspike": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_delay_seconds": 0.5,
@@ -2177,7 +2177,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_celestial_opposition": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_damaged_reduce": 15,
@@ -2201,7 +2201,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_dream_maker": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_duration_seconds": 5,

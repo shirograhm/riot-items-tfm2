@@ -71,7 +71,7 @@ impl CelestialOpposition {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_celestial_opposition", &["celestial_opposition"]),
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             // Blessing of the Mountain itself is unchanged — Radiant buys the

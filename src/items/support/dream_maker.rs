@@ -63,7 +63,7 @@ impl DreamMaker {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_dream_maker", &["dream_maker"]),
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             // Dream Maker itself is unchanged — Radiant buys the stat line only.

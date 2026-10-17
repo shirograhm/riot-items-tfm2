@@ -56,7 +56,7 @@ impl SolsticeSleigh {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_solstice_sleigh", &["solstice_sleigh"]),
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             // Going Sledding itself is unchanged — Radiant buys the stat line only.
