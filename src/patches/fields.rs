@@ -87,7 +87,6 @@ const FROZEN: &[&str] = &[
     "effect_stacks_per_second",
     "effect_immobilize_stacks",
     "effect_hp_per_stack",
-    "effect_attack_interval",
     "effect_melee_distance",
     "effect_max_distance",
     "effect_explosion_distance",

@@ -3473,8 +3473,9 @@ fn tactics_init() -> bool {
                     format!(
                         "{}
 
-This half of the mod (the 4th item slot) requires game version 0.5.3 exactly.
-If the game has updated, please wait for a mod update. The rest of the mod is unaffected.
+This half of the mod (own-team-only builds and the 5th and 6th item slots) works only on the
+game version it was made for. If the game has updated, please wait for a mod update. The rest
+of the mod is unaffected.
 ",
                         msg
                     ),
