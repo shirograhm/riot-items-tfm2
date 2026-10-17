@@ -1,141 +1,31 @@
-//! In-game Item Build Editor: the **Builds** tab on the strategy screen.
+//! In-game Item Build Editor: the **Builds** tab on the strategy screen, and
+//! the composition test's build setup. One row per champion (and role) with its
+//! item slots, a category-grouped item list and per-row buttons; it reads and
+//! writes `item-builds.json` beside the DLL, which the hooks apply from the
+//! next match.
 //!
-//! One row per champion, three item slots per row, a category-grouped item list,
-//! and swap/clear buttons per row. It reads and writes `item-builds.json` next
-//! to the DLL, which is the same file the hook applies — so a build takes effect
-//! on the next match with no restart.
+//! The `strategy.ui` override puts `#builds` in place of the game's Personal
+//! tab, whose per-athlete rule the hook cannot act on. The vanilla panels are
+//! hidden while the tab is up (their portrait tooltips are drawn outside the
+//! subtree and cannot be covered), [`open_editor`] and [`close_editor`]
+//! arbitrate with Team, and the right-hand Matchup card stays showing.
 //!
-//! # A tab rather than a window
+//! Builds are keyed by champion because the item-build hook builds one team per
+//! call with nothing saying whose, so a per-position rule reached both teams.
+//! The panel chrome (`ui/layout/build_editor.ui`) is compiled in and spawned
+//! from source, since `override_info` cannot declare a standalone asset.
 //!
-//! The override replaces the game's **Personal** tab with `#builds`, leaving
-//! Team beside it. The editor panel sits in the content band those tabs switch
-//! between, at 1364x645 (canvas 47,182) — the band's full 1824px minus the
-//! right-hand column, which is left uncovered so the vanilla Matchup card in
-//! `#sub4` stays on screen beside the editor.
+//! There are no real dropdowns (game code fills their options), so each combo
+//! is a button opening a floating `selectable` list. Nothing carries `z`, which
+//! is not inherited and makes a drawing node paint over its own children: the
+//! lists win by being the window root's last children, and child images take
+//! `ignore_event: true` so the button gets the click.
 //!
-//! Removing Personal is deliberate: this editor supersedes it. That tab's five
-//! per-player category dropdowns are the same setting expressed per athlete
-//! instead of per champion, and the hook cannot act on a per-athlete rule
-//! anyway (see below) — so leaving both would have offered a control that looks
-//! like it works and does not.
-//!
-//! Its `#personal` panel node is still in the layout and is hidden on entry,
-//! since game code may pick that tab when the screen is built without knowing
-//! its tab is gone. Nothing here shows it any more.
-//!
-//! Nothing arbitrates between the two tabs. They are independent
-//! `color_selectable`s and game code has never heard of ours, so [`open_editor`]
-//! and [`close_editor`] do that bookkeeping. Leaving deliberately restores no
-//! panel: the click that leaves is a click on Team, and game code's handler for
-//! it shows the Team columns already.
-//!
-//! The vanilla panels are hidden rather than covered while the tab is up. The
-//! Personal rows' champion portraits have a tooltip drawn by game code *outside*
-//! this subtree, so an opaque panel of ours cannot be drawn over it — only
-//! removed.
-//!
-//! # Why champions and not positions
-//!
-//! An earlier design gave each of the five *positions* a row. That cannot work:
-//! the hooked `get_item_builds_list` computes **one team per call** and is called
-//! once for each side, with `team1` being whichever team it is building for.
-//! Nothing in its arguments identifies the player's team, and the stable API has
-//! no athlete-to-champion mapping the client could use to work it out — so a rule
-//! keyed by route index fired for the enemy too, and a build pinned to "Top"
-//! reached both top laners. Keying by champion is the only thing the hook can
-//! actually discriminate on.
-//!
-//! Layout lives in two places by necessity:
-//!
-//! - `ui/layout/strategy.ui` is an asset override (see `mod.override_info`). It
-//!   swaps `#personal` for `#builds` inside `#mode_toggle`, which keeps the
-//!   toggle at its vanilla 244px (4px padding either side plus two 118px tabs)
-//!   and leaves `#item_info_btn` at its vanilla x:480. Nothing else on that
-//!   screen is touched.
-//! - `ui/layout/build_editor.ui` is the panel chrome, compiled in with
-//!   `include_str!` and spawned under [`UI_ROOT`]. The rows and both dropdown
-//!   lists are spawned from source here, because their contents depend on the
-//!   saved builds and on the loaded item pool.
-//!
-//! # Why the window is spawned from source rather than as a template asset
-//!
-//! `ui_spawn_template` resolves a *registered* asset. `strategy.ui` is
-//! registered because `mod.override_info` remaps it over a base asset, but
-//! `override_info` can only remap base to mod — it cannot declare a standalone
-//! asset — so there is no supported way to make `build_editor` resolvable by
-//! path. `ui_spawn_source` takes the same `.ui` grammar as literal text, so the
-//! layout is compiled into the DLL and the asset system is left out of it.
-//!
-//! # Why there is no real dropdown
-//!
-//! A dropdown's option list is populated by game code: no `.ui` property
-//! declares one (the runner parses only styling and layout keys), and the stable
-//! ABI's `state_set_json` accepts `checkbox`, `text_edit`, `slider` and
-//! `selectable` but not `dropdown`. So each combo is a `color_icon_button` that
-//! opens a floating panel of `selectable` rows, moved under whichever control was
-//! clicked — which is what a dropdown looks like anyway.
-//!
-//! # Do not put `z` on anything in here
-//!
-//! `z` is per-node and is *not* inherited by children, which makes it close to
-//! useless for a floating panel and actively harmful on a node that draws.
-//! Three symptoms, all the same cause:
-//!
-//! - `#itemlist:color { z: 400 }` rendered an empty panel. The fill was at 400,
-//!   its children at 0, so the panel painted over its own contents.
-//! - Moving the fill into a child of a `z: 400` `empty` fixed that but did not
-//!   stop the rows showing through, because the children still sat at 0 while
-//!   the row glyphs were at 220-250.
-//! - `selectable` has no `z` in its property table, so the list rows cannot be
-//!   lifted to match. There is no z value that puts a list above the rows.
-//!
-//! What does work is tree order at equal `z`: a child draws over its parent, and
-//! a later sibling over an earlier one. Everything here is therefore at the
-//! default `z`, and the floating lists win by being the last children of the
-//! window root. The only nodes still carrying a `z` are `empty` containers,
-//! which draw nothing, so their `z` cannot cover anything.
-//!
-//! `ignore_event: true` on the child images is unrelated and still required: it
-//! is about hit-testing, not drawing, and without it a child swallows the click
-//! meant for the button it sits on.
-//!
-//! # The filter narrows what is spawned, not what is visible
-//!
-//! The toolbar's search box hides rows whose champion does not match. It does
-//! that by spawning only the matching rows, and it keeps naming each node for
-//! the row's index in the saved list rather than its position on screen — so
-//! `…rows.row4` is row 4 of the file whether or not rows 0-3 are showing, and
-//! every path, handler and [`row_from_path`] keeps its meaning with a filter up.
-//! Hiding the non-matching nodes instead would have depended on `TopToBottom`
-//! skipping invisible children when it measures, and left 50px holes in the list
-//! if it does not.
-//!
-//! # Register each path exactly once
-//!
-//! `ui_register_path_events` registers "a handler for EVERY UI event whose path
-//! equals `path`", and the handler lives until process exit. It is keyed by the
-//! path *string* and is not bound to a node, which means registering the same
-//! path twice makes one click run the handler twice, and a handler outlives the
-//! node it was registered for.
-//!
-//! That is a correctness problem, not just a leak. Row nodes are respawned on
-//! every add and delete, and the whole screen is rebuilt every match, so the
-//! obvious "register when you spawn" ends up stacking handlers: deleting row 2
-//! removed row 2, then the new row 2 (which had been row 3), and so on to the
-//! end of the list.
-//!
-//! Everything therefore registers through `REGISTERED` ([`super::Registered`]),
-//! which keeps a set of the paths already registered.
-//!
-//! That set must *not* outlive the screen, which is what this originally got
-//! wrong. The assumption was that a handler surviving its node meant the ones
-//! registered on the first visit kept working on every later one — so the set
-//! was kept for the whole process. In practice the editor worked on the first
-//! strategy screen of a session and was completely inert on every screen after
-//! it: nothing re-registered, because the set said everything already had a
-//! handler. `REGISTERED.forget()` therefore clears it when the screen goes
-//! away, and only then — while a screen is up, registering a live path twice is
-//! still the double-fire hazard described above.
+//! The search box spawns only matching rows, each named for its index in the
+//! saved list, so paths keep their meaning under a filter. Every path is
+//! registered once through `REGISTERED` ([`super::Registered`]), forgotten when
+//! the screen goes away and only then: a set kept for the process left the
+//! editor dead on every later screen.
 
 use std::sync::{Arc, Mutex, OnceLock};
 
@@ -146,31 +36,11 @@ use crate::build_config::{self, picker_slots, ChampionRow, Role};
 use crate::item_catalog;
 use crate::tactics;
 
-// Shown for a slot left to the game's own AI, and on the list row that puts a
-// slot back into that state. The vanilla strategy screen's own wording for it
-// (`strategy.i18n`'s `build_auto`), so the editor and the screen behind it call
-// the same thing by the same name.
-// The editor's own text, as `#asset/…?key` **references** the game resolves,
-// not as strings this mod resolves itself.
-//
-// That distinction is the whole feature. `ctx.i18n()` returns the `en` value
-// regardless of the game's language, so resolving here and writing the result
-// produced an English editor inside a Korean game. Handing the *reference* to
-// the label instead lets the engine's LabelRunner substitute it at draw time,
-// against the active locale — the mechanism the old personal-tactics dropdown
-// labels used, which was verified working in game.
-//
-// The catch: LabelRunner substitutes **whole-string**
-// labels only, with no inline composition. So every key here is a complete
-// label — `col_item1`..`col_item4` rather than one `"ITEM {n}"` template — and
-// anything this mod concatenates (padded rows, truncated item names) cannot use
-// this path and stays in `en`.
-//
-// `ctx.i18n()` is still called once per key, but only to *validate* that the
-// key resolves at all; a key that does not gets its English literal instead, so
-// a raw `#asset/…` string can never reach the screen. `text/ui.i18n` is
-// hand-authored and merged into `asset/base/text/ui` by `mod.override_info` —
-// LabelRunner reads the base document, so the merge is required.
+// The editor's text as `#asset/…?key` references the game resolves at draw time
+// in the active locale, since `ctx.i18n()` always answers in English.
+// LabelRunner substitutes only whole-string labels, so every key is a complete
+// label and anything concatenated here stays English; `text/ui.i18n` is merged
+// into the base document for this ([`UI_TEXT_DOC`]).
 #[derive(Clone)]
 struct Strings {
     tab: String,
@@ -245,10 +115,9 @@ fn strings() -> Arc<Strings> {
 // Resolves the editor's text for the game's current language.
 fn load_strings(ctx: &StableClient<'_>) {
     let fallback = Strings::default();
-    // A reference the game will resolve — but only once it is known to resolve,
-    // because an unknown key would otherwise be drawn as literal `#asset/...`.
-    // `ctx.i18n` answers in `en` whatever the locale is, which is useless as a
-    // translation and perfect as an existence check.
+    // A reference only once the key is known to resolve, or it would draw as
+    // literal `#asset/...`; `ctx.i18n` answers in English whatever the locale,
+    // which makes it an existence check.
     let reference = |key: &str, fallback: &str| {
         let path = format!("{UI_TEXT_DOC}?builds.{key}");
         match ctx.i18n(&path) {
@@ -292,11 +161,9 @@ fn load_strings(ctx: &StableClient<'_>) {
 }
 
 // Writes the resolved text onto the nodes that carry it literally in the
-// layout. The `.ui` keeps the English so the editor reads correctly if this
-// never runs.
-//
-// `ui_set_properties` rather than `ui_set_text` for the buttons: their label is
-// a nested `text` block, which `ui_set_text` does not reach into.
+// layout, whose English stands if this never runs. Buttons take
+// `ui_set_properties`, since `ui_set_text` does not reach their nested `text`
+// block.
 fn apply_strings(ctx: &mut StableClient<'_>) {
     let strings = strings();
     let escape = |text: &str| text.replace('\\', "\\\\").replace('"', "\\\"");
@@ -314,11 +181,9 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
         &strings.col_champion,
     );
     ctx.ui_set_text(&format!("{}.c_role", colheader_path()), &strings.col_role);
-    // The tab and the toggle cells carry `text` as a direct property, not a
-    // nested block — see `#builds` in `strategy.ui` — so they take the plain
-    // form. The cells are labelled once here rather than on every repaint: in a
-    // segmented control the label of a cell is what it *is*, and only which one
-    // is lit changes with the setting.
+    // The tab and toggle cells carry `text` directly, so they take the plain
+    // form. Labelled once here: a cell's label is what it is, and only which
+    // one is lit changes.
     for (path, text) in [
         (BUILDS_TAB, &strings.tab),
         (unique_on_path(), &strings.unique_on),
@@ -332,31 +197,21 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
     }
 }
 
+// Shown for a slot left to the game's own AI, and on the list row that clears a
+// slot: the vanilla screen's own wording (`strategy.i18n`'s `build_auto`).
 const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 
-// What an unpinned slot button shows. The same in every language, and padded
-// so the dash sits where a pinned slot's icon is centred (x = 20px); the
-// descriptive [`AI_SLOT_LABEL_FALLBACK`] wording stays on the list row that
-// clears a slot.
+// What an unpinned slot button shows, in every language, padded so the dash
+// sits where a pinned slot's icon is centred.
 const EMPTY_SLOT_LABEL: &str = "     -";
 
 // Shown for a row whose champion has not been chosen yet. Such a row is kept in
 // the editor but never written.
 const NO_CHAMPION_LABEL_FALLBACK: &str = "(champion)";
 
-// The strategy screen's container, and the editor's host there.
-//
-// **Not a universal root.** `main` is the name of `strategy.ui`'s root node
-// (`main:strategy_ui`) and `contents` is its first child, so this whole path is
-// authored inside that one layout and exists only while that screen is loaded —
-// `main.ui` declares no `contents` at all. Reasoning from it to
-// `main.contents.<other screen>` is how both the Item Stats tab and the
-// composition test host were first written wrong; see [`resolve_comp_tactics`].
-//
-// The bare `contents.…` prefix that appears in the executable's string table is
-// what game code *builds* paths with, one level below the root the query API
-// expects — confirmed by the path probe, which reports `contents.*` absent and
-// `main.contents.*` present.
+// The strategy screen's container and the editor's host there. Authored inside
+// `strategy.ui` (root `main`), so it exists only while that screen is loaded;
+// `main.contents.<other screen>` is wrong (see [`resolve_comp_tactics`]).
 const UI_ROOT: &str = "main.contents";
 
 // The Builds tab, added by the `strategy.ui` override beside Team. It exists
@@ -364,34 +219,22 @@ const UI_ROOT: &str = "main.contents";
 // layout is loaded" — rename it here and in `strategy.ui` together.
 const BUILDS_TAB: &str = "main.contents.strategy.mode_toggle.builds";
 
-// The game's own remaining tab. The mod does not drive it; it watches it, so
-// that clicking it puts the editor away. That click also makes game code
-// restore the Team panels, which is why leaving the Builds tab never has to
-// un-hide anything itself.
+// The game's remaining tab, watched so clicking it puts the editor away; game
+// code then restores the Team panels itself.
 const TEAM_TAB: &str = "main.contents.strategy.mode_toggle.team";
 
-// The vanilla Personal panel. Its tab is gone and nothing here shows it, but
-// it is still hidden on entry: game code decides what is visible when the
-// screen is first built and may well pick Personal, having no idea its tab no
-// longer exists.
+// The vanilla Personal panel, hidden on entry since game code may pick it when
+// building the screen.
 const PERSONAL_PATH: &str = "main.contents.strategy.personal";
 
-// The screen's own "Item Info" button. Game code hides it on the Team tab and
-// keeps re-asserting that from its own tab state, which never becomes Builds,
-// so `post_update` re-shows it every frame while the tab is up rather than
-// once on entry. Leaving does not hide it again: the tab click that leaves is
-// handled by game code, which sets it to whatever that tab wants.
+// The screen's "Item Info" button, which game code keeps hiding on the Team
+// tab; re-shown every frame the Builds tab is up.
 const ITEM_INFO_BTN: &str = "main.contents.strategy.item_info_btn";
 
-// The content panels hidden while the Builds tab is up.
-//
-// Covering them is not enough. The Personal rows carry champion portraits whose
-// tooltip is drawn by game code *outside* this subtree — `strategy.ui` has no
-// tooltip node at all — so an opaque panel of ours cannot be drawn over it and
-// nothing stops the hover that summons it. With the panel hidden there is
-// nothing left to hover. `#sub1`-`#sub3` are the Team tab's first three
-// columns; they occupy the same band and would otherwise show through around
-// our edges. `#sub4` is deliberately absent — see [`MATCHUP_PATH`].
+// The content panels hidden while the Builds tab is up: the Personal rows'
+// portrait tooltips are drawn outside this subtree and cannot be covered, and
+// `#sub1`-`#sub3` would show around the edges. `#sub4` stays (see
+// [`MATCHUP_PATH`]).
 const CONTENT_PANELS: [&str; 4] = [
     PERSONAL_PATH,
     "main.contents.strategy.sub1",
@@ -404,33 +247,17 @@ const CONTENT_PANELS: [&str; 4] = [
 // of the strategy screen's paths.
 const COMP_TACTICS_REL: &str = "comp_test_popup.tactics";
 
-// The vanilla block the editor replaces there, relative to the same root.
-//
-// Despite the "Personal Tactics" heading above it (`tactics_builds`, while the
-// *team* tactics above are `tactics_strategy` — the two read backwards), this
-// is a build editor: ten rows of `blue0..blue4`/`red0..red4`, each three item
-// dropdowns. It sets a build for that one test, where this module's editor
-// writes the persistent per-champion builds in `item-builds.json`. Leaving both
-// up would be two controls for the same slot disagreeing, so it is hidden.
-//
-// Doubles as the marker [`find_comp_tactics`] walks for: no other screen has a
-// `comp_test_popup.tactics.builds` under it.
+// The composition test's vanilla per-test build block, hidden in favour of this
+// editor, since two controls for one slot would disagree. Also the marker
+// [`find_comp_tactics`] walks for.
 const COMP_BUILDS_REL: &str = "comp_test_popup.tactics.builds";
 
-// The root `training.ui` says the composition test hangs off.
-//
-// Its first line is `training:training_ui`, and `#comp_test_popup` is a direct
-// child of that root, so this is what the documented rule gives — see
-// [`resolve_comp_tactics`] for why it is a candidate rather than the answer.
+// The root `training.ui` hangs the composition test off; a candidate, not the
+// answer (see [`resolve_comp_tactics`]).
 const COMP_ROOT: &str = "training";
 
-// Frames between failed sweeps for the composition test panel.
-//
-// Only failed ones: a hit is cached in [`EditorState::comp_tactics`] and
-// re-checked with a single `ui_exists`. The throttle exists because an
-// unthrottled breadth-first `ui_child_names` sweep is a documented way to make
-// this mod lag, and unlike the statistics tab there is no cheap "am I on the
-// right screen?" test to gate it with.
+// Frames between failed sweeps for the composition test panel (a hit is cached
+// in [`EditorState::comp_tactics`]); an unthrottled sweep makes the mod lag.
 const COMP_PROBE_EVERY: u32 = 30;
 
 // Depth and node budget for that sweep, mirroring `item_stats::ui::find_screen`.
@@ -447,21 +274,14 @@ const EDITOR_RECT_STRATEGY: &str = "x: 47px; y: 182px;";
 // matching the 10px the vanilla block leaves under its own header.
 const COMP_SLOT_GAP: f32 = 10.0;
 
-// The Team tab's fourth column, left showing while the Builds tab is up so its
-// Matchup card stays on screen — the editor panel is narrowed to 1364px to
-// leave exactly this column uncovered.
-//
-// The card cannot be rebuilt on our side: its portraits and names are written
-// by game code, and nothing in the stable API maps an athlete to a champion.
-// Reusing the game's own node is the only way to have one that is populated.
+// The Team tab's fourth column, left showing (the panel is narrowed to 1364px
+// for it) so the Matchup card, which only game code can populate, stays on
+// screen.
 const SUB4_PATH: &str = "main.contents.strategy.sub4";
 
-// The Matchup card, and the "Closing Out" block above it. `#sub4` lays its
-// children out `TopToBottom`, so hiding `#game_finish` floats Matchup to the
-// top of the column — which is how the vanilla Personal tab showed it too.
-//
-// Both are re-asserted every frame: game code drives them from its own idea of
-// the current tab, which never becomes Builds.
+// The Matchup card and the "Closing Out" block above it; hiding the latter
+// floats Matchup to the column's top. Both are re-asserted every frame, since
+// game code's tab is never Builds.
 const MATCHUP_PATH: &str = "main.contents.strategy.sub4.matchup";
 const GAME_FINISH_PATH: &str = "main.contents.strategy.sub4.game_finish";
 
@@ -477,20 +297,16 @@ const TAB_IDLE_TEXT: &str = "#a3a9b6ff";
 const TAB_HOVER_LINE: &str = "#a3a9b6ff";
 const TAB_HOVER_TEXT: &str = "#e0e2e7ff";
 
-// A footer toggle that does nothing on the screen it is on (see
-// [`scope_applies`]): the same two cells in greys, the saved setting still the
-// filled one. These are this mod's picks, not the game's: `strategy_option`
-// has no disabled state to lift them from.
+// A footer toggle that does nothing on this screen ([`scope_applies`]): greyed
+// cells, the saved setting still filled. This mod's colours, since
+// `strategy_option` has no disabled state.
 const TOGGLE_OFF_SELECTED_FILL: &str = "#3a3c44ff";
 const TOGGLE_OFF_SELECTED_TEXT: &str = "#7d828dff";
 const TOGGLE_OFF_IDLE_TEXT: &str = "#5a5e68ff";
 
-// The editor's layout source, and the node name its root declares.
-//
-// There is no `EDITOR_PARENT` constant any more: the editor has two hosts and
-// they live in different scenes. `#contents` is authored inside `strategy.ui`,
-// so `main.contents` does not exist at all while the composition test is up —
-// see [`EditorPaths`].
+// The editor's layout source, and its root's node name. The editor has two
+// hosts in different scenes, so its paths are resolved per host
+// ([`EditorPaths`]).
 const EDITOR_SOURCE: &str = include_str!("../../ui/layout/build_editor.ui");
 const EDITOR_NODE: &str = "build_editor";
 
@@ -498,22 +314,16 @@ const EDITOR_NODE: &str = "build_editor";
 // 640x640 sheet (see `mod.override_info`), so frame names are the mod's.
 pub(crate) const ICON_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
 
-// Row geometry, inside the 1314px band `#rows` gives its children. The x offsets
-// match `build_editor.ui`'s column headers. The band is the panel minus the
-// right-hand column the vanilla Matchup card is left sitting in.
-// The panel size `build_editor.ui` authors, and what the strategy screen uses.
-//
-// The composition test cannot use it: its dialog is 1280 wide, so a 1364 panel
-// hangs 42px off each side. Everything below is therefore expressed as an inset
-// from the panel's edges rather than an absolute x, and [`set_panel_size`]
-// re-lays the chrome whenever the host changes.
+// The panel size `build_editor.ui` authors, used on the strategy screen. The
+// composition test's 1280-wide dialog cannot fit it, so the geometry below is
+// insets from the panel's edges, re-laid on a host change
+// ([`want_panel_size`]).
 const PANEL_W: u32 = 1364;
 const PANEL_H: u32 = 645;
 
-// Insets from the panel's right edge, taken from the authored 1364 layout:
-// rows 1306, the delete button at 1250, the item band ending at 1234, and the
-// two scrolling strips 1334. Keeping them as insets is what makes the panel
-// resizable without re-authoring the layout.
+// Insets from the panel's right edge, from the authored 1364 layout (rows 1306,
+// delete button 1250, item band 1234, scrolling strips 1334), so the panel can
+// resize without re-authoring.
 const ROW_INSET: u32 = PANEL_W - 1306;
 const DELETE_INSET: u32 = PANEL_W - 1250;
 const COLUMNS_INSET: u32 = PANEL_W - 1234;
@@ -548,14 +358,9 @@ fn columns_right() -> u32 {
     panel_size().0 - COLUMNS_INSET
 }
 
-// Records the size the editor should be laid out at, reporting whether it
-// moved.
-//
-// Separate from [`apply_panel_size`] because the two have to happen either side
-// of a spawn: rows carry their width in the `.ui` source they are built from,
-// so the size has to be settled *before* `ensure_editor` runs, while the chrome
-// can only be written *after* it. A caller that gets `true` back has rows built
-// for the old width and must rebuild them.
+// Records the size to lay the editor out at, and whether it moved. Settled
+// before `ensure_editor`, since rows carry their width in their source; `true`
+// means rows were built for the old width and must be rebuilt.
 fn want_panel_size(w: u32, h: u32) -> bool {
     match PANEL_SIZE.lock() {
         Ok(mut size) => {
@@ -567,12 +372,8 @@ fn want_panel_size(w: u32, h: u32) -> bool {
     }
 }
 
-// Writes the current size onto the panel's five sized nodes.
-//
-// Only five carry a size at all: the toolbar and footer span the panel, the
-// column header and row list are inset 15px each side, and everything else is
-// anchored — the footer to the bottom, Save and the toolbar hint to the right —
-// so they follow on their own.
+// Writes the current size onto the panel's five sized nodes; everything else is
+// anchored and follows.
 fn apply_panel_size(ctx: &mut StableClient<'_>) {
     let (w, h) = panel_size();
     let strip = w.saturating_sub(STRIP_INSET);
@@ -618,25 +419,20 @@ const ROLE_W: u32 = 100;
 const COLUMNS_LEFT: u32 = 348;
 const COLUMN_GAP: u32 = 44;
 
-// Widest an item column gets. A slot button shows only the item's icon (or
-// [`EMPTY_SLOT_LABEL`]), so it needs room for the icon at 8px (24px wide),
-// the clear button at `combo_w - 52` (22px) and the drop arrow at
-// `combo_w - 24` (12px) -- 88px holds all three with air between them.
+// Widest an item column gets: the icon at 8px, the clear button at `combo_w -
+// 52` and the drop arrow at `combo_w - 24` fit in 88px.
 const COMBO_MAX_W: u32 = 88;
 
-// Width of one item column: [`COMBO_MAX_W`], or less if the shared band split
-// evenly (gaps removed) is narrower than that on a small host. Item names are
-// no longer drawn in the button, so there is nothing to spend a wider column
-// on; the unused band is left empty before the delete button.
+// Width of one item column: [`COMBO_MAX_W`], or less where the shared band is
+// narrower; the unused band is left empty.
 fn combo_w() -> u32 {
     let slots = picker_slots() as u32;
     let split = (columns_right() - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots;
     split.min(COMBO_MAX_W)
 }
 
-// Left edge of an item column. The band starts after the Role column, so the
-// authored 306/630/954 no longer apply — `sync_column_headers` re-places the
-// headers from here, which is what keeps the two in step.
+// Left edge of an item column, after the Role column; `sync_column_headers`
+// places the headers from here.
 fn combo_x(slot: usize) -> u32 {
     COLUMNS_LEFT + slot as u32 * (combo_w() + COLUMN_GAP)
 }
@@ -660,10 +456,9 @@ const ROLE_LIST_W: i32 = 160;
 const CANVAS_W: i32 = 1920;
 const CANVAS_H: i32 = 1080;
 
-// Heights of the two kinds of item-list node, shared by [`entry_source`] (which
-// lays them out) and [`entry_height`] (which adds them up).
-// Fill behind a category header in the item list, one step up from the list
-// panel's own `#0f1016ff` so the groups read as bands rather than loose text.
+// Fill behind a category header in the item list, one step up from the panel's
+// `#0f1016ff`; then the heights of the two kinds of list node
+// ([`entry_source`], [`entry_height`]).
 const LIST_HEADER_FILL: &str = "#1d1f2cff";
 const ENTRY_HEADER_H: i32 = 26;
 const ENTRY_ITEM_H: i32 = 30;
@@ -720,10 +515,9 @@ struct EditorState {
     // The rows being edited, in display order. Loaded from `item-builds.json`
     // when the window is built and written back on every change.
     rows: Vec<ChampionRow>,
-    // Which rows currently have a node spawned, so a rebuild removes exactly
-    // those and no others. Indices into `rows`, not positions on screen: with a
-    // filter active the two differ, and every path in the editor is built from
-    // the former.
+    // Which rows have a node spawned, as indices into `rows` (not screen
+    // positions, which differ under a filter), so a rebuild removes exactly
+    // those.
     spawned_rows: Vec<usize>,
     // The filter box's text, as of the last frame that read it. Rows whose
     // champion does not match are left unspawned.
@@ -754,21 +548,17 @@ struct EditorState {
     entries: Vec<ListEntry>,
     // The champion list. Cached for the same reason.
     champions: Vec<ChampionChoice>,
-    // Where the vanilla Item Info popup was found on this screen, and how many
-    // frames have passed since it was last looked for. Both are per screen: the
-    // path found dies with the screen, and the search is a walk of the node
-    // tree, so it is throttled rather than run every frame. See
-    // [`find_info_popup`].
+    // Where the vanilla Item Info popup was found on this screen, and frames
+    // since it was looked for; the search is a tree walk, so it is throttled
+    // ([`find_info_popup`]).
     info_popup: Option<String>,
     info_probe_tick: u32,
     // Whether that popup was up as of the last frame, so the scroll views are
     // only rewritten when it opens or closes.
     info_showing: bool,
-    // Where the composition test's tactics panel was found, and how many frames
-    // have passed since it was last looked for. Cleared as soon as the cached
-    // path stops resolving, so leaving the screen re-resolves on the next visit
-    // rather than writing to a node that no longer exists. See
-    // [`resolve_comp_tactics`].
+    // Where the composition test's tactics panel was found, and frames since it
+    // was looked for; cleared when the path stops resolving
+    // ([`resolve_comp_tactics`]).
     comp_tactics: Option<String>,
     comp_probe_tick: u32,
 }
@@ -783,13 +573,9 @@ fn with_state<T>(f: impl FnOnce(&mut EditorState) -> T) -> Option<T> {
     Some(f(guard.get_or_insert_with(EditorState::default)))
 }
 
-// Final items the mod registers itself, recorded as they are added in `init`.
-//
-// They are not in the game's item settings document — that lists only the six
-// vanilla finals — so a client that reads settings alone offers none of the
-// mod's items. `StableMod` does not expose its registered items, so the keys
-// are captured at the one place that already knows them. Membership also
-// decides whether an item has art in the icon sheet.
+// Final items the mod registers, recorded in `init`: the game's settings
+// document lists only vanilla finals and `StableMod` does not expose registered
+// items. Membership also says whether an item has art in the icon sheet.
 static MOD_FINALS: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
 // Records one of the mod's final (radiant) items. Called from the
@@ -800,37 +586,9 @@ pub(crate) fn note_final_item(key: &str) {
     }
 }
 
-// Paths that already have a handler, so none is ever registered twice.
-//
-// `ui_register_path_events` registers "a handler for EVERY UI event whose path
-// equals `path`" and the handler lives until process exit — it is keyed by the
-// path *string*, not bound to a node. Two consequences, and the second one bit:
-//
-// - Registering the same path twice means one click runs the handler twice.
-//   That is invisible for something idempotent like opening a list, and
-//   destructive for `+ Add Champion` and row delete: deleting row 2 removed
-//   row 2, then the new row 2 (which had been row 3), and so on down the list.
-// - A handler outlives the node it was registered for and fires again for
-//   whatever is at that path later. Re-registering when the strategy screen is
-//   rebuilt each match is therefore not just wasteful, it is the same bug.
-//
-// Registering once per path is what both facts ask for, and it also bounds
-// the closures registered, which would otherwise pile up leaked.
-//
-// `REGISTERED.forget()` forgets every registration, so the next screen
-// registers from scratch. It is called once when the strategy screen goes
-// away. Every path this module registers lives under `main.contents` — the
-// tabs inside the screen itself, and the spawned editor beside them — so all
-// of them die with it, and a process-lifetime set of "already registered"
-// would keep the second visit's controls from ever being wired. That is the
-// shape of the bug this fixes: the editor worked on the first strategy screen
-// of a session and was inert on every one after, because registering had
-// nothing left to do and the handlers it was trusting had gone with the nodes.
-//
-// This is the one thing the process-wide set must not outlive. Registering the
-// same *live* path twice is still the hazard the set exists to prevent (one
-// click running a handler twice, which is how deleting row 2 once deleted rows
-// 2 and 3), so this clears only on teardown, never while a screen is up.
+// Paths that already have a handler, so none is registered twice (one click
+// deleted rows 2 and 3 that way). Forgotten when the strategy screen goes away
+// and never while it is up; see the module notes.
 static REGISTERED: super::Registered = super::Registered::new(handle_event);
 
 fn is_mod_item(key: &str) -> bool {
@@ -840,13 +598,9 @@ fn is_mod_item(key: &str) -> bool {
         .unwrap_or(false)
 }
 
-// [`MOD_FINALS`] as a set, built once.
-//
-// `MOD_FINALS` is written during `init` and never again, so a snapshot cannot
-// go stale — and the item-build hook asks this question for every selectable
-// final item of every player of every match, on parallel sim workers, where a
-// global mutex and a linear scan per candidate is contention for an answer that
-// cannot change.
+// [`MOD_FINALS`] as a set, built once: it never changes after `init`, and the
+// item-build hook asks about every final of every player on parallel sim
+// workers.
 static MOD_FINAL_SET: OnceLock<std::collections::HashSet<String>> = OnceLock::new();
 
 // [`is_mod_item`] for the simulation side. Reads empty — so promotes nothing —
@@ -865,25 +619,9 @@ pub(crate) fn is_mod_final_item(key: &str) -> bool {
 
 // -- paths --------------------------------------------------------------
 
-// Every path inside the editor, resolved against one host.
-//
-// # Why these are not constants any more
-//
-// The editor is spawned under whichever node hosts it, and it has two hosts in
-// two different scenes, so nothing below its root has a fixed absolute path.
-//
-// # Why they hand back `&'static str`
-//
-// Because that is what keeps the change from reaching the ~95 places that use
-// them: a call site gains `()` and nothing else — no borrow, no temporary to
-// keep alive, and `==` on two of them still compares text, which several click
-// handlers depend on. Returning `String` would have touched every one of those
-// lines, on a refactor with no way to compile-check the result here.
-//
-// The strings are leaked, which is sound because the set is bounded by the
-// number of distinct hosts — two — and each is built at most once. That is a
-// fixed ~52 small strings for the life of the process; it does not grow with
-// time, with screen changes, or with use.
+// Every path inside the editor, resolved against one of its two hosts. Leaked
+// as `&'static str` so the ~95 call sites stay simple; bounded by the two
+// hosts, about 52 small strings.
 struct EditorPaths {
     // The node the window is spawned under. Never addressed except to spawn.
     parent: &'static str,
@@ -905,32 +643,16 @@ struct EditorPaths {
     // In the toolbar, above the column headers: adding a row acts on the list
     // below it.
     add: &'static str,
-    // The filter box, beside Add. A `text_edit` styled after the ban/pick
-    // screen's own champion search — same `main#text_edit` style, same
-    // magnifier child, same `placeholder`/`max_length` keys — so it reads as one
-    // of the game's controls.
-    //
-    // No handler is registered for it. `TextEditComplete` fires on commit (Enter
-    // or focus loss), not per keystroke, so a handler alone would give a filter
-    // that only updates when you leave the box; [`sync_filter`] polls its text
-    // every frame instead. Its X *is* a registered control, since a click is
-    // exactly the event a button reports.
+    // The filter box, styled like the ban/pick screen's champion search. Polled
+    // every frame by [`sync_filter`], since `TextEditComplete` fires only on
+    // commit; its X is a registered button.
     search: &'static str,
     search_clear: &'static str,
-    // The Blue Team / Red Team cells and the box that holds them. Outside the
-    // panel, under the Matchup card whose two columns they stand for, but
-    // still the editor's own nodes so that they come and go with the tab.
-    // Built like the footer's segmented controls, but each cell is its own
-    // switch: both can be lit, or neither.
-    //
-    // `build_editor.ui` authors their place from `strategy.ui`'s numbers
-    // rather than measuring the card. With "Closing Out" hidden the card is
-    // the first child of `#sub4` (see [`MATCHUP_PATH`]), so it spans
-    // 1446..1852 across and ends at y 505, and the cells sit `#sub4`'s own
-    // 15px spacing below that. The card's rect is not trusted for this: game
-    // code re-shows "Closing Out" and [`keep_matchup`] hides it again every
-    // frame, and which of the two states a measurement would see is unknown.
-    // A change to `#sub4` or `#matchup` in `strategy.ui` moves these too.
+    // The Blue Team / Red Team cells under the Matchup card, each its own
+    // switch; editor nodes, so they come and go with the tab. Placed from
+    // `strategy.ui`'s numbers (the card spans 1446..1852 and ends at y 505,
+    // then 15px), not its rect, which flips as "Closing Out" is hidden and
+    // re-shown.
     sides: &'static str,
     side_blue: &'static str,
     side_red: &'static str,
@@ -940,31 +662,19 @@ struct EditorPaths {
     // The confirmation tick left of Save. Hidden until a save succeeds; it is
     // the only thing that reports one now that the button stays on the tab.
     saved: &'static str,
-    // In the footer beside Save. These paths are matched by exact string, so a
-    // button moved between the two bars in `build_editor.ui` must be moved here
-    // too — a stale path registers nothing and the control goes quietly dead.
-    // The two footer settings are segmented controls, not buttons whose label
-    // changes: each is a bordered box holding one `color_selectable` per choice,
-    // built exactly like the Team/Builds `#mode_toggle` at the top of the screen.
-    // Both options stay on screen, so the alternative is readable without
-    // clicking to find out what it is — which a single relabelling button cannot
-    // do.
-    //
-    // The container paths themselves are never addressed; only the cells are.
+    // Footer cells, matched by exact path (a button moved in `build_editor.ui`
+    // must be moved here too). Each footer setting is a segmented control of
+    // one `color_selectable` per choice, like `#mode_toggle`; the containers
+    // are never addressed.
     unique_on: &'static str,
     unique_off: &'static str,
     // Beside the unique toggle, in the same footer bar: both are match-wide
     // rules about the builds rather than edits to one, so they read as a pair.
     scope_all: &'static str,
     scope_own: &'static str,
-    // Full-screen transparent button shown only while a floating list is open,
-    // so that a click anywhere other than the list dismisses it.
-    //
-    // Declared between `#popup` and the two lists, which at equal `z` puts it
-    // above the window and below them — a click on a list row reaches the row, a
-    // click anywhere else reaches this. Without it a list could only be
-    // dismissed by choosing something or by hitting the backdrop outside the
-    // window, which left clicks on the window itself doing nothing at all.
+    // Full-screen transparent button shown while a floating list is open, so a
+    // click elsewhere dismisses it. Declared between `#popup` and the lists, so
+    // it sits above the window and below them.
     listcatch: &'static str,
     itemlist: &'static str,
     champlist: &'static str,
@@ -1039,11 +749,8 @@ fn host_paths(parent: &str) -> &'static EditorPaths {
     built
 }
 
-// Points every editor path at `parent`.
-//
-// Callers do not have to react to a change of host. The previous host's subtree
-// is in a scene that is no longer loaded, and [`ensure_editor`] notices that on
-// its own: its `ui_exists` stops resolving and it respawns into the new host.
+// Points every editor path at `parent`. Callers need not react:
+// [`ensure_editor`] notices the old host's subtree is gone and respawns.
 fn set_host(parent: &str) {
     let built = host_paths(parent);
     if let Ok(mut active) = ACTIVE_HOST.lock() {
@@ -1051,10 +758,7 @@ fn set_host(parent: &str) {
     }
 }
 
-// The active host's paths.
-//
-// Defaults to the strategy screen, so anything reading a path before a host
-// is chosen reads that screen's.
+// The active host's paths, defaulting to the strategy screen's.
 fn paths() -> &'static EditorPaths {
     if let Ok(active) = ACTIVE_HOST.lock() {
         if let Some(found) = *active {
@@ -1196,8 +900,6 @@ fn role_entry_path(index: usize) -> String {
 }
 
 // Strips characters that would end a `.ui` string literal or be read as markup.
-// Item and player names are plain text, so this only ever guards against a
-// future rename.
 fn sanitize(text: &str) -> String {
     text.chars()
         .filter(|c| !matches!(c, '"' | '\\' | '<' | '>' | '{' | '}' | ';'))
@@ -1206,10 +908,9 @@ fn sanitize(text: &str) -> String {
 
 // -- item list ----------------------------------------------------------
 
-// Every final item (one with no further upgrades) the game currently knows,
-// grouped into [`item_catalog`]'s categories and sorted by name within each.
-// Read from the item settings document rather than a hand-kept list, so items
-// the mod adds later show up with no extra wiring.
+// Every final item the game knows, grouped into [`item_catalog`]'s categories
+// and sorted by name, read from the item settings document so new items need no
+// wiring.
 fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     let mut choices = Vec::new();
     if let Some(json) = ctx.setting_get_json(SettingTargetV1::ItemSetting, "") {
@@ -1241,10 +942,8 @@ fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     entries
 }
 
-// Builds one [`ItemChoice`] from an item key, resolving its display name and
-// its place in the catalog.
-// `None` for an item with no category, which keeps it out of the list
-// entirely — there is no catch-all group to put it in.
+// One [`ItemChoice`] from an item key; `None` for an item with no category,
+// which keeps it out of the list.
 fn make_choice(ctx: &StableClient<'_>, key: &str) -> Option<ItemChoice> {
     let slug = build_config::base_slug(key);
     Some(ItemChoice {
@@ -1255,20 +954,9 @@ fn make_choice(ctx: &StableClient<'_>, key: &str) -> Option<ItemChoice> {
     })
 }
 
-// Display name for an item, without the "Radiant" tier word.
-//
-// Every final item in the pool is a radiant one, so the prefix is on every row
-// and distinguishes nothing — it just costs the width that tells two items
-// apart. The *base* item's name is used rather than trimming a prefix off the
-// radiant one, because the prefix is a translated word: trimming "Radiant "
-// would work in English and leave the tier word in place everywhere else.
-//
-// Six items have no base tier to read: the vanilla finals the mod reskins are
-// renames of existing keys, not new items on top of a base (`radiant_
-// bloodthirster` *is* `warlords_final_judgement`; there is no `bloodthirster`).
-// For those the radiant name is trimmed instead, which only works in English —
-// but it is six rows, and the alternative is six rows out of sixty wearing a
-// prefix none of the others do.
+// Display name for an item without the "Radiant" tier word, which every pool
+// item has: the base item's translated name. The six reskinned vanilla finals
+// have no base, so their radiant name is trimmed, in English only.
 fn item_display_name(ctx: &StableClient<'_>, key: &str, slug: &str) -> String {
     // The `#` prefix is part of the key: the probe found this spelling resolves
     // ("Radiant Bloodthirster") while the bare path returns nothing. Same form
@@ -1285,10 +973,8 @@ fn item_display_name(ctx: &StableClient<'_>, key: &str, slug: &str) -> String {
         .unwrap_or_else(|| key.to_string())
 }
 
-// Adds the mod's own final items to `choices`, skipping any the settings
-// document already yielded — the mod renames several vanilla finals (the
-// vanilla `warlords_final_judgement` is "Radiant Bloodthirster"), so the two
-// sources overlap by key.
+// Adds the mod's own final items to `choices`, skipping keys the settings
+// document already gave (renamed vanilla finals overlap).
 fn merge_mod_finals(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
     let Ok(finals) = MOD_FINALS.lock() else {
         return;
@@ -1304,10 +990,8 @@ fn merge_mod_finals(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
     }
 }
 
-// An object is an item when it carries any of the fields every item has.
-// Checked structurally because the settings document mixes items with
-// container objects — mod-added items sit under a `mod_items` group rather
-// than at the top level.
+// An object is an item when it has any field every item has; the settings
+// document mixes items with group objects such as `mod_items`.
 fn is_item(value: &serde_json::Value) -> bool {
     value.get("next_tier").is_some() || value.get("tier").is_some() || value.get("price").is_some()
 }
@@ -1333,10 +1017,9 @@ fn collect_items(
             }
             continue;
         }
-        // `next_tier` empty means nothing upgrades from this item. The
-        // item-build hook cannot make this test — `next_tier` does not cross the
-        // stable boundary — so it works from tier instead; this side reads the
-        // catalog JSON and can still ask the question directly.
+        // `next_tier` empty: nothing upgrades from this item. The hook cannot
+        // test this (`next_tier` does not cross the stable boundary), but the
+        // JSON can.
         let is_final = value
             .get("next_tier")
             .and_then(|next| next.as_array())
@@ -1384,13 +1067,9 @@ fn choice_of<'a>(entries: &'a [ListEntry], key: &str) -> Option<&'a ItemChoice> 
 }
 
 // Rewrites every pinned key to the spelling of the list entry it means.
-//
-// `item-builds.json` accepts any spelling the hook can resolve — the original
-// format was plain LoL names (`"collector"`), and renamed items can be written
-// by their LoL name (`"radiant_bloodthirster"`) — but the editor compares keys
-// exactly. Without this, such a slot reads as pinned (clear X shown, no dash)
-// yet finds no entry, so it shows no icon and cannot be ticked or unpinned by
-// clicking it. Keys no entry matches are left as written.
+// `item-builds.json` accepts any spelling the hook resolves, but the editor
+// compares exactly, so such a slot would look pinned with no icon and could not
+// be unpinned.
 fn canonicalize_rows(entries: &[ListEntry], rows: &mut [ChampionRow]) {
     for key in rows.iter_mut().flat_map(|row| row.slots.iter_mut().flatten()) {
         if let Some(item) = build_config::resolve_key(key, &|k: &str| choice_of(entries, k)) {
@@ -1401,27 +1080,10 @@ fn canonicalize_rows(entries: &[ListEntry], rows: &mut [ChampionRow]) {
     }
 }
 
-// Champion list, in display order. Cached on first use.
-//
-// The ids come from the hook's roster file, because the client cannot
-// enumerate champions: `champion_names()` returns nothing here (the host does
-// not answer those vtable slots), and `SettingTargetV1` exposes only
-// `GameSetting` and `ItemSetting`. It is still tried first, so this starts
-// working on its own if the host ever answers them.
-//
-// The roster is taken whole, deliberately. It is not filtered against
-// `champion.i18n`'s `description` map (which would look like a way to drop
-// non-champion entries) because that map holds exactly the 64 *base-game*
-// champions — filtering on it would strip every champion added by another mod,
-// which is the opposite of what is wanted here. On this install the roster is
-// 86 ids: 64 base, 21 from a champion mod, and one dummy. Whatever the hook can
-// be handed in `team1` is a key a build can legitimately use, so the roster is
-// the authoritative list by definition; a stray dummy id in the dropdown is a
-// cosmetic wart, a missing modded champion is a broken feature.
-//
-// It is also why the list is not simply hardcoded from the base game's 64
-// champions: a hardcoded list cannot see modded champions at all, and would
-// need a free-text id box to reach them.
+// Champion list, in display order, cached. From the hook's roster, since the
+// client's `champion_names()` returns nothing (still tried first); taken whole,
+// other mods' champions and a stray dummy included, because a missing modded
+// champion is worse than a wart.
 fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
     let mut ids = ctx.champion_names();
     if ids.is_empty() {
@@ -1444,10 +1106,8 @@ fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
 // matches on and is never rewritten.
 const MOD_ID_PREFIXES: [&str; 2] = ["test_mod_", "cf_"];
 
-// Drops any leading mod prefixes, including stacked ones (`test_mod_cf_x`).
-//
-// A prefix is only removed when something is left after it, so an id that is
-// nothing but a prefix still shows as itself rather than as an empty button.
+// Drops leading mod prefixes, stacked ones too (`test_mod_cf_x`), unless
+// nothing would be left.
 fn strip_mod_prefixes(id: &str) -> &str {
     let mut id = id;
     'outer: loop {
@@ -1463,18 +1123,8 @@ fn strip_mod_prefixes(id: &str) -> &str {
     }
 }
 
-// Readable name for a champion id, translated where the game has a name to
-// give and prettified from the id (`snake_case` -> `Snake Case`) where it does
-// not.
-//
-// The lookup was long documented here as pointless — `champion.i18n` was found
-// to carry `skill_name` and `description` per champion but no display-name map,
-// and the game was assumed to derive the shown name from the id the same way.
-// It is attempted anyway rather than argued about: two spellings, each accepted
-// only if it answers, and the prettified id behind them. That costs one miss
-// per champion on a cached path and settles the question per locale instead of
-// per comment. A locale whose champions come back in the id's language means
-// the keys genuinely are not there.
+// Readable name for a champion id: the game's translation where it has one (two
+// spellings tried), else the id prettified (`snake_case` -> `Snake Case`).
 fn champion_display_name(ctx: &StableClient<'_>, id: &str) -> String {
     for key in [
         format!("#asset/base/text/champion?{id}.name"),
@@ -1540,17 +1190,12 @@ fn snapshot_rows() -> Vec<ChampionRow> {
     with_state(|state| state.rows.clone()).unwrap_or_default()
 }
 
-// Applies `edit` to one row and autosaves: the file is written on every change
-// rather than only on Save.
-//
-// Returns whether the file was written, so the caller can report a failure
-// instead of silently looking like it worked.
+// Applies `edit` to one row and autosaves; returns whether the file was
+// written, so a failure can be reported.
 fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
     let rows = with_state(|state| {
         if let Some(entry) = state.rows.get_mut(row) {
-            // Grow to the editable width only. Truncating here would drop a
-            // fourth item that is being kept for a 4-slot mode that is
-            // currently off, the moment any other slot on the row was touched.
+            // Grow to the editable width only; never truncate a longer build.
             if entry.slots.len() < picker_slots() {
                 entry.slots.resize(picker_slots(), None);
             }
@@ -1566,18 +1211,9 @@ fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
 
 // -- painting -----------------------------------------------------------
 
-// Leading padding for a combo's label.
-//
-// `color_icon_button` has no property that insets its text — its only keys are
-// `btn`, `text`, `icon`, `hover`, `active`, `disabled` and the two sounds, and
-// `text` takes label *styling*, not geometry (the dropdown runner needs a
-// separate `text_layout` for exactly that reason). Left-aligned text therefore
-// starts hard against the button's rounded edge, and under the item icon.
-//
-// Padding the string is the one lever here that needs no property the parser
-// might reject. [`ICON_PAD`] clears the 24px icon at `x: 8px`; [`PLAIN_PAD`] is
-// the smaller inset for a combo showing no icon, so both columns start at a
-// sensible margin.
+// Leading padding for a combo's label: `color_icon_button` has no text inset,
+// so the string is padded. [`ICON_PAD`] clears the 24px icon at `x: 8px`;
+// [`PLAIN_PAD`] is the smaller inset for a combo with no icon.
 const ICON_PAD: &str = "          ";
 const PLAIN_PAD: &str = "  ";
 
@@ -1600,10 +1236,9 @@ fn refresh_combo(
     slot: usize,
 ) {
     let pinned = pinned_key(rows, row, slot);
-    // A pinned slot is its icon alone; the name is on the list it was picked
-    // from. Button text is not clipped to the button,
-    // so anything longer than a few characters spills over the swap button on
-    // a narrow host -- which is why the empty slot is a dash, not a sentence.
+    // A pinned slot is its icon alone: button text is not clipped and would
+    // spill over the swap button on a narrow host, which is also why the empty
+    // slot is a dash.
     let (label, color) = match &pinned {
         Some(_) => (String::new(), "#e8e8e8ff"),
         None => (EMPTY_SLOT_LABEL.to_string(), "#a5a5abff"),
@@ -1653,11 +1288,8 @@ fn refresh_champ(
     );
 }
 
-// Paints a row's Role button with the role it currently carries.
-//
-// `Any` is dimmed the way an unassigned champion is: it is the default rather
-// than a choice the player made, and the column should read as empty until it
-// is set.
+// Paints a row's Role button; `Any` is dimmed like an unassigned champion,
+// being the default rather than a choice.
 fn refresh_role(ctx: &mut StableClient<'_>, rows: &[ChampionRow], row: usize) {
     let role = rows.get(row).map(|entry| entry.role).unwrap_or_default();
     let color = if role == Role::Any {
@@ -1674,7 +1306,7 @@ fn refresh_role(ctx: &mut StableClient<'_>, rows: &[ChampionRow], row: usize) {
     );
 }
 
-// Repaints one row: its champion button and its three slot buttons.
+// Repaints one row's buttons.
 fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     let rows = snapshot_rows();
     refresh_champ(ctx, &snapshot_champions(), &rows, row);
@@ -1685,24 +1317,17 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
 }
 
 // Lights the chosen cell of a two-option footer toggle and dims the other.
-//
-// The selection is painted, not set, for the reason spelled out at
-// [`paint_tabs`]: `ui_set_selectable_selected` is rejected for the
-// `color_selectable` kind. Both property pairs are written with the same
-// appearance — `image`/`label` and `selected_image`/`selected_label` — so the
-// cell looks right whichever pair the runner decides to render. The tabs can
-// afford to pick one pair because their underlying state is known and fixed;
-// these cells are clicked directly, and paying one extra write beats depending
-// on a click not flipping a flag we cannot read back.
+// Painted, not set (`ui_set_selectable_selected` rejects `color_selectable`;
+// see [`paint_tabs`]), with both property pairs written alike so either state
+// renders right.
 fn paint_toggle(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) {
     ctx.ui_set_properties(lit_path, &toggle_style(true));
     ctx.ui_set_properties(dim_path, &toggle_style(false));
 }
 
-// Paints a two-option footer toggle greyed out, for a screen its setting does
-// nothing on: the saved setting's cell is still the filled one, and neither
-// cell answers the cursor. The click is turned away where it is handled; this
-// is only how the control looks.
+// Paints a two-option toggle greyed out, for a screen its setting does nothing
+// on: the saved cell still filled, neither answering the cursor (the click is
+// refused where it is handled).
 fn paint_toggle_off(ctx: &mut StableClient<'_>, lit_path: &str, dim_path: &str) {
     ctx.ui_set_properties(lit_path, &toggle_off_style(true));
     ctx.ui_set_properties(dim_path, &toggle_off_style(false));
@@ -1784,25 +1409,16 @@ fn refresh_unique(ctx: &mut StableClient<'_>) {
     }
 }
 
-// Takes the save tick down.
-//
-// Called from every path that changes a row, and from none that only changes
-// what is on screen: the filter box and the two footer toggles leave the builds
-// exactly as the tick found them.
-//
-// The tick therefore acknowledges *a save*, and stands only while nothing has
-// been touched since — it is not a claim about the file, which every edit
-// rewrites anyway. Writing `false` when it is already hidden is what makes the
-// callers able to say "edited" without first asking whether it was showing.
+// Takes the save tick down. Called from every path that changes a row and none
+// that only changes the view, so the tick stands only while nothing has been
+// touched since a save.
 fn clear_saved(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(saved_path(), false);
 }
 
-// Paints which half of the build-scope toggle is the live setting
-// ([`build_config::own_team_only_enabled`]).
-//
-// Greyed out where the setting does nothing ([`scope_applies`]), with the
-// saved setting still marked: it is what the next league match will use.
+// Paints the build-scope toggle ([`build_config::own_team_only_enabled`]),
+// greyed out where it does nothing ([`scope_applies`]) with the saved setting
+// still marked.
 fn refresh_scope(ctx: &mut StableClient<'_>) {
     let (lit, dim) = if build_config::own_team_only_enabled() {
         (scope_own_path(), scope_all_path())
@@ -1816,15 +1432,9 @@ fn refresh_scope(ctx: &mut StableClient<'_>) {
     }
 }
 
-// Whether the build-scope toggle does anything on the screen the editor is
-// on.
-//
-// Not on the 5v5 and lane tests. Both sides of a test are the player's, so
-// every athlete of one is handed the pinned builds whatever the setting says
-// (`is_training` in `tactics::buy_replace_ctx`), so the control is greyed
-// out there. The tests are the editor's
-// second host, one panel for both, which is all this asks, the way
-// [`sides_shown`] does.
+// Whether the build-scope toggle does anything here: not on the 5v5 and lane
+// tests, where both sides are the player's and get the pins regardless
+// (`is_training` in `tactics::buy_replace_ctx`).
 fn scope_applies() -> bool {
     paths().parent == UI_ROOT
 }
@@ -1849,12 +1459,9 @@ const SEARCH_RIGHT_INSET: u32 = SEARCH_CLEAR_GAP + 22 + 15;
 // The filter box's left and right padding, which its text cannot use.
 const SEARCH_PADDING: u32 = 44 + 15;
 
-// Whether the Blue Team / Red Team cells are up.
-//
-// Only on the strategy screen and only after a draft that [`draft_watch`]
-// saw. The composition test has no draft before it and no Matchup card to put
-// them under, and a cell that fills the box with nothing reads as a broken
-// one.
+// Whether the Blue Team / Red Team cells are up: on the strategy screen after a
+// draft [`draft_watch`] saw, never on the composition test (no draft, no
+// Matchup card).
 fn sides_shown() -> bool {
     with_state(|state| state.side_names.iter().any(|side| !side.is_empty())).unwrap_or(false)
         && paths().parent == UI_ROOT
@@ -1867,28 +1474,10 @@ fn refresh_sides(ctx: &mut StableClient<'_>) {
     paint_sides(ctx);
 }
 
-// Sizes the filter box for the text in it.
-//
-// # Why the box grows
-//
-// A `text_edit` wraps what does not fit its width and draws every line of it,
-// inside its own rect or not: ten champion names off the side cells came out
-// as four lines over a one-line box. Nothing turns that off. The runner's
-// whole property set is `color`, `rounding`, `stroke`, `back_color`, `font`,
-// `size`, `text_color`, `selection_color`, `placeholder`, `placeholder_color`,
-// `numeric_only` and `max_length`, and the label's `fit_width` is the label's
-// alone. So text that would wrap is given the rest of the toolbar instead,
-// and the hint, which lives there, steps aside until the text is short again.
-//
-// Typing gets the same treatment as a side cell's text, since it wraps the
-// same way.
-//
-// # Why it writes only a change
-//
-// This is asked on every change to the text, which while the player types is
-// every keystroke, and a property write to the box they are typing in is not
-// something to repeat for nothing. The geometry last written is kept, and a
-// keystroke that leaves it standing writes nothing.
+// Sizes the filter box for the text in it. A `text_edit` draws every wrapped
+// line outside its own rect, with no property to stop it, so text that would
+// wrap gets the rest of the toolbar while the hint steps aside; only a change
+// of geometry is written, since this runs on every keystroke.
 fn fit_search(ctx: &mut StableClient<'_>) {
     // A host too narrow to give more than the line keeps the line, and wraps.
     let room = panel_size()
@@ -1914,23 +1503,17 @@ fn fit_search(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(hint_path(), !long);
 }
 
-// A guess at how wide `text` draws in the filter box, in px.
-//
-// Nothing reports the real width. Latin text measured 6.0 to 6.3px a
-// character at the box's size 14, so 7 errs towards calling a line long, and
-// the cost of that is a box that widens a few characters early. Anything
-// outside ASCII is counted as a full-width glyph for the same reason.
+// A guess at how wide `text` draws in the filter box, in px: 7 a character
+// (Latin measured 6.0-6.3), non-ASCII counted full-width, so the box widens a
+// little early rather than late.
 fn filter_text_width(text: &str) -> u32 {
     text.chars()
         .map(|c| if c.is_ascii() { 7 } else { 14 })
         .sum()
 }
 
-// Paints which side cells are lit.
-//
-// One at a time, where [`paint_toggle`] paints a pair: each cell here is its
-// own switch, so both can be lit or neither. Both property pairs are written
-// for the reason given there.
+// Paints which side cells are lit, each its own switch (both property pairs
+// written, as in [`paint_toggle`]).
 fn paint_sides(ctx: &mut StableClient<'_>) {
     let (blue, red) =
         with_state(|state| (state.side_blue, state.side_red)).unwrap_or((false, false));
@@ -1951,13 +1534,9 @@ fn sides_text(state: &EditorState) -> String {
         .join(", ")
 }
 
-// Works out which of the editor's champions each side drafted, whenever the
-// picks [`draft_watch`] holds have changed.
-//
-// Here, from `post_update`, rather than in the click that wants the answer:
-// matching a name takes the game's own name for every champion, and a click
-// handler is where host calls have come back empty before (see the note on
-// `cached_entries` in `post_update`).
+// Works out which of the editor's champions each side drafted, whenever
+// [`draft_watch`]'s picks change. From `post_update`, since host calls in a
+// click handler have come back empty.
 fn sync_sides(ctx: &mut StableClient<'_>) {
     let revision = draft_watch::revision();
     if with_state(|state| state.sides_revision == revision).unwrap_or(true) {
@@ -1990,22 +1569,18 @@ fn sync_sides(ctx: &mut StableClient<'_>) {
     refresh_sides(ctx);
 }
 
-// The game's own name for a champion id, or nothing where it has none.
-//
-// `champion.i18n` keeps it under `description.<id>.name`, and `ctx.i18n`
-// answers in `en` whatever the locale (see [`load_strings`]). It is not always
-// the id prettified, which is what the editor shows: `priest` is "Priestess",
-// `cavalry_knight` is "Cavalry".
+// The game's own name for a champion id (`description.<id>.name`, in English),
+// or nothing. Not always the prettified id: `priest` is "Priestess",
+// `cavalry_knight` "Cavalry".
 fn game_champion_name(ctx: &StableClient<'_>, id: &str) -> String {
     ctx.i18n(&format!("#asset/base/text/champion?description.{id}.name"))
         .filter(|name| !name.starts_with('#'))
         .unwrap_or_default()
 }
 
-// What the filter box should say for one drafted champion: the editor's own
-// label for it when the pick can be tied to a champion the editor lists
-// ([`drafted_champion`]), what the draft grid showed when it cannot, and
-// nothing when that is unreadable.
+// What the filter box should say for one drafted champion: the editor's label
+// where the pick ties to a listed champion ([`drafted_champion`]), else what
+// the grid showed, else nothing.
 fn drafted_label(
     champions: &[ChampionChoice],
     game_names: &[String],
@@ -2022,18 +1597,11 @@ fn drafted_label(
     (!reference && !raw.trim().is_empty()).then_some(raw)
 }
 
-// The champion the editor lists that one drafted pick is, if it can be tied
-// to one.
-//
-// Tied by id where one can be read, because an id is the same in every
-// language: out of the label's text if that is a reference
-// (`#asset/…?description.<id>.name`) rather than a name, and failing
-// everything else out of the slot's node name, if the game names slots for
-// their champion. By name in between, against the game's name for each
-// champion (`game_names`, in step with `champions`) and then the editor's
-// label and the id itself, all compared through [`fold`]. That route only
-// works with the game in English, the one language both sides of the
-// comparison are certain to be in.
+// The listed champion one drafted pick is, if any: by id where one can be read
+// (a `#asset/…?description.<id>.name` reference, else the slot's node name),
+// and in between by name through [`fold`] against the game's names, the
+// editor's labels and the ids. The name route only works with the game in
+// English.
 fn drafted_champion<'a>(
     champions: &'a [ChampionChoice],
     game_names: &[String],
@@ -2085,7 +1653,7 @@ fn row_source(row: usize) -> String {
     let strings = strings();
     let no_champion = &strings.no_champion;
     // Both follow the panel width, so a row built for one host is the wrong
-    // shape for the other -- see `set_panel_size`, which rebuilds them.
+    // shape for the other; see [`want_panel_size`].
     let row_w = row_width();
     let delete_x = delete_x();
     let mut source = format!(
@@ -2297,13 +1865,8 @@ fn entry_height(entry: &ListEntry) -> i32 {
 }
 
 // `.ui` source for one item-list node: a category header, or a pickable item
-// with its sheet icon.
-//
-// The item node is deliberately the shape the earlier picker used and proved
-// renders — style ref, size, `label`/`selected_label` overrides, `text` — with
-// nothing added but the icon child and explicit label colors. `text_offset`
-// (which would left-align the name past the icon) appears in no shipped layout
-// and is not worth carrying as an unknown, so the style's centred label stands.
+// with its sheet icon. Kept to the proven picker shape plus the icon and label
+// colours.
 fn entry_source(index: usize, entry: &ListEntry) -> String {
     let strings = strings();
     let ai_slot = &strings.ai_slot;
@@ -2317,11 +1880,9 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
              text: \"{PLAIN_PAD}{ai_slot}\";\n\
              }}"
         ),
-        // A `color` band with the label as its child rather than a bare label,
-        // because a label has no fill of its own. The child draws over the
-        // parent at equal `z` (tree order), so the text lands on top of the
-        // band. Both ignore events so a click on a header falls through to the
-        // catcher and dismisses the list instead of being swallowed.
+        // A `color` band with the label as its child, since a label has no
+        // fill; both ignore events so a click on a header falls through to the
+        // catcher and closes the list.
         ListEntry::Header(name) => format!(
             "e{index}:color {{\n\
              width: 304px;\n\
@@ -2412,12 +1973,8 @@ fn role_entry_source(index: usize, role: Role) -> String {
 }
 
 // Removes the spawned row nodes and spawns one per row passing the filter,
-// registering every control. Called when the window is built, after any add or
-// delete, and whenever the filter text changes.
-//
-// Rebuilding wholesale rather than splicing keeps row index and node name in
-// step: a row's identity is its position in the list, so deleting row 1 has to
-// renumber everything after it anyway.
+// registering every control; rebuilt wholesale, since deleting a row renumbers
+// everything after it anyway.
 fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let previous = with_state(|state| std::mem::take(&mut state.spawned_rows)).unwrap_or_default();
     for row in previous {
@@ -2444,10 +2001,8 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let count = spawned.len();
     let _ = with_state(|state| state.spawned_rows = spawned.clone());
 
-    // `#rows` is authored `height: auto`, but an auto height measured over a
-    // subtree that has not been laid out is zero, and a scroll view whose
-    // contents are zero tall shows nothing however many children it has. The
-    // height is knowable exactly, so it is stated.
+    // `#rows` is `height: auto`, which measures zero on an unlaid subtree and
+    // shows nothing, so the exact height is stated.
     let height = count as i32 * (ROW_HEIGHT as i32 + ROW_SPACING);
     ctx.ui_set_properties(rows_path(), &format!("height: {height}px;"));
 
@@ -2478,14 +2033,9 @@ fn header_source(slot: usize) -> String {
     )
 }
 
-// Lines the column headers up with the columns.
-//
-// `build_editor.ui` authors three headers at the three-slot geometry, which is
-// exactly what [`combo_x`] and [`combo_w`] produce for three slots — so this is
-// a no-op in the vanilla case and only earns its keep at four, where it
-// re-places the first three and spawns the fourth. The editor subtree is
-// rebuilt from source on every [`ensure_editor`], so there is never a stale
-// fourth header to remove.
+// Lines the column headers up with the columns, re-placing the authored three
+// and spawning the rest; the subtree is rebuilt on every [`ensure_editor`], so
+// no stale header is left.
 fn sync_column_headers(ctx: &mut StableClient<'_>) {
     for slot in 0..picker_slots() {
         let path = format!("{}.c_item{}", colheader_path(), slot + 1);
@@ -2508,20 +2058,9 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
     }
 }
 
-// Rows that pass the current filter, as indices into `state.rows`.
-//
-// Filtering by *not spawning* rather than by hiding is what keeps the rest of
-// the module unchanged: a row's node is named for its index in `state.rows`
-// (`…rows.row4`), so every path, every handler and [`row_from_path`] go on
-// meaning the same thing with a filter up. Hiding would have worked too, but
-// only if `TopToBottom` skips invisible children when it measures — and a
-// filtered list with 50px gaps in it is exactly the bug that would cause.
-//
-// A row with no champion always passes. It is the row that was just added or is
-// about to be assigned, and having `+ Add Champion` produce a row that is
-// immediately filtered out of sight is worse than showing one extra line. (The
-// old external editor solved the same problem by clearing the search box on
-// add, which loses the filter you were in the middle of using.)
+// Rows that pass the current filter, as indices into `state.rows`; filtered by
+// not spawning (see the module notes). A row with no champion always passes, so
+// `+ Add Champion` never adds an invisible row.
 fn visible_rows() -> Vec<usize> {
     // Taken before the lock: `with_state` is a plain `Mutex`, so reading the
     // champion list from inside the closure would deadlock on itself.
@@ -2564,14 +2103,9 @@ fn visible_rows() -> Vec<usize> {
     .unwrap_or_default()
 }
 
-// The search box's text as the terms a row may match.
-//
-// Commas separate alternatives, so `ashe, garen` shows both. Blank terms are
-// dropped rather than kept as empty strings, which is what stops a lone comma
-// or a trailing separator — the state the box is in half way through typing a
-// second name — from either matching everything or matching nothing.
-//
-// Lowercased here so the comparison against the label does not have to be.
+// The search box's text as the terms a row may match: comma-separated
+// alternatives, lowercased, blanks dropped so a half-typed `ashe,` matches
+// neither everything nor nothing.
 fn filter_terms(filter: &str) -> Vec<String> {
     filter
         .split(',')
@@ -2580,33 +2114,16 @@ fn filter_terms(filter: &str) -> Vec<String> {
         .collect()
 }
 
-// Whether a filter is currently narrowing the list.
-//
-// Asks [`filter_terms`] rather than testing the raw text, so that "the box has
-// something in it" and "the list is narrowed" cannot drift apart: `,` is the
-// case where they differ.
+// Whether a filter is narrowing the list, through [`filter_terms`] so that a
+// lone `,` does not count.
 fn filter_active() -> bool {
     with_state(|state| !filter_terms(&state.filter).is_empty()).unwrap_or(false)
 }
 
-// Reads the filter box and rebuilds the rows when its text has changed.
-//
-// Polled from `post_update` rather than driven by an event: the only text
-// event the ABI defines is `TextEditComplete`, which fires on commit, so a
-// handler would leave the list stale until the box lost focus. Reading a string
-// once a frame is cheap, and the rebuild is gated on the text actually
-// differing.
-//
-// # The side cells
-//
-// A lit side cell means "the box holds this side's champions", which stops
-// being true the moment the player types in it, so a change found here puts
-// both cells out. What a cell writes itself is recorded as already read, and
-// must not count as typing — but whether the box reads back a programmatic
-// write on the very next frame is not known, so for [`SIDE_SETTLE_FRAMES`]
-// after one a mismatch is waited out rather than believed. A write that never
-// takes is believed once they have passed, which leaves the cells out and the
-// list filtered by what the box really says.
+// Reads the filter box every frame (its only event fires on commit) and
+// rebuilds the rows when the text changed. Typing puts out the side cells;
+// their own writes are waited out for [`SIDE_SETTLE_FRAMES`] in case the box
+// reads back late.
 fn sync_filter(ctx: &mut StableClient<'_>) {
     let Some(text) = ctx.ui_text_edit_text(search_path()) else {
         return;
@@ -2642,23 +2159,10 @@ fn sync_filter(ctx: &mut StableClient<'_>) {
     rebuild_rows(ctx, &entries);
 }
 
-// The composition test's tactics panel, or `None` when it is not up.
-//
-// # Why this searches instead of naming a path
-//
-// `main.contents.training.comp_test_popup.tactics`, by analogy with
-// `main.contents.strategy`, is wrong twice over. The training layout's root
-// node is `training` (`training:training_ui`), not `main`; and `contents` is
-// a node authored *inside* `strategy.ui`, so it does not exist on any screen
-// but that one. `ui_visible` returns `None` for the whole path, the vanilla
-// rows are never hidden and the editor never opens — the same silent failure
-// `item_stats::ui::resolve_screen` documents for the statistics tab.
-//
-// So the documented path is a *candidate*, not an answer: [`COMP_ROOT`] is
-// tried first because it costs one `ui_exists`, and a throttled breadth-first
-// walk for the `comp_test_popup.tactics.builds` shape backs it up. The shape is
-// the marker rather than the screen's name for the reason `find_screen` gives:
-// the name is game code's business, the shape is what this module needs.
+// The composition test's tactics panel, or `None` when it is not up. The
+// training layout's root is `training` and `contents` exists only in
+// `strategy.ui`, so [`COMP_ROOT`] is a one-lookup candidate, backed by a
+// throttled walk for the `comp_test_popup.tactics.builds` shape.
 fn resolve_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
     // Cached from an earlier frame, and still resolving. This is the usual path
     // and it costs one call.
@@ -2675,10 +2179,9 @@ fn resolve_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
         return Some(candidate);
     }
 
-    // Everything above is one `ui_exists` and runs anywhere. The sweep is not:
-    // without this gate a screen that simply has no composition test — which is
-    // every screen but one — would pay for a failed 600-node walk twice a second,
-    // forever.
+    // Everything above is one `ui_exists`; the sweep runs only on the Training
+    // tab, or every other screen would pay a failed 600-node walk twice a
+    // second.
     if !on_training_tab(ctx) {
         return None;
     }
@@ -2697,13 +2200,9 @@ fn resolve_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
     Some(found)
 }
 
-// Whether the client says the Training tab is the one up.
-//
-// Gates the sweep in [`resolve_comp_tactics`] the way `item_stats::ui`'s
-// `on_statistics_tab` gates its own. `None` means the client could not answer,
-// and the sweep is allowed rather than blocked: the throttle still bounds it,
-// and refusing on a missing answer would make the fallback dead code on any
-// build where that call stops working.
+// Whether the client says the Training tab is up, gating the sweep like
+// `item_stats::ui`'s `on_statistics_tab`. `None` allows the sweep (the throttle
+// still bounds it), so a broken call does not kill the fallback.
 fn on_training_tab(ctx: &StableClient<'_>) -> bool {
     let Some(tab) = ctx.client_main_tab() else {
         return true;
@@ -2746,29 +2245,17 @@ fn find_comp_tactics(ctx: &StableClient<'_>) -> Option<String> {
     None
 }
 
-// Puts the editor in the composition test's build section, in place of the
-// vanilla rows.
-//
-// There is no tab to enter here and none to leave by, so the editor is simply
-// what that section *is* while the panel is up — opened on arrival rather than
-// on a click, and torn down with the screen by the same teardown the strategy
-// screen uses.
+// Puts the editor in the composition test's build section in place of the
+// vanilla rows: opened on arrival, there being no tab, and torn down with the
+// screen like the strategy screen's.
 fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
     let builds = format!("{tactics}.builds");
 
     shrink_team_tactics(ctx, tactics);
 
-    // Measured against the *header* and the Back button, not against the block
-    // the editor replaces. `builds` is hidden two lines below, so from the second
-    // frame on its rect is unreliable, and a panel that can only be placed on the
-    // frame it first appeared is a panel that never recovers from a relayout.
-    // These two stay visible for as long as the dialog does.
-    //
-    // Nothing here can come from the layout file: the dialog is authored 680px
-    // tall and resized at runtime to fit this 1072px panel, so everything inside
-    // it moves, and the lane test lays out differently again. `ui_node_rect`
-    // reports in the same design space the layouts are authored in — see
-    // `place_list`, which positions the floating lists the same way.
+    // Measured against the header and the Back button, which stay visible, not
+    // the hidden block it replaces. The dialog is resized at runtime and the
+    // lane test lays out differently, so nothing comes from the layout file.
     let slot = comp_test_slot(ctx, tactics);
 
     // Point every editor path at this screen before one is read. The strategy
@@ -2776,10 +2263,8 @@ fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
     // until this runs `editor_path()` names something that cannot exist.
     set_host(tactics);
 
-    // Re-asserted every frame rather than once on entry: game code rebuilds
-    // this block whenever the champion selection changes, and a one-shot hide
-    // does not survive that. `post_update` runs after game code, so this is the
-    // last word — the same reason the strategy screen re-asserts its writes.
+    // Re-asserted every frame: game code rebuilds this block whenever the
+    // champion selection changes, and `post_update` runs after it.
     ctx.ui_set_visible(&builds, false);
 
     // Whether the panel is already up. It survives the dialog closing — same
@@ -2802,23 +2287,16 @@ fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
         }
     }
 
-    // Geometry is re-asserted every frame, like the hide above, and for a
-    // sharper reason: the 5v5 and lane tests are the same `tactics` panel laid
-    // out differently, and the editor outlives the dialog. Applying this only on
-    // the frame the editor was built meant each mode kept whichever geometry the
-    // *other* one had measured.
+    // Geometry is re-asserted every frame too: the 5v5 and lane tests lay out
+    // the same panel differently, and the editor outlives the dialog.
     apply_panel_size(ctx);
     if resized {
         let entries = snapshot_entries();
         rebuild_rows(ctx, &entries);
     }
 
-    // Both rects are absolute and the popup's x/y are relative to the host, so
-    // the host's own origin comes off — see [`host_origin`]. On the strategy
-    // screen that subtraction is a no-op.
-    //
-    // Left where it is when the measurement did not come back — an editor in the
-    // wrong place still works, and the alternative is not showing one at all.
+    // Rects are absolute and the popup's x/y host-relative, so the host origin
+    // comes off ([`host_origin`]). Left in place when the measurement fails.
     if let Some((x, y, _, _)) = slot {
         let (origin_x, origin_y) = host_origin(ctx);
         let (left, top) = (x as i32 - origin_x, y as i32 - origin_y);
@@ -2831,19 +2309,9 @@ fn comp_test_host(ctx: &mut StableClient<'_>, tactics: &str) {
     }
 }
 
-// Whether this screen is showing team tactics at all, which is what separates
-// the 5v5 from the lane test.
-//
-// **Visibility, not geometry.** Whether the first tactics row has a rect
-// reads `true` in both modes: the exe
-// leaves those nodes laid out and simply stops drawing them, so a hidden row
-// still reports its size. The "Team Tactics" label is the node that actually
-// disappears in the lane test - along with the Blue/Red labels beside it - and
-// `ui_visible` is what reports that.
-//
-// Both the label and the block are checked, because either one being hidden
-// means there is nothing to scroll; `None` (no such node) is treated as hidden
-// for the same reason.
+// Whether this screen shows team tactics, which tells the 5v5 from the lane
+// test. By visibility of the "Team Tactics" label and block, since hidden rows
+// still report a rect; a missing node counts as hidden.
 fn team_tactics_shown(ctx: &StableClient<'_>, tactics: &str) -> bool {
     ctx.ui_visible(&format!("{tactics}.strategy_header")) == Some(true)
         && ctx.ui_visible(&format!("{tactics}.strategy")) == Some(true)
@@ -2864,35 +2332,13 @@ const TEAM_TACTICS_FULL_HEIGHT: i32 = 456;
 const BUILD_HEADER_GAP: i32 = 46;
 
 // Shortens the team-tactics block on the 5v5 screen and pulls the header under
-// it, handing the reclaimed height to the item-build editor below.
-//
-// # Why the 5v5 only, and how that is decided
-//
-// `training.ui` has one `comp_test_popup.tactics.strategy` block, shared by
-// the 5v5 and the lane test, so the layout cannot tell them apart - which is
-// why the `scroll_view` this needs is declared there at the block's *unchanged*
-// height, and the shrink happens here instead.
-//
-// The test is whether the rows are on screen at all. The lane test has no team
-// tactics: the exe hides that whole section, header and Blue/Red labels
-// included, leaving the block occupying empty space. Asking `focused` - the
-// first row - for a rect answers that directly, and it answers it about the
-// thing being resized rather than about some proxy for the mode. A screen with
-// nothing to scroll keeps the vanilla block and never shows a bar.
-//
-// # Why every frame
-//
-// The same reason the rest of this screen's geometry is re-asserted: game code
-// rebuilds this panel when the champion selection changes, and `post_update`
-// runs after it, so a write here is the last word. A one-shot would survive
-// until the first reselect.
+// it, giving the height to the editor. `training.ui` shares the block between
+// the 5v5 and the lane test, so the shrink is done here, every frame, since
+// game code rebuilds the panel on reselect.
 fn shrink_team_tactics(ctx: &mut StableClient<'_>, tactics: &str) {
-    // Lane test. Put the block back rather than merely leaving it alone: this
-    // write sticks to the node, and the panel outlives the dialog - same
-    // subtree, same scene - so a 5v5 followed by a lane test would otherwise
-    // hand the lane test the shrunk block it is not supposed to get.
-    // `build_header` needs no counterpart: the exe positions that one itself
-    // (authored at 252, it lands at 662), so not writing it is enough.
+    // Lane test: put the block back, since the panel outlives the dialog and a
+    // 5v5 before it would leave the block shrunk. The header needs nothing; the
+    // exe places it itself.
     if !team_tactics_shown(ctx, tactics) {
         ctx.ui_set_properties(
             &format!("{tactics}.strategy"),
@@ -2913,10 +2359,8 @@ fn shrink_team_tactics(ctx: &mut StableClient<'_>, tactics: &str) {
         &format!("height: {TEAM_TACTICS_HEIGHT}px;"),
     );
 
-    // `ui_node_rect` is absolute and `ui_set_properties` is parent-relative, and
-    // the header's parent is the panel - the same subtraction the editor popup
-    // does against its own host. The block's own top is read live rather than
-    // assumed, so this follows the panel wherever the exe puts it.
+    // Absolute rect to parent-relative property, as the editor popup does; the
+    // block's top is read live.
     let top = (strategy.1 - panel.1).round() as i32 + TEAM_TACTICS_HEIGHT + BUILD_HEADER_GAP;
     ctx.ui_set_properties(
         &format!("{tactics}.build_header"),
@@ -2924,13 +2368,9 @@ fn shrink_team_tactics(ctx: &mut StableClient<'_>, tactics: &str) {
     );
 }
 
-// The rectangle the editor should occupy inside the composition test, in the
-// absolute space `ui_node_rect` reports: `(x, y, w, h)`.
-//
-// Spans from just under the "Personal Tactics" header down to just above the
-// Back button, at the header's own x and width — which is the same 24px inset
-// and 1232px span the vanilla block uses, taken from the live layout rather
-// than copied out of `training.ui`.
+// The rectangle for the editor inside the composition test, `(x, y, w, h)` in
+// `ui_node_rect` space: from under the "Personal Tactics" header to above Back,
+// at the header's x and width.
 fn comp_test_slot(ctx: &StableClient<'_>, tactics: &str) -> Option<(f32, f32, u32, u32)> {
     let header = ctx.ui_node_rect(&format!("{tactics}.build_header"))?;
     let back = ctx.ui_node_rect(&format!("{tactics}.back"))?;
@@ -2946,15 +2386,10 @@ fn comp_test_slot(ctx: &StableClient<'_>, tactics: &str) -> Option<(f32, f32, u3
     Some((header.0, top, header.2 as u32, (bottom - top) as u32))
 }
 
-// Spawns the window, its rows and both dropdown lists, and registers every
-// control. Deferred until the first click so a failure costs nothing until the
-// player actually asks for the editor, and is retried on the next click.
-//
-// Also the join between the two hosts: `modal_ready` is not enough on its own,
-// because the flag survives a screen change while the subtree it describes does
-// not. The `ui_exists` beside it is what notices that the editor's root now
-// names a node in a scene that has been unloaded, and respawns into the current
-// host instead.
+// Spawns the window, its rows and the floating lists and registers every
+// control, on first need and retried on failure. `modal_ready` survives a
+// screen change, so the `ui_exists` check is what notices the subtree is gone
+// and respawns into the current host.
 fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     if with_state(|state| state.modal_ready).unwrap_or(false) && ctx.ui_exists(editor_path()) {
         return true;
@@ -3061,13 +2496,9 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
 
 // -- interaction --------------------------------------------------------
 
-// Enters the Builds tab: selects it, hides what the other two tabs show, and
-// puts the editor in their place.
-//
-// The three tabs are `color_selectable`s, and each only knows its own state —
-// nothing arbitrates between them. Game code deselects Personal when Team is
-// clicked and vice versa, but it has never heard of ours, so the deselecting
-// in both directions is done here.
+// Enters the Builds tab: selects it, hides what the other tabs show, and puts
+// the editor in their place. Nothing arbitrates between the `color_selectable`
+// tabs and game code has never heard of ours, so the deselecting is done here.
 fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     paint_tabs(ctx, true);
 
@@ -3097,54 +2528,27 @@ fn open_editor(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
     let _ = with_state(|state| state.showing = true);
 }
 
-// Leaves the Builds tab.
-//
-// Deliberately restores no panel. Every exit from the tab is a click on Team,
-// and game code's own handler for that click shows the Team columns — putting
-// them back here would race that.
+// Leaves the Builds tab. It restores no panel: every exit is a click on Team,
+// whose own handler shows the Team columns.
 fn close_editor(ctx: &mut StableClient<'_>) {
     close_list(ctx);
     paint_tabs(ctx, false);
     ctx.ui_set_visible(editor_path(), false);
-    // The one thing put back, because it is the one thing hidden that game code
-    // may not restore: "Closing Out" belongs to the Team tab, and if its handler
-    // does not re-show it the block would stay gone for the rest of the screen.
-    // Writing `true` when game code also does is harmless.
+    // "Closing Out" is the one thing put back, since game code may not re-show
+    // it; a second `true` is harmless.
     ctx.ui_set_visible(GAME_FINISH_PATH, true);
     let _ = with_state(|state| state.showing = false);
 }
 
-// Paints which of the two tabs looks selected.
+// Paints which tab looks selected. `ui_set_selectable_selected` rejects
+// `color_selectable`, so the highlight is drawn: through `image`/`label` for
+// ours (never selected) and `selected_image`/`selected_label` for Team (always
+// selected underneath).
 //
-// The selection cannot be *set*. `ui_set_selectable_selected` is
-// `state_set_json` with `{"selected": …}`, and the host accepts that key only
-// for the `checkbox`, `text_edit`, `slider` and `selectable` runner kinds —
-// these tabs are `color_selectable`, a kind not on that list, so the write is
-// rejected and returns false. The highlight is therefore drawn on directly.
-//
-// The two tabs are painted through different property pairs because they are in
-// different states underneath. Ours is never `selected`, so its plain
-// `image`/`label` are what render. Team *is* selected as far as game code is
-// concerned — nothing ever told it otherwise — so its `selected_image` and
-// `selected_label` are what render, and those are the ones that have to be
-// dulled to make it look inactive.
-//
-// # `color` is the stroke, `back_color` is the fill
-//
-// Only while `stroke` is non-zero. `strategy_option`'s `image` block sets
-// `stroke: 1`, so setting `color` alone there paints a light *outline* around a
-// still-dark tab rather than filling it. Lighting our tab therefore means
-// dropping the stroke to 0 and setting the fill, and dimming it means putting
-// the stroke back.
-//
-// `selected_image` sets no stroke at all, which is why Team needs only a
-// colour and gets no `stroke` key here.
-//
-// Hover is written on both states rather than left to the style. A lit tab has
-// nothing to signal, so its hover colours are its resting ones. A dim tab greys
-// its outline and brightens its text — vanilla's unselected `image`/`label`
-// behaviour, which `selected_image` does not have because a selected tab is
-// never normally the one being hovered towards.
+// With `stroke` non-zero, `color` is the outline and `back_color` the fill, so
+// lighting our tab drops the stroke to 0. Hover is written on both states: a
+// lit tab's matches its resting look, and a dim one greys its outline and
+// brightens its text.
 fn paint_tabs(ctx: &mut StableClient<'_>, builds_active: bool) {
     if !ctx.ui_set_properties(BUILDS_TAB, &tab_style("image", "label", builds_active)) {}
     if !ctx.ui_set_properties(
@@ -3158,18 +2562,9 @@ fn paint_tabs(ctx: &mut StableClient<'_>, builds_active: bool) {
 const LIST_ROW_TEXT: &str = "#d7dbe4ff";
 const LIST_CLEAR_TEXT: &str = "#a5a5abff";
 
-// One list row's appearance, lit the same way the Builds tab is.
-//
-// The rows are `color_selectable` for the fill, which means their `selected`
-// flag cannot be written — `state_set_json` takes that key for `selectable` but
-// not for this kind (see [`paint_tabs`]). So "which row is picked" is painted
-// here rather than set, and the two list-opening functions repaint every row.
-//
-// A bare `selectable` was the obvious choice and is what this used before: its
-// `selected` flag *is* writable, so one call per row did the whole job. But
-// that runner draws only a label — no vanilla layout uses it, and the
-// `selected_image` in `strategy_option` went nowhere — so the picked row could
-// only ever change text colour, never take a fill.
+// One list row's appearance, lit the way the Builds tab is: the rows are
+// `color_selectable` for the fill, so which is picked is painted, not set (see
+// [`paint_tabs`]). A plain `selectable` could be set but draws no fill.
 fn list_entry_style(lit: bool, idle_text: &str) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
@@ -3190,14 +2585,9 @@ fn list_entry_style(lit: bool, idle_text: &str) -> String {
     )
 }
 
-// One tab's appearance, through whichever property pair actually renders for
-// it — `image`/`label` for a tab this mod added, which game code never
-// considers selected, and `selected_image`/`selected_label` for a vanilla one
-// it does.
-//
-// Shared with [`crate::item_stats::ui`], whose fourth tab on the statistics
-// screen is the same trick against a different runner: same `strategy_option`
-// style underneath, so the same pair of property sets lights and dims it.
+// One tab's appearance through the property pair that renders for it:
+// `image`/`label` for a tab this mod added, `selected_image`/`selected_label`
+// for a vanilla one. Shared with [`crate::item_stats::ui`]'s statistics tab.
 pub(crate) fn tab_style(image_key: &str, label_key: &str, lit: bool) -> String {
     let (fill, text, stroke) = if lit {
         (TAB_SELECTED_FILL, TAB_SELECTED_TEXT, 0)
@@ -3217,24 +2607,17 @@ pub(crate) fn tab_style(image_key: &str, label_key: &str, lit: bool) -> String {
     )
 }
 
-// Holds the Matchup card on screen and "Closing Out" off it.
-//
-// Called on entry and then every frame from `post_update`: game code re-asserts
-// both from its own tab state, which never becomes Builds, so a one-shot write
-// does not survive its next update.
+// Holds the Matchup card on screen and "Closing Out" off it, on entry and every
+// frame, since game code re-asserts both from its own tab.
 fn keep_matchup(ctx: &mut StableClient<'_>) {
     ctx.ui_set_visible(SUB4_PATH, true);
     ctx.ui_set_visible(GAME_FINISH_PATH, false);
     ctx.ui_set_visible(MATCHUP_PATH, true);
 }
 
-// Places a floating list under the control that opened it, flipping above when
-// there is no room below the way a dropdown near the screen edge does.
-//
-// The anchor's position comes from `ui_node_rect`, which the list probe
-// confirmed reports in the same design space the layouts are authored in. Rows
-// scroll, so their position cannot be computed from the layout constants the
-// way a fixed row's could.
+// Places a floating list under the control that opened it, or above where there
+// is no room below. The anchor comes from `ui_node_rect` (layout design space),
+// since rows scroll.
 fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32) -> (i32, i32) {
     let Some((x, y, _, h)) = ctx.ui_node_rect(anchor).filter(|rect| rect.3 > 0.0) else {
         return (0, 0);
@@ -3247,10 +2630,8 @@ fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32)
     } else {
         (y - LIST_H - 4).max(8)
     };
-    // Nudged left rather than pinned to the control's own x, so one at the right
-    // edge of the window still gets the whole list on screen. Clamped in screen
-    // space, which is what the canvas bounds are in, and only then moved into the
-    // host's frame.
+    // Nudged left to keep the whole list on screen, clamped in screen space,
+    // then moved into the host's frame.
     let left = x.min(CANVAS_W - width - 8).max(8);
 
     let (origin_x, origin_y) = host_origin(ctx);
@@ -3259,18 +2640,10 @@ fn place_list(ctx: &mut StableClient<'_>, panel: &str, anchor: &str, width: i32)
     (left, top)
 }
 
-// Origin of the node the editor is spawned under, in the absolute design space
-// [`StableClient::ui_node_rect`] reports.
-//
-// A node's own `x`/`y` are relative to its parent while `ui_node_rect` answers
-// in absolute coordinates, so anything positioned *from a measurement* has to
-// have this taken off it first.
-//
-// It is (0, 0) on the strategy screen — `main.contents` is a full-screen node at
-// the origin, which is why nothing needed this while that was the only host —
-// and it is not on the composition test, whose panel is a centred dialog. A
-// failed measurement falls back to (0, 0) rather than skipping the write: the
-// old behaviour, and a list in the wrong place still beats no list.
+// Origin of the editor's host in `ui_node_rect`'s absolute space, to take off
+// measured positions (a node's x/y are parent-relative). (0, 0) on the strategy
+// screen, and on a failed measurement, since a list in the wrong place beats
+// none.
 fn host_origin(ctx: &StableClient<'_>) -> (i32, i32) {
     ctx.ui_node_rect(paths().parent)
         .map(|(x, y, _, _)| (x.round() as i32, y.round() as i32))
@@ -3356,31 +2729,8 @@ fn close_list(ctx: &mut StableClient<'_>) {
     let _ = with_state(|state| state.open_list = None);
 }
 
-// Gives the wheel to one scroll view and takes it from the other two.
-//
-// A floating list is drawn over the row list, but overlapping is not something
-// the wheel takes account of: with a list open, one scroll moved both it and
-// the rows underneath it. `#listcatch` does not help — it is a button, and
-// buttons are about clicks.
-//
-// Two keys are written, because the obvious one is not enough. `ignore_event`
-// is in the `scroll_view` runner's property table (beside `speed`, `bar_width`
-// and the rest) and the write is accepted, but it governs hit-testing — the
-// same thing it does on the row images, which use it to keep from swallowing a
-// click meant for the button behind them — and the wheel is read from hover
-// rather than routed as a click, so a scroll view with it set still scrolled.
-// `speed` is what scales the movement, and zero of it is none.
-//
-// Written on all three every time rather than tracked, so there is no state to
-// get out of step: exactly one is live and it is the one named. Muting
-// `#rowscroll` while a list is up costs nothing else — the rows behind an open
-// list are already unclickable, that being `#listcatch`'s entire job — and
-// [`close_list`] restores it on every dismissal path.
-// Node name of the vanilla Item Info popup, opened by the button this tab
-// keeps on screen. Its layout is `strategy_component/item_info_popup`: a
-// full-screen `z: 200` panel, spawned by game code rather than declared in
-// `strategy.ui`, which is why its path has to be found rather than written
-// down.
+// Node name of the vanilla Item Info popup, a full-screen `z: 200` panel game
+// code spawns, so its path has to be found ([`find_info_popup`]).
 const INFO_POPUP_NAME: &str = "item_info_popup";
 
 // The scroll view that is live when nothing may scroll at all. Not a path
@@ -3388,13 +2738,9 @@ const INFO_POPUP_NAME: &str = "item_info_popup";
 // not the one named.
 const SCROLL_NONE: &str = "";
 
-// Looks for the Item Info popup in the node tree, breadth-first from `main`.
-//
-// Game code spawns it, so where it lands is not something the mod's own
-// layouts record — and a guessed path that is wrong fails silently, leaving the
-// bug in place with nothing to show for it. `ui_child_names` answers the
-// question directly. Two levels is enough for a full-screen popup (it is a
-// sibling of the screen, not a part of one) and bounds the walk.
+// Looks for the Item Info popup breadth-first from `main`, two levels deep:
+// game code spawns it as a sibling of the screen, so its path cannot be written
+// down.
 fn find_info_popup(ctx: &StableClient<'_>) -> Option<String> {
     let mut level = vec!["main".to_string()];
     for _ in 0..2 {
@@ -3413,24 +2759,13 @@ fn find_info_popup(ctx: &StableClient<'_>) -> Option<String> {
     None
 }
 
-// Mutes the editor's scroll views while the Item Info popup is up, and hands
-// the wheel back when it closes.
-//
-// The popup covers the editor and scrolls its own list, but it is game code's
-// node — the mod cannot make it consume the wheel on the way past, only stop
-// its own views from acting on what gets through. Same overlap as an open
-// dropdown, one screen further out.
-//
-// Rewritten only on the transition. Closing hands the wheel to whichever list
-// is open rather than always to the rows, since the popup can be opened over an
-// open dropdown.
+// Mutes the editor's scroll views while the Item Info popup is up (game code's
+// node, which cannot be made to consume the wheel), and hands the wheel back
+// when it closes, to an open list if there is one. Written only on the
+// transition.
 fn sync_info_popup(ctx: &mut StableClient<'_>) {
-    // Its own source declares `visible: false`, which says it is spawned with
-    // the screen and toggled — so the first search should find it. The retry is
-    // for the other possibility, that game code spawns it on first use: a single
-    // failed search would then never find it at all. Once a second is often
-    // enough for something opened by hand, and the walk stops being run once it
-    // has an answer.
+    // Searched for once a second until found, in case game code spawns the
+    // popup on first use rather than with the screen.
     let known = with_state(|state| {
         let due = state.info_popup.is_none() && state.info_probe_tick % 60 == 0;
         state.info_probe_tick = state.info_probe_tick.wrapping_add(1);
@@ -3474,6 +2809,10 @@ fn sync_info_popup(ctx: &mut StableClient<'_>) {
     focus_scroll(ctx, active);
 }
 
+// Gives the wheel to one scroll view and takes it from the others, since an
+// open list and the rows under it would both scroll. Done with `speed: 0`, as
+// `ignore_event` governs hit-testing and the wheel follows hover; written on
+// all three every time, and [`close_list`] restores the rows.
 fn focus_scroll(ctx: &mut StableClient<'_>, active: &str) {
     for path in [
         rowscroll_path(),
@@ -3507,10 +2846,8 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let Some(event) = ctx.ui_current_event() else {
         return;
     };
-    // `Remove` fires as a node is torn down, and this screen is torn down on
-    // every match start — so the Builds tab's own destruction would otherwise
-    // arrive here as if it had been clicked, spawning the editor into a dying
-    // tree. Only real interactions should reach the dispatch below.
+    // `Remove` fires as nodes are torn down, every match start, and must not
+    // reach the dispatch as if clicked.
     if matches!(event.kind, Some(UiEventKindV1::Remove)) {
         return;
     }
@@ -3535,10 +2872,8 @@ fn handle_event(ctx: &mut StableClient<'_>) {
             let entries = snapshot_entries();
             rebuild_rows(ctx, &entries);
         }
-        // Put the popup back where it is authored. Belt and braces since the
-        // hosts were split: the composition test moves its *own* subtree, not
-        // this one, and a strategy screen that has been reloaded respawns this
-        // from source at the authored rect anyway.
+        // Back to the authored rect; belt and braces, since the composition
+        // test moves its own subtree.
         ctx.ui_set_properties(popup_path(), EDITOR_RECT_STRATEGY);
         let entries = snapshot_entries();
         open_editor(ctx, &entries);
@@ -3563,15 +2898,9 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let entries = snapshot_entries();
 
     if path == save_path() {
-        // Save no longer leaves for the Team tab: the common thing to do after
-        // saving is to keep editing, and being thrown out of the panel to come
-        // back cost more than the exit was worth. So the button has to report
-        // its own result, which is what the tick is for.
-        //
-        // The write is real rather than skipped-because-edits-autosave, so that
-        // a failed one can leave the tick hidden — a tick that appears whatever
-        // happened is not a report. It goes down again on the next edit (see
-        // `clear_saved`), which is what keeps it about *this* state of the rows.
+        // Save stays on the tab and reports through the tick, which shows only
+        // when the write succeeds and goes down on the next edit
+        // (`clear_saved`).
         let rows = snapshot_rows();
         ctx.ui_set_visible(saved_path(), build_config::save_champion_rows(&rows));
         return;
@@ -3601,11 +2930,9 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    // Each side cell is a switch of its own, so unlike the footer's cells a
-    // click on a lit one has to do something: put it out. That makes the kind
-    // of event matter here as it does not there, because acting on anything
-    // else would undo the click. Only a click gets through, with an unreported
-    // kind counted as one — the gate `item_stats::ui` uses, for its reason.
+    // Each side cell is its own switch, so a click on a lit one puts it out.
+    // Only a click counts (an unreported kind too, the `item_stats::ui` gate),
+    // or other events would undo it.
     if path == side_blue_path() || path == side_red_path() {
         if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
             return;
@@ -3619,11 +2946,9 @@ fn handle_event(ctx: &mut StableClient<'_>) {
                 state.side_blue = !state.side_blue;
                 state.side_blue
             };
-            // Lighting a cell also gives every champion of its side a row, so
-            // the list it narrows to is the whole lineup and not just the
-            // champions that already had a build: one with no row under any
-            // role gets an empty one, at the end. Like a row off the Add
-            // button it is never written until an item is pinned in it.
+            // Lighting a cell also gives every champion of its side a row (an
+            // empty one at the end where it has none), never written until
+            // something is pinned.
             let mut added = false;
             if lit {
                 for id in state.side_ids[usize::from(red)].clone() {
@@ -3662,12 +2987,8 @@ fn handle_event(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    // A segmented control's cells each *assert* a value rather than flipping the
-    // setting: clicking the option that is already lit has to be a no-op, or the
-    // control would contradict what it shows.
-    // The setting is all this writes. It deliberately does not touch the saved
-    // builds: a pinned duplicate is the player's, and enforcement is something
-    // the match does to a build, not something the editor does to the config.
+    // A segmented control's cells assert a value, so clicking the lit one is a
+    // no-op. Only the setting is written; the saved builds are untouched.
     if path == unique_on_path() || path == unique_off_path() {
         if build_config::set_smart_builds(path == unique_on_path()) {
             refresh_unique(ctx);
@@ -3796,10 +3117,8 @@ fn pick_item(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
     refresh_row(ctx, entries, row);
 }
 
-// Commits a clicked role, assigning it to the open row.
-//
-// Unlike the champion and item lists there is no click-again-to-clear: `Any` is
-// itself an entry, so clearing is picking it.
+// Commits a clicked role to the open row; `Any` is an entry, so clearing is
+// picking it.
 fn pick_role(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
     let Some(Some(OpenList::Role { row })) = with_state(|state| state.open_list) else {
         return;
@@ -3815,10 +3134,8 @@ fn pick_role(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
     refresh_row(ctx, entries, row);
 }
 
-// Commits a clicked champion row, assigning it to the open row.
-//
-// Clicking the champion already assigned clears it, which takes the row out of
-// the saved file without deleting it from the editor.
+// Commits a clicked champion to the open row; clicking the assigned one clears
+// it, taking the row out of the file but not the editor.
 fn pick_champion(ctx: &mut StableClient<'_>, entries: &[ListEntry], index: usize) {
     let Some(Some(OpenList::Champion { row })) = with_state(|state| state.open_list) else {
         return;
@@ -3861,54 +3178,40 @@ impl StableExtension for StrategyPicker {
         perf::report_if_due();
         let _frame = perf::Probe::start(Section::Frame);
 
-        // The merged `tfm2_item_tactics` half, which was its own
-        // `ModExtension::post_update` before it moved in here. It has to run
-        // first and unconditionally: this is the only per-frame client hook the
-        // mod owns, and everything below returns early off the strategy screen,
-        // while the tactics half installs and self-heals its hooks (including
-        // the one that captures the UI root) on every frame, everywhere.
+        // The native tactics half, first and unconditional: this is the mod's
+        // only per-frame client hook, and its hooks install and self-heal on
+        // every frame, everywhere.
         perf::time(Section::FrameTactics, || tactics::driver::post_update(ctx));
 
-        // Also unconditional, and for the same reason: the screen it acts on is
-        // not this one, so it cannot live behind the early return below. It is
-        // inert unless `4items.cfg` says three slots.
+        // Unconditional too, since its screen is not this one; inert unless the
+        // slot count is three.
         perf::time(Section::FrameSoloRank, || crate::solo_rank_ui::sync(ctx));
 
-        // Which save's item totals are loaded. Unconditional because it has to
-        // be settled before anything reads or writes them, and the two places
-        // that do — the statistics screen and the management tick — are both
-        // somewhere this early return would have skipped.
+        // Which save's item totals are loaded, settled before anything reads
+        // them. Unconditional, since the statistics screen and the management
+        // tick are both past the early return.
         perf::time(Section::FrameItemStats, || crate::item_stats::sync(ctx));
 
         // The editor's two toggles, which are the loaded save's. After the
         // line above, whose word it takes that the save has been read.
         build_config::sync_settings(ctx);
 
-        // The save's item balance patches: its state, whether the next one
-        // is due, and the patched numbers in whatever item tooltip the game
-        // has up. After the line above, whose word it takes that the save
-        // has been read. Unconditional because a tooltip can be on any
-        // screen; one atomic read a frame while nothing is patched.
+        // The save's item balance patches: state, due checks, and patched
+        // numbers in any item tooltip up, after the save is read. One atomic
+        // read a frame while nothing is patched.
         crate::patches::sync(ctx);
 
-        // Item Rules: the save's own setting, read and written here, where
-        // the save can be reached. Then the row that shows it, in the game's
-        // Options dialog, which can be opened over any screen: one failed
-        // lookup while it has not been. Ahead of the patcher row below, which
-        // goes under it.
+        // Item Rules: the save's setting, then its Options row, ahead of the
+        // patcher row that goes under it.
         crate::item_tiers::sync(ctx);
         crate::options_row::sync(ctx);
 
-        // The Options dialog's Item Patcher Settings row, and the window it
-        // opens, where the player sets item numbers by hand and queues the
-        // patch that releases them. Unconditional because the dialog opens
-        // over any screen; one lookup a frame while it is closed.
+        // The Item Patcher Settings row and window; one lookup a frame while
+        // the dialog is closed.
         crate::ui::patch_settings::sync(ctx);
 
-        // Champion facts for the Smart Builds rules, which only the client can
-        // ask the host for. Unconditional: the build paths need them in every
-        // match, and it returns at once when there is no champion it has not
-        // asked about.
+        // Champion facts for Smart Builds, which only the client can ask for;
+        // returns at once with nothing new to ask.
         perf::time(Section::FrameChampionTraits, || {
             crate::champion_traits::learn(ctx)
         });
@@ -3930,10 +3233,8 @@ impl StableExtension for StrategyPicker {
             crate::item_stats::toolbox_tab::sync(ctx)
         });
 
-        // The draft screen's picks, for the editor's Blue Team / Red Team
-        // cells. Unconditional because the draft is over by the time the
-        // strategy screen is up: it has to be read on its own screen, and off
-        // that screen this is one failed lookup.
+        // The draft screen's picks, for the Blue Team / Red Team cells: read on
+        // their own screen, one failed lookup elsewhere.
         perf::time(Section::FrameDraftWatch, || draft_watch::sync(ctx));
 
         // The player's builds in the in-match Check Tactics panel. Unconditional
@@ -3954,14 +3255,9 @@ impl StableExtension for StrategyPicker {
         // Everything from here to whichever return this frame takes.
         let _editor = perf::Probe::start(Section::FrameEditor);
 
-        // The composition test hosts the editor too. It has to be handled
-        // before the gate below, which returns — and tears the editor down —
-        // for any screen without the strategy tabs, this one included.
-        //
-        // Visibility, not existence: the panel is authored `visible: false` and
-        // toggled by game code, so it *exists* for as long as the Training
-        // screen is loaded. Gating on `ui_exists` would put the editor up over
-        // the whole Training screen with the dialog shut.
+        // The composition test hosts the editor too, handled before the gate
+        // below, which tears the editor down. Gated on visibility, since the
+        // panel exists while the Training screen is loaded.
         if let Some(tactics) = resolve_comp_tactics(ctx) {
             if ctx.ui_visible(&tactics).unwrap_or(false) {
                 comp_test_host(ctx, &tactics);
@@ -4004,9 +3300,8 @@ impl StableExtension for StrategyPicker {
                 // The screen and everything registered on it is gone, so the
                 // next one has to wire itself from scratch.
                 REGISTERED.forget();
-                // The lineup that screen was for has gone into its match, where
-                // the Check Tactics panel picks the player's builds out by it.
-                // The next strategy screen gets the draft before it, or no
+                // The lineup goes to its match, where the Check Tactics panel
+                // uses it; the next strategy screen gets its own draft or no
                 // cells.
                 crate::match_builds::note_lineup(drafted);
                 draft_watch::forget();
@@ -4015,10 +3310,8 @@ impl StableExtension for StrategyPicker {
             return;
         }
 
-        // On the strategy screen, so its host is the one every editor path is
-        // addressed under. Asserted here rather than once on entry because the
-        // composition test repoints them at itself and this is the only place
-        // that knows they have to come back.
+        // Repointed here every frame, since the composition test points the
+        // paths at itself.
         set_host(UI_ROOT);
 
         if !with_state(|state| state.wired).unwrap_or(true) {
@@ -4027,10 +3320,8 @@ impl StableExtension for StrategyPicker {
             // the trait's note that only ui/asset calls are live there.
             cached_entries(ctx);
             cached_champions(ctx);
-            // Team is registered as well as ours: a handler on it is what puts
-            // the editor away when the player switches back, and registering is
-            // observation only — game code's own handling for that path is
-            // untouched.
+            // Team is registered too, observation only, so switching back puts
+            // the editor away.
             for path in [BUILDS_TAB, TEAM_TAB] {
                 REGISTERED.register(ctx, path);
             }
@@ -4042,11 +3333,8 @@ impl StableExtension for StrategyPicker {
         // comparison a frame.
         sync_sides(ctx);
 
-        // Re-asserted every frame rather than once on entry. Game code drives
-        // these from its own idea of the current tab, which never becomes
-        // Builds — so on a screen entered from Team it undoes them on its next
-        // update and a one-shot write does not survive. This runs in
-        // `post_update`, after that, so ours is the last word.
+        // Re-asserted every frame: game code drives these from its own tab,
+        // which is never Builds, and `post_update` runs after it.
         if with_state(|state| state.showing).unwrap_or(false) {
             ctx.ui_set_visible(ITEM_INFO_BTN, true);
             keep_matchup(ctx);
@@ -4055,15 +3343,7 @@ impl StableExtension for StrategyPicker {
         }
     }
 
-    // Last call before the process goes away, so anything held back for the sake
-    // of not writing it every tick has to go out here.
-    //
-    // Nothing is owed a write here any more.
-    //
-    // The totals live in the save file's own namespace, which reaches disk when
-    // the player saves and never because this mod asked. `item_stats::sync`
-    // keeps the in-memory save current every frame, so whatever the player saves
-    // already has the numbers in it — and this hook is handed no `StableClient`
-    // to write one with anyway.
+    // Nothing is owed a write at process end: the totals live in the save,
+    // which `item_stats::sync` keeps current every frame.
     fn on_end(&self) {}
 }

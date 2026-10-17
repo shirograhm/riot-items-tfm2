@@ -1,46 +1,14 @@
-//! The mod's row in the game's Options dialog, on the Competition tab:
-//! **Item Rules**, a three-cell control reading *All Radiants*, *First Item
-//! Radiant* and *No Radiants*. The setting is kept in the save, and where and
-//! what it does is [`crate::item_tiers`]'s to say.
+//! The mod's Item Rules row on the Options dialog's Competition tab: *All
+//! Radiants*, *First Item Radiant* or *No Radiants*, kept in the save and
+//! applied by [`crate::item_tiers`]. It sits above the Item Patcher Settings
+//! row (user, 2026-10-16), which waits for it to be appended.
 //!
-//! The user asked for it there (2026-10-08): "put the setting here in the
-//! escape menu as a toggle called \"Item Rules\"", and to have it above
-//! the Item Patcher Settings row when the two were brought together
-//! (2026-10-16): "I would like to have this toggle option above the option
-//! for patch data".
+//! Greyed out everywhere but the management screens ([`locked_now`], user
+//! 2026-10-08). A click applies at once, into the save; the dialog's OK and
+//! Cancel do not touch it.
 //!
-//! # The dialog
-//!
-//! Found, and its Competition tab told from the other three, by
-//! `super::options_dialog`, which the Item Patcher Settings row
-//! (`super::patch_settings`) goes through as well. The game's Competition
-//! rows are children of `#contents` like every other row (`league_rule`,
-//! `cup_rule`, `group_stage_rule`, `simulation_intensity`), so a row
-//! appended there is laid out under them. This one is appended before the
-//! patcher row, which waits for it, and so stands above it.
-//!
-//! The row was seen working on its own copy of that finder (2026-10-08, the
-//! user: "that worked"); on the shared one it has not been tried yet.
-//!
-//! The row's own shape is the layout's three-cell rows over again
-//! (`#difficulty`), sizes and style included.
-//!
-//! # Only between matches
-//!
-//! The row is greyed out, and its cells take no click, anywhere but on the
-//! management screens: through a draft, a match and everything else that is
-//! a client screen of its own ([`locked_now`]). The user's rule (2026-10-08:
-//! "we should not allow the setting to be flipped mid match. can we grey it
-//! out during matches, pick ban phases"). The saved side stays marked, the
-//! way the Builds tab greys its scope toggle on the test screens, and the
-//! cells' hint says why.
-//!
-//! # The setting applies on the click
-//!
-//! Not on the dialog's OK, and its Cancel does not take it back: the cells
-//! assert a value the way the Builds tab's footer toggles do, and the dialog's
-//! own buttons are game code's. It goes into the save, so like anything else
-//! in a save it lasts once the player saves the game.
+//! Seen working on its own dialog finder (2026-10-08); not yet tried on the
+//! shared one.
 
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU8, Ordering};
 
@@ -118,10 +86,9 @@ static PAINTED: AtomicU8 = AtomicU8::new(0);
 // place the client can be asked what screen it is on.
 static LOCKED: AtomicBool = AtomicBool::new(false);
 
-// The `options.` lines of `match-builds.log`, when its one switch is on
-// (`crate::match_builds::log`): which tab the dialog was taken to show,
-// where the row landed, and every event its cells are sent. The first
-// thing to turn on when a game update loses any of them.
+// The `options.` lines of `match-builds.log` when its switch is on
+// (`crate::match_builds::log`): the tab, where the row landed, and every cell
+// event.
 fn log(key: &str, text: impl FnOnce() -> String) {
     crate::match_builds::log(&format!("options.{key}"), text);
 }
@@ -186,12 +153,9 @@ fn look(rule: Rule, locked: bool) -> u8 {
     1 + rule.code() + 4 * locked as u8
 }
 
-// Lights the cell of the setting as it stands, in the row at `row`, greyed
-// out while it may not be changed, and gives the cells the hint that goes
-// with that.
-//
-// Painted, not set: see `strategy_ui::paint_toggle` for why a
-// `color_selectable` is given the same look in both of its states.
+// Lights the cell of the current setting in the row at `row`, greyed out while
+// locked, with the matching hint. Painted, not set: see
+// `strategy_ui::paint_toggle`.
 fn paint(ctx: &mut StableClient<'_>, row: &str) {
     let rule = crate::item_tiers::rule();
     let locked = LOCKED.load(Ordering::Relaxed);
@@ -211,11 +175,8 @@ fn paint(ctx: &mut StableClient<'_>, row: &str) {
 }
 
 // Whether the setting may not be changed now: anywhere but the management
-// screens. A draft, a match, the screens around them and the ceremonies are
-// each a client screen of their own, and the pause menu opens over all of
-// them. A host that cannot say which screen is up is taken to be on the
-// management ones, so that it does not lock the setting for good; a test
-// game outside a save is a match.
+// screens. A host that cannot say which screen is up counts as management, so
+// the setting never locks for good.
 fn locked_now(ctx: &StableClient<'_>) -> bool {
     match ctx.client_scene_kind() {
         Some(ClientSceneKindV1::Main) => false,
@@ -224,18 +185,10 @@ fn locked_now(ctx: &StableClient<'_>) -> bool {
     }
 }
 
-// Registers the click handler on one cell of a row just spawned.
-//
-// Every time the row is spawned or the dialog opens, not once a path as the
-// Builds tab does it (`super::Registered`). There a handler was seen to outlive its
-// node and fire for whatever stood at the path next. Here it did not: the
-// first version registered once, and after the pause menu had been closed
-// and opened again a click on a cell never arrived (the test log,
-// 2026-10-08: the setting could be switched to First Item Radiant and never
-// back). Whether that is the pause menu's layout taking its registrations
-// with it is not known. Registering again costs nothing that matters either
-// way: should the old one have lived, a click runs the handler twice, and
-// the handler only asserts a value.
+// Registers the click handler on one cell, every time the row spawns or the
+// dialog opens: registering once lost clicks after the pause menu was reopened
+// (2026-10-08). A surviving old handler only makes a click assert its value
+// twice.
 fn register(ctx: &mut StableClient<'_>, path: &str) {
     let registered = ctx.ui_register_path_events(path, handle_event);
     log("register", || format!("`{path}` registered={registered}"));
@@ -285,10 +238,8 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
 
     let contents = format!("{dialog}.contents");
     let row = format!("{contents}.{ROW}");
-    // Spawned when the dialog has none, which is once for each time game
-    // code builds the dialog: its own rows are all there from the start, so
-    // a row appended then comes after them, and the patcher row, which waits
-    // for this one, after it.
+    // Spawned once each time game code builds the dialog, after its own rows
+    // and before the patcher row, which waits for this one.
     let fresh = !ctx.ui_exists(&row);
     if fresh {
         let source = row_source(ctx);
@@ -299,9 +250,8 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         }
         paint(ctx, &row);
     }
-    // On a row just spawned, and again each time the dialog opens: what ends
-    // a registration is not known (see `register`), and saving the game from
-    // the pause menu leaves the dialog and this row standing.
+    // On a fresh row and each time the dialog opens, since what ends a
+    // registration is not known (see `register`).
     if fresh || opened {
         for cell in &CELLS {
             register(ctx, &format!("{row}{CELLS_UNDER}{}", cell.node));
