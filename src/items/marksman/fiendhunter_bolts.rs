@@ -206,11 +206,9 @@ impl StableItem for FiendhunterBolts {
         self.cooldown_ticks = ticks(self.effect_cooldown_seconds);
     }
 
-    // An empowered attack that did not crit is made one at the item's own
-    // rate. One that did keeps the engine's crit (already 200% when it gets
-    // here) and adds the true damage instead. The true damage lands as an
-    // `Item` hit, which this `BaseAttack` gate keeps from spending another
-    // charge.
+    // An empowered attack that did not crit is made one at the item's own rate;
+    // one that did (already 200%) adds the true damage instead, which lands as
+    // an `Item` hit and so spends no charge.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

@@ -10,22 +10,14 @@ const AURA_BUFF: &str = "abyssal_mask_aura";
 // Unmake's reach. Not configurable: the ring art is drawn at this size.
 const UNMAKE_RANGE: usize = 50;
 
-// Abyssal Mask — Unmake, an aura that lowers the magic resistance of the
-// enemy champions around the carrier.
+// Abyssal Mask: Unmake, an aura lowering the magic resistance of enemy
+// champions around the carrier (Riot's older form; it now reads "take 12% more
+// magic damage").
 //
-// The same shape as `FrozenHeart`'s Winter's Caress: a short buff on every
-// enemy champion in range, put back on the shared aura cycle
-// ([`AURA_REFRESH_TICKS`]), so an enemy who walks out keeps it for at most
-// [`AURA_DURATION_TICKS`] and one who walks in has it within a cycle.
-//
-// Riot's Unmake now reads "take 12% more magic damage". This is the older
-// form of it: less magic resistance.
-//
-// # Both variants share the buff name
-//
-// Same-name buffs stack, and re-applying is a remove followed by an add: one
-// `entity_remove_buff` clears every copy. So two Masks standing by the same
-// enemy leave one Unmake on them, not two.
+// Like `FrozenHeart`'s Winter's Caress, a short buff is put back on every enemy
+// champion in range each aura cycle ([`AURA_REFRESH_TICKS`]) and lingers at
+// most [`AURA_DURATION_TICKS`] after they leave. Both tiers share the buff name
+// and re-applying removes every copy first, so two Masks leave one Unmake.
 #[derive(Clone, Debug)]
 pub struct AbyssalMask {
     meta: ItemMeta,

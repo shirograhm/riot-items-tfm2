@@ -3,21 +3,15 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, enemies_near, percent_of, ticks, ItemMeta};
 
-// Zaz'Zak's Realmspike — what World Atlas grows into for a support that
-// fights with its abilities: Void Explosion, and the gold the Atlas line pays
+// Zaz'Zak's Realmspike: World Atlas's upgrade for a support that fights with
+// its abilities: Void Explosion, and the Atlas line's gold
 // ([`crate::SharedRiches`]).
 //
-// # Void Explosion
-//
-// Ability damage to an enemy champion marks the spot that champion stands on.
-// After a short delay the spot goes off, on whoever is standing there by
-// then: the champion may have walked out of it, and another may have walked
-// in. Each enemy caught takes a flat amount, a share of the carrier's ability
-// power and a share of its own maximum health, as magic damage.
-//
-// The spot is a place and a timer, like Iceborn Gauntlet's frost zone: no
-// unit stands for it. Its damage goes out as an `Item` hit, which the trigger
-// does not answer to, so one explosion never sets off the next.
+// Ability damage to an enemy champion marks the spot it stands on, which goes
+// off after a short delay on whoever stands there then: a flat amount plus
+// shares of the carrier's ability power and the victim's maximum health, as
+// magic damage. The spot is a place and a timer like Iceborn Gauntlet's zone,
+// and its `Item` damage never sets off the next.
 #[derive(Clone, Debug)]
 pub struct ZazzaksRealmspike {
     meta: ItemMeta,
@@ -39,10 +33,9 @@ pub struct ZazzaksRealmspike {
     blasts: Vec<Blast>,
 }
 
-// The spot gathering, played once as it is marked, and the blast, played as
-// it goes off: two tags of one sheet (`effects/void_explosion`), bound in
-// `view/effects.view_effects`. The gathering is drawn half a second long, so
-// a longer delay in the config leaves the spot bare for the rest of it.
+// The spot gathering, played as it is marked, and the blast as it goes off
+// (`effects/void_explosion`). The gathering is drawn half a second long, so a
+// longer delay leaves the spot bare after it.
 const GATHER_EFFECT: &str = "riot_void_explosion_gather";
 const BLAST_EFFECT: &str = "riot_void_explosion_blast";
 

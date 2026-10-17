@@ -9,38 +9,22 @@ use crate::{
 };
 
 // Ironheart, League's Colossal Consumption: an enemy champion within
-// `effect_max_distance` of the carrier builds up stages, one for every third of
-// `effect_charge_seconds` in range (0.5 s each at the default 1.5), up to three.
-// At three the carrier's next basic attack against them deals bonus damage and
-// banks part of it as permanent health, and they go on `effect_cooldown_seconds`
-// cooldown. Each enemy champion has their own stages and cooldown, so one fight
-// can pay out on several of them. Out of range, each stage lingers
-// `effect_duration_seconds` and then drops, one at a time; death on either side
-// clears them all.
+// `effect_max_distance` builds a stage per third of `effect_charge_seconds` in
+// range, up to three. At three the carrier's next basic attack on them deals
+// bonus damage, banks part of it as permanent health, and starts their
+// `effect_cooldown_seconds`; stages and cooldowns are per enemy, linger
+// `effect_duration_seconds` each out of range, and clear on either side's
+// death.
 //
-// That distance grows with the carrier, like every range in the mod measured
-// from its carrier (`crate::sized_range`): a carrier 30% bigger reaches 30%
-// further, whatever made them bigger. Goliath is the usual source, so the item
-// extends its own reach as the health comes in.
-//
-// The pictures are League's stack and trigger VFX, drawn up and to the right of
-// the enemy by one statless buff per stage, bound in the `view_buffs` table of
-// `view/effects.view_effects` and all from `effects/heartsteel_mark`: a dark
-// swirling ring, then the same ring with a yellow-green core lit, then a bright
-// pink orb pulsing inside it. The attack bursts the orb: a pink flash where it
-// was, with sharp light-blue and pink spikes shooting out of it
-// (`effects/heartsteel_trigger`).
-//
-// Goliath: the carrier grows `effect_size_per_thousand_hp` percent for every
-// 1000 maximum health, up to `effect_max_size_percent`. Size is the buff field
-// `radius_mult`, a whole percent (another mod's Cho'Gath grows with it the
-// same way), so it steps up one percent at a time as the health comes in.
+// The range grows with the carrier (`crate::sized_range`), and Goliath grows
+// the carrier `effect_size_per_thousand_hp` percent per 1000 maximum health, up
+// to `effect_max_size_percent` (`radius_mult`, in whole percents). Each stage
+// is a statless `view_buffs` buff drawn from `effects/heartsteel_mark` (ring,
+// lit core, pink orb), and the attack bursts it (`effects/heartsteel_trigger`).
 
-// The Ironheart proc sound: `sound/sfx/riot_heartsteel_ironheart.sound_info`,
-// mapped into `asset/base/sound/sfx` by `mod.override_info`, which is where
-// sound names are looked up. The clip is `sfx/lol-heartsteel.mp3` turned up
-// 2 dB with its peaks limited to -1 dBFS, its tail trimmed, and faded in and
-// out; the first cut, 3 dB down, was too quiet in game.
+// The Ironheart proc sound (`sound/sfx/riot_heartsteel_ironheart.sound_info`,
+// mapped by `mod.override_info`): `sfx/lol-heartsteel.mp3` raised 2 dB, limited
+// to -1 dBFS, trimmed and faded, since the first cut was too quiet.
 const IRONHEART_SFX: &str = "riot_heartsteel_ironheart";
 // The picture for each stage, tags `stage1` to `stage3`. The last is the
 // charged one: the next basic attack against them procs.
@@ -86,10 +70,9 @@ pub struct Heartsteel {
     // The size Goliath has on the carrier now, in percent; 0 before the
     // first update of each life.
     goliath_percent: i32,
-    // How much bigger than usual the carrier is, in percent, from every
-    // source ([`crate::size_percent`]). Ironheart measures its range every
-    // tick, so this is read back once a second and whenever Goliath changes
-    // rather than each time.
+    // How much bigger than usual the carrier is, in percent, from every source
+    // ([`crate::size_percent`]); read once a second and whenever Goliath
+    // changes.
     size_percent: u64,
     // Ironheart on each enemy champion, by their player id: the player keeps
     // it across a respawn, their champion entity may not.
@@ -207,12 +190,10 @@ impl Heartsteel {
         true
     }
 
-    // Keeps the banked total where an upgrade can find it. The Radiant item
-    // arrives as a fresh instance: it takes over the base item's total once,
-    // before it first uses its own, and every instance notes the total when it
-    // grows. Only the counter moves. The health banked this life is already on
-    // the champion as `heartsteel_stack` buffs, and `on_spawn` re-applies it
-    // from the total on the next respawn.
+    // Keeps the banked total where an upgrade can find it: the Radiant instance
+    // takes it over once, and every instance notes it as it grows. The health
+    // banked this life is already on the champion as `heartsteel_stack` buffs,
+    // re-applied on respawn.
     fn carry_bonus_hp(&mut self, ctx: &StableSim<'_>, player: usize) {
         if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
             if let Some((_, total)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
@@ -291,10 +272,9 @@ impl StableItem for Heartsteel {
             return;
         };
         let champion_id = champion_ref.id();
-        // Same-name buffs stack and this carries the whole banked total, so
-        // the previous life's copies go before the new one lands. Without the
-        // remove, every respawn added another full total on top of the ones
-        // already worn and the cap stopped meaning anything.
+        // Same-name buffs stack and this carries the whole banked total, so the
+        // previous life's copies are removed first, or every respawn would add
+        // another total past the cap.
         ctx.entity_remove_buff(champion_id, self.stack_buff);
         ctx.add_buff(
             champion_id,
@@ -456,14 +436,9 @@ impl StableItem for Heartsteel {
         }
     }
 
-    // Colossal Consumption's banked HP is permanent, so it crosses the Radiant
-    // upgrade. Only the counter moves: the HP already granted this life is
-    // sitting on the champion as `heartsteel_stack` buffs, and `on_spawn`
-    // re-applies it from the carried total on the next respawn. The cast round
-    // trips exactly for every `i32`, so the total needs no clamping.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `carry_bonus_hp` does the carrying, and they stay for a host that does.
+    // Banked HP is permanent, so it crosses the Radiant upgrade; only the
+    // counter moves (see `carry_bonus_hp`), and the `i32` cast round-trips
+    // exactly. The host (0.6.2) never calls these two (`crate::upgrade_carry`).
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.accumulated_bonus_hp as u64

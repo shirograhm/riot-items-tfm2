@@ -105,10 +105,9 @@ impl PhilosophersStone {
         self
     }
 
-    // Cinderhulk: one more step of maximum health, capped. The buff carries
-    // the step rather than the running total because same-name buffs stack:
-    // putting a new total on would mean taking the old one off first, and
-    // maximum health that dips mid-fight can cost the carrier current health.
+    // Cinderhulk: one more capped step of maximum health. The buff carries the
+    // step since same-name buffs stack, and swapping a total would dip maximum
+    // health mid-fight.
     fn grow(&mut self, ctx: &mut StableSim<'_>, entity: usize) {
         if self.cinderhulk_stacks >= self.effect_max_stacks {
             return;
@@ -124,9 +123,8 @@ impl PhilosophersStone {
     }
 
     // Keeps the stacks where an upgrade can find them
-    // (`upgrade_carry::StackCarry`). Only the counter moves. The health
-    // gained this life is already on the champion as `cinderhulk` buffs, and
-    // `on_spawn` re-applies it from the count on the next respawn.
+    // (`upgrade_carry::StackCarry`). Only the counter moves; the health already
+    // gained is on the champion as `cinderhulk` buffs, re-applied on respawn.
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         self.carry.carry(
             BASE_KEY,
@@ -272,12 +270,9 @@ impl StableItem for PhilosophersStone {
         self.grow(ctx, entity);
     }
 
-    // Cinderhulk stacks survive the Radiant upgrade, clamped to the
-    // successor's own ceiling in case the config gives the two variants
-    // different caps.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `carry_stacks` does the carrying, and they stay for a host that does.
+    // Cinderhulk stacks survive the Radiant upgrade, clamped to the successor's
+    // cap. The host (0.6.2) never calls these two (`crate::upgrade_carry`);
+    // `carry_stacks` does the carrying.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.cinderhulk_stacks as u64

@@ -121,10 +121,10 @@ impl StableItem for CosmicDrive {
         }
     }
 
-    // Spelldance. Any hit counts - abilities, basic attacks and item procs
-    // alike - as long as it lands as magic or true damage on an enemy champion.
-    // One stack at most: the engine caps it and restarts its duration, which
-    // also holds when an ability hits several champions in the same tick.
+    // Spelldance: any hit counts (abilities, basic attacks and item procs) if
+    // it lands as magic or true damage on an enemy champion. One stack at most;
+    // the engine caps it and restarts its duration, even for a multi-champion
+    // hit in one tick.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

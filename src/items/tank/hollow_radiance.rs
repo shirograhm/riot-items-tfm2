@@ -34,10 +34,9 @@ pub struct HollowRadiance {
     effect_minion_percent: f64,
     // Non-vital stats (internals)
     until_next_burn: usize,
-    // Death locations still to erupt. Kills are only noted in `on_kill`; the
-    // eruption lands on the next `update`, so damage dealt from inside the
-    // kill hook never re-enters it, and an eruption that kills sets off the
-    // next one a tick later.
+    // Death locations still to erupt. Noted in `on_kill` and erupted on the
+    // next `update`, so the damage never re-enters the kill hook and a chain of
+    // eruptions goes a tick at a time.
     eruptions: Vec<(u64, u64)>,
 }
 

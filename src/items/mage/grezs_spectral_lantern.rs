@@ -22,11 +22,9 @@ pub struct GrezsSpectralLantern {
     effect_percent_bonus_damage: f64,
     effect_bonus_hp_percent_of_damage: f64,
     // Non-vital stats (internals)
-    // The Ability Power Spirit Drain has banked. Power and not a count of
-    // stacks, so what the base item drained carries into the Radiant one as
-    // it is, whatever each tier pays for a stack: the two pay the same by
-    // default (1), and a config that sets them apart would otherwise have
-    // the carried stacks paid for again at the Radiant rate.
+    // The Ability Power Spirit Drain has banked: power rather than a stack count,
+    // so it carries into the Radiant as is even where the tiers pay differently
+    // for a stack.
     drained_power: usize,
     // The power last noted for an upgrade to take over.
     noted_power: usize,
@@ -102,12 +100,9 @@ impl GrezsSpectralLantern {
         self.effect_stack_magic_power.max(0) as usize * self.effect_max_stacks
     }
 
-    // Spirit Drain: one permanent Ability Power step, capped. The last step
-    // is cut to what the cap has left, so a total that a full step would
-    // carry past the cap ends on it instead (39 with a step of 2 goes to 40,
-    // not 41). The buff carries the step rather than the running total
-    // because same-name buffs stack, so the champion ends up wearing one
-    // `spirit_drain` per takedown.
+    // Spirit Drain: one permanent Ability Power step, the last cut to what the
+    // cap leaves (39 with a step of 2 goes to 40). The buff carries the step,
+    // since same-name buffs stack: one `spirit_drain` per takedown.
     fn drain(&mut self, ctx: &mut StableSim<'_>, entity: usize) {
         let room = self.power_cap().saturating_sub(self.drained_power);
         let step = (self.effect_stack_magic_power.max(0) as usize).min(room);
@@ -124,12 +119,10 @@ impl GrezsSpectralLantern {
         );
     }
 
-    // Keeps the drained power where an upgrade can find it. The Radiant item
-    // arrives as a fresh instance: it takes over the base item's power once,
-    // clamped to its own ceiling, and every instance notes its total when it
-    // grows. Only the number moves. The power drained this life is already on
-    // the champion as `spirit_drain` buffs, and `on_spawn` re-applies it from
-    // the total on the next respawn.
+    // Keeps the drained power where an upgrade can find it: the Radiant
+    // instance takes it over once, clamped to its own ceiling. The power this
+    // life is already on the champion as `spirit_drain` buffs, re-applied from
+    // the total on respawn.
     fn carry_power(&mut self, ctx: &StableSim<'_>, player: usize) {
         if !std::mem::replace(&mut self.inherited, true) && self.meta.upgrades_from(BASE_KEY) {
             if let Some((_, power)) = upgrade_carry::latest(BASE_KEY, ctx, player) {
@@ -207,10 +200,9 @@ impl StableItem for GrezsSpectralLantern {
             return;
         };
         let champion_id = champion_ref.id();
-        // Same-name buffs stack and this carries the whole banked total, so
-        // the previous life's copies go before the new one lands. Without the
-        // remove, every respawn added another full total on top of the ones
-        // already worn and the cap stopped meaning anything.
+        // Same-name buffs stack and this carries the whole banked total, so the
+        // previous life's copies are removed first, or every respawn would add
+        // another total past the cap.
         ctx.entity_remove_buff(champion_id, self.spirit_drain_buff);
         ctx.add_buff(
             champion_id,
@@ -285,11 +277,9 @@ impl StableItem for GrezsSpectralLantern {
         self.drain(ctx, entity);
     }
 
-    // Drained power is bought, not earned twice: what the base item banked
-    // survives the Radiant upgrade, clamped to the successor's own ceiling.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `carry_power` does the carrying, and they stay for a host that does.
+    // Drained power survives the Radiant upgrade, clamped to the successor's
+    // cap. The host (0.6.2) never calls these two (`crate::upgrade_carry`);
+    // `carry_power` does the carrying.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.drained_power as u64

@@ -3,26 +3,17 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ItemMeta, ProcQueue, DISTANCE_UNITS_PER_RANGE};
 
-// Cleave, scaled on the carrier's maximum health instead of Tiamat's Attack
-// Damage: basic attacks hit their target for a share of it and every enemy
-// behind the target for a larger share. The tower exclusion and the ranged
-// falloff are Tiamat's and Ravenous Hydra's, so the three read as one Cleave,
-// but where theirs splashes a circle around the target, this one splashes the
-// wave League draws behind it.
+// Cleave on the carrier's maximum health instead of Attack Damage: basic
+// attacks hit their target for a share of it and every enemy behind it for
+// more. Tower exclusion and ranged falloff match Tiamat and Ravenous Hydra, but
+// the splash is League's wave behind the target rather than a circle.
 //
-// The wave is a wedge cut square at both ends: its short side runs across the
-// target and it widens to a long, flat front `effect_max_distance` further
-// on, directly away from the carrier. The splash hits every enemy whose body
-// overlaps it, so it lands exactly where the picture is. View effects cannot
-// be turned to face a direction, but projectiles are (their art faces +x), so
-// the picture is a `Linear` projectile that passes through everything and
-// does nothing; its art is drawn for the default reach of 35. The short side
-// runs through the centre of its frame, so the projectile sits on the target
-// and only creeps forward: it moves just so the engine knows which way to face
-// it and when to remove it, and the burst itself is the animation. The damage
-// still lands with the swing. With the carrier and the target on the same spot
-// there is no behind, and the splash falls back to a circle of the same reach.
-// A host without projectiles gets Tiamat's swing effect instead of the wave.
+// The wave is a wedge from across the target out to a flat front
+// `effect_max_distance` further on, hitting every enemy whose body overlaps it.
+// It is drawn as a pass-through `Linear` projectile (view effects cannot be
+// rotated) sitting on the target and creeping just enough to be faced; with no
+// direction the splash is a circle, and a host without projectiles shows
+// Tiamat's swing.
 
 // The `view_projectiles` name in `view/effects.view_effects` that draws the
 // wedge (`effects/titanic_hydra_wave`).

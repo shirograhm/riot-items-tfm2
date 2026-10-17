@@ -51,12 +51,9 @@ impl FatedAshes {
         (self.duration_ticks() / DOT_TICK_RATE).max(1)
     }
 
-    // One tick's worth of the burn, or `None` if the target is not there to
-    // take it.
-    //
-    // The stated total is what a champion takes over the full duration; a minion
-    // or monster takes the boosted share of it. Entity ids are recycled slots, so
-    // the target is re-read every tick rather than trusted from when it was lit.
+    // One tick of the burn, or `None` if the target is gone: a champion takes
+    // the stated total over the duration, a minion or monster the boosted
+    // share. Re-read every tick, since entity ids are recycled.
     fn instance_damage(&self, ctx: &mut StableSim<'_>, id: usize) -> Option<usize> {
         let entity_ref = ctx.get_entity(id)?;
         if !entity_ref.is_alive() {

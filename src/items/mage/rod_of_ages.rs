@@ -3,13 +3,10 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, item_counts, ticks, upgrade_carry, Elapsed, Eternity, ItemMeta};
 
-// Timeless: the item grows while it is held. Every
-// `effect_growth_interval_seconds` it gains a stack of health, Ability Power
-// and Ability Haste, up to `effect_max_growth_stacks`. The time counts whether
-// the carrier is alive or not, and the Radiant item carries on from where the
-// base item was.
-//
-// Eternity is Catalyst of Aeons' passive, kept ([`crate::Eternity`]): a heal
+// Timeless: every `effect_growth_interval_seconds` held, alive or not, the item
+// gains a stack of health, Ability Power and Ability Haste, up to
+// `effect_max_growth_stacks`; the Radiant carries on from the base item.
+// Eternity, Catalyst of Aeons' passive, is kept ([`crate::Eternity`]): a heal
 // for every Ability cast.
 
 // Timeless's stats on the carrier. One name for both tiers, so what the base
@@ -141,11 +138,9 @@ impl RodOfAges {
         }
     }
 
-    // The Radiant item arrives as a fresh instance: it takes over the base
-    // item's stacks once, before it first counts its own. Only the count
-    // moves. What those stacks grant is already on the champion as
-    // `TIMELESS_BUFF`, and `on_spawn` puts it back from the count on the next
-    // respawn.
+    // The Radiant instance takes over the base item's stacks once, before
+    // counting its own. Only the count moves; their stats are already on the
+    // champion as `TIMELESS_BUFF`, restored from the count on respawn.
     fn inherit_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         if std::mem::replace(&mut self.inherited, true) || !self.meta.upgrades_from(BASE_KEY) {
             return;
@@ -256,10 +251,8 @@ impl StableItem for RodOfAges {
     }
 
     // Timeless stacks survive the Radiant upgrade, clamped to the successor's
-    // own ceiling in case the config gives the two variants different caps.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `inherit_stacks` does the carrying, and they stay for a host that does.
+    // cap. The host (0.6.2) never calls these two (`crate::upgrade_carry`);
+    // `inherit_stacks` does the carrying.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.timeless_stacks() as u64

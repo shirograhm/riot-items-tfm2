@@ -85,10 +85,9 @@ impl ArdentCenser {
         self
     }
 
-    // Puts Sanctify on `target`. Re-applying is a remove followed by an add
-    // rather than a `has_buff` gate: refreshing means replacing the instance,
-    // and one `entity_remove_buff` clears every copy, so a multi-hit cast
-    // cannot leave two on the same ally.
+    // Puts Sanctify on `target`, refreshed by remove-and-add: one
+    // `entity_remove_buff` clears every copy, so a multi-hit cast cannot leave
+    // two on one ally.
     fn sanctify(&self, ctx: &mut StableSim<'_>, target: usize) {
         ctx.entity_remove_buff(target, self.sanctify_buff);
         ctx.add_buff(

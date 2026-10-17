@@ -66,9 +66,8 @@ impl HauntingGuise {
         }
     }
 
-    // One tick of progress toward the next Madness stack. Counted in
-    // stacks-per-second over [`TICKS_PER_SECOND`] rather than in whole seconds
-    // so the cadence stays configurable.
+    // One tick of progress toward the next Madness stack, counted in stacks per
+    // second so the cadence stays configurable.
     fn build_madness(&mut self) {
         if self.madness >= self.effect_max_stacks {
             self.madness = self.effect_max_stacks;

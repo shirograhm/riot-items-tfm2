@@ -97,10 +97,8 @@ impl StaffOfFlowingWater {
         }
     }
 
-    // Rapids on `target` and on the carrier, refreshed rather than stacked.
-    // A cast that reaches several allies comes through here once per ally in
-    // the same tick, so the carrier's copy is refreshed only on the first of
-    // them: one application per cast, however many allies it reached.
+    // Rapids on `target` and the carrier, refreshed rather than stacked; the
+    // carrier's copy only on the first ally of a multi-ally cast.
     fn grant_rapids(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         let buff = self.rapids();
         refresh_buff(ctx, target, self.rapids_buff, &buff);
@@ -163,11 +161,9 @@ impl StableItem for StaffOfFlowingWater {
         self.self_cast.close();
     }
 
-    // Rapids. Same trigger as `ardent_censer`'s Sanctify: `is_ally` marks an
-    // ally-targeted skill — a heal, shield or buff — and self-casts count as
-    // one, so the carrier is ruled out as a target. A self-cast may still have
-    // healed an ally, as the Monk's heal does around them: that is watched for
-    // in `update`.
+    // Rapids: the same trigger as `ardent_censer`'s Sanctify. Self-casts count
+    // as ally-targeted, so the carrier is ruled out; a self-cast heal around
+    // them is watched for in `update`.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,

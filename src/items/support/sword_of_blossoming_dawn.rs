@@ -113,11 +113,9 @@ impl SwordOfBlossomingDawn {
         self.wisp_hit
     }
 
-    // Sends the wisp, and with it the heal, from the carrier to `ally`. False
-    // when there is no projectile to send it with. Its speed is Statikk Shiv's
-    // spark timing: the gap between the two hit circles spread over
-    // `WISP_TICKS`, plus the ally's own move speed, so one running away is
-    // still caught.
+    // Sends the wisp, and with it the heal, from the carrier to `ally`; false
+    // without projectiles. Its speed is Statikk Shiv's spark timing: the gap
+    // over `WISP_TICKS` plus the ally's move speed.
     fn send_wisp(&self, ctx: &mut StableSim<'_>, caster: usize, team: usize, ally: usize) -> bool {
         let Some((x, y)) = ctx.get_entity(caster).map(|c| c.pos()) else {
             return false;
@@ -189,12 +187,9 @@ impl StableItem for SwordOfBlossomingDawn {
         }
     }
 
-    // Basic attacks heal the most wounded ally in range. "Most wounded" is the
-    // lowest fraction of maximum health rather than the lowest number, so a
-    // chipped tank does not outrank a nearly dead carry; distance only breaks
-    // ties. The carrier is not a candidate, matching the other ally-facing
-    // items here (`locket_of_the_iron_solari`). The heal rides a wisp to the
-    // ally and lands when it arrives.
+    // Basic attacks heal the most wounded ally in range, by lowest health
+    // fraction (distance breaks ties), the carrier excluded as in
+    // `locket_of_the_iron_solari`. The heal rides a wisp and lands on arrival.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

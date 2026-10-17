@@ -6,45 +6,18 @@ use crate::{apply_config, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS, AUR
 // Fanfare's reach. Not configurable: the ring art is drawn at this size.
 const FANFARE_RANGE: usize = 100;
 
-// Bandlepipes — Fanfare, a self-empower that turns into a short team aura.
+// Bandlepipes: Fanfare, a self-empower that turns into a short team aura.
 //
-// # Why this is two buffs and not one
+// The movement speed is a timed self-buff (`fanfare_buff`), but the attack
+// speed is an aura for allies in range during the window, so `anthem_buff` is
+// re-applied each aura cycle ([`AURA_REFRESH_TICKS`]) while `fanfare_remaining`
+// runs, as Locket does for Legion. `fanfare_buff` is also the `view_buffs`
+// binding of the aura's ring (`effects/bandlepipes_aura`), drawn at
+// [`FANFARE_RANGE`].
 //
-// Fanfare is two different shapes of effect wearing one name. The movement
-// speed is a plain timed self-buff, set whenever the trigger lands. The
-// attack speed is an *aura*: the tooltip says "while empowered, you and nearby
-// allied champions", so an ally who walks into range during the window has to
-// pick it up, and one who walks out has to lose it. A single buff applied at
-// trigger time would be a snapshot of whoever happened to be standing there.
-//
-// So `fanfare_buff` is the timed self-buff and `anthem_buff` is re-applied on
-// the shared aura cycle ([`AURA_REFRESH_TICKS`]) for as long as
-// `fanfare_remaining` is non-zero, exactly as `LocketOfTheIronSolari` does for
-// Legion.
-//
-// # The ring on the ground
-//
-// `fanfare_buff` is on the carrier for exactly as long as the aura runs, so
-// the `view_buffs` binding of the same name in `view/effects.view_effects`
-// (`effects/bandlepipes_aura`) draws the aura's edge under them for that
-// long. The picture is a circle at [`FANFARE_RANGE`]; a bigger carrier reaches
-// further than it shows.
-//
-// # The residue when Fanfare ends
-//
-// `anthem_buff` outlives its last refresh by up to
-// `AURA_DURATION_TICKS - AURA_REFRESH_TICKS`, so the expiry tick clears it
-// explicitly rather than letting it drain. That clear can only reach who is in
-// range *now*, so an ally who left range mid-window keeps it for the remainder
-// of the buff — the same residue Legion has, and the reason the duration is
-// kept short.
-//
-// # Both variants share the buff names
-//
-// The passive is identical on base and Radiant (only the stat line grows), so
-// they deliberately share `fanfare_buff`/`anthem_buff`: same-name buffs stack,
-// and two instances granting the same amount would otherwise double it.
-// `ArdentCenser` shares `sanctify_buff` for the same reason.
+// On expiry `anthem_buff` is cleared from those in range, and an ally who left
+// mid-window keeps the residue, as with Legion. Both tiers share the buff names
+// (like `ArdentCenser`'s `sanctify_buff`), since same-name buffs stack.
 #[derive(Clone, Debug)]
 pub struct Bandlepipes {
     meta: ItemMeta,
@@ -254,10 +227,9 @@ impl StableItem for Bandlepipes {
         self.refresh_cooldown = 0;
     }
 
-    // Fanfare. Any damage the carrier deals to an enemy champion sets it off:
-    // a basic attack, an Ability or an item's own damage, the trigger
-    // `chemtech_putrifier` uses. `on_attack` only ever fires for this carrier's
-    // own damage, so the trigger needs no team gate of its own.
+    // Fanfare: any damage the carrier deals to an enemy champion sets it off (a
+    // basic attack, an Ability or item damage, as `chemtech_putrifier` has it);
+    // `on_attack` only fires for the carrier's own damage.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -275,10 +247,9 @@ impl StableItem for Bandlepipes {
             return;
         }
 
-        // A window that is opening starts the aura on this tick instead of
-        // waiting out the cycle the previous one left behind. One that is only
-        // being kept open leaves the cycle alone: damage comes far more often
-        // than the aura needs re-applying.
+        // A window opening starts the aura this tick; one merely kept open
+        // leaves the cycle alone, since damage comes far more often than the
+        // aura needs re-applying.
         if self.fanfare_remaining == 0 {
             self.refresh_cooldown = 0;
         }

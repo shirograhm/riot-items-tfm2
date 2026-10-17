@@ -7,20 +7,16 @@ use crate::{
 };
 
 const PROC_LOCKOUT_TICKS: usize = BUFF_REFRESH_DURATION_TICKS;
-// One puff of the red trail a carrier at full momentum leaves behind it
-// (`effects/dead_mans_trail`, bound in `view/effects.view_effects`). A view
-// effect cannot face a direction, so the tail is not one picture: each puff
-// stays where it was played and fades there, and the puffs dropped along the
-// carrier's path line up behind it whichever way it runs.
+// One puff of the red trail a carrier at full momentum leaves
+// (`effects/dead_mans_trail`). A view effect cannot face a direction, so each
+// puff fades where it was played, and the puffs line up behind the carrier.
 const TRAIL_EFFECT: &str = "riot_dead_mans_trail";
 // Ground the carrier covers between two puffs. Spaced by distance rather than
 // by time, so the tail is as dense at any speed and nothing piles up under a
 // carrier that stands still.
 const TRAIL_SPACING: u64 = 6 * DISTANCE_UNITS_PER_RANGE as u64;
-// The burst on the target of a basic attack that spends a full bar of
-// momentum, which is where the trail ends (`effects/dead_mans_burst`, bound
-// in `view/effects.view_effects`). Lesser hits spend their momentum quietly:
-// a carrier that keeps attacking spends a few stacks on every swing.
+// The burst on the target of a basic attack that spends a full bar of momentum
+// (`effects/dead_mans_burst`); lesser hits spend their momentum quietly.
 const BURST_EFFECT: &str = "riot_dead_mans_burst";
 
 #[derive(Clone, Debug)]
@@ -310,10 +306,8 @@ impl StableItem for DeadMansPlate {
             .on_hit_physical(ctx, target, damage, damage_type, is_crit, bonus_damage);
     }
 
-    // Momentum carries across the Radiant upgrade. Only whole stacks move —
-    // `stack_progress` is the sub-stack remainder and is worth nothing on its
-    // own — and the old variant's momentum buff expires on its own refresh
-    // cycle, since base and Radiant name theirs differently.
+    // Momentum carries across the Radiant upgrade, whole stacks only; the old
+    // variant's differently named buff expires on its own.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.momentum as u64

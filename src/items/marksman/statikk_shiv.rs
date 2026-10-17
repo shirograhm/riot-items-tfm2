@@ -6,18 +6,13 @@ use crate::{
 };
 
 // Electrospark: when fully Energized, the next basic attack deals bonus magic
-// damage to its target and releases chain lightning that jumps on to up to
-// `effect_max_targets` more enemies, each hop within range of the last one,
-// champions first.
+// damage to its target and chains lightning to up to `effect_max_targets` more
+// enemies, each within range of the last, champions first.
 //
-// The whole chain is worked out when the charged swing lands, and every hop
-// is a real projectile flying from the enemy it jumps off to the next one
-// (`spawn_projectile`), so the segments draw together as one chain. The damage
-// lands on arrival through the native effect the hop carries (`StatikkSpark`,
-// registered in `lib.rs`, one per tier). It goes out as `Item`, so the chain
-// applies no on-hit effects -- this item's own included. Every enemy the
-// chain hits, the first one included, is left crackling for a moment
-// (`SHOCK_EFFECT`), since the hop itself vanishes the instant it lands.
+// The chain is worked out when the swing lands, each hop a projectile from one
+// enemy to the next whose damage lands on arrival as `Item` (`StatikkSpark`,
+// registered in `lib.rs`), so no on-hit effects apply. Every enemy hit is left
+// crackling briefly (`SHOCK_EFFECT`), since a hop vanishes on landing.
 
 // The `view_projectiles` name in `view/effects.view_effects` that draws one
 // hop of the chain (`effects/statikk_spark`).
@@ -147,11 +142,9 @@ impl StatikkShiv {
         )
     }
 
-    // The chain's hops after `target`, as `(from, to)` pairs: each jump goes
-    // to an enemy within range of the one before it that the chain has not
-    // hit yet, every champion in range before any other unit, nearest first
-    // within each. Turrets are never picked. Stops early when nothing is in
-    // range of the last enemy hit.
+    // The chain's hops after `target`, as `(from, to)` pairs: each to an unhit
+    // enemy within range of the last, champions first, nearest first, never
+    // turrets; it stops when nothing is in range.
     fn chain_hops(&self, ctx: &StableSim<'_>, team: usize, target: usize) -> Vec<(usize, usize)> {
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         let range_sq = range * range;
@@ -353,12 +346,10 @@ fn spark_damage(damage: usize, minion_percent: f64, champion: bool) -> usize {
     }
 }
 
-// The speed that keeps a hop from `from` to `to` in the air for `HOP_TICKS`:
-// the distance left once the hit circles touch, spread over the flight, plus
-// the target's own move speed. Without that, a short hop could fly slower
-// than its target runs and trail behind an enemy moving away. Move speed is
-// in the same units per tick as projectile speed (vanilla champions move at
-// 900; their basic attacks fly at 4200-4300).
+// The speed that keeps a hop in the air for `HOP_TICKS`: the gap left once the
+// hit circles touch, over the flight, plus the target's move speed so a short
+// hop cannot trail a fleeing enemy (vanilla champions move at 900, attacks fly
+// at 4200-4300).
 fn hop_speed(ctx: &StableSim<'_>, from: usize, to: usize) -> u64 {
     let distance = (ctx.distance_sq(from, to) as f64).sqrt() as u64;
     let (radius, move_speed) = ctx

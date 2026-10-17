@@ -6,8 +6,8 @@ use crate::{apply_config, percent_of, ticks, ItemMeta, Lifeline};
 // Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs
 // 330 - 605 (based on level) damage (90 second cooldown).
 //
-// While that shield is up the carrier shows Lifeline's bubble
-// ([`crate::Lifeline`]), the one Sterak's Gage's Lifeline shows too.
+// While it is up the carrier shows Lifeline's bubble ([`crate::Lifeline`]),
+// shared with Sterak's Gage.
 #[derive(Clone, Debug)]
 pub struct ImmortalShieldbow {
     meta: ItemMeta,
@@ -149,13 +149,11 @@ impl StableItem for ImmortalShieldbow {
         self.lifeline.update(ctx, player);
     }
 
-    // The host resolves the hit before this runs, so "falling below" is read
-    // after the fact, as in `steraks_gage` and `locket_of_the_iron_solari`: the
-    // shield lands on the tick the carrier crosses under the threshold. The
-    // cooldown is an item-side tick counter, like Locket's Devotion, so a fast
-    // second hit cannot slip past a buff the host has not shown yet. A lethal
-    // hit arrives with the carrier already dead; shielding the corpse would
-    // only burn the cooldown.
+    // The hit is resolved before this runs, so "falling below" is read on the
+    // tick the carrier crosses the threshold, as in `steraks_gage` and Locket.
+    // The cooldown is an item-side counter so a fast second hit cannot slip
+    // past, and a lethal hit is ignored rather than burn the cooldown on a
+    // corpse.
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,
