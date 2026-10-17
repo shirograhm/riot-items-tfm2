@@ -33,10 +33,10 @@ impl MikaelsBlessing {
                 &["forbidden_idol"],
                 &["radiant_mikaels_blessing"],
             ),
-            price: 550,
-            hp: 200,
+            price: 750,
+            hp: 250,
             hp_regen: 2,
-            magic_power: 10,
+            magic_power: 20,
             skill_cooldown_mult: 10,
             effect_hp_percent_threshold: 50.0,
             effect_min_heal: 100,
@@ -55,7 +55,7 @@ impl MikaelsBlessing {
             price: 750,
             hp: 300,
             hp_regen: 3,
-            magic_power: 20,
+            magic_power: 30,
             skill_cooldown_mult: 15,
             ..Self::base()
         }

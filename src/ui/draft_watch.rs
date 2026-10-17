@@ -1,43 +1,21 @@
 //! Which champions each side picked in the draft just played, for the Build
 //! Editor's Blue Team / Red Team buttons.
 //!
-//! # Why it is read off the draft screen
+//! The draft screen's champion grid is the only place a mod can read the lineup
+//! while the player can still act on it: each slot has a `#name` label and a
+//! `#blue`/`#red` badge numbered once picked. Picks are added and never taken
+//! back within one draft (the grid can be filtered), and `strategy_ui` maps
+//! them to champions.
 //!
-//! Nothing hands a mod the lineup while the player can still act on it. The
-//! draft hook does not fire for the player's own match, the item-build hook
-//! only sees the lineup at Start Match, no record holds an upcoming draft, and
-//! the Tactics screen's Matchup card and the draft's own pick slots show a
-//! champion as an image, which reads back as nothing.
-//!
-//! The draft screen's champion grid is the one place it is text. Every slot
-//! (`banpick/champion_slot.ui`) carries the champion's name in a `#name` label,
-//! and a `#blue` or `#red` badge that the game shows once that side has picked
-//! it, with a number in the badge's `#text`. So the grid is read while the
-//! draft is up, and what it showed is kept for the Tactics screen after it.
-//!
-//! # What it keeps
-//!
-//! What the grid showed, as it showed it: the label's text in whatever form
-//! the label holds it, and the slot's node name beside it. Turning those into
-//! a champion the editor knows is `strategy_ui`'s business, which has the
-//! champion list.
-//!
-//! A pick is added and never taken back for as long as one draft lasts. The
-//! grid can be filtered by class, position and search, so a champion picked
-//! earlier is often not on it; and what the grid does in the moment the draft
-//! ends is not known, so a slot seen without its badge is not taken as proof
-//! of anything. A new draft starts from nothing.
-//!
-//! None of this has been confirmed in game. [`crate::own_team_log`] reports
-//! what the grid looked like and every pick read off it.
+//! Not yet confirmed in game; [`crate::own_team_log`] reports what the grid
+//! showed.
 
 use std::sync::Mutex;
 
 use mod_api_stable::StableClient;
 
-// The draft screen's champion grid. The screen's root is `main`, like every
-// screen's; `#champions` is its scroll view and `#contents` the table of
-// slots inside it (`banpick/layout.ui`).
+// The draft screen's champion grid (`banpick/layout.ui`): `#champions` is its
+// scroll view, `#contents` the table of slots.
 const GRID: &str = "main.champions.contents";
 
 // Frames between two readings of the grid. A pick stands for seconds, and a
@@ -50,9 +28,8 @@ pub(crate) struct Pick {
     // The slot's node name. The champion's id if the game names slots for
     // their champion, a position in the grid if it does not.
     pub(crate) node: String,
-    // The `#name` label's text: a name in the game's language, or the
-    // `#asset/...` reference the label resolves one from. Empty when the label
-    // gave nothing.
+    // The `#name` label's text: a localized name or its `#asset/...` reference;
+    // empty when the label gave nothing.
     pub(crate) name: String,
     red: bool,
     // The number on the badge, or `usize::MAX` when it is not one.
@@ -60,9 +37,8 @@ pub(crate) struct Pick {
 }
 
 impl Pick {
-    // Whether this is the champion in the slot `node` showing `name`. By name
-    // where there is one: a filtered grid may reuse a node for another
-    // champion, and a name cannot be reused.
+    // Whether this is the champion in slot `node` showing `name`; by name where
+    // there is one, since a filtered grid may reuse a node.
     fn is(&self, node: &str, name: &str) -> bool {
         if self.name.is_empty() || name.is_empty() {
             self.node == node
@@ -195,9 +171,8 @@ pub(crate) fn revision() -> u64 {
     WATCH.lock().map_or(0, |watch| watch.revision)
 }
 
-// Drops the picks held. For when the match they were drafted for has begun:
-// a Tactics screen reached without a draft before it must not be told about
-// the last one.
+// Drops the picks held once their match has begun, so a later Tactics screen
+// without a draft is not told about this one.
 pub(crate) fn forget() {
     let Ok(mut watch) = WATCH.lock() else {
         return;

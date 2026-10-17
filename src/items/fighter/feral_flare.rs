@@ -198,10 +198,9 @@ impl StableItem for FeralFlare {
             (damage, heal)
         };
 
-        // The stack count is already folded into `damage`, so the proc pays out
-        // the Feral bar as it stood on the hit that earned it. The heal is left
-        // on the attack itself: it lands on the carrier rather than the target,
-        // so it has no number to collide with.
+        // The stack count is already in `damage`, so the proc pays the Feral
+        // bar as of the hit; the heal stays on the attack, landing on the
+        // carrier.
         self.procs.push_magic(ctx, target, damage);
         ctx.heal(caster, caster, heal);
     }
@@ -236,11 +235,9 @@ impl StableItem for FeralFlare {
         self.add_stack();
     }
 
-    // Feral stacks survive the Radiant upgrade, clamped to the successor's own
-    // ceiling in case the config gives the two variants different caps.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `carry_stacks` does the carrying, and they stay for a host that does.
+    // Feral stacks survive the Radiant upgrade, clamped to the successor's cap.
+    // The host (0.6.2) never calls these two (`crate::upgrade_carry`);
+    // `carry_stacks` does the carrying.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.feral_stacks as u64

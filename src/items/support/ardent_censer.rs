@@ -31,11 +31,11 @@ impl ArdentCenser {
                 &["radiant_ardent_censer"],
             ),
             sanctify_buff: "ardent_censer_sanctify",
-            price: 500,
-            hp: 100,
+            price: 700,
+            hp: 150,
             hp_regen: 1,
             magic_power: 25,
-            skill_cooldown_mult: 5,
+            skill_cooldown_mult: 10,
             move_speed_mult: 5,
             effect_attack_speed_mult: 20,
             effect_enemy_max_hp_damage: 2,
@@ -52,7 +52,7 @@ impl ArdentCenser {
             hp: 200,
             hp_regen: 2,
             magic_power: 45,
-            skill_cooldown_mult: 5,
+            skill_cooldown_mult: 10,
             move_speed_mult: 5,
             ..Self::base()
         }
@@ -85,10 +85,9 @@ impl ArdentCenser {
         self
     }
 
-    // Puts Sanctify on `target`. Re-applying is a remove followed by an add
-    // rather than a `has_buff` gate: refreshing means replacing the instance,
-    // and one `entity_remove_buff` clears every copy, so a multi-hit cast
-    // cannot leave two on the same ally.
+    // Puts Sanctify on `target`, refreshed by remove-and-add: one
+    // `entity_remove_buff` clears every copy, so a multi-hit cast cannot leave
+    // two on one ally.
     fn sanctify(&self, ctx: &mut StableSim<'_>, target: usize) {
         ctx.entity_remove_buff(target, self.sanctify_buff);
         ctx.add_buff(

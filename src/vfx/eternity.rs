@@ -1,16 +1,9 @@
 //! Eternity: every Ability the carrier casts heals them. Shared by Catalyst of
-//! Aeons and Rod of Ages; each item owns its numbers.
+//! Aeons and Rod of Ages.
 //!
-//! No hook reports a cast, so one is read the way Spellblade reads it: an
-//! ability's remaining cooldown going *up* between two ticks, since it only
-//! ever counts down otherwise. That covers every ability, the ones that hit
-//! nothing included.
-//!
-//! # One Eternity for the champion
-//!
-//! Every Eternity item a champion holds sees the same cast in the same tick,
-//! so the first to heal for it leaves a note (`HEALED`) and the others find it
-//! and stand down.
+//! A cast is read as an ability's remaining cooldown going up between ticks,
+//! since no hook reports one. The first Eternity item to heal for a cast notes
+//! it in `HEALED`, so others on the same champion stand down.
 
 use std::cell::Cell;
 
@@ -27,9 +20,8 @@ thread_local! {
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Eternity {
-    // The carrier's remaining ability cooldowns (skill, skill2, ult) last
-    // tick. `None` until the first reading after a spawn, which is only a
-    // baseline.
+    // The carrier's remaining ability cooldowns (skill, skill2, ult) last tick;
+    // `None` until the first reading after a spawn.
     last_cooldowns: Option<(usize, usize, usize)>,
 }
 
@@ -75,9 +67,8 @@ impl Eternity {
             return;
         }
 
-        // The whole span is shared out over the levels and then rounded, not
-        // rounded to a step per level first: 15 - 40 in whole steps of 2
-        // would stop at 37, short of what the tooltip states.
+        // Interpolated over the whole span and then rounded, so level 12
+        // reaches the tooltip's maximum.
         let steps = (level.saturating_sub(1) as f64).min(LEVEL_STEPS);
         let span = max_heal.saturating_sub(min_heal) as f64;
         let heal = min_heal + (span * steps / LEVEL_STEPS).round() as usize;

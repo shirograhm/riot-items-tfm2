@@ -1,10 +1,6 @@
-//! The player's Steam name, for the byline of a hotfix.
-//!
-//! The stable API has no word of who is playing: the manager's name is the
-//! save's, not the player's. The game runs under Steam and has its library
-//! loaded, so the name is asked of that, through the library's flat C
-//! interface: the same two calls any Steam game makes to show a name.
-//! Nothing is sent anywhere, and nothing but the name is read.
+//! The player's Steam name, for a hotfix's byline. The stable API does not say
+//! who is playing, so the name is asked of the game's loaded Steam library
+//! through its flat C interface; nothing is sent anywhere.
 
 use std::ffi::{c_char, c_void, CStr};
 
@@ -29,11 +25,9 @@ pub(crate) fn persona_name() -> Option<String> {
         fn GetProcAddress(module: *mut c_void, name: *const u8) -> *mut c_void;
     }
 
-    // SAFETY: the library is looked up among the modules the game has
-    // already loaded and is never loaded from here; each call is made only
-    // through an export that was found, with the signature the Steam SDK
-    // gives it; and the name is a NUL-ended string the library owns, copied
-    // before anything else is asked of it.
+    // SAFETY: the library is only looked up among loaded modules, each call
+    // goes through a found export with the SDK's signature, and the
+    // library-owned name is copied at once.
     unsafe {
         let library = GetModuleHandleA(LIBRARY.as_ptr());
         if library.is_null() {

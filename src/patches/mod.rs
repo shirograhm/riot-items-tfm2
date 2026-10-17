@@ -1,79 +1,34 @@
-//! Item balance patches: the items are rebalanced whenever the game patches
-//! its champions, from how they did on the version that just ended.
+//! Item balance patches: whenever the game patches its champions, the items are
+//! rebalanced from how they did on the version that just ended (`item_stats`
+//! counts per version). Winners held too much are nerfed, items that neither
+//! won nor were held are buffed ([`balance`]), and a news article lists what
+//! moved ([`text::news`]).
 //!
-//! The base game patches champions on a calendar and never touches an item.
-//! This is the same idea for items, built on what the mod already keeps:
-//! `item_stats` counts, for every game version, how often each item was held
-//! at the end of a match and how often its holder won. When the game patches
-//! its champions, the version that just ended is judged ([`balance`]), the
-//! items that won and were held too much are nerfed and the ones that did
-//! neither are buffed, and a news article says what moved ([`text::news`]):
-//! "Item Patch Notes v…", under the version the game's own notes announce.
+//! The game's patch is noticed in the player's inbox, where its patch notes
+//! arrive ([`watch_news`]), or failing that by the first match on a newer
+//! version, and the item patch lands at once so its notes come with the game's
+//! ([`ALERT_FRAMES`]). A number is only patched where the match ([`live`]), the
+//! tooltips ([`text`]) and the builds can follow it: build choices lean with an
+//! item's patches ([`leaning`]), or a nerfed popular item would stay just as
+//! popular.
 //!
-//! That the game has patched is read off the player's inbox, where its
-//! patch notes arrive ([`watch_news`]), and failing that off the first match
-//! counted on a newer version, which is how it was first told and still
-//! catches a patch the inbox was not seen to get. The item patch lands the
-//! moment that is seen, so that its notes come with the same news as the
-//! game's own ([`ALERT_FRAMES`]).
+//! Modules: [`fields`] (what may move, in what steps), [`base`] (patched items
+//! and their unpatched numbers), [`state`] (what the save keeps), [`balance`]
+//! (choosing changes), [`live`] (what matches, hooks and tooltips read),
+//! [`text`] (tooltips and notes), [`steam`] (a hotfix's byline).
 //!
-//! # Where everything is
+//! A hotfix is the player's own patch: numbers set in the Item Patcher Settings
+//! window (`crate::ui::patch_settings`) wait in the save ([`State::staged`])
+//! until Queue Manual Patch queues one ([`balance::manual`]). It lands when the
+//! calendar next moves ([`server_tick`], or [`watch_news`] for a guest) as
+//! "Item Patch Notes v… - Hotfix N", signed with the player's Steam name; with
+//! nothing staged there is no hotfix.
 //!
-//! - [`fields`]: which numbers may move, which way is a buff, in what steps.
-//! - [`base`]: which items are patched, and their numbers before any patch.
-//! - [`state`]: what the save remembers.
-//! - [`balance`]: choosing one patch's changes.
-//! - [`live`]: the balance as matches, build hooks and tooltips read it.
-//! - [`text`]: the patched tooltips, and the patch notes.
-//! - [`steam`]: the player's Steam name, for a hotfix's byline.
-//!
-//! # What follows a patch
-//!
-//! A number is only patched where all of these can follow it. The match:
-//! see [`live`]. The tooltips: the game's own are corrected where they are
-//! shown, and the mod's read the patched numbers ([`text`]). And the builds:
-//! an item's patches lean the choice of it ([`leaning`]), so that a nerf
-//! takes an item out of some builds as well as off its win rate. Without
-//! that an item would be nerfed for being popular and stay exactly as
-//! popular, down to its floor.
-//!
-//! # Hotfixes
-//!
-//! A hotfix is the player's own patch, made by hand. The Item Patcher
-//! Settings window (`crate::ui::patch_settings`) is where the player sets
-//! an item's numbers themselves. A number typed there changes nothing yet:
-//! it waits in the save ([`State::staged`]). The window's Queue Manual
-//! Patch button queues a hotfix, which is made of the numbers waiting and
-//! of nothing else
-//! ([`balance::manual`]): no item is judged for it, and its notes say whose
-//! patch it is. With no number waiting there is no hotfix. None can be
-//! queued then, and one queued whose numbers have since been taken back
-//! comes to nothing when it is due: no patch, no notes.
-//!
-//! A queued hotfix lands the moment the calendar next moves, so that its
-//! notes arrive with the news of that very move. The server's management
-//! tick is what says the calendar has moved: it runs only while it does
-//! ([`server_tick`]). A client with no server of its own, a guest in a
-//! shared league, has the hotfix when its inbox is next seen to take news
-//! ([`watch_news`]).
-//!
-//! It is a hotfix of the game's current version: "Item Patch Notes v… -
-//! Hotfix 1", numbered from one for each version, and signed with the
-//! player's Steam name where that can be had. The queue is the save's
-//! ([`State::queued`]). A patch the game's own brings in the meantime does
-//! not release the numbers waiting, and leaves the hotfix queued to land
-//! right behind it.
-//!
-//! With `automatic` off in the patch settings ([`tuning`]) a hotfix is the
-//! only patch there is: the game's own patches bring none.
-//!
-//! A number set by hand reads exactly as typed (`State::exact`), where a
-//! patch counts in steps. The same window holds what the player allows the
-//! automatic patches: a least and a most for a number, and numbers they are
-//! not to move at all ([`State::limits`]).
-//!
-//! With `match_builds::LOG` on, `match-builds.log` has a `patch.` line for
-//! everything this does.
+//! The game's own patch leaves a queued hotfix to land right behind it, and
+//! with `automatic` off ([`tuning`]) hotfixes are the only patches. Hand-set
+//! numbers read exactly as typed (`State::exact`), and the window also holds
+//! the automatic patches' limits ([`State::limits`]); with `match_builds::LOG`
+//! on, `match-builds.log` has a `patch.` line for everything.
 
 pub(crate) mod balance;
 pub(crate) mod base;
@@ -107,26 +62,18 @@ const KEY: &str = "item_patches";
 // Frames between two looks at whether a patch is due.
 const CHECK_FRAMES: u32 = 30;
 
-// Frames a due patch is looked for on every one, after each management
-// tick of the server's. A tick means the calendar is moving, and what a
-// patch waits for comes with that move: the game's own patch notes, or a
-// queued hotfix's turn. A patch left to the next look in [`CHECK_FRAMES`]
-// can find the player on the way into a match, and its notes then come a
-// day late.
+// Frames a due patch is looked for on every frame after each server management
+// tick, since the calendar's move brings what a patch waits for; left to
+// [`CHECK_FRAMES`], its notes could come a day late.
 const ALERT_FRAMES: u32 = 120;
 
-// What the build hooks add to an item's score for its patches, at the most
-// they lean ([`leaning`]). On the scale of `item_build_hook`'s bonuses,
-// which nothing documents: a mod final gets 0.5 there for being one, so at
-// full lean an item is worth that much again less a fifth, or more.
+// What the build hooks add to an item's score at full lean ([`leaning`]), on
+// the scale of `item_build_hook`'s bonuses (a mod final gets 0.5).
 pub(crate) const LEAN_SCORE: f32 = 0.2;
 
-// The command the client sends its own server extension to have it post a
-// patch's article at once.
-//
-// Without it the article waits for the next management tick, and the server
-// only ticks while the calendar runs: a patch that lands on an idle
-// management screen would post nothing until the player moves on.
+// The command the client sends its server extension to post a patch's article
+// at once. Otherwise it waits for a management tick, which an idle management
+// screen never has.
 const SERVER_COMMAND: &str = "item_patches";
 
 pub(crate) fn log(key: &str, text: impl FnOnce() -> String) {
@@ -239,17 +186,14 @@ fn hand_to_server(state: &State) {
     }
 }
 
-// Whether a hotfix is queued in the save that is loaded. In an atomic of
-// its own, beside [`State::queued`], for the queue button of the Item
-// Patcher Settings window, which has no business holding the session to
-// paint itself.
+// Whether a hotfix is queued in the loaded save, mirrored from
+// [`State::queued`] for the window's queue button.
 static HOTFIX_QUEUED: AtomicBool = AtomicBool::new(false);
 // A click has changed the queue and the save has not been told yet.
 static QUEUE_CHANGED: AtomicBool = AtomicBool::new(false);
-// Management ticks the server has run ([`server_tick`]): it has one only
-// while the calendar moves. Counted for the client, which looks for a due
-// patch on every frame for a while after each, and what the count was when
-// the hotfix was queued: the hotfix is due at the next.
+// Server management ticks run ([`server_tick`]), which happen only while the
+// calendar moves. The client watches closely after each, and a queued hotfix is
+// due at the next.
 static CALENDAR_TICKS: AtomicU32 = AtomicU32::new(0);
 static QUEUED_AT_TICK: AtomicU32 = AtomicU32::new(0);
 // Times the inbox has been seen to take new articles ([`watch_news`]), and
@@ -258,9 +202,8 @@ static QUEUED_AT_TICK: AtomicU32 = AtomicU32::new(0);
 static NEWS_CYCLES: AtomicU32 = AtomicU32::new(0);
 static QUEUED_AT_CYCLE: AtomicU32 = AtomicU32::new(0);
 
-// Whether the save that is loaded has numbers set by hand waiting for a
-// hotfix ([`State::staged`]): what a hotfix is made of, and without which
-// there is none to queue. In an atomic for the same reason as the queue.
+// Whether the loaded save has hand-set numbers waiting ([`State::staged`]),
+// without which no hotfix can be queued; an atomic like the queue.
 static STAGED_ANY: AtomicBool = AtomicBool::new(false);
 
 // Takes whether `state` has numbers waiting for a hotfix.
@@ -283,10 +226,9 @@ pub(crate) fn hotfix_ready() -> bool {
     STAGED_ANY.load(Ordering::Relaxed)
 }
 
-// Queues a hotfix for the calendar's next move. From the Item Patcher
-// Settings window's queue button; [`sync`] puts it in the save. One that is
-// queued already stays as it is: it is not taken back, and there is nothing
-// to queue twice. Nor is one queued with nothing to release.
+// Queues a hotfix for the calendar's next move, from the window's queue button;
+// [`sync`] writes it to the save. A queued one stays as it is, and nothing is
+// queued with nothing to release.
 pub(crate) fn queue_hotfix() {
     if HOTFIX_QUEUED.load(Ordering::Relaxed) || !hotfix_ready() {
         return;
@@ -317,12 +259,10 @@ pub(crate) fn settings<T>(read: impl FnOnce(&State) -> T) -> Option<T> {
     (enabled() && session.loaded).then(|| read(&session.state))
 }
 
-// Changes the save's patch state from that window: the numbers set by hand
-// that wait for the next manual patch ([`State::staged`]) and what the
-// player allows a patch to do ([`State::limits`]). Neither changes a number
-// a match reads, so nothing is worked out again; the save is told once the
-// window has been left alone for a moment ([`sync`]). Whether there was a
-// state to change.
+// Changes the save's patch state from that window: staged numbers
+// ([`State::staged`]) and limits ([`State::limits`]), neither of which a match
+// reads. The save is told once the window has been left alone a moment
+// ([`sync`]); returns whether there was a state.
 pub(crate) fn edit_settings(edit: impl FnOnce(&mut State)) -> bool {
     let Ok(mut session) = SESSION.lock() else {
         return false;
@@ -347,11 +287,8 @@ fn take_queue(state: &State) {
     QUEUE_CHANGED.store(false, Ordering::Relaxed);
 }
 
-// The state `text` holds, in the shape this build keeps.
-//
-// A state from before the tiers of an item were patched one by one has an
-// item's ratios once, under its legendary, for all of its tiers. They are
-// written out for each tier here, which leaves every number where it was.
+// The state `text` holds, upgraded from the old shape (an item's ratios once,
+// under its legendary) to one entry per tier.
 fn read_state(text: &str) -> Option<State> {
     let mut state = State::parse(text)?;
     if state.format < state::FORMAT {
@@ -371,12 +308,9 @@ fn read_state(text: &str) -> Option<State> {
     Some(state)
 }
 
-// A version as its numbers, to tell the newer of two: `1.10` is after
-// `1.9`. Two that have the same numbers are the same version however they
-// are written (`1.2` and `1.2.0`, or with a letter in front): a version is
-// read from two places now, the matches and the patch notes, and a patch
-// must not be set off by the two spelling one version differently. Only
-// versions with no number in them are told apart by their text.
+// Orders two versions by their numbers (`1.10` after `1.9`), so the matches and
+// the patch notes cannot spell one version two ways (`1.2`, `1.2.0`, a letter
+// in front). Versions with no number are compared as text.
 fn version_order(a: &str, b: &str) -> Order {
     let numbers = |text: &str| -> Vec<u64> {
         let mut numbers: Vec<u64> = text
@@ -423,25 +357,14 @@ impl Watch {
     }
 }
 
-// Keeps [`Watch::newest`]: the version of the newest champion patch notes
-// in the player's inbox. Every two seconds on the management screens, and
-// on every frame for a while after the calendar has moved.
+// Keeps [`Watch::newest`], the version of the newest champion patch notes in
+// the player's inbox (a `PatchNote` with a `version` in the team record's
+// `news`), since the game states its version nowhere else. Every two seconds on
+// the management screens, and every frame for a while after the calendar moves.
 //
-// The game says nowhere what version it is on (no event for a patch, no
-// field for the version: only the matches played carry one). Its patch
-// notes do, and they are an article in the player's team's news the day
-// the patch lands: type `PatchNote`, with a `version`, in the team record's
-// `news` list.
-//
-// A look is one small read, of the article after the last one seen, which
-// is not there while nothing has come. When something has, the list is read
-// whole: where in it a new article goes is not known, and a patch note is
-// looked for by what it is and not by where. It is read whole every
-// [`WATCH_REREAD`]th look regardless, in case the list is ever shortened
-// from the front as it grows.
-//
-// Each reading that finds news come in since the one before is counted
-// ([`NEWS_CYCLES`]): a queued hotfix goes out with the next news.
+// A look reads only the article after the last one seen; when one has come, or
+// every [`WATCH_REREAD`]th look, the list is read whole. Each reading with news
+// counts toward [`NEWS_CYCLES`], and a queued hotfix goes out with the next.
 fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
     use serde_json::Value;
 
@@ -517,10 +440,9 @@ fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
     watch.newest = newest;
 }
 
-// The screens a patch lands on: the management ones, and the lineup that
-// comes before a match, which is where a move of the calendar leaves the
-// player on a match day. Not from the stadium entrance on: the numbers the
-// player's match reads must not change under it.
+// The screens a patch lands on: the management ones and the pre-match lineup,
+// but nothing from the stadium entrance on, so a match's numbers never change
+// under it.
 fn can_land(scene: Option<ClientSceneKindV1>) -> bool {
     matches!(
         scene,
@@ -585,11 +507,9 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
         Some(_) => return,
     };
 
-    // A patch lands at once, the game's own or a queued hotfix, and does
-    // not wait for the simulations to go quiet. Its notes go out with the
-    // news of the calendar's move, and that move is the other fixtures
-    // being played: by the time they are quiet the player is in their own
-    // match, and the notes would be a day late.
+    // A patch lands at once rather than waiting for the simulations to go
+    // quiet: they are the other fixtures of the calendar's move, and by then
+    // the player is in their match and the notes a day late.
     if !can_land(scene) {
         return;
     }
@@ -606,10 +526,8 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
 
     let number = session.state.number + 1;
     let mut patch = if hotfix {
-        // A hotfix is the player's own patch: the numbers they set by hand
-        // in the Item Patcher Settings window, and nothing else. No item is
-        // judged for it. With no number waiting there is nothing to release
-        // and no hotfix: no patch, no notes, no number taken.
+        // A hotfix is only the numbers the player set by hand; nothing is
+        // judged for it, and with none waiting there is no patch and no notes.
         if session.state.staged.is_empty() {
             session.dirty = true;
             log("patch.landed", || {
@@ -744,10 +662,9 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         }
         return;
     }
-    // The save's namespace reads empty on some frames while it is still
-    // loading. `item_stats` waits that out for its own table, and its word
-    // that the save has answered is taken for this state too: both are read
-    // from the same place, on the same frame.
+    // The save's namespace reads empty on some frames while loading;
+    // `item_stats`' word that the save has answered is taken for this state
+    // too.
     if !crate::item_stats::loaded() {
         return;
     }
@@ -827,10 +744,9 @@ pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableComm
     true
 }
 
-// Every server management tick, which the server only has while the
-// calendar moves: the tick is counted for the client ([`CALENDAR_TICKS`]),
-// and whatever state and article are waiting are seen to. An atomic add, a
-// lock and an atomic read while there is neither.
+// Every server management tick (only while the calendar moves): counts the tick
+// for the client ([`CALENDAR_TICKS`]) and posts whatever state and article
+// wait.
 pub(crate) fn server_tick(ctx: &mut StableServerCtx<'_>) {
     CALENDAR_TICKS.fetch_add(1, Ordering::Relaxed);
     keep_state(ctx);
@@ -852,14 +768,9 @@ pub(crate) fn server_started(ctx: &mut StableServerCtx<'_>) {
     });
 }
 
-// Puts the state the client handed over into the save from the server's
-// side, ahead of the article of the patch that made it.
-//
-// The client writes it too ([`sync`]), and that is the copy a save the
-// player makes has. A save the game made by itself was seen to have a
-// hotfix's notes in its inbox and the state from before the hotfix: loaded,
-// the hotfix landed a second time. Written here, the state goes into the
-// save in the same call as the notes.
+// Puts the state the client handed over into the save from the server's side,
+// in the same call as the patch's article. A self-made save once had a hotfix's
+// notes but the earlier state, and landed the hotfix twice on load.
 fn keep_state(ctx: &mut StableServerCtx<'_>) {
     let Some(state) = SERVER_STATE.lock().ok().and_then(|mut held| held.take()) else {
         return;
@@ -889,13 +800,8 @@ fn in_inbox(ctx: &StableServerCtx<'_>, team: usize, title: &str) -> bool {
         })
 }
 
-// Posts the articles the client has written. One atomic read while there
-// is none.
-//
-// Not one the inbox has already: a patch's notes are named for its version
-// and its number among that version's hotfixes, and a patch lands a second
-// time when a save is loaded that kept its notes and lost its state. The
-// patch is then made again, from the same matches, and says nothing new.
+// Posts the articles the client has written, skipping any the inbox already has
+// (a patch made again after a save kept its notes but lost its state).
 fn post_articles(ctx: &mut StableServerCtx<'_>) {
     if !ARTICLE_WAITING.swap(false, Ordering::Relaxed) {
         return;
@@ -934,30 +840,13 @@ fn post_articles(ctx: &mut StableServerCtx<'_>) {
 const SCOPE_KEY: &str = "Scope";
 const SCOPE_PATCH: &str = "patch";
 
-// Files the article just posted under the inbox's Patch tab. Says what
-// happened, for the test log. Whatever goes wrong, the article is left as it
-// was posted, under General.
+// Files the just-posted article under the inbox's Patch tab, else leaves it
+// under General; returns what happened, for the test log. The inbox files a
+// plain article by its `Scope` content bind (`patch` for Patch; 0.6.3 exe, RVA
+// 0x16f3090), which `news_push` cannot set, so it is written into the team
+// record's `news` list, copying the shape of any bind already there.
 //
-// An article has no section of its own: the inbox works one out from the
-// article's type (0.6.3 exe, the function at RVA 0x16f36a0, a jump table
-// over the 53 news types). Only the game's champion patch notes are Patch
-// by type, and those hold champion keys, not text. A plain article, which
-// is all `news_push` makes, is filed by its content binds (RVA 0x16f3090):
-// one named `Scope` decides, `patch` for Patch (`transfer` Transfer;
-// `match`, `pre_match` Match; `scout`, `rating`, `season`, `meta` Report;
-// `fan`, `finance`, `team`, `player`, `merch`, `staff` Club), and an
-// article with no such bind is General.
-//
-// `news_push` takes no binds, so the bind is written into the article
-// where the server keeps it, the team record's `news` list (`ty` is the
-// type, by serde's name for it, `Simple`, with `content` and
-// `content_bind`). A bind is a pair of strings in the exe; how the record's
-// JSON writes one is not known from there, so it is copied from any bind
-// the list already has, and written as a `[name, value]` pair where there
-// is none to copy.
-//
-// Not yet seen in game when written: that the write is taken, and that the
-// client's inbox has the bind without a save and a load in between.
+// Not yet seen in game.
 fn file_under_patch(ctx: &mut StableServerCtx<'_>, team: usize, title: &str) -> String {
     use serde_json::Value;
 

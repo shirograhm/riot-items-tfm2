@@ -1,65 +1,22 @@
-//! **Item Patcher Settings**: the mod's row in the game's Options dialog, on
-//! the Competition tab ([`super::options_dialog`] finds the dialog), and the
-//! window its button opens.
+//! **Item Patcher Settings**: the mod's row on the Options dialog's Competition
+//! tab ([`super::options_dialog`]) and the window its button opens.
 //!
-//! The window is the item page of another mod's balance editor (toxicsnek's
-//! Auto Balance Patcher), drawn over again for this mod's own patches
-//! ([`crate::patches`]): a list of the items a patch can touch down the left,
-//! with a search box over it, and for the item picked a card a tier, the
-//! legendary and its radiant, with a row for every number a patch can move.
-//! A row has
+//! The window redraws toxicsnek's Auto Balance Patcher item page for this mod's
+//! patches ([`crate::patches`]): a searchable item list, and for the item
+//! picked a card a tier with a row per patchable number. Each row has Current,
+//! New Value (waiting for the next manual patch, `patches::consider`), Minimum
+//! and Maximum (the automatic patches' band, `patches::tuning`) and Protected,
+//! all kept in the save (`patches::state`).
 //!
-//! - **Current**: what the number reads in this save, patches and all;
-//! - **New Value**: a box to type another into. It is not taken at once: it
-//!   waits for the next manual item patch, which is then made of these
-//!   numbers and of nothing else (`patches::consider`), and says so in its
-//!   notes. Emptied, the number waits no longer;
-//! - **Minimum** and **Maximum**: the least and the most an automatic patch
-//!   may make the number, in place of the band every number has
-//!   (`patches::tuning`), which the empty boxes show;
-//! - **Protected**: on, no automatic patch moves the number.
+//! The footer has **Changed Items Only**, a status line, Back and **Queue
+//! Manual Patch** (`patches::queue_hotfix`), greyed out while there is nothing
+//! to release or a patch is queued. **Import** and **Export** carry it all
+//! between saves through a file ([`transfer`]).
 //!
-//! All of it is the save's (`patches::state`): another save has its own.
-//!
-//! The footer has the rest. On its left a toggle, **Changed Items Only**,
-//! narrows the list to the items with a New Value waiting, and beside it a
-//! line says how many are. On its right, Back and then **Queue Manual
-//! Patch**, which queues the patch that releases them
-//! (`patches::queue_hotfix`). That button is greyed out, and takes no click,
-//! while there is nothing to release and from when a patch is queued until
-//! it has gone out; the line on the left says which.
-//!
-//! Over the page, beside the cross, **Import** and **Export** carry all of
-//! it from one save to another, through a file the player picks in a Windows
-//! file dialog that opens in the mod's folder ([`transfer`]). What they did
-//! is said on the footer's line.
-//!
-//! # Where the window hangs
-//!
-//! Under the layout root the dialog is in, the pause menu's, as its last
-//! child: at equal `z` the later of two siblings is drawn over the earlier,
-//! and that is the only thing that puts a panel over the dialog (see
-//! `strategy_ui` on `z`). It is spawned anew each time it is opened, so that
-//! it is the last child whenever game code has built its dialog again, and it
-//! goes with the pause menu when that closes.
-//!
-//! # The text boxes
-//!
-//! A box is read on every frame while the window is up: the only event a
-//! text box has is the one for a finished edit, and a number typed and left
-//! in its box has to count. What a box held when it was last read is kept
-//! ([`TextBox`]), and a reading that differs is the player's typing. A box
-//! the window fills itself is not believed to differ until it has once read
-//! what was written into it, since a write is not known to show on the next
-//! frame.
-//!
-//! # Clicks
-//!
-//! A handler only notes which node was clicked ([`CLICKS`]); what the click
-//! means is worked out on the next frame, here, where the window's state is.
-//! A node is registered each time it is spawned, since a registration in the
-//! pause menu's layout does not outlast its node, and a click that arrives
-//! twice for that reason is noted once.
+//! The window is spawned each time as the pause menu layout's last child, since
+//! only sibling order draws it over the dialog. Text boxes are read every frame
+//! ([`TextBox`]), as a finished edit is their only event; click handlers only
+//! note the node ([`CLICKS`]), and the click is acted on next frame.
 
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::Mutex;
@@ -88,10 +45,8 @@ const ROW_HINT: (&str, &str) = (
     "Set item numbers by hand and release them as a manual item patch, and choose what the automatic item patches may change.",
 );
 
-// Frames after a node is spawned or comes into view in which an event on it
-// is not taken for a click. A node was seen to be sent an event with no
-// click behind it; what sent it is not known, and the moment a node is
-// built, shown or painted is when the host would answer with one.
+// Frames after a node is spawned or shown in which an event on it is not taken
+// for a click: a node was seen to get an event with no click behind it.
 const SETTLE_FRAMES: u32 = 12;
 
 // Frames a box the window wrote into is waited on to read what was written.
@@ -760,10 +715,9 @@ const CARD_SOURCE: &str = r##"c%N%:color {
 }
 "##;
 
-// One number of a tier: what it is called, what it reads, the three boxes,
-// the Protected pill and a note. The pill is three nodes, as in the editor
-// this is drawn after: a fill, a selectable over it that takes the click and
-// looks the same in both its states, and the word.
+// One number of a tier: its name, its reading, the three boxes, the Protected
+// pill and a note. The pill is a fill, a selectable over it that looks the same
+// in both states, and the word.
 const FIELD_SOURCE: &str = r##"  #f%N%:empty {
     y: %Y%px;
     width: 1394px;
@@ -1304,14 +1258,10 @@ fn queue_look() -> u8 {
     }
 }
 
-// Keeps the footer's queue button as the queue stands, and the line on the
-// footer's left with it. Whether anything was painted.
-//
-// The button is two nodes in one place, as in the editor this is drawn
-// after: the button itself, shown while a patch can be queued, and a
-// greyed-out box with the same words, or "Queued", shown while none can. So
-// nothing is ever written to the button, which is what an event with no
-// click behind it would answer.
+// Keeps the footer's queue button, and its line, as the queue stands; whether
+// anything was painted. The button and a greyed-out copy share one place and
+// are shown in turn, so nothing is ever written to the button itself (a write
+// is when a phantom event comes).
 fn paint_queue(ctx: &mut StableClient<'_>, window: &mut Window, frame: u32) -> bool {
     let look = queue_look();
     if look == window.queue_look {
@@ -1343,10 +1293,9 @@ fn paint_only(ctx: &mut StableClient<'_>, window: &Window) {
     );
 }
 
-// Shows the entries of the list that match the search box, and with the
-// footer's toggle on only those with a number waiting for a patch, one
-// under the other. Each is placed outright: nothing is left to a layout's
-// own stacking, which is not known to pass over a hidden node.
+// Shows the list entries that match the search box (and, with the toggle on,
+// have a number waiting), each placed outright rather than left to a layout's
+// stacking.
 fn lay_list(ctx: &mut StableClient<'_>, window: &Window) {
     let wanted = window.filter.trim().to_lowercase();
     // The tiers with a number waiting, where the toggle asks for them.
@@ -1679,10 +1628,9 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
 
 // -- events ---------------------------------------------------------------------
 
-// A click on the row's button asks for the window: on a button that is on
-// screen and has been for a moment ([`SETTLE_FRAMES`]). An unreported kind
-// counts as a click: a window opened for nothing is closed again, and a
-// button that opens nothing is the worse failure.
+// A click on the row's button opens the window, if the button has been on
+// screen a moment ([`SETTLE_FRAMES`]). An unreported kind counts as a click: a
+// window opened for nothing closes again.
 fn handle_open(ctx: &mut StableClient<'_>) {
     let Some(event) = ctx.ui_current_event() else {
         return;
@@ -1719,14 +1667,10 @@ fn handle_click(ctx: &mut StableClient<'_>) {
 
 // -- every frame ----------------------------------------------------------------
 
-// Keeps the row in the dialog and on its tab.
-//
-// It is spawned when the dialog has none, which is once for each time game
-// code builds the dialog: the dialog's own rows are all there from the
-// start, so a row appended then is the last and stays the last. Its button
-// is registered then, and again each time the dialog opens: in the pause
-// menu's layout a registration does not outlast the dialog closing or the
-// game being saved, and a button registered once goes dead.
+// Keeps the row in the dialog and on its tab: spawned once each time game code
+// builds the dialog, and its button registered again each time the dialog
+// opens, since a registration in the pause menu's layout does not outlast the
+// dialog closing or a save.
 fn sync_row(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
     let Some(dialog) = dialog else {
         ROW_UP.store(false, Ordering::Relaxed);
@@ -1737,11 +1681,8 @@ fn sync_row(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
     let contents = format!("{dialog}.contents");
     let row = format!("{contents}.{ROW}");
     let fresh = !ctx.ui_exists(&row);
-    // Rows stand in the order they were appended, and this one goes under
-    // Item Rules (the user, 2026-10-16: "I would like to have this toggle
-    // option above the option for patch data"). That row is spawned first in
-    // the frame, so this waits a frame at most: only when the two finders
-    // came upon the dialog on different frames.
+    // This row goes under Item Rules (user, 2026-10-16), which is spawned first
+    // in the frame, so this waits a frame at most.
     if fresh && !ctx.ui_exists(&format!("{contents}.{}", super::options_row::ROW)) {
         return;
     }
@@ -1878,10 +1819,9 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
         window.notice = None;
     }
 
-    // Import and Export each open a file dialog, which the footer points to
-    // while it is up. Once a file is chosen it is written or read
-    // (`transfer::finished`), and an import puts other numbers in the boxes,
-    // so the page is made again from what the save has now.
+    // Import and Export each open a file dialog; once a file is chosen it is
+    // written or read (`transfer::finished`), and the page is rebuilt from the
+    // save after an import.
     let export = window.under(".popup.export");
     if settled && clicks.iter().any(|path| *path == export) {
         if let Some(notice) = transfer::start_export() {
@@ -1912,10 +1852,8 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
         lay_list(ctx, window);
     }
 
-    // The queue button: a click on it queues the patch, where it has been
-    // showing as one that can be for a moment. One event queues a patch,
-    // with nothing to confirm it, so the event has to be the player's click
-    // and no other.
+    // The queue button queues a patch with nothing to confirm it, so only a
+    // click on a button shown as ready for a moment counts.
     let queue = window.under(".popup.footer.queue");
     if settled
         && window.queue_look == QUEUE_READY

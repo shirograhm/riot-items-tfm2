@@ -3,22 +3,19 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DOT_TICK_RATE};
 
-// Statless marker on a unit Torment is burning, monster as much as
-// champion: the `view_buffs` binding of the same name in
-// `view/effects.view_effects` draws a fire at its feet for as long as the
-// marker is up. One name for both tiers and every carrier, so a unit two of
-// them burn shows one fire. The art is drawn to a champion's size.
+// Statless marker on a unit Torment is burning: the `view_buffs` binding of the
+// same name draws a fire at its feet while it is up. One name for both tiers
+// and every carrier, so a unit burned twice shows one fire; drawn at a
+// champion's size.
 const BURN_BUFF: &str = "riot_liandrys_burn";
 // The same marker for a minion, bound to a fire its size: a minion stands
 // about 13 px wide and tall against a champion's 21 to 36, its feet 7 px
 // under it against 12, and the champion's fire swallowed it.
 const SMALL_BURN_BUFF: &str = "riot_liandrys_burn_small";
-// How much longer than the burn the marker is put up for, which is also how
-// long it is left alone before it is put up again. A damage-over-time skill
-// starts the burn over on every one of its ticks, and replacing a buff that
-// often is work for nothing: the marker would restart its animation as often
-// if the view ever took a replaced buff for a new one. So the flames may
-// outlast the burn by this much, a fifth of a second.
+// How much longer than the burn the marker is put up for, and how long it is
+// left before being put up again: a damage-over-time skill restarts the burn
+// every tick, and replacing the buff that often is wasted work. The flames may
+// outlast the burn by a fifth of a second.
 const MARKER_SLACK_TICKS: usize = DOT_TICK_RATE;
 
 // One unit this carrier's Torment is burning.
@@ -57,7 +54,7 @@ impl LiandrysTorment {
                 &["radiant_liandrys_torment"],
             ),
             price: 700,
-            hp: 200,
+            hp: 300,
             magic_power: 40,
             effect_hp_percent_damage: 6.0,
             effect_minion_damage_cap: 40,
@@ -70,7 +67,7 @@ impl LiandrysTorment {
         Self {
             meta: ItemMeta::radiant("radiant_liandrys_torment", &["liandrys_torment"]),
             price: 1000,
-            hp: 300,
+            hp: 400,
             magic_power: 75,
             effect_hp_percent_damage: 6.0,
             effect_minion_damage_cap: 40,
@@ -143,10 +140,9 @@ impl LiandrysTorment {
         };
         let burn = &mut self.burns[index];
         burn.remaining = duration;
-        // Up for the whole burn from one call, not kept alive instance by
-        // instance, and only put up again once the burn would outlast it. The
-        // price is that the flames outlast a burn cut short by its carrier's
-        // death, by up to the burn's own length.
+        // Put up for the whole burn in one call, and again only once the burn
+        // would outlast it; the flames may outlast a burn cut short by its
+        // carrier's death.
         if burn.marker < duration {
             burn.marker = duration + MARKER_SLACK_TICKS;
             let marker = burn.marker;

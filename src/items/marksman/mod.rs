@@ -14,6 +14,7 @@ items! {
     lord_dominiks_regards,
     mirage_blade,
     mortal_reminder,
+    navori_flickerblade,
     runaans_hurricane,
     statikk_shiv,
     stormrazor,

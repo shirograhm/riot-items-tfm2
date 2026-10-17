@@ -3,13 +3,13 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
 
-// Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While in
-// stasis, you are untargetable, invulnerable, and unable to act (120 second
+// Time Stop: Falling below 20% health puts you in stasis for 2.5 seconds. While
+// in stasis, you are untargetable, invulnerable, and unable to act (120 second
 // cooldown).
 //
-// Stasis is built the way `guardian_angel` builds its revive: a self-banish makes
-// the carrier untargetable and locks her inputs, and a `damaged_reduce: 100` buff
-// covers damage already on its way (burns, projectiles in flight).
+// Built like `guardian_angel`'s revive: a self-banish makes the carrier
+// untargetable and locks her inputs, and a `damaged_reduce: 100` buff covers
+// damage already on its way.
 
 // Invulnerability for the stasis and the tick after it. Shared by both tiers.
 const STASIS_BUFF: &str = "zhonyas_hourglass_stasis";
@@ -17,11 +17,10 @@ const STASIS_BUFF: &str = "zhonyas_hourglass_stasis";
 // Angel's ring. Bound in `view/effects.view_effects`; the sheet is drawn 2.5
 // seconds long, so it matches the default `effect_duration_seconds`.
 const STASIS_EFFECT: &str = "riot_zhonyas_hourglass_stasis";
-// The activation sound: `sound/sfx/riot_zhonyas_stasis.sound_info`, mapped
-// into `asset/base/sound/sfx` by `mod.override_info`, which is where sound
-// names are looked up. The clip is trimmed so its first hit lands on the
-// activation and its closing chime on the default 2.5 second stasis ending;
-// the untrimmed source is `sfx/zhonyas.wav`.
+// The activation sound (`sound/sfx/riot_zhonyas_stasis.sound_info`, mapped into
+// `asset/base/sound/sfx` by `mod.override_info`), trimmed so its first hit
+// lands on activation and its chime on the default 2.5 s ending; the untrimmed
+// source is `sfx/zhonyas.wav`.
 const STASIS_SFX: &str = "riot_zhonyas_stasis";
 
 #[derive(Clone, Debug)]
@@ -146,12 +145,10 @@ impl StableItem for ZhonyasHourglass {
         self.time_stop_pending = false;
     }
 
-    // Time Stop itself. It waits here rather than firing from `on_damaged`
-    // because a hit that takes the carrier under the threshold can be followed,
-    // in the same tick, by one that kills her: stasis started on the first would
-    // play its hourglass and sound over a death. By the time this runs
-    // the tick's damage is in, so a carrier who died gets nothing, and the
-    // cooldown is not spent.
+    // Time Stop itself, from `update` rather than `on_damaged`: a hit under the
+    // threshold can be followed in the same tick by a killing one, and stasis
+    // would play over a death. By now the tick's damage is in, so a dead
+    // carrier gets nothing and keeps the cooldown.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.time_stop_cooldown = self.time_stop_cooldown.saturating_sub(1);
         if !std::mem::take(&mut self.time_stop_pending) || self.time_stop_cooldown > 0 {
@@ -180,15 +177,11 @@ impl StableItem for ZhonyasHourglass {
         self.time_stop_cooldown = ticks(self.effect_cooldown_seconds);
     }
 
-    // The host resolves the hit before this runs, so "falling below" is read after
-    // the fact, as in `steraks_gage`: the carrier crosses under the threshold on
-    // this tick. A hit that kills outright never gets here alive; one that is
-    // followed by a killing blow does, which is why stasis itself waits for
-    // `update`.
-    //
-    // An untargetable carrier is already banished (Guardian Angel's revive, or
-    // this item's own stasis): a second banish would replace that one, and cut a
-    // longer stasis short.
+    // The hit is resolved before this runs, so "falling below" is read on the
+    // tick the carrier crosses the threshold, as in `steraks_gage`; stasis
+    // itself waits for `update`. An untargetable carrier is already banished
+    // (Guardian Angel's revive or this stasis), and a second banish would cut
+    // it short.
     fn on_damaged(
         &mut self,
         ctx: &mut StableSim<'_>,

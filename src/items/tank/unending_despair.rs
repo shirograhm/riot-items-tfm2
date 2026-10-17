@@ -27,7 +27,7 @@ impl UnendingDespair {
                 &["radiant_unending_despair"],
             ),
             price: 750,
-            hp: 250,
+            hp: 400,
             defence: 15,
             effect_bonus_flat_heal: 15,
             effect_caster_hp_percent_heal: 1.5,
@@ -40,7 +40,7 @@ impl UnendingDespair {
         Self {
             meta: ItemMeta::radiant("radiant_unending_despair", &["unending_despair"]),
             price: 1050,
-            hp: 350,
+            hp: 650,
             defence: 25,
             effect_bonus_flat_heal: 20,
             effect_caster_hp_percent_heal: 2.5,

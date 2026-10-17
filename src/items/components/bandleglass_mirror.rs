@@ -5,7 +5,6 @@ use mod_api_stable::*;
 #[derive(Clone, Debug)]
 pub struct BandleglassMirror {
     price: usize,
-    hp: i32,
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
@@ -14,11 +13,10 @@ pub struct BandleglassMirror {
 impl Default for BandleglassMirror {
     fn default() -> Self {
         Self {
-            price: 350,
-            hp: 100,
+            price: 400,
             hp_regen: 1,
-            magic_power: 10,
-            skill_cooldown_mult: 5,
+            magic_power: 20,
+            skill_cooldown_mult: 10,
         }
     }
 }
@@ -29,7 +27,7 @@ impl BandleglassMirror {
         apply_config!(
             item,
             cfg,
-            [price, hp, hp_regen, magic_power, skill_cooldown_mult]
+            [price, hp_regen, magic_power, skill_cooldown_mult]
         );
         item
     }
@@ -57,7 +55,7 @@ impl StableItem for BandleglassMirror {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string()]
+        vec!["arcane_crystal".to_string(), "glowing_mote".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
@@ -73,7 +71,6 @@ impl StableItem for BandleglassMirror {
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            hp: self.hp,
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -82,7 +79,7 @@ impl StableItem for BandleglassMirror {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::HpRegen, ItemTagV1::Ap]
+        vec![ItemTagV1::HpRegen, ItemTagV1::Ap, ItemTagV1::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategoryV1 {

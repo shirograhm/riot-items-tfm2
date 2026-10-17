@@ -26,8 +26,8 @@ impl EchoesOfHelia {
                 &["bandleglass_mirror", "forbidden_idol"],
                 &["radiant_echoes_of_helia"],
             ),
-            price: 550,
-            hp: 150,
+            price: 750,
+            hp: 200,
             hp_regen: 2,
             magic_power: 25,
             skill_cooldown_mult: 15,
@@ -178,18 +178,9 @@ impl StableItem for EchoesOfHelia {
         self.save_charges(caster_ref.level(), *damage as f64);
     }
 
-    // Spends the stored charges on an ally.
-    //
-    // Self-casts count as ally-targeted, and Soul Charges only ever spend on
-    // someone else, so a self-cast spends nothing here. It may still have
-    // healed an ally, as the Monk's heal does around them: that is watched for
-    // and spent in `update`.
-    //
-    // Every one of these checks now returns *before* the reset rather than
-    // skipping only the heal. Clearing the charges unconditionally spent them
-    // on casts that healed nobody — a self-cast, an enemy-targeted skill, a
-    // minion, a dead ally — which contradicted the tooltip and made the
-    // self-exclusion a punishment rather than a no-op.
+    // Spends the stored charges on an ally. A self-cast spends nothing here
+    // (its heal around the carrier is watched for in `update`), and every check
+    // returns before the reset, so a cast that healed nobody keeps the charges.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,

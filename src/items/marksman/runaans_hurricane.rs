@@ -9,13 +9,10 @@ use crate::{apply_config, is_monster, percent_of, sized_range, ItemMeta, ProcQue
 // range of the carrier, champions first, each dealing bonus physical damage
 // that can critically strike.
 //
-// The bolts are real projectiles: `spawn_projectile` flies each one from the
-// carrier to its target, and the damage lands when it arrives, through the
-// native effect the bolt carries (`RunaansBolt`, registered in `lib.rs`, one
-// per tier). That effect is handed a deterministic seed, which is what the
-// crit roll uses. The damage goes out as `Item`, so it applies no on-hit
-// effects -- this item's own included, which would otherwise fire bolts
-// forever.
+// The bolts are real projectiles (`spawn_projectile`) whose damage lands on
+// arrival through the tier's native effect (`RunaansBolt`, registered in
+// `lib.rs`), with a deterministic seed for the crit roll. It goes out as
+// `Item`, so no on-hit effects apply, this item's own included.
 
 // The `view_projectiles` name in `view/effects.view_effects` that draws a
 // bolt in flight (`effects/runaans_bolt`).
@@ -50,7 +47,7 @@ impl RunaansHurricane {
             ),
             bolt_hit: "riot_runaans_bolt_hit",
             price: 700,
-            attack_speed_mult: 40,
+            attack_speed_mult: 35,
             crit_chance: 20,
             move_speed_mult: 5,
             effect_ad_percent_damage: 50.0,
@@ -66,7 +63,7 @@ impl RunaansHurricane {
             meta: ItemMeta::radiant("radiant_runaans_hurricane", &["runaans_hurricane"]),
             bolt_hit: "riot_radiant_runaans_bolt_hit",
             price: 950,
-            attack_speed_mult: 70,
+            attack_speed_mult: 65,
             crit_chance: 25,
             move_speed_mult: 5,
             ..Self::base()
@@ -110,10 +107,9 @@ impl RunaansHurricane {
         self.bolt_hit
     }
 
-    // Up to `effect_max_targets` enemies other than `target` within range of
-    // the carrier, as LoL measures it: every champion in range before any
-    // other unit, nearest first within each. Turrets are never picked. The
-    // default range sits just past a ranged champion's attack range (60).
+    // Up to `effect_max_targets` enemies besides `target` within range of the
+    // carrier: champions first, nearest first, never turrets. The default range
+    // sits just past a ranged champion's attack range (60).
     fn bolt_targets(
         &self,
         ctx: &StableSim<'_>,

@@ -28,7 +28,7 @@ impl CosmicDrive {
                 &["radiant_cosmic_drive"],
             ),
             price: 850,
-            hp: 150,
+            hp: 250,
             magic_power: 50,
             skill_cooldown_mult: 10,
             move_speed_mult: 4,
@@ -41,7 +41,7 @@ impl CosmicDrive {
         Self {
             meta: ItemMeta::radiant("radiant_cosmic_drive", &["cosmic_drive"]),
             price: 1000,
-            hp: 250,
+            hp: 350,
             magic_power: 75,
             skill_cooldown_mult: 15,
             move_speed_mult: 4,
@@ -121,10 +121,10 @@ impl StableItem for CosmicDrive {
         }
     }
 
-    // Spelldance. Any hit counts - abilities, basic attacks and item procs
-    // alike - as long as it lands as magic or true damage on an enemy champion.
-    // One stack at most: the engine caps it and restarts its duration, which
-    // also holds when an ability hits several champions in the same tick.
+    // Spelldance: any hit counts (abilities, basic attacks and item procs) if
+    // it lands as magic or true damage on an enemy champion. One stack at most;
+    // the engine caps it and restarts its duration, even for a multi-champion
+    // hit in one tick.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

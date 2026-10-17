@@ -287,6 +287,13 @@
         },
         {
             "type": "Animated",
+            "name": "abyssal_mask_aura",
+            "anim": "asset/riot_items_tfm2/effects/abyssal_aura",
+            "tag": "aura",
+            "z": -1
+        },
+        {
+            "type": "Animated",
             "name": "riot_energized",
             "anim": "asset/riot_items_tfm2/effects/energized_charge",
             "tag": "charge",

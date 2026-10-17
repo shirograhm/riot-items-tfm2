@@ -726,15 +726,15 @@
         },
         "axiom_arc": {
             "name": "Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10<> (<#4b7cffff>+0.2<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>total cooldown<>."
         },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Gain <#4b7cffff>10<> (<#4b7cffff>+0.2<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>total cooldown<>."
         },
         "hearthbound_axe": {
             "name": "Hearthbound Axe",
-            "option": ""
+            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
         },
         "feral_flare": {
             "name": "Feral Flare",
@@ -818,11 +818,11 @@
         },
         "bandlepipes": {
             "name": "Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and nearby allied champions also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "radiant_bandlepipes": {
             "name": "Radiant Bandlepipes",
-            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and allied champions within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
+            "option": "\n<#ff7a3eff>Fanfare<>: Dealing damage to an enemy champion empowers you with <#92dc7bff>Fanfare<> for <#e8a800ff>4 seconds<>, granting you <#ffffffff>12%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>. While empowered, you and nearby allied champions also gain <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<>."
         },
         "tiamat": {
             "name": "Tiamat",
@@ -1058,11 +1058,11 @@
         },
         "abyssal_mask": {
             "name": "Abyssal Mask",
-            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of nearby enemy champions by <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Radiant Abyssal Mask",
-            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of enemy champions within <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> by <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Unmake<>: Reduce the <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> of nearby enemy champions by <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "World Atlas",
@@ -1123,6 +1123,22 @@
         "radiant_mikaels_blessing": {
             "name": "Radiant Mikael's Blessing",
             "option": "\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+        },
+        "force_of_nature": {
+            "name": "Force of Nature",
+            "option": "\n<#ff7a3eff>Steadfast<>: Taking <#a974ffff>magic damage<> from champions grants a stack of <#92dc7bff>Steadfast<> for <#e8a800ff>7 seconds<>, up to 1 stack per second (max 8 stacks). Being <#d94c49ff>immobilized<> by an enemy champion grants 2 stacks. At maximum stacks, gain <#88ccffff>70<> bonus <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> and <#ffffffff>6%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Radiant Force of Nature",
+            "option": "\n<#ff7a3eff>Steadfast<>: Taking <#a974ffff>magic damage<> from champions grants a stack of <#92dc7bff>Steadfast<> for <#e8a800ff>7 seconds<>, up to 1 stack per second (max 8 stacks). Being <#d94c49ff>immobilized<> by an enemy champion grants 2 stacks. At maximum stacks, gain <#88ccffff>70<> bonus <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>magic resistance<> and <#ffffffff>6%<> bonus <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>."
+        },
+        "navori_flickerblade": {
+            "name": "Navori Flickerblade",
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>remaining cooldown<> of your basic abilities by <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Radiant Navori Flickerblade",
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>remaining cooldown<> of your basic abilities by <#4b7cffff>15%<>."
         }
     },
     "vi": {
@@ -1852,15 +1868,15 @@
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10<> <#ffdd8eff>(+0.2 mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>tổng thời gian hồi chiêu<> của chiêu cuối."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Nhận <#4b7cffff>10<> <#ffdd8eff>(+0.2 mỗi 1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>tổng thời gian hồi chiêu<> của chiêu cuối."
         },
         "hearthbound_axe": {
             "name": "Rìu Nhanh Nhẹn",
-            "option": ""
+            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
         },
         "feral_flare": {
             "name": "Ngọn Lửa Hoang Dã",
@@ -1948,11 +1964,11 @@
         },
         "bandlepipes": {
             "name": "Kèn Túi Bandle",
-            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh lân cận cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         },
         "radiant_bandlepipes": {
             "name": "Kèn Túi Bandle Ánh Sáng",
-            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
+            "option": "\n<#ff7a3eff>Khúc Khải Hoàn<>: Gây sát thương lên tướng địch sẽ cấp cho bạn <#92dc7bff>Khúc Khải Hoàn<> trong <#e8a800ff>4 giây<>, tăng <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>. Khi được tăng cường, bạn và các tướng đồng minh lân cận cũng nhận thêm <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<>."
         },
         "seryldas_grudge": {
             "name": "Thương Phục Hận Serylda",
@@ -2184,11 +2200,11 @@
         },
         "abyssal_mask": {
             "name": "Mặt Nạ Vực Thẳm",
-            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch lân cận đi <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Mặt Nạ Vực Thẳm Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch trong phạm vi <#ff86c2ff>50<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> đi <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Hủy Hoại<>: Giảm <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép<> của các tướng địch lân cận đi <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "Bản Đồ Thế Giới",
@@ -2249,6 +2265,22 @@
         "radiant_mikaels_blessing": {
             "name": "Chuông Bảo Hộ Mikael Ánh Sáng",
             "option": "\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+        },
+        "force_of_nature": {
+            "name": "Giáp Thiên Nhiên",
+            "option": "\n<#ff7a3eff>Vững Chãi<>: Nhận <#a974ffff>sát thương phép<> từ tướng sẽ nhận một cộng dồn <#92dc7bff>Vững Chãi<> trong <#e8a800ff>7 giây<>, tối đa 1 cộng dồn mỗi giây (tối đa 8 cộng dồn). Bị một tướng địch <#d94c49ff>Làm Bất Động<> sẽ nhận 2 cộng dồn. Khi đạt tối đa cộng dồn, nhận <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép cộng thêm<> và <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Giáp Thiên Nhiên Ánh Sáng",
+            "option": "\n<#ff7a3eff>Vững Chãi<>: Nhận <#a974ffff>sát thương phép<> từ tướng sẽ nhận một cộng dồn <#92dc7bff>Vững Chãi<> trong <#e8a800ff>7 giây<>, tối đa 1 cộng dồn mỗi giây (tối đa 8 cộng dồn). Bị một tướng địch <#d94c49ff>Làm Bất Động<> sẽ nhận 2 cộng dồn. Khi đạt tối đa cộng dồn, nhận <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>kháng phép cộng thêm<> và <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<>."
+        },
+        "navori_flickerblade": {
+            "name": "Đao Chớp Navori",
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Đao Chớp Navori Ánh Sáng",
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
         }
     },
     "zh-hans": {
@@ -2978,15 +3010,15 @@
         },
         "axiom_arc": {
             "name": "公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：获得 <#4b7cffff>10<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>总冷却时间<>的 <#4b7cffff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
         },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：获得 <#4b7cffff>10<> <#ffdd8eff>（每 1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲 +0.2）<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>总冷却时间<>的 <#4b7cffff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
         },
         "hearthbound_axe": {
             "name": "缚炉之斧",
-            "option": ""
+            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
         },
         "feral_flare": {
             "name": "野性之炎",
@@ -3074,11 +3106,11 @@
         },
         "bandlepipes": {
             "name": "班德尔音管",
-            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和附近的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         },
         "radiant_bandlepipes": {
             "name": "光明版班德尔音管",
-            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
+            "option": "\n<#ff7a3eff>嘹亮旋律<>：对敌方英雄造成伤害时，你获得<#92dc7bff>嘹亮旋律<>，持续 <#e8a800ff>4秒<>，并获得 <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。持续期间，你和附近的友方英雄还会获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>。"
         },
         "seryldas_grudge": {
             "name": "赛瑞尔达的怨恨",
@@ -3310,11 +3342,11 @@
         },
         "abyssal_mask": {
             "name": "深渊面具",
-            "option": "\n<#ff7a3eff>损毁<>：使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
+            "option": "\n<#ff7a3eff>损毁<>：使附近敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
         },
         "radiant_abyssal_mask": {
             "name": "光明版深渊面具",
-            "option": "\n<#ff7a3eff>损毁<>：使 <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
+            "option": "\n<#ff7a3eff>损毁<>：使附近敌方英雄的 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>魔法抗性<> 降低 <#d94c49ff>20%<>。"
         },
         "world_atlas": {
             "name": "云游图鉴",
@@ -3375,6 +3407,22 @@
         "radiant_mikaels_blessing": {
             "name": "光明版米凯尔的祝福",
             "option": "\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
+        },
+        "force_of_nature": {
+            "name": "自然之力",
+            "option": "\n<#ff7a3eff>坚定<>：受到英雄的<#a974ffff>魔法伤害<>时获得一层<#92dc7bff>坚定<>，持续 <#e8a800ff>7秒<>，每秒最多获得1层（最多叠加8层）。被敌方英雄<#d94c49ff>定身<>时获得2层。达到最大层数时，获得 <#88ccffff>70 点<><i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>额外魔法抗性<>和 <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。"
+        },
+        "radiant_force_of_nature": {
+            "name": "光明版自然之力",
+            "option": "\n<#ff7a3eff>坚定<>：受到英雄的<#a974ffff>魔法伤害<>时获得一层<#92dc7bff>坚定<>，持续 <#e8a800ff>7秒<>，每秒最多获得1层（最多叠加8层）。被敌方英雄<#d94c49ff>定身<>时获得2层。达到最大层数时，获得 <#88ccffff>70 点<><i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>额外魔法抗性<>和 <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>。"
+        },
+        "navori_flickerblade": {
+            "name": "纳沃利烁刃",
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>剩余冷却时间<>缩短 <#4b7cffff>15%<>。"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "光明版纳沃利烁刃",
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>剩余冷却时间<>缩短 <#4b7cffff>15%<>。"
         }
     },
     "pt-BR": {
@@ -4104,15 +4152,15 @@
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10<> <#ffdd8eff>(+0.2 por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga total<> da sua Ultimate."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Recebe <#4b7cffff>10<> <#ffdd8eff>(+0.2 por 1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga total<> da sua Ultimate."
         },
         "hearthbound_axe": {
             "name": "Machado Termestre",
-            "option": ""
+            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
         },
         "feral_flare": {
             "name": "Chama Feral",
@@ -4200,11 +4248,11 @@
         },
         "bandlepipes": {
             "name": "Bandocanos",
-            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados próximos também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         },
         "radiant_bandlepipes": {
             "name": "Bandocanos Radiante",
-            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
+            "option": "\n<#ff7a3eff>Fanfarra<>: Causar dano a um campeão inimigo concede <#92dc7bff>Fanfarra<> por <#e8a800ff>4 segundos<>, concedendo a você <#ffffffff>12%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>. Enquanto fortalecido, você e os campeões aliados próximos também recebem <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<>."
         },
         "seryldas_grudge": {
             "name": "Rancor de Serylda",
@@ -4436,11 +4484,11 @@
         },
         "abyssal_mask": {
             "name": "Máscara Abissal",
-            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos próximos em <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Máscara Abissal Radiante",
-            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos dentro de <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> em <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Destroçar<>: Reduz a <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica<> dos campeões inimigos próximos em <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "Atlas Mundial",
@@ -4501,6 +4549,22 @@
         "radiant_mikaels_blessing": {
             "name": "Bênção de Mikael Radiante",
             "option": "\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+        },
+        "force_of_nature": {
+            "name": "Força da Natureza",
+            "option": "\n<#ff7a3eff>Impassível<>: Receber <#a974ffff>dano mágico<> de campeões concede um acúmulo de <#92dc7bff>Impassível<> por <#e8a800ff>7 segundos<>, até 1 acúmulo por segundo (acumula 8x). Ser <#d94c49ff>imobilizado<> por um campeão inimigo concede 2 acúmulos. Com o máximo de acúmulos, recebe <#88ccffff>70<> de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica bônus<> e <#ffffffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Força da Natureza Radiante",
+            "option": "\n<#ff7a3eff>Impassível<>: Receber <#a974ffff>dano mágico<> de campeões concede um acúmulo de <#92dc7bff>Impassível<> por <#e8a800ff>7 segundos<>, até 1 acúmulo por segundo (acumula 8x). Ser <#d94c49ff>imobilizado<> por um campeão inimigo concede 2 acúmulos. Com o máximo de acúmulos, recebe <#88ccffff>70<> de <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>Resistência Mágica bônus<> e <#ffffffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<>."
+        },
+        "navori_flickerblade": {
+            "name": "Adaga Oscilante Navori",
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga restante<> das suas Habilidades básicas em <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Adaga Oscilante Navori Radiante",
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga restante<> das suas Habilidades básicas em <#4b7cffff>15%<>."
         }
     },
     "ru": {
@@ -5230,15 +5294,15 @@
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10<> <#ffdd8eff>(+0.2 за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>полной перезарядки<> вашего абсолютного умения."
         },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: Даёт <#4b7cffff>10<> <#ffdd8eff>(+0.2 за 1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>полной перезарядки<> вашего абсолютного умения."
         },
         "hearthbound_axe": {
             "name": "Топор Теплолюбивых",
-            "option": ""
+            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
         },
         "feral_flare": {
             "name": "Дикое пламя",
@@ -5326,11 +5390,11 @@
         },
         "bandlepipes": {
             "name": "Бандл-трубы",
-            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы поблизости также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         },
         "radiant_bandlepipes": {
             "name": "Лучезарные Бандл-трубы",
-            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
+            "option": "\n<#ff7a3eff>Фанфары<>: Нанесение урона вражескому чемпиону даёт вам <#92dc7bff>Фанфары<> на <#e8a800ff>4 секунды<> и <#ffffffff>12%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>. Пока действует эффект, вы и союзные чемпионы поблизости также получаете <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<>."
         },
         "seryldas_grudge": {
             "name": "Злоба Серильды",
@@ -5562,11 +5626,11 @@
         },
         "abyssal_mask": {
             "name": "Маска пустоты",
-            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов поблизости на <#d94c49ff>20%<>."
         },
         "radiant_abyssal_mask": {
             "name": "Лучезарная Маска пустоты",
-            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов в пределах <#ff86c2ff>50 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> на <#d94c49ff>20%<>."
+            "option": "\n<#ff7a3eff>Уничтожение<>: Уменьшает <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>сопротивление магии<> вражеских чемпионов поблизости на <#d94c49ff>20%<>."
         },
         "world_atlas": {
             "name": "Атлас мира",
@@ -5627,6 +5691,22 @@
         "radiant_mikaels_blessing": {
             "name": "Лучезарное Благословение Микаэля",
             "option": "\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+        },
+        "force_of_nature": {
+            "name": "Сила природы",
+            "option": "\n<#ff7a3eff>Непоколебимость<>: Получение <#a974ffff>магического урона<> от чемпионов даёт заряд <#92dc7bff>Непоколебимости<> на <#e8a800ff>7 секунд<>, не чаще 1 заряда в секунду (макс. 8 зарядов). Когда вражеский чемпион вас <#d94c49ff>обездвиживает<>, вы получаете 2 заряда. При максимальном количестве зарядов вы получаете <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>дополнительного сопротивления магии<> и <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>."
+        },
+        "radiant_force_of_nature": {
+            "name": "Лучезарная Сила природы",
+            "option": "\n<#ff7a3eff>Непоколебимость<>: Получение <#a974ffff>магического урона<> от чемпионов даёт заряд <#92dc7bff>Непоколебимости<> на <#e8a800ff>7 секунд<>, не чаще 1 заряда в секунду (макс. 8 зарядов). Когда вражеский чемпион вас <#d94c49ff>обездвиживает<>, вы получаете 2 заряда. При максимальном количестве зарядов вы получаете <#88ccffff>70<> <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>дополнительного сопротивления магии<> и <#ffffffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<>."
+        },
+        "navori_flickerblade": {
+            "name": "Летающий нож Навори",
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>оставшуюся перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Лучезарный Летающий нож Навори",
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>оставшуюся перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
         }
     },
     "ko": {
@@ -6356,15 +6436,15 @@
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>10<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2)<> 증가합니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>전체 재사용 대기시간<>의 <#4b7cffff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>10<> <#ffdd8eff>(<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1당 +0.2)<> 증가합니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>전체 재사용 대기시간<>의 <#4b7cffff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
         },
         "hearthbound_axe": {
             "name": "온기가 필요한 자의 도끼",
-            "option": ""
+            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
         },
         "feral_flare": {
             "name": "야성의 불꽃",
@@ -6452,11 +6532,11 @@
         },
         "bandlepipes": {
             "name": "밴들파이프",
-            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 주변 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         },
         "radiant_bandlepipes": {
             "name": "찬란한 밴들파이프",
-            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
+            "option": "\n<#ff7a3eff>팡파르<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <#92dc7bff>팡파르<>가 활성화되어 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>12%<> 증가합니다. <#92dc7bff>팡파르<>가 활성화된 동안 자신과 주변 아군 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 증가합니다."
         },
         "seryldas_grudge": {
             "name": "세릴다의 원한",
@@ -6688,11 +6768,11 @@
         },
         "abyssal_mask": {
             "name": "심연의 가면",
-            "option": "\n<#ff7a3eff>파괴<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
+            "option": "\n<#ff7a3eff>파괴<>: 주변 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
         },
         "radiant_abyssal_mask": {
             "name": "찬란한 심연의 가면",
-            "option": "\n<#ff7a3eff>파괴<>: <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 50<> 안의 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
+            "option": "\n<#ff7a3eff>파괴<>: 주변 적 챔피언의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>마법 저항력<>을 <#d94c49ff>20%<> 감소시킵니다."
         },
         "world_atlas": {
             "name": "세계 지도집",
@@ -6753,6 +6833,22 @@
         "radiant_mikaels_blessing": {
             "name": "찬란한 미카엘의 축복",
             "option": "\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
+        },
+        "force_of_nature": {
+            "name": "대자연의 힘",
+            "option": "\n<#ff7a3eff>굳건함<>: 챔피언에게 <#a974ffff>마법 피해<>를 받으면 <#e8a800ff>7초<> 동안 <#92dc7bff>굳건함<> 중첩을 1회 얻습니다. 1초에 최대 1회 얻으며, 최대 8회 중첩됩니다. 적 챔피언에 의해 <#d94c49ff>이동 불가<> 상태가 되면 중첩을 2회 얻습니다. 최대 중첩 시 <#88ccffff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>추가 마법 저항력<> 및 <#ffffffff>6%<>의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>추가 이동 속도<>를 얻습니다."
+        },
+        "radiant_force_of_nature": {
+            "name": "찬란한 대자연의 힘",
+            "option": "\n<#ff7a3eff>굳건함<>: 챔피언에게 <#a974ffff>마법 피해<>를 받으면 <#e8a800ff>7초<> 동안 <#92dc7bff>굳건함<> 중첩을 1회 얻습니다. 1초에 최대 1회 얻으며, 최대 8회 중첩됩니다. 적 챔피언에 의해 <#d94c49ff>이동 불가<> 상태가 되면 중첩을 2회 얻습니다. 최대 중첩 시 <#88ccffff>70<>의 <i#asset/base/ui/banpick/champion_stat_icon:magic resistance_0> <#88ccffff>추가 마법 저항력<> 및 <#ffffffff>6%<>의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>추가 이동 속도<>를 얻습니다."
+        },
+        "navori_flickerblade": {
+            "name": "나보리 명멸검",
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>남은 재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
+        },
+        "radiant_navori_flickerblade": {
+            "name": "찬란한 나보리 명멸검",
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>남은 재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
         }
     }
 }

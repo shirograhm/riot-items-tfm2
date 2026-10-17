@@ -5,12 +5,14 @@ use rand::{RngExt, SeedableRng};
 use crate::config::ItemConfig;
 use crate::{add_stack, apply_config, ticks, ItemMeta};
 
-// Wrath and Ruin: Using an Ability grants 5% critical strike chance for 5 seconds (max 5 stacks).
-// Salvage the Wreckage: Using an Ability has a <crit_icon> chance to grant you a shield for 3 seconds that absorbs 95 - 260 (based on level) damage.
+// Wrath and Ruin: Using an Ability grants 5% critical strike chance for 5
+// seconds (max 5 stacks).
 //
-// Both answer to the cast, whatever it hits. No hook reports one, so it is
-// read the way Eternity reads it: an ability's remaining cooldown going up
-// between two ticks.
+// Salvage the Wreckage: Using an Ability has a <crit_icon> chance to grant you
+// a shield for 3 seconds that absorbs 35 - 90 (based on level) damage.
+//
+// Both answer to the cast, read as an ability's remaining cooldown going up
+// between two ticks (as Eternity does), since no hook reports one.
 #[derive(Clone, Debug)]
 pub struct RiteOfRuin {
     meta: ItemMeta,

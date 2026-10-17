@@ -89,16 +89,10 @@ impl StableItem for HextechAlternator {
         self.cooldown = 0;
     }
 
-    // Revved.
-    //
-    // Any damage the carrier's champion deals itself sets it off: a basic
-    // attack, a skill's hit, or a tick of a skill's damage over time (the
-    // tooltip says "damaging").
-    //
-    // `Item` hits are turned away so the bolt cannot pay for itself: it is dealt
-    // through the engine and comes back around through this hook. The cooldown
-    // would bound that anyway, but the gate is what makes it impossible rather
-    // than merely brief.
+    // Revved: set off by any damage the carrier's champion deals itself (a
+    // basic attack, a skill's hit, or a damage-over-time tick). `Item` hits are
+    // turned away so the bolt, which comes back through this hook, cannot pay
+    // for itself.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

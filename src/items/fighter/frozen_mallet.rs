@@ -20,7 +20,7 @@ impl FrozenMallet {
         Self {
             meta: ItemMeta::base("frozen_mallet", &["phage"], &["radiant_frozen_mallet"]),
             price: 700,
-            hp: 200,
+            hp: 350,
             attack: 20,
             effect_slow_amount: 15,
             effect_duration_seconds: 2.0,
@@ -33,7 +33,7 @@ impl FrozenMallet {
         Self {
             meta: ItemMeta::radiant("radiant_frozen_mallet", &["frozen_mallet"]),
             price: 1000,
-            hp: 300,
+            hp: 550,
             attack: 30,
             effect_slow_amount: 15,
             effect_duration_seconds: 2.0,

@@ -1,67 +1,17 @@
-//! Item Rules: the setting in the game's Options dialog (Competition tab,
-//! `crate::options_row`) that says how far a build is upgraded.
+//! Item Rules: the Options setting (Competition tab, `crate::options_row`) for
+//! how far builds upgrade: All Radiants (the default), First Item Radiant, or
+//! No Radiants, where every slot stops at its legendary.
 //!
-//! - **All Radiants**, the default: every slot of a build is bought up to its
-//!   radiant, as it always was.
-//! - **First Item Radiant**: only the first slot is. Every other slot stops at
-//!   its legendary, the tier under the radiant.
-//! - **No Radiants**: every slot stops at its legendary.
+//! The setting lives in the save under [`SAVE_KEY`], so each save has its own.
+//! The save namespace reads empty around loads, so a missing value only counts
+//! after [`ABSENT_GRACE`], and a click stands until the save reads it back.
 //!
-//! The user asked for it (2026-10-08): "limit all games to 1 radiant item",
-//! "make the first slot the radiant", and a pinned item goes by the setting
-//! like any other ("the setting will infer the behavior"). No Radiants came
-//! the same evening: "a third option ... that caps all items to legendary
-//! tier".
-//!
-//! # Where the setting lives
-//!
-//! In the save, one a save: this mod's key-value namespace there, beside the
-//! item stats (`item_stats::sync`), under [`SAVE_KEY`]. The user asked for
-//! that the same day, "that way people can have multiple saves with different
-//! settings"; it was a line of `mod-settings.json` for the hour before. A
-//! save that has never been told is on All Radiants.
-//!
-//! The namespace has the two habits `item_stats` documents: a value written
-//! to it reaches disk only when the player saves the game, and it reads empty
-//! on some frames around a load. So the value is looked up again every
-//! [`READ_EVERY`] frames, a value found is taken at once, and "nothing there"
-//! only counts once it has been the answer for [`ABSENT_GRACE`] frames on end
-//! ([`sync`]).
-//!
-//! The player's click stands until a look at the save returns the same
-//! value, or until the save goes ([`server_started`], or no save for
-//! [`ABSENT_GRACE`]). That was put in on a guess that a read could return
-//! the old value for a while after a write. The test log then showed the
-//! save answering with the new value on the very next look, so the guess was
-//! wrong (the fault was a click that never arrived, see `options_row`). It
-//! is kept all the same: it costs nothing and holds whichever way that goes
-//! on another host.
-//!
-//! # How a slot is held at legendary
-//!
-//! By what the slot *targets*. The engine buys a build strictly in order and
-//! upgrades the item it is on until that item's key equals the key the slot
-//! names; then it starts the next slot, and never comes back (read out of the
-//! 0.6.3 executable, and seen in game). A slot naming `collector` instead of
-//! `radiant_collector` is finished at Collector. So nothing is forbidden or
-//! refunded: `tactics::buy_replace_ctx` rewrites the targets of the slots the
-//! rule holds back, and that is the whole mechanism.
-//!
-//! Everything that *decides* a build (both item-build hooks, Smart Builds, the
-//! pins, the picks for the 5th and 6th slots) still deals in radiants, the
-//! only finals there are. This module is the map between the two forms and
-//! the setting, and nothing else.
-//!
-//! # The two forms
-//!
-//! Every radiant this mod registers is `radiant_<key>` over a legendary
-//! registered as `<key>` (checked across `lib.rs`, 98 of 98), so the prefix is
-//! the map. The game's own six radiants keep the game's keys and are listed
-//! (`item_catalog::GAME_RADIANTS`).
-//! An item with no other form (boots, which top out at their third tier, or a
-//! component) is not mapped, and neither is another mod's unless it follows
-//! the same prefix: callers check that the other form exists before they use
-//! it, the game's six aside ([`is_game_tier`]).
+//! A slot is held at legendary by rewriting its target key in
+//! `tactics::buy_replace_ctx`, since the engine upgrades a slot only until its
+//! key matches; everything that decides builds still deals in radiants. Mod
+//! radiants are `radiant_<key>` over a legendary `<key>` and the game's six are
+//! listed in `item_catalog::GAME_RADIANTS`, so callers check that the other
+//! form exists unless [`is_game_tier`].
 
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU8, Ordering};
 
@@ -143,10 +93,8 @@ const NO_CHOICE: u8 = 0;
 static CHOICE: AtomicU8 = AtomicU8::new(NO_CHOICE);
 static WRITTEN: AtomicBool = AtomicBool::new(false);
 
-// The `rules.` lines of `match-builds.log`, when its one switch is on
-// (`crate::match_builds::log`): a click, whether the save took the write,
-// what a look at it returned. The setting was seen to switch both ways and
-// to last through a save and a load (2026-10-08).
+// The `rules.` lines of `match-builds.log` when its switch is on: clicks,
+// writes and reads.
 fn log(key: &str, text: impl FnOnce() -> String) {
     crate::match_builds::log(key, text);
 }
@@ -240,11 +188,9 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     }
 }
 
-// Whether `key` is one of the game's own radiants or the legendary under
-// one ([`GAME_RADIANTS`]: Bloodthirster, Phantom Dancer, Thornmail, Dragon's
-// Claw, Luden's Tempest and Sunfire Cape, as the mod draws them): an item
-// whose other form is known for certain, not guessed from a prefix, so a
-// caller need not check that it exists.
+// Whether `key` is one of the game's six radiants or the legendary under one:
+// its other form is known for certain, so a caller need not check that it
+// exists.
 pub(crate) fn is_game_tier(key: &str) -> bool {
     GAME_RADIANTS
         .iter()

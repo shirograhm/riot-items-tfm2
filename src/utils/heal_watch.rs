@@ -1,29 +1,14 @@
 //! Finds the allies the carrier healed, and by how much.
 //!
-//! The host reports an ally-targeted skill once, at the cast, and names only
-//! the target the cast was aimed at: `apply_input` calls `on_skill_hit` right
-//! after `try_skill` (read from the 0.5.6 SDK's IR). The heal has not landed
-//! yet, its amount is never given, and a skill aimed at its own caster that
-//! heals around them arrives as a plain self-cast with the allies it reaches
-//! never named. The Monk's heal is one: `MonkSkillAction::casting_target` is
-//! `AllyOnlySelf`.
+//! The host reports an ally-targeted skill once, at the cast, naming only its
+//! aimed target and no amount (a self-aimed heal like the Monk's names no ally
+//! at all). So after a cast this watches for a while: an ally whose health rose
+//! while the carrier's `heal - self_heal` statistic rose too was healed by the
+//! carrier.
 //!
-//! What the host does keep is who healed whom. A player's `heal` statistic
-//! counts their healing of champions and `self_heal` the part of it that
-//! landed on themselves (`GamePlayer::on_heal`, called with the health really
-//! restored), so the difference going up means the carrier healed another
-//! champion, and by that much. After a cast this watches for a short while: an
-//! ally whose health rose, with that difference risen since it was last read,
-//! was healed by the carrier.
-//!
-//! The statistics are the dear part. The host serialises the player's whole
-//! document for every read, so they are read only on a tick where some ally's
-//! health did rise; the health reads that decide it are a call each.
-//!
-//! Only heals leave that trace. Nothing is counted as a shield is given
-//! (`Entity::add_shield` leaves the statistics alone; `shield_given` grows as
-//! a shield absorbs damage) and a buff is not counted at all. Neither is an
-//! ally at full health, whose health cannot rise.
+//! The statistics are read only on a tick where an ally's health rose, since
+//! each read serialises the player's whole document. Only heals show up:
+//! shields and buffs leave no trace.
 
 use mod_api_stable::*;
 
@@ -60,10 +45,8 @@ pub(crate) struct HealWatch {
 }
 
 impl HealWatch {
-    // Starts watching, from `on_skill_hit`: the carrier cast an ally-targeted
-    // skill. The heal has not landed yet, so what is read here is the state
-    // before it. A watch that is already running is only given more time, and
-    // keeps what it last read.
+    // Starts watching, from `on_skill_hit`, before the heal lands. A running
+    // watch on the same caster only gets more time.
     pub(crate) fn open(&mut self, ctx: &StableSim<'_>, caster: usize) {
         if self.is_open() && self.caster == caster {
             self.remaining = WATCH_TICKS;
@@ -148,9 +131,8 @@ impl HealWatch {
         healed
     }
 
-    // Reads the state again, so that a heal the item itself has just given in
-    // the carrier's name is not read back next tick as one of the carrier's.
-    // Heals apply at once (`Entity::healed_inner`), so this sees them.
+    // Reads the state again, so that a heal the item itself just gave in the
+    // carrier's name is not read back as the carrier's (heals apply at once).
     pub(crate) fn resync(&mut self, ctx: &StableSim<'_>) {
         if !self.is_open() {
             return;

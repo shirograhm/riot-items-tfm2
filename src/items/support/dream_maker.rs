@@ -3,30 +3,18 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch, ADAPTIVE_FORCE_AD_RATIO};
 
-// Dream Maker — what World Atlas grows into for a support that keeps its
-// allies up: the passive it is named for, and the gold the Atlas line pays
-// ([`crate::SharedRiches`]).
+// Dream Maker: World Atlas's upgrade for a support that keeps its allies up,
+// with the Atlas line's gold ([`crate::SharedRiches`]).
 //
-// # Dream Maker
+// A heal, shield or buff the carrier casts on an allied champion blows them a
+// Dream Bubble: less ability damage taken and Adaptive Force (ability power
+// where they have more of it than attack damage, else attack damage at
+// [`ADAPTIVE_FORCE_AD_RATIO`]). One bubble at a time, with the cooldown
+// starting when it ends; both tiers share the buff name.
 //
-// A skill the carrier casts on an allied champion (a heal, a shield or a
-// buff) blows that ally a Dream Bubble. For as long as the bubble lasts the
-// ally takes less damage from abilities and has Adaptive Force: ability
-// power for an ally with more of that than attack damage, attack damage at
-// [`ADAPTIVE_FORCE_AD_RATIO`] for any other, the way Diamond Tipped Spear's
-// Pierce reads it.
-//
-// One cast, one bubble: while it lasts no other is blown, and when it ends
-// the cooldown starts. Both variants share the buff name, so two Dream
-// Makers blowing on one ally leave one bubble, not two.
-//
-// # Who gets the bubble
-//
-// The nearest allied champion the cast reached. A skill cast on an ally
-// names only that ally, so that is the one, as Ardent Censer's Sanctify has
-// it. A skill the carrier casts on itself that heals around it (the Monk's)
-// names no ally: of the ones it is seen to heal ([`SelfCastWatch`]), the
-// nearest to the carrier gets it.
+// It goes to the ally the cast named, or for a self-cast heal around the
+// carrier (the Monk's) to the nearest ally it is seen to heal
+// ([`SelfCastWatch`]).
 #[derive(Clone, Debug)]
 pub struct DreamMaker {
     meta: ItemMeta,
@@ -75,7 +63,7 @@ impl DreamMaker {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_dream_maker", &["dream_maker"]),
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             // Dream Maker itself is unchanged — Radiant buys the stat line only.

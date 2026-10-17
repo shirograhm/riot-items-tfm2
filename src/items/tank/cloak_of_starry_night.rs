@@ -28,7 +28,7 @@ impl CloakOfStarryNight {
             ),
             limitless_buff: "cloak_of_starry_night_limitless",
             price: 750,
-            hp: 200,
+            hp: 300,
             magic_resistance: 50,
             magic_resistance_mult: 25,
             effect_skill_damaged_reduce: 5,
@@ -46,7 +46,7 @@ impl CloakOfStarryNight {
                 &["cloak_of_starry_night"],
             ),
             price: 1050,
-            hp: 250,
+            hp: 550,
             magic_resistance: 100,
             magic_resistance_mult: 25,
             effect_skill_damaged_reduce: 5,
@@ -81,13 +81,10 @@ impl CloakOfStarryNight {
         self
     }
 
-    // Limitless as the Stars. The magic resistance multiplier is a plain stat,
-    // but the skill damage reduction it feeds has to track that resistance as
-    // buffs and levels move it, so it is granted as a re-applied timed buff the
-    // way `Overlord's Bloodmail` grants Tyranny.
-    //
-    // Read first, then remove-and-replace: the buff carries no resistance of
-    // its own, so the number it is solved from is never one it produced.
+    // Limitless as the Stars: the skill damage reduction tracks the carrier's
+    // magic resistance, so it is a re-applied timed buff like Overlord's
+    // Bloodmail's Tyranny. The resistance is read before the
+    // remove-and-replace; the buff carries none of its own.
     fn apply_limitless(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         if self.refresh_cooldown > 0 {
             self.refresh_cooldown -= 1;

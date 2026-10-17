@@ -228,9 +228,8 @@ fn apply_adaptive_force(ctx: &mut StableSim<'_>, player: usize, adaptive_force: 
     ctx.add_buff(champion_id, &buff);
 }
 
-// Adaptive force from a tier whose lesser tier gives some too
-// (`upgrades_from`: that tier's buff and its force). While the lesser tier's
-// buff is still on the champion, only what this tier adds over it.
+// Adaptive force from a tier whose lesser tier gives some too: while the lesser
+// tier's buff is still on the champion, only the difference.
 fn apply_tiered_adaptive_force(
     ctx: &mut StableSim<'_>,
     player: usize,
@@ -322,9 +321,8 @@ impl StableServerExtension for NativeTapExtension {
     }
 
     fn after_management_tick(&self, _ctx: &mut StableServerCtx<'_>) {
-        // Nothing to write here. The captures stay in memory and the totals
-        // live in the save file, which only a `StableClient` can reach, so
-        // both are driven from `item_stats::sync` on the client frame loop.
+        // Nothing here: the captures stay in memory and the totals live in the
+        // save, which only a `StableClient` reaches (`item_stats::sync`).
     }
 
     fn handle_command(
@@ -401,19 +399,15 @@ fn init(host: &StableHost) -> StableMod {
     // items register below and handed to the match hook, which does the paying.
     let mut riches = SharedRiches::default();
 
-    // Both macros note the key as they go, for the item catalog to name and draw.
-    // Registration order does not matter: loadouts come from the simulation as
-    // real keys, and the statistics are stored under those keys. The order
-    // below is for people, grouped by tier and alphabetical within it.
-    // The `, passive_crit` arm is for items whose passive grants crit chance:
-    // Smart Builds counts it at full stacks on top of the flat stat.
-    // The `, boots` arm is for upgraded boots: tier-3 items that are build goals
-    // of their own, so the editor's picker lists them beside the radiants.
-    // The `, shared_riches` arm is for the World Atlas line: its gold is paid
-    // from the match hook, at the rate the item was configured with.
-    // Every item comes out wrapped in `perf::Timed`, which times its hooks
-    // when `perf::ENABLED` and is where an item balance patch reaches it
-    // (`patches`): that is what the constructor handed over with it is for.
+    // Both macros note each key for the item catalog; the order below is for
+    // people, by tier, then alphabetical. The `passive_crit` arm counts the
+    // passive's crit at full stacks for Smart Builds, `boots` lists tier-3
+    // boots in the editor beside the radiants, and `shared_riches` pays World
+    // Atlas gold from the match hook.
+    //
+    // Every item is wrapped in `perf::Timed`, which times its hooks and is
+    // where an item balance patch reaches it; the constructor handed over with
+    // it is for that.
     macro_rules! configured {
         ($key:literal => $T:ty, shared_riches) => {{
             let item = configured!($key => $T);
@@ -574,6 +568,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured!("feral_flare" => FeralFlare));
     reg.add_item(configured!("fiendhunter_bolts" => FiendhunterBolts));
+    reg.add_item(configured!("force_of_nature" => ForceOfNature));
     reg.add_item(configured!("frozen_heart" => FrozenHeart));
     reg.add_item(configured!("frozen_mallet" => FrozenMallet));
     reg.add_item(configured!("grezs_spectral_lantern" => GrezsSpectralLantern));
@@ -602,6 +597,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("morellonomicon" => Morellonomicon));
     reg.add_item(configured!("mortal_reminder" => MortalReminder));
     reg.add_item(configured!("nashors_tooth" => NashorsTooth));
+    reg.add_item(configured!("navori_flickerblade" => NavoriFlickerblade));
     reg.add_item(configured!("night_harvester" => NightHarvester));
     reg.add_item(configured!("opportunity" => Opportunity));
     reg.add_item(configured!("overlords_bloodmail" => OverlordsBloodmail));
@@ -677,6 +673,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_experimental_hexplate" => ExperimentalHexplate));
     reg.add_item(configured_radiant!("radiant_feral_flare" => FeralFlare));
     reg.add_item(configured_radiant!("radiant_fiendhunter_bolts" => FiendhunterBolts));
+    reg.add_item(configured_radiant!("radiant_force_of_nature" => ForceOfNature));
     reg.add_item(configured_radiant!("radiant_frozen_heart" => FrozenHeart));
     reg.add_item(configured_radiant!("radiant_frozen_mallet" => FrozenMallet));
     reg.add_item(configured_radiant!("radiant_grezs_spectral_lantern" => GrezsSpectralLantern));
@@ -705,6 +702,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_morellonomicon" => Morellonomicon));
     reg.add_item(configured_radiant!("radiant_mortal_reminder" => MortalReminder));
     reg.add_item(configured_radiant!("radiant_nashors_tooth" => NashorsTooth));
+    reg.add_item(configured_radiant!("radiant_navori_flickerblade" => NavoriFlickerblade));
     reg.add_item(configured_radiant!("radiant_night_harvester" => NightHarvester));
     reg.add_item(configured_radiant!("radiant_opportunity" => Opportunity));
     reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));
@@ -800,12 +798,9 @@ fn init(host: &StableHost) -> StableMod {
     // `item-builds.json` hook
     reg.add_item_build_hook(item_build_hook::ConfiguredBuilds);
 
-    // Records only keep the build a match was *assigned*; this reads what each
-    // champion actually finished holding, off the simulation's last tick. The
-    // same hook runs Immolate for the vanilla Sunfire Cape, and the minion and
-    // monster bonus the engine's Radiant Sunfire Cape burn does not have. It
-    // also pays Shared Riches, which an item's own `update` cannot do for a
-    // dead carrier.
+    // The match hook: end-of-match item capture, Immolate for the vanilla
+    // Sunfire Cape (and Radiant Sunfire Cape's minion bonus), and Shared
+    // Riches, which an item's own `update` cannot pay to a dead carrier.
     reg.set_match_hook(sunfire::MatchHooks {
         immolate: configs
             .get("sunfire_cape")

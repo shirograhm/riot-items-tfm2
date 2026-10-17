@@ -8,10 +8,9 @@ use crate::{
 
 // Witch's Path: Killing a unit grants 0.5 armor, up to a maximum of 15.
 //
-// The kill count lives on the item, which survives death; the armor it buys is a
-// short buff re-applied while the item is held. A permanent buff would outlive
-// the item: after the upgrade into Zhonya's Hourglass (whose flat armor already
-// covers the full passive) it would stay on the champion until the next death.
+// The kill count lives on the item, and the armor is a short buff re-applied
+// while it is held: a permanent one would outlive the upgrade into Zhonya's
+// Hourglass.
 #[derive(Clone, Debug)]
 pub struct SeekersArmguard {
     witchs_path_buff: &'static str,

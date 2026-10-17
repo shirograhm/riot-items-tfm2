@@ -1,154 +1,53 @@
-//! The Smart Builds rules: what the editor's footer toggle
-//! ([`crate::build_config::smart_builds_enabled`]) enforces on a build.
+//! The Smart Builds rules, which the editor's footer toggle
+//! ([`crate::build_config::smart_builds_enabled`]) enforces on a build:
 //!
-//! Seventeen of them:
+//! 1. **Unique items**: no item twice.
+//! 2. **One Grievous Wounds item.**
+//! 3. **Crit chance at or under 100%**, counting a stacking passive at full
+//!    stacks; an overflowing slot is replaced by an item with no crit.
+//! 4. **Support items stay in the support role**, bar Protoplasm Harness.
+//! 5. **Items the champion scales with**: an AP-only champion keeps no attack,
+//!    attack speed or crit item ([`AP_ITEMS`] count as AP) and an AD-only one
+//!    no magic power item; only a hybrid keeps a hybrid item. Rules 12, 13 and
+//!    14's items are not judged here.
+//! 6. **Items bought when they pay off**: [`EARLY_ITEMS`] go first and only in
+//!    the first [`EARLY_SLOTS`] slots, [`LATE_ITEMS`] only after them. A pick
+//!    still on the wrong side makes way for an item of no timing.
+//! 7. **One pair of boots**: a build without any gets [`boots_for`]'s pair in
+//!    the second slot, or the first open slot after a pin or early item there.
+//! 8. **Jungle items stay in the jungle, one to a build**: Philosopher's Stone
+//!    on a `Tank`, else Feral Flare or Grez's by damage type.
+//! 9. **Role items first**: a jungler's jungle item goes in the first slot,
+//!    unless the player pinned it ([`Fit::starter_slot_pinned`]). A support
+//!    other than a mage prefers Support-class items past its World Atlas item,
+//!    without being held to one.
+//! 10. **Imperial Mandate for supports that immobilize**: the AI's first
+//!     support item makes way for Mandate, and a support known not to
+//!     immobilize keeps none. A pinned support item stays, and a build with no
+//!     AI support item gets none.
+//! 11. **Items for the champion's reach**: a ranged champion keeps no
+//!     [`MELEE_ITEMS`] and a melee one (reach 35 or less) no [`RANGED_ITEMS`].
+//! 12. **A World Atlas item for every support**: the one [`Fit::atlas_item`]
+//!     picks, in the first slot, in place of the AI's last pick.
+//! 13. **Heal, shield and buff items for supports that do that**: the AI's
+//!     first spare support item makes way for one of [`ALLY_AID_ITEMS`]; a
+//!     support known not to aid allies, or a mage, keeps none.
+//! 14. **Marksman items for marksmen**: only a `Range`-class champion keeps
+//!     [`MARKSMAN_ONLY_ITEMS`], whatever it scales with.
+//! 15. **One Spellblade item** of [`SPELLBLADE_ITEMS`]; a support whose World
+//!     Atlas item is Bloodsong keeps no other.
+//! 16. **Tank and support items for tank supports**: a `Tank`-tagged support
+//!     keeps only Tank- and Support-class items, plus boots.
+//! 17. **Tank and support items for heal, shield and buff supports**: a Dream
+//!     Maker support is held to the same classes and looks to
+//!     [`PREFERRED_AID_ITEMS`] first, as a preference, not a quota.
 //!
-//! 1. **Unique items** — a build holds no item twice.
-//! 2. **One Grievous Wounds item** — a build holds one heal-cut item.
-//! 3. **Crit chance at or under 100%** — crit from a stacking passive counts
-//!    as if fully stacked. A slot that overflows the cap is replaced by an
-//!    item that adds no crit at all.
-//! 4. **Support items stay in the support role** — Support-class items (bar
-//!    Protoplasm Harness) are only kept by whoever plays support, whatever
-//!    the champion.
-//! 5. **Items the champion scales with** — an AP-only champion keeps no item
-//!    that gives a physical stat (attack, attack speed or crit), and an
-//!    AD-only champion none that gives magic power. A hybrid item, one that
-//!    gives both, is only kept by a hybrid champion; Hextech Gunblade is the
-//!    only one. The AP items that give attack speed or crit count as AP
-//!    ([`AP_ITEMS`]). Hybrid champions and items with no offensive stat are
-//!    never touched. Support items are judged like the rest: an AD support
-//!    keeps the tank ones, not the AP ones. Not judged: the World Atlas item
-//!    (rule 12), the heal, shield and buff items (rule 13) and the marksman
-//!    items (rule 14).
-//! 6. **Items bought when they pay off** — an item whose value builds up the
-//!    longer it is owned ([`EARLY_ITEMS`]: Heartsteel, Hubris) is bought
-//!    before the AI's other picks, and only in the first two slots
-//!    ([`EARLY_SLOTS`]); one that scales with the stats the rest of the build
-//!    brings ([`LATE_ITEMS`]: Riftmaker, Rabadon's) after them, and only from
-//!    the third slot on. The order does most of it. A pick it still leaves on
-//!    the wrong side (more early items than the first two slots hold, or too
-//!    few other picks to keep a late one out of them) makes way for an item of
-//!    no timing: of its own category, else of the build's style. A jungler's
-//!    jungle item is its role item (rule 9) and stays wherever it lands, and
-//!    the 5th and 6th items are never early ones.
-//! 7. **One pair of boots** — a build with no boots gets the pair
-//!    [`boots_for`] picks for its champion: in the second slot, or the first
-//!    open slot after it when a pin or an early item (rule 6) holds that one
-//!    (the 5th and 6th included), else the first slot. Boots the player
-//!    pinned anywhere count, and no other rule swaps an AI pick for boots.
-//! 8. **Jungle items stay in the jungle, one to a build** — only whoever
-//!    plays jungle keeps a jungle item ([`JUNGLE_ITEMS`]: Feral Flare, Grez's
-//!    Spectral Lantern, Philosopher's Stone). A jungler's is the one for its
-//!    champion: Philosopher's Stone on a champion tagged `Tank`, else Feral
-//!    Flare or Grez's by damage type (rule 5). The AI's other jungle items
-//!    make way, all of them when the player pinned one.
-//! 9. **Role items first** — a jungler's build holds the jungle item rule 8
-//!    names, in the first slot. When neither a pin nor an AI pick is one, the
-//!    AI's last pick makes way for it. When the player pinned the first
-//!    slot, the build goes without: one the AI picked makes way, and none
-//!    is added, the 5th and 6th items included ([`Fit::starter_slot_pinned`]).
-//!    A support is guaranteed only its World Atlas item (rule 12). Past that
-//!    it prefers Support-class items (Protoplasm Harness included) without
-//!    being held to one: the item-build hook pushes them harder than the
-//!    mod's other items, the AI's picks among them are bought right after the
-//!    Atlas item and any early item (rule 6), and they are the first place a
-//!    stand-in is looked for (rules 5, 10 and 13).
-//!    Rule 5 still matches them to the champion. A mage support prefers none:
-//!    past its World Atlas item it builds AP items like any other mage.
-//! 10. **Imperial Mandate for supports that immobilize** — a support whose
-//!    kit has a stun, root, knock-up, knockback, pull, taunt, fear or charm
-//!    has the AI's first support item make way for Mandate. A slow, a silence
-//!    or a disarm does not count, and the game's `CC` tag only decides for a
-//!    champion whose kit is not known (`ChampionTraits::can_immobilize`). It
-//!    only picks which support item: a build the AI gave none gets none. A
-//!    support item the player pinned stays, a build that already holds
-//!    Mandate is left alone, and rule 5 still keeps Mandate, an AP item, off
-//!    an AD support. A support known not to immobilize never keeps an AI's
-//!    Mandate: it makes way for another support item, and is never a stand-in
-//!    in that build. A champion nothing is known about is left alone either
-//!    way.
-//! 11. **Items for the champion's reach** — a ranged champion keeps no item
-//!    whose passive wants its carrier in melee ([`MELEE_ITEMS`]: the Hydras,
-//!    Hullbreaker, Heartsteel, Abyssal Mask, the Immolate items), and a melee
-//!    champion none that wants its carrier at range ([`RANGED_ITEMS`]:
-//!    Runaan's Hurricane, Diamond Tipped Spear). Melee is a basic attack that
-//!    reaches 35 or less. The stand-in comes from the item's own category. A
-//!    champion whose reach nothing states is left alone.
-//! 12. **A World Atlas item for every support** — a support's build holds one
-//!    of [`ATLAS_ITEMS`], the one for its champion, in the first slot. When
-//!    the player pinned that slot, the build goes without, as a jungler's
-//!    does its jungle item (rule 9). Which one, the first that applies:
-//!    - Dream Maker for Chef and Monk ([`ATLAS_BY_CHAMPION`]);
-//!    - Solstice Sleigh on a champion tagged `Tank` whose kit immobilizes for
-//!      a second or more in all, ultimate included;
-//!    - Celestial Opposition on any other champion tagged `Tank`;
-//!    - Dream Maker on a champion whose kit heals, shields or buffs allies
-//!      (rule 13's test, so not a mage);
-//!    - Zaz'Zak's Realmspike on a mage (the game's `Magician` class) and on
-//!      any other AP champion;
-//!    - Bloodsong on the rest.
+//! The rules only replace AI picks: a pinned slot is kept and counts toward the
+//! budgets like any other item, and an earlier slot wins over a later one.
 //!
-//!    The AI's other Atlas items make way, all of them when the player pinned
-//!    one. A build with none, pinned or picked, has the AI's last pick
-//!    swapped for it, one that is not a support item rule 9 prefers where
-//!    there is a choice. Rule 5 does not judge it, and rules 9, 10 and 13
-//!    look past it. Off the support role it is a support item like any other
-//!    (rule 4).
-//! 13. **Heal, shield and buff items for the champions that do that** — a
-//!    support whose kit heals, shields or buffs an ally with a basic ability
-//!    makes one of [`ALLY_AID_ITEMS`] (Ardent Censer, Echoes of Helia,
-//!    Moonstone Renewer, Staff of Flowing Water) its support item: with none
-//!    in the build, and no support item the player pinned, the AI's first
-//!    support item that is neither Mandate nor the Atlas one makes way for
-//!    it. It only picks which support item, so a build with none to spare
-//!    gets none. A support known not to aid allies never keeps one the AI
-//!    picked, and neither does a mage. What a kit does is read off the kit
-//!    where it is known (`ChampionTraits::aids_allies`), not off the `Heal`
-//!    and `Shield` tags. Rule 5 does not judge these items.
-//! 14. **Guinsoo's Rageblade and Statikk Shiv for marksmen** — only a
-//!    champion of the game's `Range` class keeps one
-//!    ([`MARKSMAN_ONLY_ITEMS`]), whatever it scales with: rule 5 does not
-//!    judge them, and the stand-in follows the build's style, like rule 5's.
-//!    Sword of Blossoming Dawn is held to the same class. It is a support
-//!    item, so rule 4 keeps it in the support role, and a marksman there
-//!    keeps it whether it is AD or AP. A champion whose class nothing states
-//!    is left alone.
-//! 15. **One Spellblade item** — a build holds one of [`SPELLBLADE_ITEMS`]
-//!    (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn
-//!    Gauntlet, Bloodsong), which share one cooldown. Sheen, their component,
-//!    is not counted. The AI's second makes way for an item of its own
-//!    category. A support whose World Atlas item is Bloodsong (rule 12) keeps
-//!    no other the AI picked, and that Bloodsong is never the one that goes.
-//! 16. **Tank and support items for tank supports** — a support with the
-//!    game's `Tank` tag builds items of the editor's Tank and Support classes
-//!    and no others, whatever its damage type. Boots are rule 7's. The game's
-//!    own six finals have a class through the names the mod gives them
-//!    (`base_slug`). An offender makes way for an item of the kind the rest
-//!    of the build is made of, like rule 5's.
-//! 17. **Tank and support items for heal, shield and buff supports** — a
-//!    support whose World Atlas item is Dream Maker (rule 12) is held to the
-//!    same two classes, and among them prefers [`PREFERRED_AID_ITEMS`] (the
-//!    heal, shield and buff items bar Moonstone Renewer): a stand-in for any
-//!    of its picks is looked for there first, the AI buys them right after
-//!    the Atlas item and any early item (rule 6), the item-build hook pushes
-//!    them hardest, and the
-//!    automatic 5th and 6th items come from them while one is left. A
-//!    preference, not a quota: a tank or support item the AI picked itself
-//!    stays.
-//!
-//! The rules only ever replace what the AI picked. A slot the player pinned in
-//! the editor is kept whatever it holds, and counts toward the budgets like any
-//! other item.
-//!
-//! An earlier slot always wins: the walk keeps the first heal-cut item and the
-//! crit the build can still afford, and replaces what comes after. Rule 6 runs
-//! after that walk.
-//!
-//! Rules 4, 5, 8 to 14, 16 and 17 are about the champion, not the build, and
-//! come in as a [`Fit`]; see [`crate::champion_traits`] for where its facts
-//! come from. Every fact the rules need is keyed by item key, never read off
-//! an item (see the warning above `hook::detour`).
+//! The champion side comes in as a [`Fit`] (facts from
+//! [`crate::champion_traits`]). Item facts are keyed by item key, never read
+//! off an item (see the warning above `hook::detour`).
 
 use std::collections::{HashMap, HashSet};
 use std::sync::{Arc, Mutex};
@@ -158,23 +57,19 @@ use mod_api_stable::{ItemTagV1, StableItem};
 use crate::build_config::Role;
 use crate::champion_traits::{self, Class, Scaling};
 
-// Flat crit chance a build may total before the rules start replacing crit
-// items. The engine caps crit chance at 100%, so a build summing to exactly 100
-// is the goal, not a violation.
+// The engine caps crit chance at 100%, so a build totalling exactly 100 is
+// fine.
 const CRIT_CAP: i32 = 100;
 
-// What the rules need to know about one item.
 #[derive(Clone, Copy, Default)]
 struct ItemTraits {
-    // Crit chance from the item's own stats, plus what its passive grants at
-    // full stacks (Atma's Reckoning, Rite of Ruin, Yun Tal Wildarrows). A
-    // passive is counted as maxed because a build is meant to hold up once
-    // the stacks are there, which is when an overflow wastes crit.
+    // Flat crit plus a passive's at full stacks (Atma's Reckoning, Rite of
+    // Ruin, Yun Tal Wildarrows), since an overflow only wastes crit once the
+    // stacks are there.
     crit_chance: i32,
     // Whether the item applies Grievous Wounds.
     cuts_healing: bool,
-    // Whether it gives attack, attack speed or crit: stats only a champion
-    // that deals physical damage uses.
+    // Attack, attack speed or crit: stats only a physical champion uses.
     physical: bool,
     // Whether it gives magic power.
     magic: bool,
@@ -190,51 +85,38 @@ impl ItemTraits {
         }
     }
 
-    // Whether these say the item gives no offensive stat of any kind.
     fn blank(&self) -> bool {
         !self.physical && !self.magic && self.crit_chance == 0
     }
 }
 
-// Item traits by key, filled from the two places items are described.
 #[derive(Clone, Default)]
 struct Table {
-    // This mod's items, recorded as `init` registers them. Authoritative for
-    // its own keys, because the values there are the configured ones.
+    // This mod's items as `init` registers them; authoritative for its own
+    // keys.
     mod_items: HashMap<String, ItemTraits>,
-    // The game's items, from the mod's settings file at start-up
-    // (`item_stats::prime_game_items`), and other mods' from the client's
-    // settings document. No vanilla item cuts healing; the stats are read
-    // rather than hardcoded because they are config-editable through
-    // `item_setting`.
+    // The game's items from the mod's settings file
+    // (`item_stats::prime_game_items`), other mods' from the client's settings
+    // document. Read rather than hardcoded because `item_setting` can change
+    // them.
     engine_items: HashMap<String, ItemTraits>,
 }
 
-// The game's own items that give attack, attack speed, crit or ability
-// power, at the values this mod ships for them (`setting/item_setting`): key,
-// crit chance, attack, attack speed, magic power. The other fifteen (the
-// armor, magic resistance and health lines) give none of the four, which
-// are all the rules read off an item's stats, so a row for one would be
-// four zeros and decide nothing: no row is what says so.
-//
-// The last resort. The rules learn all thirty at start-up from the mod's
-// settings file itself (`item_stats::prime_game_items`), with whatever the
-// player's config made of them, and this only answers when that file could
-// not be read, or when a record of one of these comes out blank
-// ([`Table::traits`]). Kept in step with the file by hand: it is fifteen
-// numbers a balance pass rarely moves across zero, which is all that matters
-// here outside the crit of the attack speed line.
+// The game's items with an offensive stat, at the values this mod ships: key,
+// crit, attack, attack speed, magic power. A last resort for when the settings
+// file cannot be read or a record comes out blank ([`Table::traits`]); kept in
+// step with `setting/item_setting` by hand.
 const GAME_ITEMS: [(&str, i32, i32, i32, i32); 15] = [
     ("ironsword", 0, 10, 0, 0),
     ("soldiers_longsword", 0, 20, 0, 0),
     ("ruinous_blade", 0, 25, 0, 0),
     ("conquerors_greatsword", 0, 40, 0, 0),
     ("warlords_final_judgement", 0, 50, 0, 0),
-    ("dagger", 0, 0, 10, 0),
-    ("wind_dagger", 0, 0, 20, 0),
-    ("twin_stormblade", 10, 0, 30, 0),
-    ("thunderclaw", 20, 0, 45, 0),
-    ("storm_sovereign", 25, 0, 60, 0),
+    ("dagger", 0, 0, 8, 0),
+    ("wind_dagger", 0, 0, 15, 0),
+    ("twin_stormblade", 10, 0, 25, 0),
+    ("thunderclaw", 20, 0, 40, 0),
+    ("storm_sovereign", 25, 0, 55, 0),
     ("arcane_crystal", 0, 0, 0, 15),
     ("spirit_crystal", 0, 0, 0, 30),
     ("staff_of_rapture", 0, 0, 0, 50),
@@ -242,20 +124,15 @@ const GAME_ITEMS: [(&str, i32, i32, i32, i32); 15] = [
     ("prophet_of_the_abyss", 0, 0, 0, 100),
 ];
 
-// What [`GAME_ITEMS`] says of `key`, where it is one of them.
 fn game_item_traits(key: &str) -> Option<ItemTraits> {
     let &(_, crit, attack, speed, power) = GAME_ITEMS.iter().find(|(item, ..)| *item == key)?;
     Some(ItemTraits::from_stats(crit, attack, speed, power))
 }
 
 impl Table {
-    // This mod's own record of the item, then the settings document's, then
-    // [`GAME_ITEMS`]. An item none of them describes has no traits, which no
-    // rule rejects.
-    //
-    // A record that finds no offensive stat on one of the game's damage
-    // items is taken for a failed reading, not for an item that lost them,
-    // and [`GAME_ITEMS`] answers instead.
+    // This mod's record, then the settings document's, then [`GAME_ITEMS`]; an
+    // item none describes has no traits. A blank record for one of the game's
+    // damage items is taken for a failed read.
     fn traits(&self, key: &str) -> ItemTraits {
         let recorded = self
             .mod_items
@@ -287,9 +164,9 @@ fn table() -> Arc<Table> {
         .unwrap_or_default()
 }
 
-// Records one of this mod's items as it is registered. Called from the
-// registration macros in `lib.rs`, where the item is still a concrete type —
-// `stat()` and `tags()` are safe to call there, unlike on a `dyn ItemInfo`.
+// Records one of this mod's items from the registration macros in `lib.rs`,
+// where `stat()` and `tags()` are still safe to call (unlike on a `dyn
+// ItemInfo`).
 pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
     let stat = item.stat();
     let mut traits = ItemTraits {
@@ -304,11 +181,8 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
     if is_ap_item(key) {
         traits.physical = false;
     }
-    // Rule 12's item is every support's, whatever the champion scales with:
-    // its stats are not what it is bought for, so rule 5 has no say over it.
-    // Rule 13's items neither: they are for what the champion casts, and an
-    // AD support that shields an ally wants Ardent Censer whatever its ability
-    // power is worth to it. Rule 14's are judged by the champion's class.
+    // Rules 12, 13 and 14 judge their items by role, kit or class, so rule 5
+    // has no say over them.
     if is_atlas_item(key) || is_ally_aid_item(key) || is_marksman_only_item(key) {
         traits.physical = false;
         traits.magic = false;
@@ -318,10 +192,8 @@ pub(crate) fn note_mod_item<T: StableItem + ?Sized>(key: &str, item: &T) {
     });
 }
 
-// Rule 5: items counted as AP only, whatever physical stat they also carry.
-// By base slug, so the radiant tier follows. Dusk and Dawn, Lich Bane and
-// Nashor's Tooth give attack speed beside their ability power, and Rite of
-// Ruin's crit is spent by its own passive.
+// Rule 5: items counted as AP only, by base slug. Their attack speed (or Rite
+// of Ruin's crit, spent by its own passive) does not make them physical.
 const AP_ITEMS: [&str; 4] = [
     "dusk_and_dawn",
     "lich_bane",
@@ -329,14 +201,12 @@ const AP_ITEMS: [&str; 4] = [
     "rite_of_ruin",
 ];
 
-// Whether `key` is one of [`AP_ITEMS`], base or radiant.
 fn is_ap_item(key: &str) -> bool {
     AP_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// Adds the crit chance an item's passive grants at full stacks to what
-// [`note_mod_item`] recorded from its flat stats. Called right after it, from
-// the `passive_crit` arm of the registration macros in `lib.rs`.
+// Adds a passive's full-stack crit to what [`note_mod_item`] recorded, from the
+// `passive_crit` arm in `lib.rs`.
 pub(crate) fn note_passive_crit(key: &str, crit_chance: i32) {
     edit_table(|table| {
         let traits = table.mod_items.entry(key.to_string()).or_default();
@@ -345,10 +215,8 @@ pub(crate) fn note_passive_crit(key: &str, crit_chance: i32) {
     });
 }
 
-// Records one of the game's items, from the settings document
-// [`crate::item_stats`] already parses. An item with none of these stats is
-// recorded too: it says the item is described, which is cheaper to keep than
-// to special-case.
+// Records one of the game's items from the settings document
+// [`crate::item_stats`] parses, even one with none of these stats.
 pub(crate) fn note_engine_item(
     key: &str,
     crit_chance: i32,
@@ -358,8 +226,8 @@ pub(crate) fn note_engine_item(
 ) {
     let traits = ItemTraits::from_stats(crit_chance, attack, attack_speed, magic_power);
     edit_table(|table| {
-        // The document is walked in its own order, and a second object under
-        // the same key that carries no stats must not undo the first.
+        // A later object under the same key with no stats must not undo the
+        // first.
         let known = table.engine_items.entry(key.to_string()).or_insert(traits);
         if !traits.blank() {
             *known = traits;
@@ -367,9 +235,8 @@ pub(crate) fn note_engine_item(
     });
 }
 
-// What the rules make of `key` on `champion` in `role`, for the Check Tactics
-// test log: the stats the item is taken to give (`P` physical, `M` magic) and
-// why an empty build would turn it away, if it would.
+// What the rules make of `key` for the Check Tactics test log: `P` physical,
+// `M` magic, and why an empty build would reject it.
 pub(crate) fn explain(champion: &str, role: Role, key: &str) -> String {
     let budget = Budget::empty(fit(champion, role));
     let traits = budget.table.traits(key);
@@ -388,9 +255,8 @@ pub(crate) fn explain_champion(champion: &str, role: Role) -> String {
     format!("{:?}", fit(champion, role).scaling)
 }
 
-// Why an item cannot join a build. Also what its stand-in has to fix: a crit
-// overflow is the one case that demands a stand-in adding no crit, rather than
-// any item the build can still afford.
+// Why an item cannot join a build. A crit overflow is the one reason whose
+// stand-in must add no crit.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub(crate) enum Reason {
     Duplicate,
@@ -415,33 +281,16 @@ pub(crate) enum Reason {
     AllyAidWithoutAid,
     // An item only a marksman keeps (rule 14) on a champion that is none.
     MarksmanOnly,
-    // An item that is neither a tank's nor a support's, on a support held
-    // to those two classes: one with the `Tank` tag (rule 16), or one whose
-    // World Atlas item is Dream Maker (rule 17).
+    // Not a Tank or Support item, on a support held to those classes (rules 16
+    // and 17).
     SupportClasses,
     Reach,
 }
 
 impl Reason {
-    // Whether the offending item's own category is the wrong place to look
-    // for its stand-in. A support item's category holds nothing but support
-    // items, and an item the champion does not scale with sits among others
-    // it does not scale with, so for these two the stand-in is taken from the
-    // categories the rest of the build uses instead. Imperial Mandate on a
-    // support that cannot immobilize goes the same way: it is a support item,
-    // so another support item stands in first, and an item that answers to
-    // aiding allies on a support that aids none goes with it. So does a
-    // jungler's wrong
-    // jungle item, for the same reason: its champion's own stands in first.
-    // A jungle item's category is otherwise an ordinary one (Grez's is a Mage
-    // item), so off the jungle, or as a build's second, its stand-in comes
-    // from there, like a duplicate's. So is a melee or ranged item's: a ranged
-    // champion that loses Titanic Hydra still wanted an item of that kind.
-    // A support's wrong World Atlas item is a jungler's wrong jungle item over
-    // again, and a second one is a support item, whose category holds only
-    // more of those. A marksman's item off a marksman goes with rule 5's:
-    // its category holds little but attack items, none of which a mage
-    // that loses Guinsoo's Rageblade could take.
+    // Whether the stand-in comes from the build's style rather than the
+    // offender's own category. That category would only offer more of what the
+    // champion cannot use, or the role's own item should stand in first.
     pub(crate) fn restyles(self) -> bool {
         matches!(
             self,
@@ -473,66 +322,50 @@ pub(crate) struct Fit {
     marksman: Option<bool>,
     // Rule 8: whether jungle items are allowed.
     jungle_items: bool,
-    // Rule 8: whether this jungler's one jungle item is Philosopher's Stone
-    // rather than a damage one: a champion tagged `Tank`. Not a ranged one,
-    // which rule 11 would take the Stone back off; it builds its damage item
-    // like any other jungler.
+    // Rule 8: a `Tank` jungler, whose jungle item is Philosopher's Stone. Not a
+    // ranged one, since rule 11 would take the Stone back off.
     stone_jungler: bool,
-    // Rule 10: whether this is a support whose kit immobilizes, whose support
-    // item is Imperial Mandate. A mage too.
+    // Rule 10: a support whose kit immobilizes, whose support item is Imperial
+    // Mandate (mages included).
     mandate: bool,
-    // Rule 10's other half: whether this is a support known not to
-    // immobilize, who never keeps Mandate. `false` when the champion is
-    // unknown.
+    // Rule 10: a support known not to immobilize, which never keeps Mandate.
     no_mandate: bool,
-    // Rule 12: whether this is a support whose World Atlas item is Solstice
-    // Sleigh: a champion tagged `Tank` whose kit immobilizes for
-    // [`SLEIGH_IMMOBILIZE_TICKS`] or more in all. The first test of the five.
+    // Rule 12: a `Tank` support that immobilizes for
+    // [`SLEIGH_IMMOBILIZE_TICKS`] or more, whose World Atlas item is Solstice
+    // Sleigh.
     sleigh: bool,
-    // Rule 12: whether this is a support of the game's `Magician` class,
-    // whose World Atlas item is Zaz'Zak's Realmspike unless it is tagged
-    // `Tank`. Rule 13 passes a mage over as well: whatever its kit holds, it
-    // is treated as one that does not aid allies. And rule 9 prefers no
-    // support items for a mage, which builds AP items like any other.
+    // A `Magician`-class support: Zaz'Zak's Realmspike unless tagged `Tank`
+    // (rule 12), treated as not aiding allies (rule 13), and preferring no
+    // support items (rule 9).
     mage: bool,
-    // Rule 13: whether this is a support whose kit heals, shields or buffs
-    // allies, who holds an item that answers to it. Never a mage. Rule 12
-    // too: its World Atlas item is Dream Maker.
+    // Rule 13: a support other than a mage whose kit heals, shields or buffs
+    // allies; rule 12 gives it Dream Maker.
     ally_aid: bool,
-    // Rule 13's other half: whether this is a support known not to aid
-    // allies, or a mage, who never keeps such an item. `false` when the
-    // champion is unknown.
+    // Rule 13: a support known not to aid allies, or a mage, which never keeps
+    // such an item.
     no_ally_aid: bool,
-    // Rule 12: whether this is a support whose World Atlas item is Celestial
-    // Opposition: a champion tagged `Tank`, the one the enemy hits, that
-    // `sleigh` did not take. The second test of the five.
+    // Rule 12: a `Tank` support that `sleigh` did not take, whose World Atlas
+    // item is Celestial Opposition.
     celestial: bool,
-    // Rule 16: whether this is a support with the `Tank` tag, which builds
-    // tank and support items and no others.
+    // Rule 16: a `Tank`-tagged support, held to tank and support items.
     tank_support: bool,
     // Rule 12: the World Atlas item named for this champion as a support
     // ([`ATLAS_BY_CHAMPION`]), whatever the tests would say.
     atlas_named: Option<&'static str>,
-    // Rule 12: whether this is a support whose World Atlas item is Zaz'Zak's
-    // Realmspike without being a mage: an AP champion none of the tests
-    // before it took, so its abilities are there to deal damage.
+    // Rule 12: an AP support none of the earlier tests took, whose World Atlas
+    // item is Zaz'Zak's Realmspike.
     realmspike: bool,
     // Rule 11: whether the champion attacks from range, `None` when unknown.
     ranged: Option<bool>,
-    // Rules 9 and 12: a pin holds the build's first slot, the only one a
-    // jungler's jungle item and a support's World Atlas item go in, so the
-    // build goes without that item ([`Fit::starter_slot_pinned`]).
+    // Rules 9 and 12: the first slot is pinned, so the build goes without its
+    // jungle or World Atlas item ([`Fit::starter_slot_pinned`]).
     no_starter: bool,
 }
 
-// The [`Fit`] for `champion` playing `role`.
-//
-// Support items are allowed in the support role and nowhere else — not even an
-// unknown role ([`Role::Any`]), which the buy detour falls back to when no
-// lineup has placed the champion yet. Jungle items follow the same line, for
-// the jungle role. A champion nothing is known about gets no scaling
-// restriction and none on its reach: a missing tag must never cost a build an
-// item. In the jungle it is no tank either, so it builds a damage item.
+// The [`Fit`] for `champion` playing `role`. Support and jungle items are
+// allowed only in their own role (not [`Role::Any`]), and a champion nothing is
+// known about gets no restriction: a missing tag must never cost a build an
+// item.
 pub(crate) fn fit(champion: &str, role: Role) -> Fit {
     let traits = champion_traits::traits(champion);
     let mage =
@@ -572,10 +405,9 @@ pub(crate) fn fit(champion: &str, role: Role) -> Fit {
 }
 
 impl Fit {
-    // This [`Fit`] for a build whose first slot the player pinned. A
-    // jungler's jungle item and a support's World Atlas item only ever go in
-    // that slot (rules 9 and 12), so such a build goes without them: none is
-    // added, and one the AI picked makes way like a second one would.
+    // This [`Fit`] for a build whose first slot the player pinned: it goes
+    // without the jungle or World Atlas item that only goes there (rules 9 and
+    // 12).
     pub(crate) fn starter_slot_pinned(self) -> Self {
         Self {
             no_starter: self.jungle_items || self.support_items,
@@ -583,18 +415,15 @@ impl Fit {
         }
     }
 
-    // Whether `key` is the item a build with its first slot pinned goes
-    // without ([`Fit::starter_slot_pinned`]): a jungler's jungle item, or a
-    // support's World Atlas item.
+    // Whether `key` is the jungle or World Atlas item such a build goes
+    // without.
     pub(crate) fn skips_starter(&self, key: &str) -> bool {
         self.no_starter && ((self.jungle_items && is_jungle_item(key)) || self.is_atlas_pick(key))
     }
 
-    // Rules 16 and 17 for one item: whether `key` is of a class this
-    // support does not build. Boots are rule 7's, and an item no class is
-    // written down for is left alone, like any item the rules cannot place.
-    // The game's six finals are not among those: `base_slug` gives them the
-    // name the mod draws them under, and that has a class.
+    // Rules 16 and 17: whether `key` is of a class this support does not build.
+    // Boots and items with no class are left alone; `base_slug` gives the
+    // game's six finals a class.
     fn off_support_classes(&self, key: &str) -> bool {
         (self.tank_support || self.aid_support())
             && !matches!(
@@ -603,16 +432,14 @@ impl Fit {
             )
     }
 
-    // Rule 17: whether this is a heal, shield and buff support, which is one
-    // whose World Atlas item is Dream Maker. Not a tank whose kit aids allies
-    // but whose Atlas item is another: rule 16 holds it to the two classes,
-    // without the preference.
+    // Rule 17: a support whose World Atlas item is Dream Maker. A tank that
+    // aids allies but holds another Atlas item is held to the classes by rule
+    // 16, without the preference.
     fn aid_support(&self) -> bool {
         self.support_items && self.atlas_item() == DREAM_MAKER
     }
 
-    // Rule 17: whether this support has items it looks to before the other
-    // tank and support items.
+    // Rule 17: whether this support looks to [`PREFERRED_AID_ITEMS`] first.
     pub(crate) fn prefers_aid_items(&self) -> bool {
         self.aid_support()
     }
@@ -623,14 +450,9 @@ impl Fit {
         self.aid_support() && PREFERRED_AID_ITEMS.contains(&crate::build_config::base_slug(key))
     }
 
-    // Rule 5 for one item: whether an item with these traits gives a stat the
-    // champion cannot use. A hybrid item gives both kinds, so only a hybrid
-    // champion keeps one.
-    //
-    // Support items in the support role are judged like any other. The ones
-    // an AD champion can use pass anyway: the tank ones carry no offensive
-    // stat. Sword of Blossoming Dawn is not judged here at all: it is a
-    // marksman's item (rule 14).
+    // Rule 5 for one item: whether it gives a stat the champion cannot use.
+    // Support items are judged like any other; the tank ones carry no offensive
+    // stat anyway.
     fn mismatches(&self, item: &ItemTraits) -> bool {
         match self.scaling {
             Some(Scaling::Ap) => item.physical,
@@ -655,53 +477,44 @@ impl Fit {
         }
     }
 
-    // Rule 8: whether `key` is a jungle item and this champion is not
-    // jungling. The one test even a last-resort pick is held to, while the
-    // toggle is on.
+    // Rule 8: a jungle item on a champion that is not jungling, the one test
+    // even a last-resort pick is held to.
     pub(crate) fn off_role_jungle_item(&self, key: &str) -> bool {
         !self.jungle_items && is_jungle_item(key)
     }
 
-    // Rule 8, for a jungler: whether `key` is a jungle item other than the
-    // one its champion builds — a damage item on a tank, Philosopher's Stone
-    // on anyone else. Which of the two damage items is rule 5's to say.
+    // Rule 8, for a jungler: a jungle item other than its champion's (a damage
+    // one on a tank, the Stone on anyone else). Which damage item is rule 5's
+    // call.
     fn other_jungle_item(&self, key: &str) -> bool {
         self.jungle_items && is_jungle_item(key) && is_philosophers_stone(key) != self.stone_jungler
     }
 
-    // Rule 9: whether the champion's build is guaranteed an item of its role:
-    // a jungler's jungle item, unless the player pinned the slot it goes in.
-    // A support's one dedicated item is its World Atlas item (rule 12); past
-    // that it only prefers support items ([`Fit::prefers_support_items`]).
+    // Rule 9: whether the build is guaranteed a role item, which only a
+    // jungler's is, unless its first slot is pinned.
     fn guarantees_role_item(&self) -> bool {
         self.jungle_items && !self.no_starter
     }
 
-    // Rule 9: whether this is a support that prefers Support-class items past
-    // its World Atlas item — any support but a mage, which builds AP items
-    // like any other mage.
+    // Rule 9: any support but a mage prefers Support-class items past its World
+    // Atlas item.
     fn prefers_support_items(&self) -> bool {
         self.support_items && !self.mage
     }
 
-    // Rule 9: whether `key` is a Support-class item this champion prefers
-    // ([`Fit::prefers_support_items`]), rule 12's World Atlas item aside.
-    // What the item-build hook pushes harder than the mod's other items.
+    // Rule 9: a Support-class item this champion prefers, World Atlas aside.
+    // The item-build hook pushes these harder than the mod's other items.
     pub(crate) fn is_preferred_support_item(&self, key: &str) -> bool {
         self.prefers_support_items() && is_other_support_class(key)
     }
 
-    // Rule 9: whether `key` is an item of the role this champion plays — a
-    // support item it prefers ([`Fit::is_preferred_support_item`]), a jungle
-    // item for a jungler, nothing in any other role. What the AI buys right
-    // after the World Atlas item (and a support's early items, rule 6), and
-    // looks to first for a stand-in.
+    // Rule 9: a preferred support item, or a jungler's jungle item. Bought
+    // right after the World Atlas item and looked to first for a stand-in.
     fn is_role_item(&self, key: &str) -> bool {
         self.is_preferred_support_item(key) || (self.jungle_items && is_jungle_item(key))
     }
 
-    // Rule 12: whether `key` is a World Atlas item held by a support — one of
-    // [`ATLAS_ITEMS`], this champion's or not.
+    // Rule 12: whether `key` is any World Atlas item held by a support.
     fn is_atlas_pick(&self, key: &str) -> bool {
         self.support_items && is_atlas_item(key)
     }
@@ -775,8 +588,8 @@ fn timing(key: &str) -> Timing {
     }
 }
 
-// Rule 6: the build slots, from the first, that an early item may be bought
-// in. A late item only goes in the ones after them.
+// Rule 6: how many leading slots an early item may take; a late item only goes
+// after them.
 const EARLY_SLOTS: usize = 2;
 
 // Rule 6: whether `key` may be bought in build slot `slot` (from 0).
@@ -788,17 +601,10 @@ pub(crate) fn fits_slot(key: &str, slot: usize) -> bool {
     }
 }
 
-// The order rules 6, 9, 12 and 17 buy AI picks in: a support's World Atlas
-// item (rule 12) before anything, then a support's early items, then the
-// heal, shield and buff items of a support that looks to them first (rule
-// 17), then the role's own items (rule 9), then by [`timing`]. Sorted on, so
-// smaller is sooner. The order is also what decides which pick drops off the
-// end when rule 7 puts the boots in, so it is never one of the first two
-// kinds while another is left.
-//
-// A support's early items come before its support items so that they still
-// get one of the first two slots, the only ones rule 6 lets them have. A
-// jungler's jungle item stays ahead of them: it is first of all its picks.
+// The order AI picks are bought in, smallest first: a support's World Atlas
+// item, its early items, rule 17's preferred items, the role's own items, then
+// [`timing`]. Rule 7's boots push the last pick off, so it is never one of the
+// first kinds while another is left.
 fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, bool, Timing) {
     match key {
         Some(key) => (
@@ -812,9 +618,8 @@ fn buy_order(key: Option<&str>, fit: Fit) -> (bool, bool, bool, bool, Timing) {
     }
 }
 
-// Rules 6 and 9 over AI picks chosen elsewhere: the buy detour's, for the 5th
-// and 6th slots the build only grows to after [`enforce`] has run. Stable,
-// like the sort in [`enforce`], so picks of the same timing keep their order.
+// Rules 6 and 9 over the buy detour's picks for the 5th and 6th slots, which
+// only exist after [`enforce`]. Stable, so equal picks keep their order.
 pub(crate) fn sort_by_timing<T>(picks: &mut [T], fit: Fit, key: impl Fn(&T) -> Option<String>) {
     picks.sort_by_key(|pick| buy_order(key(pick).as_deref(), fit));
 }
@@ -829,7 +634,6 @@ const MERCURYS_TREADS: &str = "mercurys_treads";
 const PLATED_STEELCAPS: &str = "plated_steelcaps";
 const SORCERERS_SHOES: &str = "sorcerers_shoes";
 
-// Every upgraded pair.
 const UPGRADED_BOOTS: [&str; 7] = [
     BERSERKERS_GREAVES,
     BOOTS_OF_SWIFTNESS,
@@ -840,30 +644,17 @@ const UPGRADED_BOOTS: [&str; 7] = [
     SORCERERS_SHOES,
 ];
 
-// The build slot rule 7 puts boots in: the second, which is where League
-// players finish theirs. A pin always wins the slot, and so does an early
-// item (rule 6): when one holds it, the boots take the first open slot after
-// it (up to the 6th), then the first slot, and with every slot pinned there
-// are no boots.
+// Rule 7's slot: the second, where League players finish their boots. A pin or
+// early item there pushes them to the next open slot.
 const BOOTS_SLOT: usize = 1;
 
-// Whether `key` is a pair of boots, tier 1 or upgraded.
 pub(crate) fn is_boots(key: &str) -> bool {
     key == BASE_BOOTS || UPGRADED_BOOTS.contains(&key)
 }
 
-// The boots rule 7 gives `champion` playing `role`, against `enemies` (empty
-// when the caller cannot see them).
-//
-// In order: a tank answers the enemy's main damage type (Mercury's against
-// more magic than physical, Steelcaps otherwise, which also covers not
-// knowing), whatever its role; any other support takes haste (Lucidity),
-// since it wins through its abilities' uptime rather than their damage; then
-// the champion's own damage: ability power takes magic
-// penetration, and a physical champion follows its class — attack speed for
-// the ranged, haste for assassins, omnivamp for fighters. A utility champion
-// that heals or shields takes haste (Lucidity), and one that does neither, or
-// one nothing is known about, the plain speed of Swiftness.
+// Rule 7's boots for `champion` in `role` against `enemies` (empty when
+// unseen). A tank answers the enemy's main damage type, other supports take
+// Lucidity, AP takes Sorcerer's, and the rest follow their class.
 pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'static str {
     let traits = champion_traits::traits(champion).unwrap_or_default();
     if traits.tank {
@@ -913,27 +704,23 @@ pub(crate) fn is_support_item(key: &str) -> bool {
     !SUPPORT_ITEM_EXCEPTIONS.contains(&crate::build_config::base_slug(key)) && is_support_class(key)
 }
 
-// Rule 14: the items only a marksman keeps. By base slug, so the radiant
-// tier follows.
+// Rule 14: the items only a marksman keeps, by base slug.
 const MARKSMAN_ONLY_ITEMS: [&str; 3] = [
     "guinsoos_rageblade",
     "statikk_shiv",
     "sword_of_blossoming_dawn", // a support item, so a marksman playing support
 ];
 
-// Whether `key` is one of [`MARKSMAN_ONLY_ITEMS`], base or radiant.
 fn is_marksman_only_item(key: &str) -> bool {
     MARKSMAN_ONLY_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// Rule 10: whether `key` is Imperial Mandate, base or radiant.
 fn is_mandate(key: &str) -> bool {
     crate::build_config::base_slug(key) == "imperial_mandate"
 }
 
-// Rule 13: the items whose passive only answers to the carrier healing,
-// shielding or buffing an ally. By base slug, so the radiant tier follows.
-// Dream Maker is one too, and rule 12 hands that out.
+// Rule 13: items whose passive only answers to healing, shielding or buffing an
+// ally, by base slug. Dream Maker is one too, handed out by rule 12.
 const ALLY_AID_ITEMS: [&str; 4] = [
     "ardent_censer",          // Sanctify, on healing, shielding or buffing an ally
     "echoes_of_helia",        // Soul Siphon spends its charges on the same
@@ -941,23 +728,18 @@ const ALLY_AID_ITEMS: [&str; 4] = [
     "staff_of_flowing_water", // Rapids, on healing, shielding or buffing an ally
 ];
 
-// Whether `key` is one of [`ALLY_AID_ITEMS`], base or radiant.
 fn is_ally_aid_item(key: &str) -> bool {
     ALLY_AID_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// Rule 17: the ones of [`ALLY_AID_ITEMS`] a heal, shield and buff support
-// looks to first. Moonstone Renewer is not one: Starlit Grace only chains a
-// heal, so it does nothing for a kit that shields or buffs, and nothing
-// here tells such a kit from one that heals. It is an ally-aid item in
-// every other way: rule 13 still goes by it, and such a support may hold it
-// like any Support item.
+// Rule 17: the [`ALLY_AID_ITEMS`] a heal, shield and buff support looks to
+// first. Not Moonstone Renewer, which only chains heals and does nothing for a
+// kit that shields or buffs.
 const PREFERRED_AID_ITEMS: [&str; 3] =
     ["ardent_censer", "echoes_of_helia", "staff_of_flowing_water"];
 
-// Rule 12: what World Atlas grows into, the support role's own item line. By
-// base slug, so the radiant tier follows. Which of them a support builds is
-// [`Fit::atlas_item`]'s to say: a new one needs a place there.
+// Rule 12: World Atlas's upgrades, the support role's own line, by base slug. A
+// new one needs a place in [`Fit::atlas_item`].
 const ATLAS_ITEMS: [&str; 5] = [
     BLOODSONG,            // Spellblade, for a support none of the others is for
     CELESTIAL_OPPOSITION, // Blessing of the Mountain, on being hit by an enemy champion
@@ -975,32 +757,28 @@ const CELESTIAL_OPPOSITION: &str = "celestial_opposition";
 // Rule 12: the World Atlas item of a support that heals or shields.
 const DREAM_MAKER: &str = "dream_maker";
 
-// Rule 12: champions whose World Atlas item is named outright, ahead of the
-// tests in [`Fit::atlas_item`]. Both are tagged `Tank` and aid their allies,
-// and the tests look at the tag first: Chef has no immobilize, which they
-// answer with Celestial Opposition, and Monk immobilizes for a second, which
-// they answer with Solstice Sleigh. Rule 17 follows the Atlas item, so the
-// two look to the heal, shield and buff items first.
+// Rule 12: champions whose World Atlas item is named outright. Chef and Monk
+// are `Tank`s that aid allies, which the tests would hand Celestial Opposition
+// or Solstice Sleigh.
 const ATLAS_BY_CHAMPION: [(&str, &str); 2] = [("chef", DREAM_MAKER), ("monk", DREAM_MAKER)];
 
 // Rule 12: the World Atlas item of a tank that immobilizes.
 const SOLSTICE_SLEIGH: &str = "solstice_sleigh";
 
-// Rule 12: how long a tank's kit has to immobilize for in all to be handed
-// Solstice Sleigh: a second, in ticks.
+// Rule 12: how long a tank's kit must immobilize in all for Solstice Sleigh:
+// one second, in ticks.
 const SLEIGH_IMMOBILIZE_TICKS: usize = 60;
 
 // Rule 12: the World Atlas item of a mage, and of any other AP support that
 // only deals damage.
 const ZAZZAKS_REALMSPIKE: &str = "zazzaks_realmspike";
 
-// Whether `key` is one of [`ATLAS_ITEMS`], base or radiant.
 pub(crate) fn is_atlas_item(key: &str) -> bool {
     ATLAS_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// [`is_support_item`], less rule 12's World Atlas item: what rules 9 and 10
-// mean by a support item, since every support holds the Atlas one besides.
+// [`is_support_item`] less the World Atlas item: what rules 9 and 10 mean by a
+// support item.
 fn is_other_support_item(key: &str) -> bool {
     is_support_item(key) && !is_atlas_item(key)
 }
@@ -1010,31 +788,25 @@ fn is_other_support_class(key: &str) -> bool {
     is_support_class(key) && !is_atlas_item(key)
 }
 
-// Rule 8: items only the jungle role may build. By base slug, so the radiant
-// tier follows.
+// Rule 8: items only the jungle role may build, by base slug.
 const JUNGLE_ITEMS: [&str; 3] = [
     "feral_flare",            // a stack per takedown and monster killed
     "grezs_spectral_lantern", // ability power per takedown and monster killed
     PHILOSOPHERS_STONE,       // maximum health per takedown and monster killed
 ];
 
-// Rule 8: the jungle item of a champion tagged `Tank`. The other two are for
-// champions that are not, by damage type.
+// Rule 8: the jungle item of a `Tank`; the other two go by damage type.
 const PHILOSOPHERS_STONE: &str = "philosophers_stone";
 
-// Whether `key` is one of [`JUNGLE_ITEMS`], base or radiant.
 pub(crate) fn is_jungle_item(key: &str) -> bool {
     JUNGLE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// Whether `key` is Philosopher's Stone, base or radiant.
 fn is_philosophers_stone(key: &str) -> bool {
     crate::build_config::base_slug(key) == PHILOSOPHERS_STONE
 }
 
-// Rule 11: items whose passive wants the carrier in melee, which a ranged
-// champion does not keep. By base slug, so the radiant tier follows. The
-// distances are the defaults; all of them are config-editable.
+// Rule 11: items whose passive wants the carrier in melee, by base slug.
 const MELEE_ITEMS: [&str; 9] = [
     "ravenous_hydra",     // Cleave at half strength from past 35 range
     "titanic_hydra",      // Cleave at half strength from past 35 range
@@ -1044,31 +816,26 @@ const MELEE_ITEMS: [&str; 9] = [
     "hollow_radiance",    // Immolate burns enemies within 30 range
     "philosophers_stone", // Immolate again
     "sunfire_cape",       // Immolate again; this slug is the radiant cape's
-    // Sunfire Cape itself, whose key the base game never lost: only the
-    // radiant reskins have an alias for `base_slug` to undo.
+    // The vanilla Sunfire Cape's own key, which `base_slug` does not alias.
     "hourglass_of_eternity",
 ];
 
-// Rule 11: items whose passive wants the carrier at range, which a melee
-// champion does not keep. By base slug, so the radiant tier follows.
+// Rule 11: items whose passive wants the carrier at range, by base slug.
 const RANGED_ITEMS: [&str; 2] = [
     "runaans_hurricane", // bolts at the enemies around the carrier; ranged only in League
     "diamond_tipped_spear", // Sweet Spot grows with the distance to the target, up to 100 range
 ];
 
-// Whether `key` is one of [`MELEE_ITEMS`], base or radiant.
 fn is_melee_item(key: &str) -> bool {
     MELEE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// Whether `key` is one of [`RANGED_ITEMS`], base or radiant.
 fn is_ranged_item(key: &str) -> bool {
     RANGED_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// Rule 15: the finished Spellblade items, of which a build holds one. By base
-// slug, so the radiant tier follows. Sheen is left out: it is their
-// component, not a finished item.
+// Rule 15: the finished Spellblade items, by base slug (Sheen, their component,
+// is not one).
 const SPELLBLADE_ITEMS: [&str; 6] = [
     "trinity_force",
     "dusk_and_dawn",
@@ -1078,15 +845,13 @@ const SPELLBLADE_ITEMS: [&str; 6] = [
     BLOODSONG,
 ];
 
-// Whether `key` is one of [`SPELLBLADE_ITEMS`], base or radiant.
 fn is_spellblade_item(key: &str) -> bool {
     SPELLBLADE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
-// What the items a build already holds have spent of the budgets the rules
-// police, and the [`Fit`] of the champion it is for. Carries the trait table
-// with it, so a scan across the catalog is a run of hash lookups rather than a
-// run of lock acquisitions.
+// What a build's items have spent of the rules' budgets, plus its [`Fit`].
+// Holds the trait table so a catalog scan is hash lookups, not lock
+// acquisitions.
 pub(crate) struct Budget {
     table: Arc<Table>,
     cuts_healing: bool,
@@ -1101,7 +866,6 @@ pub(crate) struct Budget {
 }
 
 impl Budget {
-    // An empty budget: a build with nothing in it yet.
     pub(crate) fn empty(fit: Fit) -> Self {
         Self {
             table: table(),
@@ -1114,7 +878,6 @@ impl Budget {
         }
     }
 
-    // The budget the given items have already spent.
     pub(crate) fn spent<'a>(keys: impl IntoIterator<Item = &'a str>, fit: Fit) -> Self {
         let mut budget = Self::empty(fit);
         for key in keys {
@@ -1123,10 +886,8 @@ impl Budget {
         budget
     }
 
-    // Why `key` cannot join the build, or `None` when it can.
-    //
-    // Duplicates are the caller's to spot: this knows what a build has spent,
-    // not which slots spent it.
+    // Why `key` cannot join the build, or `None`. Duplicates are the caller's
+    // to spot.
     pub(crate) fn rejects(&self, key: &str) -> Option<Reason> {
         let traits = self.table.traits(key);
         if !self.fit.support_items && is_support_item(key) {
@@ -1148,14 +909,13 @@ impl Budget {
         } else if self.fit.mismatches(&traits) {
             Some(Reason::Scaling)
         } else if self.fit.out_of_reach(key) {
-            // After rule 5: an item that fails both (Runaan's on a melee mage)
-            // is replaced the way rule 5 does it, in the build's style, not by
-            // another item of a kind the champion cannot use.
+            // After rule 5, so an item failing both (Runaan's on a melee mage)
+            // is replaced in the build's style.
             Some(Reason::Reach)
         } else if (self.jungle_item || self.fit.no_starter) && is_jungle_item(key) {
-            // After the rules about the champion: what is left here is a
-            // jungle item this jungler could hold, were it the build's first.
-            // A build whose first slot is pinned holds none (rule 9).
+            // After the champion rules: a jungle item this jungler could hold
+            // only as the build's first, and none when the first slot is pinned
+            // (rule 9).
             Some(Reason::SecondJungle)
         } else if (self.atlas_item || self.fit.no_starter) && self.fit.is_atlas_pick(key) {
             // The same for a support's World Atlas item (rule 12).
@@ -1165,11 +925,8 @@ impl Budget {
             && (self.spellblade_item
                 || (self.fit.holds_bloodsong() && !self.atlas_item && !self.fit.no_starter))
         {
-            // Rule 15. A support's Bloodsong is rule 12's to place, so it is
-            // never the one turned away, and a build still waiting for it
-            // counts as holding it. One with another Atlas item pinned, or its
-            // first slot pinned, is not getting a Bloodsong, and is judged
-            // like anyone's.
+            // Rule 15. A support's Bloodsong is rule 12's, so it is never the
+            // one turned away, and a build still due one counts as holding it.
             Some(Reason::SecondSpellblade)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
@@ -1180,10 +937,9 @@ impl Budget {
         }
     }
 
-    // Whether `key` is an item this champion may hold at all — rules 4, 5, 8,
-    // 10, 11, 13, 14, 16 and 17, which do not depend on what else is in the build (rule 8's
-    // one-to-a-build half does, and is left out). An item that fails is no
-    // guide to the build's style.
+    // Whether this champion may hold `key` at all, by the rules that do not
+    // depend on the rest of the build. An item that fails is no guide to the
+    // build's style.
     pub(crate) fn suits_champion(&self, key: &str) -> bool {
         !(!self.fit.support_items && is_support_item(key))
             && !self.fit.off_role_jungle_item(key)
@@ -1197,8 +953,7 @@ impl Budget {
             && !self.fit.out_of_reach(key)
     }
 
-    // Whether `key` brings any crit chance — what the stand-in for a crit
-    // overflow must not do.
+    // Whether `key` brings any crit, which a crit overflow's stand-in must not.
     pub(crate) fn adds_crit(&self, key: &str) -> bool {
         self.table.traits(key).crit_chance > 0
     }
@@ -1208,7 +963,6 @@ impl Budget {
         self.rejects(key).is_none() && (reason != Reason::Crit || !self.adds_crit(key))
     }
 
-    // Records `key` as part of the build.
     pub(crate) fn take(&mut self, key: &str) {
         let traits = self.table.traits(key);
         self.cuts_healing |= traits.cuts_healing;
@@ -1219,81 +973,20 @@ impl Budget {
     }
 }
 
-// Rewrites `build` in place so that it breaks none of the rules, as far as
-// the catalog allows.
+// Rewrites `build` in place so it breaks none of the rules, as far as the
+// catalog allows. An offending AI slot is swapped for the next unused final
+// that fixes it, wrapping from its index, from its own category or, for
+// [`Reason::restyles`], the build's style; with none, it stays.
 //
-// A slot that breaks one is swapped for the next item that fixes it: unused, of
-// the same category, selectable as a final, and no violation itself. The search
-// wraps the catalog from the offending index, which is the walk the unique-items
-// rule has always used. A slot with no such stand-in — an unknown category, or a
-// category with nothing left in it — is left alone and counted, because it is in
-// the build either way. A jungle item off the jungle is the exception (rule
-// 8): with nothing in its own category it makes way for the build's style,
-// then for anything the champion may hold.
+// `pinned` marks the player's slots, never rewritten, and `reserved` holds
+// their pins past the end of `build`; both are counted first, so an AI pick
+// that clashes with a pin is the one that goes. `key`, `category` and
+// `is_final` describe a `count`-item catalog, `boots` is [`boots_for`]'s pair,
+// and `later_open` says a 5th or 6th slot is free for it
+// ([`crate::build_config::later_slot_open`]).
 //
-// For the two rules about the champion ([`Reason::restyles`]) "the same
-// category" is the build's, not the item's: the categories of the build's other
-// items that suit the champion, earliest slot first, and only then any category
-// at all. That keeps a stand-in in the style of the build — an attack-damage
-// build that loses a support item gets another attack-damage item.
-//
-// `count` is the size of the catalog the indices in `build` refer to; `category`
-// and `is_final` are the caller's view of it, and `key` is what ties an index to
-// the trait table. `fit` is [`fit`] for the champion the build is for.
-//
-// `pinned` says, per slot, whether the player pinned it (a missing entry is
-// an AI slot). A pinned slot is never rewritten. Pins — and `reserved`, the
-// player's pins for slots past the end of `build` — are counted before any AI
-// slot is looked at, so an AI pick that clashes with a pin is the one that
-// goes, wherever the two sit in the build.
-//
-// Then rule 12: a support whose build holds no World Atlas item has the AI's
-// last pick swapped for its champion's.
-//
-// Then rule 9: a jungler whose build holds no jungle item, pinned or picked,
-// has its last AI slot swapped for one. The walk is the one above, from the
-// item being replaced, and the stand-in is held to every other rule against
-// the rest of the build. Nothing that fits, nothing changes. A support gets
-// nothing here: rule 12's item is its one dedicated support item.
-//
-// Then rule 10: a support whose kit immobilizes and whose build has no Imperial
-// Mandate, and no support item the player pinned, has the AI's first support
-// item (preferring one only supports may build) swapped for Mandate, held to
-// the other rules the same way. No AI support item, no Mandate.
-//
-// Then rule 13: a support whose kit aids allies and whose build has no item
-// that answers to it, and no support item the player pinned, has one swapped
-// in the same way, over the AI's first support item that is neither Mandate
-// nor the Atlas one. None to spare, none swapped in.
-//
-// Rule 17 is in the walk itself: for a support that looks to the heal,
-// shield and buff items first, one of those is the stand-in for whatever
-// pick is turned away, while one is left that the build can hold.
-//
-// Last, rule 6 reorders the AI's slots among themselves: the role's own items
-// first (rule 9), then early items, late items last, and the engine's order
-// within each group. A pinned slot keeps its position and its item, so the
-// player's buy order is never moved. Every caller decides the build before
-// the match, when nothing is bought yet, so no owned item can end up in a
-// later slot.
-//
-// Then rule 7: `boots` is the catalog index of the pair [`boots_for`] picked
-// (`None` when the catalog has none). A build with no boots in any slot or in
-// `reserved` gets them in the second slot, or the first open slot after it
-// when a pin or an early item holds that one, else the first
-// ([`BOOTS_SLOT`]); the AI picks from there on move one AI slot later and the
-// last one drops off. Boots are never a stand-in for the other rules, whatever
-// `is_final` says about them.
-//
-// And rule 6's line between the first two slots and the rest
-// ([`fits_slot`]): an AI pick the order left on the wrong side of it makes
-// way for an item of no timing.
-//
-// `later_open`: a slot past the end of `build` — the 5th or 6th, which exist
-// only once the buy detour grows the build — that no pin holds
-// ([`crate::build_config::later_slot_open`]). When every slot of `build` from
-// the second on is taken, the boots are left to that slot
-// (`tactics::extra_slot_pick`) rather than put in the first.
+// After the walk come rules 12, 9, 10 and 13 (each swapping one AI pick), then
+// rule 6's order, rule 7's boots and rule 6's slot line.
 pub(crate) fn enforce<C, K, G, F>(
     count: usize,
     build: &mut [usize],
@@ -1338,11 +1031,9 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // The build's style: the categories of the items that suit the champion,
-    // earliest slot first, each once. Taken before any slot changes, from the
-    // whole build, so a support item in slot 0 still follows the IE in slot 1.
-    // A mage support's support items are no style of its own (rule 9): what it
-    // loses to rules 5 and 13 makes way for an item of its AP categories.
+    // The build's style: the categories of its items that suit the champion,
+    // earliest first, taken before any slot changes. A mage support's support
+    // items set no style (rule 9).
     let sets_style = |key: &str| budget.suits_champion(key) && !(fit.mage && is_support_class(key));
     let mut styles: Vec<C> = Vec::new();
     for &index in build.iter() {
@@ -1367,9 +1058,8 @@ pub(crate) fn enforce<C, K, G, F>(
             current.as_deref().and_then(|key| budget.rejects(key))
         };
 
-        // The item this slot ends up holding. One assignment for all four
-        // outcomes — kept, replaced, unclassifiable, or nothing left to swap in —
-        // so the budget cannot drift from the build it is meant to describe.
+        // One assignment for every outcome, so the budget cannot drift from the
+        // build.
         let chosen = match reason {
             None => *slot,
             Some(reason) => {
@@ -1387,10 +1077,9 @@ pub(crate) fn enforce<C, K, G, F>(
                                 })
                         })
                 };
-                // Rule 17: a heal, shield and buff support's stand-in is one
-                // of the items that answer to that, whatever the pick was
-                // turned away for. A wrong World Atlas item is the exception:
-                // it makes way for the right one, below.
+                // Rule 17: a heal, shield and buff support's stand-in is a
+                // preferred aid item, unless the offender is a wrong World
+                // Atlas item.
                 let aid_item = (fit.prefers_aid_items() && reason != Reason::AtlasMismatch)
                     .then(|| {
                         search(&|candidate| {
@@ -1401,16 +1090,10 @@ pub(crate) fn enforce<C, K, G, F>(
                 if let Some(aid_item) = aid_item {
                     aid_item
                 } else if reason.restyles() {
-                    // An item of the champion's role that fails rule 5 (an
-                    // AP-only support item on an AD support) or rule 8 (Feral
-                    // Flare on a tank jungler) makes way for one of the role
-                    // it can use first: rule 9 wants the role to keep one (a
-                    // jungler) or prefers it (a support), and the build's
-                    // style would not look there. A support's
-                    // World Atlas item makes way for another of those first,
-                    // for the same reason (rule 12). And any of a support's
-                    // picks does, bar a mage's: it prefers support items
-                    // (rule 9).
+                    // A role item failing rule 5 or 8, a wrong World Atlas
+                    // item, or any pick of a support other than a mage makes
+                    // way for a role item first (rules 9 and 12), which the
+                    // build's style would not reach.
                     let atlas = current.as_deref().is_some_and(|key| fit.is_atlas_pick(key));
                     let role_first = atlas
                         || fit.prefers_support_items()
@@ -1434,24 +1117,18 @@ pub(crate) fn enforce<C, K, G, F>(
                                 search(&|candidate| category(candidate).as_ref() == Some(style))
                             })
                         })
-                        // A build with no usable style at all — every other
-                        // item broke these rules too — still loses the item.
+                        // With no usable style left, the item still goes.
                         .or_else(|| search(&|_| true))
                         .unwrap_or(offender)
                 } else {
-                    // The category must be known: matching `None` against
-                    // `None` would swap the slot for any item the caller could
-                    // not classify.
+                    // The category must be known: `None` matching `None` would
+                    // accept any unclassified item.
                     let own_category = category(offender).and_then(|wanted| {
                         search(&|candidate| category(candidate).as_ref() == Some(&wanted))
                     });
                     // A jungle item off the jungle goes even when its category
-                    // has nothing for the champion, which is every time it
-                    // also fails rule 5: all the attack speed finals give
-                    // attack speed, so Feral Flare on a mage in lane finds no
-                    // stand-in among them, and Grez's on an AD laner none
-                    // among the magic ones. It then follows the build's style,
-                    // like rule 5's, and only then any category.
+                    // holds nothing for the champion (Feral Flare on a mage):
+                    // it follows the build's style, then any category.
                     let elsewhere = || {
                         (reason == Reason::JungleOnly)
                             .then(|| {
@@ -1495,12 +1172,9 @@ pub(crate) fn enforce<C, K, G, F>(
         rest
     };
 
-    // Rule 12. A support's build holds a World Atlas item, as a jungler's
-    // holds its jungle item: its champion's, which is the only one the budget
-    // lets through. The AI's last pick makes way for it, and one that is not
-    // an item rule 9 prefers where there is a choice. Ahead of rules 9, 10
-    // and 13, which look past this item. Not where the player pinned the
-    // first slot, the one the Atlas item goes in: the build goes without.
+    // Rule 12: a support with no World Atlas item has the AI's last pick,
+    // preferably not a rule 9 role item, swapped for its champion's (the only
+    // one the budget allows). Ahead of rules 9, 10 and 13, which look past it.
     let needs_atlas_item = fit.support_items
         && !fit.no_starter
         && !build
@@ -1532,11 +1206,9 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 9, for a jungler: a support's one guaranteed item is rule 12's. The
-    // AI's last pick is the one the engine wanted least, so it is the one that
-    // makes way. The stand-in is judged against the rest of the build, which
-    // is why the budget is rebuilt without that slot. Not where the player
-    // pinned the first slot ([`Fit::guarantees_role_item`]).
+    // Rule 9: a jungler with no jungle item has its last AI pick, the one the
+    // engine wanted least, swapped for one judged against the rest of the
+    // build.
     let needs_role_item = fit.guarantees_role_item()
         && !build
             .iter()
@@ -1568,11 +1240,9 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 10. This only decides which support item, among those the AI
-    // picked: a build with none gets none, since its one dedicated support
-    // item is rule 12's. The player's pinned support item is their choice, so
-    // a pin rules Mandate out. Rule 12's World Atlas item is not that support
-    // item, pinned or picked.
+    // Rule 10 only decides which of the AI's support items becomes Mandate: no
+    // AI support item, or a pinned one, means no Mandate. The World Atlas item
+    // is not that support item.
     let holds = |index: usize, want: fn(&str) -> bool| key(index).is_some_and(|key| want(&key));
     let pinned_support = (0..build.len())
         .filter(|&slot| is_pinned(slot))
@@ -1604,11 +1274,8 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 13. After rule 10, and like it only deciding which support item:
-    // the AI's first that is neither Mandate nor the Atlas one makes way. A
-    // build with none to spare (none at all, or rule 10 took the only one for
-    // Mandate) gets none. A pinned support item rules it out, as it does
-    // Mandate.
+    // Rule 13, after rule 10 and likewise: the AI's first support item that is
+    // neither Mandate nor the Atlas one makes way for an ally-aid item.
     let has_ally_aid = build
         .iter()
         .chain(reserved)
@@ -1638,16 +1305,14 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 6, with rule 12's World Atlas item and rule 9's role items ahead
-    // of it. A stable sort, so items of the same timing keep the engine's
-    // order.
+    // Rule 6, behind rule 12's World Atlas item and rule 9's role items.
+    // Stable, so equal timings keep the engine's order.
     let open: Vec<usize> = (0..build.len()).filter(|&slot| !is_pinned(slot)).collect();
     let mut picks: Vec<usize> = open.iter().map(|&slot| build[slot]).collect();
     picks.sort_by_key(|&index| buy_order(key(index).as_deref(), fit));
-    // An early item the first two slots cannot hold goes to the back: the
-    // first pick rule 7's boots push off, and swapped below where they do
-    // not. The AI's other picks keep their places ahead of it. A role item
-    // (rule 9's jungle item) keeps its place.
+    // An early item the first two slots cannot hold goes to the back, where
+    // rule 7's boots push it off or the slot line below swaps it. A role item
+    // keeps its place.
     let overflows = |pick: usize, at: usize| {
         open[at] >= EARLY_SLOTS
             && key(pick).is_some_and(|key| {
@@ -1670,20 +1335,16 @@ pub(crate) fn enforce<C, K, G, F>(
         .iter()
         .chain(reserved)
         .any(|&index| key(index).is_some_and(|key| is_boots(&key)));
-    // Where the boots go, as a position in `picks` (the AI's slots, in
-    // order): the second build slot, or the first open one after it when a pin
-    // holds it — the 5th and 6th included, which the buy detour fills when it
-    // grows the build, so an open one there leaves the boots to it — or the
-    // first slot when every one from the second on is pinned. No open slot at
-    // all, no boots.
+    // Where the boots go in `picks`: the first open slot from the second on,
+    // else none when a 5th or 6th is open (the buy detour places them there),
+    // else the first.
     let at = match (0..open.len()).find(|&pick| open[pick] >= BOOTS_SLOT) {
         Some(at) => Some(at),
         None if later_open => None,
         None => (!open.is_empty()).then_some(0),
     };
-    // An early item that lands in one of the first two slots keeps it, and
-    // the boots go after it (rule 6). With no slot left after it, they are
-    // left to the 5th or 6th.
+    // An early item in one of the first two slots keeps it, and the boots go
+    // after it.
     let at = at.map(|mut at| {
         while at < picks.len()
             && open[at] < EARLY_SLOTS
@@ -1702,11 +1363,9 @@ pub(crate) fn enforce<C, K, G, F>(
         build[slot] = index;
     }
 
-    // Rule 6's line: an early item only in the first two slots, a late one
-    // only after them. The order above keeps to it where the AI's picks allow;
-    // a pick still on the wrong side makes way for an item of no timing, of
-    // its own category, else of the build's style, else any the rest of the
-    // build can hold. A role item (rule 9's jungle item) stays where it is.
+    // Rule 6's slot line: a pick still on the wrong side makes way for an item
+    // of no timing, from its own category, then the build's style, then
+    // anything. A role item stays.
     for &slot in &open {
         let offender = build[slot];
         let Some(current) = key(offender) else {

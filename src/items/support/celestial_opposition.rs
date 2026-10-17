@@ -3,20 +3,14 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta};
 
-// Celestial Opposition — what World Atlas grows into for a support that
-// stands in front and is hit: Blessing of the Mountain, and the gold the
-// Atlas line pays ([`crate::SharedRiches`]).
+// Celestial Opposition: World Atlas's upgrade for a support that stands in
+// front: Blessing of the Mountain, and the Atlas line's gold
+// ([`crate::SharedRiches`]).
 //
-// # Blessing of the Mountain
-//
-// Damage from an enemy champion makes the carrier Blessed: for a short while
-// everything it takes is cut by a share. The hit that brings the blessing on
-// has already landed, so it is the ones after it that are cut. When Blessed
-// runs out the carrier lets a shockwave go, which slows every enemy unit
-// around it, and only then does the cooldown start.
-//
-// A carrier that dies Blessed lets nothing go: the blessing ends with it and
-// the cooldown starts there.
+// Damage from an enemy champion makes the carrier Blessed, cutting what it
+// takes next by a share for a while; when Blessed runs out a shockwave slows
+// every enemy unit around it and the cooldown starts. A carrier that dies
+// Blessed lets nothing go, and the cooldown starts there.
 #[derive(Clone, Debug)]
 pub struct CelestialOpposition {
     meta: ItemMeta,
@@ -45,10 +39,8 @@ const BLESSED_BUFF: &str = "celestial_opposition_blessed";
 // The shockwave's slow. One name for both variants and every carrier, so two
 // shockwaves refresh one slow on a target rather than stacking two.
 const SLOW_BUFF: &str = "celestial_opposition_slow";
-// The shield breaking, played on the carrier (`effects/celestial_shatter`).
-// It is the shockwave's picture too: the pieces fly out as far as the slow
-// reaches, so there is the one burst and not two. Bound in
-// `view/effects.view_effects`.
+// The shield breaking (`effects/celestial_shatter`), which is the shockwave's
+// picture too: the pieces fly as far as the slow reaches.
 const SHATTER_EFFECT: &str = "riot_celestial_shatter";
 
 impl CelestialOpposition {
@@ -79,7 +71,7 @@ impl CelestialOpposition {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_celestial_opposition", &["celestial_opposition"]),
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             // Blessing of the Mountain itself is unchanged — Radiant buys the

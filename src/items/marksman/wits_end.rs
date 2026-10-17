@@ -19,7 +19,7 @@ impl WitsEnd {
         Self {
             meta: ItemMeta::base("wits_end", &["scouts_slingshot"], &["radiant_wits_end"]),
             price: 700,
-            attack_speed_mult: 40,
+            attack_speed_mult: 35,
             magic_resistance: 40,
             toughness: 20,
             effect_bonus_magic_damage: 45,
@@ -32,7 +32,7 @@ impl WitsEnd {
         Self {
             meta: ItemMeta::radiant("radiant_wits_end", &["wits_end"]),
             price: 1000,
-            attack_speed_mult: 65,
+            attack_speed_mult: 60,
             magic_resistance: 65,
             toughness: 30,
             effect_bonus_magic_damage: 45,

@@ -2,10 +2,9 @@ use crate::apply_config;
 use crate::config::ItemConfig;
 use mod_api_stable::*;
 
-// Runic Compass — World Atlas's upgrade, and the last step before a finished
-// support item: health on top of the regen, and the gold comes in faster
-// ([`crate::SharedRiches`]). It grows into every finished item of the World Atlas
-// line.
+// Runic Compass: World Atlas's upgrade and the last step before a finished
+// support item, adding health and faster gold ([`crate::SharedRiches`]). It
+// grows into every finished item of the World Atlas line.
 #[derive(Clone, Debug)]
 pub struct RunicCompass {
     price: usize,

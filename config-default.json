@@ -16,7 +16,7 @@
   "haunting_guise": {
     "price": 500,
     "magic_power": 30,
-    "hp": 100,
+    "hp": 200,
     "effect_stack_percent_damage": 2.0,
     "effect_stacks_per_second": 1,
     "effect_max_stacks": 3,
@@ -24,7 +24,7 @@
   },
   "phage": {
     "price": 500,
-    "hp": 100,
+    "hp": 200,
     "attack": 20,
     "effect_move_speed_mult": 5,
     "effect_duration_seconds": 2
@@ -38,7 +38,7 @@
   "black_cleaver": {
     "price": 750,
     "attack": 25,
-    "hp": 150,
+    "hp": 250,
     "skill_cooldown_mult": 5,
     "effect_max_stacks": 5,
     "effect_duration_seconds": 6,
@@ -55,7 +55,7 @@
   "blade_of_the_ruined_king": {
     "price": 750,
     "attack": 25,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "vamp": 5,
     "effect_hp_percent_damage": 5.0,
     "effect_minion_damage_cap": 50
@@ -63,7 +63,7 @@
   "bloodletters_curse": {
     "price": 750,
     "magic_power": 55,
-    "hp": 150,
+    "hp": 250,
     "skill_cooldown_mult": 5,
     "effect_max_stacks": 5,
     "effect_duration_seconds": 6,
@@ -78,9 +78,9 @@
     "effect_bonus_gold": 25
   },
   "experimental_hexplate": {
-    "price": 600,
-    "hp": 150,
-    "attack_speed_mult": 30,
+    "price": 800,
+    "hp": 300,
+    "attack_speed_mult": 25,
     "ult_cooldown_mult": 15,
     "effect_attack_speed_mult": 32,
     "effect_move_speed_mult": 16,
@@ -104,14 +104,14 @@
   },
   "frozen_mallet": {
     "price": 700,
-    "hp": 200,
+    "hp": 350,
     "attack": 20,
     "effect_slow_amount": 15,
     "effect_duration_seconds": 2
   },
   "rylais_crystal_scepter": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "magic_power": 65,
     "effect_slow_amount": 15,
     "effect_duration_seconds": 2
@@ -120,7 +120,7 @@
     "price": 700,
     "attack": 15,
     "magic_power": 15,
-    "attack_speed_mult": 30,
+    "attack_speed_mult": 25,
     "effect_bonus_magic_damage": 30,
     "effect_stack_attack_speed_mult": 8,
     "effect_max_stacks": 4,
@@ -128,7 +128,7 @@
   },
   "heartsteel": {
     "price": 750,
-    "hp": 250,
+    "hp": 600,
     "effect_bonus_flat_damage": 70,
     "effect_caster_hp_percent_damage": 6.0,
     "effect_bonus_hp_percent_of_damage": 10.0,
@@ -153,7 +153,7 @@
   },
   "jaksho_the_protean": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "defence": 25,
     "magic_resistance": 40,
     "effect_stack_defence_mult": 6,
@@ -163,7 +163,7 @@
   },
   "mirage_blade": {
     "price": 750,
-    "attack_speed_mult": 40,
+    "attack_speed_mult": 35,
     "move_speed_mult": 10,
     "adaptive_force": 30,
     "effect_move_speed_mult": 20,
@@ -209,7 +209,7 @@
   },
   "morellonomicon": {
     "price": 650,
-    "hp": 100,
+    "hp": 200,
     "magic_power": 60,
     "skill_cooldown_mult": 10,
     "effect_heal_reduce": 40,
@@ -217,7 +217,7 @@
   },
   "riftmaker": {
     "price": 650,
-    "hp": 200,
+    "hp": 300,
     "magic_power": 30,
     "effect_caster_hp_percent_power": 2.0,
     "effect_vamp": 2,
@@ -243,7 +243,7 @@
   },
   "spear_of_shojin": {
     "price": 700,
-    "hp": 200,
+    "hp": 300,
     "attack": 20,
     "skill_cooldown_mult": 10,
     "effect_stack_attack_mult": 3,
@@ -253,7 +253,7 @@
   "terminus": {
     "price": 700,
     "attack": 15,
-    "attack_speed_mult": 35,
+    "attack_speed_mult": 30,
     "crit_chance": 20,
     "effect_bonus_flat_damage": 30,
     "effect_ad_percent_damage": 5.0,
@@ -265,7 +265,7 @@
   },
   "protectors_vow": {
     "price": 650,
-    "hp": 200,
+    "hp": 300,
     "defence": 25,
     "skill_cooldown_mult": 5,
     "effect_bonus_flat_hp": 50,
@@ -273,7 +273,7 @@
   },
   "protoplasm_harness": {
     "price": 600,
-    "hp": 200,
+    "hp": 300,
     "skill_cooldown_mult": 10,
     "move_speed_mult": 5,
     "effect_bonus_flat_hp": 300,
@@ -291,20 +291,20 @@
   },
   "spirit_visage": {
     "price": 700,
-    "hp": 200,
+    "hp": 350,
     "magic_resistance": 50,
     "effect_heal_mult": 20.0
   },
   "unending_despair": {
     "price": 750,
-    "hp": 250,
+    "hp": 400,
     "defence": 15,
     "effect_bonus_flat_heal": 15,
     "effect_caster_hp_percent_heal": 1.5
   },
   "night_harvester": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "magic_power": 50,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 100,
@@ -316,13 +316,13 @@
   "overlords_bloodmail": {
     "price": 700,
     "attack": 15,
-    "hp": 200,
+    "hp": 550,
     "effect_caster_hp_percent_attack": 2.5
   },
   "radiant_experimental_hexplate": {
     "price": 950,
-    "hp": 200,
-    "attack_speed_mult": 50,
+    "hp": 450,
+    "attack_speed_mult": 35,
     "move_speed_mult": 5,
     "ult_cooldown_mult": 25,
     "effect_attack_speed_mult": 32,
@@ -333,7 +333,7 @@
   "radiant_black_cleaver": {
     "price": 1100,
     "attack": 35,
-    "hp": 250,
+    "hp": 350,
     "skill_cooldown_mult": 10,
     "effect_max_stacks": 5,
     "effect_duration_seconds": 6,
@@ -350,14 +350,14 @@
   "radiant_blade_of_the_ruined_king": {
     "price": 1050,
     "attack": 30,
-    "attack_speed_mult": 50,
+    "attack_speed_mult": 45,
     "vamp": 10,
     "effect_hp_percent_damage": 8.0,
     "effect_minion_damage_cap": 50
   },
   "radiant_frozen_mallet": {
     "price": 1000,
-    "hp": 300,
+    "hp": 550,
     "attack": 30,
     "effect_slow_amount": 15,
     "effect_duration_seconds": 2,
@@ -366,7 +366,7 @@
   },
   "radiant_rylais_crystal_scepter": {
     "price": 950,
-    "hp": 200,
+    "hp": 300,
     "magic_power": 100,
     "effect_slow_amount": 15,
     "effect_duration_seconds": 2
@@ -375,7 +375,7 @@
     "price": 950,
     "attack": 25,
     "magic_power": 25,
-    "attack_speed_mult": 50,
+    "attack_speed_mult": 45,
     "effect_bonus_magic_damage": 30,
     "effect_stack_attack_speed_mult": 8,
     "effect_max_stacks": 4,
@@ -383,7 +383,7 @@
   },
   "radiant_heartsteel": {
     "price": 1050,
-    "hp": 400,
+    "hp": 1000,
     "effect_bonus_flat_damage": 70,
     "effect_caster_hp_percent_damage": 6.0,
     "effect_bonus_hp_percent_of_damage": 10.0,
@@ -438,7 +438,7 @@
   },
   "radiant_morellonomicon": {
     "price": 950,
-    "hp": 200,
+    "hp": 300,
     "magic_power": 95,
     "skill_cooldown_mult": 10,
     "effect_heal_reduce": 40,
@@ -447,7 +447,7 @@
   "radiant_bloodletters_curse": {
     "price": 1100,
     "magic_power": 90,
-    "hp": 250,
+    "hp": 350,
     "skill_cooldown_mult": 10,
     "effect_max_stacks": 5,
     "effect_duration_seconds": 6,
@@ -463,7 +463,7 @@
   },
   "radiant_jaksho_the_protean": {
     "price": 1000,
-    "hp": 300,
+    "hp": 400,
     "defence": 35,
     "magic_resistance": 60,
     "effect_stack_defence_mult": 10,
@@ -473,7 +473,7 @@
   },
   "radiant_mirage_blade": {
     "price": 1050,
-    "attack_speed_mult": 65,
+    "attack_speed_mult": 60,
     "move_speed_mult": 15,
     "adaptive_force": 50,
     "effect_move_speed_mult": 20,
@@ -482,7 +482,7 @@
   "radiant_terminus": {
     "price": 1000,
     "attack": 25,
-    "attack_speed_mult": 60,
+    "attack_speed_mult": 55,
     "crit_chance": 25,
     "effect_bonus_flat_damage": 30,
     "effect_ad_percent_damage": 5.0,
@@ -494,7 +494,7 @@
   },
   "radiant_protectors_vow": {
     "price": 900,
-    "hp": 300,
+    "hp": 400,
     "defence": 40,
     "skill_cooldown_mult": 15,
     "effect_bonus_flat_hp": 50,
@@ -502,7 +502,7 @@
   },
   "radiant_protoplasm_harness": {
     "price": 850,
-    "hp": 350,
+    "hp": 550,
     "skill_cooldown_mult": 10,
     "move_speed_mult": 5,
     "effect_bonus_flat_hp": 600,
@@ -515,7 +515,7 @@
   },
   "radiant_riftmaker": {
     "price": 950,
-    "hp": 300,
+    "hp": 400,
     "magic_power": 60,
     "effect_caster_hp_percent_power": 2.0,
     "effect_vamp": 2,
@@ -541,7 +541,7 @@
   },
   "radiant_spear_of_shojin": {
     "price": 1100,
-    "hp": 300,
+    "hp": 400,
     "attack": 30,
     "skill_cooldown_mult": 20,
     "effect_stack_attack_mult": 3,
@@ -555,20 +555,20 @@
   },
   "radiant_spirit_visage": {
     "price": 950,
-    "hp": 300,
+    "hp": 550,
     "magic_resistance": 75,
     "effect_heal_mult": 20.0
   },
   "radiant_unending_despair": {
     "price": 1050,
-    "hp": 350,
+    "hp": 650,
     "defence": 25,
     "effect_bonus_flat_heal": 20,
     "effect_caster_hp_percent_heal": 2.5
   },
   "radiant_night_harvester": {
     "price": 1000,
-    "hp": 250,
+    "hp": 350,
     "magic_power": 80,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 150,
@@ -580,12 +580,12 @@
   "radiant_overlords_bloodmail": {
     "price": 1000,
     "attack": 20,
-    "hp": 350,
+    "hp": 700,
     "effect_caster_hp_percent_attack": 2.5
   },
   "warmogs_armor": {
     "price": 750,
-    "hp": 300,
+    "hp": 550,
     "hp_regen": 3,
     "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
@@ -593,7 +593,7 @@
   },
   "radiant_warmogs_armor": {
     "price": 1050,
-    "hp": 500,
+    "hp": 900,
     "hp_regen": 5,
     "effect_caster_hp_percent_heal": 3.0,
     "effect_move_speed_mult": 4,
@@ -602,7 +602,7 @@
   "kraken_slayer": {
     "price": 700,
     "attack": 30,
-    "attack_speed_mult": 30,
+    "attack_speed_mult": 25,
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
@@ -611,7 +611,7 @@
   "radiant_kraken_slayer": {
     "price": 1000,
     "attack": 45,
-    "attack_speed_mult": 45,
+    "attack_speed_mult": 40,
     "move_speed_mult": 4,
     "effect_bonus_flat_damage": 150,
     "effect_max_percent_bonus": 75.0,
@@ -619,7 +619,7 @@
   },
   "atmas_reckoning": {
     "price": 750,
-    "hp": 250,
+    "hp": 500,
     "crit_chance": 20,
     "effect_stack_crit_chance": 5,
     "effect_hp_per_stack": 1000,
@@ -627,7 +627,7 @@
   },
   "radiant_atmas_reckoning": {
     "price": 1050,
-    "hp": 450,
+    "hp": 700,
     "crit_chance": 25,
     "effect_stack_crit_chance": 5,
     "effect_hp_per_stack": 1000,
@@ -635,14 +635,14 @@
   },
   "wits_end": {
     "price": 700,
-    "attack_speed_mult": 40,
+    "attack_speed_mult": 35,
     "magic_resistance": 40,
     "toughness": 20,
     "effect_bonus_magic_damage": 45
   },
   "radiant_wits_end": {
     "price": 1000,
-    "attack_speed_mult": 65,
+    "attack_speed_mult": 60,
     "magic_resistance": 65,
     "toughness": 30,
     "effect_bonus_magic_damage": 45
@@ -691,7 +691,7 @@
   },
   "diamond_tipped_spear": {
     "price": 750,
-    "attack_speed_mult": 35,
+    "attack_speed_mult": 30,
     "adaptive_force": 30,
     "skill_cooldown_mult": 10,
     "effect_max_percent_bonus": 25.0,
@@ -699,7 +699,7 @@
   },
   "radiant_diamond_tipped_spear": {
     "price": 1150,
-    "attack_speed_mult": 60,
+    "attack_speed_mult": 55,
     "adaptive_force": 50,
     "skill_cooldown_mult": 10,
     "effect_max_percent_bonus": 25.0,
@@ -707,7 +707,7 @@
   },
   "zekes_herald": {
     "price": 550,
-    "hp": 100,
+    "hp": 150,
     "defence": 20,
     "magic_resistance": 30,
     "skill_cooldown_mult": 10,
@@ -719,7 +719,7 @@
   },
   "radiant_zekes_herald": {
     "price": 750,
-    "hp": 150,
+    "hp": 350,
     "defence": 30,
     "magic_resistance": 40,
     "skill_cooldown_mult": 15,
@@ -731,20 +731,19 @@
   },
   "scouts_slingshot": {
     "price": 400,
-    "attack_speed_mult": 30,
+    "attack_speed_mult": 25,
     "effect_bonus_flat_damage": 40,
     "effect_cooldown_seconds": 20
   },
   "bandleglass_mirror": {
-    "price": 350,
-    "hp": 100,
+    "price": 400,
     "hp_regen": 1,
-    "magic_power": 10,
-    "skill_cooldown_mult": 5
+    "magic_power": 20,
+    "skill_cooldown_mult": 10
   },
   "liandrys_torment": {
     "price": 700,
-    "hp": 200,
+    "hp": 300,
     "magic_power": 40,
     "effect_hp_percent_damage": 6.0,
     "effect_minion_damage_cap": 40,
@@ -752,7 +751,7 @@
   },
   "radiant_liandrys_torment": {
     "price": 1000,
-    "hp": 300,
+    "hp": 400,
     "magic_power": 75,
     "effect_hp_percent_damage": 6.0,
     "effect_minion_damage_cap": 40,
@@ -765,7 +764,7 @@
   },
   "aegis_of_the_legion": {
     "price": 700,
-    "hp": 100,
+    "hp": 150,
     "defence": 20,
     "magic_resistance": 30
   },
@@ -790,8 +789,8 @@
     "magic_resistance_penetration": 40
   },
   "echoes_of_helia": {
-    "price": 550,
-    "hp": 150,
+    "price": 750,
+    "hp": 200,
     "hp_regen": 2,
     "magic_power": 25,
     "skill_cooldown_mult": 15,
@@ -811,7 +810,7 @@
   },
   "sundered_sky": {
     "price": 700,
-    "hp": 200,
+    "hp": 300,
     "attack": 20,
     "skill_cooldown_mult": 10,
     "effect_percent_bonus_damage": 60.0,
@@ -821,7 +820,7 @@
   },
   "radiant_sundered_sky": {
     "price": 1000,
-    "hp": 300,
+    "hp": 400,
     "attack": 35,
     "skill_cooldown_mult": 20,
     "effect_percent_bonus_damage": 60.0,
@@ -831,7 +830,7 @@
   },
   "sheen": {
     "price": 650,
-    "attack_speed_mult": 20,
+    "attack_speed_mult": 15,
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
@@ -839,9 +838,9 @@
   },
   "trinity_force": {
     "price": 750,
-    "hp": 100,
+    "hp": 200,
     "attack": 20,
-    "attack_speed_mult": 20,
+    "attack_speed_mult": 15,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
@@ -851,7 +850,7 @@
     "price": 1333,
     "hp": 333,
     "attack": 33,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 15,
     "effect_bonus_flat_damage": 33,
     "effect_ad_percent_damage": 33.0,
@@ -859,9 +858,9 @@
   },
   "dusk_and_dawn": {
     "price": 700,
-    "hp": 100,
+    "hp": 200,
     "magic_power": 30,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 85,
     "effect_ap_percent_damage": 15.0,
@@ -871,9 +870,9 @@
   },
   "radiant_dusk_and_dawn": {
     "price": 1000,
-    "hp": 150,
+    "hp": 250,
     "magic_power": 75,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 85,
     "effect_ap_percent_damage": 15.0,
@@ -894,7 +893,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_bloodsong": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_min_bonus_damage": 70,
@@ -984,7 +983,7 @@
   },
   "locket_of_the_iron_solari": {
     "price": 550,
-    "hp": 100,
+    "hp": 150,
     "defence": 20,
     "magic_resistance": 30,
     "skill_cooldown_mult": 10,
@@ -1001,7 +1000,7 @@
   },
   "radiant_locket_of_the_iron_solari": {
     "price": 850,
-    "hp": 150,
+    "hp": 250,
     "defence": 40,
     "magic_resistance": 50,
     "skill_cooldown_mult": 15,
@@ -1018,7 +1017,7 @@
   },
   "dead_mans_plate": {
     "price": 750,
-    "hp": 150,
+    "hp": 250,
     "defence": 30,
     "move_speed_mult": 4,
     "effect_stacks_per_second": 7,
@@ -1029,7 +1028,7 @@
   },
   "radiant_dead_mans_plate": {
     "price": 1050,
-    "hp": 350,
+    "hp": 450,
     "defence": 35,
     "move_speed_mult": 4,
     "effect_stacks_per_second": 7,
@@ -1080,7 +1079,7 @@
   },
   "winged_moonplate": {
     "price": 400,
-    "hp": 150,
+    "hp": 250,
     "move_speed_mult": 4
   },
   "frozen_heart": {
@@ -1107,7 +1106,7 @@
   "steraks_gage": {
     "price": 700,
     "attack": 20,
-    "hp": 200,
+    "hp": 300,
     "toughness": 15,
     "effect_hp_percent_threshold": 30.0,
     "effect_caster_hp_percent_shield": 45.0,
@@ -1117,7 +1116,7 @@
   "radiant_steraks_gage": {
     "price": 1000,
     "attack": 25,
-    "hp": 350,
+    "hp": 450,
     "toughness": 20,
     "effect_hp_percent_threshold": 30.0,
     "effect_caster_hp_percent_shield": 45.0,
@@ -1126,13 +1125,13 @@
   },
   "randuins_omen": {
     "price": 750,
-    "hp": 150,
+    "hp": 300,
     "defence": 35,
     "effect_crit_damage_percent_heal": 30.0
   },
   "radiant_randuins_omen": {
     "price": 1000,
-    "hp": 300,
+    "hp": 400,
     "defence": 45,
     "effect_crit_damage_percent_heal": 30.0
   },
@@ -1183,7 +1182,9 @@
   "hearthbound_axe": {
     "price": 500,
     "attack": 20,
-    "attack_speed_mult": 20
+    "attack_speed_mult": 15,
+    "effect_bonus_magic_damage": 25,
+    "effect_bonus_flat_heal": 10
   },
   "axiom_arc": {
     "price": 650,
@@ -1202,16 +1203,15 @@
     "effect_ult_cooldown_per_lethality": 0.2
   },
   "forbidden_idol": {
-    "price": 350,
-    "hp": 100,
-    "magic_power": 10,
-    "skill_cooldown_mult": 10
+    "price": 150,
+    "hp": 200,
+    "hp_regen": 2
   },
   "sword_of_blossoming_dawn": {
-    "price": 500,
+    "price": 700,
     "attack_speed_mult": 20,
-    "hp": 100,
-    "magic_power": 20,
+    "hp": 200,
+    "magic_power": 15,
     "skill_cooldown_mult": 10,
     "effect_min_heal": 15,
     "effect_max_heal": 60,
@@ -1222,8 +1222,8 @@
   "radiant_sword_of_blossoming_dawn": {
     "price": 850,
     "attack_speed_mult": 35,
-    "hp": 150,
-    "magic_power": 35,
+    "hp": 200,
+    "magic_power": 45,
     "skill_cooldown_mult": 15,
     "effect_min_heal": 15,
     "effect_max_heal": 60,
@@ -1232,11 +1232,11 @@
     "effect_max_distance": 100
   },
   "ardent_censer": {
-    "price": 500,
-    "hp": 100,
+    "price": 700,
+    "hp": 150,
     "hp_regen": 1,
     "magic_power": 25,
-    "skill_cooldown_mult": 5,
+    "skill_cooldown_mult": 10,
     "move_speed_mult": 5,
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
@@ -1247,7 +1247,7 @@
     "hp": 200,
     "hp_regen": 2,
     "magic_power": 45,
-    "skill_cooldown_mult": 5,
+    "skill_cooldown_mult": 10,
     "move_speed_mult": 5,
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
@@ -1255,7 +1255,7 @@
   },
   "grezs_spectral_lantern": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "magic_power": 30,
     "skill_cooldown_mult": 10,
     "effect_stack_magic_power": 1,
@@ -1265,7 +1265,7 @@
   },
   "radiant_grezs_spectral_lantern": {
     "price": 1000,
-    "hp": 200,
+    "hp": 300,
     "magic_power": 60,
     "skill_cooldown_mult": 10,
     "effect_stack_magic_power": 1,
@@ -1275,7 +1275,7 @@
   },
   "cloak_of_starry_night": {
     "price": 750,
-    "hp": 200,
+    "hp": 300,
     "magic_resistance": 50,
     "magic_resistance_mult": 25,
     "effect_skill_damaged_reduce": 5,
@@ -1284,7 +1284,7 @@
   },
   "radiant_cloak_of_starry_night": {
     "price": 1050,
-    "hp": 250,
+    "hp": 550,
     "magic_resistance": 100,
     "magic_resistance_mult": 25,
     "effect_skill_damaged_reduce": 5,
@@ -1321,7 +1321,7 @@
   },
   "fated_ashes": {
     "price": 250,
-    "magic_power": 30,
+    "magic_power": 25,
     "effect_bonus_flat_damage": 15,
     "effect_duration_seconds": 3,
     "effect_minion_percent": 400.0
@@ -1371,8 +1371,8 @@
     "effect_ranged_percent": 50.0
   },
   "bamis_cinder": {
-    "price": 700,
-    "hp": 200,
+    "price": 400,
+    "hp": 300,
     "effect_bonus_flat_damage": 5,
     "effect_caster_hp_percent_damage": 0.5,
     "effect_max_distance": 30,
@@ -1404,27 +1404,27 @@
   },
   "dagger": {
     "price": 250,
-    "attack_speed_mult": 10
+    "attack_speed_mult": 8
   },
   "recurve_bow": {
     "price": 250,
-    "attack_speed_mult": 20
+    "attack_speed_mult": 15
   },
   "zeal": {
     "price": 400,
-    "attack_speed_mult": 30,
+    "attack_speed_mult": 25,
     "crit_chance": 10
   },
   "phantom_dancer": {
     "price": 700,
     "move_speed_mult": 5,
-    "attack_speed_mult": 45,
+    "attack_speed_mult": 40,
     "crit_chance": 20
   },
   "radiant_phantom_dancer": {
     "price": 1000,
     "move_speed_mult": 10,
-    "attack_speed_mult": 60,
+    "attack_speed_mult": 55,
     "crit_chance": 25
   },
   "cloth_armor": {
@@ -1459,25 +1459,25 @@
   },
   "negatron_cloak": {
     "price": 250,
-    "hp": 50,
+    "hp": 100,
     "magic_resistance": 30
   },
   "spectres_cowl": {
     "price": 400,
-    "hp": 100,
+    "hp": 150,
     "magic_resistance": 50,
     "skill_damaged_reduce": 4
   },
   "dragons_claw": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "magic_resistance": 75,
     "toughness": 15,
     "skill_damaged_reduce": 8
   },
   "radiant_dragons_claw": {
     "price": 1000,
-    "hp": 200,
+    "hp": 300,
     "magic_resistance": 100,
     "toughness": 25,
     "skill_damaged_reduce": 10
@@ -1508,20 +1508,20 @@
   },
   "ruby_crystal": {
     "price": 250,
-    "hp": 50
+    "hp": 100
   },
   "kindlegem": {
     "price": 250,
-    "hp": 100
+    "hp": 200
   },
   "giants_belt": {
     "price": 400,
-    "hp": 150,
+    "hp": 300,
     "effect_bonus_hp_regen": 5
   },
   "sunfire_cape": {
     "price": 700,
-    "hp": 250,
+    "hp": 350,
     "defence": 15,
     "effect_bonus_hp_regen": 20,
     "effect_bonus_flat_damage": 10,
@@ -1531,7 +1531,7 @@
   },
   "radiant_sunfire_cape": {
     "price": 1000,
-    "hp": 400,
+    "hp": 500,
     "defence": 25,
     "effect_bonus_hp_regen": 40,
     "effect_bonus_flat_damage": 10,
@@ -1549,14 +1549,13 @@
   },
   "bandlepipes": {
     "price": 500,
-    "hp": 100,
+    "hp": 150,
     "defence": 20,
     "magic_resistance": 30,
     "skill_cooldown_mult": 15,
     "effect_duration_seconds": 4,
     "effect_move_speed_mult": 12,
-    "effect_attack_speed_mult": 20,
-    "effect_max_distance": 100
+    "effect_attack_speed_mult": 20
   },
   "radiant_bandlepipes": {
     "price": 750,
@@ -1566,8 +1565,7 @@
     "skill_cooldown_mult": 20,
     "effect_duration_seconds": 4,
     "effect_move_speed_mult": 12,
-    "effect_attack_speed_mult": 20,
-    "effect_max_distance": 100
+    "effect_attack_speed_mult": 20
   },
   "seryldas_grudge": {
     "price": 700,
@@ -1588,10 +1586,10 @@
     "effect_duration_seconds": 1.5
   },
   "chemtech_putrifier": {
-    "price": 500,
+    "price": 700,
     "hp": 150,
     "hp_regen": 2,
-    "magic_power": 15,
+    "magic_power": 25,
     "skill_cooldown_mult": 15,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
@@ -1600,7 +1598,7 @@
     "price": 750,
     "hp": 250,
     "hp_regen": 3,
-    "magic_power": 25,
+    "magic_power": 35,
     "skill_cooldown_mult": 15,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
@@ -1608,7 +1606,7 @@
   "chempunk_chainsword": {
     "price": 650,
     "attack": 20,
-    "hp": 200,
+    "hp": 300,
     "skill_cooldown_mult": 10,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
@@ -1616,7 +1614,7 @@
   "radiant_chempunk_chainsword": {
     "price": 950,
     "attack": 30,
-    "hp": 300,
+    "hp": 400,
     "skill_cooldown_mult": 15,
     "effect_heal_reduce": 40,
     "effect_duration_seconds": 2
@@ -1681,9 +1679,9 @@
     "move_speed_mult": 10
   },
   "staff_of_flowing_water": {
-    "price": 550,
-    "hp": 100,
-    "hp_regen": 1,
+    "price": 750,
+    "hp": 200,
+    "hp_regen": 2,
     "magic_power": 30,
     "skill_cooldown_mult": 10,
     "effect_magic_power": 25,
@@ -1692,7 +1690,7 @@
   },
   "radiant_staff_of_flowing_water": {
     "price": 750,
-    "hp": 150,
+    "hp": 250,
     "hp_regen": 2,
     "magic_power": 50,
     "skill_cooldown_mult": 15,
@@ -1723,7 +1721,7 @@
   "lich_bane": {
     "price": 750,
     "magic_power": 50,
-    "attack_speed_mult": 20,
+    "attack_speed_mult": 15,
     "skill_cooldown_mult": 10,
     "effect_bonus_flat_damage": 105,
     "effect_ap_percent_damage": 30.0,
@@ -1732,26 +1730,26 @@
   "radiant_lich_bane": {
     "price": 1050,
     "magic_power": 90,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 15,
     "effect_bonus_flat_damage": 105,
     "effect_ap_percent_damage": 45.0,
     "effect_cooldown_seconds": 1.5
   },
   "imperial_mandate": {
-    "price": 550,
-    "hp": 100,
+    "price": 750,
+    "hp": 150,
     "hp_regen": 1,
-    "magic_power": 25,
+    "magic_power": 35,
     "skill_cooldown_mult": 15,
     "effect_damaged_amplify": 9,
     "effect_duration_seconds": 3
   },
   "radiant_imperial_mandate": {
     "price": 750,
-    "hp": 150,
+    "hp": 250,
     "hp_regen": 2,
-    "magic_power": 40,
+    "magic_power": 50,
     "skill_cooldown_mult": 20,
     "effect_damaged_amplify": 9,
     "effect_duration_seconds": 3
@@ -1781,7 +1779,7 @@
   },
   "hollow_radiance": {
     "price": 750,
-    "hp": 200,
+    "hp": 300,
     "magic_resistance": 50,
     "skill_damaged_reduce": 4,
     "effect_bonus_flat_damage": 10,
@@ -1795,7 +1793,7 @@
   },
   "radiant_hollow_radiance": {
     "price": 1050,
-    "hp": 350,
+    "hp": 450,
     "magic_resistance": 70,
     "skill_damaged_reduce": 6,
     "effect_bonus_flat_damage": 10,
@@ -1809,7 +1807,7 @@
   },
   "cosmic_drive": {
     "price": 850,
-    "hp": 150,
+    "hp": 250,
     "magic_power": 50,
     "skill_cooldown_mult": 10,
     "move_speed_mult": 4,
@@ -1818,7 +1816,7 @@
   },
   "radiant_cosmic_drive": {
     "price": 1000,
-    "hp": 250,
+    "hp": 350,
     "magic_power": 75,
     "skill_cooldown_mult": 15,
     "move_speed_mult": 4,
@@ -1827,7 +1825,7 @@
   },
   "fiendhunter_bolts": {
     "price": 700,
-    "attack_speed_mult": 35,
+    "attack_speed_mult": 30,
     "crit_chance": 20,
     "move_speed_mult": 4,
     "ult_cooldown_mult": 15,
@@ -1840,7 +1838,7 @@
   },
   "radiant_fiendhunter_bolts": {
     "price": 1000,
-    "attack_speed_mult": 55,
+    "attack_speed_mult": 50,
     "crit_chance": 25,
     "move_speed_mult": 4,
     "ult_cooldown_mult": 25,
@@ -1854,7 +1852,7 @@
   "essence_reaver": {
     "price": 800,
     "attack": 30,
-    "attack_speed_mult": 20,
+    "attack_speed_mult": 15,
     "skill_cooldown_mult": 10,
     "crit_chance": 20,
     "effect_ad_percent_damage": 125.0,
@@ -1864,7 +1862,7 @@
   "radiant_essence_reaver": {
     "price": 1000,
     "attack": 50,
-    "attack_speed_mult": 30,
+    "attack_speed_mult": 25,
     "skill_cooldown_mult": 15,
     "crit_chance": 25,
     "effect_ad_percent_damage": 125.0,
@@ -1906,14 +1904,14 @@
   "edge_of_night": {
     "price": 750,
     "attack": 35,
-    "hp": 100,
+    "hp": 200,
     "effect_lethality": 15,
     "effect_cooldown_seconds": 40
   },
   "radiant_edge_of_night": {
     "price": 1000,
     "attack": 60,
-    "hp": 150,
+    "hp": 250,
     "effect_lethality": 15,
     "effect_cooldown_seconds": 40
   },
@@ -1925,7 +1923,7 @@
   },
   "runaans_hurricane": {
     "price": 700,
-    "attack_speed_mult": 40,
+    "attack_speed_mult": 35,
     "crit_chance": 20,
     "move_speed_mult": 5,
     "effect_ad_percent_damage": 50.0,
@@ -1934,7 +1932,7 @@
   },
   "radiant_runaans_hurricane": {
     "price": 950,
-    "attack_speed_mult": 70,
+    "attack_speed_mult": 65,
     "crit_chance": 25,
     "move_speed_mult": 5,
     "effect_ad_percent_damage": 50.0,
@@ -1945,7 +1943,7 @@
     "price": 700,
     "attack": 15,
     "magic_power": 15,
-    "attack_speed_mult": 30,
+    "attack_speed_mult": 25,
     "move_speed_mult": 4,
     "effect_max_stacks": 100,
     "effect_bonus_magic_damage": 60,
@@ -1957,7 +1955,7 @@
     "price": 1000,
     "attack": 25,
     "magic_power": 25,
-    "attack_speed_mult": 50,
+    "attack_speed_mult": 45,
     "move_speed_mult": 4,
     "effect_max_stacks": 100,
     "effect_bonus_magic_damage": 80,
@@ -1968,7 +1966,7 @@
   "titanic_hydra": {
     "price": 750,
     "attack": 25,
-    "hp": 200,
+    "hp": 300,
     "effect_caster_hp_percent_damage": 1.0,
     "effect_splash_caster_hp_percent": 3.0,
     "effect_max_distance": 35,
@@ -1978,7 +1976,7 @@
   "radiant_titanic_hydra": {
     "price": 1000,
     "attack": 40,
-    "hp": 300,
+    "hp": 400,
     "effect_caster_hp_percent_damage": 1.5,
     "effect_splash_caster_hp_percent": 4.0,
     "effect_max_distance": 35,
@@ -1988,7 +1986,7 @@
   "hullbreaker": {
     "price": 800,
     "attack": 20,
-    "hp": 200,
+    "hp": 300,
     "move_speed_mult": 4,
     "effect_ad_percent_damage": 80.0,
     "effect_caster_hp_percent_damage": 5.0,
@@ -2003,7 +2001,7 @@
   "radiant_hullbreaker": {
     "price": 1000,
     "attack": 35,
-    "hp": 300,
+    "hp": 400,
     "move_speed_mult": 4,
     "effect_ad_percent_damage": 80.0,
     "effect_caster_hp_percent_damage": 5.0,
@@ -2017,14 +2015,14 @@
   },
   "spirit_stone": {
     "price": 400,
-    "hp": 100,
+    "hp": 200,
     "magic_power": 20,
     "effect_percent_bonus_damage": 10.0,
     "effect_bonus_hp_percent_of_damage": 2.0
   },
   "philosophers_stone": {
     "price": 750,
-    "hp": 250,
+    "hp": 350,
     "defence": 15,
     "magic_resistance": 25,
     "effect_bonus_flat_damage": 10,
@@ -2036,7 +2034,7 @@
   },
   "radiant_philosophers_stone": {
     "price": 1050,
-    "hp": 350,
+    "hp": 450,
     "defence": 30,
     "magic_resistance": 45,
     "effect_bonus_flat_damage": 10,
@@ -2048,9 +2046,9 @@
   },
   "iceborn_gauntlet": {
     "price": 750,
-    "hp": 150,
+    "hp": 250,
     "defence": 15,
-    "attack_speed_mult": 20,
+    "attack_speed_mult": 15,
     "skill_cooldown_mult": 10,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
@@ -2061,9 +2059,9 @@
   },
   "radiant_iceborn_gauntlet": {
     "price": 1000,
-    "hp": 250,
+    "hp": 350,
     "defence": 25,
-    "attack_speed_mult": 25,
+    "attack_speed_mult": 20,
     "skill_cooldown_mult": 15,
     "effect_min_bonus_damage": 30,
     "effect_max_bonus_damage": 85,
@@ -2073,7 +2071,7 @@
     "effect_max_distance": 30
   },
   "moonstone_renewer": {
-    "price": 550,
+    "price": 750,
     "hp": 150,
     "hp_regen": 2,
     "magic_power": 20,
@@ -2092,19 +2090,17 @@
   },
   "abyssal_mask": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "magic_resistance": 50,
     "skill_cooldown_mult": 10,
-    "effect_percent_mr_shred": 20,
-    "effect_max_distance": 50
+    "effect_percent_mr_shred": 20
   },
   "radiant_abyssal_mask": {
     "price": 950,
-    "hp": 250,
+    "hp": 350,
     "magic_resistance": 75,
     "skill_cooldown_mult": 15,
-    "effect_percent_mr_shred": 20,
-    "effect_max_distance": 50
+    "effect_percent_mr_shred": 20
   },
   "world_atlas": {
     "price": 250,
@@ -2132,7 +2128,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_solstice_sleigh": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_move_speed_mult": 20,
@@ -2157,7 +2153,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_zazzaks_realmspike": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_delay_seconds": 0.5,
@@ -2183,7 +2179,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_celestial_opposition": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_damaged_reduce": 15,
@@ -2207,7 +2203,7 @@
     "effect_gold_interval_seconds": 5
   },
   "radiant_dream_maker": {
-    "price": 750,
+    "price": 550,
     "hp": 300,
     "hp_regen": 5,
     "effect_duration_seconds": 5,
@@ -2218,16 +2214,16 @@
     "effect_gold_interval_seconds": 5
   },
   "catalyst_of_aeons": {
-    "price": 500,
-    "hp": 100,
-    "magic_power": 20,
+    "price": 650,
+    "hp": 200,
+    "magic_power": 30,
     "skill_cooldown_mult": 5,
     "effect_min_heal": 15,
     "effect_max_heal": 40
   },
   "rod_of_ages": {
     "price": 700,
-    "hp": 150,
+    "hp": 250,
     "magic_power": 40,
     "skill_cooldown_mult": 5,
     "effect_growth_hp": 10,
@@ -2240,7 +2236,7 @@
   },
   "radiant_rod_of_ages": {
     "price": 1000,
-    "hp": 250,
+    "hp": 350,
     "magic_power": 65,
     "skill_cooldown_mult": 10,
     "effect_growth_hp": 10,
@@ -2252,10 +2248,10 @@
     "effect_max_heal": 40
   },
   "mikaels_blessing": {
-    "price": 550,
-    "hp": 200,
+    "price": 750,
+    "hp": 250,
     "hp_regen": 2,
-    "magic_power": 10,
+    "magic_power": 20,
     "skill_cooldown_mult": 10,
     "effect_hp_percent_threshold": 50.0,
     "effect_min_heal": 100,
@@ -2267,12 +2263,50 @@
     "price": 750,
     "hp": 300,
     "hp_regen": 3,
-    "magic_power": 20,
+    "magic_power": 30,
     "skill_cooldown_mult": 15,
     "effect_hp_percent_threshold": 50.0,
     "effect_min_heal": 100,
     "effect_max_heal": 265,
     "effect_max_distance": 65,
     "effect_cooldown_seconds": 120
+  },
+  "force_of_nature": {
+    "price": 700,
+    "hp": 300,
+    "magic_resistance": 50,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 8,
+    "effect_stacks_per_second": 1,
+    "effect_immobilize_stacks": 2,
+    "effect_duration_seconds": 7,
+    "effect_bonus_magic_resistance": 70,
+    "effect_move_speed_mult": 6
+  },
+  "radiant_force_of_nature": {
+    "price": 950,
+    "hp": 500,
+    "magic_resistance": 75,
+    "move_speed_mult": 4,
+    "effect_max_stacks": 8,
+    "effect_stacks_per_second": 1,
+    "effect_immobilize_stacks": 2,
+    "effect_duration_seconds": 7,
+    "effect_bonus_magic_resistance": 70,
+    "effect_move_speed_mult": 6
+  },
+  "navori_flickerblade": {
+    "price": 700,
+    "attack_speed_mult": 35,
+    "crit_chance": 20,
+    "move_speed_mult": 4,
+    "effect_remaining_cooldown_percent": 15.0
+  },
+  "radiant_navori_flickerblade": {
+    "price": 1000,
+    "attack_speed_mult": 55,
+    "crit_chance": 25,
+    "move_speed_mult": 4,
+    "effect_remaining_cooldown_percent": 15.0
   }
 }

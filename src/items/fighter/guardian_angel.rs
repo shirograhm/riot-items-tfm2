@@ -3,23 +3,19 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, ticks, upgrade_carry, ItemMeta};
 
-// Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing for
-// 40% of your maximum health. During the duration, you are untargetable,
+// Rebirth: Upon taking lethal damage, instead resurrect for 4 seconds, healing
+// for 40% of your maximum health. During the duration, you are untargetable,
 // invulnerable, and unable to act (300 second cooldown).
 //
-// The heal lands in equal pulses every `effect_heal_interval_seconds` across the
-// stasis; `effect_caster_hp_percent_heal` is the total.
-//
-// There is no "would die" hook, and `on_damaged` runs after the engine has already
-// marked the carrier dead: setting HP back from there revives her in the sim, but
-// the match view has played the death by then. So the carrier never reaches 0 HP
-// while Rebirth is ready: she holds an `undying` buff, and the hit that pins her
-// at the HP floor is the "lethal" one.
+// The heal lands in equal pulses (`effect_heal_interval_seconds`) totalling
+// `effect_caster_hp_percent_heal`. There is no "would die" hook and
+// `on_damaged` sees the carrier already dead, so while Rebirth is ready she
+// holds an `undying` buff, and the hit that pins her at the HP floor is the
+// lethal one.
 
-// Held while Rebirth is ready. Shared by both tiers, so an upgrade keeps it.
-// It is also the name the `view_buffs` binding in `view/effects.view_effects`
-// draws the "Rebirth is ready" swirl under (`effects/guardian_angel_ready`),
-// so the swirl is up exactly when the buff is and goes as Rebirth is spent.
+// Held while Rebirth is ready, shared by both tiers so an upgrade keeps it.
+// Also the `view_buffs` binding of the "Rebirth is ready" swirl
+// (`effects/guardian_angel_ready`), which lasts exactly as long.
 const UNDYING_BUFF: &str = "guardian_angel_undying";
 // Invulnerability for the stasis (and the tick after it, for the last heal
 // pulse): the banish stops targeting, this stops damage-over-time.
@@ -196,14 +192,10 @@ impl GuardianAngel {
         self.undying_added_tick = None;
     }
 
-    // Settles a carrier the undying buff has pinned (`is_pinned`). While Rebirth
-    // is ready that is its trigger. With Rebirth spent the buff should not be on
-    // her at all, and if it ever is, it would keep her unkillable at the HP floor
-    // for the rest of the cooldown: she dies to that hit after all, there and
-    // then rather than on whichever hit follows the buff's removal.
-    //
-    // Raw damage, because the hit that pinned her has already been through the
-    // attack pipeline once; a second pass would count it, and its procs, again.
+    // Settles a carrier the undying buff has pinned (`is_pinned`): Rebirth's
+    // trigger while it is ready, and otherwise a death there and then, since a
+    // stray buff would keep her unkillable. Raw damage, because the pinning hit
+    // has already been through the attack pipeline.
     fn settle_pinned(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -280,12 +272,10 @@ impl StableItem for GuardianAngel {
         }
     }
 
-    // Keeps the undying buff on the carrier whenever Rebirth is ready. Buffs are
-    // lost on death, so this also restores it after a respawn.
-    //
-    // A pinned carrier is settled here as well as in `on_damaged`, so she is never
-    // left standing at the HP floor: that hook can miss the hit that pinned her,
-    // while `has_buff` does not see a new buff yet.
+    // Keeps the undying buff on the carrier whenever Rebirth is ready,
+    // restoring it after a respawn. A pinned carrier is settled here too, since
+    // `on_damaged` can miss the pinning hit while `has_buff` does not see a new
+    // buff yet.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         let tick = ctx.tick();
         self.inherit_cooldown(ctx, player);

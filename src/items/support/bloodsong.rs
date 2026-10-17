@@ -49,7 +49,7 @@ impl Bloodsong {
         Self {
             meta: ItemMeta::radiant("radiant_bloodsong", &["bloodsong"]),
             vulnerable_buff: "bloodsong_vulnerable",
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             effect_min_bonus_damage: 70,

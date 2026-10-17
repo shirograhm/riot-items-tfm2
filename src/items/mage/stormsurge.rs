@@ -3,15 +3,10 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, percent_of, ticks, ItemMeta};
 
-// How far ahead of the damage the bolt is drawn.
-//
-// `effects/stormsurge_lightning` is six frames at 0.1s, so at 60 ticks a second
-// each frame is 6 ticks. Three frames of lead puts the damage on the third/
-// fourth frame — where the bolt is fully extended — instead of on frame one,
-// which had the hit landing as the bolt was still only a wisp at the top.
-//
-// Retune by frames: this is `frames * 6`, and the frame count and durations are
-// in `effects/stormsurge_lightning#anim.fanim`.
+// How far ahead of the damage the bolt is drawn: `effects/stormsurge_lightning`
+// is six 6-tick frames, and three frames of lead lands the damage where the
+// bolt is fully extended. Retune as `frames * 6`
+// (`effects/stormsurge_lightning#anim.fanim`).
 const STRIKE_LEAD_TICKS: usize = 18;
 
 #[derive(Clone, Debug)]
@@ -60,13 +55,10 @@ impl Stormsurge {
                 &["hextech_alternator"],
                 &["radiant_stormsurge"],
             ),
-            // Our own bolt, bound in `view/effects.view_effects` to
-            // `effects/stormsurge_lightning` (tag `strike`).
-            //
-            // Not `lightning_mage_skill2`, which draws nothing: that name is
-            // registered as a view *projectile*, and `play_view_effect` only
-            // searches the view-effect table. An unknown name is not an
-            // error — it silently draws nothing. See the note in `update`.
+            // Our own bolt, bound to `effects/stormsurge_lightning` (tag
+            // `strike`). Not `lightning_mage_skill2`, a view projectile:
+            // `play_view_effect` searches only view effects, and an unknown
+            // name silently draws nothing.
             strike_effect: "riot_stormsurge_squall",
             price: 700,
             magic_power: 55,
@@ -281,11 +273,9 @@ impl StableItem for Stormsurge {
             }
             if tracked.strike > 0 {
                 tracked.strike -= 1;
-                // `<=` rather than `==`, guarded by the flag: a configured
-                // `effect_delay_seconds` shorter than the lead never counts down
-                // *through* the lead value, and an equality test would silently
-                // draw no bolt at all. This way a short delay simply draws it on
-                // the first tick it can.
+                // `<=`, guarded by the flag: a configured delay shorter than
+                // the lead never counts through it, and `==` would draw no
+                // bolt; a short delay draws it on the first tick it can.
                 if !tracked.flashed && tracked.strike <= STRIKE_LEAD_TICKS {
                     tracked.flashed = true;
                     flashed.push(tracked.target);
@@ -297,19 +287,11 @@ impl StableItem for Stormsurge {
             tracked.live()
         });
 
-        // The bolt is drawn `STRIKE_LEAD_TICKS` before the hit, not on it, so
-        // the animation is mid-strike when the damage lands rather than only
-        // beginning. The damage tick itself is unchanged, so the tooltip's
-        // delay still describes when it hurts.
-        //
-        // It goes through the same frame-event pipeline the game's own
-        // `.data_champion` `ViewEffect`s use, so it shows up in replays too, and
-        // is skipped silently by the background pre-sims that have no frame
-        // recording.
-        //
-        // `range`/`radius`/`time` are the `.data_champion` `ViewEffect` fields;
-        // they steer travelling and area effects, and a bolt anchored on one
-        // entity uses none of them, so all three are the documented 0.
+        // The bolt is drawn `STRIKE_LEAD_TICKS` before the hit, so it is
+        // mid-strike when the damage lands at the tooltip's delay. It goes
+        // through the frame-event pipeline the game's own `ViewEffect`s use
+        // (replays included, skipped by pre-sims), and as an anchored effect
+        // leaves `range`/`radius`/`time` at 0.
         for target in flashed {
             ctx.play_view_effect(
                 self.strike_effect,
