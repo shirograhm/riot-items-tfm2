@@ -97,7 +97,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Glacial Buckler** | 400G | +25 Armor<br>+5 Ability Haste | — |
 | **Gluttonous Greaves** | 650G | +8% Omnivamp<br>+10% MS | — |
 | **Haunting Guise** | 500G | +200 HP<br>+30 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. Stacks are lost after 3 seconds out of combat. |
-| **Hearthbound Axe** | 500G | +20 AD<br>+15% AS | — |
+| **Hearthbound Axe** | 500G | +20 AD<br>+15% AS | Maim: Basic attacks against monsters deal 25 bonus magic damage on-hit and restore 10 health. |
 | **Hextech Alternator** | 400G | +50 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Ionian Boots of Lucidity** | 650G | +15 Ability Haste<br>+10% MS | — |
 | **Last Whisper** | 500G | +25 AD<br>+10% Armor Pen | — |

@@ -1159,7 +1159,7 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 122] = [
+const ROW_FORMATS: [RowFormat; 123] = [
     RowFormat {
         item: "deaths_dance",
         field: "effect_delayed_damage_percent",
@@ -1512,6 +1512,13 @@ const ROW_FORMATS: [RowFormat; 122] = [
     },
     RowFormat {
         item: "feral_flare",
+        field: "effect_bonus_flat_heal",
+        label: Some(("row_healing", "Healing")),
+        lead: None,
+        unit: Some(("unit_health", " health")),
+    },
+    RowFormat {
+        item: "hearthbound_axe",
         field: "effect_bonus_flat_heal",
         label: Some(("row_healing", "Healing")),
         lead: None,
@@ -2833,8 +2840,9 @@ const ARTICLE_FOOT: f32 = 36.0;
 // not set again, so a fix for the scroll cannot become what stops it.
 static SCROLL_TRIED: Mutex<Option<(f32, f32, f32)>> = Mutex::new(None);
 
-// The article whose scroll was last worked out, by title, and the result
-// ([`scroll_for`]), since finding the text can mean reading the whole inbox.
+// What the scroll was last worked out from (the time shown, the row clicked)
+// and the result ([`scroll_for`]), since finding the text can mean reading
+// every inbox row.
 static SCROLL_FOR: Mutex<Option<(String, Option<f32>)>> = Mutex::new(None);
 
 // Whether a character is drawn a full size wide (Chinese, Japanese, Korean
@@ -2892,6 +2900,9 @@ fn article_text_height(text: &str) -> f32 {
 // ([`scroll_for`]), and kept at the layout's length where the text cannot be
 // had.
 pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
+    if !listen_to_rows(ctx) {
+        return;
+    }
     // A plain article in the mod's layout is up: its length node is there.
     let Some((_, _, _, length)) = ctx.ui_node_rect(ARTICLE_EXTENT) else {
         return;
@@ -2941,17 +2952,21 @@ fn label_text(ctx: &StableClient<'_>, path: &str) -> Option<String> {
 }
 
 // The scroll length for the open article: its text's height, never under the
-// view. The label's text where the host gives it (for the patch notes it has
-// given none), else the article by title from the inbox ([`inbox_article`]); a
-// game article not found there has no scroll.
+// view. The label's text where the host gives it (for an article in the mod's
+// layout it gives none: the title and text do not read as labels, only the
+// time does), else the article whose inbox row was clicked last
+// ([`on_news_row`]) if that row shows the open article's time, else the
+// longest of the articles whose rows show that time. A game article (no plain
+// text in the record) has no scroll; nothing found keeps the layout's length.
 fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
-    let title = label_text(ctx, ARTICLE_TITLE);
+    let time = label_text(ctx, ARTICLE_TIME);
     let body = label_text(ctx, ARTICLE_TEXT);
+    let clicked = CLICKED.lock().ok().and_then(|clicked| *clicked);
     // What the answer was worked out from: while it is the same, so is the
     // answer.
     let asked = format!(
-        "{}\n{}",
-        title.as_deref().unwrap_or_default(),
+        "{}\n{clicked:?}\n{}",
+        time.as_deref().unwrap_or_default(),
         body.as_ref().map_or(0, String::len)
     );
     if let Ok(known) = SCROLL_FOR.lock() {
@@ -2964,17 +2979,40 @@ fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
             .max(ARTICLE_VIEW_H)
             .ceil()
     };
-    let (length, from) = match (&body, &title) {
-        (Some(body), _) => (Some(length_of(body)), "the label's text"),
-        (None, Some(title)) => match inbox_article(ctx, title) {
-            Some(Some(text)) => (Some(length_of(&text)), "the inbox's text"),
-            Some(None) => (Some(ARTICLE_VIEW_H), "no article of that title in the inbox"),
-            None => (None, "an inbox that could not be read"),
-        },
-        (None, None) => (None, "nothing: neither the title nor the text can be read"),
+    let (length, from) = match (&body, &time) {
+        (Some(body), _) => (Some(length_of(body)), "the label's text".to_string()),
+        (None, Some(time)) => {
+            // The clicked row, unless it shows another time: then the article
+            // was opened some other way, and the rows at its time stand in.
+            let rows = match clicked
+                .filter(|&row| row_time(ctx, row).map_or(true, |shown| same_time(&shown, time)))
+            {
+                Some(row) => vec![row],
+                None => rows_at(ctx, time),
+            };
+            let texts: Vec<Option<Option<String>>> =
+                rows.iter().map(|&row| inbox_article(ctx, row)).collect();
+            let longest = texts
+                .iter()
+                .flatten()
+                .flatten()
+                .map(|text| length_of(text.as_str()))
+                .fold(None, |most: Option<f32>, length| Some(most.map_or(length, |most| most.max(length))));
+            let from = format!("rows {rows:?} (clicked {clicked:?})");
+            match longest {
+                Some(length) => (Some(length), from),
+                // Every one of them read, and none is plain text: a game
+                // article, which does not scroll.
+                None if !texts.is_empty() && texts.iter().all(Option::is_some) => {
+                    (Some(ARTICLE_VIEW_H), from)
+                }
+                None => (None, from),
+            }
+        }
+        (None, None) => (None, "nothing: neither the time nor the text can be read".to_string()),
     };
     super::log("patch.scroll.for", || {
-        format!("title {title:?}: {length:?}px, from {from}")
+        format!("time {time:?}: {length:?}px, from {from}")
     });
     if let Ok(mut known) = SCROLL_FOR.lock() {
         *known = Some((asked, length));
@@ -2982,24 +3020,130 @@ fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
     length
 }
 
-// The text of the newest plain inbox article titled `title`: `Some(None)` where
-// there is none (templated titles are not kept as shown), `None` where the
-// inbox could not be read.
-fn inbox_article(ctx: &StableClient<'_>, title: &str) -> Option<Option<String>> {
+// The plain text of the article at `index` in the team's `news`: `Some(None)`
+// for another kind of article, `None` where it could not be read.
+fn inbox_article(ctx: &StableClient<'_>, index: usize) -> Option<Option<String>> {
     let team = ctx.player_team_id()?;
-    let news = ctx.record_get_json(RecordKindV1::Team, team, "news")?;
-    let news: Value = serde_json::from_str(&news).ok()?;
-    let articles = news.as_array()?;
-    Some(articles.iter().rev().find_map(|article| {
-        let named = article.get("title")?.as_str()?;
-        if named.trim() != title.trim() {
-            return None;
-        }
+    let article = ctx.record_get_json(RecordKindV1::Team, team, &format!("news.{index}"))?;
+    let article: Value = serde_json::from_str(&article).ok()?;
+    Some(
         article
-            .pointer("/ty/Simple/content")?
-            .as_str()
-            .map(str::to_string)
-    }))
+            .pointer("/ty/Simple/content")
+            .and_then(Value::as_str)
+            .map(str::to_string),
+    )
+}
+
+// -- which article is open ---------------------------------------------------------
+
+// The inbox list: a row per article, named by the article's place in the
+// team's `news`, among date headers (`h_YYYYMMDD`).
+const NEWS_ROWS: &str = "main.top.right.news.background.list.contents";
+
+// Frames between two looks over the list for rows not yet listened to, where
+// its length has not changed (another category shows as many).
+const ROWS_LOOK_EVERY: u32 = 60;
+
+// The inbox rows listened to ([`on_news_row`]).
+static ROWS: crate::ui::Registered = crate::ui::Registered::new(on_news_row);
+
+// The list's length when last looked over, and the frames since.
+static ROWS_LOOKED: Mutex<Option<(usize, u32)>> = Mutex::new(None);
+
+// The article whose inbox row was clicked last, by its place in the team's
+// `news`; forgotten when the news screen closes.
+static CLICKED: Mutex<Option<usize>> = Mutex::new(None);
+
+// Listens for clicks on the inbox's rows, the only sure way to know which
+// article is open. Whether the news screen is up: off it, everything here is
+// forgotten.
+fn listen_to_rows(ctx: &mut StableClient<'_>) -> bool {
+    let Ok(mut looked) = ROWS_LOOKED.lock() else {
+        return false;
+    };
+    let Some(count) = ctx.ui_child_count(NEWS_ROWS) else {
+        if looked.take().is_some() {
+            ROWS.forget();
+            if let Ok(mut clicked) = CLICKED.lock() {
+                *clicked = None;
+            }
+        }
+        return false;
+    };
+    let due = match looked.as_mut() {
+        Some((known, frames)) if *known == count && *frames < ROWS_LOOK_EVERY => {
+            *frames += 1;
+            false
+        }
+        _ => true,
+    };
+    if due {
+        *looked = Some((count, 0));
+        for name in ctx.ui_child_names(NEWS_ROWS) {
+            if name.parse::<usize>().is_ok() {
+                ROWS.register(ctx, &format!("{NEWS_ROWS}.{name}"));
+            }
+        }
+    }
+    true
+}
+
+// A click on an inbox row: that row's article is the one opening.
+fn on_news_row(ctx: &mut StableClient<'_>) {
+    let Some(event) = ctx.ui_current_event() else {
+        return;
+    };
+    // An unreported kind counts as a click, as in `crate::ui`.
+    if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
+        return;
+    }
+    let Some(row) = event
+        .path
+        .strip_prefix(NEWS_ROWS)
+        .and_then(|rest| rest.strip_prefix('.'))
+        .and_then(|name| name.parse::<usize>().ok())
+    else {
+        return;
+    };
+    if let Ok(mut clicked) = CLICKED.lock() {
+        *clicked = Some(row);
+    }
+    super::log("patch.scroll.row", || format!("row {row} clicked"));
+}
+
+// The time an inbox row shows: its `time` label, a level or two down.
+fn row_time(ctx: &StableClient<'_>, row: usize) -> Option<String> {
+    let mut paths = vec![format!("{NEWS_ROWS}.{row}")];
+    for _ in 0..3 {
+        let mut next = Vec::new();
+        for path in paths {
+            for child in ctx.ui_child_names(&path) {
+                let child_path = format!("{path}.{child}");
+                if child == "time" {
+                    return label_text(ctx, &child_path);
+                }
+                next.push(child_path);
+            }
+        }
+        paths = next;
+    }
+    None
+}
+
+// The inbox rows showing `time`.
+fn rows_at(ctx: &StableClient<'_>, time: &str) -> Vec<usize> {
+    ctx.ui_child_names(NEWS_ROWS)
+        .iter()
+        .filter_map(|name| name.parse::<usize>().ok())
+        .filter(|&row| row_time(ctx, row).is_some_and(|shown| same_time(&shown, time)))
+        .collect()
+}
+
+// Whether two times shown are one: the same, or one the end of the other,
+// should the article and its row write it at different lengths.
+fn same_time(a: &str, b: &str) -> bool {
+    let (a, b) = (a.trim(), b.trim());
+    !a.is_empty() && !b.is_empty() && (a == b || a.ends_with(b) || b.ends_with(a))
 }
 
 // Children of a node [`tree`] writes out.

@@ -1,5 +1,5 @@
-use crate::apply_config;
 use crate::config::ItemConfig;
+use crate::{apply_config, is_monster, ProcQueue};
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
@@ -7,6 +7,10 @@ pub struct HearthboundAxe {
     price: usize,
     attack: i32,
     attack_speed_mult: i32,
+    effect_bonus_magic_damage: usize,
+    effect_bonus_flat_heal: i32,
+    // Non-vital stats (internals)
+    procs: ProcQueue,
 }
 
 impl Default for HearthboundAxe {
@@ -15,6 +19,10 @@ impl Default for HearthboundAxe {
             price: 500,
             attack: 20,
             attack_speed_mult: 15,
+            effect_bonus_magic_damage: 25,
+            effect_bonus_flat_heal: 10,
+            // Non-vital stats (internals)
+            procs: ProcQueue::new(),
         }
     }
 }
@@ -22,7 +30,17 @@ impl Default for HearthboundAxe {
 impl HearthboundAxe {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
-        apply_config!(item, cfg, [price, attack, attack_speed_mult]);
+        apply_config!(
+            item,
+            cfg,
+            [
+                price,
+                attack,
+                attack_speed_mult,
+                effect_bonus_magic_damage,
+                effect_bonus_flat_heal
+            ]
+        );
         item
     }
 }
@@ -65,6 +83,45 @@ impl StableItem for HearthboundAxe {
             attack_speed_mult: self.attack_speed_mult,
             ..Default::default()
         }
+    }
+
+    fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
+        self.procs.clear();
+    }
+
+    // Maim: basic attacks against monsters only. The bonus is part of the
+    // swing where it can be (`ProcQueue::on_hit_magic`); the heal lands with
+    // the hit, on the carrier.
+    fn on_attack(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
+        damage_type: DamageTypeV1,
+        attack_type: AttackTypeV1,
+        is_crit: bool,
+    ) {
+        if attack_type != AttackTypeV1::BaseAttack {
+            return;
+        }
+        if !ctx.get_entity(target).is_some_and(|target_ref| is_monster(&target_ref)) {
+            return;
+        }
+        self.procs.on_hit_magic(
+            ctx,
+            target,
+            damage,
+            damage_type,
+            is_crit,
+            self.effect_bonus_magic_damage,
+        );
+        ctx.heal(caster, caster, self.effect_bonus_flat_heal.max(0) as usize);
+    }
+
+    // Lands the Maim bonus a crit or a swing of another type had to queue.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        self.procs.update(ctx, player);
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
