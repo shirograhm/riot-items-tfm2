@@ -1518,7 +1518,7 @@ const ROW_FORMATS: [RowFormat; 123] = [
         unit: Some(("unit_health", " health")),
     },
     RowFormat {
-        item: "hearthbound_axe",
+        item: "madreds_razors",
         field: "effect_bonus_flat_heal",
         label: Some(("row_healing", "Healing")),
         lead: None,

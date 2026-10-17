@@ -520,6 +520,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("hextech_alternator" => HextechAlternator));
     reg.add_item(configured!("ionian_boots_of_lucidity" => IonianBootsOfLucidity, boots));
     reg.add_item(configured!("last_whisper" => LastWhisper));
+    reg.add_item(configured!("madreds_razors" => MadredsRazors));
     reg.add_item(configured!("mercurys_treads" => MercurysTreads, boots));
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));

@@ -33,7 +33,7 @@ impl FeralFlare {
         Self {
             meta: ItemMeta::base(
                 BASE_KEY,
-                &["hearthbound_axe"],
+                &["madreds_razors"],
                 &["radiant_feral_flare"],
             ),
             price: 700,

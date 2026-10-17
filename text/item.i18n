@@ -346,11 +346,11 @@
         },
         "experimental_hexplate": {
             "name": "Experimental Hexplate",
-            "option": "\n<#ff7a3eff>Hexcharged<>: Gain <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Overdrive<>: Upon casting your ultimate ability, enter <#92dc7bff>Overdrive<>, gaining <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>8 seconds<> (<#e8a800ff>32 second<> cooldown, starting on cast)."
+            "option": "\n<#ff7a3eff>Hexcharged<>: Gain <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Overdrive<>: Upon casting your ultimate ability, enter <#92dc7bff>Overdrive<>, gaining <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>8 seconds<> (<#e8a800ff>32 second<> cooldown, starting on cast)."
         },
         "radiant_experimental_hexplate": {
             "name": "Radiant Experimental Hexplate",
-            "option": "\n<#ff7a3eff>Hexcharged<>: Gain <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Overdrive<>: Upon casting your ultimate ability, enter <#92dc7bff>Overdrive<>, gaining <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>8 seconds<> (<#e8a800ff>32 second<> cooldown, starting on cast)."
+            "option": "\n<#ff7a3eff>Hexcharged<>: Gain <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Overdrive<>: Upon casting your ultimate ability, enter <#92dc7bff>Overdrive<>, gaining <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>8 seconds<> (<#e8a800ff>32 second<> cooldown, starting on cast)."
         },
         "nashors_tooth": {
             "name": "Nashor's Tooth",
@@ -526,11 +526,11 @@
         },
         "zekes_herald": {
             "name": "Zeke's Convergence",
-            "option": "\n<#ff7a3eff>Cryocombustion<>: Gain <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Frostfire Tempest<>: Upon casting your ultimate ability, summon a storm of flame and ice around you for <#e8a800ff>4 seconds<>. The storm deals <#a974ffff>60 magic damage<> per second to nearby enemies and applies a <#d94c49ff>40% slow<>."
+            "option": "\n<#ff7a3eff>Cryocombustion<>: Gain <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Frostfire Tempest<>: Upon casting your ultimate ability, summon a storm of flame and ice around you for <#e8a800ff>4 seconds<>. The storm deals <#a974ffff>60 magic damage<> per second to nearby enemies and applies a <#d94c49ff>40% slow<>."
         },
         "radiant_zekes_herald": {
             "name": "Radiant Zeke's Convergence",
-            "option": "\n<#ff7a3eff>Cryocombustion<>: Gain <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Frostfire Tempest<>: Upon casting your ultimate ability, summon a storm of flame and ice around you for <#e8a800ff>4 seconds<>. The storm deals <#a974ffff>60 magic damage<> per second to nearby enemies and applies a <#d94c49ff>40% slow<>."
+            "option": "\n<#ff7a3eff>Cryocombustion<>: Gain <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Frostfire Tempest<>: Upon casting your ultimate ability, summon a storm of flame and ice around you for <#e8a800ff>4 seconds<>. The storm deals <#a974ffff>60 magic damage<> per second to nearby enemies and applies a <#d94c49ff>40% slow<>."
         },
         "liandrys_torment": {
             "name": "Liandry's Torment",
@@ -566,11 +566,11 @@
         },
         "malignance": {
             "name": "Malignance",
-            "option": "\n<#ff7a3eff>Scorn<>: Gain <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
+            "option": "\n<#ff7a3eff>Scorn<>: Gain <#61d1bcff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>."
         },
         "radiant_malignance": {
             "name": "Radiant Malignance",
-            "option": "\n<#ff7a3eff>Scorn<>: Gain <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>."
+            "option": "\n<#ff7a3eff>Scorn<>: Gain <#61d1bcff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>."
         },
         "rite_of_ruin": {
             "name": "Rite of Ruin",
@@ -726,15 +726,15 @@
         },
         "axiom_arc": {
             "name": "Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>total cooldown<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>total cooldown<>."
         },
         "radiant_axiom_arc": {
             "name": "Radiant Axiom Arc",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>total cooldown<>."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Flux<>: Scoring a <#e8a800ff>takedown<> on an enemy champion refunds <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>) of your ultimate ability's <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>total cooldown<>."
         },
         "hearthbound_axe": {
             "name": "Hearthbound Axe",
-            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
+            "option": ""
         },
         "feral_flare": {
             "name": "Feral Flare",
@@ -894,11 +894,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Staff of Flowing Water",
-            "option": "\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
+            "option": "\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Radiant Staff of Flowing Water",
-            "option": "\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
+            "option": "\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
         },
         "immortal_shieldbow": {
             "name": "Immortal Shieldbow",
@@ -954,11 +954,11 @@
         },
         "fiendhunter_bolts": {
             "name": "Fiendhunter Bolts",
-            "option": "\n<#ff7a3eff>Night Vigil<>: Gain <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>8 seconds<>. Your next 3 basic attacks within this window <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<> for <#e8a800ff>60% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>15%<> of its damage dealt (<#e8a800ff>45 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Night Vigil<>: Gain <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>8 seconds<>. Your next 3 basic attacks within this window <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<> for <#e8a800ff>60% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>15%<> of its damage dealt (<#e8a800ff>45 second<> cooldown)."
         },
         "radiant_fiendhunter_bolts": {
             "name": "Radiant Fiendhunter Bolts",
-            "option": "\n<#ff7a3eff>Night Vigil<>: Gain <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>8 seconds<>. Your next 3 basic attacks within this window <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<> for <#e8a800ff>60% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>15%<> of its damage dealt (<#e8a800ff>45 second<> cooldown)."
+            "option": "\n<#ff7a3eff>Night Vigil<>: Gain <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ultimate Ability Haste<>.\n\n<#ff7a3eff>Opening Barrage<>: Upon casting your ultimate ability, gain <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> for <#e8a800ff>8 seconds<>. Your next 3 basic attacks within this window <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>critically strike<> for <#e8a800ff>60% bonus damage<>. If the attack would have already critically struck, it instead deals <#e3ab9dff>bonus true damage<> equal to <#e3ab9dff>15%<> of its damage dealt (<#e8a800ff>45 second<> cooldown)."
         },
         "essence_reaver": {
             "name": "Essence Reaver",
@@ -970,11 +970,11 @@
         },
         "endless_hunger": {
             "name": "Endless Hunger",
-            "option": "\n<#ff7a3eff>Famine<>: Gain <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ability Haste<>.\n\n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>5 seconds<>."
+            "option": "\n<#ff7a3eff>Famine<>: Gain <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ability Haste<>.\n\n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>5 seconds<>."
         },
         "radiant_endless_hunger": {
             "name": "Radiant Endless Hunger",
-            "option": "\n<#ff7a3eff>Famine<>: Gain <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Ability Haste<>.\n\n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>5 seconds<>."
+            "option": "\n<#ff7a3eff>Famine<>: Gain <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>AD)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Ability Haste<>.\n\n<#ff7a3eff>Feast<>: Scoring a <#e8a800ff>takedown<> on an enemy champion grants <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> for <#e8a800ff>5 seconds<>."
         },
         "banshees_veil": {
             "name": "Banshee's Veil",
@@ -1110,11 +1110,11 @@
         },
         "rod_of_ages": {
             "name": "Rod of Ages",
-            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
         },
         "radiant_rod_of_ages": {
             "name": "Radiant Rod of Ages",
-            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
+            "option": "\n<#ff7a3eff>Timeless<>: This item gains <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> health<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> every <#e8a800ff>30 seconds<>, up to 10 times.\n\n<#ff7a3eff>Eternity<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Heal<> for <#60e84dff>15<> - <#60e84dff>40<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> per Ability cast."
         },
         "mikaels_blessing": {
             "name": "Mikael's Blessing",
@@ -1134,11 +1134,15 @@
         },
         "navori_flickerblade": {
             "name": "Navori Flickerblade",
-            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>remaining cooldown<> of your basic abilities by <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>remaining cooldown<> of your basic abilities by <#61d1bcff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Radiant Navori Flickerblade",
-            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>remaining cooldown<> of your basic abilities by <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendence<>: Basic attacks <#ffff99ff>on-attack<> reduce the <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>remaining cooldown<> of your basic abilities by <#61d1bcff>15%<>."
+        },
+        "madreds_razors": {
+            "name": "Madred's Razors",
+            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
         }
     },
     "vi": {
@@ -1488,11 +1492,11 @@
         },
         "experimental_hexplate": {
             "name": "Khiên Hextech Thử Nghiệm",
-            "option": "\n<#ff7a3eff>Bùng Nổ Hextech<>: Nhận <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Quá Tải<>: Khi sử dụng chiêu cuối, bạn vào trạng thái <#92dc7bff>Quá Tải<>, nhận <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>8 giây<> (hồi chiêu <#e8a800ff>32 giây<>, bắt đầu khi sử dụng chiêu cuối)."
+            "option": "\n<#ff7a3eff>Bùng Nổ Hextech<>: Nhận <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Quá Tải<>: Khi sử dụng chiêu cuối, bạn vào trạng thái <#92dc7bff>Quá Tải<>, nhận <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>8 giây<> (hồi chiêu <#e8a800ff>32 giây<>, bắt đầu khi sử dụng chiêu cuối)."
         },
         "radiant_experimental_hexplate": {
             "name": "Khiên Hextech Thử Nghiệm Ánh Sáng",
-            "option": "\n<#ff7a3eff>Bùng Nổ Hextech<>: Nhận <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Quá Tải<>: Khi sử dụng chiêu cuối, bạn vào trạng thái <#92dc7bff>Quá Tải<>, nhận <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>8 giây<> (hồi chiêu <#e8a800ff>32 giây<>, bắt đầu khi sử dụng chiêu cuối)."
+            "option": "\n<#ff7a3eff>Bùng Nổ Hextech<>: Nhận <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Quá Tải<>: Khi sử dụng chiêu cuối, bạn vào trạng thái <#92dc7bff>Quá Tải<>, nhận <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>8 giây<> (hồi chiêu <#e8a800ff>32 giây<>, bắt đầu khi sử dụng chiêu cuối)."
         },
         "nashors_tooth": {
             "name": "Nanh Nashor",
@@ -1660,11 +1664,11 @@
         },
         "zekes_herald": {
             "name": "Tụ Bão Zeke",
-            "option": "\n<#ff7a3eff>Hàn Diễm<>: Nhận <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Băng Hỏa Cuồng Nộ<>: Khi sử dụng chiêu cuối, triệu hồi một cơn bão băng và lửa quanh bạn trong <#e8a800ff>4 giây<>. Cơn bão gây <#a974ffff>60 sát thương phép<> mỗi giây lên kẻ địch lân cận và <#d94c49ff>làm chậm 40%<>."
+            "option": "\n<#ff7a3eff>Hàn Diễm<>: Nhận <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Băng Hỏa Cuồng Nộ<>: Khi sử dụng chiêu cuối, triệu hồi một cơn bão băng và lửa quanh bạn trong <#e8a800ff>4 giây<>. Cơn bão gây <#a974ffff>60 sát thương phép<> mỗi giây lên kẻ địch lân cận và <#d94c49ff>làm chậm 40%<>."
         },
         "radiant_zekes_herald": {
             "name": "Tụ Bão Zeke Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hàn Diễm<>: Nhận <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Băng Hỏa Cuồng Nộ<>: Khi sử dụng chiêu cuối, triệu hồi một cơn bão băng và lửa quanh bạn trong <#e8a800ff>4 giây<>. Cơn bão gây <#a974ffff>60 sát thương phép<> mỗi giây lên kẻ địch lân cận và <#d94c49ff>làm chậm 40%<>."
+            "option": "\n<#ff7a3eff>Hàn Diễm<>: Nhận <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Băng Hỏa Cuồng Nộ<>: Khi sử dụng chiêu cuối, triệu hồi một cơn bão băng và lửa quanh bạn trong <#e8a800ff>4 giây<>. Cơn bão gây <#a974ffff>60 sát thương phép<> mỗi giây lên kẻ địch lân cận và <#d94c49ff>làm chậm 40%<>."
         },
         "scouts_slingshot": {
             "name": "Ná Cao Su Trinh Sát",
@@ -1708,11 +1712,11 @@
         },
         "malignance": {
             "name": "Hỏa Khuẩn",
-            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#61d1bcff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>."
         },
         "radiant_malignance": {
             "name": "Hỏa Khuẩn Ánh Sáng",
-            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>."
+            "option": "\n<#ff7a3eff>Ai Oán<>: Nhận <#61d1bcff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>."
         },
         "rite_of_ruin": {
             "name": "Nghi Thức Suy Vong",
@@ -1868,15 +1872,15 @@
         },
         "axiom_arc": {
             "name": "Nguyên Tố Luân",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>tổng thời gian hồi chiêu<> của chiêu cuối."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>tổng thời gian hồi chiêu<> của chiêu cuối."
         },
         "radiant_axiom_arc": {
             "name": "Nguyên Tố Luân Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>tổng thời gian hồi chiêu<> của chiêu cuối."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Tái Thiết<>: Khi tham gia <#e8a800ff>hạ gục<> một tướng địch, hoàn lại <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> mỗi <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>) <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>tổng thời gian hồi chiêu<> của chiêu cuối."
         },
         "hearthbound_axe": {
             "name": "Rìu Nhanh Nhẹn",
-            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
+            "option": ""
         },
         "feral_flare": {
             "name": "Ngọn Lửa Hoang Dã",
@@ -2036,11 +2040,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Trượng Lưu Thủy",
-            "option": "\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
+            "option": "\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Trượng Lưu Thủy Ánh Sáng",
-            "option": "\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
+            "option": "\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
         },
         "immortal_shieldbow": {
             "name": "Nỏ Tử Thủ",
@@ -2096,11 +2100,11 @@
         },
         "fiendhunter_bolts": {
             "name": "Cung Tiễn Diệt Quỷ",
-            "option": "\n<#ff7a3eff>Gác Đêm<>: Nhận <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>8 giây<>. 3 đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>15%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>45 giây<>)."
+            "option": "\n<#ff7a3eff>Gác Đêm<>: Nhận <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>8 giây<>. 3 đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>15%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>45 giây<>)."
         },
         "radiant_fiendhunter_bolts": {
             "name": "Cung Tiễn Diệt Quỷ Ánh Sáng",
-            "option": "\n<#ff7a3eff>Gác Đêm<>: Nhận <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>8 giây<>. 3 đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>15%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>45 giây<>)."
+            "option": "\n<#ff7a3eff>Gác Đêm<>: Nhận <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Chiêu Cuối<>.\n\n<#ff7a3eff>Mưa Đạn Mở Màn<>: Khi sử dụng chiêu cuối, nhận <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> trong <#e8a800ff>8 giây<>. 3 đòn đánh thường tiếp theo trong khoảng thời gian này sẽ <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>chí mạng<>, gây <#e8a800ff>60% sát thương cộng thêm<>. Nếu đòn đánh vốn đã chí mạng, thay vào đó nó gây <#e3ab9dff>sát thương chuẩn cộng thêm<> bằng <#e3ab9dff>15%<> sát thương của đòn đánh đó (hồi chiêu <#e8a800ff>45 giây<>)."
         },
         "essence_reaver": {
             "name": "Lưỡi Hái Linh Hồn",
@@ -2112,11 +2116,11 @@
         },
         "endless_hunger": {
             "name": "Liềm Xích Huyết Thực",
-            "option": "\n<#ff7a3eff>Nạn Đói<>: Nhận <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Kỹ Năng<>.\n\n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>5 giây<>."
+            "option": "\n<#ff7a3eff>Nạn Đói<>: Nhận <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Kỹ Năng<>.\n\n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>5 giây<>."
         },
         "radiant_endless_hunger": {
             "name": "Liềm Xích Huyết Thực Ánh Sáng",
-            "option": "\n<#ff7a3eff>Nạn Đói<>: Nhận <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Điểm Hồi Kỹ Năng<>.\n\n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>5 giây<>."
+            "option": "\n<#ff7a3eff>Nạn Đói<>: Nhận <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Điểm Hồi Kỹ Năng<>.\n\n<#ff7a3eff>Xơi Tái<>: Khi tham gia hạ gục một tướng địch, nhận <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> trong <#e8a800ff>5 giây<>."
         },
         "banshees_veil": {
             "name": "Dây Chuyền Chữ Thập",
@@ -2252,11 +2256,11 @@
         },
         "rod_of_ages": {
             "name": "Trượng Trường Sinh",
-            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
         },
         "radiant_rod_of_ages": {
             "name": "Trượng Trường Sinh Ánh Sáng",
-            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
+            "option": "\n<#ff7a3eff>Vô Tận<>: Trang bị này cho thêm <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> máu<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> sau mỗi <#e8a800ff>30 giây<>, tối đa 10 lần.\n\n<#ff7a3eff>Vĩnh Hằng<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hồi<> <#60e84dff>15<> - <#60e84dff>40<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#60e84dff>máu<> mỗi lần sử dụng kĩ năng."
         },
         "mikaels_blessing": {
             "name": "Chuông Bảo Hộ Mikael",
@@ -2276,11 +2280,15 @@
         },
         "navori_flickerblade": {
             "name": "Đao Chớp Navori",
-            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#61d1bcff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Đao Chớp Navori Ánh Sáng",
-            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Thăng Tiến Sức Mạnh<>: Đòn đánh thường <#ffff99ff>khi tung ra<> giảm <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>thời gian hồi chiêu còn lại<> của các Kỹ Năng Cơ Bản đi <#61d1bcff>15%<>."
+        },
+        "madreds_razors": {
+            "name": "Móng Vuốt Madred",
+            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
         }
     },
     "zh-hans": {
@@ -2630,11 +2638,11 @@
         },
         "experimental_hexplate": {
             "name": "海克斯注力刚壁",
-            "option": "\n<#ff7a3eff>海克斯充能<>：获得 <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>过载<>：施放终极技能时进入<#92dc7bff>过载<>状态，获得 <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>和 <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>8秒<>（冷却 <#e8a800ff>32秒<>，从施放时开始计算）。"
+            "option": "\n<#ff7a3eff>海克斯充能<>：获得 <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。\n\n<#ff7a3eff>过载<>：施放终极技能时进入<#92dc7bff>过载<>状态，获得 <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>和 <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>8秒<>（冷却 <#e8a800ff>32秒<>，从施放时开始计算）。"
         },
         "radiant_experimental_hexplate": {
             "name": "光明版海克斯注力刚壁",
-            "option": "\n<#ff7a3eff>海克斯充能<>：获得 <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>过载<>：施放终极技能时进入<#92dc7bff>过载<>状态，获得 <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>和 <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>8秒<>（冷却 <#e8a800ff>32秒<>，从施放时开始计算）。"
+            "option": "\n<#ff7a3eff>海克斯充能<>：获得 <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。\n\n<#ff7a3eff>过载<>：施放终极技能时进入<#92dc7bff>过载<>状态，获得 <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>和 <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>8秒<>（冷却 <#e8a800ff>32秒<>，从施放时开始计算）。"
         },
         "nashors_tooth": {
             "name": "纳什之牙",
@@ -2802,11 +2810,11 @@
         },
         "zekes_herald": {
             "name": "基克的聚合",
-            "option": "\n<#ff7a3eff>冰焰燃烧<>：获得 <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>霜火风暴<>：施放终极技能时，召唤一个环绕你的冰火风暴，持续 <#e8a800ff>4秒<>。风暴每秒对附近的敌人造成 <#a974ffff>60点魔法伤害<>，并施加 <#d94c49ff>40%减速<>。"
+            "option": "\n<#ff7a3eff>冰焰燃烧<>：获得 <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。\n\n<#ff7a3eff>霜火风暴<>：施放终极技能时，召唤一个环绕你的冰火风暴，持续 <#e8a800ff>4秒<>。风暴每秒对附近的敌人造成 <#a974ffff>60点魔法伤害<>，并施加 <#d94c49ff>40%减速<>。"
         },
         "radiant_zekes_herald": {
             "name": "光明版基克的聚合",
-            "option": "\n<#ff7a3eff>冰焰燃烧<>：获得 <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>霜火风暴<>：施放终极技能时，召唤一个环绕你的冰火风暴，持续 <#e8a800ff>4秒<>。风暴每秒对附近的敌人造成 <#a974ffff>60点魔法伤害<>，并施加 <#d94c49ff>40%减速<>。"
+            "option": "\n<#ff7a3eff>冰焰燃烧<>：获得 <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。\n\n<#ff7a3eff>霜火风暴<>：施放终极技能时，召唤一个环绕你的冰火风暴，持续 <#e8a800ff>4秒<>。风暴每秒对附近的敌人造成 <#a974ffff>60点魔法伤害<>，并施加 <#d94c49ff>40%减速<>。"
         },
         "scouts_slingshot": {
             "name": "斥候弹弓",
@@ -2850,11 +2858,11 @@
         },
         "malignance": {
             "name": "残疫",
-            "option": "\n<#ff7a3eff>蔑视<>：获得 <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
+            "option": "\n<#ff7a3eff>蔑视<>：获得 <#61d1bcff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。"
         },
         "radiant_malignance": {
             "name": "光明版残疫",
-            "option": "\n<#ff7a3eff>蔑视<>：获得 <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。"
+            "option": "\n<#ff7a3eff>蔑视<>：获得 <#61d1bcff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。"
         },
         "rite_of_ruin": {
             "name": "毁坏仪式",
@@ -3010,15 +3018,15 @@
         },
         "axiom_arc": {
             "name": "公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>总冷却时间<>的 <#4b7cffff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>总冷却时间<>的 <#61d1bcff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#61d1bcff>+0.2%<>）。"
         },
         "radiant_axiom_arc": {
             "name": "光明版公理圆弧",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>总冷却时间<>的 <#4b7cffff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#4b7cffff>+0.2%<>）。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>涌动<>：参与<#e8a800ff>击杀<>敌方英雄时，返还终极技能<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>总冷却时间<>的 <#61d1bcff>10%<>（每 <#ffdd8eff>1 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<> <#61d1bcff>+0.2%<>）。"
         },
         "hearthbound_axe": {
             "name": "缚炉之斧",
-            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+            "option": ""
         },
         "feral_flare": {
             "name": "野性之炎",
@@ -3178,11 +3186,11 @@
         },
         "staff_of_flowing_water": {
             "name": "流水法杖",
-            "option": "\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
+            "option": "\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
         },
         "radiant_staff_of_flowing_water": {
             "name": "光明版流水法杖",
-            "option": "\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
+            "option": "\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
         },
         "immortal_shieldbow": {
             "name": "不朽盾弓",
@@ -3238,11 +3246,11 @@
         },
         "fiendhunter_bolts": {
             "name": "猎魔人弩箭",
-            "option": "\n<#ff7a3eff>守夜<>：获得 <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>8秒<>。在此期间，你的下 3 次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>15%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>45秒<>）。"
+            "option": "\n<#ff7a3eff>守夜<>：获得 <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。\n\n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>8秒<>。在此期间，你的下 3 次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>15%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>45秒<>）。"
         },
         "radiant_fiendhunter_bolts": {
             "name": "光明版猎魔人弩箭",
-            "option": "\n<#ff7a3eff>守夜<>：获得 <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>终极技能急速<>。\n\n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>8秒<>。在此期间，你的下 3 次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>15%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>45秒<>）。"
+            "option": "\n<#ff7a3eff>守夜<>：获得 <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>终极技能急速<>。\n\n<#ff7a3eff>开战弹幕<>：施放终极技能时，获得 <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，持续 <#e8a800ff>8秒<>。在此期间，你的下 3 次普通攻击会 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>暴击<>，造成 <#e8a800ff>60% 额外伤害<>。如果该次攻击本就会暴击，则改为造成相当于该次攻击伤害 <#e3ab9dff>15%<> 的<#e3ab9dff>额外真实伤害<>（冷却 <#e8a800ff>45秒<>）。"
         },
         "essence_reaver": {
             "name": "夺萃之镰",
@@ -3254,11 +3262,11 @@
         },
         "endless_hunger": {
             "name": "无穷饥渴",
-            "option": "\n<#ff7a3eff>饥馑<>：获得 <#4b7cffff>5<><#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>技能急速<>。\n\n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>5秒<>。"
+            "option": "\n<#ff7a3eff>饥馑<>：获得 <#61d1bcff>5<><#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>技能急速<>。\n\n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>5秒<>。"
         },
         "radiant_endless_hunger": {
             "name": "光明版无穷饥渴",
-            "option": "\n<#ff7a3eff>饥馑<>：获得 <#4b7cffff>5<><#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>技能急速<>。\n\n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>5秒<>。"
+            "option": "\n<#ff7a3eff>饥馑<>：获得 <#61d1bcff>5<><#ff9028ff>（+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力）<><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>技能急速<>。\n\n<#ff7a3eff>盛宴<>：参与击杀敌方英雄时，获得 <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>，持续 <#e8a800ff>5秒<>。"
         },
         "banshees_veil": {
             "name": "女妖面纱",
@@ -3394,11 +3402,11 @@
         },
         "rod_of_ages": {
             "name": "时光之杖",
-            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
         },
         "radiant_rod_of_ages": {
             "name": "光明版时光之杖",
-            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#4b7cffff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
+            "option": "\n<#ff7a3eff>时无限<>：这件装备每 <#e8a800ff>30秒<> 获得 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_0> 生命值<>、<#a974ffff>2 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>1 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，至多 10 次。\n\n<#ff7a3eff>永恒<>：每次施放技能时<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>自身 <#60e84dff>15<> - <#60e84dff>40<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>。"
         },
         "mikaels_blessing": {
             "name": "米凯尔的祝福",
@@ -3418,11 +3426,15 @@
         },
         "navori_flickerblade": {
             "name": "纳沃利烁刃",
-            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>剩余冷却时间<>缩短 <#4b7cffff>15%<>。"
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>剩余冷却时间<>缩短 <#61d1bcff>15%<>。"
         },
         "radiant_navori_flickerblade": {
             "name": "光明版纳沃利烁刃",
-            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>剩余冷却时间<>缩短 <#4b7cffff>15%<>。"
+            "option": "\n<#ff7a3eff>超凡入圣<>：普通攻击<#ffff99ff>出手时<>使你各基础技能的<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>剩余冷却时间<>缩短 <#61d1bcff>15%<>。"
+        },
+        "madreds_razors": {
+            "name": "麦瑞德之爪",
+            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
         }
     },
     "pt-BR": {
@@ -3772,11 +3784,11 @@
         },
         "experimental_hexplate": {
             "name": "Hexoplaca Experimental",
-            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Turbo<>: Ao conjurar sua ultimate, você entra em <#92dc7bff>Turbo<>, recebendo <#ceff99ff>32%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ffffffff>16%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>8 segundos<> (recarga de <#e8a800ff>32 segundos<>, começando na conjuração)."
+            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Turbo<>: Ao conjurar sua ultimate, você entra em <#92dc7bff>Turbo<>, recebendo <#ceff99ff>32%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ffffffff>16%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>8 segundos<> (recarga de <#e8a800ff>32 segundos<>, começando na conjuração)."
         },
         "radiant_experimental_hexplate": {
             "name": "Hexoplaca Experimental Radiante",
-            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Turbo<>: Ao conjurar sua ultimate, você entra em <#92dc7bff>Turbo<>, recebendo <#ceff99ff>32%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ffffffff>16%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>8 segundos<> (recarga de <#e8a800ff>32 segundos<>, começando na conjuração)."
+            "option": "\n<#ff7a3eff>Hexcarregado<>: Recebe <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Turbo<>: Ao conjurar sua ultimate, você entra em <#92dc7bff>Turbo<>, recebendo <#ceff99ff>32%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ffffffff>16%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>8 segundos<> (recarga de <#e8a800ff>32 segundos<>, começando na conjuração)."
         },
         "nashors_tooth": {
             "name": "Dente de Nashor",
@@ -3944,11 +3956,11 @@
         },
         "zekes_herald": {
             "name": "Convergência de Zeke",
-            "option": "\n<#ff7a3eff>Criocombustão<>: Recebe <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Tempestade do Raio de Gelo<>: Ao conjurar sua ultimate, invoca uma tempestade de fogo e gelo ao seu redor por <#e8a800ff>4 segundos<>. A tempestade causa <#a974ffff>60 de dano mágico<> por segundo a inimigos próximos e aplica <#d94c49ff>40% de Lentidão<>."
+            "option": "\n<#ff7a3eff>Criocombustão<>: Recebe <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Tempestade do Raio de Gelo<>: Ao conjurar sua ultimate, invoca uma tempestade de fogo e gelo ao seu redor por <#e8a800ff>4 segundos<>. A tempestade causa <#a974ffff>60 de dano mágico<> por segundo a inimigos próximos e aplica <#d94c49ff>40% de Lentidão<>."
         },
         "radiant_zekes_herald": {
             "name": "Convergência de Zeke Radiante",
-            "option": "\n<#ff7a3eff>Criocombustão<>: Recebe <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Tempestade do Raio de Gelo<>: Ao conjurar sua ultimate, invoca uma tempestade de fogo e gelo ao seu redor por <#e8a800ff>4 segundos<>. A tempestade causa <#a974ffff>60 de dano mágico<> por segundo a inimigos próximos e aplica <#d94c49ff>40% de Lentidão<>."
+            "option": "\n<#ff7a3eff>Criocombustão<>: Recebe <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Tempestade do Raio de Gelo<>: Ao conjurar sua ultimate, invoca uma tempestade de fogo e gelo ao seu redor por <#e8a800ff>4 segundos<>. A tempestade causa <#a974ffff>60 de dano mágico<> por segundo a inimigos próximos e aplica <#d94c49ff>40% de Lentidão<>."
         },
         "scouts_slingshot": {
             "name": "Estilingue do Patrulheiro",
@@ -3992,11 +4004,11 @@
         },
         "malignance": {
             "name": "Malevolência",
-            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#61d1bcff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>."
         },
         "radiant_malignance": {
             "name": "Malevolência Radiante",
-            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>."
+            "option": "\n<#ff7a3eff>Escárnio<>: Recebe <#61d1bcff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>."
         },
         "rite_of_ruin": {
             "name": "Ritual da Ruína",
@@ -4152,15 +4164,15 @@
         },
         "axiom_arc": {
             "name": "Arco do Axioma",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga total<> da sua Ultimate."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Tempo de Recarga total<> da sua Ultimate."
         },
         "radiant_axiom_arc": {
             "name": "Arco do Axioma Radiante",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga total<> da sua Ultimate."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fluxo<>: Participar do <#e8a800ff>abate<> de um campeão inimigo reembolsa <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> por <#ffdd8eff>1 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>) do <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Tempo de Recarga total<> da sua Ultimate."
         },
         "hearthbound_axe": {
             "name": "Machado Termestre",
-            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
+            "option": ""
         },
         "feral_flare": {
             "name": "Chama Feral",
@@ -4320,11 +4332,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Cajado Aquafluxo",
-            "option": "\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
+            "option": "\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Cajado Aquafluxo Radiante",
-            "option": "\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
+            "option": "\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
         },
         "immortal_shieldbow": {
             "name": "Arco-escudo Imortal",
@@ -4380,11 +4392,11 @@
         },
         "fiendhunter_bolts": {
             "name": "Dardos de Caça-Demônios",
-            "option": "\n<#ff7a3eff>Vigília Noturna<>: Recebe <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe <#ceff99ff>50%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>8 segundos<>. Seus próximos 3 ataques básicos dentro desse período <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>15%<> do dano causado pelo ataque (recarga de <#e8a800ff>45 segundos<>)."
+            "option": "\n<#ff7a3eff>Vigília Noturna<>: Recebe <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe <#ceff99ff>50%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>8 segundos<>. Seus próximos 3 ataques básicos dentro desse período <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>15%<> do dano causado pelo ataque (recarga de <#e8a800ff>45 segundos<>)."
         },
         "radiant_fiendhunter_bolts": {
             "name": "Dardos de Caça-Demônios Radiantes",
-            "option": "\n<#ff7a3eff>Vigília Noturna<>: Recebe <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe <#ceff99ff>50%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>8 segundos<>. Seus próximos 3 ataques básicos dentro desse período <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>15%<> do dano causado pelo ataque (recarga de <#e8a800ff>45 segundos<>)."
+            "option": "\n<#ff7a3eff>Vigília Noturna<>: Recebe <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade da Ultimate<>.\n\n<#ff7a3eff>Barragem de Abertura<>: Ao conjurar sua ultimate, recebe <#ceff99ff>50%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> por <#e8a800ff>8 segundos<>. Seus próximos 3 ataques básicos dentro desse período <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>causam acerto crítico<>, causando <#e8a800ff>60% de dano bônus<>. Se o ataque já fosse causar acerto crítico, em vez disso ele causa <#e3ab9dff>dano verdadeiro bônus<> igual a <#e3ab9dff>15%<> do dano causado pelo ataque (recarga de <#e8a800ff>45 segundos<>)."
         },
         "essence_reaver": {
             "name": "Colhedor de Essência",
@@ -4396,11 +4408,11 @@
         },
         "endless_hunger": {
             "name": "Fome Eterna",
-            "option": "\n<#ff7a3eff>Fome<>: Recebe <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade<>.\n\n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>5 segundos<>."
+            "option": "\n<#ff7a3eff>Fome<>: Recebe <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade<>.\n\n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>5 segundos<>."
         },
         "radiant_endless_hunger": {
             "name": "Fome Eterna Radiante",
-            "option": "\n<#ff7a3eff>Fome<>: Recebe <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>de Aceleração de Habilidade<>.\n\n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>5 segundos<>."
+            "option": "\n<#ff7a3eff>Fome<>: Recebe <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>de Aceleração de Habilidade<>.\n\n<#ff7a3eff>Banquete<>: Ao participar do abate de um campeão inimigo, concede <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> por <#e8a800ff>5 segundos<>."
         },
         "banshees_veil": {
             "name": "Véu da Banshee",
@@ -4536,11 +4548,11 @@
         },
         "rod_of_ages": {
             "name": "Bastão das Eras",
-            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
         },
         "radiant_rod_of_ages": {
             "name": "Bastão das Eras Radiante",
-            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#4b7cffff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
+            "option": "\n<#ff7a3eff>Atemporal<>: Este item ganha <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> Vida<>, <#a974ffff>2 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>1 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> a cada <#e8a800ff>30 segundos<>, até 10 vezes.\n\n<#ff7a3eff>Eternidade<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Cure-se<> em <#60e84dff>15<> - <#60e84dff>40<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) de <#60e84dff>Vida<> a cada Habilidade conjurada."
         },
         "mikaels_blessing": {
             "name": "Bênção de Mikael",
@@ -4560,11 +4572,15 @@
         },
         "navori_flickerblade": {
             "name": "Adaga Oscilante Navori",
-            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga restante<> das suas Habilidades básicas em <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Tempo de Recarga restante<> das suas Habilidades básicas em <#61d1bcff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Adaga Oscilante Navori Radiante",
-            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>Tempo de Recarga restante<> das suas Habilidades básicas em <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Transcendência<>: Ataques básicos <#ffff99ff>ao atacar<> reduzem o <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>Tempo de Recarga restante<> das suas Habilidades básicas em <#61d1bcff>15%<>."
+        },
+        "madreds_razors": {
+            "name": "Navalhas de Madred",
+            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
         }
     },
     "ru": {
@@ -4914,11 +4930,11 @@
         },
         "experimental_hexplate": {
             "name": "Экспериментальная Хекстековая Броня",
-            "option": "\n<#ff7a3eff>Хекстековый заряд<>: Даёт <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Перегрузка<>: При применении абсолютного умения вы входите в режим <#92dc7bff>Перегрузки<> и получаете <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>8 секунд<> (перезарядка <#e8a800ff>32 секунды<>, начинается при применении)."
+            "option": "\n<#ff7a3eff>Хекстековый заряд<>: Даёт <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Перегрузка<>: При применении абсолютного умения вы входите в режим <#92dc7bff>Перегрузки<> и получаете <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>8 секунд<> (перезарядка <#e8a800ff>32 секунды<>, начинается при применении)."
         },
         "radiant_experimental_hexplate": {
             "name": "Лучезарная Экспериментальная Хекс Броня",
-            "option": "\n<#ff7a3eff>Хекстековый заряд<>: Даёт <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Перегрузка<>: При применении абсолютного умения вы входите в режим <#92dc7bff>Перегрузки<> и получаете <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>8 секунд<> (перезарядка <#e8a800ff>32 секунды<>, начинается при применении)."
+            "option": "\n<#ff7a3eff>Хекстековый заряд<>: Даёт <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Перегрузка<>: При применении абсолютного умения вы входите в режим <#92dc7bff>Перегрузки<> и получаете <#ceff99ff>32%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ffffffff>16%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>8 секунд<> (перезарядка <#e8a800ff>32 секунды<>, начинается при применении)."
         },
         "nashors_tooth": {
             "name": "Зуб Нашора",
@@ -5086,11 +5102,11 @@
         },
         "zekes_herald": {
             "name": "Конвергенция Зика",
-            "option": "\n<#ff7a3eff>Криогорение<>: Даёт <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Буря ледяного пламени<>: При применении абсолютного умения вас на <#e8a800ff>4 секунды<> окружает буря огня и льда. Буря наносит ближайшим врагам <#a974ffff>60 магического урона<> в секунду и <#d94c49ff>замедляет их на 40%<>."
+            "option": "\n<#ff7a3eff>Криогорение<>: Даёт <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Буря ледяного пламени<>: При применении абсолютного умения вас на <#e8a800ff>4 секунды<> окружает буря огня и льда. Буря наносит ближайшим врагам <#a974ffff>60 магического урона<> в секунду и <#d94c49ff>замедляет их на 40%<>."
         },
         "radiant_zekes_herald": {
             "name": "Лучезарная Конвергенция Зика",
-            "option": "\n<#ff7a3eff>Криогорение<>: Даёт <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Буря ледяного пламени<>: При применении абсолютного умения вас на <#e8a800ff>4 секунды<> окружает буря огня и льда. Буря наносит ближайшим врагам <#a974ffff>60 магического урона<> в секунду и <#d94c49ff>замедляет их на 40%<>."
+            "option": "\n<#ff7a3eff>Криогорение<>: Даёт <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Буря ледяного пламени<>: При применении абсолютного умения вас на <#e8a800ff>4 секунды<> окружает буря огня и льда. Буря наносит ближайшим врагам <#a974ffff>60 магического урона<> в секунду и <#d94c49ff>замедляет их на 40%<>."
         },
         "scouts_slingshot": {
             "name": "Рогатка скаута",
@@ -5134,11 +5150,11 @@
         },
         "malignance": {
             "name": "Пагубность",
-            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
+            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#61d1bcff>12<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>."
         },
         "radiant_malignance": {
             "name": "Лучезарная Пагубность",
-            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#4b7cffff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>."
+            "option": "\n<#ff7a3eff>Презрение<>: Даёт <#61d1bcff>20<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>."
         },
         "rite_of_ruin": {
             "name": "Ритуал уничтожения",
@@ -5294,15 +5310,15 @@
         },
         "axiom_arc": {
             "name": "Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>полной перезарядки<> вашего абсолютного умения."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>полной перезарядки<> вашего абсолютного умения."
         },
         "radiant_axiom_arc": {
             "name": "Лучезарный Шакрам Аксиом",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#4b7cffff>10%<> (<#4b7cffff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>полной перезарядки<> вашего абсолютного умения."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Непрерывность<>: <#e8a800ff>Участие в убийстве<> вражеского чемпиона возвращает <#61d1bcff>10%<> (<#61d1bcff>+0.2%<> за <#ffdd8eff>1 ед. <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>) от <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>полной перезарядки<> вашего абсолютного умения."
         },
         "hearthbound_axe": {
             "name": "Топор Теплолюбивых",
-            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
+            "option": ""
         },
         "feral_flare": {
             "name": "Дикое пламя",
@@ -5462,11 +5478,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Посох водного потока",
-            "option": "\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
+            "option": "\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Лучезарный Посох водного потока",
-            "option": "\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
+            "option": "\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
         },
         "immortal_shieldbow": {
             "name": "Арбалет бессмертия",
@@ -5522,11 +5538,11 @@
         },
         "fiendhunter_bolts": {
             "name": "Стрелы борца с демонами",
-            "option": "\n<#ff7a3eff>Ночное бдение<>: Даёт <#4b7cffff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>8 секунд<>. Ваши следующие 3 базовые атаки в течение этого времени <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносят критический удар<> с <#e8a800ff>60% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>15%<> от урона этой атаки (перезарядка <#e8a800ff>45 секунд<>)."
+            "option": "\n<#ff7a3eff>Ночное бдение<>: Даёт <#61d1bcff>15<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>8 секунд<>. Ваши следующие 3 базовые атаки в течение этого времени <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносят критический удар<> с <#e8a800ff>60% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>15%<> от урона этой атаки (перезарядка <#e8a800ff>45 секунд<>)."
         },
         "radiant_fiendhunter_bolts": {
             "name": "Лучезарные Стрелы борца с демонами",
-            "option": "\n<#ff7a3eff>Ночное бдение<>: Даёт <#4b7cffff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>8 секунд<>. Ваши следующие 3 базовые атаки в течение этого времени <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносят критический удар<> с <#e8a800ff>60% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>15%<> от урона этой атаки (перезарядка <#e8a800ff>45 секунд<>)."
+            "option": "\n<#ff7a3eff>Ночное бдение<>: Даёт <#61d1bcff>25<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения абсолютных умений<>.\n\n<#ff7a3eff>Первый залп<>: При применении абсолютного умения вы получаете <#ceff99ff>50%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> на <#e8a800ff>8 секунд<>. Ваши следующие 3 базовые атаки в течение этого времени <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>наносят критический удар<> с <#e8a800ff>60% дополнительного урона<>. Если атака и так была бы критической, вместо этого она наносит <#e3ab9dff>дополнительный чистый урон<> в размере <#e3ab9dff>15%<> от урона этой атаки (перезарядка <#e8a800ff>45 секунд<>)."
         },
         "essence_reaver": {
             "name": "Похититель сущности",
@@ -5538,11 +5554,11 @@
         },
         "endless_hunger": {
             "name": "Вечный голод",
-            "option": "\n<#ff7a3eff>Голод<>: Даёт <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения умений<>.\n\n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>5 секунд<>."
+            "option": "\n<#ff7a3eff>Голод<>: Даёт <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения умений<>.\n\n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>5 секунд<>."
         },
         "radiant_endless_hunger": {
             "name": "Лучезарный Вечный голод",
-            "option": "\n<#ff7a3eff>Голод<>: Даёт <#4b7cffff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>ускорения умений<>.\n\n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>5 секунд<>."
+            "option": "\n<#ff7a3eff>Голод<>: Даёт <#61d1bcff>5<> <#ff9028ff>(+5%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки)<> <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>ускорения умений<>.\n\n<#ff7a3eff>Пиршество<>: При участии в убийстве вражеского чемпиона даёт <#b7462dff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> на <#e8a800ff>5 секунд<>."
         },
         "banshees_veil": {
             "name": "Завеса банши",
@@ -5678,11 +5694,11 @@
         },
         "rod_of_ages": {
             "name": "Жезл веков",
-            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
         },
         "radiant_rod_of_ages": {
             "name": "Лучезарный Жезл веков",
-            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#4b7cffff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
+            "option": "\n<#ff7a3eff>Постоянство<>: Этот предмет даёт <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> здоровья<>, <#a974ffff>2 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>1 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> каждые <#e8a800ff>30 секунд<>, до 10 раз.\n\n<#ff7a3eff>Вечность<>: Каждое применение умения <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливает<> вам <#60e84dff>15<> - <#60e84dff>40<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#60e84dff>здоровья<>."
         },
         "mikaels_blessing": {
             "name": "Благословение Микаэля",
@@ -5702,11 +5718,15 @@
         },
         "navori_flickerblade": {
             "name": "Летающий нож Навори",
-            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>оставшуюся перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>оставшуюся перезарядку<> ваших базовых умений на <#61d1bcff>15%<>."
         },
         "radiant_navori_flickerblade": {
             "name": "Лучезарный Летающий нож Навори",
-            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>оставшуюся перезарядку<> ваших базовых умений на <#4b7cffff>15%<>."
+            "option": "\n<#ff7a3eff>Божественность<>: Базовые атаки <#ffff99ff>при атаке<> сокращают <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>оставшуюся перезарядку<> ваших базовых умений на <#61d1bcff>15%<>."
+        },
+        "madreds_razors": {
+            "name": "Когти Мадреда",
+            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
         }
     },
     "ko": {
@@ -6056,11 +6076,11 @@
         },
         "experimental_hexplate": {
             "name": "실험적 마공학판",
-            "option": "\n<#ff7a3eff>마공학 충전<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>15<> 증가합니다.\n\n<#ff7a3eff>폭주<>: 궁극기 사용 시 <#92dc7bff>폭주<> 상태가 되어 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>32%<>, <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>16%<> 증가합니다. (재사용 대기시간 <#e8a800ff>32초<>, 사용 시 시작)"
+            "option": "\n<#ff7a3eff>마공학 충전<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>15<> 증가합니다.\n\n<#ff7a3eff>폭주<>: 궁극기 사용 시 <#92dc7bff>폭주<> 상태가 되어 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>32%<>, <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>16%<> 증가합니다. (재사용 대기시간 <#e8a800ff>32초<>, 사용 시 시작)"
         },
         "radiant_experimental_hexplate": {
             "name": "찬란한 실험적 마공학판",
-            "option": "\n<#ff7a3eff>마공학 충전<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>25<> 증가합니다.\n\n<#ff7a3eff>폭주<>: 궁극기 사용 시 <#92dc7bff>폭주<> 상태가 되어 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>32%<>, <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>16%<> 증가합니다. (재사용 대기시간 <#e8a800ff>32초<>, 사용 시 시작)"
+            "option": "\n<#ff7a3eff>마공학 충전<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>25<> 증가합니다.\n\n<#ff7a3eff>폭주<>: 궁극기 사용 시 <#92dc7bff>폭주<> 상태가 되어 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>32%<>, <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>16%<> 증가합니다. (재사용 대기시간 <#e8a800ff>32초<>, 사용 시 시작)"
         },
         "nashors_tooth": {
             "name": "내셔의 이빨",
@@ -6236,11 +6256,11 @@
         },
         "zekes_herald": {
             "name": "지크의 융합",
-            "option": "\n<#ff7a3eff>냉기 연소<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>15<> 증가합니다.\n\n<#ff7a3eff>서리불꽃 폭풍<>: 궁극기 사용 시 <#e8a800ff>4초<> 동안 주변에 불꽃과 얼음의 폭풍을 소환합니다. 폭풍은 주변 적에게 매초 <#a974ffff>60의 마법 피해<>를 입히고 <#d94c49ff>40% 둔화<>시킵니다."
+            "option": "\n<#ff7a3eff>냉기 연소<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>15<> 증가합니다.\n\n<#ff7a3eff>서리불꽃 폭풍<>: 궁극기 사용 시 <#e8a800ff>4초<> 동안 주변에 불꽃과 얼음의 폭풍을 소환합니다. 폭풍은 주변 적에게 매초 <#a974ffff>60의 마법 피해<>를 입히고 <#d94c49ff>40% 둔화<>시킵니다."
         },
         "radiant_zekes_herald": {
             "name": "찬란한 지크의 융합",
-            "option": "\n<#ff7a3eff>냉기 연소<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>15<> 증가합니다.\n\n<#ff7a3eff>서리불꽃 폭풍<>: 궁극기 사용 시 <#e8a800ff>4초<> 동안 주변에 불꽃과 얼음의 폭풍을 소환합니다. 폭풍은 주변 적에게 매초 <#a974ffff>60의 마법 피해<>를 입히고 <#d94c49ff>40% 둔화<>시킵니다."
+            "option": "\n<#ff7a3eff>냉기 연소<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>15<> 증가합니다.\n\n<#ff7a3eff>서리불꽃 폭풍<>: 궁극기 사용 시 <#e8a800ff>4초<> 동안 주변에 불꽃과 얼음의 폭풍을 소환합니다. 폭풍은 주변 적에게 매초 <#a974ffff>60의 마법 피해<>를 입히고 <#d94c49ff>40% 둔화<>시킵니다."
         },
         "liandrys_torment": {
             "name": "리안드리의 고통",
@@ -6276,11 +6296,11 @@
         },
         "malignance": {
             "name": "악의",
-            "option": "\n<#ff7a3eff>경멸<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>12<> 증가합니다."
+            "option": "\n<#ff7a3eff>경멸<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>12<> 증가합니다."
         },
         "radiant_malignance": {
             "name": "찬란한 악의",
-            "option": "\n<#ff7a3eff>경멸<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>20<> 증가합니다."
+            "option": "\n<#ff7a3eff>경멸<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>20<> 증가합니다."
         },
         "rite_of_ruin": {
             "name": "파멸의식 고서",
@@ -6436,15 +6456,15 @@
         },
         "axiom_arc": {
             "name": "원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>전체 재사용 대기시간<>의 <#4b7cffff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>전체 재사용 대기시간<>의 <#61d1bcff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#61d1bcff>+0.2%<>)가 반환됩니다."
         },
         "radiant_axiom_arc": {
             "name": "찬란한 원칙의 원형낫",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>전체 재사용 대기시간<>의 <#4b7cffff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#4b7cffff>+0.2%<>)가 반환됩니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>전이 표식<>: 적 챔피언 <#e8a800ff>처치에 관여<>하면 궁극기 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>전체 재사용 대기시간<>의 <#61d1bcff>10%<>(<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력 1<>당 <#61d1bcff>+0.2%<>)가 반환됩니다."
         },
         "hearthbound_axe": {
             "name": "온기가 필요한 자의 도끼",
-            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
+            "option": ""
         },
         "feral_flare": {
             "name": "야성의 불꽃",
@@ -6604,11 +6624,11 @@
         },
         "staff_of_flowing_water": {
             "name": "흐르는 물의 지팡이",
-            "option": "\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>10<> 증가합니다."
+            "option": "\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>10<> 증가합니다."
         },
         "radiant_staff_of_flowing_water": {
             "name": "찬란한 흐르는 물의 지팡이",
-            "option": "\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>10<> 증가합니다."
+            "option": "\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>10<> 증가합니다."
         },
         "immortal_shieldbow": {
             "name": "불멸의 철갑궁",
@@ -6664,11 +6684,11 @@
         },
         "fiendhunter_bolts": {
             "name": "악마사냥꾼의 화살",
-            "option": "\n<#ff7a3eff>한밤 경계<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>15<> 증가합니다.\n\n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>50%<> 증가합니다. 이 시간 동안 다음 3회의 기본 공격은 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>45초<>)"
+            "option": "\n<#ff7a3eff>한밤 경계<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>15<> 증가합니다.\n\n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>50%<> 증가합니다. 이 시간 동안 다음 3회의 기본 공격은 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>45초<>)"
         },
         "radiant_fiendhunter_bolts": {
             "name": "찬란한 악마사냥꾼의 화살",
-            "option": "\n<#ff7a3eff>한밤 경계<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>궁극기 가속<>이 <#4b7cffff>25<> 증가합니다.\n\n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>50%<> 증가합니다. 이 시간 동안 다음 3회의 기본 공격은 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>45초<>)"
+            "option": "\n<#ff7a3eff>한밤 경계<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>궁극기 가속<>이 <#61d1bcff>25<> 증가합니다.\n\n<#ff7a3eff>폭격 개시<>: 궁극기 사용 시 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>50%<> 증가합니다. 이 시간 동안 다음 3회의 기본 공격은 <i#asset/base/ui/banpick/champion_stat_icon:crit_chance_0> <#d45656ff>치명타<>로 적용되어 <#e8a800ff>60%의 추가 피해<>를 입힙니다. 이미 치명타가 적용될 공격이었다면 대신 해당 공격 피해량의 <#e3ab9dff>15%<>만큼 <#e3ab9dff>추가 고정 피해<>를 입힙니다. (재사용 대기시간 <#e8a800ff>45초<>)"
         },
         "essence_reaver": {
             "name": "정수 약탈자",
@@ -6680,11 +6700,11 @@
         },
         "endless_hunger": {
             "name": "끝없는 갈망",
-            "option": "\n<#ff7a3eff>기근<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>5<> <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력의 +5%)<> 증가합니다.\n\n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 15%<>를 얻습니다."
+            "option": "\n<#ff7a3eff>기근<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<> <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력의 +5%)<> 증가합니다.\n\n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 15%<>를 얻습니다."
         },
         "radiant_endless_hunger": {
             "name": "찬란한 끝없는 갈망",
-            "option": "\n<#ff7a3eff>기근<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>5<> <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력의 +5%)<> 증가합니다.\n\n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 15%<>를 얻습니다."
+            "option": "\n<#ff7a3eff>기근<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<> <#ff9028ff>(<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력의 +5%)<> 증가합니다.\n\n<#ff7a3eff>만찬<>: 적 챔피언 처치에 관여하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 15%<>를 얻습니다."
         },
         "banshees_veil": {
             "name": "밴시의 장막",
@@ -6820,11 +6840,11 @@
         },
         "rod_of_ages": {
             "name": "영겁의 지팡이",
-            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         },
         "radiant_rod_of_ages": {
             "name": "찬란한 영겁의 지팡이",
-            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>스킬 가속<>이 <#4b7cffff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>불멸의 시간<>: <#e8a800ff>30초<>마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>체력<>이 <#60e84dff>10<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>2<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>1<>씩 상승합니다. 최대 10회까지 중첩됩니다.\n\n<#ff7a3eff>영원<>: 스킬을 사용할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <#60e84dff>15<>~<#60e84dff>40<>의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력<>을 회복합니다."
         },
         "mikaels_blessing": {
             "name": "미카엘의 축복",
@@ -6844,11 +6864,15 @@
         },
         "navori_flickerblade": {
             "name": "나보리 명멸검",
-            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>남은 재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>남은 재사용 대기시간<>이 <#61d1bcff>15%<> 감소합니다."
         },
         "radiant_navori_flickerblade": {
             "name": "찬란한 나보리 명멸검",
-            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#4b7cffff>남은 재사용 대기시간<>이 <#4b7cffff>15%<> 감소합니다."
+            "option": "\n<#ff7a3eff>깨달음<>: 기본 <#ffff99ff>공격 시<> 기본 스킬의 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>남은 재사용 대기시간<>이 <#61d1bcff>15%<> 감소합니다."
+        },
+        "madreds_razors": {
+            "name": "마드레드의 갈퀴손",
+            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
         }
     }
 }

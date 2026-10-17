@@ -17,6 +17,7 @@ items! {
     hextech_alternator,
     hearthbound_axe,
     last_whisper,
+    madreds_razors,
     needlessly_large_rod,
     noonquiver,
     oblivion_orb,
