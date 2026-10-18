@@ -3,6 +3,10 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, apply_lethality, percent_of, total_lethality, ItemMeta};
 
+// A streak of teal light spiralling up the carrier when Flux gives cooldown
+// back (`view/effects.view_effects`, art from `docs/vfx/make_axiom_flux.py`).
+const FLUX_EFFECT: &str = "riot_axiom_flux";
+
 // Axiom Arc: Lethality, and Flux, a takedown on an enemy champion refunding a
 // share of the ultimate's full cooldown (`entity_reduce_cooldown`, ABI level
 // 10; an older host refunds nothing).
@@ -74,11 +78,11 @@ impl AxiomArc {
     // Flux: takes the refund off what is left of the ultimate's cooldown. The
     // Lethality is read at the takedown, so it counts every item held then.
     fn flux(&self, ctx: &mut StableSim<'_>, player: usize, entity: usize) {
-        let Some(cooltime) = ctx
+        let Some((cooltime, remaining)) = ctx
             .get_entity(entity)
             .and_then(|e| e.cooldown(SkillSlotV1::Ult))
             .filter(|cooldown| cooldown.unlocked)
-            .map(|cooldown| cooldown.cooltime)
+            .map(|cooldown| (cooldown.cooltime, cooldown.remaining))
         else {
             return;
         };
@@ -88,6 +92,17 @@ impl AxiomArc {
         let refund = percent_of(cooltime, percent);
         if refund > 0 {
             ctx.entity_reduce_cooldown(entity, SkillSlotV1::Ult, refund);
+            // The burst only when there was cooldown to give back.
+            if remaining > 0 {
+                ctx.play_view_effect(
+                    FLUX_EFFECT,
+                    entity,
+                    &InputTargetV1::target(entity),
+                    0,
+                    0,
+                    0,
+                );
+            }
         }
     }
 }
