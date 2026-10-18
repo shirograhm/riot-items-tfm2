@@ -391,7 +391,26 @@ fn init(host: &StableHost) -> StableMod {
     // And the game's own thirty items, from the mod's settings file: the
     // Smart Builds rules know what each gives from here on.
     item_stats::prime_game_items();
-    let configs = config::load();
+    let (configs, skipped) = config::load();
+    // What of the player's config.json no item can use, which is otherwise
+    // only seen as numbers that never change.
+    if !skipped.is_empty() {
+        const NAMED: usize = 20;
+        let more = skipped.len().saturating_sub(NAMED);
+        host.log(
+            LogLevel::Warn,
+            &format!(
+                "riot_items_tfm2: config.json: {} value(s) not used, defaults kept: {}{}",
+                skipped.len(),
+                skipped[..skipped.len().min(NAMED)].join(", "),
+                if more > 0 {
+                    format!(" and {more} more")
+                } else {
+                    String::new()
+                }
+            ),
+        );
+    }
     record_lethality_table(&configs);
 
     tactics::driver::on_mod_init();

@@ -200,7 +200,19 @@ impl Base {
             .unwrap_or_default();
 
         let defaults = read_object("config-default.json");
-        let overrides = read_object("config.json");
+        // The player's numbers as the items take them (`config::usable_entry`):
+        // what a tooltip shows and a patch is laid over must be what the item
+        // runs with, and a number it cannot hold would leave a patched config
+        // unreadable.
+        let overrides: serde_json::Map<String, Value> = read_object("config.json")
+            .into_iter()
+            .map(|(item, entry)| match entry {
+                Value::Object(fields) => {
+                    (item, Value::Object(crate::config::usable_entry(fields).0))
+                }
+                other => (item, other),
+            })
+            .collect();
         // The default numbers, and those with the player's over them.
         let mut shipped: HashMap<String, HashMap<String, f64>> = HashMap::new();
         let mut config: HashMap<String, HashMap<String, f64>> = HashMap::new();
