@@ -20,8 +20,9 @@
 //!    on a `Tank`, else Feral Flare or Grez's by damage type.
 //! 9. **Role items first**: a jungler's jungle item goes in the first slot,
 //!    unless the player pinned it ([`Fit::starter_slot_pinned`]). A support
-//!    other than a mage looks to Support-class items first, right after its
-//!    World Atlas item.
+//!    looks to Support-class items first, right after its World Atlas item; a
+//!    mage only to those with ability power, and it is guaranteed one, bought
+//!    before its mage items, unless the player pinned a support item.
 //! 10. **Imperial Mandate for supports that immobilize**: the AI's first
 //!     support item makes way for Mandate, and a support known not to
 //!     immobilize keeps none. A pinned support item stays, and a build with no
@@ -343,8 +344,9 @@ pub(crate) struct Fit {
     // Sleigh.
     sleigh: bool,
     // A `Magician`-class support: Zaz'Zak's Realmspike unless tagged `Tank`
-    // (rule 12), treated as not aiding allies (rule 13), preferring no support
-    // items (rule 9), and the one support rule 16 lets build other classes.
+    // (rule 12), treated as not aiding allies (rule 13), preferring and
+    // guaranteed one support item with ability power (rule 9), and the one
+    // support rule 16 lets build other classes.
     mage: bool,
     // Rule 13: a support other than a mage whose kit heals, shields or buffs
     // allies; rule 12 gives it Dream Maker.
@@ -499,22 +501,34 @@ impl Fit {
         self.jungle_items && is_jungle_item(key) && is_philosophers_stone(key) != self.stone_jungler
     }
 
-    // Rule 9: whether the build is guaranteed a role item, which only a
-    // jungler's is, unless its first slot is pinned.
+    // Rule 9: whether the build is guaranteed a role item: a jungler's jungle
+    // item, unless its first slot is pinned, and a mage support's support item,
+    // which nothing else in a mage's build would bring.
     fn guarantees_role_item(&self) -> bool {
-        self.jungle_items && !self.no_starter
+        (self.jungle_items && !self.no_starter) || (self.support_items && self.mage)
     }
 
-    // Rule 9: any support but a mage prefers Support-class items past its World
-    // Atlas item.
+    // Rule 9: every support prefers Support-class items past its World Atlas
+    // item; a mage only those that suit it ([`Fit::is_preferred_support_item`]).
     fn prefers_support_items(&self) -> bool {
+        self.support_items
+    }
+
+    // Rule 9: whether a support's picks that make way look to its support items
+    // first. Not a mage's: past its one support item it builds mage items.
+    fn stands_in_support_items(&self) -> bool {
         self.support_items && !self.mage
     }
 
-    // Rule 9: a Support-class item this champion prefers, World Atlas aside.
-    // The item-build hook pushes these harder than the mod's other items.
+    // Rule 9: a Support-class item this champion prefers, World Atlas aside:
+    // any, but for a mage only one with ability power (Imperial Mandate,
+    // Mikael's Blessing, Chemtech Putrifier; rules 10 and 13 take the ones its
+    // kit cannot use). The item-build hook pushes these harder than the mod's
+    // other items.
     pub(crate) fn is_preferred_support_item(&self, key: &str) -> bool {
-        self.prefers_support_items() && is_other_support_class(key)
+        self.prefers_support_items()
+            && is_other_support_class(key)
+            && (!self.mage || table().traits(key).magic)
     }
 
     // Rule 9: a preferred support item, or a jungler's jungle item. Bought
@@ -1120,7 +1134,7 @@ pub(crate) fn enforce<C, K, G, F>(
                     // build's style would not reach.
                     let atlas = current.as_deref().is_some_and(|key| fit.is_atlas_pick(key));
                     let role_first = atlas
-                        || fit.prefers_support_items()
+                        || fit.stands_in_support_items()
                         || current.as_deref().is_some_and(|key| fit.is_role_item(key));
                     let role_item = role_first
                         .then(|| {
@@ -1230,10 +1244,18 @@ pub(crate) fn enforce<C, K, G, F>(
         }
     }
 
-    // Rule 9: a jungler with no jungle item has its last AI pick, the one the
-    // engine wanted least, swapped for one judged against the rest of the
-    // build.
+    // Rule 9: a jungler with no jungle item, or a mage support with no support
+    // item that suits it, has its last AI pick, the one the engine wanted
+    // least, swapped for one judged against the rest of the build. A support
+    // item the player pinned is a mage's own pick (as for rule 10).
+    let mage_pinned_support = fit.mage
+        && (0..build.len())
+            .filter(|&slot| is_pinned(slot))
+            .map(|slot| build[slot])
+            .chain(reserved.iter().copied())
+            .any(|index| key(index).is_some_and(|key| is_other_support_class(&key)));
     let needs_role_item = fit.guarantees_role_item()
+        && !mage_pinned_support
         && !build
             .iter()
             .chain(reserved)
