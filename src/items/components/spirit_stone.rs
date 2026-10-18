@@ -19,7 +19,7 @@ impl Default for SpiritStone {
         Self {
             price: 400,
             hp: 200,
-            magic_power: 20,
+            magic_power: 25,
             effect_percent_bonus_damage: 10.0,
             effect_bonus_hp_percent_of_damage: 2.0,
             // Non-vital stats (internals)
@@ -68,7 +68,7 @@ impl StableItem for SpiritStone {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string()]
+        vec!["hardened_heart".to_string(), "fated_ashes".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

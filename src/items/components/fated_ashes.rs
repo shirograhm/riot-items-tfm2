@@ -121,7 +121,7 @@ impl StableItem for FatedAshes {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec!["haunting_guise".to_string()]
+        vec!["haunting_guise".to_string(), "spirit_stone".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {
