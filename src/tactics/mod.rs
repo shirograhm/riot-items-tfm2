@@ -4,6 +4,8 @@
 //!   they can restrict the player's pins to the player's own athletes.
 //! - The 5th and 6th item slots: the buy detour grows every build past the
 //!   game's four, and four byte patches let the engine buy and draw them.
+//! - Smart Builds rule 18: the route picker's detour takes the components
+//!   `crate::route_choice` prefers in place of the game's random ones.
 //!
 //! Everything here is pinned to one exact game build (`check_game_version`):
 //! hardcoded addresses, byte patches and struct offsets, re-derived every game
@@ -733,16 +735,21 @@ static SPAWN_INSTALLED: AtomicU64 = AtomicU64::new(0);
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         let _probe = crate::perf::Probe::sim(crate::perf::Section::SpawnDetour);
-        // Only under `own_team_only`: otherwise `item_build_hook::decide_build`
-        // has already set these slots on the stable API, and two writers would
-        // fight over them.
-        if !SPAWN_INJECT_ENABLED || saved.is_null() || !crate::build_config::own_team_only_enabled()
-        {
+        if !SPAWN_INJECT_ENABLED || saved.is_null() {
             return;
         }
         let game = *saved as usize; // rcx = Game
         let athlete = *saved.add(1) as usize; // rdx = athlete (stack copy, the final build)
         if game < 0x10000 || athlete < 0x10000 {
+            return;
+        }
+        // Smart Builds rule 18's lineups, under either team setting: every
+        // athlete of a match spawns here before it plays.
+        spawn_note_lineup(game, athlete);
+        // The rest only under `own_team_only`: otherwise
+        // `item_build_hook::decide_build` has already set these slots on the
+        // stable API, and two writers would fight over them.
+        if !crate::build_config::own_team_only_enabled() {
             return;
         }
         // (1) The match's provider, watched or not: under `own_team_only` this
@@ -903,6 +910,29 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         });
     }));
     0 // the stub ignores the return value
+}
+// Hands rule 18 (`crate::route_choice`) the champion `athlete` plays and its
+// side in the match being spawned. Reads are VEH-guarded, since this runs for
+// every athlete of every match.
+unsafe fn spawn_note_lineup(game: usize, athlete: usize) {
+    if !ROUTE_CHOICE {
+        return;
+    }
+    let Some(provider) = safe_read_u64(game + O_GAME_PROVIDER) else {
+        return;
+    };
+    if provider < 0x10000 || provider >= 0x0000_8000_0000_0000 {
+        return;
+    }
+    let mut name = [0u8; CHAMP_NAME_MAX];
+    let (Some(seed), Some(side), Some(len)) = (
+        safe_read_u64(provider as usize + O_PROVIDER_SEED),
+        safe_read_u64(athlete + O_ATHLETE_TEAM),
+        athlete_champion(athlete, &mut name),
+    ) else {
+        return;
+    };
+    crate::route_choice::note_spawn(seed, side, &String::from_utf8_lossy(&name[..len]));
 }
 // Where Smart Builds' boots in slot `si` go when a pin lands there: the next
 // slot no pin holds, else `None` when an open 5th or 6th will get them as it
@@ -1216,6 +1246,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
         install_launcher_hook();
         install_seed_ctor_hook();
         install_spawn_hook();
+        install_route_hook();
         // The player's team id, for team scoping.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
             // `player_team_id()` reads 0 or -1 at times, 0 throughout comp
@@ -1295,6 +1326,7 @@ fn tactics_on_server_start() {
     install_launcher_hook();
     install_seed_ctor_hook();
     install_spawn_hook();
+    install_route_hook();
 }
 
 fn tactics_before_management_tick() {
@@ -1757,24 +1789,26 @@ unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> b
 static NAME_GETTERS: [AtomicUsize; 16] = [const { AtomicUsize::new(0) }; 16];
 static NAME_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
 
-// Whether `namefn` (a name or recipe getter) is code, proving and remembering
-// it on first sight since `code_ptr_ok` is a syscall. The low-address test
-// comes first because an empty slot is 0.
+// Whether `namefn` (a name or recipe getter) is code ([`proven_code`]).
 unsafe fn name_getter_ok(namefn: usize) -> bool {
-    if namefn < 0x10000 {
+    proven_code(&NAME_GETTERS, &NAME_GETTER_NEXT, namefn)
+}
+
+// Whether `f` is code, proving and remembering it in `ring` on first sight
+// since `code_ptr_ok` is a syscall. The low-address test comes first because
+// an empty slot is 0.
+unsafe fn proven_code(ring: &[AtomicUsize], next: &AtomicUsize, f: usize) -> bool {
+    if f < 0x10000 {
         return false;
     }
-    if NAME_GETTERS
-        .iter()
-        .any(|g| g.load(Ordering::Relaxed) == namefn)
-    {
+    if ring.iter().any(|g| g.load(Ordering::Relaxed) == f) {
         return true;
     }
-    if !code_ptr_ok(namefn) {
+    if !code_ptr_ok(f) {
         return false;
     }
-    let slot = NAME_GETTER_NEXT.fetch_add(1, Ordering::Relaxed) % NAME_GETTERS.len();
-    NAME_GETTERS[slot].store(namefn, Ordering::Relaxed);
+    let slot = next.fetch_add(1, Ordering::Relaxed) % ring.len();
+    ring[slot].store(f, Ordering::Relaxed);
     true
 }
 
@@ -2568,6 +2602,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             0
         };
+        // Rule 18's route picker is not handed the match, so every buy notes
+        // it for the athlete (`route_fixup`).
+        if ROUTE_CHOICE {
+            crate::route_choice::note_seat(athlete, seed_r9);
+        }
         let seed_match_r9 = lseed != 0 && seed_r9 == lseed;
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let is_live = seed_match_r9 || (rp != 0 && provider_now != 0 && provider_now == rp);
@@ -3356,6 +3395,660 @@ unsafe fn lift_server_mod_items(state: usize, keys: &[String]) -> Option<ModItem
         header,
         taken: [capacity, entries as u64, len],
     })
+}
+
+// ===========================================================================
+//  Build routes (Smart Builds rule 18)
+// ===========================================================================
+//
+// The route picker, buy_item's resolver, draws what to buy toward the build
+// target from the match's RNG: a new item from every tier-0 item that can
+// build into the target, an upgrade from the held item's next steps that still
+// can, each with even odds (`previous_tier` order plays no part). Its detour
+// lets the game draw first, so the RNG moves as it always did, then puts in
+// the candidate `crate::route_choice` scores highest out of that same set and
+// redoes the gold check. Every caller gets that choice: buy_item, the upgrade
+// decider (0xf75440) and six "can I buy now" checks.
+//
+// Arguments: rcx the RNG, rdx the athlete, r8/r9 the catalog, then on the
+// stack the build entries done, the upgrade flag (1 = upgrade) and the owned
+// slot being upgraded. Returns rax 1 = buy, rdx the catalog index.
+//
+// To re-derive: buy_item's call after the done-count function. It reads the
+// build at +0x358/+0x360 at once and ends on the gold check against
+// `O_ATHLETE_GOLD`; the graph getter is its first direct call on both paths.
+
+// Kill switch for rule 18's detour and the lineup and seat notes that feed it.
+const ROUTE_CHOICE: bool = true;
+const ROUTE_PICKER_RVA: usize = 0xe933d0; // 0.6.4 (0.6.3: 0xea1ea0)
+// 48 bytes, unique in .text: the 8 pushes, `sub rsp,0xa8`, the frame setup and
+// the argument moves.
+const ROUTE_PICKER_SIG: [u8; 48] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xa8,
+    0x00, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0f, 0x29, 0x75, 0x10, 0x48,
+    0xc7, 0x45, 0x08, 0xfe, 0xff, 0xff, 0xff, 0x4c, 0x89, 0xce, 0x4c, 0x89, 0xc7, 0x48, 0x89, 0x4d,
+];
+const ROUTE_PICKER_ORIG_LEN: usize = 12; // the 8 pushes, an instruction boundary
+// The route graph's cache getter: rcx its thread-local key, rdx/r8 the
+// catalog -> the graph `Rc` with its strong count raised. Called at picker
+// +0x199.
+const ROUTE_GRAPH_RVA: usize = 0x1ab3a10; // 0.6.4
+const ROUTE_GRAPH_SIG: [u8; 48] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xf8,
+    0x00, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x48, 0xc7, 0x45, 0x70, 0xfe,
+    0xff, 0xff, 0xff, 0x4c, 0x89, 0xc6, 0x48, 0x89, 0xd7, 0x48, 0x89, 0xc8, 0x31, 0xc9, 0xff, 0x10,
+];
+// The getter's key (`lea rcx,[rip+..]` before every call to it), whose first
+// word is the key's accessor.
+const ROUTE_GRAPH_KEY_RVA: usize = 0x3b8e0a0; // 0.6.4
+const ROUTE_GRAPH_KEY_ACCESSOR_RVA: usize = 0x12cacb0; // 0.6.4
+// The graph, from the `Rc`'s start (strong count at +0): the next steps of
+// every item (`Vec<Vec<usize>>`, its pointer and length), a byte per item the
+// picker requires set, and a bit matrix of what builds into what (row = item,
+// bit = target, an item reaching itself).
+const O_GRAPH_NEXT_PTR: usize = 0x18;
+const O_GRAPH_NEXT_LEN: usize = 0x20;
+const O_GRAPH_FLAGS_PTR: usize = 0x30;
+const O_GRAPH_FLAGS_LEN: usize = 0x38;
+const O_GRAPH_REACH_PTR: usize = 0x48;
+const O_GRAPH_REACH_LEN: usize = 0x50; // in words
+const O_GRAPH_REACH_STRIDE: usize = 0x58; // words per row
+// The athlete's gold: the picker's last check, `mov rsi,[rax+0x868]`.
+const O_ATHLETE_GOLD: usize = 0x868; // 0.6.4
+// Catalog vtable slots the picker calls: the step's price and the tier.
+const VT_PRICE: usize = 0x68;
+const VT_TIER: usize = 0x70;
+// The longest champion key read.
+const CHAMP_NAME_MAX: usize = 48;
+
+static ROUTE_INSTALLED: AtomicU64 = AtomicU64::new(0); // 0 untried, 1 installed, 2 failed
+
+fn install_route_hook() {
+    if !ROUTE_CHOICE {
+        return;
+    }
+    let state = ROUTE_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
+        return;
+    }
+    // See `install_retry_due`.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
+        return;
+    }
+    let r = unsafe {
+        if route_graph_ok() {
+            install_post_hook(
+                ROUTE_PICKER_RVA,
+                ROUTE_PICKER_ORIG_LEN,
+                &ROUTE_PICKER_SIG,
+                route_fixup as *const () as usize,
+            )
+        } else {
+            Err("route graph getter mismatch")
+        }
+    };
+    ROUTE_INSTALLED.store(if r.is_ok() { 1 } else { 2 }, Ordering::Relaxed);
+    crate::match_builds::log("routes.install", || {
+        format!("route picker @ {ROUTE_PICKER_RVA:#x}: {r:?}")
+    });
+}
+
+// Whether the graph getter and its key are where this build has them; the
+// detour is not installed otherwise, since it reads the graph through them.
+unsafe fn route_graph_ok() -> bool {
+    let base = exe_base_addr();
+    let getter = base + ROUTE_GRAPH_RVA;
+    readable(getter, ROUTE_GRAPH_SIG.len())
+        && (0..ROUTE_GRAPH_SIG.len()).all(|i| *((getter + i) as *const u8) == ROUTE_GRAPH_SIG[i])
+        && safe_read_u64(base + ROUTE_GRAPH_KEY_RVA)
+            == Some((base + ROUTE_GRAPH_KEY_ACCESSOR_RVA) as u64)
+}
+
+// Installs a detour that runs after the original. The stub calls the original
+// (its relocated first `orig_len` bytes, then a jump back) with the arguments
+// it was entered with, three stack arguments included, then
+// `fixup(regs, stack, caller)`: `regs` = [rcx, rdx, r8, r9, rax, rdx], the
+// last two the original's return pair, which the fixup may rewrite; `stack` =
+// the three stack arguments; `caller` = the return address. Then it returns
+// that pair. Only volatile registers are touched.
+unsafe fn install_post_hook(
+    rva: usize,
+    orig_len: usize,
+    sig: &[u8],
+    fixup: usize,
+) -> Result<usize, &'static str> {
+    let base = exe_base_addr();
+    if base == 0 {
+        return Err("module 0");
+    }
+    if orig_len < 12 || orig_len > sig.len() {
+        return Err("orig_len");
+    } // the entry patch is 12B (movabs+jmp), over bytes the signature proves
+    let fn_addr = base + rva;
+    if !readable(fn_addr, sig.len()) {
+        return Err("unreadable");
+    }
+    if (0..sig.len()).any(|i| *((fn_addr + i) as *const u8) != sig[i]) {
+        return Err("signature mismatch");
+    }
+    const MEM_CR: u32 = 0x1000 | 0x2000;
+    const RWX: u32 = 0x40;
+    let stub = VirtualAlloc(0, 256, MEM_CR, RWX);
+    if stub == 0 {
+        return Err("VirtualAlloc");
+    }
+    // Frame of 0x78 (entry rsp is 8 off 16, so calls from it are aligned):
+    // +0x00 shadow space, +0x20 the stack arguments passed on, +0x40 rcx rdx
+    // r8 r9, +0x60 rax rdx returned. The caller's frame starts at +0x78 (the
+    // return address), its stack arguments at +0xa0.
+    let mut s: Vec<u8> = Vec::new();
+    s.extend_from_slice(&[0x48, 0x83, 0xec, 0x78]); // sub rsp, 0x78
+    s.extend_from_slice(&[0x48, 0x89, 0x4c, 0x24, 0x40]); // mov [rsp+0x40], rcx
+    s.extend_from_slice(&[0x48, 0x89, 0x54, 0x24, 0x48]); // mov [rsp+0x48], rdx
+    s.extend_from_slice(&[0x4c, 0x89, 0x44, 0x24, 0x50]); // mov [rsp+0x50], r8
+    s.extend_from_slice(&[0x4c, 0x89, 0x4c, 0x24, 0x58]); // mov [rsp+0x58], r9
+    for (from, to) in [(0xa0u8, 0x20u8), (0xa8, 0x28), (0xb0, 0x30)] {
+        s.extend_from_slice(&[0x48, 0x8b, 0x84, 0x24, from, 0x00, 0x00, 0x00]); // mov rax, [rsp+from]
+        s.extend_from_slice(&[0x48, 0x89, 0x44, 0x24, to]); // mov [rsp+to], rax
+    }
+    s.extend_from_slice(&[0x48, 0xb8]); // movabs rax, trampoline (filled in below)
+    let tramp_at = s.len();
+    s.extend_from_slice(&0usize.to_le_bytes());
+    s.extend_from_slice(&[0xff, 0xd0]); // call rax
+    s.extend_from_slice(&[0x48, 0x89, 0x44, 0x24, 0x60]); // mov [rsp+0x60], rax
+    s.extend_from_slice(&[0x48, 0x89, 0x54, 0x24, 0x68]); // mov [rsp+0x68], rdx
+    s.extend_from_slice(&[0x48, 0x8d, 0x4c, 0x24, 0x40]); // lea rcx, [rsp+0x40]
+    s.extend_from_slice(&[0x48, 0x8d, 0x94, 0x24, 0xa0, 0x00, 0x00, 0x00]); // lea rdx, [rsp+0xa0]
+    s.extend_from_slice(&[0x4c, 0x8b, 0x44, 0x24, 0x78]); // mov r8, [rsp+0x78]
+    s.extend_from_slice(&[0x48, 0xb8]);
+    s.extend_from_slice(&fixup.to_le_bytes()); // movabs rax, fixup
+    s.extend_from_slice(&[0xff, 0xd0]); // call rax
+    s.extend_from_slice(&[0x48, 0x8b, 0x44, 0x24, 0x60]); // mov rax, [rsp+0x60]
+    s.extend_from_slice(&[0x48, 0x8b, 0x54, 0x24, 0x68]); // mov rdx, [rsp+0x68]
+    s.extend_from_slice(&[0x48, 0x83, 0xc4, 0x78]); // add rsp, 0x78
+    s.push(0xc3); // ret
+    // The trampoline: the relocated bytes (position-independent), then back
+    // into the function through r11, which is neither an argument nor kept.
+    let tramp = stub + s.len();
+    s[tramp_at..tramp_at + 8].copy_from_slice(&tramp.to_le_bytes());
+    let mut orig = vec![0u8; orig_len];
+    core::ptr::copy_nonoverlapping(fn_addr as *const u8, orig.as_mut_ptr(), orig_len);
+    s.extend_from_slice(&orig);
+    s.extend_from_slice(&[0x49, 0xbb]);
+    s.extend_from_slice(&(fn_addr + orig_len).to_le_bytes()); // movabs r11, fn + orig_len
+    s.extend_from_slice(&[0x41, 0xff, 0xe3]); // jmp r11
+    if s.len() > 256 {
+        return Err("stub too long");
+    }
+    core::ptr::copy_nonoverlapping(s.as_ptr(), stub as *mut u8, s.len());
+    let mut patch = vec![0x90u8; orig_len];
+    patch[0] = 0x48;
+    patch[1] = 0xb8;
+    patch[2..10].copy_from_slice(&stub.to_le_bytes());
+    patch[10] = 0xff;
+    patch[11] = 0xe0;
+    let mut old: u32 = 0;
+    if VirtualProtect(fn_addr, orig_len, RWX, &mut old) == 0 {
+        return Err("VirtualProtect");
+    }
+    core::ptr::copy_nonoverlapping(patch.as_ptr(), fn_addr as *mut u8, orig_len);
+    VirtualProtect(fn_addr, orig_len, old, &mut old);
+    FlushInstructionCache(GetCurrentProcess(), fn_addr, orig_len);
+    Ok(stub)
+}
+
+// The route picker's fixup ([`install_post_hook`]). Only a draw the game would
+// buy is looked at (rax 1); a better candidate replaces it, bought only if the
+// gold covers it, as the game would have checked its own.
+unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller: u64) {
+    let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        if regs.is_null() || stack.is_null() || *regs.add(4) != 1 {
+            return;
+        }
+        if !crate::build_config::smart_builds_enabled() {
+            return;
+        }
+        let athlete = *regs.add(1) as usize;
+        let (catalog, catalog_len) = (*regs.add(2) as usize, *regs.add(3));
+        let drawn = *regs.add(5);
+        let (done, upgrading, slot) = (*stack, *stack.add(1) == 1, *stack.add(2));
+        let Some(better) = route_better(
+            athlete,
+            catalog,
+            catalog_len,
+            done,
+            upgrading.then_some(slot),
+            drawn,
+        ) else {
+            return;
+        };
+        let (Some(price), Some(gold)) = (
+            catalog_call(catalog, catalog_len, better, VT_PRICE),
+            safe_read_u64(athlete + O_ATHLETE_GOLD),
+        ) else {
+            return;
+        };
+        *regs.add(5) = better;
+        *regs.add(4) = (gold >= price) as u64;
+    }));
+}
+
+// One question to rule 18: the route from `from` (`u64::MAX` for a new item) to
+// `target` for one champion in one lane of one match. Asked again every tick
+// an athlete shops, so the answers are kept per thread.
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+struct RouteAsk {
+    catalog_len: u64,
+    from: u64,
+    target: u64,
+    seed: u64,
+    side: u64,
+    lane: u8,
+    champion: u64, // a hash of the key
+}
+
+// What the picker could draw, and the best of it; `best` is empty where the
+// draw stands (one candidate, or a tie between all of them).
+#[derive(Default)]
+struct RouteAnswer {
+    candidates: Vec<u64>,
+    best: Vec<u64>,
+}
+
+const ROUTE_ANSWERS_KEPT: usize = 2048;
+
+thread_local! {
+    static ROUTE_ANSWERS: core::cell::RefCell<HashMap<RouteAsk, std::rc::Rc<RouteAnswer>>> =
+        core::cell::RefCell::new(HashMap::new());
+    // Catalog length -> key -> index, for the item being upgraded.
+    static ROUTE_INDEX: core::cell::RefCell<HashMap<u64, HashMap<String, u64>>> =
+        core::cell::RefCell::new(HashMap::new());
+}
+
+// The candidate to buy in place of `drawn`, or `None` to keep the draw: when
+// rule 18 has nothing better, or `drawn` is not among the candidates it found
+// (then it has misread the picker, and the game's draw is safer).
+unsafe fn route_better(
+    athlete: usize,
+    catalog: usize,
+    catalog_len: u64,
+    done: u64,
+    upgrading: Option<u64>,
+    drawn: u64,
+) -> Option<u64> {
+    if athlete < 0x10000
+        || catalog < 0x10000
+        || catalog_len == 0
+        || catalog_len > 100_000
+        || drawn >= catalog_len
+    {
+        return None;
+    }
+    let target = route_target(athlete, catalog_len, done)?;
+    let from = match upgrading {
+        None => u64::MAX,
+        Some(slot) => {
+            let items = safe_read_u64(athlete + O_ATHLETE_ITEMS_PTR)? as usize;
+            let held = safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN)?;
+            let key = catalog_name_in(items, held, slot)?;
+            route_index_of(catalog, catalog_len, &key)?
+        }
+    };
+    let mut name = [0u8; CHAMP_NAME_MAX];
+    let len = athlete_champion(athlete, &mut name)?;
+    let champion = &name[..len];
+    let lane = athlete_lane(athlete);
+    let ask = RouteAsk {
+        catalog_len,
+        from,
+        target,
+        seed: crate::route_choice::seat_seed(athlete),
+        side: safe_read_u64(athlete + O_ATHLETE_TEAM)?,
+        lane: lane.map_or(u8::MAX, |lane| lane as u8),
+        champion: {
+            use std::hash::{Hash, Hasher};
+            let mut hasher = std::collections::hash_map::DefaultHasher::new();
+            champion.hash(&mut hasher);
+            hasher.finish()
+        },
+    };
+    let kept = ROUTE_ANSWERS
+        .try_with(|answers| answers.borrow().get(&ask).cloned())
+        .ok()?;
+    let answer = match kept {
+        Some(answer) => answer,
+        None => {
+            // A graph that cannot be read is remembered as "keep the draw" too,
+            // rather than read again every tick.
+            let answer = std::rc::Rc::new(
+                route_answer(
+                    catalog,
+                    catalog_len,
+                    &ask,
+                    &String::from_utf8_lossy(champion),
+                    lane,
+                )
+                .unwrap_or_default(),
+            );
+            let _ = ROUTE_ANSWERS.try_with(|answers| {
+                let mut answers = answers.borrow_mut();
+                if answers.len() >= ROUTE_ANSWERS_KEPT {
+                    answers.clear();
+                }
+                answers.insert(ask, answer.clone());
+            });
+            answer
+        }
+    };
+    if answer.best.is_empty() || answer.best.contains(&drawn) || !answer.candidates.contains(&drawn) {
+        return None;
+    }
+    // Between equals, the draw still picks.
+    Some(answer.best[(drawn % answer.best.len() as u64) as usize])
+}
+
+// The build entry the picker buys toward: the first after `done` of them, as
+// it counts (only entries inside the catalog count).
+unsafe fn route_target(athlete: usize, catalog_len: u64, done: u64) -> Option<u64> {
+    let ptr = safe_read_u64(athlete + O_ATHLETE_BUILD_PTR)? as usize;
+    let len = safe_read_u64(athlete + O_ATHLETE_BUILD_LEN)?;
+    if ptr < 0x10000 || len > 32 {
+        return None;
+    }
+    let mut skip = done;
+    for j in 0..len as usize {
+        let entry = safe_read_u64(ptr + j * 8)?;
+        if entry >= catalog_len {
+            continue;
+        }
+        if skip == 0 {
+            return Some(entry);
+        }
+        skip -= 1;
+    }
+    None
+}
+
+// Rule 18's answer for `ask`, from the game's own graph; `None` when it cannot
+// be read.
+unsafe fn route_answer(
+    catalog: usize,
+    catalog_len: u64,
+    ask: &RouteAsk,
+    champion: &str,
+    lane: Option<crate::build_config::Role>,
+) -> Option<RouteAnswer> {
+    let graph = RouteGraph::of(catalog, catalog_len)?;
+    let target = ask.target;
+    // The picker's own two sets: tier-0 items that reach the target, or the
+    // held item's next steps that do.
+    let candidates: Vec<u64> = if ask.from == u64::MAX {
+        (0..catalog_len)
+            .filter(|&i| {
+                graph.flag(i)
+                    && graph.reaches(i, target)
+                    && catalog_call(catalog, catalog_len, i, VT_TIER) == Some(0)
+            })
+            .collect()
+    } else {
+        graph
+            .next(ask.from)
+            .into_iter()
+            .filter(|&n| graph.flag(n) && graph.reaches(n, target))
+            .collect()
+    };
+    if candidates.len() < 2 {
+        return Some(RouteAnswer {
+            candidates,
+            best: Vec::new(),
+        });
+    }
+    let enemies = crate::route_choice::enemy_damage(ask.seed, ask.side, champion);
+    let weights = crate::route_choice::Weights::new(champion, lane, enemies);
+    let table = crate::route_choice::route_table();
+    let mut scores = RouteScores::default();
+    let scored: Vec<(u64, f64)> = candidates
+        .iter()
+        .map(|&c| {
+            let score = scores.route(&graph, catalog, catalog_len, c, target, &table, &weights, 0);
+            (c, score)
+        })
+        .collect();
+    let top = scored
+        .iter()
+        .map(|&(_, score)| score)
+        .fold(f64::NEG_INFINITY, f64::max);
+    let margin = 1e-6 * top.abs().max(1.0);
+    let mut best: Vec<u64> = scored
+        .iter()
+        .filter(|&&(_, score)| score >= top - margin)
+        .map(|&(c, _)| c)
+        .collect();
+    if best.len() == candidates.len() {
+        best.clear();
+    }
+    crate::match_builds::log("routes", || {
+        let name = |i: u64| catalog_name_in(catalog, catalog_len, i).unwrap_or_else(|| i.to_string());
+        format!(
+            "{champion} lane={lane:?} seed={:#x} side={} enemies(AD,AP)={enemies:?} {} -> {}: {} => {}",
+            ask.seed,
+            ask.side,
+            if ask.from == u64::MAX {
+                "new".to_string()
+            } else {
+                name(ask.from)
+            },
+            name(target),
+            scored
+                .iter()
+                .map(|&(c, score)| format!("{}={score:.0}", name(c)))
+                .collect::<Vec<_>>()
+                .join(" "),
+            if best.is_empty() {
+                "the draw".to_string()
+            } else {
+                best.iter().map(|&c| name(c)).collect::<Vec<_>>().join("|")
+            }
+        )
+    });
+    Some(RouteAnswer { candidates, best })
+}
+
+// Scores of one decision's items and routes, each worked out once.
+#[derive(Default)]
+struct RouteScores {
+    items: HashMap<u64, f64>,
+    routes: HashMap<u64, f64>,
+}
+
+impl RouteScores {
+    // What the route from `node` on to `target` is worth: `node`'s stats plus
+    // the best way on. The target's own stats are left out, since every route
+    // ends on them.
+    #[allow(clippy::too_many_arguments)]
+    unsafe fn route(
+        &mut self,
+        graph: &RouteGraph,
+        catalog: usize,
+        catalog_len: u64,
+        node: u64,
+        target: u64,
+        table: &crate::route_choice::RouteTable,
+        weights: &crate::route_choice::Weights,
+        depth: u32,
+    ) -> f64 {
+        if let Some(&score) = self.routes.get(&node) {
+            return score;
+        }
+        let own = match self.items.get(&node) {
+            Some(&score) => score,
+            None => {
+                let score = catalog_name_in(catalog, catalog_len, node)
+                    .map_or(0.0, |key| crate::route_choice::item_score(table, &key, weights));
+                self.items.insert(node, score);
+                score
+            }
+        };
+        // Item trees are a few steps deep; the cap only guards a bad read.
+        let mut on: Option<f64> = None;
+        if depth < 8 {
+            for next in graph.next(node) {
+                let score = if next == target {
+                    0.0
+                } else if graph.flag(next) && graph.reaches(next, target) {
+                    self.route(graph, catalog, catalog_len, next, target, table, weights, depth + 1)
+                } else {
+                    continue;
+                };
+                on = Some(on.map_or(score, |best: f64| best.max(score)));
+            }
+        }
+        let score = own + on.unwrap_or(0.0);
+        self.routes.insert(node, score);
+        score
+    }
+}
+
+// The game's route graph for a catalog, read through its cache.
+struct RouteGraph {
+    next: usize,
+    next_len: u64,
+    flags: Vec<u8>,
+    reach: usize,
+    reach_len: u64,
+    stride: u64,
+}
+
+impl RouteGraph {
+    unsafe fn of(catalog: usize, catalog_len: u64) -> Option<Self> {
+        let base = exe_base_addr();
+        let getter: unsafe extern "win64" fn(usize, usize, usize) -> usize =
+            core::mem::transmute(base + ROUTE_GRAPH_RVA);
+        let rc = getter(base + ROUTE_GRAPH_KEY_RVA, catalog, catalog_len as usize);
+        if rc < 0x10000 {
+            return None;
+        }
+        // The reference goes straight back: the cache keeps its own, and
+        // nothing below touches the cache. Under two, the cache would not, and
+        // the graph is left alone (one reference leaked) rather than freed.
+        let strong = safe_read_u64(rc)?;
+        if strong < 2 {
+            return None;
+        }
+        wr_u64(rc, strong - 1);
+        let flags_ptr = safe_read_u64(rc + O_GRAPH_FLAGS_PTR)? as usize;
+        let flags_len = safe_read_u64(rc + O_GRAPH_FLAGS_LEN)? as usize;
+        let mut flags = Vec::new();
+        if flags_len == 0 || !safe_read_bytes(flags_ptr, flags_len, &mut flags) {
+            return None;
+        }
+        Some(Self {
+            next: safe_read_u64(rc + O_GRAPH_NEXT_PTR)? as usize,
+            next_len: safe_read_u64(rc + O_GRAPH_NEXT_LEN)?,
+            flags,
+            reach: safe_read_u64(rc + O_GRAPH_REACH_PTR)? as usize,
+            reach_len: safe_read_u64(rc + O_GRAPH_REACH_LEN)?,
+            stride: safe_read_u64(rc + O_GRAPH_REACH_STRIDE)?,
+        })
+    }
+
+    // Whether the picker considers item `i` at all.
+    fn flag(&self, i: u64) -> bool {
+        self.flags.get(i as usize).is_some_and(|&flag| flag != 0)
+    }
+
+    // Whether item `i` builds into `target` (or is it).
+    unsafe fn reaches(&self, i: u64, target: u64) -> bool {
+        if target as usize >= self.flags.len() {
+            return false;
+        }
+        let word = i * self.stride + (target >> 6);
+        word < self.reach_len
+            && safe_read_u64(self.reach + word as usize * 8)
+                .is_some_and(|bits| (bits >> (target & 63)) & 1 != 0)
+    }
+
+    // Item `i`'s next steps.
+    unsafe fn next(&self, i: u64) -> Vec<u64> {
+        if i >= self.next_len || self.next < 0x10000 {
+            return Vec::new();
+        }
+        let entry = self.next + i as usize * 24;
+        let (Some(ptr), Some(len)) = (safe_read_u64(entry + 8), safe_read_u64(entry + 0x10)) else {
+            return Vec::new();
+        };
+        if ptr < 0x10000 || len > 64 {
+            return Vec::new();
+        }
+        (0..len as usize)
+            .filter_map(|j| safe_read_u64(ptr as usize + j * 8))
+            .collect()
+    }
+}
+
+// Catalog index of the entry named `key`, whatever its tier (unlike
+// [`scan_catalog_index`], which wants a recipe). Kept per thread by catalog
+// length and checked by name before use.
+unsafe fn route_index_of(catalog: usize, catalog_len: u64, key: &str) -> Option<u64> {
+    let kept = ROUTE_INDEX
+        .try_with(|index| {
+            index
+                .borrow()
+                .get(&catalog_len)
+                .and_then(|keys| keys.get(key).copied())
+        })
+        .ok()
+        .flatten();
+    if let Some(i) = kept {
+        if catalog_entry_named(catalog, catalog_len, i, key.as_bytes()) {
+            return Some(i);
+        }
+    }
+    let found = (0..catalog_len).find(|&i| catalog_entry_named(catalog, catalog_len, i, key.as_bytes()))?;
+    let _ = ROUTE_INDEX.try_with(|index| {
+        let mut index = index.borrow_mut();
+        if index.len() >= 8 {
+            index.clear();
+        }
+        index.entry(catalog_len).or_default().insert(key.to_string(), found);
+    });
+    Some(found)
+}
+
+// Getters `catalog_call` has proven to be code; their own ring, so they never
+// push out the name getters.
+static ROUTE_GETTERS: [AtomicUsize; 32] = [const { AtomicUsize::new(0) }; 32];
+static ROUTE_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
+
+// Catalog entry `idx`'s answer from the getter in its vtable `slot`
+// ([`VT_PRICE`], [`VT_TIER`]).
+unsafe fn catalog_call(data: usize, len: u64, idx: u64, slot: usize) -> Option<u64> {
+    if idx >= len || data < 0x10000 {
+        return None;
+    }
+    let e = data + (idx as usize) * 16;
+    let edata = safe_read_u64(e)? as usize;
+    let evt = safe_read_u64(e + 8)? as usize;
+    if edata < 0x10000 || evt < 0x10000 {
+        return None;
+    }
+    let getter = safe_read_u64(evt + slot)? as usize;
+    if !proven_code(&ROUTE_GETTERS, &ROUTE_GETTER_NEXT, getter) {
+        return None;
+    }
+    let getter: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(getter);
+    Some(getter(edata) as u64)
+}
+
+// The champion `athlete` plays, into `name`; its length. VEH-guarded.
+unsafe fn athlete_champion(athlete: usize, name: &mut [u8; CHAMP_NAME_MAX]) -> Option<usize> {
+    let ptr = safe_read_u64(athlete + O_ATHLETE_CHAMP_PTR)? as usize;
+    let len = safe_read_u64(athlete + O_ATHLETE_CHAMP_LEN)? as usize;
+    if ptr < 0x10000 || len == 0 || len > CHAMP_NAME_MAX {
+        return None;
+    }
+    safe_copy(name.as_mut_ptr(), ptr as *const u8, len).then_some(len)
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

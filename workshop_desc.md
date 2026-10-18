@@ -82,6 +82,7 @@ To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b
 15. One Spellblade item  
 16. Supports build only Tank/Support items (mages only when tank-tagged or on Dream Maker)  
 17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
+18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
 

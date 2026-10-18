@@ -43,6 +43,12 @@
 //! 17. **Heal, shield and buff items first for heal, shield and buff
 //!     supports**: a Dream Maker support looks to [`PREFERRED_AID_ITEMS`]
 //!     first, as a preference, not a quota.
+//! 18. **Components for the champion and the enemy team**: where an item can
+//!     be built more than one way, the AI takes the route
+//!     [`crate::route_choice`] scores highest (armor or magic resist by the
+//!     enemies' damage, damage stats by what the champion scales with) instead
+//!     of the game's random one. Native half only; it changes how an item is
+//!     built, never which.
 //!
 //! The rules only replace AI picks: a pinned slot is kept and counts toward the
 //! budgets like any other item, and an earlier slot wins over a later one.
@@ -667,24 +673,27 @@ pub(crate) fn is_boots(key: &str) -> bool {
     key == BASE_BOOTS || UPGRADED_BOOTS.contains(&key)
 }
 
+// The enemy team's damage as (physical, magic): one point per champion that
+// scales with AD, one per AP, both for a hybrid. Rule 7's tank boots and rule
+// 18's resists answer to it.
+pub(crate) fn damage_split(enemies: &[&str]) -> (u32, u32) {
+    enemies.iter().fold((0, 0), |(physical, magic), enemy| {
+        match champion_traits::traits(enemy).and_then(|traits| traits.scaling) {
+            Some(Scaling::Ad) => (physical + 1, magic),
+            Some(Scaling::Ap) => (physical, magic + 1),
+            Some(Scaling::Hybrid) => (physical + 1, magic + 1),
+            None => (physical, magic),
+        }
+    })
+}
+
 // Rule 7's boots for `champion` in `role` against `enemies` (empty when
 // unseen). A tank answers the enemy's main damage type, other supports take
 // Lucidity, AP takes Sorcerer's, and the rest follow their class.
 pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'static str {
     let traits = champion_traits::traits(champion).unwrap_or_default();
     if traits.tank {
-        let (physical, magic) =
-            enemies.iter().fold(
-                (0, 0),
-                |(physical, magic), enemy| match champion_traits::traits(enemy)
-                    .and_then(|traits| traits.scaling)
-                {
-                    Some(Scaling::Ad) => (physical + 1, magic),
-                    Some(Scaling::Ap) => (physical, magic + 1),
-                    Some(Scaling::Hybrid) => (physical + 1, magic + 1),
-                    None => (physical, magic),
-                },
-            );
+        let (physical, magic) = damage_split(enemies);
         return if magic > physical {
             MERCURYS_TREADS
         } else {

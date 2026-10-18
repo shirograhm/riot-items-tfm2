@@ -681,6 +681,7 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
                 stat("magic_power"),
             );
             crate::smart_builds::note_engine_item(key, crit, attack, speed, power);
+            crate::route_choice::note_engine_item(key, |name| item_stat(&object, name));
             if GAME_DAMAGE_FINALS.contains(&key) {
                 read.push(format!(
                     "{key}(document: stat block={} stat={:?} price={:?}; merged: crit={crit} attack={attack} speed={speed} power={power} price={:?})",
@@ -1014,6 +1015,7 @@ pub(crate) fn prime_game_items() {
             stat("attack_speed_mult"),
             stat("magic_power"),
         );
+        crate::route_choice::note_engine_item(key, |name| item_stat(object, name));
     }
 }
 

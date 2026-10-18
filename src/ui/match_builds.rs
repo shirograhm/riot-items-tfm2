@@ -165,7 +165,8 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 // Whether `match-builds.log` is written beside the DLL: how each match was
 // identified and every changed answer, plus the `traits:`/`server items:` lines
 // of `item_stats`, `patch.` of `patches`, `counts.` of `item_counts`, `rules.`
-// of `item_tiers` and `options.` of `options_row`. Off for releases.
+// of `item_tiers`, `options.` of `options_row` and `routes` of the native
+// half's route picker (Smart Builds rule 18). Off for releases.
 const LOG: bool = false;
 
 // Lines written in one session at most.

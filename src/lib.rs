@@ -9,6 +9,7 @@ mod item_stats;
 mod item_tiers;
 mod items;
 mod patches;
+mod route_choice;
 mod smart_builds;
 mod tactics;
 mod ui;
@@ -444,6 +445,7 @@ fn init(host: &StableHost) -> StableMod {
             let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
+            route_choice::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
             patches::note_mod_item($key, &item, <$T>::with_config);
             perf::timed($key, item, <$T>::with_config)
@@ -483,6 +485,7 @@ fn init(host: &StableHost) -> StableMod {
                 .unwrap_or_else(<$T>::radiant);
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
+            route_choice::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key);
             patches::note_mod_item($key, &item, <$T>::radiant_with_config);
