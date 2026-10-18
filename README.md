@@ -115,7 +115,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
 | **Sheen** | 650G | +15% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 30 - 85 (based on level) bonus physical damage on-hit (1.5 second cooldown, starting after using the empowered attack). |
 | **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+10% MS | — |
-| **Spirit Stone** | 400G | +200 HP<br>+20 AP | Butcher: Against monsters, deal 10% bonus magic damage and restore health equal to 2% of your damage dealt. |
+| **Spirit Stone** | 400G | +200 HP<br>+25 AP | Butcher: Against monsters, deal 10% bonus magic damage and restore health equal to 2% of your damage dealt. |
 | **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Verdant Barrier** | 400G | +35 AP<br>+25 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
