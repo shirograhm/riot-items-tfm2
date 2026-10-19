@@ -23,7 +23,7 @@ impl Morellonomicon {
                 &["radiant_morellonomicon"],
             ),
             price: 650,
-            hp: 100,
+            hp: 200,
             magic_power: 60,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
@@ -35,7 +35,7 @@ impl Morellonomicon {
         Self {
             meta: ItemMeta::radiant("radiant_morellonomicon", &["morellonomicon"]),
             price: 950,
-            hp: 200,
+            hp: 300,
             magic_power: 95,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,

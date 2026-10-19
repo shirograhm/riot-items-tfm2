@@ -1,75 +1,15 @@
-//! Solo-rank match history: makes the item row match the configured slot count.
+//! Solo-rank match history's item row.
 //!
-//! # The override, with six slots
+//! The 5th and 6th slots put six-item records into solo rank, and the game
+//! looks up `item.item_slot{i}` for each owned item, so a row short of slots
+//! takes the whole tab down. `mod.override_info` remaps
+//! `solo_rank_component/view_slot` to a copy of 0.6.0's with
+//! `item_slot4`/`item_slot5` added, compacted to fit the row; rebase it onto
+//! vanilla after any game update that touches the row.
 //!
-//! The mod's 5th and 6th item slots put six-item records into solo rank, and
-//! the game asks this row for `item.item_slot{i}` once per owned item — so a
-//! four-slot row would take the tab down (see below). `mod.override_info`
-//! remaps `solo_rank_component/view_slot` to a copy of 0.6.0's own file
-//! with `item_slot4`/`item_slot5` added. It is 0.6.0's styling, compacted to fit
-//! the 1600px row with no other column moving: slots 29 -> 26px, icons 24 ->
-//! 22px, gaps 4 -> 2px (`#item` 128 -> 166px), and `#replay_wrap` 79 -> 41px to
-//! pay for it. Rebase it onto vanilla after any game update that touches the
-//! row. [`sync`] still does nothing at more than three slots.
-//!
-//! # Inert as of game 0.6.0 (release) — and its override is gone
-//!
-//! Everything below describes a choice between a three- and a four-slot
-//! layout. 0.6.0 settled it: the base game's own `view_slot.ui` ships four
-//! item slots, so the mod's override of it was deleted and
-//! `mod.override_info` no longer remaps it. Keeping it would have forced this
-//! mod's older styling (40px slots, rounding 6, 23px icons) over the row 0.6.0
-//! redesigned (29px, rounding 8, 24px icons).
-//!
-//! [`sync`] returns on its first line whenever the count is four, and
-//! `build_config::picker_slots` now answers four unconditionally, so this
-//! module does nothing but one atomic load per frame. It is kept, rather than
-//! deleted, because it is the whole of the 3-slot restoration and costs
-//! nothing — if a future game build ever makes the count variable again, it
-//! works as written. The `VANILLA_*` constants below are 0.5.x's geometry and
-//! would need re-measuring first.
-//!
-//! The historical reasoning is preserved as written:
-//!
-//! # Why the layout cannot just be the right one
-//!
-//! `ui/layout/solo_rank_component/view_slot.ui` is an asset override, and
-//! `mod.override_info` is static JSON the loader reads before this code runs.
-//! There is no way to pick a different layout per `4items.cfg` value, so the
-//! shipped layout has to be one of the two — and which one is not a free choice.
-//!
-//! `solo_rank_ui.rs` does not look up `item_slot0`/`1`/`2` as literals. The exe
-//! holds only the prefix `item.item_slot` and the suffix `.icon` (`0x3447ed1`
-//! and `0x3447ee1` in the 0.5.5 build) and formats them with the item's index,
-//! so it asks for exactly as many slot nodes as the athlete has items. A
-//! four-item record against a three-slot layout fails the lookup and takes the
-//! whole tab with it:
-//!
-//! ```text
-//! [main_ui] failed to create main tab: Solorank
-//! ```
-//!
-//! Four items are reachable here because `slots = 4` byte-patches the game's own
-//! buy resolver and `run_tick_ext` process-wide, and `FIXB` deliberately injects
-//! into background sims scoped by `is_my_athlete` — which is precisely who plays
-//! solo-rank matches.
-//!
-//! So the shipped layout declares **four** slots always. That direction cannot
-//! break: a fourth node nobody asks for is an empty box, whereas a missing
-//! fourth node nobody shipped is a dead tab. This module pays for that choice by
-//! restoring the vanilla three-slot look at runtime when the config says three.
-//!
-//! The consequence worth stating plainly: **if this module never runs, the tab
-//! still works.** It is cosmetics on top of a layout that is already safe in
-//! both modes, which is the whole reason the split is this way round and not the
-//! other.
-//!
-//! # Inert in 4-slot mode
-//!
-//! [`sync`] returns on its first line when the count is four, because the
-//! shipped layout already *is* the four-slot geometry. Nothing walks, nothing is
-//! written, and the per-frame cost is one atomic load. Only 3-slot users pay for
-//! any of this.
+//! [`sync`] restores a three-slot look and only runs while
+//! `build_config::picker_slots` is 3, which it never is now. It is kept in case
+//! the count becomes configurable again; the `VANILLA_*` geometry is 0.5.x's.
 
 use std::sync::Mutex;
 
@@ -77,10 +17,8 @@ use mod_api_stable::*;
 
 use crate::build_config::picker_slots;
 
-// The node every item block carries in the shipped layout, and the one the
-// vanilla three-slot look has to put away. Its presence is also what marks a
-// node as an item block during the walk — the row has no other name worth
-// matching on, and `item` alone is far too common a name to trust.
+// The slot the three-slot look puts away. A node with this child is an item
+// block, since the row has no better name to match on.
 const SLOT3: &str = "item_slot3";
 
 // Vanilla geometry, restored onto slots 0/1/2 when the config says three.
@@ -89,36 +27,18 @@ const VANILLA_SLOT: u32 = 40;
 const VANILLA_ICON: u32 = 32;
 const VANILLA_ROUNDING: u32 = 8;
 
-// Gap between slots while three are shown, and the one number here that is not
-// vanilla's (which is 4px).
-//
-// It has to fit whether or not the engine's `LeftToRight` skips an invisible
-// child, because that is not something this mod gets to find out from a layout
-// file. The block is 128px wide and slot 3 is set to zero width, so:
-//
-// * child skipped:     3*40 + 2*2 = 124  <= 128
-// * child not skipped: 3*40 + 3*2 +0 = 126  <= 128
-//
-// At vanilla's 4px the second case is 132px and overflows the block, which
-// would push `replay_wrap` off the end of a row that has no spare pixels
-// anywhere. 2px fits both, and the difference is not visible.
+// Gap between slots while three are shown (vanilla's is 4px): 2px keeps the row
+// inside the 128px block whether or not the engine's `LeftToRight` skips the
+// hidden fourth slot.
 const THREE_SPACING: u32 = 2;
 
-// How often the tree is walked, in frames. Between walks the cached blocks are
-// re-asserted every frame, which is a handful of writes.
-//
-// The walk is the expensive half and the rows it looks for only appear when the
-// player expands an athlete, so a walk per frame would spend its whole budget
-// finding nothing. The cost of the throttle is that a freshly expanded row
-// shows the four-slot geometry for up to this many frames (about a quarter of a
-// second at 60fps) before it snaps to three.
+// How often the tree is walked, in frames; between walks the cached blocks are
+// re-asserted. A newly expanded row shows the wide look for up to this many
+// frames.
 const WALK_EVERY: u32 = 15;
 
-// How deep below the solo-rank screen root an item block is allowed to be.
-//
-// The chain is roughly screen -> list -> scroll contents -> athlete -> view ->
-// row -> item, and this leaves room to spare without letting a wrong root turn
-// the walk loose over the whole tree.
+// How deep below the solo-rank screen an item block may be: room to spare
+// without letting a wrong root loose on the whole tree.
 const MAX_DEPTH: u32 = 8;
 
 #[derive(Default)]
@@ -139,18 +59,9 @@ fn with_state<T>(f: impl FnOnce(&mut State) -> T) -> Option<T> {
     Some(f(guard.get_or_insert_with(State::default)))
 }
 
-// Finds the solo-rank screen among the children of `main.contents`.
-//
-// Matched by name rather than written down as a constant: every screen the mod
-// already addresses is one it also ships a layout override for, so its path is
-// known from the override. This screen is not — the tab is built by game code
-// from `solo_rank_component/*` with no top-level layout of its own, and a
-// guessed constant that is wrong fails silently and leaves the rows untouched
-// with nothing to show for it.
-//
-// The tab is `Solorank` in the log, the runner is `solo_rank_ui` and the assets
-// are `solo_rank_component`, so the engine is inconsistent about the
-// underscore. Both spellings are accepted for that reason.
+// Finds the solo-rank screen among `main.contents`' children, by name: game
+// code builds it with no layout of its own to take a path from. Names with and
+// without the underscore are accepted, since the engine uses both.
 fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
     ctx.ui_child_names("main.contents")
         .into_iter()
@@ -161,11 +72,8 @@ fn find_screen(ctx: &StableClient<'_>) -> Option<String> {
         .map(|name| format!("main.contents.{name}"))
 }
 
-// Collects every item block under `root`, breadth-first.
-//
-// A block is any node with an `item_slot3` child. That test is what keeps this
-// honest about a tree whose shape is game code's business: it does not care how
-// the athlete list nests, only that it recognises the thing it came to change.
+// Collects every item block under `root`, breadth-first: any node with an
+// `item_slot3` child, however the athlete list nests.
 fn find_blocks(ctx: &StableClient<'_>, root: &str) -> Vec<String> {
     let mut found = Vec::new();
     let mut level = vec![root.to_string()];
@@ -222,14 +130,12 @@ fn apply_three(ctx: &mut StableClient<'_>, block: &str) {
     ctx.ui_set_visible(&slot3, false);
 }
 
-// Per-frame entry point, called from the mod's one client hook.
-//
-// Ordered before that hook's own strategy-screen early return, since this
-// screen is not that one.
+// Per-frame entry point, called before the client hook's strategy-screen early
+// return.
 pub fn sync(ctx: &mut StableClient<'_>) {
     if picker_slots() != 3 {
-        // The shipped layout is already correct for four slots. This is the
-        // author's own configuration, so the common path costs one atomic load.
+        // The shipped layout already holds every slot; only a three-slot count
+        // needs this.
         return;
     }
 
@@ -277,10 +183,8 @@ pub fn sync(ctx: &mut StableClient<'_>) {
         return;
     }
 
-    // Between walks, re-assert what is already known. Game code owns these nodes
-    // and drives them from its own idea of the row, so a one-shot write is not
-    // guaranteed to survive — the same reason the strategy screen's properties
-    // are re-asserted rather than set once on entry.
+    // Between walks, re-assert what is known: game code drives these nodes, so
+    // a one-shot write may not survive.
     for block in &blocks {
         if ctx.ui_exists(block) {
             apply_three(ctx, block);

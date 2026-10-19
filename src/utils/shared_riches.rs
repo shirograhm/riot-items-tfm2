@@ -1,18 +1,10 @@
-//! Shared Riches: a little gold at a steady rate for whoever holds the item.
-//! World Atlas pays it, and so does everything it grows into (Runic Compass
-//! and the finished support items); each item owns its amount and its interval.
+//! Shared Riches: gold at a steady rate for whoever holds World Atlas or
+//! anything it grows into; each item owns its amount and interval.
 //!
-//! The gold comes in whether the carrier is alive or not: the tooltip promises
-//! gold every so many seconds, not every so many seconds alive. An item cannot
-//! keep that promise from its own `update`, which the engine does not run for
-//! a dead carrier, so the paying is done from the match hook
-//! ([`crate::sunfire::MatchHooks`]), which runs every tick whoever is alive.
-//!
-//! It goes by the match clock, which leaves nothing to keep per item or per
-//! match: an item that pays every five seconds pays each time the clock
-//! reaches another five, to every player holding it at that moment. The first
-//! payment after a purchase can therefore come sooner than a full interval,
-//! and an upgrade does not start the wait over.
+//! Paid from the match hook ([`crate::sunfire::MatchHooks`]), since an item's
+//! `update` does not run for a dead carrier, and by the match clock: each
+//! holder is paid whenever the clock reaches another interval, so the first
+//! payment can come early and an upgrade does not restart the wait.
 
 use mod_api_stable::StableSim;
 

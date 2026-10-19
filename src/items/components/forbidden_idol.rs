@@ -6,17 +6,15 @@ use mod_api_stable::*;
 pub struct ForbiddenIdol {
     price: usize,
     hp: i32,
-    magic_power: i32,
-    skill_cooldown_mult: i32,
+    hp_regen: i32,
 }
 
 impl Default for ForbiddenIdol {
     fn default() -> Self {
         Self {
-            price: 350,
-            hp: 100,
-            magic_power: 10,
-            skill_cooldown_mult: 10,
+            price: 150,
+            hp: 200,
+            hp_regen: 2,
         }
     }
 }
@@ -24,7 +22,7 @@ impl Default for ForbiddenIdol {
 impl ForbiddenIdol {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
-        apply_config!(item, cfg, [price, hp, magic_power, skill_cooldown_mult]);
+        apply_config!(item, cfg, [price, hp, hp_regen]);
         item
     }
 }
@@ -66,18 +64,13 @@ impl StableItem for ForbiddenIdol {
     fn stat(&self) -> BuffV1 {
         BuffV1 {
             hp: self.hp,
-            magic_power: self.magic_power,
-            skill_cooldown_mult: self.skill_cooldown_mult,
+            hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![
-            ItemTagV1::Hp,
-            ItemTagV1::Ap,
-            ItemTagV1::CooltimeReduce,
-        ]
+        vec![ItemTagV1::Hp, ItemTagV1::HpRegen]
     }
 
     fn category(&self) -> ItemCategoryV1 {

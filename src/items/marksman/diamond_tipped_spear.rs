@@ -7,10 +7,8 @@ use crate::{apply_config, apply_tiered_adaptive_force, ItemMeta, DISTANCE_UNITS_
 pub struct DiamondTippedSpear {
     meta: ItemMeta,
     adaptive_force_buff: &'static str,
-    // The previous tier's buff and the Adaptive Force it grants. When the holder
-    // already carries that item, this one only tops up the difference instead of
-    // granting its full amount. `None` on the base variant, which has no earlier
-    // Adaptive Force tier to stack with.
+    // The previous tier's buff and its Adaptive Force: on a holder of that item
+    // this one only tops up the difference. `None` on the base variant.
     upgrades_from: Option<(&'static str, i32)>,
     price: usize,
     attack_speed_mult: i32,
@@ -31,7 +29,7 @@ impl DiamondTippedSpear {
             adaptive_force_buff: "diamond_tipped_spear_adaptive_force",
             upgrades_from: None,
             price: 750,
-            attack_speed_mult: 35,
+            attack_speed_mult: 30,
             adaptive_force: 30,
             skill_cooldown_mult: 10,
             effect_max_percent_bonus: 25.0,
@@ -45,7 +43,7 @@ impl DiamondTippedSpear {
             adaptive_force_buff: "radiant_diamond_tipped_spear_adaptive_force",
             upgrades_from: Some(("diamond_tipped_spear_adaptive_force", 30)),
             price: 1150,
-            attack_speed_mult: 60,
+            attack_speed_mult: 55,
             adaptive_force: 50,
             skill_cooldown_mult: 10,
             effect_max_percent_bonus: 25.0,

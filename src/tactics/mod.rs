@@ -1,17 +1,17 @@
 //! The native half of the mod: what the stable mod API cannot express.
-//! ===========================================================================
+//!
 //! - `own_team_only`: the buy and spawn detours hold the athlete pointer, so
 //!   they can restrict the player's pins to the player's own athletes.
 //! - The 5th and 6th item slots: the buy detour grows every build past the
 //!   game's four, and four byte patches let the engine buy and draw them.
+//! - Smart Builds rule 18: the route picker's detour takes the components
+//!   `crate::route_choice` prefers in place of the game's random ones.
 //!
 //! Everything here is pinned to one exact game build (`check_game_version`):
 //! hardcoded addresses, byte patches and struct offsets, re-derived every game
 //! update.
-//! ===========================================================================
 #![allow(dead_code, unused_imports, unused_variables)]
 
-// The client half of what the classic `Scene`/`ClientDatabase` used to give.
 use mod_api_stable::{RecordKindV1, StableClient};
 use std::collections::HashMap;
 use std::fs;
@@ -29,10 +29,8 @@ const TRACE_FILES: bool = false;
 type HMODULE = isize;
 type DWORD = u32;
 type BOOL = i32;
-// The same kernel32 calls are declared again elsewhere in the crate with
-// pointers where these take and return pointer-sized integers. On 64-bit
-// Windows the two are passed the same way, so the declarations differ in
-// spelling only and the lint that compares them has nothing to report.
+// Declared elsewhere in the crate with pointer types; on 64-bit Windows both
+// pass the same way.
 #[allow(clashing_extern_declarations)]
 #[link(name = "kernel32")]
 extern "system" {
@@ -116,8 +114,8 @@ unsafe fn writable(addr: usize, len: usize) -> bool {
     }
     addr + len <= mbi.base + mbi.region_size
 }
-// * Stability: verify the function pointer really points at an executable code page (before a shadow-call). "Readable" alone
-//   still leaves a DEP AV on a non-executable page -> check PAGE_EXECUTE_*. Pre-empts the AV that VEH cannot catch.
+// Whether `p` is on a committed executable page. A readable but non-executable
+// page still faults under DEP, which the VEH cannot catch.
 unsafe fn code_ptr_ok(p: usize) -> bool {
     if p < 0x10000 {
         return false;
@@ -158,15 +156,10 @@ struct ExceptionPointers {
 }
 type VehHandler = extern "system" fn(*mut ExceptionPointers) -> i32;
 
-// * 2026-07-22 switch: global SEH[8] + spinlock -> **per-thread TLS**. (justified by perf measurements)
-//   Before: safe_copy shared one global state, so `while SEH_BUSY.swap(true) { spin_loop() }`
-//   **serialized every rayon worker**. The buy early-exit path calls safe_read_u64 on every call
-//   (6.89M times in 130.7s), so spin contention scaled with worker count = one of the mod's biggest costs.
-//   The VEH handler runs **on the very thread that faulted**, so reading its own TLS is enough
-//   => no lock needed, and no tid comparison needed either (TLS is thread-scoped by construction).
-//   WARNING: keep the VEH safety requirements: Cell array + `const` init + **no Drop** => no lazy-init flag and no
-//     TLS destructor registration = there is no path that allocates, locks or panics inside the handler (rule §3).
-//   Layout is identical to the old [u64;8] (asm offsets unchanged). idx1 (formerly tid) is left unused.
+// Per-thread SEH state, so guarded reads on the sim workers never contend: the
+// VEH runs on the faulting thread and reads its own copy. `Cell`, `const` init
+// and no `Drop` keep the handler free of allocation, locks and panics; slot 1
+// is unused.
 #[repr(C)]
 struct SehTls {
     v: [core::cell::Cell<u64>; 8],
@@ -195,8 +188,8 @@ extern "system" fn seh_veh(p: *mut ExceptionPointers) -> i32 {
         if (*rec).code != 0xC0000005 {
             return CONTINUE_SEARCH;
         }
-        // * TLS switch: this handler runs on the faulting thread, so its own TLS *is* that thread's state
-        //   (the old tid comparison became unnecessary). try_with = silently pass if TLS is being destroyed (no-panic requirement).
+        // `try_with`: pass the fault on if this thread's TLS is being torn
+        // down, since the handler must not panic.
         let Ok(g) = SEH_T.try_with(|s| s.v.as_ptr() as *mut u64) else {
             return CONTINUE_SEARCH;
         };
@@ -214,7 +207,7 @@ extern "system" fn seh_veh(p: *mut ExceptionPointers) -> i32 {
         *((ctx + 0xF8) as *mut u64) = *g.add(2); // Rip = land_rip
         *((ctx + 0x98) as *mut u64) = *g.add(3); // Rsp = land_rsp
         *((ctx + 0xA0) as *mut u64) = *g.add(4); // Rbp = land_rbp
-        *g.add(7) += 1; // fault counter (now per-thread)
+        *g.add(7) += 1; // fault counter
         CONTINUE_EXECUTION
     }
 }
@@ -231,7 +224,6 @@ unsafe fn safe_copy(dst: *mut u8, src: *const u8, len: usize) -> bool {
     if !SEH_INSTALLED.load(Ordering::Relaxed) {
         return false;
     }
-    // * No lock: state is per-thread, so workers do not contend (the old SEH_BUSY spinlock is gone).
     let g = seh_ptr();
     let mut ok: u64;
     core::arch::asm!(
@@ -283,7 +275,6 @@ unsafe fn safe_read_bytes(addr: usize, len: usize, out: &mut Vec<u8>) -> bool {
 // ===========================================================================
 //  Logging / paths
 // ===========================================================================
-// Game exe path (GetModuleHandleW(NULL) = main exe). Never hardcode - derive the path dynamically.
 fn exe_path() -> Option<PathBuf> {
     let mut buf = [0u16; 1024];
     let n = unsafe {
@@ -298,16 +289,8 @@ fn exe_path() -> Option<PathBuf> {
     }
     Some(PathBuf::from(String::from_utf16_lossy(&buf[..n as usize])))
 }
-// Where this half's diagnostic files live.
-//
-// Was `<game>/mods/tfm2_item_tactics`. After the merge there is no such folder:
-// the code ships inside the host mod, so it reads and writes beside the host's
-// DLL. `config::dll_dir` is used rather than `game_root()/mods/<id>` because
-// the host mod may be installed from the Steam Workshop, in which case its
-// folder is under `steamapps/workshop/content/<appid>/<published_file_id>/` —
-// outside the game directory, and named for a published file id rather than a
-// mod id. The old expression resolves to a path that simply does not exist for
-// those users, which silently disabled every file this reads.
+// Where this half's diagnostic files live: beside the host DLL, which may be a
+// Workshop folder outside the game directory.
 fn mod_dir() -> Option<PathBuf> {
     crate::config::dll_dir()
 }
@@ -319,7 +302,8 @@ static MOD_REGISTRY: Mutex<Vec<String>> = Mutex::new(Vec::new()); // idx i -> ke
 static MOD_FINALS: Mutex<Vec<u64>> = Mutex::new(Vec::new()); // mod item IDs whose next_tier is empty
 static MODITEMS_DONE: AtomicBool = AtomicBool::new(false);
 
-// The 30 vanilla JSON keys (order = ID 0..29). A fingerprint for validating the in-memory master list.
+// The game's 30 item keys in id order (0..29); ids from 30 on are
+// `MOD_REGISTRY`'s.
 const VANILLA_KEYS: [&str; 30] = [
     "iron_blade",
     "soldiers_longsword",
@@ -353,38 +337,23 @@ const VANILLA_KEYS: [&str; 30] = [
     "giants_horn_shard",
 ];
 
-// Fills `MOD_REGISTRY`/`MOD_FINALS` from the game's own item catalog, which the
-// host mod's item-build detour is handed as `&Vec<Box<dyn ItemInfo>>`.
-//
-// The catalog is the list the game is actually using: it arrives typed, and
-// it needs no base address at all.
-//
-// `catalog` is `(key, next_tier)` per entry, in catalog order.
-//
-// # Item ids
-//
-// `item_id_to_key` defines the id space as `0..30` vanilla (`VANILLA_KEYS`) and
-// `30 + i` for `MOD_REGISTRY[i]`. Those ids stay *inside* this module — the
-// injection path turns an id into a key and then resolves the key against the
-// live catalog by name, so all that matters is that ids and `MOD_REGISTRY`
-// agree with each other. Catalog order is therefore fine even though it is not
-// the game's mod-item order.
-// Whether the mod-item registry has already been built, so a caller can skip
-// assembling the catalog argument. The registry is built once per process; the
-// hook that supplies it fires once per team per match, background league
-// fixtures included, and building that argument is two allocations per item.
+// Whether the mod-item registry is built, so the hook can skip assembling the
+// catalog argument (two allocations per item, for every team of every match).
 pub(crate) fn item_catalog_recorded() -> bool {
     MODITEMS_DONE.load(Ordering::Relaxed)
 }
 
+// Fills `MOD_REGISTRY`/`MOD_FINALS` from the catalog the item-build detour is
+// handed, `(key, next_tier)` per entry. Ids are `0..30` vanilla and `30 + i`
+// for `MOD_REGISTRY[i]`, used only inside this module (injection resolves keys
+// by name), so catalog order is fine.
 fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     if catalog.is_empty() || MODITEMS_DONE.swap(true, Ordering::Relaxed) {
         return;
     }
 
-    // Pass 1: every key that something upgrades into. `next_tier` is read across
-    // the WHOLE catalog, vanilla included — a mod item can be the upgrade target
-    // of a vanilla component.
+    // Pass 1: every key something upgrades into, vanilla included, since a mod
+    // item can be a vanilla component's upgrade.
     let built_into: std::collections::HashSet<&str> = catalog
         .iter()
         .flat_map(|(_, next)| next.iter().map(String::as_str))
@@ -399,11 +368,9 @@ fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
             continue;
         }
         let id = 30 + registry.len() as u64;
-        // Pass 2: final = nothing to upgrade into, AND something upgrades into
-        // it. Both halves matter — "no next tier" alone also accepts a base
-        // component nothing builds into, which is not a legal build goal.
-        // Upgraded boots pass both tests too, but they are no build goal for
-        // an automatic 4th-6th pick; Smart Builds places them.
+        // Pass 2: a final has no next tier and something builds into it, which
+        // rules out lone components. Upgraded boots pass too, but Smart Builds
+        // places those.
         if next_tier.is_empty()
             && built_into.contains(key.as_str())
             && !crate::smart_builds::is_boots(key)
@@ -415,12 +382,12 @@ fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
 
     *MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()) = registry;
     *MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()) = finals;
-    // `auto_cands` memoizes on first call and never reconsiders, so a list built
-    // before this ran would pin the 4th item to vanilla for the whole session.
+    // `auto_cands` memoizes on first call, so drop any list built before the
+    // registry.
     *AUTO_CANDS.lock().unwrap_or_else(|e| e.into_inner()) = None;
 }
 
-// All dynamic final items = (game ID, key). Map MOD_FINALS (empty next_tier) through MOD_REGISTRY to keys.
+// Every mod final item as (game id, key).
 fn mod_final_opts_all() -> Vec<(u64, String)> {
     let finals = MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner());
     let reg = MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner());
@@ -433,207 +400,52 @@ fn mod_final_opts_all() -> Vec<(u64, String)> {
         .collect()
 }
 
-// Vanilla category (1~6) -> final item game ID. Same conversion as the game's c6 jump table (cat1=AD .. cat6=HP).
-//   WARNING churn: may move if the game's item tree changes (currently 0.4.14). Matches the constants in the game's jump table (0x143441cf4 etc.).
+// Vanilla category (1-6) -> its final's game id, as the game's c6 jump table
+// maps them (cat1 = AD .. cat6 = HP).
 const VANILLA_FINAL: [u64; 6] = [4, 24, 9, 14, 19, 29];
 
 // ===========================================================================
-//  Phase 2c - live match build injection (mid-function detour in the FUN_140c6c430 candidate loop)
+//  Live match build injection
 // ===========================================================================
 
-const TRAMPOLINE_DEBUG_PASSTHROUGH: bool = false; // * diagnostic: stub = original instructions + return only (no capture/call)
+const TRAMPOLINE_DEBUG_PASSTHROUGH: bool = false; // diagnostic: the stub only runs the original instructions
 
-static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not captured (scope not applied = fallback)
-                                                             // ═══════════════════════════════════════════════════════════════════════════
-                                                             //  ** My-team detection v15 (07-19, ported from the ai_adjust team_gate pattern) - no scene tag9 needed.
-                                                             //    db.player_team_id() -> db.team(tid).last_starting (the 5 starters' athlete_ids) -> publish as a HashSet.
-                                                             //    On the sim side, read athlete+0x810 (athlete_id) and test membership = my team.
-                                                             //    => Also valid at spawn (SelectLineup, before tag9) -> removes the "my team = 0" bottleneck of the v14 spawn commit hook.
-                                                             //    WARNING A2 static conclusion: the sim layer has no team_id at all (0 getters across all 78 provider vtable slots).
-                                                             //      Scanning for team_id/match_id in the sim is a dead end (do not retry). athlete_id membership is the only path.
-                                                             //    WARNING offset: 0.5.1 = +0x810. (The old 0x698 is 0.4.x STALE - still present in the ai_adjust source, but that is a separate TODO.
-                                                             //      0x6a8 is not athlete_id either (measured all zeros; a mislabel). Use only 0x810.)
-                                                             // ═══════════════════════════════════════════════════════════════════════════
-                                                             // * Verified on 0.5.3 (2026-07-29): the 3-consecutive-store idiom of the athlete ctor 0x22cb050 -> **0xed32b0** is instruction-identical
-                                                             //   (`mov [rsi+0x810],reg` / `+0x818,0` / `+0x820,rax`, reg <- rdx = arg2) => **+0x810 kept**.
-                                                             //   Cross-checks = the roster walk 0x1740380 `add rbx,0x8d0` -> `mov r12,[rbx+0x810]` / VIEW signature 0xee9070
-                                                             //   (`[rcx+0x840]` array, `[rcx+0x848]` count, `imul rcx,r9,0x8d0`) => **stride 0x8d0 kept too**.
-                                                             //   Whole athlete layout confirmed unchanged: champ String +0x418/0x420/0x428 - items Vec +0x448/0x450/0x458
-                                                             //   - build Vec +0x490/0x498/0x4a0 - id +0x810 - team +0x820 - gold +0x888 - position (dword) +0x8b0 - copy size 0x8b8.
-                                                             // 0.5.4 = 0x800 (0.5.3 was 0x810). The roster walk that reads it is the SAME function either side
-                                                             // (0x1740300 -> 0x17ce980, 286 bytes both) and reads it at the SAME two positions, +0x2d and +0x97.
-                                                             // ═══ 0.5.5 athlete layout (2026-08-11) ═════════════════════════════════════════════════════════════════════
-                                                             // The struct moved again, and **not by one uniform amount** — it grew 0x60 twice, in two different places, so
-                                                             // nothing here may be obtained by shifting the 0.5.4 values by a single delta. Fields below 0x518 moved +0x60;
-                                                             // fields from 0x800 up moved +0x120.
-                                                             //
-                                                             //   champ ptr  0x410 -> 0x470     items ptr 0x440 -> 0x4a0     build cap 0x480 -> 0x4e0     id     0x800 -> 0x920
-                                                             //   champ len  0x418 -> 0x478     items len 0x448 -> 0x4a8     build ptr 0x488 -> 0x4e8     team   0x810 -> 0x930
-                                                             //                                                              build len 0x490 -> 0x4f0     gold   0x878 -> 0x998
-                                                             //   read guard 0x8a8 -> 0x9c8     stride    0x8c0 -> 0x9e0
-                                                             //   position   0x8b0 -> 0x9c0  (dword, sits 8 below the read guard in both layouts)
-                                                             // The position row was missing from this table until 2026-09-08, and the helpers that read it were still on
-                                                             // 0x8b0 that whole time — see `O_ATHLETE_POS`, which is now the only place any of these are written.
-                                                             //
-                                                             // Every one of these comes from a function established to walk the athlete *by call contract* and then shown to
-                                                             // be a clean recompile — same .pdata size, same instruction count, zero mnemonic mismatches — so the offsets are
-                                                             // read out of a 1:1 correspondence rather than pattern-matched:
-                                                             //
-                                                             //   * `buy_item` (r8 = athlete) and its three callees give items ptr/len, build ptr/len and gold.
-                                                             //   * the 286-byte roster walk (0x17ce980 -> 0x18ab160, identical at every instruction offset) gives id and,
-                                                             //     from its `add rbx,imm`, the stride.
-                                                             //   * two further functions (0xf059a0 -> 0xf16ef0, 0x13bd510 -> 0x14b4d40) read the champ String and the id
-                                                             //     through the *same base register*, which is what makes their 0x410/0x418 the athlete's and not another
-                                                             //     struct's; the second also gives team directly.
-                                                             //   * build cap and the read guard are the only two taken by bracketing, and both are bracketed tightly by
-                                                             //     fields with equal deltas on either side (0x448/0x488 both +0x60; 0x8a0/0x8c0 both +0x120), which offsets
-                                                             //     cannot escape without reordering the struct.
-                                                             //
-                                                             // The trap this avoids is real: four plausible-looking candidates found by scanning for the 0x410/0x418/0x448
-                                                             // displacements turned out to be walking unrelated structs — their offsets did not move at all between builds.
-                                                             // ═══ 0.6.0_beta1 athlete layout (2026-08-27) ═══════════════════════════════════════════════════════════
-                                                             // The struct moved again, and — as in 0.5.5 — **not by one uniform amount**: it grew in two places, so no
-                                                             // value here may be obtained by shifting a 0.5.7 value by a single delta. Fields from the champ String up to
-                                                             // ~0x548 moved **+0x30**; fields from the id up moved **+0x90**.
-                                                             //
-                                                             //   champ ptr  0x470 -> 0x4a0     items ptr 0x4a0 -> 0x4d0     build cap 0x4e0 -> 0x510     id     0x920 -> 0x9b0
-                                                             //   champ len  0x478 -> 0x4a8     items len 0x4a8 -> 0x4d8     build ptr 0x4e8 -> 0x518     team   0x930 -> 0x9c0
-                                                             //                                                              build len 0x4f0 -> 0x520     gold   0x998 -> 0xa28
-                                                             //   position   0x9c0 -> 0xa50     read guard 0x9c8 -> 0xa58     stride    0x9e0 -> 0xa70
-                                                             //
-                                                             // Every one comes from a 1:1 instruction correspondence, never from pattern-shifting:
-                                                             //   * `buy_item` (r8 = athlete) + its three callees — all four pair instruction-isomorphic at IDENTICAL size
-                                                             //     (230/691/871/856) — give items ptr/len, build ptr/len and gold. NOTE they only pair under `--loose`:
-                                                             //     the displacements are exactly what changed, which is itself the signal that the struct moved.
-                                                             //   * the 286-byte roster walk (0x18c84b0 -> 0x1a41030, 74 insns both) gives id and, from `add rbx,imm`, the stride.
-                                                             //   * champ ptr/len, team and position are confirmed by **three** independent athlete walkers that read them
-                                                             //     through the same base register as the id — 0x18cffe0->0x1a48f10, 0x1076c40->0x118c260, 0xf126a0->0xff53b0 —
-                                                             //     each pairing isomorphic. In all three the dword read straight after id+team is the position: 0x9c0 -> 0xa50.
-                                                             //   * build cap and the read guard are the only two taken by bracketing, and both are bracketed tightly by
-                                                             //     fields with equal deltas on either side (0x4a8/0x4e8 both +0x30; 0x9c0/0x9e0 both +0x90).
-                                                             //
-                                                             // The 0.5.5 trap repeated exactly: four plausible candidates found by scanning for the 0x470/0x478 displacements
-                                                             // were walking unrelated structs and showed **zero** delta. A candidate whose offsets do not move is disproof.
-                                                             // 0.5.6 and 0.5.7 = 0x920, unchanged and **measured each time**: the 286-byte roster walk pairs
-                                                             // instruction-isomorphic with zero differing displacements, and in 0.5.7 it still reads the id as
-                                                             // `mov r14,[rdx+0x920]` at 0x18c84dd, immediately before `add rbx,0x9e0` (= ATH_STRIDE).
-                                                             // 0.5.8 = 0x920, unchanged and **measured again, not carried forward**: the 286-byte roster walk pairs
-                                                             // clean (0x18c84b0 -> 0x191e560, zero differing displacements) and in the new body still reads the id as
-                                                             // `mov r14,[rdx+0x920]` at 0x191e58d, immediately before `add rbx,0x9e0` (= ATH_STRIDE) at 0x191e5aa.
-const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3..0.7.0-beta, re-measured on 0.7.0-beta: the 313-byte roster walk pairs clean (0x1b72360 -> 0x1c87df0) and still reads `mov rax,[rdx] / mov r14,[rax+0x7f0]` (0.6.0-beta2..0.6.2 0x9f0, 0.6.0-beta was 0x9b0, 0.5.5..0.5.8 0x920, 0.5.4 0x800, 0.5.3 0x810)
+static PLAYER_TEAM_ID: AtomicU64 = AtomicU64::new(u64::MAX); // u64::MAX = not captured
+const O_ATHLETE_ID: usize = 0x7f0; // 0.6.3 and 0.7.0-beta (0.6.2: 0x9f0)
 
-/// The rest of the athlete fields this module reads, as constants rather than
-/// literals — which is the whole point of them existing.
-///
-/// # Why they were added (2026-09-08)
-///
-/// The 0.5.5 layout migration above updated the buy detour, which spells these
-/// offsets out inline, and **missed every helper below it**: `athlete_lineup_at`,
-/// `ath_champ_name`, `ath_side_champ`, `build_lineup_ctx` and `valid_ps_elem`
-/// were still reading the 0.5.4/0.5.3 layout — champion at `0x420/0x428`, team
-/// at `0x820`, position at `0x8b0` — three game versions later. They fail
-/// silently: `athlete_lineup_at` validates `team <= 1` against whatever now sits
-/// at `0x820`, so the roster scan finds bogus bounds and `build_lineup_ctx`
-/// hands `compute_auto_4th_id` a lineup of `9999`s. The auto 4th-item pick has
-/// been scoring on that since 0.5.5. (All of them went on 2026-10-07, with the
-/// automatic 4th pick and the probes they served.)
-///
-/// A named constant is what stops the next migration repeating it: one place to
-/// change, and a grep for the name finds every reader.
-///
-/// # Measured, on the shipped 0.5.8 executable
-///
-/// One site carries all four fields — id, team, position, champion — in eight
-/// instructions (`0x1818df0 +0xf1`, base `r13`):
-///
-/// ```text
-///   movdqu xmm6, [r13+0x920]        id, as the 0x920/0x928 pair
-///   mov    rbx,  [r13+0x930]        team
-///   mov    eax,  dword [r13+0x9c0]  position
-///   mov    rdi,  [r13+0x478]        champion name len
-///   mov    r15,  [r13+0x470]        champion name ptr
-/// ```
-///
-/// Across the whole image: of every function reading both `+0x920` and `+0x930`
-/// through one non-stack base, `+0x9c0` is the *only* dword field any of them
-/// also reads (9 sites in 9 functions; the runner-up has 1). `+0x470`/`+0x478`
-/// dominate the champion String range at 11 and 14 sites. And the 0.5.5 note
-/// above independently pins it: it recorded `read guard 0x8a8 -> 0x9c8`, and the
-/// position sits 8 below the guard in both layouts (`0x8b0` under `0x8a8`,
-/// `0x9c0` under `0x9c8`) — the guard was written down and the position beside
-/// it was not, which is how it went missing.
-///
-/// The buy detour still writes these as literals; it is the hottest path in the
-/// mod and its values are correct, so it was left alone.
-///
-/// # 0.6.0-beta (2026-09-08)
-///
-/// Carried forward from the 0.6.0 athlete layout derived on `game-beta`, whose
-/// note pins the same three fields: champion `0x470 -> 0x4a0`, team
-/// `0x930 -> 0x9c0`, position `0x9c0 -> 0xa50`, id `0x920 -> 0x9b0`, stride
-/// `0x9e0 -> 0xa70`. The two halves of the struct move by different amounts
-/// (`+0x30` low, `+0x90` high), which is why every field is listed rather than
-/// shifted by one delta. Independently corroborated while re-deriving
-/// `SPAWN_RVA`: that function writes the athlete's gold at `[rdx+0x998]` on
-/// 0.5.8 and `[rdx+0xa28]` on 0.6.0, exactly the move the layout note records.
-///
-/// # 0.6.3 (2026-10-06)
-///
-/// The athlete shrank by **0x200 below the champion String**, so every field
-/// this module reads moved by exactly that much, and the roster stopped being
-/// an array of athletes: it is a `Vec` of pointers to them now (the 313-byte
-/// roster walk `0x1b72360` reads `mov rax,[rdx] / mov r14,[rax+0x7f0]` and
-/// steps 8), so there is no stride any more.
-///
-/// Nothing pairs exe2exe this time, strict or loose, so each value is read off
-/// the 0.6.3 spawn function (`SPAWN_RVA`), which makes 0.6.2's reads in 0.6.2's
-/// order: gold `[rdx+0xa68]` -> `[rdx+0x868]`, then through one base register
-/// id `0x9f0` -> `0x7f0`, team `0xa00` -> `0x800`, position `0xa90` -> `0x890`,
-/// champion len/ptr `0x4e8/0x4e0` -> `0x2e8/0x2e0`. The resolver
-/// (`patch_final_gate`'s container, rdx = athlete) gives the build `Vec` at
-/// `[rdx+0x358]/[rdx+0x360]`, the items at `[rax+0x310]/[rax+0x318]` and the
-/// gold again at `[rsi+0x868]`; both spawn callers copy `0x898` bytes, where
-/// 0.6.2's copied `0xa98`.
-///
-/// # 0.7.0-beta (2026-10-07)
-///
-/// Nothing moved, measured rather than carried: `buy_item`, the resolver, the
-/// roster walk and both spawn callers pair with 0.6.3's at identical size with
-/// no differing displacement (`pairdiff --min-disp 0x4 --imm`), and the spawn
-/// function (1818 -> 1754 bytes, changed only away from these reads) still
-/// reads gold, id, team, position and champion len/ptr at the offsets below,
-/// through the same registers. The `Game` reads there are unchanged too
-/// (`[rcx+0x1e30]`, `[rcx+0x1ba0..0x1bb8]`, `[rsi+0x1db8]/[rsi+0x1dc0]`), and
-/// the builders that take the catalog still do `lea rdx,[reg+0x1d98]`.
-const O_ATHLETE_CHAMP_PTR: usize = 0x2e0; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x4e0, 0.6.0-beta was 0x4a0, 0.5.5..0.5.8 0x470, 0.5.4 0x410, 0.5.3 0x420)
-const O_ATHLETE_CHAMP_LEN: usize = 0x2e8; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x4e8, 0.6.0-beta was 0x4a8, 0.5.5..0.5.8 0x478, 0.5.4 0x418, 0.5.3 0x428)
-const O_ATHLETE_TEAM: usize = 0x800; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0xa00, 0.6.0-beta was 0x9c0, 0.5.5..0.5.8 0x930, 0.5.4 0x810, 0.5.3 0x820)
-const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0xa90, 0.6.0-beta was 0xa50, 0.5.5..0.5.8 0x9c0, 0.5.4 0x8b0)
-/// The athlete's owned-item count and its build `Vec` (`{cap, ptr, len}`), the
-/// size of the athlete the spawn callers copy, and the `Game` fields the spawn
-/// detour reads. The detours spelled these out as literals through 0.6.2;
-/// 0.6.3 moved every one, so they are named like the fields above. How each
-/// was measured is in the 0.6.3 notes there and at `SPAWN_RVA`.
-const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x518)
-/// The items `Vec`'s pointer: the word before its length, as the build's is
-/// (`cap, ptr, len`). 0x310 in 0.6.3, where the buy resolver reads the two
-/// together (`[rdx+0x310]`, `[rdx+0x318]`). Elements are 16 bytes, an item
-/// and its vtable, the shape of a catalog entry.
+// The athlete fields this module reads, named so a layout migration finds every
+// reader. Re-derived each update off the spawn function (`SPAWN_RVA`) and the
+// buy resolver; the struct moves by different amounts in different places, so
+// never shift every field by one delta.
+//
+// A candidate reader whose offsets did not move between builds is walking
+// another struct. Since 0.6.3 the roster is a `Vec` of pointers to athletes, so
+// there is no stride.
+const O_ATHLETE_CHAMP_PTR: usize = 0x2e0; // 0.6.3 and 0.7.0-beta (0.6.2: 0x4e0)
+const O_ATHLETE_CHAMP_LEN: usize = 0x2e8; // 0.6.3 and 0.7.0-beta (0.6.2: 0x4e8)
+const O_ATHLETE_TEAM: usize = 0x800; // 0.6.3 and 0.7.0-beta (0.6.2: 0xa00)
+const O_ATHLETE_POS: usize = 0x890; // dword. 0.6.3 (0.6.2: 0xa90)
+// The owned-item count, the build `Vec` (`{cap, ptr, len}`), the size of the
+// athlete the spawn callers copy, and the `Game` fields the spawn detour reads.
+const O_ATHLETE_ITEMS_LEN: usize = 0x318; // 0.6.3 and 0.7.0-beta (0.6.2: 0x518)
+// The items `Vec`'s pointer, the word before its length. Elements are 16 bytes,
+// an item and its vtable, like a catalog entry.
 const O_ATHLETE_ITEMS_PTR: usize = O_ATHLETE_ITEMS_LEN - 8;
-const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x550)
-const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x558)
-const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0x560)
-const ATHLETE_COPY_SIZE: usize = 0x898; // 0.6.3..0.7.0-beta (0.6.0-beta2..0.6.2 0xa98)
-const O_GAME_PROVIDER: usize = 0x1ba0; // 0.6.3..0.7.0-beta (0.5.3..0.6.2 0x1dc0)
-const O_GAME_CATALOG_PTR: usize = 0x1da0; // 0.6.3..0.7.0-beta (through 0.6.2 0x1fd0)
-const O_GAME_CATALOG_LEN: usize = 0x1da8; // 0.6.3..0.7.0-beta (through 0.6.2 0x1fd8)
+const O_ATHLETE_BUILD_CAP: usize = 0x350; // 0.6.3 and 0.7.0-beta (0.6.2: 0x550)
+const O_ATHLETE_BUILD_PTR: usize = 0x358; // 0.6.3 and 0.7.0-beta (0.6.2: 0x558)
+const O_ATHLETE_BUILD_LEN: usize = 0x360; // 0.6.3 and 0.7.0-beta (0.6.2: 0x560)
+const ATHLETE_COPY_SIZE: usize = 0x898; // 0.6.3 and 0.7.0-beta (0.6.2: 0xa98)
+const O_GAME_PROVIDER: usize = 0x1ba0; // 0.6.3 and 0.7.0-beta (0.6.2: 0x1dc0)
+const O_GAME_CATALOG_PTR: usize = 0x1da0; // 0.6.3 and 0.7.0-beta (0.6.2: 0x1fd0)
+const O_GAME_CATALOG_LEN: usize = 0x1da8; // 0.6.3 and 0.7.0-beta (0.6.2: 0x1fd8)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_N: AtomicU64 = AtomicU64::new(0); // published starter count (0 = not obtained)
 static ROSTER_TICK: AtomicU64 = AtomicU64::new(0);
-// Publish my team's starting roster (after the swap the previous copy is released lazily - a sim thread may be reading it, so never free immediately).
+// Publishes my team's starting roster. The previous set is freed one swap
+// later, since a sim thread may still be reading it.
 fn publish_my_athletes(set: std::collections::HashSet<u64>) {
     MY_ATH_N.store(set.len() as u64, Ordering::Relaxed);
     let boxed = Box::into_raw(Box::new(set));
@@ -645,16 +457,15 @@ fn publish_my_athletes(set: std::collections::HashSet<u64>) {
         }
     }
 }
-// The lane `athlete` plays in this match, off the athlete itself
-// (`O_ATHLETE_POS`, the game's own `Position`, Top = 0 — the order
-// `build_config::Role::LANES` follows): the answer
-// `build_config::role_for_champion` can otherwise only guess. `None` when it
-// does not read as one of the five lanes.
+// The lane `athlete` plays this match, from `O_ATHLETE_POS` (the game's
+// `Position`, Top = 0); `None` when it is not one of the five.
 unsafe fn athlete_lane(athlete: usize) -> Option<crate::build_config::Role> {
     let pos = (safe_read_u64(athlete + O_ATHLETE_POS)? & 0xffff_ffff) as usize;
     (pos < 5).then(|| crate::build_config::Role::from_lane_code(pos))
 }
-// Is this athlete_id on my team (under contract, or in the last starting five)? If the roster is not obtained yet (before visiting the management screen), None = undecided (the caller decides).
+// Whether this athlete is on my team (contracted, or in the last starting
+// five); `None` while the roster is unknown, before the management screen is
+// visited.
 #[inline]
 unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
     let p = MY_ATHLETES.load(Ordering::Acquire);
@@ -662,27 +473,18 @@ unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
         return None;
     }
     let aid = safe_read_u64(athlete + O_ATHLETE_ID)?;
-    // NO **the `aid==0` block was added and then removed (2026-07-30)** - the history:
-    //   (1) suspecting `pid=0` / `MY_ATHLETES=[0,1,2,3,4]` to be a db misreport, aid=0 matching was blocked, but
-    //   (2) measurement confirmed **a save where team id 0 and player id 0 genuinely exist** (even after playing normal matches,
-    //     0 observations of a non-zero pid / in background buys aid 1~4 appeared with a different champion each match = real players of my team).
-    //   => keeping the block is a pure loss that **silently drops the designation of 1 of the 5 starters (20%)**.
-    //   The original purpose - guarding against a not-yet-filled athlete (+0x810=0) - **cannot be distinguished at all** in a save
-    //   where athlete_id 0 really exists, so it is not a problem to block here (the real cause, the pid misjudgement, was
-    //   solved by ignoring 0 in comp-test context + the team-0 acceptance rule; see the mod's implementation notes, section 12).
+    // Athlete id 0 is a real player in some saves, so it must not be filtered
+    // out here.
     Some((*p).contains(&aid))
 }
-// ** 0.5.4 (2026-08-04): found by its documented body rather than an exe2exe signature (no old exe - see
-//   `tools/rederive.py`). `mov rdi,r9 / mov rsi,rcx / cmp r8,0x11` is **1 hit in .text**, at +0x11 inside fn
-//   0x29a7640. The body is __rust_realloc outright: `cmp r8,0x11 / jae` splits the over-aligned path, the
-//   align<=16 path tail-jmps to HeapReAlloc(heap, 0, ptr, size), and the over-aligned path allocs (0x29bb920),
-//   memcpys, then frees. Argument contract (rcx=ptr, rdx=old, r8=align, r9=new) is unchanged.
-const RVA_REALLOC: usize = 0x32c7bf0; // 0.7.0-beta (2026-10-07: exe2exe from 0.6.3 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm, the 12 prologue bytes unchanged). 0.6.3 was 0x2f855a0 (2026-10-06: exe2exe from 0.6.2 strict unique, FUNCTION START, size 174 both sides, the 12 prologue bytes unchanged). 0.6.2 was 0x2f9f0e0 (2026-09-29: exe2exe from 0.6.1 strict unique, FUNCTION START, size 174 both sides, pairdiff clean at --min-disp 0x4 --imm). 0.6.1 was 0x2f50ad0 (2026-09-21: exe2exe from 0.6.0 strict unique, FUNCTION START, size 174 both sides, pairdiff clean). 0.6.0 release was 0x2f23bf0 (2026-09-18: exe2exe from beta2 0x2f1b320 is unique, FUNCTION START, size 174 both sides; the 23-byte entry below is also unique in .text on its own). 0.6.0-beta2 was 0x2f1b320 (0.6.0-beta was 0x2dc0690, 0.5.7 0x2a9fb50, 0.5.6 0x2a9d1b0; exe2exe unique, size 174 both sides, pairdiff clean). History for 0.5.6 follows. (0.5.5 was 0x2a87a70; exe2exe unique, size 174 both sides, instruction-identical). History for 0.5.5 follows. (0.5.4 was 0x29a7640; exe2exe unique, size 174 both sides, body still the __rust_realloc shape). History for 0.5.4 follows. (0.5.3 was 0x28e3b10). History for 0.5.3 follows. (0.5.2 was 0x25c4dd0). The real __rust_realloc. (rcx=ptr, rdx=old, r8=align, r9=new) -> rax. A 112B masked signature from the old exe gave exactly 1 hit in the new exe + instruction-for-instruction identical body (mov rdi,r9 / mov rsi,rcx / cmp r8,0x11 / jae).
+// `__rust_realloc` (rcx = ptr, rdx = old, r8 = align, r9 = new) -> rax. When no
+// signature pairs, find it by its body: `mov rdi,r9 / mov rsi,rcx / cmp
+// r8,0x11` is unique in .text and tail-jumps to HeapReAlloc.
+const RVA_REALLOC: usize = 0x32c7bf0; // 0.7.0-beta (0.6.3: 0x2f855a0); exe2exe strict unique, 174 bytes
 type ReallocFn = unsafe extern "win64" fn(usize, usize, usize, usize) -> usize;
-// First 12 bytes of `RVA_REALLOC` (6 push + `sub rsp,0x28`), checked before
-// every call. The call is a raw transmute, and on 2026-09-16 a stale beta2
-// address in this constant crashed matches (AV at exe+0x2f1b2c0): with this
-// check a stale address declines instead, and the build keeps the game's four.
+// The first 12 bytes of `RVA_REALLOC`, checked before every call, so a stale
+// address declines (the build keeps the game's four) instead of crashing as it
+// did on 2026-09-16.
 const REALLOC_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x56, 0x57, 0x53, 0x48, 0x83, 0xec, 0x28,
 ];
@@ -714,13 +516,9 @@ fn exe_base_addr() -> usize {
     v
 }
 
-// Catalog index -> item name (evt[0x50] shadow-call). The inverse of scan_recipe_safe_in.
-//
-// Every read is VEH-guarded (`safe_read_*`) rather than `readable` + a raw
-// read: the buy detour names catalog entries dozens of times a decision, and
-// `readable` is a `VirtualQuery` syscall per check (7 per name, ~5.9 us
-// each, measured 2026-09-25). The one thing a guarded read cannot prove, that
-// the name getter is code, is proven once per getter ([`name_getter_ok`]).
+// Catalog index -> item name, through the entry's name getter (vtable +0x58).
+// Reads are VEH-guarded rather than `readable` (a `VirtualQuery` syscall each),
+// and the getter is proven code once ([`name_getter_ok`]).
 unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
     if ctx < 0x10000 {
         return None;
@@ -736,9 +534,8 @@ unsafe fn catalog_name_at(ctx: usize, idx: u64) -> Option<String> {
     )
 }
 
-// [`catalog_name_at`] against a catalog array already read out of its
-// collection (`data`/`len`), which is what the index cache needs to re-check a
-// cached index without going back through a context.
+// [`catalog_name_at`] on an already-read catalog array (`data`/`len`), so the
+// index cache can re-check an index without a context.
 unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
     if idx >= len || data < 0x10000 {
         return None;
@@ -770,53 +567,26 @@ unsafe fn catalog_name_in(data: usize, len: u64, idx: u64) -> Option<String> {
     Some(String::from_utf8_lossy(&name).into_owned())
 }
 
-// === Match start launcher hook (0.5.1 RE) - deterministic capture of the rendered match seed ===
-//   launcher 0x20588a0 (out=rcx, flag=dl, seed=r8, r9) <- called by the client render scene builder 0x722ca0 (the caller identifies rendering).
-//   If retaddr rva is in [0x722ca0, 0x732ca0) it is a rendered match -> LIVE_SEED = seed (r8). The buy hook gates on sim_seed == LIVE_SEED.
-// ** 0.5.4 re-derivation (2026-08-04, `tools/rederive.py frames` + `calls`; no old exe, see that file's header).
-//   Found by frame size: this opens `push*8; mov eax,imm32; call __chkstk`, and the imm is a fingerprint.
-//   Of 492 chkstk functions, **frame 0x25168 is 0x60 off the 0.5.3 launcher's 0x25108 and the next nearest is
-//   0x17d0 away** — an isolated outlier, the same kind of drift as 0.5.2->0.5.3 (0x165c8 -> 0x25108).
-//   Confirmed by the pair relationship, which is checkable inside one binary: it calls the seedctor candidate
-//   (0x14e16d0) three times, and at 0x13b5598 the call is preceded by `mov rdx,r12` where `mov r12,r8`
-//   at 0x13b5411 is the entry saving the seed => **rdx = the saved r8 = seed**, exactly the recorded contract.
-//   It also calls the confirmed heap allocator 0x29bb920 repeatedly, which cross-checks that derivation too.
-// ** 0.5.5 re-derivation (2026-08-11). exe2exe `match` returns **0 hits** here even with `--loose`, which is
-//   expected and not a warning sign: the frame immediate sits in the first 13 bytes, `match` deliberately keeps
-//   non-address immediates concrete, and the frame moved 0x25168 -> 0x25438. `frames --near 0x25168` puts
-//   0x14ac3e0 first at delta +0x2d0, with the next nearest 0x1770 away — the same isolated-outlier shape as
-//   every previous migration. What actually settles it is the call structure, compared side by side: **60 direct
-//   calls on both sides, in the same order, to callees of the same sizes**, including seedctor three times at
-//   the identical instruction offsets (+0x1c8, +0x29b, +0x372) and the confirmed allocator repeatedly. The
-//   `mov r12,r8` entry save and the `mov rdx,r12` before the seedctor call are both still there, so the
-//   r8=seed contract holds.
-// ** 0.5.7 re-derivation (2026-08-26). Again 0 exe2exe hits, again for the documented reason: the frame
-//   immediate is in the first 13 bytes and moved 0x25438 -> **0x25418**, and this time the body also shrank
-//   4398 -> 4369 bytes. `frames --near 0x25438` puts 0x106dd60 **first** at delta -0x20, next nearest 0x14c0
-//   away. Three independent structural checks then agree, and all three are stronger than the size:
-//     (1) 60 direct calls on both sides — seedctor three times at the *identical* instruction offsets
-//         (+0x1c5, +0x298, +0x36f) and the confirmed allocator eight times, also identical
-//         (+0x142/+0x1dd/+0x21d/+0x2c8/+0x308/+0x711/+0x751/+0x7fb). The call offsets only start to diverge
-//         at call #29, past everything this mod cares about.
-//     (2) 9 direct callers on both sides, with the same shape (one caller making two of them).
-//     (3) the entry idiom is byte-for-byte the same apart from the frame imm, `mov r12,r8` still saves the
-//         seed, and every rbp spill moved by exactly -0x20 = the frame delta. The r8=seed contract holds.
-//   CL_LAUNCHER_PROLOGUE therefore needs its last 4 bytes changed with the frame; that is the only edit.
-const CL_LAUNCHER_RVA: usize = 0x16cd4e0; // 0.7.0-beta (2026-10-07; 0.6.3 was 0x13f3950). exe2exe strict unique at 160 bytes, a function start, and the frame did not move this time (0x25ef8, so CL_LAUNCHER_PROLOGUE is unchanged); the body shrank 4367 -> 4319 past the head, whose first 39 instructions are 0.6.3's (`mov r12,r8` still saves the seed). Confirmed from the seedctor callers: 3 sites inside 0x16cd4e0 at +0x1c5/+0x298/+0x36f plus 1 in 0x16cf120 (+0x113); 10 caller sites now (4445/5757 identical; the match-sim megafunction 80906 -> 80806 is again the hook.rs target's caller). 0.6.3 notes follow: (2026-10-06; 0.6.2 was 0x17277c0). From the seedctor callers once more: 3 sites inside 0x13f3950 at +0x1c8/+0x29b/+0x372 (0.6.2: +0x1c5/+0x298/+0x36f) plus 1 in 0x13f55c0 (+0x116), 60 direct calls and 9 caller sites in 8 functions on both sides (4445/5757 identical; the match-sim megafunction 79953 -> 80906 is again the hook.rs target's caller), size 4490 -> 4367, frame 0x25478 -> 0x25ef8. `mov r12,r8` still saves the seed at +0x41 and the seedctor call still gets it in rdx. 0.6.2 notes follow: (2026-09-29; 0.6.1 was 0x1a88440). exe2exe finds nothing (size 4454 -> 4490); from the seedctor callers again: 3 sites inside 0x17277c0 at the SAME +0x1c5/+0x298/+0x36f plus 1 in 0x1729490 (+0x113 both builds), 9 direct callers both sides (3078/4312/4445/5757 identical; the match-sim megafunction 79985 -> 79953 is also the hook.rs target's caller), frame 0x25458 -> 0x25478. 0.6.1 notes follow: (2026-09-21; 0.6.0 release was 0x16d9180). exe2exe finds nothing again (size 4486 -> 4454), so it came from the seedctor callers once more: 3 sites inside 0x1a88440 at +0x1c5/+0x298/+0x36f (0.6.0: +0x1c8/+0x29b/+0x372) plus 1 in 0x1a8a0f0, 9 direct callers both sides with the same caller sizes (only the match-sim megafunction grew, 79937 -> 79985, and it is also the hook.rs target's caller), frame 0x25478 -> 0x25458. 0.6.0 release notes follow: (0.6.0-beta2 was 0x16f7270). exe2exe finds NOTHING here - the body changed - so it came from the seedctor callers, the same way 0.5.3 did: beta2's seedctor had 3 call sites inside the launcher plus 1 elsewhere, and the release's seedctor (0x16e98c0) has exactly 3 inside 0x16d9180 plus 1 inside 0x16dae50. Cross-checked three more ways: 9 direct callers (the same count beta2 had), two of them in one function (the render scene builder calling it twice, 0x81ba60 here vs 0x814a20 there), and the same prologue idiom with only the chkstk frame moving. 0.6.0-beta2 (0.6.0-beta was 0x1183bb0, 0.5.7 0x106dd60, 0.5.6 0x14dda60, 0.5.5 0x14ac3e0, 0.5.4 0x13b53d0, 0.5.3 0xeb8810). History for 0.5.3 follows. (0.5.2 was 0x1d96870). Evidence: (1) identical prologue idiom (8 push + mov eax,frame + call chkstk + lea rbp,[rsp+0x80] + xmm spills + [rbp+X]=-2) (2) **9 callers = the same count as the old exe** (3) the render scene builder (0x997740) calls it twice (4) internally it calls seedctor (0x12b9ab0) with rdx = the saved r8 (seed) = line-for-line correspondence with the old exe. The r8=seed entry contract still holds (mov r12,r8).
+// Match-start launcher hook: captures the rendered match's seed (r8) as
+// `LIVE_SEED`, which gates the buy hook. Re-derived each update as the
+// seedctor's caller: it calls the seedctor three times with rdx = the seed it
+// saved at entry (`mov r12,r8`), and its chkstk frame size is a fingerprint
+// (`tools/rederive.py frames`).
+const CL_LAUNCHER_RVA: usize = 0x16cd4e0; // 0.7.0-beta (0.6.3: 0x13f3950); exe2exe strict unique at 160 bytes, `mov r12,r8` still saves the seed
 const CL_LAUNCHER_PROLOGUE: [u8; 17] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0xb8, 0xf8, 0x5e, 0x02,
     0x00,
-]; // 0.7.0-beta, and 0.6.3 before it: 8 push + mov eax,0x25ef8, the same frame on both (0.6.2 was 0x25478, 0.6.1 0x25458, 0.6.0 release 0x25478, 0.6.0-beta2 0x25468) (0.6.0-beta was 0x25438, 0.5.7 0x25418, 0.5.6 0x25438, 0.5.5 0x25438, 0.5.4 0x25168, 0.5.3 0x25108, 0.5.2 0x165c8)
+]; // 0.7.0-beta and 0.6.3: 8 push + mov eax,0x25ef8, the frame size, which moves most updates
 static CLAUNCH_INSTALLED: AtomicU64 = AtomicU64::new(0);
-// * Is the current match a comp test? Comp test is a sandbox where the user composes both blue and red themselves, so
-//   there is no notion of "my team" -> bypass the team gate and apply to both sides for designated champions.
+// Whether the current match is a comp test, where the user builds both sides:
+// there is no "my team", so the team gate is bypassed.
 static COMPTEST_MATCH: AtomicBool = AtomicBool::new(false);
 static CLAUNCH_STUB: AtomicU64 = AtomicU64::new(0); // address of our launcher stub (for re-validating the entry point)
 static LAUNCH_WAIT: AtomicU64 = AtomicU64::new(0); // frames spent waiting for serpen to install
-                                                   // WARNING minimal detour: the launcher has a 91KB chkstk frame and fires for every 30~40 background matches -> no format!/fs/locks/catch_unwind (stack overflow).
-                                                   //   The body does raw reads and atomics only (no panic source -> catch_unwind unnecessary).
 unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
-    // WARNING keep the minimal-detour constraint - the probe too uses only rdtsc + global atomics (no rec_tl = TLS lazy-init path).
+    // Minimal detour: the launcher has a 91KB chkstk frame and fires for every
+    // background match, so this body does raw reads and atomics only (no
+    // format!, fs, locks or TLS lazy-init).
     if saved.is_null() {
         return 0;
     }
@@ -827,29 +597,10 @@ unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
         return 0;
     }
     let rva = retaddr - base;
-    // * Caller within the client render scene builder range 0x722ca0 -> rendered match seed
-    // * serpen canonical (CURRENT_MATCH_DETECT.md, verified in game): on-screen match call sites = exactly 0x72f507 (path A) and 0x733e9f (path B). 0x2061132 = background.
-    // * Comp test (comp_test) added (07-21, ghidra-re confirmed): retaddr 0xc884fa (call site 0xc884f5, function 0xc831b0).
-    //   Its reach path is unique (dispatch arm 31 -> 0x75fe90 -> 0xc831b0) so it does not mix with background. The other 3 observed are all background:
-    //   0x13dd5a0 = solo_rank / 0x1659d55 = server::worker / 0x2061137 = tick driver -> never add these.
-    //   The r8=seed passing form is the same as normal spectating, so the capture logic is reused as-is.
-    // * 0.5.2 remap (exe2exe call-site re-enumeration 2026-07-22): the render scene builder container 0x722ca0 -> 0x74d510 (mnemonic 0.9928),
-    //   its 2 launcher call retaddrs = 0x72f507 -> 0x759c36 / 0x733e9f -> 0x75e5cf.
-    //   comptest container 0xc831b0 -> 0xd405c0 (the remaining pair of the 9/9 launcher-caller bijection; its single caller 0x75fe90 -> 0x78a5c0 is isomorphic)
-    //   retaddr 0xc884fa -> 0xd40a63. TODO comptest is tentative only (container size shrank 0x5b8f -> 0xce1 = a refactor; ghidra-re confirmation recommended).
-    // * 0.5.3 remap (2026-07-29, re-enumerated from the measured call sites of launcher 0xeb8810):
-    //   render scene builder container 0x74d510 -> 0x997740 (caller count and size fingerprints match), its 2 launcher calls
-    //   retaddr = 0x759c36 -> **0x9a3287** / 0x75e5cf -> **0x9a7b03** (both measured inside the container).
-    //   comptest container 0xd405c0 -> 0x1925ab0 (size 0xce1 -> 0xf5a; single-caller fingerprint matches) retaddr 0xd40a63 -> **0x1925f12**.
-    //   TODO comptest is tentative as in 0.5.2 (matched only down to the single-caller chain, not verified in game).
-    // * The nature of all 9 launcher callers = fully determined (2026-07-30 full RE, panic Location file/line + packet dispatch arm reachability):
-    //   0x9a3287  = spectate (arm75 SpectateGameStart)   * on screen
-    //   0x9a7b03  = my match (arm30 GameStart)           * on screen
-    //   0x1925f12 = comp test main match (arm31 CompTestStarted, data.rs:1545)  * on screen, both sides user-composed
-    //   0x18f718e = comp test **record replay** (training_ui.rs:4351)           * on screen, both sides user-composed
-    //   0x229ad94 = replay (pause_ui.rs:2332 - the value serpen uses)
-    //   0x220acb (state.rs app state machine) / 0x195c5be (server\worker.rs) / 0x20dac9c (solo_rank.rs)
-    //   0x2256a6d (solo_rank_ui.rs) = **background sim -> never add these**
+    // The caller's return address says which match this is: spectate, my match,
+    // a comp test or its record replay are on screen. Every other caller is a
+    // background sim and must never be added; these are 0.5.3's addresses and
+    // were never re-derived (see `build_config::training_match`).
     let is_comptest = rva == 0x1925f12 || rva == 0x18f718e;
     if (rva == 0x9a3287 || rva == 0x9a7b03 || is_comptest) && seed != 0 {
         let prev = LIVE_SEED.swap(seed, Ordering::Relaxed);
@@ -862,32 +613,21 @@ unsafe extern "C" fn cap_launcher(saved: *mut u64, _e: usize) -> u64 {
 }
 static HK_L_TICK: AtomicU64 = AtomicU64::new(0);
 fn install_launcher_hook() {
-    // * Cost optimization (2026-07-22 perf measurement - this function cost **at least 106us** every frame, the single largest
-    //   real main-thread expense. It is the minimum, not the average, that is 106us, so it is real work and not preemption noise):
-    //   (1) `GetModuleHandleW` (loader lock) called directly every frame -> **the cached `exe_base_addr()`**
-    //      (every other path used the cache; only this one called the raw API)
-    //   (2) removed `readable()` = **VirtualQuery** (address-space lock) -> read the entry point with the VEH-protected `safe_read_u64`.
-    //      The address is already validated at install time and a fault is caught by the VEH, so the double check was unnecessary.
-    //   (3) the post-install re-validation (self-heal in case another mod overwrote our hook) has no reason to run every frame ->
-    //      **every 60 frames (~1s)**. Self-healing within a second is plenty even if overwritten (this is a match-start event, so there is slack).
-    //   (4) 2026-08-07: the throttle covered state 1 (installed, re-validating) only, so a
-    //      FAILED install (2) still paid the full cost every frame — the case a game update
-    //      puts every RVA in. Any non-zero state is now throttled; 0 is the untried first
-    //      frame, which still runs immediately.
+    // Runs every frame, so it uses the cached exe base and VEH-guarded reads,
+    // and once tried re-checks only every 60 frames (~1 s).
     if CLAUNCH_INSTALLED.load(Ordering::Relaxed) != 0 {
         if HK_L_TICK.fetch_add(1, Ordering::Relaxed) % 60 != 0 {
             return;
         }
     }
-    // * Coexisting with serpen (chain hooking): if serpen hooks launcher 0x20588a0 first (entry point = movabs+jmp) we chain behind it.
-    //   WARNING installing first would let serpen overwrite us and orphan our hook -> wait for serpen (= a foreign movabs entry point) to appear (up to 240 frames),
-    //     and if the original prologue is still there after that, assume serpen is absent and install standalone. Re-validate every frame (entry point != our stub -> re-chain, so we self-heal even if serpen overwrites us later).
-    let base = exe_base_addr(); // * the cached copy (was: GetModuleHandleW every frame)
+    // Coexists with serpen: when its hook (a movabs entry) is present we chain
+    // behind it, so we wait up to 240 frames for it before installing alone.
+    // The later re-checks re-chain if anyone overwrites ours.
+    let base = exe_base_addr();
     if base == 0 {
         return;
     }
     let fn_addr = base + CL_LAUNCHER_RVA;
-    // * Check the entry point with a VEH-protected read instead of VirtualQuery (was: readable() every frame).
     let Some(w0) = (unsafe { safe_read_u64(fn_addr) }) else {
         return;
     };
@@ -910,8 +650,9 @@ fn install_launcher_hook() {
     let waited = LAUNCH_WAIT.fetch_add(1, Ordering::Relaxed);
     if !is_foreign && b0 != 0x48 && waited < 240 {
         return;
-    } // original prologue and still waiting -> wait for serpen to install
-      // Install (or re-chain). install_detour_generic chains automatically when it detects a foreign hook.
+    }
+    // Install, or re-chain behind a foreign hook (`install_detour_generic`
+    // detects it).
     let r = unsafe {
         install_detour_generic(
             CL_LAUNCHER_RVA,
@@ -929,57 +670,19 @@ fn install_launcher_hook() {
     }
 }
 
-// === seed-ctor hook (0.5.1 RE) - deterministic capture of the rendered sim's provider pointer (seed values cannot be compared -> pointer identity) ===
-//   ghidra-re confirmed: FUN_1421d03e0 (rcx = provider (this), rdx = seed (= launcher r8, bit-identical, no conversion)) stores seed at provider+0xeab8.
-//   But +0xeab8 is updated on every random draw = RNG running state -> comparing it at buy time is impossible in principle.
-//   Alternative: when the ctor is entered with rdx == LIVE_SEED (the rendered initial seed captured by launcher), record that provider (rcx) as RENDER_PROVIDER.
-//   At buy time: provider == RENDER_PROVIDER -> definitely the rendered sim (address comparison, independent of mutable fields).
-//   WARNING **legacy comment correction (0.5.3, 07-29)**: the current buy gate uses **r9 (arg4) = provider**, not `*(game_p6+0x1dc0)`
-//     (see `*saved.add(3)` in the buy hook below - the old RE conclusion that [rsp+0x30] was the buy-list container, not the provider).
-//     The only live code reading `Game+0x1dc0` is cap_spawn, and that is gated OFF. Game+0x1dc0/+0x1dc8 themselves are **confirmed still present** in 0.5.3
-//     (launcher 0xeb9646 `mov [rsi+0x1dc0],rax; mov [rsi+0x1dc8],rax` + vtable slot +0x20 being `mov rax,[rcx+0xeaf8]` = consistent with the seed offset).
-//   TODO **unverified**: "r9 = provider" cannot be confirmed statically because the buy body overwrites arg4 immediately - as in 0.5.2 it is **established only by in-game seed matching**.
-//     If it is wrong in 0.5.3 the symptom is not a crash but a silent "spectated match not recognized" (detectable via the is_live hit counter).
-//   launcher calls the ctor synchronously -> LIVE_SEED is guaranteed to be set first. Background sims do not use the render seed -> no match (contamination excluded).
-// ** 0.5.4 (2026-08-04): frame 0x11ba8, **0x50 off the 0.5.3 seedctor's 0x11b58 with the next nearest 0x500 away**,
-//   and it is the function the launcher calls with rdx = its saved seed (see CL_LAUNCHER_RVA above). Entry shape
-//   is unchanged: 8 push (12B) + mov eax,frame + call chkstk, so SEEDCTOR_PROLOGUE needs no edit.
-// ** 0.5.5 (2026-08-11): two independent methods agree. exe2exe `match` gives **1 hit**, and `frames --near
-//   0x11b98` puts the same function first at frame 0x11ba8 (delta +0x10, next nearest 0x4c0 away). Its size grew
-//   4175 -> 4407, which is why the pair relationship matters more than the size: it is the function the launcher
-//   calls three times with `rdx` = its saved seed. Entry shape unchanged (8 push + mov eax,frame + call chkstk),
-//   so SEEDCTOR_PROLOGUE needs no edit.
-// ** 0.5.7 (2026-08-26): the easy case for once — exe2exe `match` gives **1 hit**, size 4525 and 733
-//   instructions on both sides, and it is confirmed by the launcher relationship anyway (the launcher calls it
-//   at the same three instruction offsets, and its 4 caller sites correspond 3-in-launcher + 1-elsewhere on
-//   both sides). `pairdiff` reports only two differing displacements, both in the TLS block reached through
-//   `gs:[0x58]` (0x187e8 -> 0x18830), which is thread-local layout, not the provider struct. Entry shape
-//   unchanged (8 push + mov eax,frame + call chkstk), so SEEDCTOR_PROLOGUE needs no edit.
-const SEEDCTOR_RVA: usize = 0x16e61d0; // 0.7.0-beta (2026-10-07: exe2exe strict unique, fn start, size 4468 both sides, frame still 0x11f38; pairdiff at --min-disp 0x4 --imm shows two differing displacements, 0x176a0/0x176b0 -> 0x17768/0x17778, far above anything read here, and the `mov [rsi+0xec88],rax` seed store is byte-identical at the same +0xf06 and still the only one in the image. 12B prologue byte-identical). 0.6.3 was 0x13fddb0 (2026-10-06: exe2exe finds nothing, size 4586 -> 4468, frame 0x11bc8 -> 0x11f38. Found as the function holding the seed store, which moved: the masked `48 89 86 ?? ec 00 00` has 5 hits and one of them, `mov [rsi+0xec88],rax` at +0xf06, follows the same three `[rsi+0x70]/[rsi]/[rsi+0x10]` initialisers 0.6.2's store follows and stores the same value, the rdx seed spilled at +0x44. The launcher calls it three times and one other function once, as before. 12B prologue byte-identical). 0.6.2 was 0x1749a50 (2026-09-29: exe2exe finds nothing, size 4411 -> 4586, frame 0x11ba8 -> 0x11bc8; the `mov [rsi+0xec90],rax` O_PROVIDER_SEED store is unique in the image and sits in this function at +0xeed (0.6.1 +0xecd), and the launcher calls it at the same three offsets. 12B prologue byte-identical). 0.6.1 was 0x1a98e60 (2026-09-21: exe2exe strict unique, fn start, size 4411 both sides; the O_PROVIDER_SEED store is byte-identical at +0xecd). 0.6.0 release was 0x16e98c0 (0.6.0-beta2 was 0x1712c90; exe2exe unique at 154B, fn start, size 4407 -> 4411, 12B prologue byte-identical) (0.6.0-beta was 0x1697a30, 0.5.7 0x1635ae0, 0.5.6 0x10a3be0, 0.5.5 0x14c2380, 0.5.4 0x14e16d0, 0.5.3 0x12b9ab0). History for 0.5.3 follows. (0.5.2 was 0x22c1da0). The 12B prologue is completely identical (8 push); the chkstk frame went 0x11b58 -> 0x11b98; confirmed via the call inside launcher (0xeb8810) with rdx = the saved r8 (seed). WARNING: the seed store offset moved from provider+0xeab8 to **+0xeaf8** (measured at 0x12ba92d).
-                                       // * 0.5.3: the seed store offset inside the provider struct moved (0.5.2 +0xeab8 -> 0.5.3 +0xeaf8).
-                                       //   Measured = `mov [reg+0xeaf8], rdx` inside seedctor @0x12ba92d (the old exe has 0xeab8 in the same place).
-                                       //   WARNING keep it in a single constant - updating only this on each patch carries the whole is_live gate along.
-                                       // 0.5.4 = 0xeb28 (0.5.3 was 0xeaf8, 0.5.2 0xeab8). Measured, not guessed: seedctor spills its `rdx` (the seed)
-                                       // to [rbp+0x11a48] at entry (0x14e1714), reloads it at 0x14e2596 and stores it to **[rsi+0xeb28]** at 0x14e259d.
-                                       // The writes that follow (+0xeb30 = 0, +0xeb58 = 0, +0xeb59 = the bool arg) are the same field cluster.
-                                       // 0.5.5 = 0xec90 (0.5.4 was 0xeb28). Measured the same way, and the whole
-                                       // field cluster moved together by a uniform +0x168, which is what makes it
-                                       // the same cluster rather than a lookalike: the seven big-displacement
-                                       // stores in seedctor correspond one for one and in the same order —
-                                       // 0xeb5a->0xecc2, **0xeb28->0xec90 (the `mov [rsi+...],rax` seed store,
-                                       // at 0x14c324d)**, 0xeb30->0xec98, 0xeb58->0xecc0, 0xeb59->0xecc1,
-                                       // 0xeb38->0xeca0, 0xeb48->0xecb0.
-                                       // 0.5.6 and 0.5.7 = 0xec90, **unchanged and verified, not assumed**: the whole seven-store cluster inside
-                                       // seedctor corresponds one for one, in the same order, at the same displacements — 0xecc2, **0xec90 (the
-                                       // `mov [rsi+...],rax` seed store, at 0x1636a0d)**, 0xec98, 0xecc0, 0xecc1, 0xeca0, 0xecb0.
-const O_PROVIDER_SEED: usize = 0xec88; // 0.6.3..0.7.0-beta: `mov [rsi+0xec88],rax` at seedctor +0xf06 on both (0.6.2 0xec90 at +0xeed; the qword after it is still zeroed by the next instruction)
+// Seed-ctor hook: the provider constructed with `LIVE_SEED` (rcx = provider,
+// rdx = seed) is the rendered sim, recorded as `RENDER_PROVIDER`. The seed
+// field itself is the RNG's running state, so providers are compared by address
+// instead.
+const SEEDCTOR_RVA: usize = 0x16e61d0; // 0.7.0-beta (0.6.3: 0x13fddb0); holds the image-unique seed store `mov [rsi+0xec88],rax`, and the launcher calls it three times
+const O_PROVIDER_SEED: usize = 0xec88; // 0.6.3..0.7.0-beta (0.6.2: 0xec90): `mov [rsi+0xec88],rax` at seedctor +0xf06
 const SEEDCTOR_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-]; // ghidra-re confirmed: 8 push (12B) + mov eax,0x11b58 + call chkstk (same pattern as launcher)
-const SEEDCTOR_ORIG_LEN: usize = 12; // relocate the 8 pushes only (excluding the chkstk call). The jmp lands on fn+12 = mov eax -> the frame is set up correctly
+]; // 8 push; the chkstk call after them stays in place
+const SEEDCTOR_ORIG_LEN: usize = 12; // the 8 pushes only; the jmp back lands on `mov eax,frame`
 static SEEDCTOR_INSTALLED: AtomicU64 = AtomicU64::new(0);
-static RENDER_PROVIDER: AtomicU64 = AtomicU64::new(0); // * rendered sim provider pointer (the primary is_live gate)
-static LIVE_SEED: AtomicU64 = AtomicU64::new(0); // * my match's seed (captured from r8 in the launcher hook). The v13 value-comparison key.
+static RENDER_PROVIDER: AtomicU64 = AtomicU64::new(0); // the rendered sim's provider (the primary is_live gate)
+static LIVE_SEED: AtomicU64 = AtomicU64::new(0); // the rendered match's seed, from the launcher hook
 unsafe extern "C" fn cap_seed_ctor(saved: *mut u64, _e: usize) -> u64 {
     if saved.is_null() {
         return 0;
@@ -996,9 +699,9 @@ fn install_seed_ctor_hook() {
     let state = SEEDCTOR_INSTALLED.load(Ordering::Relaxed);
     if state == 1 {
         return;
-    } // * skip only on 1 = success (0/2 = retry)
-      // A failed attempt (2) backs off instead of re-running every frame; see
-      // `install_retry_due`. State 0 is the untried first frame and is not delayed.
+    }
+    // A failed attempt backs off ([`install_retry_due`]); the untried first
+    // frame is not delayed.
     static RETRY: AtomicU64 = AtomicU64::new(0);
     if state == 2 && !install_retry_due(&RETRY) {
         return;
@@ -1014,117 +717,25 @@ fn install_seed_ctor_hook() {
     SEEDCTOR_INSTALLED.store(if r.is_ok() { 1 } else { 2 }, Ordering::Relaxed);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  ** v14 spawn commit hook (ghidra-re, confirmed on 0.5.1) - a "intervene once at build creation" design.
-//    Every build creation path (live worker 0x164f040 / league 0xf63f80 / others) converges on the single choke point
-//    athlete ctor -> wrapper -> spawn FUN_142060280. Planting only the build[] targets here lets the
-//    buy resolver build up to them naturally (components -> combines) -> no per-buy intervention needed.
-//    Arguments: rcx = Game (-> provider = *(Game+0x1dc0)), rdx = athlete (the final build), r8 = descriptor.
-//    Once per athlete, a single call site, and after personal tactics is applied = our injection is the final winner.
-//    WARNING the rdx athlete is a stack copy (0x8b8) - writing here propagates via the later memcpy all the way into the provider Vec (RE confirmed).
-// ═══════════════════════════════════════════════════════════════════════════
-// * 0.5.2 (2026-07-22 exe2exe): 0x2060280 = skeleton NO MATCH (= logic changed). Re-pinned via the call target at the same offset +0x8c
-//   in the caller container 0x20565e0 -> 0x1d94640 (mnemonic 1.0000) = 0x1d9e0e0. The function shrank 0x714 -> 0x51f, and **the prologue went from 8 pushes to 7** (41 55 = push r13 is gone).
-//   => prologue constants and ORIG_LEN updated + the entry patch (12B movabs+jmp) is longer than the push block (10B), so the mov eax must be relocated too
-//     -> a rax-preserving tail (r11 jump) is required = install_detour_r11.
-//   WARNING since the function's logic changed, the argument contract (rcx=Game, rdx=athlete) is unconfirmed -> **gate OFF** (re-enable after ghidra-re re-confirmation).
-//     No functionality is lost: the 07-19 measurements showed build[] injection reaching 8/8 = the buy path alone is sufficient.
-// * 0.5.3 re-pin done (2026-07-29, ghidra-re): 0x1d9e0e0 -> **0xebfe50** (~0xec0302). Caller container 0x1d94640 -> 0xeb6480 (the +0x91 call @0xeb6511).
-//   Body instructions confirmed 1:1 (`[rcx+0x1dc0]`/`[rcx+0x1dc8]` -> `call [r15+0x160]`, `[rsi+0x1dd0]`/`[rsi+0x1dd8]` -> `call [rax+0x30]`).
-//   WARNING **two changes are mandatory before re-enabling** - the constants below are unused today because the gate is OFF:
-//     (1) prologue: 7 push + mov eax + chkstk -> **8 push (12B) + sub rsp,0xf8** (no chkstk) => ORIG_LEN=12 and no rax preservation needed (generic works).
-//     (2) argument contract: r8 = &descriptor -> **r8/r9 = the descriptor's two-word pair** (the caller switched to calling the builder indirectly through the global function pointer 0x144531340).
-//        rcx=Game and rdx=athlete stack copy (0x8b8) are unchanged. 15 direct callers = it remains a single choke point.
-// * 0.5.8 re-derivation (2026-09-08) — the gate is ON again, so this address is live.
-//   exe2exe `match` is useless here: the body changed at 0.5.3 -> 0.5.4 and gets 0 hits at every length,
-//   strict and `--loose` alike. Derived structurally instead, and the filter was **validated against the
-//   known 0.5.3 answer before being trusted**: "8-push prologue + `sub rsp,imm32`, size 600..3000, body
-//   containing all four Game displacements 0x1dc0/0x1dc8/0x1dd0/0x1dd8" returns **exactly one** function in
-//   0.5.3 — 0xebfe50, size 1202, frame 0xf8, 15 direct callers, matching every number recorded below — and
-//   **exactly one** in 0.5.8: 0x1819300, size 1150, frame 0xf8.
-//   The pair is then confirmed instruction-for-instruction over the whole head: every instruction sits at the
-//   same offset with the same mnemonic through +0xcd, and only four operands differ, each of them a struct
-//   field that independently moved:
-//     [rdx+0x888] -> [rdx+0x998]   athlete **gold** — exactly the move the 0.5.5 layout table records
-//     [rdx+0x598] -> [rdx+0x5e8]   athlete field, the same low-range shift
-//     [r15+0x160] -> [r15+0x188]   provider vtable slot
-//     plus relocated branch/call targets.
-//   Two of those four *are* the argument contract: `rdx` is written at the athlete's own gold offset, so
-//   **rdx = athlete** is proven rather than assumed, and `[rcx+0x2060]`/`[rcx+0x1dc0]`/`[rcx+0x1dc8]` keep
-//   **rcx = Game**. The 0.5.3 warning (2) — r8/r9 becoming the descriptor's two-word pair — is moot for this
-//   mod: `cap_spawn` reads only saved[0] (rcx) and saved[1] (rdx) and never touches r8/r9. Warning (1) is
-//   satisfied too: the prologue is still 8 push + `sub rsp,0xf8`, byte-identical, so SPAWN_PROLOGUE and
-//   SPAWN_ORIG_LEN=12 needed no edit and the generic detour still suffices.
-// * 0.6.0-beta re-derivation (2026-09-08). The same validated filter, run 0.5.8 -> 0.6.0: exactly one
-//   candidate on each side, 0x1819300 and **0x118c260**, both size 1150 and frame 0xf8 with 2 direct callers.
-//   The heads pair 45 instructions identical / 8 differing, and every difference is a field that moved:
-//     [rdx+0x998] -> [rdx+0xa28]   athlete **gold** — precisely the move the 0.6.0 layout note records
-//     [rdx+0x5e8] -> [rdx+0x618]   +0x30, the documented 0.6.0 low-half shift
-//     [r15+0x188] -> [r15+0x178]   provider vtable slot
-//     [r14+0x5e8] -> [r14+0xb68]   a different struct's field, plus relocated branches/calls.
-//   The gold offset is the clincher: it re-proves **rdx = athlete** against a layout derived independently
-//   of this function. 0x118c260 is also named in that note's own list (0.5.7's 0x1076c40 -> 0x118c260) as a
-//   function that reads the athlete id, which is a second, unrelated route to the same address.
-//   Direct callers fell 15 -> 2, which is the documented trend, not a mismatch: 0.5.3 already noted the
-//   callers moving to an indirect call through a global function pointer.
-// * 0.6.1 re-derivation (2026-09-23). exe2exe `match` from beta's 0x118c260 gets 0 hits strict and
-//   `--loose`: beta2 grew the body 1150 -> 1914 and the frame 0xf8 -> 0x108 (one inserted block
-//   mid-body; the head and the call sequence around it are unchanged). The validated structural
-//   filter above still returns **exactly one** function in every build, and reproduces both earlier
-//   answers first: 0.5.8 0x1819300, beta 0x118c260, beta2 0x16ff930, 0.6.0 0x16dcdd0,
-//   **0.6.1 0x1a8c100** (size 1914, frame 0x108, 2 direct callers like beta).
-//   Contract re-proved on 0.6.1, not carried:
-//     [rdx+0xa28] -> [rdx+0xa68]   athlete gold, beta +0x40 = the beta2 layout shift that
-//     [rdx+0x618] -> [rdx+0x658]   O_ATHLETE_ID (0x9b0 -> 0x9f0) and ATH_STRIDE record
-//     [rcx+0x2060], [rcx+0x1dc0..0x1dd8], [rsi+0x1fe8/0x1ff0]  Game fields byte-identical to beta,
-//                                  so the catalog at Game+0x1fd0/+0x1fd8 has not moved either
-//   The caller (0x1a8b750, site +0x24a) still memcpys the athlete into a stack slot of **0xa98**
-//   bytes (beta 0xa58, +0x40) and passes it as rdx -> exactly `cap_spawn`'s `readable(athlete,
-//   0xa98)` guard. Prologue: the same 12 push bytes, so SPAWN_PROLOGUE / ORIG_LEN are unchanged.
-// * 0.6.2 re-derivation (2026-09-29). The caller matched strict (0x1a8b750 -> 0x172f540, 604B both,
-//   pairdiff clean) and still calls spawn at +0x24a; the structural filter independently returns
-//   exactly one function, the same one: **0x172ff50** (size 1914 -> 1924, frame still 0x108, the same
-//   2 direct callers at the same offsets). Contract re-read, not carried: `mov [rdx+0xa68],rax` (gold)
-//   at the same +0x41, and the caller's `mov r8d,0xa98` athlete copy at the same +0x21a.
-// * 0.6.3 re-derivation (2026-10-06). exe2exe finds neither the function nor its caller: the athlete
-//   moved (see `O_ATHLETE_CHAMP_PTR`), and so did the Game fields the structural filter above
-//   searches for. Found by the gold store with its new displacement, `mov [rdx+0x868],rax`, which
-//   has two hits in .text and one of them at a function's +0x41, where it has always been:
-//   **0x13f7550** (size 1924 -> 1818, frame still 0x108, the same 2 direct callers: 0x13f6be0 at
-//   +0x204 and 0x13f6f40 at +0x91). Contract re-read, not carried: rcx = Game, rdx = athlete, and
-//   both callers memcpy **0x898** bytes (was 0xa98) into the stack slot they pass as rdx.
-//   The Game fields moved by two different amounts, each read off this function:
-//     [rcx+0x2060]                -> [rcx+0x1e30]                 (-0x230)
-//     [rcx+0x1dc0..0x1dd8]        -> [rcx+0x1ba0..0x1bb8]         (-0x220; +0x1ba0 = the provider)
-//     [rsi+0x1fe8], [rsi+0x1ff0]  -> [rsi+0x1db8], [rsi+0x1dc0]   (-0x230; the empty Vec beside the catalog)
-//   which puts the catalog Vec at Game+0x1d98 {cap} / +0x1da0 {ptr} / +0x1da8 {len}. Confirmed
-//   apart from that neighbour: the 67-byte drop glue `lea rcx,[rsi+0x1fc8] / call` exists with
-//   `0x1d98` at the same +0x27 in 0.6.3, and so do the two large builders that take
-//   `lea rdx,[reg+0x1fc8]`. For the next build, the filter's disp32s are 0x1ba0/0x1ba8/0x1bb0/0x1bb8.
-// * 0.7.0-beta re-derivation (2026-10-07). exe2exe strict from 0.6.3 is unique at 160 bytes:
-//   **0x16d1080** (size 1818 -> 1754, frame still 0x108, the same 2 direct callers: 0x16d0710 at
-//   +0x204 and 0x16d0a70 at +0x91, both pairing clean and both still copying 0x898 bytes). The
-//   first 165 instructions are 0.6.3's, so the gold store is at the same +0x41 and every Game
-//   read is byte-identical; the id/team/position/champion reads are the same instructions 0x41
-//   bytes earlier (+0x35f on). The gold store's second hit in .text is still mid-function.
-const SPAWN_RVA: usize = 0x16d1080; // 0.7.0-beta (0.6.3 0x13f7550, 0.6.2 0x172ff50, 0.6.1 0x1a8c100, 0.6.0 0x16dcdd0, beta2 0x16ff930, beta 0x118c260, 0.5.8 0x1819300, 0.5.3 0xebfe50, 0.5.2 0x1d9e0e0, 0.5.1 0x2060280).
+// Spawn hook: every build-creation path goes through this one function (rcx =
+// Game, rdx = a stack copy of the athlete, copied into the provider
+// afterwards), so build targets written here are bought up to like any other
+// build.
+//
+// To re-derive it, look for the athlete gold store `mov [rdx+<gold>],rax` at
+// +0x41 (8-push prologue, two direct callers that memcpy `ATHLETE_COPY_SIZE`
+// bytes into rdx), or for its Game-field reads (0x1ba0..0x1bb8 in 0.6.3).
+const SPAWN_RVA: usize = 0x16d1080; // 0.7.0-beta (0.6.3: 0x13f7550)
 const SPAWN_PROLOGUE: [u8; 12] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53,
-]; // 0.5.8: unchanged since 0.5.3 - 8 push (12B) + sub rsp,0xf8, byte-identical at the new address (0.5.2 was 7 push + mov eax,0x4d20)
-const SPAWN_ORIG_LEN: usize = 12; // 0.5.8: unchanged - relocate the 8 pushes only (12B = exactly an instruction boundary) => install_detour_r11 is unnecessary on re-enable (generic suffices).
-                                  // The only path that can set slot 0 under `own_team_only`.
-const SPAWN_INJECT_ENABLED: bool = true; // was false 2026-09-16..09-23; was true (2026-09-08), confirmed in game: with this closed the first item was always the engine's pick, and with it open all four slots hold the configured build. ON after the 0.5.8 re-derivation above re-confirmed both sealing reasons: the prologue is unchanged (warning 1) and the r8/r9 contract change (warning 2) never applied to `cap_spawn`, which reads only rcx/rdx. This is the only path that can set build slot 0 under `own_team_only` — see `build_config::own_team_only_enabled`. History: OFF from 0.5.2 (logic change unconfirmed) through 0.5.7; 0.5.1 had true. ~~resumed (07-19)~~ the sealing reason "no catalog at spawn time" turned out to be an offset error.
-                                         //   The old 0x1fe8/0x1ff0 = a neighbouring empty Vec (always len=0) -> the real catalog is Game+0x1fd0/+0x1fd8 (ghidra-re confirmed).
-                                         //   The v15 team decision (athlete_id membership) is verified (aid valid 10/10, my team 5/10 correct) -> (4) injection expected to complete.
+]; // 8 push (12B), then `sub rsp`
+const SPAWN_ORIG_LEN: usize = 12; // the 8 pushes, an instruction boundary
+const SPAWN_INJECT_ENABLED: bool = true; // the only path that can set slot 0 under `own_team_only`
 static SPAWN_INSTALLED: AtomicU64 = AtomicU64::new(0);
 unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         let _probe = crate::perf::Probe::sim(crate::perf::Section::SpawnDetour);
-        // Only under `own_team_only`: otherwise `item_build_hook::decide_build`
-        // has already set these slots on the stable API, and two writers would
-        // fight over them.
-        if !SPAWN_INJECT_ENABLED || saved.is_null() || !crate::build_config::own_team_only_enabled()
-        {
+        if !SPAWN_INJECT_ENABLED || saved.is_null() {
             return;
         }
         let game = *saved as usize; // rcx = Game
@@ -1132,10 +743,17 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if game < 0x10000 || athlete < 0x10000 {
             return;
         }
-        // -- (1) The match's provider: *(Game+0x1dc0) - offset confirmed unchanged in 0.5.3 (07-29). WARNING the buy hook uses r9 (a separate path) --
-        // Watched or simulated alike: under `own_team_only` the only athletes
-        // this path writes to are the player's own five, and whether the
-        // player is watching does not change whose they are.
+        // Smart Builds rule 18's lineups, under either team setting: every
+        // athlete of a match spawns here before it plays.
+        spawn_note_lineup(game, athlete);
+        // The rest only under `own_team_only`: otherwise
+        // `item_build_hook::decide_build` has already set these slots on the
+        // stable API, and two writers would fight over them.
+        if !crate::build_config::own_team_only_enabled() {
+            return;
+        }
+        // (1) The match's provider, watched or not: under `own_team_only` this
+        // only writes to the player's own five.
         let provider = match safe_read_u64(game + O_GAME_PROVIDER) {
             Some(p) => p,
             None => return,
@@ -1143,7 +761,7 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         if provider < 0x10000 || provider >= 0x0000_8000_0000_0000 {
             return;
         }
-        // -- (2) Is this a designated champion? --
+        // (2) The champion.
         if !readable(athlete, ATHLETE_COPY_SIZE) {
             return;
         }
@@ -1164,14 +782,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
         );
         // Before any pin is looked up: the lane every lookup below resolves in.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
-        // Was `is_champ_designated`, which OR-ed the pin set with the `SEL`
-        // dropdown keys. `SEL` is gone, so the pin set is the whole answer.
         if !crate::build_config::has_pins(champ) {
             return;
         }
-        // -- (3) Is it my team (v15): athlete_id (+0x810) in my starting roster = no scene tag9 needed -> holds at spawn time.
-        //     WARNING because static analysis A2 established the sim has no team_id, this membership test is the only deterministic path.
-        //     If the roster is not obtained yet (before visiting the management screen), stay undecided -> skip injection (avoiding enemy-team contamination > coverage). The buy path covers it.
+        // (3) Whether it is my team, by athlete id in my roster: the sim has no
+        // team id, so membership is the only test.
         let mine = is_my_athlete(athlete);
         crate::own_team_log::line(|| {
             format!(
@@ -1185,46 +800,16 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 MY_ATH_N.load(Ordering::Relaxed)
             )
         });
-        // `Some(false)` is definitely another team: no injection. `None`
-        // (roster or athlete id unavailable) stays undecided and is left to
-        // the buy path (slots 1/2): avoiding enemy-team contamination beats
-        // coverage.
-        //
-        // ** Observed cost of that choice (2026-09-08): slot 0 can be
-        // wrong for the *first* match of a session and correct from the
-        // second on. `MY_ATHLETES` is published from the Team record's
-        // `last_starting` on the roster poll in `tactics_post_update`,
-        // so until that first publish lands `is_my_athlete` answers
-        // `None` and this declines — and the buy path, which does
-        // cover slots 1/2, is structurally too late for slot 0. It is
-        // the safe failure, not a bug to paper over: guessing here puts
-        // the player's build on the enemy. If it needs tightening, the
-        // fix belongs at the publish end (poll every frame until the
-        // roster is first obtained, then back off to ROSTER_POLL),
-        // not here.
-        //
-        // (2026-09-25, logged: the roster published about a second after
-        // the save loaded and 25 s before the first spawn, and every
-        // spawn of the player's athletes that session read `Some(true)`.
-        // The miss above was not reproduced, so the poll is unchanged.)
-        //
-        // (2026-09-29, reproduced on a new save: `last_starting` stayed
-        // empty until the first match began, so the starters were
-        // published two seconds after they spawned. The fix was at the
-        // publish end, as predicted, but in *what* is published rather
-        // than how often: the roster now comes from every athlete's
-        // contract, which exists from load. See `roster_scan_step`.)
+        // `Some(false)` is another team's athlete and `None` is undecided; both
+        // are left alone, since putting the player's build on the enemy is
+        // worse than missing slot 0. The roster comes from every athlete's
+        // contract (`roster_scan_step`), so it is known from load.
         if mine != Some(true) {
             return;
         }
-        // -- (4) Inject the build[] targets --
-        // ** Catalog offset correction (07-19 ghidra-re confirmed): the old 0x1fe8/0x1ff0 were a **neighbouring empty Vec** 0x18 off
-        //   (the Game ctor initializes it cap=0 / ptr=8 (dangling) / len=0, and there is no push site anywhere in the exe -> always len=0.
-        //    That is exactly what the measured catlen=0 was - it was never a spawn timing problem).
-        //   The real catalog = Game+0x1fc8{cap} / +0x1fd0{ptr} / +0x1fd8{len}, stride 0x10 {elem_ptr, vtable}.
-        //   * Same index space: the ctx builder 0x1420571C8 puts ctx+0x30 = &(Game+0x1fc8) => it is the same heap buffer
-        //    that buy indexes into = usable directly in build[] (no mapping table needed).
-        //   * Ordering guaranteed: Game creation (catalog builder 0x21c0750) precedes spawn (in all 21 wrapper call sites).
+        // (4) Write the build targets. The catalog is the `Vec` at
+        // `O_GAME_CATALOG_PTR`/`_LEN` (16-byte entries), the same index space
+        // the buy context uses.
         let cat_base = rd_u64(game + O_GAME_CATALOG_PTR) as usize;
         let cat_len = rd_u64(game + O_GAME_CATALOG_LEN);
         let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
@@ -1236,10 +821,9 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             // vanilla designations need no scan, so keep going
         } else {
             let held = spawn_build_names(bptr, blen, cat_base, cat_len);
-            // The stable hook gave this athlete the build it gives both teams,
-            // which does not know the pins. The player's athlete gets the
-            // pin-aware one the hook recorded next to it, before the pins
-            // below are written into it.
+            // The stable hook gave this athlete the pin-free build both teams
+            // get; swap in the pin-aware one it recorded before the pins are
+            // written.
             spawn_paste_pinned_build(champ, bptr, blen, cat_base, cat_len);
             crate::own_team_log::line(|| {
                 format!(
@@ -1256,8 +840,6 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             if (si as u64) >= blen {
                 break;
             }
-            // (The `Scope::Plain` argument these took is gone with `SEL`; a pin
-            // has no scope, so there is nothing left to disambiguate.)
             if crate::build_config::pinned_key_raw(champ, si as usize).is_none() {
                 continue;
             }
@@ -1270,13 +852,10 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             if cat_len > 0 && t < cat_len {
                 let here = rd_u64(bptr + (si as usize) * 8);
                 if here != t {
-                    // The engine may already target the pinned item in another
-                    // slot, or, for boots, another pair. Nothing is bought at
-                    // spawn, so swap rather than duplicate: the engine's item
-                    // for this slot moves to where the clash was. (The buy
-                    // path does the same for the slots it can still reach; see
-                    // there.) A slot the player pinned to what it holds is
-                    // theirs and is left alone.
+                    // The engine may target the pinned item (or, for boots,
+                    // another pair) in another slot. Nothing is bought yet, so
+                    // swap rather than duplicate, unless the player pinned that
+                    // slot too.
                     let pin_boots = spawn_is_boots(cat_base, cat_len, t);
                     let elsewhere = (0..blen as usize).filter(|&j| j != si as usize).find(|&j| {
                         let there = rd_u64(bptr + j * 8);
@@ -1286,12 +865,9 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                     if let Some(j) = elsewhere {
                         wr_u64(bptr + j * 8, here);
                     } else if !pin_boots && spawn_is_boots(cat_base, cat_len, here) {
-                        // The pin covers the boots Smart Builds gave this
-                        // build (rule 7). Unless the player pinned a pair of
-                        // their own, move them where the rule would have put
-                        // them (`displaced_boots_slot`), replacing the
-                        // engine's pick there. Nothing is bought yet, so the
-                        // first slot is open to them too.
+                        // The pin covers Smart Builds' boots (rule 7): unless
+                        // the player pinned a pair, move them where the rule
+                        // would (`displaced_boots_slot`).
                         let player_boots = (0..crate::build_config::picker_slots()).any(|j| {
                             spawn_pin_at(champ, cat_base, cat_len, j)
                                 .is_some_and(|pin| spawn_is_boots(cat_base, cat_len, pin))
@@ -1305,11 +881,9 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
                 }
             }
         }
-        // Boots the player pinned past the slots above (the 5th and 6th, which
-        // the buy path plants later): the engine's own pair is swapped for
-        // them now, so the build holds one pair, the player's, bought when the
-        // engine's would have been. `pin_placed_by_engine` then drops the
-        // later pin.
+        // Boots pinned in the 5th or 6th replace the engine's pair now, so the
+        // build holds one pair, bought when the engine's would have been;
+        // `pin_placed_by_engine` then drops the later pin.
         if cat_len > 0 {
             let planted = (blen as usize).min(crate::build_config::game_slots());
             let pinned_boots = (planted..crate::build_config::picker_slots())
@@ -1335,15 +909,35 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             )
         });
     }));
-    0 // the install_detour_generic stub does not use the return value (this is an observe/modify hook)
+    0 // the stub ignores the return value
 }
-// Where the boots Smart Builds put in build slot `si` go when a pin lands
-// there, following the rule's order (`smart_builds::BOOTS_SLOT`): the first
-// slot after `si` that no pin holds. A 5th or 6th slot the build has not
-// grown to yet (`len` is its length now) gets them when it grows
-// (`extra_slot_boots`), so there is nothing to move then: `None`. Failing
-// both, the first slot, when it is not bought yet (`first_open`) and no pin
-// holds it. `None` otherwise, and the build goes without.
+// Hands rule 18 (`crate::route_choice`) the champion `athlete` plays and its
+// side in the match being spawned. Reads are VEH-guarded, since this runs for
+// every athlete of every match.
+unsafe fn spawn_note_lineup(game: usize, athlete: usize) {
+    if !ROUTE_CHOICE {
+        return;
+    }
+    let Some(provider) = safe_read_u64(game + O_GAME_PROVIDER) else {
+        return;
+    };
+    if provider < 0x10000 || provider >= 0x0000_8000_0000_0000 {
+        return;
+    }
+    let mut name = [0u8; CHAMP_NAME_MAX];
+    let (Some(seed), Some(side), Some(len)) = (
+        safe_read_u64(provider as usize + O_PROVIDER_SEED),
+        safe_read_u64(athlete + O_ATHLETE_TEAM),
+        athlete_champion(athlete, &mut name),
+    ) else {
+        return;
+    };
+    crate::route_choice::note_spawn(seed, side, &String::from_utf8_lossy(&name[..len]));
+}
+// Where Smart Builds' boots in slot `si` go when a pin lands there: the next
+// slot no pin holds, else `None` when an open 5th or 6th will get them as it
+// grows (`extra_slot_boots`), else the first slot if unbought (`first_open`)
+// and unpinned.
 fn displaced_boots_slot(champ: &str, si: usize, len: usize, first_open: bool) -> Option<usize> {
     let open = |j: usize| crate::build_config::pinned_key_raw(champ, j).is_none();
     if let Some(j) = (si + 1..len).find(|&j| open(j)) {
@@ -1375,13 +969,10 @@ unsafe fn spawn_build_names(
         .collect()
 }
 
-// Swaps the pin-free build the stable hook handed this athlete for the
-// pin-aware one it recorded under `own_team_only`
-// (`crate::item_build_hook::remember_pinned_build`): the Smart Builds pass
-// that counted the player's pins. Only `cap_spawn`'s player gate reaches
-// this, so the enemy keeps the pin-free build. Nothing is written unless the
-// athlete still holds exactly the build the hook recorded and every item of
-// the pin-aware one resolves.
+// Swaps the pin-free build the stable hook gave this athlete for the pin-aware
+// one it recorded under `own_team_only`
+// (`item_build_hook::remember_pinned_build`). Writes nothing unless the athlete
+// still holds exactly the recorded build and every pinned item resolves.
 unsafe fn spawn_paste_pinned_build(
     champ: &str,
     bptr: usize,
@@ -1421,7 +1012,7 @@ unsafe fn spawn_pin_at(champ: &str, cat_base: usize, cat_len: u64, slot: usize) 
 fn install_spawn_hook() {
     if !SPAWN_INJECT_ENABLED {
         return;
-    } // * when sealed, do not install the detour at all (a no-op hook = pure risk)
+    } // a sealed hook is not installed at all
     let state = SPAWN_INSTALLED.load(Ordering::Relaxed);
     if state == 1 {
         return;
@@ -1431,7 +1022,8 @@ fn install_spawn_hook() {
     if state == 2 && !install_retry_due(&RETRY) {
         return;
     }
-    // * 0.5.2: a rax-preserving tail is mandatory (the relocated region contains mov eax,0x4d20 -> the chkstk right after uses that value as the frame size).
+    // The r11 tail preserves rax, which 0.5.2's relocated `mov eax,frame`
+    // needed.
     let r = unsafe {
         install_detour_r11(
             SPAWN_RVA,
@@ -1447,21 +1039,9 @@ fn install_spawn_hook() {
 // Frames between retries of a hook install that has not succeeded.
 const INSTALL_RETRY_FRAMES: u64 = 60;
 
-// Whether an installer that is not in the success state should try again this
-// frame.
-//
-// A *failed* install is not free, and it used to run on every frame forever.
-// `install_detour_generic` takes the loader lock (module base) and the
-// address-space lock (`readable`) before it can even look at the prologue —
-// the same two calls that were measured at >=106us per frame and taken out of
-// `install_launcher_hook` on 2026-07-22. Only that one installer got the
-// treatment; the others kept retrying every frame, and their early-out is
-// `== 1`, so anything that fails pays full price forever.
-//
-// That is the *expected* state after a game update, not an edge case: every RVA
-// in this module is version-specific, so one that has not been re-derived yet
-// fails the prologue check on every frame of every scene, main thread. Which
-// makes the whole mod feel slow while nothing looks broken.
+// Whether a failed installer should retry this frame. A failed install takes
+// the loader and address-space locks each time, and after a game update every
+// stale RVA fails, so retries wait [`INSTALL_RETRY_FRAMES`] frames.
 fn install_retry_due(tick: &AtomicU64) -> bool {
     tick.fetch_add(1, Ordering::Relaxed) % INSTALL_RETRY_FRAMES == 0
 }
@@ -1472,8 +1052,7 @@ unsafe fn install_detour_generic(
     cap_fn: usize,
     prologue: &[u8],
 ) -> Result<usize, &'static str> {
-    // Cached: the raw `GetModuleHandleW` takes the loader lock, which is half of
-    // what made a retrying install cost 106us a frame.
+    // Cached: the raw `GetModuleHandleW` takes the loader lock.
     let base = exe_base_addr();
     if base == 0 {
         return Err("module 0");
@@ -1482,8 +1061,8 @@ unsafe fn install_detour_generic(
     if !readable(fn_addr, orig_len + 4) {
         return Err("unreadable");
     }
-    // * Chain hooking: if the entry point already holds a foreign mod's hook (movabs rax,tgt; jmp rax = 48 b8 .. ff e0), chain to that foreign stub instead of the original.
-    //   When serpen or another mod hooked the same function first (e.g. launcher 0x20588a0) the prologue is overwritten, so skip prologue validation.
+    // Chain hooking: when the entry already holds a foreign hook (`movabs
+    // rax,tgt; jmp rax`), chain to it and skip the prologue check.
     let mut cur = [0u8; 12];
     core::ptr::copy_nonoverlapping(fn_addr as *const u8, cur.as_mut_ptr(), 12);
     let foreign_tgt: usize =
@@ -1493,7 +1072,7 @@ unsafe fn install_detour_generic(
             0
         };
     let chained = foreign_tgt >= 0x10000;
-    // Prologue validation (guards against a wrong RVA) - skipped when chaining (a foreign hook has overwritten the original prologue).
+    // The prologue check against a wrong RVA, unless chaining.
     if !chained {
         for i in 0..prologue.len() {
             if *((fn_addr + i) as *const u8) != prologue[i] {
@@ -1508,8 +1087,7 @@ unsafe fn install_detour_generic(
         return Err("VirtualAlloc");
     }
     let ret_addr = fn_addr + orig_len;
-    // * Bisection: with passthrough=true, register saving and the cap_fn call are both skipped - original instructions + return only.
-    //   If that does not crash, the patch/relocation is fine -> the problem is in saving/calling. If it crashes, the patch/orig is the problem.
+    // Bisection aid: the original instructions and a return only, no capture.
     if TRAMPOLINE_DEBUG_PASSTHROUGH {
         let mut s: Vec<u8> = Vec::new();
         let mut orig = vec![0u8; orig_len];
@@ -1535,10 +1113,9 @@ unsafe fn install_detour_generic(
         return Ok(stub);
     }
     let mut s: Vec<u8> = Vec::new();
-    // WARNING do not capture entry_rsp (mov r10,rsp) - the hooked original instructions save r10, so r10 must be preserved.
-    //   cap_fn's second argument (entry_rsp) is unused -> rdx is left alone (the original rdx passes through; cap_fn ignores it).
-    // push r12 rsi rdi rbx r11 r10 r9 r8 rdx rcx  (rcx last = saved+0; r12 = saved+0x48; r10/r9 keep their originals)
-    //   * r12 was added because cap_fn accesses r12 (the personal_tactics match entry, for arming a watchpoint).
+    // Pushes r12 rsi rdi rbx r11 r10 r9 r8 rdx rcx, so rcx is saved+0 and r12
+    // saved+0x48. Entry rsp is not captured into r10, which the relocated
+    // instructions save.
     s.extend_from_slice(&[
         0x41, 0x54, 0x56, 0x57, 0x53, 0x41, 0x53, 0x41, 0x52, 0x41, 0x51, 0x41, 0x50, 0x52, 0x51,
     ]);
@@ -1555,8 +1132,8 @@ unsafe fn install_detour_generic(
         0x59, 0x5a, 0x41, 0x58, 0x41, 0x59, 0x41, 0x5a, 0x41, 0x5b, 0x5b, 0x5f, 0x5e, 0x41, 0x5c,
     ]);
     if chained {
-        // * Chaining: do not run the original prologue -> jump to the foreign mod's stub (cur = movabs rax,foreign_tgt; jmp rax).
-        //   The foreign stub handles its own capture + the original prologue + returning to fn+0xc. Clobbering rax is harmless (the original mov eax resets it).
+        // Chaining: skip the original prologue and jump to the foreign stub,
+        // which runs it and returns into the function.
         s.extend_from_slice(&cur); // = 48 b8 <foreign_tgt> ff e0
     } else {
         let mut orig = vec![0u8; orig_len]; // copy the original (position-independent) instructions to execute
@@ -1584,11 +1161,9 @@ unsafe fn install_detour_generic(
     Ok(stub)
 }
 
-// * The rax-preserving variant of install_detour_generic (0.5.2 SPAWN only).
-//   The generic tail is `movabs rax, ret_addr; jmp rax`, so if the relocated region contains `mov eax,imm` (a chkstk frame size)
-//   that value is overwritten and chkstk runs away -> here the tail becomes `movabs r11, ret_addr; jmp r11` to preserve rax.
-//   (r11 = an x64 volatile scratch register with no meaningful value at function entry = safe to clobber.)
-//   The chain-hooking branch is unsupported (SPAWN is not a hook shared with other mods) - Err on detecting a foreign hook.
+// The rax-preserving variant of [`install_detour_generic`]: the tail jumps
+// through r11, so a relocated `mov eax,frame` survives into chkstk. Foreign
+// hooks are not chained.
 unsafe fn install_detour_r11(
     rva: usize,
     orig_len: usize,
@@ -1665,60 +1240,25 @@ unsafe fn install_detour_r11(
 //  SDK lifecycle
 // ===========================================================================
 
-// (Was `impl ModExtension for ItemTacticsExt`. Driven from the host mod's
-// `StableExtension::post_update` — see `driver` and `src/lib.rs`.)
-//
-// `scene: &mut Scene` became `in_game: bool` plus the `StableClient` itself,
-// which answers what `Scene::InGame { data }.db()` used to. The `ui`, `_assets`
-// and `_dt` parameters went with the code that used them.
+// Every client frame, from `driver::post_update`.
 fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
     {
         install_launcher_hook();
         install_seed_ctor_hook();
         install_spawn_hook();
-        // * Capture the player team id, for team scoping.
-        // (was `if let Scene::InGame { data } = scene`)
-        //
-        // `data.db()` returned `mod_api::ClientDatabase` — the *client* scene's
-        // database, which a stable-ABI mod cannot be handed. What this block
-        // read off it is read from the stable client instead;
-        // `stable_last_starting` is the JSON-record equivalent of
-        // `team.last_starting`.
+        install_route_hook();
+        // The player's team id, for team scoping.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
-            // * During a match player_team_id() returns 0/-1 -> store only when in the valid range (1~9999), otherwise keep the last valid value.
-            //   My team id is constant during a session, so the value captured on the management/pre-match screen is used during the match too.
-            // * pid=0 is valid too (the team id space starts at 0 - measured: db.team(0)=Some, 5 PT entries). Only -1 (u64::MAX) is invalid.
-            // ** 2026-07-30 defect fix - prevent pid **regression**.
-            //   The old comment judged "pid=0 is valid too (the team id space starts at 0, db.team(0)=Some)", but measurement showed
-            //   the same save alternating between **105 and 0** depending on the moment (via the management screen = 105; straight into comp test
-            //   right after starting the game = 0). Trusting the 0 publishes team(0).last_starting=[0,1,2,3,4] as my team and
-            //   breaks the team gate => **once a valid non-zero pid has been seen, never fall back to 0.**
-            //   (0 itself is not forbidden, since a save whose real team id is 0 may exist - 0 is used until a non-zero is seen.)
-            // ** 2026-07-30 measurement addendum - **do not update pid during a comp-test match.**
-            //   pid is only read under `Scene::InGame` (on the management screen this block does not run at all, so there is no
-            //   chance to correct it), and comp test is also InGame while that screen has no notion of team membership, so
-            //   `player_team_id()` **returns 0**. Publishing that 0 makes team(0).last_starting=[0,1,2,3,4] my team.
-            //   => ignore 0 reports during comp test and keep the value captured in a normal match.
-            // (2026-09-24: or a lane/5v5 test by the route call's `mode` —
-            //  `COMPTEST_MATCH` hangs on 0.5.3 launcher retaddrs that were never
-            //  re-derived; see `build_config::training_match`.)
+            // `player_team_id()` reads 0 or -1 at times, 0 throughout comp
+            // tests, and a 0 publishes team 0's lineup as mine. So only 0..9999
+            // is stored, a 0 never replaces a non-zero id, and 0s during tests
+            // are ignored (`COMPTEST_MATCH` hangs on stale 0.5.3 retaddrs,
+            // hence `build_config::training_match`).
             let in_comptest =
                 COMPTEST_MATCH.load(Ordering::Relaxed) || crate::build_config::training_match();
             let pu = pid as u64;
-            // * Diagnostic: pid observation history. ** Confirmed by measurement (2026-07-30) - **from the user's point of view comp test is a
-            //   background brief-sim, but under the SDK `Scene` enum it is `InGame`** (proved by LIVE_DB != 0, i.e. this block did run),
-            //   and `player_team_id()` in that context returns **0**. That is the source of the pid=0 publications.
-            // * Second extension (2026-07-30 measurement): `COMPTEST_MATCH` is only true **after the comp-test sim starts** (after the launcher
-            //   fires), so 0 reports from the window **between entering the comp-test screen and the sim starting** leaked through and got published
-            //   (measured: of 2416 observations of 0, only 1592 were blocked and the remaining 824 came from that window). => while the comp-test popup
-            //   is open (`CT_OPEN`) treat it as the same context and ignore 0 as well.
-            // ** `CT_OPEN` went with the comp-test screen handler that set it, so
-            //   the "popup open but sim not started" window is no longer detected
-            //   and those pid=0 observations are treated as clean again. Harmless
-            //   here: a 0 is only *published* when no non-zero pid has ever been
-            //   seen (see the rule below), and this half no longer reads personal
-            //   tactics at all — the pid is used for the starter roster, which a
-            //   comp test does not have.
+            // Counts 0 reports outside tests, so a save whose team id really is
+            // 0 is trusted after a while (`trust` below).
             let ct_ctx = in_comptest;
             if pu == 0 && !ct_ctx {
                 // an observation of 0 unrelated to comp test
@@ -1732,9 +1272,9 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                     PLAYER_TEAM_ID.store(0, Ordering::Relaxed);
                 }
             }
-            // ** v15: publish my team's athlete_ids - the material for the spawn hook's scene-free team decision.
-            //   Everyone under contract (`roster_scan_step`, published the frame a pass finishes) plus the last starting five,
-            //   refreshed on the ROSTER_POLL period (transfers and lineup changes are picked up automatically).
+            // Publish my team's athlete ids for the spawn hook: everyone under
+            // contract (`roster_scan_step`) plus the last starting five,
+            // refreshed every `ROSTER_POLL` frames.
             {
                 const ROSTER_POLL: u64 = 120; // frames
                 let n = ROSTER_TICK.fetch_add(1, Ordering::Relaxed);
@@ -1743,18 +1283,15 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
                 // Every frame: the contract scan reads a few records at a time.
                 let scanned = valid && roster_scan_step(client, known as usize);
                 if valid && (n % ROSTER_POLL == 0 || scanned) {
-                    // (was `db.team(known).last_starting` / `.champion_personal_tactics`)
-                    // The whole contracted roster, plus the last starting five
-                    // as a floor: see `roster_scan_step` for why the starters
-                    // alone missed the first match of a new save.
+                    // The contracted roster, with the last starting five as a
+                    // floor.
                     let starting = stable_last_starting(client, known as usize);
                     let roster = contracted_roster(known as usize);
                     let mut my = starting.clone();
                     my.extend(roster.iter().copied());
-                    // * `pid=0` is **treated as undetermined and withheld by default** (withheld = is_my_athlete returns None
-                    //   = the team gate closes on the safe side). But if 0 has been observed **long enough (600 ticks, ~10s) in an InGame unrelated to
-                    //   comp test**, accept it as a genuine team-id-0 save and publish.
-                    //   => it is never published in a comp-test-only session, and playing a normal match captures the real pid.
+                    // A team id of 0 is withheld (the team gate stays closed)
+                    // until 0 has been seen for 600 frames outside tests, so a
+                    // test-only session never publishes team 0.
                     let trust = known != 0 || PID_ZERO_CLEAN.load(Ordering::Relaxed) >= 600;
                     crate::own_team_log::on_change("roster", {
                         let mut ids: Vec<u64> = starting.iter().copied().collect();
@@ -1779,8 +1316,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
     }
 }
 
-// Server side. (Was `impl ModServerExtension for ItemTacticsServerExt`. Driven
-// from the host mod's `StableServerExtension` — see `driver` and `src/lib.rs`.)
+// Server start, from `driver::on_server_start`.
 fn tactics_on_server_start() {
     // Session boundary: the item network belongs to the save that was just
     // left, and its picks were made for that save's matches.
@@ -1790,6 +1326,7 @@ fn tactics_on_server_start() {
     install_launcher_hook();
     install_seed_ctor_hook();
     install_spawn_hook();
+    install_route_hook();
 }
 
 fn tactics_before_management_tick() {
@@ -1797,23 +1334,11 @@ fn tactics_before_management_tick() {
 }
 
 // ===========================================================================
-//  Stable-ABI replacement for the `ClientDatabase` read
+//  Roster reads through the stable client
 // ===========================================================================
-// `Scene::InGame { data }.db()` gave a `mod_api::ClientDatabase`, whose `team()`
-// returned a struct the starting five were read straight off. The stable client
-// exposes the same management records as JSON documents instead, so the shape
-// of the answer is unchanged and only the route to it differs.
-//
-// It is called from a throttled path (the roster, every 120 frames), which is
-// what makes a JSON round-trip per call acceptable where a field read was
-// before.
 
-// Athlete ids of `team_id`'s starting five — was `team.last_starting`.
-//
-// That field is `[Option<usize>; 5]`, so the JSON has nulls in it for an
-// incomplete lineup; those slots are skipped exactly as the `if let Some(aid)`
-// did. An empty set means "could not read it", which the caller already
-// handles by not publishing (`!my.is_empty()`).
+// Athlete ids of `team_id`'s starting five; empty when unreadable, which the
+// caller takes as nothing to publish.
 fn stable_last_starting(
     client: &StableClient<'_>,
     team_id: usize,
@@ -1833,35 +1358,19 @@ fn stable_last_starting(
     out
 }
 
-// ── The contracted roster ─────────────────────────────────────────────────
+// ── The contracted roster ──────────────────────────────────────────────
 //
-// Athlete ids of everyone under contract with the player's team — starters,
-// subs and academy alike — read off each athlete record's `contract`.
+// Everyone under contract with the player's team, read off each athlete
+// record's `contract`. `last_starting` alone is empty until the team has
+// played, so a new save's first match would spawn before anything was
+// published.
 //
-// `last_starting` alone is empty until the team has played a match, so on a
-// new save the first match would spawn before anything is published, and
-// every athlete would buy its first item from the engine's build. A contract is
-// there from the moment the save loads, and it also covers a newly signed
-// starter, who is not in `last_starting` until he has played.
-//
-// `contract` is an enum, `FreeAgent { requests }` or `InContract { team_id,
-// start_date, end_date, weekly_salary, transfer_fee, incentives,
-// transfer_requests, recruit_requests }` (the serde tables in the 0.6.2 exe),
-// so the plain path `contract.team_id` matches nothing — the first build of
-// this read 0 of 1,065. The fragment is read whole instead and its first
-// `team_id` taken ([`contract_team_id`]), which holds however serde tags the
-// enum: fields serialize in declaration order, so the contract's own team
-// comes before any `team_id` inside its transfer requests.
-//
-// A read costs 0.1-0.2 ms (that same one-shot build: 1,065 in 114 ms, a
-// visible hitch), so a pass is spread over frames, [`ROSTER_SCAN_BATCH`] at a
-// time, and repeated only when the in-game day changes (signings land on day
-// ticks) and at most every [`ROSTER_RESCAN_FRAMES`], so a fast-forward that
-// ticks the date every second does not keep one running.
+// A read costs 0.1-0.2 ms, so a pass is spread over frames
+// ([`ROSTER_SCAN_BATCH`]) and repeated only when the in-game day changes, at
+// most every [`ROSTER_RESCAN_FRAMES`].
 
-// Athlete records [`roster_scan_step`] reads per frame. Measured on 0.6.2 at
-// 32 a frame: 1,065 contracts in 191 ms over 34 frames, ~5.6 ms a frame. At
-// 16 that is under 3 ms a frame and about a second for a whole pass.
+// Athlete records [`roster_scan_step`] reads per frame: under 3 ms a frame and
+// about a second a pass (0.6.2).
 const ROSTER_SCAN_BATCH: usize = 16;
 // Frames (~10 s) a finished pass waits before a day change starts another.
 const ROSTER_RESCAN_FRAMES: u64 = 600;
@@ -1986,53 +1495,15 @@ fn contract_team_id(json: &str) -> Option<usize> {
     rest[..end].parse().ok()
 }
 
-// == athlete -> champion mapping probe (scanning buy_item's r8 = athlete) =====================
-// ** 0.5.4 re-derivation (2026-08-04) - `tools/rederive.py sig`, no old exe available (see that file's header).
-//   The mod relocates 19B of this entry, so its exact opening was already known and became the search key:
-//   `41 57 41 56 56 57 53 48 83 EC 50` (5 push + sub 0x50) + `48 8B 84 24 A8 00 00 00` (mov rax,[rsp+0xa8] = arg6).
-//   **Exactly 1 hit in .text: 0xe767e0, a .pdata function start (size 230).**
-//   Every term of the documented argument contract is visible in its first 40 bytes:
-//     mov rax,[rsp+0xa8]          -> arg6 = Game            (what the detour reads as rsp_entry+0x30)
-//     cmp qword [r8+0x490],0      -> **r8 = athlete**, +0x490 = its build Vec (the recorded athlete layout)
-//     mov r15,[rax+0x30]          -> Game+0x30 = catalog
-//     mov rsi,[r15+8] / rdi,[r15+0x10] -> catalog Vec ptr/len
-//     shl rax,4; mov rcx,[rsi+rax]; mov rax,[rsi+rax+8] -> the 16B element {elem_ptr@0, vtable@8}
-//     call [rax+0x70]             -> vtable dispatch, same family as the recorded name@0x50 / recipe@0x68
-//   The 19B relocation boundary is unchanged: the instruction after the mov starts at 0xe767f3 = entry+19.
-// ** 0.5.5 re-derivation (2026-08-11). Strict exe2exe gives **0 hits** and `--loose` gives exactly **1**, at a
-//   function start of identical size 230 — which is itself the finding: the only bytes that changed are struct
-//   displacements, i.e. the athlete moved. Disassembled side by side the two are 67 instructions each with zero
-//   mnemonic mismatches and a single differing operand, `cmp qword [r8+0x490],0` -> `cmp qword [r8+0x4f0],0`.
-//   That one instruction is the anchor the whole athlete layout below hangs off, because r8 is the athlete by
-//   the argument contract. The prologue and the 19B relocation boundary are both unchanged.
-// ** 0.5.7 (2026-08-26): exe2exe **strict** (no --loose), 1 hit, size 230 and 67 instructions on both sides.
-//   That it matched strict is itself evidence the athlete struct did not move — `--loose` exists because a
-//   moved struct defeats a strict match. `pairdiff --min-disp 0x4` then confirms it directly: zero differing
-//   displacements in buy_item and in all three of its callees (0xdf3a70, 0xdf5580, 0xde0120), so the build
-//   Vec, the items Vec and the id are all where they were. orig_len=19 unchanged.
-// ** 0.6.3 re-derivation (2026-10-06): the function was rebuilt, not moved. exe2exe finds nothing,
-//   strict or loose; the 25-byte thunk that forwarded to it is gone; the body is no longer 230 bytes.
-//   What did not change is who calls it. `run_tick` still does `call [vtable+0x80]` on the same trait
-//   object, and that vtable is found by its layout (drop, size, align 0x10, two methods, then the two
-//   supertrait pointers at vtable-0x40 and vtable-0x20): 0x3afa198 on 0.6.2, **0x3b08bd8** on 0.6.3.
-//   Slot +0x80 is now a bare `jmp` at 0xf61b80 to **0xf3f510** (317 bytes), and nothing else in the
-//   image refers to that function. Its body is the old one behind a longer prologue:
-//     mov r13,[rsp+0xc8]            8 pushes + sub rsp,0x58 -> entry+0x30 = Game (unchanged slot)
-//     cmp qword [rsi+0x360],0       rsi = r8 = athlete, its build len (was [r8+0x560])
-//     mov rax,[r13+0x30] / mov rbx,[rax+8] / mov r14,[rax+0x10]    the catalog
-//     three callees of 709/917/1069 bytes (were 691/1007/1069), then the same
-//     `call [rax+0x70]` / `sete al` tail with the index in rdx
-//   r9 is still the provider: it is the receiver of the two `call [arg5+0x20]`/`[arg5+0x28]` at the
-//   top, and `run_tick` loads it from the slot it loaded 0.6.2's from. So everything the detour
-//   reads holds (r8 = athlete, r9 = provider, [rsp_entry+0x30] = Game, Game+0x30 = catalog, rax/rdx
-//   out); only the prologue differs.
-//   NOT this function: 0xea1670 (189 bytes) has the same `cmp qword [r8+0x360],0` head, but takes
-//   the Game through r9 and returns a bare bool. It is the AI's "is there anything to buy" test,
-//   new in this build, called from three AI functions and never from `run_tick`.
-const RVA_BUY_ITEM: usize = 0xfd1b30; // 0.7.0-beta (2026-10-07: exe2exe strict unique, fn start, size 317 and 96 instructions both sides, prologue byte-identical; vtable 0x3e5dd48 +0x80 -> jmp 0xffa590 -> here, still the only reference. pairdiff at --min-disp 0x4 --imm: one displacement moved, `[r14+0x4448]` -> `[r14+0x44a8]`, a field of the AI object in rcx that nothing here reads; buy_item's resolver and the AI predicate pair clean with none). 0.6.3 was 0xf3f510 (2026-10-06: see the note above; vtable 0x3b08bd8 +0x80 -> jmp 0xf61b80 -> here, size 317). 0.6.2 was 0xe82e40 (2026-09-29: exe2exe strict unique, fn start, size 230 both sides; buy_item and all three callees pairdiff clean at --min-disp 0x4 --imm, no struct offset moved). 0.6.1 was 0xeae130 (2026-09-21: exe2exe strict unique, fn start, size 230 both sides, pairdiff: no struct offset moved). 0.6.0 release was 0xf3d570 (0.6.0-beta2 was 0xfe23b0; exe2exe unique, fn start, size 230 both sides, prologue byte-identical) (0.6.0-beta was 0xf33680, 0.5.7 0xdf5490, 0.5.6 0xebca20, 0.5.5 0xeb2c40, 0.5.4 0xe767e0, 0.5.3 0xd0c680). History for 0.5.3 follows.(0.5.2 was 0x211e070). **The first 24B of the entry are byte-identical** (a single unique hit in the whole exe) + the body is instruction-for-instruction isomorphic + the argument contract is unchanged (r8=athlete, [rsp_entry+0x30]=Game, Game+0x30=catalog). orig_len=19 is unchanged too (11B < 12B -> the next clean boundary is the 8B mov rax,[rsp+0xa8]). WARNING 0.5.3 change: the call path became a vtable (+0x78) thunk 0xd22340 instead of a direct call, but **since we hook the function entry, every call is still caught**. History for 0.5.2 follows. (0.5.1 was 0x1f01090; exe2exe skeleton UNIQUE, the 24B prologue completely identical = body unchanged, delta +0x21cfe0.) History for 0.5.1 follows: the function was heavily reworked (8 push/sub 0x38 -> 5 push/sub 0x50, with build/name comparison split out into the subfunction 0x1f00920) so mask-sig was NONE, but it was confirmed by the unchanged argument contract (r8=athlete, p6=Game@rsp_entry+0x30, Game+0x30=catalog). Cross-checked against the buy driver FUN_142234430 (successor to the old FUN_1420e76e0) + the vtable slot.
+// The buy hook on `buy_item`: r8 = athlete, r9 = provider, [rsp_entry+0x30] =
+// Game, Game+0x30 = catalog, the index out in rdx. Since 0.6.3 it is reached
+// through slot +0x80 of the `run_tick` vtable; not the 189-byte "anything to
+// buy" test with the same `cmp qword [r8+<build len>],0` head, which takes the
+// Game in r9.
+const RVA_BUY_ITEM: usize = 0xfd1b30; // 0.7.0-beta (0.6.3: 0xf3f510); exe2exe strict unique at 317 bytes, the run_tick vtable's +0x80 slot
 const BUY_PROLOGUE: [u8; 12] = [
     0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x55, 0x53,
-]; // 0.6.3: push r15/r14/r13/r12/rsi/rdi/rbp/rbx = 12B, a clean boundary and all the trampoline relocates (`install_replace_4th`). Through 0.6.2 this was 41 57 41 56 56 57 53 48 83 EC 50 48, the first 12B of the 0.5.1 prologue: push r15/r14/rsi/rdi/rbx; sub rsp,0x50; (11B = a clean boundary) + the first byte of the following mov (0x48...). Trampoline relocation = 19B (next clean boundary = + mov rax,[rsp+0xa8])
+]; // 0.6.3: push r15/r14/r13/r12/rsi/rdi/rbp/rbx, 12B, all the trampoline relocates (`install_replace_4th`)
 static BUY_PROBE_INSTALLED: AtomicU64 = AtomicU64::new(0);
 
 #[inline]
@@ -2044,29 +1515,17 @@ unsafe fn wr_u64(p: usize, v: u64) {
     std::ptr::write_unaligned(p as *mut u64, v);
 }
 
-// -- Direct call into the item neural network forward (ported from the verified scrim version) --
-//   forward(net, ctx=&[u64;11], build_ptr, build_len, flag=0) -> f32 sigmoid score.
-//   ctx: [0..5] = our team's champ ids / [5..10] = the opponents' / [10] = position (0~4; forward panics above 4).
-// 0.5.4 (2026-08-04): exe2exe `match`, 1 hit at 320 and 640 bytes, size 1609.
-// ** 0.5.5 (2026-08-11): exe2exe unique, size 1609 on both sides, and `delta.py` reports no differing struct
-//   displacement anywhere in the body — so the net layout the per-call re-validation checks (net+0x8 weight ptr,
-//   +0x10 bound, +0x18) is untouched and that logic stays valid as-is.
-// ** 0.5.7 (2026-08-26): exe2exe unique, size 1609 and 409 instructions both sides, `pairdiff` clean, so the
-//   net layout (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) is unchanged and the per-call
-//   re-validation logic stays valid as-is.
-// ** 0.6.3 (2026-10-07): 0x1932130, back in service for the 5th and 6th item (`network_pick`). It was not
-//   migrated for 0.6.0 to 0.6.2, while nothing could reach it. Found from the item-build hook's target: that
-//   calls one 6.3KB beam search (0x1932b40), and this is the beam search's scoring callee, 0xa10 below it as
-//   in every build, still 1609 bytes, with the same five feature names. Its arguments are unchanged too:
-//   rcx net, rdx lineup ([rdx+0x50] = lane, a panic above 4; [rdx+lane*8] = the champion; +0x28 on = the
-//   five enemies, 9999 = nobody), r8/r9 the build slice, [rsp+0x20] a flag that adds noise when set. The
-//   net's constructor (0x196a2c0) still writes 16384 / ptr / 16384 / 1, though only a dword of that 1.
-//   xmm0 is the score; 0.6.3 also hands back p(1-p) in xmm1, which nothing here reads. A second function
-//   (0x1931cd0) builds the same features to TRAIN the weights, so a score is only good for the moment it
-//   was asked for: see `NETWORK_PICKS`.
-const ITEMNET_FORWARD_RVA: usize = 0x1ad8080; // 0.7.0-beta (2026-10-07: exe2exe strict unique, fn start, size 1609 and 409 instructions both sides, pairdiff clean at --min-disp 0x4 --imm; still called only by the beam search, 0x1ad8a90, which only the hook.rs target calls, and the net's constructor, 0x1b296e0, pairs clean as well). 0.6.3 was 0x1932130 (0.6.0-beta2 was 0x1228050, 0.6.0-beta 0x12462b0, 0.5.7 0x17f09b0, 0.5.6 0xf53de0, 0.5.5 0x12624f0, 0.5.4 0x145a680, 0.5.3 0x10587e0). History for 0.5.3 follows. (0.5.2 was 0x1b9cce0). The first 24B of the entry are identical + all 5 feature-name strings match (self_item/champ_pos_build/lane_counter/synergy/global_counter) + the net layout is unchanged (net+0x8 = weight ptr, +0x10 = 16384 bound, +0x18 = 1) => the mod's per-call re-validation logic stays valid as-is. History for 0.5.2 follows. (0.5.1 was 0x1bc82e0; exe2exe UNIQUE, identical prologue.) History for 0.5.1 follows: (0.5.0_3 was 0x1b78420, mask-sig UNIQUE PROL-OK push8 554157415641554154565753). WARNING it was OFF via AUTO4_FORWARD_SCORE=false (an AV at +0x44a inside forward on 0.5.1; see the flag comment above). A matching prologue does not imply identical internals.
-/// The eight pushes and `sub rsp, 0xd8`. The pushes alone open thousands of
-/// functions; the frame size is what makes a stale address fail this.
+// The item network's scorer, called directly for the 5th and 6th item
+// (`network_pick`): rcx net, rdx lineup ([rdx+lane*8] the champion, +0x28 on
+// the five enemies with 9999 for nobody, [rdx+0x50] the lane, which panics
+// above 4), r8/r9 the build slice, [rsp+0x20] a noise flag; xmm0 the score.
+//
+// Found as the scoring callee of the beam search the hook.rs target calls. A
+// sibling function trains the weights, so a score is only good when it was
+// asked for (`NETWORK_PICKS`).
+const ITEMNET_FORWARD_RVA: usize = 0x1ad8080; // 0.7.0-beta (0.6.3: 0x1932130); exe2exe strict unique at 1609 bytes
+// The eight pushes and `sub rsp, 0xd8`. The pushes alone open thousands of
+// functions; the frame size is what makes a stale address fail this.
 const ITEMNET_FORWARD_PROLOGUE: [u8; 19] = [
     0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xd8,
     0x00, 0x00, 0x00,
@@ -2078,10 +1537,9 @@ type ItemNetFn = unsafe extern "C" fn(usize, usize, *const u64, u64, u8) -> f32;
 static NETWORK_AGENT: AtomicU64 = AtomicU64::new(0);
 // Most weights [`network_ready`] accepts. The network has 16384.
 const NETWORK_WEIGHTS_MAX: usize = 1 << 20;
-// Whether `net` can be handed to `itemnet_forward`: a weight array that is
-// there to be read, for as many weights as the network says it has. The
-// function checks every index against that count itself, so nothing else
-// about the network can make it read out of bounds.
+// Whether `net` can be handed to `itemnet_forward`: a readable weight array of
+// the length the network states. The function bounds-checks every index against
+// that count itself.
 unsafe fn network_ready(net: usize) -> bool {
     if net < 0x10000 || !readable(net, 0x20) {
         return false;
@@ -2104,14 +1562,11 @@ unsafe fn itemnet_addr_valid() -> bool {
     ITEMNET_VALID.store(if ok { 1 } else { 2 }, Ordering::Relaxed);
     ok
 }
-const SHADOW_CALL_NAMES: bool = true; // name of a ctx+0x20 element = calling vtable[0x50] (AV risk, hence the gate)
+const SHADOW_CALL_NAMES: bool = true; // gate on the name getter shadow-calls (an AV risk)
 
-// Item game id -> name key (0~29 = vanilla, 30+ = mod items). Used to scan names in the ctx+0x20 collection.
-// A start offset spread deterministically by champion name, so a rule that
-// walks a candidate list does not hand every champion the same answer.
-//
-// FNV-1a over the name: the same champion always gets the same offset, which is
-// what keeps a replayed match identical to the one that was played.
+// A start offset spread deterministically by champion name (FNV-1a), so a
+// candidate walk does not hand every champion the same answer and a replay
+// matches the match.
 fn champ_spread(champ: &str, modulo: usize) -> usize {
     if modulo == 0 {
         return 0;
@@ -2123,12 +1578,9 @@ fn champ_spread(champ: &str, modulo: usize) -> usize {
     (h % modulo as u64) as usize
 }
 
-// First free final item that `matches`, starting from a champion-spread offset
-// so the whole league does not converge on one stand-in.
-//
-// "Free" is both unclaimed by the earlier build slots (`taken`) and actually
-// present in this match's catalog with a recipe — which is what the scan
-// proves and an id alone does not.
+// The first free final that `matches`, from a champion-spread offset so the
+// league does not converge on one stand-in. Free means unclaimed by earlier
+// slots (`taken`) and in this match's catalog with a recipe.
 unsafe fn pick_candidate(
     ctx: usize,
     wanted: u64,
@@ -2156,6 +1608,7 @@ unsafe fn pick_candidate(
     None
 }
 
+// Item game id -> key (0..29 vanilla, 30+ mod items).
 fn item_id_to_key(id: u64) -> Option<String> {
     if (id as usize) < VANILLA_KEYS.len() {
         return Some(VANILLA_KEYS[id as usize].to_string());
@@ -2163,10 +1616,9 @@ fn item_id_to_key(id: u64) -> Option<String> {
     let reg = MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner());
     reg.get((id as usize).checked_sub(30)?).cloned()
 }
-// Grows the buy build Vec from whatever the engine built (normally 4) to
-// `build_config::picker_slots()`, for the 5th and 6th slots. Every call goes
-// through `realloc_ok`, which checks `RVA_REALLOC`'s entry bytes first: a
-// stale address there is a crash mid-match.
+// Whether the buy build `Vec` is grown from the engine's four to
+// `build_config::picker_slots()`. Every grow goes through `realloc_ok`, since a
+// stale `RVA_REALLOC` crashes mid-match.
 const BUILD_EXTEND_ENABLED: bool = true;
 static AUTO_CANDS: Mutex<Option<std::sync::Arc<Vec<u64>>>> = Mutex::new(None);
 fn auto_cands() -> std::sync::Arc<Vec<u64>> {
@@ -2189,17 +1641,9 @@ fn auto_cands() -> std::sync::Arc<Vec<u64>> {
 //  Build-slot lookups
 // ---------------------------------------------------------------------------
 //
-// `item-builds.json` — written by the host mod's `#builds` editor — is the only
-// source these consult. Each used to try the pin first and fall back to a `SEL`
-// dropdown designation; `SEL` is gone, so the pin is the whole answer and the
-// `scope` argument that disambiguated per-side comp-test selections went with
-// it.
-//
-// Which slots reach here depends on the editor's scope toggle. The 5th and 6th
-// always do: the engine's build `Vec` is four long until this half grows it, so
-// the stable hook cannot deliver them. The game's own four reach here only
-// under `own_team_only`, where the team scoping this side can do is the whole
-// point; otherwise `crate::item_build_hook` sets them before the match.
+// The pins from `item-builds.json`. The 5th and 6th always come through here,
+// since the stable hook cannot reach them; the game's four only under
+// `own_team_only`.
 
 // The pinned item key for one build slot, normalized (radiant + alias) the way
 // the item catalog is keyed.
@@ -2207,20 +1651,10 @@ fn slot_n_item_key(champ: &str, si: u8) -> Option<String> {
     crate::build_config::pinned_key(champ, si as usize)
 }
 
-// Catalog index of a slot's pinned item, looked up by key through `lookup`
-// (a name scan of the live catalog).
-//
-// Never by id. This used to short-cut vanilla items as "id == catalog index",
-// but the catalog grows and reorders with the enabled mods and the save, so a
-// position in `VANILLA_KEYS` names whatever happens to sit there — often a
-// component with no recipe, which the game then never builds. Every item goes
-// through the scan, the way the stable hook goes through
-// `StableItemBuildContext::item_index`.
-//
-// Tries keys in `build_config::resolve_key`'s order: the normalized key first
-// (`radiant_` + alias, so `"bloodthirster"` finds `warlords_final_judgement`),
-// then the key exactly as written, which is how a game-internal key like
-// `"warlords_final_judgement"` resolves.
+// Catalog index of a slot's pin, by key through `lookup` (a name scan of the
+// live catalog), never by id: the catalog grows and reorders with mods and
+// saves. The normalized key is tried first (`bloodthirster` finds
+// `warlords_final_judgement`), then the key as written.
 fn slot_n_catalog_index(champ: &str, si: u8, lookup: impl Fn(&[u8]) -> Option<u64>) -> Option<u64> {
     let raw = crate::build_config::pinned_key_raw(champ, si as usize)?;
     slot_n_item_key(champ, si)
@@ -2228,12 +1662,9 @@ fn slot_n_catalog_index(champ: &str, si: u8, lookup: impl Fn(&[u8]) -> Option<u6
         .or_else(|| lookup(raw.as_bytes()))
 }
 
-// * The 4th target = scan the catalog (ctx+0x20) by name to get the index + validate the recipe. (Mod items need a name scan because id != index.)
-//   catalog = the same array the resolver indexes (RE confirmed). element{elem_ptr@0, vtable@8}, name = vtable[0x50],
-//   has_recipe = calling vtable[0x68] (!=0 = has a recipe). Without a recipe the game panics in FUN_141d5ab40 -> always validate before use.
-//   Returns = the catalog index of a valid final item that has a recipe (usable directly in build[3]). None otherwise (vanilla fallback).
-// * For the spawn hook (v14): a scan that takes the catalog base/len directly (Game+0x1fd0/+0x1fd8). Cache key = len (see `SCAN_CACHE`).
-//   Same index space as the buy path (the ctx+0x30 collection) - a build[] value *is* this index, so the resolver consumes it as-is.
+// Catalog index of the final named `want` that has a recipe (the game panics
+// building one without), in the catalog at `base`/`len`. The same index space
+// as the buy context's, so a build slot takes it as-is; cached in `SCAN_CACHE`.
 unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> {
     if want.is_empty() || base < 0x10000 || len == 0 || len > 100000 {
         return None;
@@ -2260,26 +1691,20 @@ unsafe fn scan_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<u64> 
     }
     res
 }
-// Shared scan core: find the index in the catalog array (element{elem_ptr@0, vtable@8}, stride 0x10) whose name matches and which has a recipe.
-//
-// ** Every read is VEH-guarded, through `catalog_entry_named` (2026-09-26, the
-//   teamfight lag the buy memo only partly fixed). This loop used to prove each
-//   entry with `readable`/`code_ptr_ok` first: up to four `VirtualQuery` syscalls
-//   an entry at ~5.9 us each, so ~6 ms to walk a catalog of ~250, on every lookup
-//   that missed `SCAN_CACHE`. A full buy pass makes dozens of lookups (every
-//   `pick_candidate` step is one), and every sim copy of a match used to start
-//   with a cold cache — see `SCAN_CACHE`.
+// The scan behind [`scan_catalog_index`]: the first entry named `want`, if it
+// has a recipe. Reads are VEH-guarded (`catalog_entry_named`), since
+// `VirtualQuery` checks made a cold walk cost ~6 ms.
 unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64> {
     if want.is_empty() || data < 0x10000 || len == 0 || len > 100000 {
         return None;
     }
     let i = (0..len).find(|&i| catalog_entry_named(data, len, i, want))?;
-    // * Recipe validation: calling vtable[0x68] must return !=0 for natural build-up to be safe (0 = a base item -> panic).
-    //   Only the first entry with the name counts: a name match without a recipe falls back rather than looking further.
+    // The recipe getter returns 0 for a base item, which the game would panic
+    // building. Only the first entry with the name counts.
     let e = data + (i as usize) * 16;
     let edata = safe_read_u64(e)? as usize;
     let evt = safe_read_u64(e + 8)? as usize;
-    let recfn = safe_read_u64(evt + 0x70)? as usize; // 0.5.1: the next_tier/recipe getter slot moved +0x68 -> +0x70 (ghidra-re)
+    let recfn = safe_read_u64(evt + 0x70)? as usize; // the recipe getter
     if !name_getter_ok(recfn) {
         return None;
     }
@@ -2287,27 +1712,10 @@ unsafe fn scan_recipe_safe_in(data: usize, len: u64, want: &[u8]) -> Option<u64>
     (rf(edata) != 0).then_some(i)
 }
 
-// * Performance: scan cache (name -> index). Reduces the 96-element shadow-call scan to once per name. Value -1 = not found / no recipe.
-//
-// A catalog index is only meaningful against the catalog it was read from. The
-// list grows and reorders with the enabled mods, and a save load or a new match
-// can rebuild it at the address the old one had, so an address match is not
-// proof the index still names the same item. This cache used to trust that, and
-// a stale hit put the wrong item — or one with no recipe — into a build slot,
-// which the game then never built. Every positive hit is re-read by name before
-// it is returned, the way `StableItemBuildContext::item_index` looks items up by
-// key on every call; a mismatch falls through to a fresh scan.
-//
-// ** Keyed by the catalog's length, not its address (2026-09-26). Every `Game`
-//   builds its own catalog array, and a match plays in several sim copies (the
-//   player's league match was seen buying in 4 providers), so the old
-//   (base, len) key gave each copy a cold cache, and more than 16 live catalogs
-//   (league fixtures x copies) cleared it outright. The copies of one session
-//   are built from one item list, so their answers are the same; the checks
-//   above are what make that safe to rely on. A hit is re-read by name in the
-//   catalog asking, and a miss is trusted only while that catalog's last entry
-//   has the name the cache started with. Two catalogs of the same length but a
-//   different item set would only cost rescans: a failed check forgets the lot.
+// Name -> catalog index cache, keyed by catalog length, since every sim copy of
+// a match builds its own catalog from the same item list. A hit is re-read by
+// name before use and a miss trusted only while the catalog's last entry is
+// unchanged; a failed check forgets that length's answers.
 static SCAN_CACHE: Mutex<Option<HashMap<u64, CatalogCache>>> = Mutex::new(None);
 
 // Cached lookups against every catalog of one length.
@@ -2319,17 +1727,10 @@ struct CatalogCache {
     found: HashMap<Vec<u8>, i64>,
 }
 
-// A cached answer for `want` in this catalog, re-checked against it.
-//
-// `Some(Some(i))` is a verified index and `Some(None)` a cached miss; `None`
-// means there is nothing usable and the caller has to scan.
-//
-// A miss is re-checked more cheaply than a hit, because proving absence would
-// be the full scan again: it is trusted only while the last entry still has the
-// name it had when the cache was started. A rebuilt catalog with a different
-// item set essentially never keeps its last entry. Any failed check drops every
-// cached answer for the catalog, so one stale hit cannot leave stale misses
-// behind.
+// A cached answer for `want`, re-checked: `Some(Some(i))` a verified index,
+// `Some(None)` a miss whose catalog still ends in the same entry, `None`
+// nothing usable (scan). A failed check forgets the catalog's answers, so no
+// stale miss outlives a stale hit.
 unsafe fn cached_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<Option<u64>> {
     let (cached, last) = {
         let g = SCAN_CACHE.lock().unwrap_or_else(|e| e.into_inner());
@@ -2348,15 +1749,8 @@ unsafe fn cached_catalog_index(base: usize, len: u64, want: &[u8]) -> Option<Opt
     verified
 }
 
-// Whether catalog entry `idx` is named `want`.
-//
-// The re-check behind every cache hit, so it runs on the buy hot path — the
-// fallback 4th-item search can make dozens of lookups per decision, for every
-// athlete. It therefore reads through the VEH-guarded `safe_read_*` rather
-// than [`catalog_name_in`]'s `readable`, which is a `VirtualQuery` syscall per
-// check. The one thing a protected read cannot prove is that the name getter is
-// code, so each getter is validated once with `code_ptr_ok` and remembered;
-// the catalog holds only a handful of item types.
+// Whether catalog entry `idx` is named `want`. On the buy hot path, so it reads
+// VEH-guarded and proves each name getter is code only once.
 unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> bool {
     if idx >= len || data < 0x10000 {
         return false;
@@ -2390,34 +1784,31 @@ unsafe fn catalog_entry_named(data: usize, len: u64, idx: u64, want: &[u8]) -> b
     safe_read_bytes(chars as usize, want.len(), &mut name) && name == want
 }
 
-// Getter addresses [`catalog_entry_named`] and [`scan_recipe_safe_in`] have
-// already proven are code. Sixteen, not eight, since the recipe getters share
-// it: a name getter pushed out of the ring costs a syscall on every entry of
-// the next scan.
+// Getter addresses already proven to be code. Sixteen, since the recipe getters
+// share the ring with the name getters.
 static NAME_GETTERS: [AtomicUsize; 16] = [const { AtomicUsize::new(0) }; 16];
 static NAME_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
 
-// Whether `namefn` is a catalog getter (the name getter, or the recipe getter
-// `scan_recipe_safe_in` calls) proven to be code, proving and remembering it
-// on first sight: `code_ptr_ok` is a `VirtualQuery` syscall, and the catalog
-// holds only a handful of item types. The low-address test comes first
-// because an empty [`NAME_GETTERS`] slot is 0, and a null getter must not
-// match one.
+// Whether `namefn` (a name or recipe getter) is code ([`proven_code`]).
 unsafe fn name_getter_ok(namefn: usize) -> bool {
-    if namefn < 0x10000 {
+    proven_code(&NAME_GETTERS, &NAME_GETTER_NEXT, namefn)
+}
+
+// Whether `f` is code, proving and remembering it in `ring` on first sight
+// since `code_ptr_ok` is a syscall. The low-address test comes first because
+// an empty slot is 0.
+unsafe fn proven_code(ring: &[AtomicUsize], next: &AtomicUsize, f: usize) -> bool {
+    if f < 0x10000 {
         return false;
     }
-    if NAME_GETTERS
-        .iter()
-        .any(|g| g.load(Ordering::Relaxed) == namefn)
-    {
+    if ring.iter().any(|g| g.load(Ordering::Relaxed) == f) {
         return true;
     }
-    if !code_ptr_ok(namefn) {
+    if !code_ptr_ok(f) {
         return false;
     }
-    let slot = NAME_GETTER_NEXT.fetch_add(1, Ordering::Relaxed) % NAME_GETTERS.len();
-    NAME_GETTERS[slot].store(namefn, Ordering::Relaxed);
+    let slot = next.fetch_add(1, Ordering::Relaxed) % ring.len();
+    ring[slot].store(f, Ordering::Relaxed);
     true
 }
 
@@ -2431,14 +1822,13 @@ fn forget_catalog(len: u64) {
     }
 }
 
-// VEH-guarded reads, not `readable`: the candidate searches call this once
-// per candidate, and two `VirtualQuery` syscalls each made a 5th/6th-slot
-// growth pass cost milliseconds (see [`catalog_name_at`]).
+// VEH-guarded reads, not `readable`: the candidate searches call this once per
+// candidate (see [`catalog_name_at`]).
 unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
     if ctx < 0x10000 {
         return None;
     }
-    let coll = safe_read_u64(ctx + 0x30)? as usize; // * 0.5.0: the catalog collection offset moved ctx+0x20 -> +0x30 (RE confirmed, the only change)
+    let coll = safe_read_u64(ctx + 0x30)? as usize; // the catalog collection
     if coll < 0x10000 {
         return None;
     }
@@ -2449,15 +1839,10 @@ unsafe fn scan_idx_cached(ctx: usize, want: &[u8]) -> Option<u64> {
     )
 }
 
-// What goes into build slot `si` when the Vec grows -- `si` 4 and 5 are the
-// 5th and 6th items, and 3 the 4th of the rare build the engine left three
-// long.
-//
-// The team gate is `designate` in `buy_replace_ctx`: a designated athlete
-// gets its `item-builds.json` pin, and everyone else, or a slot left blank
-// in the editor, gets [`auto_extra_pick`]. There is no engine pick to fall
-// back on -- the engine never plans these slots -- so an excluded athlete
-// still gets them filled, just not with the player's pins.
+// What goes into build slot `si` when the `Vec` grows (4 and 5 are the 5th and
+// 6th, 3 the 4th of a rare three-long build). A designated athlete
+// (`buy_replace_ctx`'s team gate) gets its pin, everyone else and blank slots
+// [`auto_extra_pick`], since the engine never plans these slots.
 unsafe fn extra_slot_pick(
     ctx: usize,
     buyer: Buyer,
@@ -2488,9 +1873,8 @@ unsafe fn extra_slot_pick(
 }
 
 thread_local! {
-    // Which of the ways above and below filled the slot `extra_slot_pick` was
-    // last asked for on this thread. Only read back by the growth that asked,
-    // for the Check Tactics panel's test log.
+    // How `extra_slot_pick` last filled a slot on this thread, for the Check
+    // Tactics test log.
     static PICKED_BY: core::cell::Cell<&'static str> = const { core::cell::Cell::new("") };
 }
 
@@ -2498,12 +1882,10 @@ fn picked_by(how: &'static str) {
     PICKED_BY.with(|picked| picked.set(how));
 }
 
-// Smart Builds' boots for build slot `si` (the 5th or 6th), in a build that
-// has none yet: the rule (`smart_builds::enforce`) leaves them to the first
-// open slot here when a pin holds every slot from the second to the fourth.
-// A slot the player pinned is not open, and a pair the player pinned
-// anywhere is the build's only pair. The pair is the one the rule picked for
-// the champion, which saw the enemy lineup this path does not.
+// Smart Builds' boots for the 5th or 6th slot, which the rule leaves here when
+// pins hold slots 2-4 (`smart_builds::enforce`). Never over a pin or beside a
+// pinned pair; the pair is the one the rule picked with the enemy lineup in
+// view.
 unsafe fn extra_slot_boots(
     ctx: usize,
     champ: &str,
@@ -2539,16 +1921,10 @@ unsafe fn pinned_extra_slot(ctx: usize, champ: &str, si: usize, taken: &[u64]) -
         .filter(|&t| !pin_placed_by_engine(ctx, champ, t, taken))
 }
 
-// Whether pinned item `t` already sits in one of the earlier slots `taken`
-// because the ENGINE put it there, not the player. Under `own_team_only` slot 0
-// (and any blank slot) is the engine's pick, made without seeing the pins, so it
-// can be the very item pinned later. Planting the pin anyway builds it twice;
-// it is honoured already, just sooner, so the later slot is freed for an
-// automatic pick instead. A slot whose own pin is `t` is the player duplicating
-// on purpose, and that is still planted as written.
-//
-// Boots count as placed when the engine holds any pair: one pair per build,
-// and by the time a 4th-6th slot is planted the engine's is usually bought.
+// Whether pinned item `t` already sits in an earlier slot because the engine
+// put it there (slot 0 under `own_team_only`, or a blank slot), so planting it
+// again would build it twice. A slot whose own pin is `t` is the player
+// duplicating on purpose; boots count as placed when the engine holds any pair.
 unsafe fn pin_placed_by_engine(ctx: usize, champ: &str, t: u64, taken: &[u64]) -> bool {
     let pin_boots = buy_is_boots(ctx, t);
     taken.iter().enumerate().any(|(j, &v)| {
@@ -2571,13 +1947,8 @@ unsafe fn later_pins(ctx: usize, champ: &str, from: usize) -> Vec<u64> {
         .collect()
 }
 
-// What the build slots before this one have spent of the Smart Builds budgets.
-// An index the catalog scan cannot name contributes nothing — the same way an
-// unclassifiable item is passed over on the other two paths.
-//
-// `fit` decides what the champion may hold at all (support items, what it
-// scales with), for the role the last lineup gave it, since this path is not
-// told the lane.
+// What the slots before this one have spent of the Smart Builds budgets; an
+// index the scan cannot name adds nothing.
 unsafe fn spent_budget(
     ctx: usize,
     fit: crate::smart_builds::Fit,
@@ -2597,24 +1968,12 @@ struct Buyer {
     seed: u64,
 }
 
-// The automatic 5th and 6th item: what the game's own item network wants
-// most on top of the build so far ([`network_pick`]), the way the engine
-// arrives at the four it plans itself.
-//
-// No slot decides it: the 5th and 6th are picked the way the AI picks, not
-// by matching the category of an earlier slot.
-//
-// Smart Builds still has the last word on what may be picked: always on
-// what suits the champion, and on the build as a whole while the toggle is
-// on. A support its rule 17 has looking to the heal, shield and buff items
-// first is asked about those alone before the rest.
-// Should the network be out of reach (its address not found after a game update, or no
-// build asked for yet this session) the slot goes to the first final the
-// rules accept, from a start spread by champion, and only then to any final
-// at all. Never a duplicate: `taken` is every slot before this one, and
-// `reserved` the player's pins for the slots after it, which count exactly
-// as if placed. `first_pinned`: the player pinned the build's first slot,
-// so while the toggle is on it gets no jungle or World Atlas item.
+// The automatic 5th and 6th item: the final the game's item network wants most
+// on top of the build ([`network_pick`]), held to Smart Builds, with rule 17
+// supports asked about their preferred items first. Without the network, the
+// first final the rules accept from a champion-spread start, then any final;
+// never one in `taken` or the later pins `reserved`, and no starter item when
+// `first_pinned`.
 unsafe fn auto_extra_pick(
     ctx: usize,
     buyer: Buyer,
@@ -2627,19 +1986,14 @@ unsafe fn auto_extra_pick(
     // `taken` stays the build in slot order, for the network; everything else
     // works from the whole build, pins still to come included.
     let spoken = [taken, reserved].concat();
-    // What the champion may hold at all, toggle or not. The engine's own
-    // search only offers a champion the finals whose tags match its own, and
-    // these two slots are picked on its behalf; an item it could not keep
-    // under the rules is the nearest thing here to one the engine would never
-    // have offered. The same line `item_build_hook::score_item` draws.
+    // What the champion may hold at all, toggle or not: the engine only offers
+    // finals matching the champion's tags, and these slots are picked on its
+    // behalf (as in `item_build_hook::score_item`).
     let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
     let suits = crate::smart_builds::Budget::empty(fit);
-    // Smart Builds applies to a pick the mod made as much as to a pinned one: a
-    // 5th item that cuts healing a second time, or pushes the build past the crit
-    // cap, is the same wasted slot either way. `None` while the toggle is off,
-    // which leaves the test above as the only one.
-    // A jungler's jungle item and a support's World Atlas item go in the
-    // first slot or not at all (rules 9 and 12).
+    // The build-wide rules too while the toggle is on (`None` when off); a
+    // pinned first slot rules out the jungle and World Atlas items (rules 9 and
+    // 12).
     let rule_fit = if first_pinned {
         fit.starter_slot_pinned()
     } else {
@@ -2648,19 +2002,16 @@ unsafe fn auto_extra_pick(
     let budget =
         crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, rule_fit, &spoken));
     // Rule 6 too: these slots are past the first two, where an early item
-    // goes.
+    // goes (supports are exempt).
     let allowed = |candidate: &str| {
         suits.rejects(candidate).is_none()
             && budget.as_ref().is_none_or(|budget| {
-                budget.rejects(candidate).is_none()
-                    && crate::smart_builds::fits_slot(candidate, si)
+                budget.rejects(candidate).is_none() && fit.fits_slot(candidate, si)
             })
     };
-    // Smart Builds rule 17: a support that looks to the heal, shield and buff
-    // items first takes these two slots from them while one is left, picked
-    // the same way, by the network, among those alone. Only with the toggle
-    // on: it is a preference among picks, not a line on what the champion
-    // may hold.
+    // Rule 17: a support that looks to the heal, shield and buff items first
+    // takes these slots from them while one is left, by the network among those
+    // alone. Only with the toggle on, as a preference.
     let aid_first = |candidate: &str| fit.is_preferred_aid_item(candidate) && allowed(candidate);
     let preferred = if budget.is_some() && fit.prefers_aid_items() {
         network_pick(ctx, buyer, champ, si, taken, &spoken, &aid_first)
@@ -2681,12 +2032,8 @@ unsafe fn auto_extra_pick(
             pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed)
                 .inspect(|_| picked_by("first the rules allow"))
         })
-        // Last resort, unconstrained but for the rules that hold even here
-        // while the toggle is on: a 5th item that breaks a rule still beats
-        // an empty slot, a jungle item on a champion that is not jungling
-        // does not, and neither does the jungle or World Atlas item of a
-        // build whose first slot is pinned. With the toggle off it is any
-        // final at all.
+        // Last resort: any final, but while the toggle is on never a jungle
+        // item off the jungle or a starter item behind a pinned first slot.
         .or_else(|| {
             pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
                 budget.is_none()
@@ -2699,16 +2046,10 @@ unsafe fn auto_extra_pick(
 // What the item network's lineup table holds for a seat nobody is in.
 const NET_NO_CHAMPION: u64 = 9999;
 
-// The network's picks so far: `(seed, team, lane, slot)` to item key.
-//
-// The network learns. `0x1931cd0` builds the same features `itemnet_forward`
-// scores and moves the weights, so the same question can get a different
-// answer an hour later, and a match is played more than once: in the
-// background for its result and again on screen, each copy buying for itself
-// (fix B, in `buy_replace_ctx`). What a seat was given the first time is what it gets every
-// time after, or the match the player watches stops being the one that was
-// recorded. By key, because a catalog index is only good for the catalog it
-// was read from.
+// The network's picks so far, `(seed, team, lane, slot)` -> item key. The
+// network keeps training and a match is played more than once (in the
+// background, then on screen), so a seat keeps its first answer or the watched
+// match drifts from the recorded one.
 static NETWORK_PICKS: Mutex<Option<HashMap<(u64, u64, u64, u64), String>>> = Mutex::new(None);
 
 // Seats [`NETWORK_PICKS`] holds before it starts over: about eight hundred
@@ -2734,27 +2075,13 @@ fn network_picks_forget() {
     *NETWORK_PICKS.lock().unwrap_or_else(|e| e.into_inner()) = None;
 }
 
-// The final the game's item network scores highest as this athlete's next
-// item, among those `allowed` and not in `spoken`. `None` when the network
-// cannot be asked.
+// The final the game's item network scores highest as this athlete's next item,
+// among those `allowed` and not in `spoken`; `None` when it cannot be asked. A
+// seat keeps its first answer ([`NETWORK_PICKS`]).
 //
-// This is one step of the engine's own search. `get_item_builds_list` runs a
-// beam search four items deep, and at each depth it scores every candidate by
-// appending it to the build so far and calling `itemnet_forward`. The same
-// call is made here for a fifth and a sixth item, with three differences:
-//
-// - **The candidates** are the finals `allowed`, which is Smart Builds'
-//   word on the champion and the build, not the engine's own short list
-//   (finals whose tags match the champion's).
-// - **The lineup** holds this champion in its lane and nobody else. The
-//   detour is not told who the enemies are, so the two features that read
-//   them (`lane_counter`, `global_counter`) sit out; the three that do not
-//   (`self_item`, `champ_pos_build`, `synergy`) are scored in full.
-// - **Boots are left out of the build** the network is shown. It has never
-//   seen a pair: they are not finals, so the engine never offers it one.
-//
-// A seat keeps its first answer for as long as the session lasts; see
-// [`NETWORK_PICKS`].
+// One step of the engine's own beam search, but over Smart Builds' candidates,
+// with only this champion in the lineup (the two enemy features sit out) and no
+// boots in the build shown (the network has never seen a pair).
 unsafe fn network_pick(
     ctx: usize,
     buyer: Buyer,
@@ -2849,19 +2176,10 @@ unsafe fn network_pick(
 // so a session that never leaves All Radiants runs none of this.
 static TIERS_RULED: AtomicBool = AtomicBool::new(false);
 
-// Item Rules (`crate::item_tiers`): rewrites the target of every build slot
-// from `from` on to the form `form` gives for the item it names, where it
-// gives one and the catalog has it.
-//
-// `from` is never less than the athlete's owned count, and that is the
-// whole of the safety here. The engine buys a build in order and upgrades
-// the last item it owns until that item's key equals its slot's target. A
-// slot it has not reached is only a number it has not read yet. A slot it
-// is on is not: were its target lowered under an item already upgraded past
-// it, the engine would look for an upgrade from the radiant to the
-// legendary, find none, and the athlete would buy nothing for the rest of
-// the match. So a slot already started keeps whatever target it has, and a
-// setting flipped during a match only reaches the slots after it.
+// Item Rules (`crate::item_tiers`): rewrites every slot target from `from` on
+// to the form `form` gives, where the catalog has it. `from` is never below the
+// owned count: lowering the target of a slot already upgraded past it would
+// leave the athlete buying nothing for the rest of the match.
 unsafe fn retier_unstarted(
     ctx: usize,
     athlete: usize,
@@ -2892,17 +2210,9 @@ unsafe fn retier_unstarted(
     }
 }
 
-// Item Rules, No Radiants: holds the slot the athlete is on, `owned - 1`, at
-// its legendary too. The one slot [`retier_unstarted`] must leave alone,
-// because its target may only be lowered while the item in hand has not gone
-// past it. So the item in hand is read (the athlete's items stand one to a
-// build slot, in order), and the slot is left as it is when that item is the
-// radiant already, or cannot be read. Anything else in hand is a component
-// on the way up, or the legendary itself, and either is finished by the
-// lower target.
-//
-// At a match's first buy decision this is the first slot, one component in:
-// the detour never sees an athlete with nothing bought.
+// Item Rules, No Radiants: holds the slot in hand (`owned - 1`) at its
+// legendary too, unless the item in hand is already the radiant or unreadable.
+// A component or the legendary itself in hand is finished by the lower target.
 unsafe fn cap_slot_in_hand(ctx: usize, athlete: usize, owned: u64) {
     let Some(slot) = owned.checked_sub(1) else {
         return;
@@ -2952,13 +2262,9 @@ unsafe fn radiant_index(ctx: usize, index: u64) -> u64 {
         .unwrap_or(index)
 }
 
-// Smart Builds' rules 6 and 9 over a build just grown to its 5th and 6th
-// slots, which the stable hook's pass never saw: the automatic picks not
-// bought yet, role items first, then early items, late items last
-// (`smart_builds::sort_by_timing`).
-// Fixed in place: every slot up to the one being built now (`owned`, whose
-// components may already be bought), the player's pins (`designate`), and
-// the boots, which rule 7 placed.
+// Smart Builds rules 6 and 9 over a build just grown to six, which the stable
+// hook's pass never saw (`smart_builds::sort_by_timing`). Slots up to the one
+// being built (`owned`), the player's pins and the boots stay put.
 unsafe fn reorder_unbought(
     ctx: usize,
     champ: &str,
@@ -2981,14 +2287,10 @@ unsafe fn reorder_unbought(
     }
 }
 
-// Grows the athlete's build `Vec` to `slots.len()` and writes every slot from
-// `old_len` on, then moves `len`. Returns the length the Vec has afterwards,
-// which is `old_len` if anything declined.
-//
-// Reallocates only when `cap` is short. `__rust_realloc` returns null on
-// failure and leaves the old block alone, so that case changes nothing; on
-// success the old block may already be freed, so ptr/cap are updated before
-// anything else can go wrong.
+// Grows the athlete's build `Vec` to `slots.len()`, writing every slot from
+// `old_len` on, and returns its new length (`old_len` if anything declined).
+// Reallocates only when `cap` is short, and writes ptr/cap at once, since a
+// successful realloc may have freed the old block.
 unsafe fn grow_build(athlete: usize, ptr: usize, cap: u64, old_len: u64, slots: &[u64]) -> u64 {
     let new_len = slots.len();
     let old = old_len as usize;
@@ -3017,26 +2319,10 @@ unsafe fn grow_build(athlete: usize, ptr: usize, cap: u64, old_len: u64, slots: 
     new_len as u64
 }
 
-// Whether this athlete's build `Vec` still has to be grown to
-// `build_config::picker_slots()` (4 -> 6 on game 0.6.0).
-//
-// Read through `safe_read_u64` (the VEH, no syscall) rather than `readable`
-// (`VirtualQuery`, a kernel call), because this runs on the buy hot path *ahead
-// of* the background early exit — the one place where a syscall per call was
-// measured at 75% of the mod's whole cost. Two protected reads of an address
-// that is about to be read anyway is the budget here.
-//
-// Answers `false` for good once the extension has run (`len` reaches the
-// target), so no athlete keeps the exit open.
-//
-// This deliberately mirrors the `grow` condition the extension itself tests
-// in `buy_replace_ctx`. If those two ever disagree the symptom is silent — the
-// gate opens for an athlete the extension then declines — so they are worth
-// changing together.
-// Whether the buy detour grows builds past the game's four slots, so a 5th
-// and 6th exist for Smart Builds' boots to wait for
-// (`build_config::later_slot_open`). The same conditions `grow` tests in
-// `buy_replace_ctx`, less the per-athlete ones, plus the detour being in.
+// Whether the buy detour grows builds past the game's four slots, so a 5th and
+// 6th exist for Smart Builds' boots to wait for
+// (`build_config::later_slot_open`). `grow`'s conditions in `buy_replace_ctx`,
+// less the per-athlete ones, plus the detour being in.
 pub(crate) fn builds_grow_past_four() -> bool {
     BUILD_EXTEND_ENABLED
         && BUY_PROBE_INSTALLED.load(Ordering::Relaxed) == 1
@@ -3044,6 +2330,10 @@ pub(crate) fn builds_grow_past_four() -> bool {
         && realloc_ok()
 }
 
+// Whether this athlete's build `Vec` still has to grow to
+// `build_config::picker_slots()`. On the buy hot path ahead of the background
+// early exit, so it reads VEH-guarded; it mirrors `grow` in `buy_replace_ctx`,
+// and the two must change together.
 unsafe fn needs_build_extension(athlete: usize) -> bool {
     // `realloc_ok` too: an athlete whose Vec can never grow must not keep
     // taking the slow path on every buy. It is one cached atomic load.
@@ -3051,7 +2341,6 @@ unsafe fn needs_build_extension(athlete: usize) -> bool {
         return false;
     }
     let target = crate::build_config::picker_slots() as u64;
-    // 0.6.0 build Vec: cap@+0x550, ptr@+0x558, len@+0x560.
     match (
         safe_read_u64(athlete + O_ATHLETE_BUILD_CAP),
         safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
@@ -3072,15 +2361,9 @@ const BUY_MEMO_BUILD_MAX: usize = 8;
 #[derive(Clone, Copy, PartialEq, Eq)]
 struct BuyInputs([u64; BUY_INPUT_FIXED + BUY_MEMO_BUILD_MAX]);
 
-// Reads [`BuyInputs`] for `athlete`, or `None` when any of it is unreadable
-// or the build is too long to hold, and the call takes the full path.
-//
-// It covers what the full path reads: the athlete's identity, champion,
-// side, lane, owned count and build Vec (header and every target), the
-// catalog context, the team-gate flags, both settings, and which pin
-// snapshot is live. Not gold: nothing below decides anything from
-// it. The network's pick for a slot being grown is covered through its inputs
-// (the build so far, the champion and lane, and the match's seed).
+// Reads [`BuyInputs`] for `athlete`; `None` when any of it is unreadable or the
+// build is too long, and the call takes the full path. Covers everything the
+// full path decides from (not gold), the network's pick through its inputs.
 unsafe fn buy_inputs(
     athlete: usize,
     rsp_entry: usize,
@@ -3128,22 +2411,13 @@ unsafe fn buy_inputs(
     Some(BuyInputs(words))
 }
 
-// Athletes remembered per thread. A match has ten athletes, but a rayon
-// worker can step several background fixtures in turn, so this holds a few
-// matches' worth rather than letting them evict each other. A miss only costs
-// the full path, so the table does not need to be exact.
+// Athletes remembered per thread: a worker steps several fixtures in turn, and
+// a miss only costs the full path.
 const BUY_MEMO_SLOTS: usize = 64;
 
-// Which athlete a [`BuyInputs`] belongs to: the match seed, the athlete id and
-// the address of its build `Vec`.
-//
-// Not the `athlete` pointer the detour is handed: the game passes every
-// athlete of a team through the same buffer, so they would take turns at one
-// address, each overwriting the last one's entry, and the memo would miss on
-// nearly every call. The seed
-// tells sim copies of different fixtures apart, the id tells athletes apart,
-// and the build `Vec` is the athlete's own heap buffer, which tells two copies
-// of one match on the same seed apart.
+// Which athlete a [`BuyInputs`] belongs to: match seed, athlete id and build
+// `Vec` address. Not the athlete pointer, which the game reuses for every
+// athlete of a team.
 fn buy_memo_key(inputs: &BuyInputs) -> [u64; 3] {
     [inputs.0[0], inputs.0[1], inputs.0[8]]
 }
@@ -3201,32 +2475,17 @@ fn buy_memo_store(inputs: BuyInputs) {
     });
 }
 
-// -- Control's shop picks ------------------------------------------------------
+// -- Control's shop picks -----------------------------------------------
 //
-// Control (`tft2_pov` on the Workshop) lets the player take over one of their
-// own champions mid-match, with a shop that writes the chosen item straight
-// into the athlete's build `Vec`. The game then buys it part by part, as it
-// buys anything there. The pin passes in `buy_replace_ctx` rewrite every
-// unbought pinned slot that does not hold its pin, which undid such a pick on
-// the champion's next trip to base. The user's call (2026-10-13): Control's
-// choice beats a pin.
-//
-// A pick is told apart as a change made by nobody here: a slot holding
-// something else than this detour left in it at its last full pass. Nothing
-// else writes a build mid-match (the spawn injector runs before the first
-// pass, growth inside one), and none of this runs unless Control is enabled,
-// so without it pins behave exactly as before.
-//
-// What was left is remembered per sim copy, under the buy memo's key (seed,
-// athlete id, build `Vec`): Control replays a match's picks into later copies
-// of the same seed, and each copy has to decide as the one played did. It is
-// global rather than per thread because a sim can move between workers, and
-// a forgotten build would have its picks pinned over again.
+// Control (`tft2_pov`) lets the player take over a champion with a shop that
+// writes into the athlete's build `Vec`, and Control's pick beats a pin (user,
+// 2026-10-13). A pick is a slot holding something other than what this detour
+// left at its last full pass, remembered per sim copy under the buy memo's key;
+// none of this runs unless Control is enabled.
 const CONTROL_MOD_ID: &str = "tft2_pov";
 
-// Whether Control is enabled this session. Asked once, from `tactics_init`:
-// the game reads its list once too. A list that cannot be read is a no, and
-// pins behave as they always have.
+// Whether Control is enabled this session, read once like the game's own list;
+// unreadable means no.
 fn control_enabled() -> bool {
     static ENABLED: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
     *ENABLED.get_or_init(|| {
@@ -3321,32 +2580,21 @@ fn note_left_build(key: [u64; 3], slots: Vec<u64>, picked: u64) {
 }
 
 unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
-    // * Hot path (parallel rayon workers) - global atomic counters would make the measurement itself expensive through cache-line contention,
-    //   so thread_local accumulation (rec_tl) is used. T_BUY_ALL = the whole detour (including catch_unwind),
-    //   T_BUY_EARLY = the background-sim early exit portion (contained in ALL, so it is double counted - subtract when interpreting).
     let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> u64 {
         // Relabelled as the call gets further, so each exit is timed as the
         // kind of call it was: an early exit, a memo hit, or a full pass.
         let mut probe = crate::perf::Probe::sim(crate::perf::Section::BuyEarlyExit);
         if saved.is_null() {
             return 0;
-        } // * mode=3 passes through here too (slot 0/1/2 designation injection). Only the 4th-item logic is gated on mode=4 below.
+        }
         let athlete = *saved.add(2) as usize; // r8
         if athlete < 0x10000 {
             return 0;
         }
-        // *** Early-exit reordering (2026-07-22, established by perf measurement): there used to be a `readable(athlete,0x4a8)` ahead of this, and
-        //   since readable() is a **VirtualQuery kernel call**, every buy call (6.89M in 130.7s, 53k/s) entered the kernel.
-        //   => the buy early exit averaged 3.6us = 75% of the mod's total cost (25.9 core-seconds). athlete fields are only touched after passing the
-        //   is_live gate, so **all checks and diagnostics moved behind the gate** (VirtualQuery 6.89M -> about 80k = 1.2%).
-        //   The 07-18 lean comment claimed "we exit immediately after 2 memory reads", but a kernel call remained in front of it and
-        //   nullified that intent. (The LOG_ENABLED diagnostic block moved along with it - its purpose, tracking the 4th item's tier in a spectated match, is unchanged.)
-        // *** Hot-path early exit (07-18 lean): the spectated (rendered) match test comes first - about 94% of all buy calls are background league sims,
-        //   so they exit here after 2 memory reads. (Structurally, the old order of extracting the champion name and doing a hash lookup first was the main cost.)
-        // * Spectate identification v13 (confirmed working 07-18): buy r9 (saved[3]) = the provider (the 0xeb08 sim object).
-        //   provider+O_PROVIDER_SEED (0.5.3 = 0xeaf8, 0.5.2 = 0xeab8) = the match seed (a constant value, verified in game by serpen) == LIVE_SEED (captured by the launcher hook) -> an on-screen match.
-        //   Secondary: pointer identity with RENDER_PROVIDER (captured by the seed-ctor hook matching rdx == LIVE_SEED).
-        //   WARNING [rsp+0x30] = the buy-list container (not the provider) - the reason the old gates (v5~v11) failed. r9 is the right one (RE confirmed).
+        // Spectate check first, from two memory reads: r9 is the provider, and
+        // its seed matching `LIVE_SEED` (or the provider being
+        // `RENDER_PROVIDER`) marks the on-screen match. Most buy calls are
+        // background sims and must exit before any syscall.
         let lseed = LIVE_SEED.load(Ordering::Relaxed);
         let provider_now = *saved.add(3); // r9 = param_4 = provider
         let seed_r9 = if provider_now >= 0x10000 && provider_now < 0x0000_8000_0000_0000 {
@@ -3354,38 +2602,18 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             0
         };
+        // Rule 18's route picker is not handed the match, so every buy notes
+        // it for the athlete (`route_fixup`).
+        if ROUTE_CHOICE {
+            crate::route_choice::note_seat(athlete, seed_r9);
+        }
         let seed_match_r9 = lseed != 0 && seed_r9 == lseed;
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let is_live = seed_match_r9 || (rp != 0 && provider_now != 0 && provider_now == rp);
-        // ** fix B (2026-07-27): spectate == final. The is_live early exit was removed -> inject in background matches too, with the team scope = is_my_athlete (+0x810).
-        //   My players get designated items / everyone else gets the network, identically in background and spectated sims -> they converge. Being id-based, AI-vs-AI matches have my=0 = no designation = zero statistical contamination.
-        // ** fix B performance (2026-07-27): in background buys only my players (is_my_athlete) are injection targets -> a background buy by anyone else
-        //   passes through immediately after a cheap VEH read (+0x810) + HashSet lookup, before the expensive readable (= VirtualQuery kernel call).
-        //   This restores the background early exit that 07-22 removed, in a way compatible with the fix (~94% of background buys exit here). None (roster unavailable) =
-        //   no injection = early exit (identical to the old behaviour). Spectated matches (is_live) always pass through (a comp test's athletes are not mine; see `is_comptest_live`).
-        //
-        // ** 4th-item parity fix (2026-08-05) — `&& !needs_build_extension`.
-        //   The gate above is about *designation* scope: only my players get an item
-        //   pinned, which is right. But the build **extension** (the Vec 3 -> 4 that
-        //   makes a 4th item possible at all) sits below it, so this exit denied it to
-        //   everyone else — and every match except the player's own is a background sim.
-        //   The result was a league where only the player's five athletes ever built a
-        //   4th item, which is the reported "the opposing team never buys a 4th item".
-        //
-        //   Letting an athlete through *only while its build still needs growing* keeps
-        //   the measurement this exit was built for: `needs_build_extension` is two
-        //   VEH reads and no syscall, it is false for everyone in 3-slot mode, and it
-        //   goes false for good once the Vec is 4 — so each athlete passes at most once
-        //   per match and every later buy exits exactly as cheaply as before.
-        //
-        //   Scope is unaffected: `is_player` is still what gates the designation, so a
-        //   non-player athlete reaching the extension takes the network/vanilla fallback
-        //   the code below already had for it.
-        //   A lane or 5v5 test's athletes get through too: both of its sides
-        //   are the player's (see `is_training` below). The test is known by
-        //   its match's seed (`build_config::note_test_spawn`), so a league
-        //   fixture simulating alongside it still exits here, as cheaply as
-        //   before.
+        // Background buys exit here unless the athlete is mine, a test's, or
+        // still needs its build grown (`needs_build_extension`: two VEH reads,
+        // true at most once per athlete). The same decision runs in background
+        // and on-screen copies of a match, so they converge.
         if !is_live
             && !crate::build_config::is_test_match(seed_r9)
             && !matches!(is_my_athlete(athlete), Some(true))
@@ -3393,20 +2621,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         {
             return 0;
         }
-        // ** Per-athlete memo (2026-09-25, the sim slowing down in teamfights).
-        //   `run_tick` calls buy_item every tick for every athlete who is dead
-        //   or standing in its fountain (the entity lookup at 0x1aff1b8 on
-        //   0.6.1), so after a fight everything below ran 60 times a second
-        //   per dead athlete: about 56 `readable`/`VirtualQuery` syscalls a
-        //   call, ~0.33 ms at the ~5.9 us one costs, to rewrite build targets
-        //   that had not changed. With the detour off (`DIAG_BUY_OFF`) the lag
-        //   went away.
-        //
-        //   Everything below is a function of `BuyInputs`. A call whose inputs
-        //   match the athlete's last call that changed nothing would change
-        //   nothing too, so it passes through after ~20 VEH reads. A purchase
-        //   (owned), an engine re-plan (the targets), a new pin snapshot or a
-        //   flipped gate each change the inputs and run the full path again.
+        // Per-athlete memo: `run_tick` calls this every tick for every dead or
+        // in-fountain athlete, and everything below is a function of
+        // [`BuyInputs`]. A call whose inputs match the last call that changed
+        // nothing passes through.
         probe.set(crate::perf::Section::BuyMemoHit);
         let memo_inputs = buy_inputs(athlete, rsp_entry, seed_r9, is_live);
         if memo_inputs.is_none() {
@@ -3416,14 +2634,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             return 0;
         }
         probe.set(crate::perf::Section::BuyFullPass);
-        // -- From here on, only spectated-match buys (a small minority) and background buys by my 5 players get through --
-        // * The athlete validity check, now VEH-guarded reads rather than a
-        //   `readable` (VirtualQuery) syscall (2026-09-25; see `catalog_name_at`).
-        //   The build len at +0x560 is read too, only as proof: it is the
-        //   furthest of the fields read raw below (+0x550/+0x558/+0x560), which
-        //   the old `readable(athlete, 0x538)` no longer reached.
+        // Only on-screen buys and background buys by my athletes get here. The
+        // build len is read only as proof that the raw reads below are in
+        // bounds.
         let (Some(owned), Some(cptr), Some(clen), Some(_)) = (
-            safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN), // 0.5.0 owned (was 0x3d0)
+            safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN), // owned
             safe_read_u64(athlete + O_ATHLETE_CHAMP_PTR),
             safe_read_u64(athlete + O_ATHLETE_CHAMP_LEN),
             safe_read_u64(athlete + O_ATHLETE_BUILD_LEN),
@@ -3443,38 +2658,18 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let champ: &str = champ_cow.as_ref();
         // Before any pin is looked up: the lane every lookup below resolves in.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
-        // * Comp test: both sides are user-composed, so bypass the team gate (apply to any designated champion).
-        // ** fix B: team scope = athlete_id membership (is_my_athlete, +0x810). The same decision in background and spectated sims -> convergence.
-        //   If MY_ATHLETES is not published yet (before spectating) None = false = network. Only my players are designated; AI vs AI = my 0 = no designation.
-        // ** Comp-test regression fix (2026-07-30 user report "item injection doesn't work in comp test"):
-        //   the fix B (= athlete_id membership) path **was missing the comp-test bypass**.
-        //   Comp test is a sandbox where the user composes both sides, so those players are **not in** `MY_ATHLETES`
-        //   (= db.team(pid).last_starting = my team's starters) => is_my_athlete = false
-        //   => designated item injection was silently skipped. (The path before fix B had the COMPTEST_MATCH bypass, but that
-        //    condition disappeared with fix B = an omission introduced with fix B, not by a migration.)
-        //   => for a match judged to be comp test (launcher retaddr measured = 0x1925f12), **apply designations to both sides**.
-        //     Bypassing the team gate on a screen that has no notion of "my team" was the original design intent (see the comment at line 2409).
-        // *** 2026-07-30 second fix - **blocking background contamination** (`&& is_live`):
-        //   `COMPTEST_MATCH` is a **sticky global flag** updated only when an on-screen match launcher comes around again
-        //   (the background sim call sites 0x220acb / 0x195c5be / 0x20dac9c / 0x2256a6d do not update it).
-        //   => after one comp test, every buy in the background sims of subsequent schedule advances became is_player=true and
-        //     **designated items were injected into every player on both teams of background matches** (until a spectate/own match started).
-        //   The cause was that when the first fix hoisted the bypass to the top branch, the **is_live AND of the old condition
-        //   `is_live && (by_scene || COMPTEST_MATCH)` fell away with it**. Comp-test main matches and record replays are both
-        //   on-screen matches (the launcher plants LIVE_SEED), so filtering by is_live keeps the feature intact.
+        // Both sides of a comp test are the player's, so it bypasses the team
+        // gate, but only on screen: `COMPTEST_MATCH` is sticky, and background
+        // sims after a comp test would otherwise give every athlete the
+        // player's pins.
         let is_comptest_live = COMPTEST_MATCH.load(Ordering::Relaxed) && is_live;
-        // ** 2026-09-24: lane and 5v5 tests, from the route call's `mode` rather
-        //   than the launcher retaddrs above, which date from 0.5.3 and were
-        //   never re-derived (and never listed the lane test). Both sides of a
-        //   test are the player's, so `own_team_only` does not apply to them.
-        // ** 2026-09-25: an athlete of the test's own match, not any athlete on
-        //   one of its champions. The day's league fixtures simulate while a
-        //   test runs, and the champion gate gave the player's pins to four
-        //   league athletes during a lane test — the same leak the note above
-        //   describes for comp tests. See `build_config::note_test_spawn`.
+        // Lane and 5v5 tests, by the route call's `mode` (the comp-test
+        // retaddrs date from 0.5.3), and only the test's own match, since
+        // league fixtures simulate alongside it
+        // (`build_config::note_test_spawn`).
         let is_training = crate::build_config::is_test_match(seed_r9);
         let is_player = if is_comptest_live || is_training {
-            true // comp test = both sides user-composed -> bypass the team gate
+            true // a test: both sides are the player's
         } else {
             matches!(is_my_athlete(athlete), Some(true))
         };
@@ -3509,27 +2704,20 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 ),
             );
         }
-        // Item Rules (`crate::item_tiers`). Everything below decides on a
-        // build of radiant targets, as it always has: the pins, the clash
-        // checks between them, the growth and its picks all compare catalog
-        // indices. So the slots an earlier pass held at their legendary are
-        // put back first, and capped again when the pass is done (after the
-        // growth, below). Only slots not started yet: see `retier_unstarted`.
-        // A started slot keeps its target in memory and is read as its
-        // radiant where the build is copied out to decide on.
+        // Item Rules (`crate::item_tiers`): everything below decides on radiant
+        // targets, so slots an earlier pass held at legendary are put back
+        // first and capped again after the growth. Only unstarted slots
+        // ([`retier_unstarted`]); a started one is read as its radiant where
+        // the build is copied out.
         let tiers_rule = crate::item_tiers::rule();
         let tiers_ctx = rd_u64(rsp_entry + 0x30) as usize;
         let tiers_put_back = tiers_rule != crate::item_tiers::Rule::AllRadiants
             || TIERS_RULED.load(Ordering::Relaxed);
-        // The editor's scope toggle, read once here rather than per slot: it is
-        // an atomic load (see `build_config::own_team_only_enabled`), but this
-        // is a per-buy-decision path and both the pins for the game's four
-        // slots below and the 5th and 6th further down need the same answer.
+        // The editor's scope toggle, read once for the four slots below and the
+        // 5th and 6th.
         let own_team_only = crate::build_config::own_team_only_enabled();
-        // The slots of this build the player has picked through Control's
-        // shop, which no pin below takes back (see `control_picks`). Tracked
-        // for the athletes those pins reach: the player's under
-        // `own_team_only`, and everyone's without it.
+        // The slots picked through Control's shop, which no pin takes back
+        // ([`control_picks`]); tracked for the athletes the pins reach.
         let aid = safe_read_u64(athlete + O_ATHLETE_ID).unwrap_or(0);
         let track = (is_player || !own_team_only) && control_enabled();
         let picked = if track {
@@ -3545,53 +2733,18 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         if tiers_put_back {
             retier_unstarted(tiers_ctx, athlete, owned, crate::item_tiers::radiant_of);
         }
-        // This branch used to publish the player's lineup to `crate::my_team`,
-        // which is how the host half guessed whether a set of item-build routes
-        // belonged to the player. Nothing consumes that guess any more: the host
-        // half either applies builds to both teams or leaves them entirely to
-        // this one, and `is_player` — the real gate, not a guess — is right here.
-        // (A `scope` was computed here — `Scope::CtBlue`/`CtRed` in comp test,
-        // `Plain` otherwise — so that the same champion picked on both sides of a
-        // comp test kept two separate `SEL` designations. Pins have no scope, so
-        // it went with `SEL`.)
-        // The game's four slots: the `item-builds.json` pin written straight
-        // into the build Vec.
+        // The game's four slots under `own_team_only`: the player's pins
+        // written straight into the build `Vec`, gated on `is_player`. The
+        // stable hook (`item_build_hook::decide_build`) sets these slots
+        // otherwise but cannot tell sides apart, so exactly one of the two
+        // runs.
         //
-        // This runs ONLY under `own_team_only`, and it is the reason that toggle
-        // can exist. `crate::item_build_hook::decide_build` sets the same four
-        // slots on the stable API, earlier and more cheaply — the engine is
-        // handed the build before the match instead of having it overwritten per
-        // buy decision — but it has no *usable* team gate, so what it sets
-        // reaches BOTH sides. (Its context does carry a `team()`, but that is
-        // a 0/1 side index within the match: it cannot say which
-        // side is the player's, nor whether the player is in the match at all.
-        // See `build_config::own_team_only_enabled`.) This path is the opposite
-        // trade: it costs a per-buy write and it can only fire under
-        // `is_player`, because a sim athlete carries no team id and the gate has
-        // to be inferred from the athlete-id roster — which is exactly the
-        // scoping the toggle asks for.
-        //
-        // The two must never both apply, or they fight over the same four
-        // slots; `decide_build` returns the engine's own build untouched
-        // whenever this is live, and the toggle is the single thing deciding
-        // which of them runs.
-        //
-        // # What this path cannot do
-        //
-        // Slot 0. A buy decision is the earliest moment it sees the athlete, and
-        // by then one item has completed, so the `owned > si` guard below skips
-        // si=0 for the rest of the match — si=1 needs `owned >= 2` and si=2
-        // `owned >= 3`, so only the first slot is ever locked out. That is why,
-        // with the toggle on, every configured item applies except the first.
-        // Setting it here is not possible. Moving it to `decide_build` was the
-        // obvious answer and is ruled out (see above), so the remaining route is
-        // `SPAWN_INJECT_ENABLED` — the spawn-time injector below, which runs
-        // before any purchase, has no `owned` guard, and holds the athlete
-        // pointer that makes `is_my_athlete` usable.
+        // Slot 0 is already bought by the first buy decision, which is why
+        // `cap_spawn` (`SPAWN_INJECT_ENABLED`) plants it at spawn.
         if own_team_only && is_player {
             let ctx012 = rd_u64(rsp_entry + 0x30) as usize;
-            let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize; // 0.5.0 build ptr
-            let blen = rd_u64(athlete + O_ATHLETE_BUILD_LEN); // 0.5.0 build len
+            let bptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
+            let blen = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
             if ctx012 >= 0x10000
                 && bptr >= 0x10000
                 && blen >= 1
@@ -3608,30 +2761,20 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     if picked & (1 << si) != 0 {
                         continue;
                     } // picked through Control -> the player's choice stands
-                      // By key, vanilla included: name scan + recipe validation.
                     let idx = slot_n_catalog_index(champ, si, |key| scan_idx_cached(ctx012, key));
                     if let Some(t) = idx {
-                        // * Idempotence guard (07-19): skip the write if the target value is already there. Measured, the vast majority of 53,890 writes
-                        //   were rewrites of the same value on the same athlete and slot -> a value comparison cut it to about 10 (removing the hot-path cost).
+                        // Skip a write of the value already there, which most
+                        // writes were.
                         if rd_u64(bptr + (si as usize) * 8) == t {
                             continue;
                         }
-                        // Never plant a second copy of an item the build already
-                        // targets. The engine chose slot 0 (and any slot without a
-                        // pin) knowing nothing of the pins, so it can pick the very
-                        // item pinned here: K'Sante with Jak'Sho pinned 2nd bought
-                        // the engine's Jak'Sho 1st and then the pin's 2nd. Same
-                        // rule `merge_build` applies on the stable path, where AI
-                        // fill skips pinned items.
-                        //   - Earlier slot: it is bought or being built, so the pin
-                        //     is already honoured, only sooner. Moving it would
-                        //     throw away components; this slot keeps the engine's
-                        //     item.
-                        //   - Later slot: swap, so the pin lands where the player
-                        //     put it and the engine's item moves back.
-                        // Boots clash with any other pair, not just the same
-                        // one. A slot the player pinned to what it holds is a
-                        // deliberate duplicate, not a clash.
+                        // Never plant a second copy of an item the build
+                        // already targets (the engine chose unpinned slots
+                        // blind to the pins). An earlier copy is bought or
+                        // being built, so this slot keeps the engine's item; a
+                        // later one swaps. Boots clash with any pair, and a
+                        // slot pinned to what it holds is a deliberate
+                        // duplicate.
                         let pin_at = |j: usize| {
                             slot_n_catalog_index(champ, j as u8, |key| scan_idx_cached(ctx012, key))
                         };
@@ -3655,12 +2798,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                             }
                             continue;
                         }
-                        // The pin covers the boots Smart Builds gave this build
-                        // (rule 7): move them where the rule would have put
-                        // them, as `cap_spawn` does (`displaced_boots_slot`),
-                        // unless the player pinned a pair of their own. Every
-                        // slot after this one is unbought; the first is only
-                        // while nothing is.
+                        // The pin covers Smart Builds' boots (rule 7): move
+                        // them as `cap_spawn` does (`displaced_boots_slot`)
+                        // unless the player pinned a pair. Later slots are
+                        // unbought; the first only while nothing is.
                         let here = rd_u64(bptr + (si as usize) * 8);
                         if !pin_boots
                             && buy_is_boots(ctx012, here)
@@ -3692,23 +2833,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         if !SHADOW_CALL_NAMES {
             return 0;
         }
-        // The game's own four slots are not decided here. With `own_team_only`
-        // off they are the stable hook's (`crate::item_build_hook`: pins and
-        // Smart Builds over all four, before the match); with it on, the
-        // player's pins for them are written above and in `cap_spawn`. What
-        // is decided here is the slots the engine never plans:
-        //   in_place -- the build has its four slots, and maybe the two an
-        //               earlier buy grew: those take a pin that changed,
-        //               rewritten where it stands;
-        //   grow     -- the Vec is shorter than `target` (the game's 4 against
-        //               the mod's 6), so it is extended and every new slot is
-        //               filled before `len` moves. A 3-long build, which the
-        //               engine still produces now and then, gets its 4th the
-        //               same way: one more slot to fill.
-        // `grow` is the only path that reaches `RVA_REALLOC`. It is called
-        // through a raw transmute, so `realloc_ok` checks its entry bytes first:
-        // a stale address in that constant crashes matches.
-        // Keep this condition in step with `needs_build_extension`.
+        // The slots the engine never plans: `in_place` rewrites a changed pin
+        // where it stands, and `grow` extends a short `Vec` (to the mod's six,
+        // or a 3-long build's 4th) and fills every new slot before `len` moves.
+        // `grow` is the only path to `RVA_REALLOC`, behind `realloc_ok`; keep
+        // it in step with `needs_build_extension`.
         let mut build_len = rd_u64(athlete + O_ATHLETE_BUILD_LEN);
         let cap_now = rd_u64(athlete + O_ATHLETE_BUILD_CAP);
         let in_place = build_len >= 4 && cap_now >= 4;
@@ -3727,19 +2856,14 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 && (!in_place || writable(ptr, live * 8));
             if ok {
                 let ctx = rd_u64(rsp_entry + 0x30) as usize;
-                // The team gate the pins below take, the one the game's four
-                // slots take above: with `own_team_only` off a pin is keyed by
-                // champion and applies to whoever plays it, both teams, as on
-                // the stable API; with it on, only my athletes get theirs and
-                // everyone else an automatic pick.
+                // The pins' team gate: with `own_team_only` off a pin applies
+                // to whoever plays the champion, on both teams; with it on,
+                // only my athletes get theirs.
                 let designate = !own_team_only || is_player;
                 let smart = crate::build_config::smart_builds_enabled();
-                // The whole build as it will stand, starting from the live
-                // slots. Only `slots[build_len..]` is new memory. A started
-                // slot Item Rules holds at its legendary is read as the
-                // radiant it was decided as, so that a pin or a pick for a
-                // later slot is still known to be in the build already.
-                // Nothing below writes a started slot back.
+                // The whole build as it will stand. A started slot Item Rules
+                // holds at legendary is read as its radiant, so later pins and
+                // picks still see it.
                 let mut slots: Vec<u64> = (0..live)
                     .map(|i| {
                         let index = rd_u64(ptr + i * 8);
@@ -3750,10 +2874,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                         }
                     })
                     .collect();
-                // Slots 5 and 6 that an earlier buy already grew: only a pin,
-                // only where it changed, and only while that slot is not
-                // bought yet -- the same `owned > si` rule the game's four follow.
-                // Their automatic picks were made once, at growth, and stand.
+                // Grown slots 5 and 6 take only a changed pin, while unbought;
+                // their automatic picks stand.
                 if designate {
                     for si in 4..slots.len().min(target as usize) {
                         if owned > si as u64 || picked & (1 << si) != 0 {
@@ -3809,10 +2931,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                 )
                             });
                         }
-                        // `grow_build` writes only the new slots; rule 6 may
-                        // have moved the old ones too. Only once the growth
-                        // held, or an item moved into a slot that never came
-                        // would be lost. The Vec may have moved.
+                        // `grow_build` writes only the new slots, and rule 6
+                        // may have moved old ones: write those back once the
+                        // growth held (the `Vec` may have moved).
                         let new_ptr = rd_u64(athlete + O_ATHLETE_BUILD_PTR) as usize;
                         if build_len as usize == slots.len()
                             && new_ptr >= 0x10000
@@ -3830,11 +2951,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                                 }
                             }
                         }
-                        // For the Check Tactics panel, which shows what each
-                        // of the player's athletes will buy: the whole build
-                        // as it stands now, the two new slots included and in
-                        // the order rule 6 left it. Once per athlete, here
-                        // where the growth held.
+                        // For the Check Tactics panel: the whole grown build,
+                        // once per athlete, in the order rule 6 left it.
                         if build_len as usize == slots.len() {
                             let keys = slots
                                 .iter()
@@ -3866,14 +2984,10 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 }
             }
         }
-        // Item Rules, the other half: the slots the setting holds back are
-        // capped at their legendary. Under First Item Radiant every slot
-        // after the first that is not started yet; the first is never
-        // touched, so it is the build's one radiant. Under No Radiants every
-        // slot not started yet, and the one in hand while that is still safe
-        // (`cap_slot_in_hand`). A pass that only put back and capped again
-        // leaves the build as it found it, and is remembered below like any
-        // other that wrote nothing.
+        // Item Rules, the other half: First Item Radiant caps every unstarted
+        // slot after the first, No Radiants every unstarted slot plus the one
+        // in hand while safe (`cap_slot_in_hand`). A pass that only put back
+        // and capped again is remembered like one that wrote nothing.
         match tiers_rule {
             crate::item_tiers::Rule::AllRadiants => {}
             crate::item_tiers::Rule::FirstItemRadiant => {
@@ -3899,11 +3013,9 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 note_left_build([seed_r9, aid, ptr], build, picked);
             }
         }
-        // The memo's other half: inputs unchanged by the whole pass above mean
-        // it wrote nothing, and a call with the same inputs would write nothing
-        // too. A pass that did write is not remembered, so the next call runs in
-        // full on what it wrote, as it always has (growth takes a second pass to
-        // settle), and is remembered once it settles.
+        // The memo's other half: inputs unchanged by the whole pass mean it
+        // wrote nothing, so they are remembered; a pass that wrote runs in full
+        // again next call.
         if let Some(inputs) = memo_inputs {
             if buy_inputs(athlete, rsp_entry, seed_r9, is_live) == Some(inputs) {
                 buy_memo_store(inputs);
@@ -3916,7 +3028,8 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
     r.unwrap_or(0)
 }
 
-// Install the buy_item replace-detour (stub: mov r10,rsp; push rax r11 r10 r9 r8 rdx rcx; cap_fn(rcx=saved, rdx=rsp_entry)).
+// Installs the buy_item detour. The stub does `mov r10,rsp; push rax r11 r10 r9
+// r8 rdx rcx` and calls `cap_fn(rcx = saved, rdx = rsp_entry)`.
 unsafe fn install_replace_buy(
     rva: usize,
     orig_len: usize,
@@ -3978,11 +3091,10 @@ unsafe fn install_replace_buy(
     FlushInstructionCache(GetCurrentProcess(), fn_addr, orig_len);
     Ok(stub)
 }
-// * 2026-07-30: have we ever seen a valid **non-zero** pid? If 1, ignore later reports of 0 (prevents pid regression - measurement showed
-//   the same save alternating between 105 and 0 depending on the moment, and trusting the 0 breaks the team gate).
+// Whether a non-zero team id has been seen; after that, 0 reports are ignored
+// (one save alternated between 105 and 0).
 static PID_NONZERO_SEEN: AtomicU64 = AtomicU64::new(0);
-static PID_ZERO_CLEAN: AtomicU64 = AtomicU64::new(0); // * times pid=0 was observed in an InGame unrelated to comp test
-                                                      //   (>=600 accepts it as "a save whose real team id is 0" = MY_ATHLETES publication allowed)
+static PID_ZERO_CLEAN: AtomicU64 = AtomicU64::new(0); // 0 reports seen outside tests; 600 trusts a real team 0
 const DIAG_BUY_OFF: bool = false; // master switch for buy injection (true = injection/identification OFF)
 fn install_replace_4th() {
     if DIAG_BUY_OFF {
@@ -4004,9 +3116,8 @@ fn install_replace_4th() {
         BUY_PROBE_INSTALLED.store(2, Ordering::Relaxed);
         return;
     }
-    // orig_len=12 since 0.6.3: the prologue is 8 pushes, 12B, exactly the jmp patch. (Through 0.6.2 it was 19:
-    // 5 push (7) + sub rsp,0x50 (4) = 11B could not cover the 12B patch, so it ran to the next clean boundary,
-    // + mov rax,[rsp+0xa8] (8).)
+    // 12 bytes since 0.6.3: the 8 pushes, exactly the jmp patch (through 0.6.2
+    // it was 19).
     match unsafe { install_replace_buy(RVA_BUY_ITEM, 12, buy_replace_ctx as *const () as usize) } {
         Ok(_) => BUY_PROBE_INSTALLED.store(1, Ordering::Relaxed),
         Err(_) => BUY_PROBE_INSTALLED.store(3, Ordering::Relaxed),
@@ -4014,32 +3125,18 @@ fn install_replace_4th() {
 }
 
 // ===========================================================================
-//  5th and 6th item slots (game 0.6.0 release, derived 2026-09-18)
+//  5th and 6th item slots
 // ===========================================================================
 //
-// The game ships four slots. Four things stop at four, and each gets a byte
-// patch:
+// The game stops at four in four places, each byte-patched: the resolver's
+// final gate (`patch_final_gate`), the tick's finals cap
+// (`patch_tick_finals_cap`), and the in-match and result item rows
+// (`patch_row_floor`, `patch_result_row_floor`). The build `Vec` is grown by
+// `buy_replace_ctx` instead (`grow_build`).
 //
-//   * the resolver refuses to start a new final once four are complete
-//     (`patch_final_gate`);
-//   * the tick throws away a purchase buy_item approved once four finals are
-//     owned (`patch_tick_finals_cap`) -- found 2026-09-19 by
-//     `build_ext_diag.txt`: builds grew to 6, every other patch applied, and
-//     max owned still stopped at exactly 4;
-//   * the in-match item row is floored at four (`patch_row_floor`);
-//   * the match-result row is floored at four (`patch_result_row_floor`).
-//
-// The other piece, a build `Vec` long enough to hold six targets, is not a
-// patch: `buy_replace_ctx` grows it (see `grow_build`). No stat cap needs a
-// patch: that tick path takes the resolver's answer with no count of its own.
-//
-// Every site below is pinned by a form that is unique in the release .text
-// (checked with `tools/rederive.py sig`), and every write address is derived
-// from the signature, never pinned separately. The 0.5.6 migration is why: a
-// patch whose checked address was updated and whose write address was not
-// passed its check and stamped bytes into unrelated live functions. A mismatch
-// skips the patch and says so in `4items_patches.txt`; the build still grows,
-// and the engine simply stops at four items the way it did before.
+// Every write address is derived from a signature unique in .text, never
+// pinned separately: a mismatch skips the patch (in `4items_patches.txt`
+// with `TRACE_FILES` on) and the engine stops at four as before.
 const EXTRA_SLOT_PATCHES: bool = true;
 
 // Checks `expect` at `sig`, then writes `writes`, both as (offset, byte).
@@ -4080,28 +3177,13 @@ unsafe fn patch_bytes(
     format!("{name}: patched")
 }
 
-// * The "four finals complete" gate inside the resolver `0xf3d660` -- the
-//   second callee of buy_item (`RVA_BUY_ITEM`). It counts the athlete's
-//   owned items that are final items, then
-//
-//       cmp rax,3 / jbe <price check>
-//
-//   so up to three finals go straight to the gold check, and at four the
-//   target must also pass a vtable+0x70 test that a fresh final fails: the
-//   engine never starts a 5th. `jbe` -> `jmp` sends four-and-up down the same
-//   path as three-and-under. On a four-long build it changes nothing: with
-//   four finals owned the resolver runs out of build before reaching this,
-//   and returns "nothing to buy".
-//
-//   The beta2 site was a call's result spilled to the stack; the release
-//   inlines that call as the counting loop just above, which is why the form
-//   changed and exe2exe finds no match for the container (871 -> 1007 bytes).
-//   The 11-byte form below, through the spill reload after the jbe, is unique
-//   in .text. 0.6.3 recompiled the resolver (1007 -> 917 bytes): the count is in
-//   rbx and the reload is `mov r14,[rsp+0x48]`, where 0.6.2 had `cmp rax,3` and
-//   `mov r13,[rsp+0x68]`. Same gate, same `jbe`, different bytes.
+// The resolver's "four finals complete" gate (buy_item's second callee): `cmp
+// rax,3 / jbe <price check>`, so a 5th final is never started, and `jbe` ->
+// `jmp` treats four and up like three. On 0.7.0-beta, as on 0.6.3, the count is
+// in rbx (0.6.4 made it a call); re-find it by `cmp rbx,3 / jbe` ahead of the
+// `[vt+0x70]` test.
 unsafe fn patch_final_gate() -> String {
-    let sig = exe_base_addr() + 0xe94a4a; // 0.7.0-beta, container 0xe94780 +0x2ca (a strict exe2exe match at identical size 917, pairdiff clean; bytes unchanged, form still unique) (0.6.3 0xea216a, container 0xea1ea0 +0x2ca) (buy_item's second callee again; the form changed with the address, see above) (0.6.2 0xe83251, container 0xe82f30 +0x321) (0.6.1 0xeae541; container a strict exe2exe match, bytes unchanged) (0.6.0 release 0xf3d981; container a strict exe2exe match, bytes unchanged)
+    let sig = exe_base_addr() + 0xe94a4a; // 0.7.0-beta: resolver 0xe94780 +0x2ca (0.6.3: 0xea216a)
     const EXPECT: [(usize, u8); 11] = [
         (0, 0x48),
         (1, 0x83),
@@ -4118,22 +3200,13 @@ unsafe fn patch_final_gate() -> String {
     patch_bytes("final_gate", sig, &EXPECT, &[(4, 0xEB)])
 }
 
-// * The tick's own finals cap, the one `patch_final_gate` could not reach.
-//
-//   `run_tick` (0x1745420 on 0.7.0-beta, 0x1465e80 on 0.6.3, 0x17a7b60 on 0.6.2, 0x1afad10 on 0.6.1, 0x174d640 on 0.6.0) calls buy_item through its vtable (+0x80 on 0.6.2 through 0.7.0-beta), and on
-//   an approved purchase counts the athlete's owned finals again -- the same
-//   inlined loop the resolver has -- then
-//
-//       cmp rax,3 / ja <skip the purchase>
-//
-//   so a 5th item buy_item said yes to was dropped here, every time. Raising
-//   the imm to `slots - 1` keeps a hard cap, now at `slots` finals, instead of
-//   deleting the check. The 17-byte form below (through the
-//   `mov r9,[rbp+0x4598]` after the ja; 0x42f0 on 0.6.3, 0x4cd0 on 0.6.2, 0x4e18 on 0.6.1, 0x4e20 on 0.6.0) is unique in .text; so is the
-//   13-byte form with the rel32 masked, which is how to re-find it. That trailing frame slot has
-//   moved on every update, so re-read it from the disassembly rather than carrying it forward.
+// The tick's own finals cap: `run_tick` recounts owned finals after an approved
+// purchase and skips it at `cmp rax,3 / ja`. Raising the imm to `slots - 1`
+// moves the cap rather than removing it; re-find it by the 13-byte form with
+// the rel32 masked, and re-read the trailing frame slot, which moves every
+// update.
 unsafe fn patch_tick_finals_cap(slots: u8) -> String {
-    let sig = exe_base_addr() + 0x174ab91; // 0.7.0-beta, run_tick 0x1745420 +0x5771 (run_tick 25507 -> 24170 bytes; the rel32-masked 13-byte form is still unique, the ja rel32 is still 0x24a, the trailing slot moved to [rbp+0x4598] and the gold read after it is still [rax+0x868]) (0.6.3 0x146baf3, run_tick 0x1465e80 +0x5c73) (run_tick 20694 -> 25507 bytes; the rel32-masked 13-byte form is still unique, the ja rel32 is 0x24a now and the gold read after it is [rax+0x868]) (0.6.2 0x17ac532, run_tick 0x17a7b60 +0x49d2) (0.6.1 0x1aff8f2; run_tick 21164 -> 20694 bytes, the rel32-masked 13-byte form is unique, the ja rel32 and the [rax+0xa68] gold read after it are unchanged) (0.6.0 release 0x1752342; run_tick changed size, found by the rel32-masked 13-byte form, unique)
+    let sig = exe_base_addr() + 0x174ab91; // 0.7.0-beta: run_tick 0x1745420 +0x5771 (0.6.3: 0x146baf3)
     const EXPECT: [(usize, u8); 17] = [
         (0, 0x48),
         (1, 0x83),
@@ -4151,32 +3224,21 @@ unsafe fn patch_tick_finals_cap(slots: u8) -> String {
         (13, 0x98),
         (14, 0x45),
         (15, 0x00),
-        (16, 0x00), // mov r9, [rbp+0x4598] (0.6.3: 0x42f0, 0.6.2: 0x4cd0, 0.6.1: 0x4e18, 0.6.0: 0x4e20)
+        (16, 0x00), // mov r9, [rbp+0x4598] (0.6.3: 0x42f0)
     ];
     patch_bytes("tick_finals_cap", sig, &EXPECT, &[(3, slots - 1)])
 }
 
-// * In-match row floor: `max(4, most items any player owns)` -> `max(slots, ..)`.
+// In-match row floor: `cmp rax,5 / mov ecx,4 / cmovae rcx,rax` is `max(4, most
+// items owned)`, and both immediates move so it stays `max(rax, slots)`.
+// Nothing else reads the count, and the fill loop already draws slots past a
+// player's items empty.
 //
-//       cmp rax,5 / mov ecx,4 / cmovae rcx,rax     (count = rax >= 5 ? rax : 4)
-//
-//   Both immediates move: the floor becomes `slots` and the compare
-//   `slots + 1`, so the result stays `max(rax, slots)`. Raising only the
-//   floor would turn 5 owned items into a 5-wide row under a 6 floor.
-//   Safe because nothing else reads that count: the store feeds the four
-//   `#items` populate calls and the four fill-loop bounds (blue/red x
-//   compact/wide), and the fill loop checks `i < items.len()` before reading
-//   `items[i]`, so a slot past what a player owns takes the empty branch
-//   vanilla already uses for an unbought item. The icons shrink to fit the
-//   vanilla `#items` width.
-//
-//   Pinned by a masked form -- the two byte loads from `[rbp+disp32]` ahead
-//   of the compare, displacements masked -- because the bare cmp/mov/cmov is
-//   a stock `max(x, n)` idiom with dozens of hits, and validating those bytes
-//   alone at a stale address would pass on somebody else's arithmetic. The
-//   masked form is unique in the image, which is also how to re-find it.
+// Pinned by a masked form (the two `[rbp+disp32]` byte loads ahead of it),
+// since the bare `max` idiom has dozens of hits; that is also how to re-find
+// it.
 unsafe fn patch_row_floor(slots: u8) -> String {
-    let sig = exe_base_addr() + 0x91b021; // 0.7.0-beta, inside the ingame mega-function 0x9148a0 at +0x6781 (135652 -> 135868 bytes; the masked form is still unique) (0.6.3 0xba33f1 in 0xb9c970) (0.6.2 0xb8b0f1 in 0xb84660) (0.6.1 0xb34d91 in 0xb2e260; the masked form is still unique) (0.6.0 release 0xa6a501 in 0xa63a70; the masked form is unique)
+    let sig = exe_base_addr() + 0x91b021; // 0.7.0-beta: ingame mega-function 0x9148a0 +0x6781 (0.6.3: 0xba33f1)
     const EXPECT: [(usize, u8); 18] = [
         (0, 0x8a),
         (1, 0x9d), //                           mov bl, [rbp+disp32]
@@ -4200,19 +3262,12 @@ unsafe fn patch_row_floor(slots: u8) -> String {
     patch_bytes("row_floor", sig, &EXPECT, &[(16, slots + 1), (18, slots)])
 }
 
-// * Match-result row floor, the same change on that screen's own count.
-//
-//       cmp rdx,5 / mov ecx,4 / cmovb rdx,rcx / test al,1 / cmove rdx,rcx
-//
-//   The post-match screen has its own item row, with its own layout, populate
-//   routine and fit/shrink sizing, so `patch_row_floor` does nothing there.
-//   Its count is one value for all ten rows (the most items any player
-//   finished, floored here), so "more slots than this player owns" is a state
-//   vanilla already draws: the surplus slots are simply empty. The 19-byte
-//   form is unique in .text and stops before the `mov [rbp+disp],rdx` that
-//   follows, so a frame-layout shift does not invalidate it.
+// Match-result row floor, the same change on that screen's own count (`cmp
+// rdx,5 / mov ecx,4 / cmovb rdx,rcx / test al,1 / cmove rdx,rcx`). One count
+// serves all ten rows, so surplus slots are already drawn empty; the 19-byte
+// form is unique in .text.
 unsafe fn patch_result_row_floor(slots: u8) -> String {
-    let sig = exe_base_addr() + 0xaf96ea; // 0.7.0-beta, in the match-result screen builder 0xaf72a0 at the same +0x244a (a strict exe2exe match at identical size 33673; the full 19-byte form is still unique, bytes unchanged) (0.6.3 0x910f8a in 0x90eb40; a strict exe2exe match at identical size 33673; the full 19-byte form is still unique, bytes unchanged) (0.6.2 0xa6b9da in 0xa69590) (0.6.1 0x8bf9de in 0x8bd560; the full 19-byte form is still unique, bytes unchanged) (0.6.0 release 0xc5264e in 0xc501d0; bytes unchanged)
+    let sig = exe_base_addr() + 0xaf96ea; // 0.7.0-beta: match-result screen builder 0xaf72a0 +0x244a (0.6.3: 0x910f8a)
     const EXPECT: [(usize, u8); 19] = [
         (0, 0x48),
         (1, 0x83),
@@ -4246,47 +3301,23 @@ unsafe fn patch_result_row_floor(slots: u8) -> String {
 //  Server item settings: the mod items, lifted out for a settings write
 // ===========================================================================
 //
-// `setting_set_json` on the item settings rebuilds every entry of `mod_items`
-// from its JSON, which is eight data fields, and drops the entries it had.
-// What is lost with them is the one thing an entry holds that is not data:
-// the mod's item object, an `Option<Box<dyn ..>>` at `O_MOD_ITEM_OBJECT`,
-// whose absence is what the game reads as "inactive" (0.6.3: `is_active` at
-// 0x17da9f0 is `cmp qword [rcx+0x190],0`; the entry's drop, 0x2d5bb0, frees
-// it). `item_stats::SYNC_SERVER_ITEMS` has what that did to players.
+// `setting_set_json` on the item settings rebuilds `mod_items` from JSON and
+// drops the old entries, and with them each entry's mod item object
+// (`O_MOD_ITEM_OBJECT`), whose absence the game reads as inactive. So the
+// `Vec` is emptied for the write and its three words put back after, entries
+// untouched.
 //
-// Nothing in the stable API puts the object back, so the entries must not go
-// through the write at all. The `Vec` they live in is three words in the
-// Database. Emptied for the length of the write, the host serializes
-// `mod_items: []`, builds new settings with an empty list, finds nothing of
-// the old list to drop or free (capacity 0), and installs the new settings in
-// the same place; the three words then go back, and the entries are the ones
-// that were there, untouched. The base items' `next_tier` lists name mod
-// items by key, as text, and pass through the write as they are.
-//
-// All four constants are 0.7.0-beta's (re-read 2026-10-14 with
-// `tools/lift_sites.py` against the 0.7.0-beta exe: the thunk at 0x311aa83
-// loads the Database with `mov rcx,[rdi+0x10]`, the handler's drop at
-// 0x3115b9d reads the list at +0x16890 and steps it by 0x1a8, and the object
-// check is `cmp qword [rcx+0x190],0` at 0x12d6210). Three of them are 0.6.3's
-// values as well; `O_DATABASE_MOD_ITEMS` is not (see below). They are only
-// used behind the version gate (`driver::lift_server_mod_items`). They are
-// also checked against the server's own account of the list before anything
-// is written, so a build they are wrong for gets no write rather than a
-// wrong one.
+// The constants are checked against the server's own list before anything is
+// written, and used only behind the version gate
+// (`driver::lift_server_mod_items`).
 
-// Where the state the host hands every server call keeps its `Database`
-// (0.6.3: the vtable's own `setting_set_json`, 0x2dccbe0, loads it with
-// `mov rcx,[rdi+0x10]` before calling the handler).
+// Where the server call's host state keeps its `Database` (the vtable's
+// `setting_set_json` loads it with `mov rcx,[rdi+0x10]`).
 const O_SERVER_STATE_DATABASE: usize = 0x10;
 
-// The Database's `mod_items`: a `Vec<ModItemEntry>` as capacity, pointer,
-// length (0.6.3: the item settings are at +0x136c0 and the list 0x3028 into
-// them; handler 0x2dc7670 drops the old one through
-// `[r12+0x166e8] / [r12+0x166f0] / [r12+0x166f8]`). 0.7.0-beta: 0x16890,
-// as `tools/lift_sites.py` reads it off that exe (the drop at 0x3115b9d).
-// This branch is the beta's: on 0.6.3 the value is 0x166e8, and with the
-// wrong one for the build the list never checks out and nothing is written.
-const O_DATABASE_MOD_ITEMS: usize = 0x16890;
+// The Database's `mod_items` `Vec` (cap, ptr, len), found where the settings
+// handler drops the old list.
+const O_DATABASE_MOD_ITEMS: usize = 0x16890; // 0.7.0-beta (0.6.4: 0x166e8)
 
 // Size of one `ModItemEntry` (0.6.3: `lea rsi,[rcx+0x1a8]` steps that drop
 // loop). Its key, a `String`, is the first field: capacity, pointer, length.
@@ -4309,10 +3340,8 @@ pub(crate) struct ModItemsLift {
 }
 
 impl Drop for ModItemsLift {
-    // Puts the list back, whatever the writes in between came to: accepted,
-    // the host has installed new settings with an empty list at this same
-    // address; refused, the empty list written by [`lift_server_mod_items`]
-    // is still there. Either way these three words own nothing.
+    // Puts the list back whatever the write came to: accepted or refused, these
+    // three words now hold an empty list that owns nothing.
     fn drop(&mut self) {
         unsafe {
             for (word, &value) in self.taken.iter().enumerate() {
@@ -4322,18 +3351,14 @@ impl Drop for ModItemsLift {
     }
 }
 
-// Empties the server's `mod_items` and returns what puts it back.
-//
-// `state` is the host state of the server call in progress and `keys` the
-// keys of the list as the server reports it, in order. Nothing is touched
-// unless the memory read through the constants above IS that list: the same
-// number of entries, and every entry's key the one reported at its place.
-// `None` otherwise, and the caller must not write to the item settings.
+// Empties the server's `mod_items` and returns what puts it back. Only when the
+// memory there is exactly the list `keys` reports (same length, every key in
+// place); `None` otherwise, and the caller must not write.
 //
 // # Safety
 //
-// Only from inside a server hook, on the thread it runs on: that is where
-// the host itself replaces these settings, so nothing else is reading them.
+// Only from inside a server hook, on its thread, where the host itself replaces
+// these settings.
 unsafe fn lift_server_mod_items(state: usize, keys: &[String]) -> Option<ModItemsLift> {
     if keys.is_empty() {
         return None;
@@ -4373,19 +3398,689 @@ unsafe fn lift_server_mod_items(state: usize, keys: &[String]) -> Option<ModItem
     })
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  ** Game version gate - 0.6.0_beta1 only. On any other version **every feature disables itself automatically**.
-// ═══════════════════════════════════════════════════════════════════════════
-//  Why: this mod depends on 12 hardcoded RVAs + 2 byte patches + many struct offsets.
-//  Once the game is patched past 0.6.0_beta1 all those addresses are wrong and we would **hook/patch the wrong code**
-//  (hooks with prologue validation simply fail to install, but the weakly validated places risk crashes and data corruption).
-//  => check the version at init and, on a mismatch, install **not a single** hook or patch.
+// ===========================================================================
+//  Build routes (Smart Builds rule 18)
+// ===========================================================================
 //
-//  Two-part decision (both must pass to enable):
-//   (1) exe file size - 0.6.0_beta1 = 81,422,336B (0.5.7 was 77,111,808B, 0.5.6 77,101,056B, 0.5.5 76,957,696B, 0.5.4 75,936,256B, 0.5.3 74,970,624B). It reliably differs per version and costs nothing to read.
-//   (2) measured entry prologues of 3 key hooks - catches a repackage that happens to have the same size but different code.
-//  WARNING a loose check (size only) could misbehave on a hotfix, so we look at the prologues too.
-const GAME_EXE_SIZE_070_BETA: u64 = 91_006_464; // 0.7.0-beta, the exe that reports 0.7.0_beta1 (0.6.3 was 86_804_992, 0.6.2 86_674_944, 0.6.1 86_330_880, 0.6.0 release 86_082_048, 0.6.0_beta2 86_023_680) (0.6.0_beta1 was 81_422_336)
+// The route picker, buy_item's resolver, draws what to buy toward the build
+// target from the match's RNG: a new item from every tier-0 item that can
+// build into the target, an upgrade from the held item's next steps that still
+// can, each with even odds (`previous_tier` order plays no part). Its detour
+// lets the game draw first, so the RNG moves as it always did, then puts in
+// the candidate `crate::route_choice` scores highest out of that same set and
+// redoes the gold check. Every caller gets that choice: buy_item, the upgrade
+// decider (0xf75440) and six "can I buy now" checks.
+//
+// Arguments: rcx the RNG, rdx the athlete, r8/r9 the catalog, then on the
+// stack the build entries done, the upgrade flag (1 = upgrade) and the owned
+// slot being upgraded. Returns rax 1 = buy, rdx the catalog index.
+//
+// To re-derive: buy_item's call after the done-count function. It reads the
+// build at +0x358/+0x360 at once and ends on the gold check against
+// `O_ATHLETE_GOLD`; the graph getter is its first direct call on both paths.
+
+// Kill switch for rule 18's detour and the lineup and seat notes that feed it.
+const ROUTE_CHOICE: bool = true;
+// NOT derived for 0.7.0-beta: these are 0.6.4's addresses and neither 48-byte
+// signature occurs in the beta exe, so the detour never installs there and
+// rule 18 is off on this branch. Beta's resolver is 0.6.3's (0xe94780, see
+// `patch_final_gate`), whose arguments have to be re-read before porting.
+const ROUTE_PICKER_RVA: usize = 0xe933d0; // 0.6.4 (0.6.3: 0xea1ea0)
+// 48 bytes, unique in .text: the 8 pushes, `sub rsp,0xa8`, the frame setup and
+// the argument moves.
+const ROUTE_PICKER_SIG: [u8; 48] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xa8,
+    0x00, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0f, 0x29, 0x75, 0x10, 0x48,
+    0xc7, 0x45, 0x08, 0xfe, 0xff, 0xff, 0xff, 0x4c, 0x89, 0xce, 0x4c, 0x89, 0xc7, 0x48, 0x89, 0x4d,
+];
+const ROUTE_PICKER_ORIG_LEN: usize = 12; // the 8 pushes, an instruction boundary
+// The route graph's cache getter: rcx its thread-local key, rdx/r8 the
+// catalog -> the graph `Rc` with its strong count raised. Called at picker
+// +0x199.
+const ROUTE_GRAPH_RVA: usize = 0x1ab3a10; // 0.6.4
+const ROUTE_GRAPH_SIG: [u8; 48] = [
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xf8,
+    0x00, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x48, 0xc7, 0x45, 0x70, 0xfe,
+    0xff, 0xff, 0xff, 0x4c, 0x89, 0xc6, 0x48, 0x89, 0xd7, 0x48, 0x89, 0xc8, 0x31, 0xc9, 0xff, 0x10,
+];
+// The getter's key (`lea rcx,[rip+..]` before every call to it), whose first
+// word is the key's accessor.
+const ROUTE_GRAPH_KEY_RVA: usize = 0x3b8e0a0; // 0.6.4
+const ROUTE_GRAPH_KEY_ACCESSOR_RVA: usize = 0x12cacb0; // 0.6.4
+// The graph, from the `Rc`'s start (strong count at +0): the next steps of
+// every item (`Vec<Vec<usize>>`, its pointer and length), a byte per item the
+// picker requires set, and a bit matrix of what builds into what (row = item,
+// bit = target, an item reaching itself).
+const O_GRAPH_NEXT_PTR: usize = 0x18;
+const O_GRAPH_NEXT_LEN: usize = 0x20;
+const O_GRAPH_FLAGS_PTR: usize = 0x30;
+const O_GRAPH_FLAGS_LEN: usize = 0x38;
+const O_GRAPH_REACH_PTR: usize = 0x48;
+const O_GRAPH_REACH_LEN: usize = 0x50; // in words
+const O_GRAPH_REACH_STRIDE: usize = 0x58; // words per row
+// The athlete's gold: the picker's last check, `mov rsi,[rax+0x868]`.
+const O_ATHLETE_GOLD: usize = 0x868; // 0.6.4
+// Catalog vtable slots the picker calls: the step's price and the tier.
+const VT_PRICE: usize = 0x68;
+const VT_TIER: usize = 0x70;
+// The longest champion key read.
+const CHAMP_NAME_MAX: usize = 48;
+
+static ROUTE_INSTALLED: AtomicU64 = AtomicU64::new(0); // 0 untried, 1 installed, 2 failed
+
+fn install_route_hook() {
+    if !ROUTE_CHOICE {
+        return;
+    }
+    let state = ROUTE_INSTALLED.load(Ordering::Relaxed);
+    if state == 1 {
+        return;
+    }
+    // See `install_retry_due`.
+    static RETRY: AtomicU64 = AtomicU64::new(0);
+    if state == 2 && !install_retry_due(&RETRY) {
+        return;
+    }
+    let r = unsafe {
+        if route_graph_ok() {
+            install_post_hook(
+                ROUTE_PICKER_RVA,
+                ROUTE_PICKER_ORIG_LEN,
+                &ROUTE_PICKER_SIG,
+                route_fixup as *const () as usize,
+            )
+        } else {
+            Err("route graph getter mismatch")
+        }
+    };
+    ROUTE_INSTALLED.store(if r.is_ok() { 1 } else { 2 }, Ordering::Relaxed);
+    crate::match_builds::log("routes.install", || {
+        format!("route picker @ {ROUTE_PICKER_RVA:#x}: {r:?}")
+    });
+}
+
+// Whether the graph getter and its key are where this build has them; the
+// detour is not installed otherwise, since it reads the graph through them.
+unsafe fn route_graph_ok() -> bool {
+    let base = exe_base_addr();
+    let getter = base + ROUTE_GRAPH_RVA;
+    readable(getter, ROUTE_GRAPH_SIG.len())
+        && (0..ROUTE_GRAPH_SIG.len()).all(|i| *((getter + i) as *const u8) == ROUTE_GRAPH_SIG[i])
+        && safe_read_u64(base + ROUTE_GRAPH_KEY_RVA)
+            == Some((base + ROUTE_GRAPH_KEY_ACCESSOR_RVA) as u64)
+}
+
+// Installs a detour that runs after the original. The stub calls the original
+// (its relocated first `orig_len` bytes, then a jump back) with the arguments
+// it was entered with, three stack arguments included, then
+// `fixup(regs, stack, caller)`: `regs` = [rcx, rdx, r8, r9, rax, rdx], the
+// last two the original's return pair, which the fixup may rewrite; `stack` =
+// the three stack arguments; `caller` = the return address. Then it returns
+// that pair. Only volatile registers are touched.
+unsafe fn install_post_hook(
+    rva: usize,
+    orig_len: usize,
+    sig: &[u8],
+    fixup: usize,
+) -> Result<usize, &'static str> {
+    let base = exe_base_addr();
+    if base == 0 {
+        return Err("module 0");
+    }
+    if orig_len < 12 || orig_len > sig.len() {
+        return Err("orig_len");
+    } // the entry patch is 12B (movabs+jmp), over bytes the signature proves
+    let fn_addr = base + rva;
+    if !readable(fn_addr, sig.len()) {
+        return Err("unreadable");
+    }
+    if (0..sig.len()).any(|i| *((fn_addr + i) as *const u8) != sig[i]) {
+        return Err("signature mismatch");
+    }
+    const MEM_CR: u32 = 0x1000 | 0x2000;
+    const RWX: u32 = 0x40;
+    let stub = VirtualAlloc(0, 256, MEM_CR, RWX);
+    if stub == 0 {
+        return Err("VirtualAlloc");
+    }
+    // Frame of 0x78 (entry rsp is 8 off 16, so calls from it are aligned):
+    // +0x00 shadow space, +0x20 the stack arguments passed on, +0x40 rcx rdx
+    // r8 r9, +0x60 rax rdx returned. The caller's frame starts at +0x78 (the
+    // return address), its stack arguments at +0xa0.
+    let mut s: Vec<u8> = Vec::new();
+    s.extend_from_slice(&[0x48, 0x83, 0xec, 0x78]); // sub rsp, 0x78
+    s.extend_from_slice(&[0x48, 0x89, 0x4c, 0x24, 0x40]); // mov [rsp+0x40], rcx
+    s.extend_from_slice(&[0x48, 0x89, 0x54, 0x24, 0x48]); // mov [rsp+0x48], rdx
+    s.extend_from_slice(&[0x4c, 0x89, 0x44, 0x24, 0x50]); // mov [rsp+0x50], r8
+    s.extend_from_slice(&[0x4c, 0x89, 0x4c, 0x24, 0x58]); // mov [rsp+0x58], r9
+    for (from, to) in [(0xa0u8, 0x20u8), (0xa8, 0x28), (0xb0, 0x30)] {
+        s.extend_from_slice(&[0x48, 0x8b, 0x84, 0x24, from, 0x00, 0x00, 0x00]); // mov rax, [rsp+from]
+        s.extend_from_slice(&[0x48, 0x89, 0x44, 0x24, to]); // mov [rsp+to], rax
+    }
+    s.extend_from_slice(&[0x48, 0xb8]); // movabs rax, trampoline (filled in below)
+    let tramp_at = s.len();
+    s.extend_from_slice(&0usize.to_le_bytes());
+    s.extend_from_slice(&[0xff, 0xd0]); // call rax
+    s.extend_from_slice(&[0x48, 0x89, 0x44, 0x24, 0x60]); // mov [rsp+0x60], rax
+    s.extend_from_slice(&[0x48, 0x89, 0x54, 0x24, 0x68]); // mov [rsp+0x68], rdx
+    s.extend_from_slice(&[0x48, 0x8d, 0x4c, 0x24, 0x40]); // lea rcx, [rsp+0x40]
+    s.extend_from_slice(&[0x48, 0x8d, 0x94, 0x24, 0xa0, 0x00, 0x00, 0x00]); // lea rdx, [rsp+0xa0]
+    s.extend_from_slice(&[0x4c, 0x8b, 0x44, 0x24, 0x78]); // mov r8, [rsp+0x78]
+    s.extend_from_slice(&[0x48, 0xb8]);
+    s.extend_from_slice(&fixup.to_le_bytes()); // movabs rax, fixup
+    s.extend_from_slice(&[0xff, 0xd0]); // call rax
+    s.extend_from_slice(&[0x48, 0x8b, 0x44, 0x24, 0x60]); // mov rax, [rsp+0x60]
+    s.extend_from_slice(&[0x48, 0x8b, 0x54, 0x24, 0x68]); // mov rdx, [rsp+0x68]
+    s.extend_from_slice(&[0x48, 0x83, 0xc4, 0x78]); // add rsp, 0x78
+    s.push(0xc3); // ret
+    // The trampoline: the relocated bytes (position-independent), then back
+    // into the function through r11, which is neither an argument nor kept.
+    let tramp = stub + s.len();
+    s[tramp_at..tramp_at + 8].copy_from_slice(&tramp.to_le_bytes());
+    let mut orig = vec![0u8; orig_len];
+    core::ptr::copy_nonoverlapping(fn_addr as *const u8, orig.as_mut_ptr(), orig_len);
+    s.extend_from_slice(&orig);
+    s.extend_from_slice(&[0x49, 0xbb]);
+    s.extend_from_slice(&(fn_addr + orig_len).to_le_bytes()); // movabs r11, fn + orig_len
+    s.extend_from_slice(&[0x41, 0xff, 0xe3]); // jmp r11
+    if s.len() > 256 {
+        return Err("stub too long");
+    }
+    core::ptr::copy_nonoverlapping(s.as_ptr(), stub as *mut u8, s.len());
+    let mut patch = vec![0x90u8; orig_len];
+    patch[0] = 0x48;
+    patch[1] = 0xb8;
+    patch[2..10].copy_from_slice(&stub.to_le_bytes());
+    patch[10] = 0xff;
+    patch[11] = 0xe0;
+    let mut old: u32 = 0;
+    if VirtualProtect(fn_addr, orig_len, RWX, &mut old) == 0 {
+        return Err("VirtualProtect");
+    }
+    core::ptr::copy_nonoverlapping(patch.as_ptr(), fn_addr as *mut u8, orig_len);
+    VirtualProtect(fn_addr, orig_len, old, &mut old);
+    FlushInstructionCache(GetCurrentProcess(), fn_addr, orig_len);
+    Ok(stub)
+}
+
+// The route picker's fixup ([`install_post_hook`]). Only a draw the game would
+// buy is looked at (rax 1); a better candidate replaces it, bought only if the
+// gold covers it, as the game would have checked its own.
+unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller: u64) {
+    let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        if regs.is_null() || stack.is_null() || *regs.add(4) != 1 {
+            return;
+        }
+        if !crate::build_config::smart_builds_enabled() {
+            return;
+        }
+        let athlete = *regs.add(1) as usize;
+        let (catalog, catalog_len) = (*regs.add(2) as usize, *regs.add(3));
+        let drawn = *regs.add(5);
+        let (done, upgrading, slot) = (*stack, *stack.add(1) == 1, *stack.add(2));
+        let Some(better) = route_better(
+            athlete,
+            catalog,
+            catalog_len,
+            done,
+            upgrading.then_some(slot),
+            drawn,
+        ) else {
+            return;
+        };
+        let (Some(price), Some(gold)) = (
+            catalog_call(catalog, catalog_len, better, VT_PRICE),
+            safe_read_u64(athlete + O_ATHLETE_GOLD),
+        ) else {
+            return;
+        };
+        *regs.add(5) = better;
+        *regs.add(4) = (gold >= price) as u64;
+    }));
+}
+
+// One question to rule 18: the route from `from` (`u64::MAX` for a new item) to
+// `target` for one champion in one lane of one match. Asked again every tick
+// an athlete shops, so the answers are kept per thread.
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+struct RouteAsk {
+    catalog_len: u64,
+    from: u64,
+    target: u64,
+    seed: u64,
+    side: u64,
+    lane: u8,
+    champion: u64, // a hash of the key
+}
+
+// What the picker could draw, and the best of it; `best` is empty where the
+// draw stands (one candidate, or a tie between all of them).
+#[derive(Default)]
+struct RouteAnswer {
+    candidates: Vec<u64>,
+    best: Vec<u64>,
+}
+
+const ROUTE_ANSWERS_KEPT: usize = 2048;
+
+thread_local! {
+    static ROUTE_ANSWERS: core::cell::RefCell<HashMap<RouteAsk, std::rc::Rc<RouteAnswer>>> =
+        core::cell::RefCell::new(HashMap::new());
+    // Catalog length -> key -> index, for the item being upgraded.
+    static ROUTE_INDEX: core::cell::RefCell<HashMap<u64, HashMap<String, u64>>> =
+        core::cell::RefCell::new(HashMap::new());
+}
+
+// The candidate to buy in place of `drawn`, or `None` to keep the draw: when
+// rule 18 has nothing better, or `drawn` is not among the candidates it found
+// (then it has misread the picker, and the game's draw is safer).
+unsafe fn route_better(
+    athlete: usize,
+    catalog: usize,
+    catalog_len: u64,
+    done: u64,
+    upgrading: Option<u64>,
+    drawn: u64,
+) -> Option<u64> {
+    if athlete < 0x10000
+        || catalog < 0x10000
+        || catalog_len == 0
+        || catalog_len > 100_000
+        || drawn >= catalog_len
+    {
+        return None;
+    }
+    let target = route_target(athlete, catalog_len, done)?;
+    let from = match upgrading {
+        None => u64::MAX,
+        Some(slot) => {
+            let items = safe_read_u64(athlete + O_ATHLETE_ITEMS_PTR)? as usize;
+            let held = safe_read_u64(athlete + O_ATHLETE_ITEMS_LEN)?;
+            let key = catalog_name_in(items, held, slot)?;
+            route_index_of(catalog, catalog_len, &key)?
+        }
+    };
+    let mut name = [0u8; CHAMP_NAME_MAX];
+    let len = athlete_champion(athlete, &mut name)?;
+    let champion = &name[..len];
+    let lane = athlete_lane(athlete);
+    let ask = RouteAsk {
+        catalog_len,
+        from,
+        target,
+        seed: crate::route_choice::seat_seed(athlete),
+        side: safe_read_u64(athlete + O_ATHLETE_TEAM)?,
+        lane: lane.map_or(u8::MAX, |lane| lane as u8),
+        champion: {
+            use std::hash::{Hash, Hasher};
+            let mut hasher = std::collections::hash_map::DefaultHasher::new();
+            champion.hash(&mut hasher);
+            hasher.finish()
+        },
+    };
+    let kept = ROUTE_ANSWERS
+        .try_with(|answers| answers.borrow().get(&ask).cloned())
+        .ok()?;
+    let answer = match kept {
+        Some(answer) => answer,
+        None => {
+            // A graph that cannot be read is remembered as "keep the draw" too,
+            // rather than read again every tick.
+            let answer = std::rc::Rc::new(
+                route_answer(
+                    catalog,
+                    catalog_len,
+                    &ask,
+                    &String::from_utf8_lossy(champion),
+                    lane,
+                )
+                .unwrap_or_default(),
+            );
+            let _ = ROUTE_ANSWERS.try_with(|answers| {
+                let mut answers = answers.borrow_mut();
+                if answers.len() >= ROUTE_ANSWERS_KEPT {
+                    answers.clear();
+                }
+                answers.insert(ask, answer.clone());
+            });
+            answer
+        }
+    };
+    if answer.best.is_empty() || answer.best.contains(&drawn) || !answer.candidates.contains(&drawn) {
+        return None;
+    }
+    // Between equals, the draw still picks.
+    Some(answer.best[(drawn % answer.best.len() as u64) as usize])
+}
+
+// The build entry the picker buys toward: the first after `done` of them, as
+// it counts (only entries inside the catalog count).
+unsafe fn route_target(athlete: usize, catalog_len: u64, done: u64) -> Option<u64> {
+    let ptr = safe_read_u64(athlete + O_ATHLETE_BUILD_PTR)? as usize;
+    let len = safe_read_u64(athlete + O_ATHLETE_BUILD_LEN)?;
+    if ptr < 0x10000 || len > 32 {
+        return None;
+    }
+    let mut skip = done;
+    for j in 0..len as usize {
+        let entry = safe_read_u64(ptr + j * 8)?;
+        if entry >= catalog_len {
+            continue;
+        }
+        if skip == 0 {
+            return Some(entry);
+        }
+        skip -= 1;
+    }
+    None
+}
+
+// Rule 18's answer for `ask`, from the game's own graph; `None` when it cannot
+// be read.
+unsafe fn route_answer(
+    catalog: usize,
+    catalog_len: u64,
+    ask: &RouteAsk,
+    champion: &str,
+    lane: Option<crate::build_config::Role>,
+) -> Option<RouteAnswer> {
+    let graph = RouteGraph::of(catalog, catalog_len)?;
+    let target = ask.target;
+    // The picker's own two sets: tier-0 items that reach the target, or the
+    // held item's next steps that do.
+    let candidates: Vec<u64> = if ask.from == u64::MAX {
+        (0..catalog_len)
+            .filter(|&i| {
+                graph.flag(i)
+                    && graph.reaches(i, target)
+                    && catalog_call(catalog, catalog_len, i, VT_TIER) == Some(0)
+            })
+            .collect()
+    } else {
+        graph
+            .next(ask.from)
+            .into_iter()
+            .filter(|&n| graph.flag(n) && graph.reaches(n, target))
+            .collect()
+    };
+    if candidates.len() < 2 {
+        return Some(RouteAnswer {
+            candidates,
+            best: Vec::new(),
+        });
+    }
+    // A jungle starter is a jungler's first buy, whatever the stats say.
+    if ask.from == u64::MAX {
+        let starters: Vec<u64> = candidates
+            .iter()
+            .copied()
+            .filter(|&c| {
+                catalog_name_in(catalog, catalog_len, c)
+                    .is_some_and(|key| crate::route_choice::is_jungle_starter(&key))
+            })
+            .collect();
+        if !starters.is_empty() && starters.len() < candidates.len() {
+            return Some(RouteAnswer {
+                candidates,
+                best: starters,
+            });
+        }
+    }
+    let enemies = crate::route_choice::enemy_damage(ask.seed, ask.side, champion);
+    let weights = crate::route_choice::Weights::new(champion, lane, enemies);
+    let table = crate::route_choice::route_table();
+    let mut scores = RouteScores::default();
+    let scored: Vec<(u64, f64)> = candidates
+        .iter()
+        .map(|&c| {
+            let score = scores.route(&graph, catalog, catalog_len, c, target, &table, &weights, 0);
+            (c, score)
+        })
+        .collect();
+    let top = scored
+        .iter()
+        .map(|&(_, score)| score)
+        .fold(f64::NEG_INFINITY, f64::max);
+    let margin = 1e-6 * top.abs().max(1.0);
+    let mut best: Vec<u64> = scored
+        .iter()
+        .filter(|&&(_, score)| score >= top - margin)
+        .map(|&(c, _)| c)
+        .collect();
+    if best.len() == candidates.len() {
+        best.clear();
+    }
+    crate::match_builds::log("routes", || {
+        let name = |i: u64| catalog_name_in(catalog, catalog_len, i).unwrap_or_else(|| i.to_string());
+        format!(
+            "{champion} lane={lane:?} seed={:#x} side={} enemies(AD,AP)={enemies:?} {} -> {}: {} => {}",
+            ask.seed,
+            ask.side,
+            if ask.from == u64::MAX {
+                "new".to_string()
+            } else {
+                name(ask.from)
+            },
+            name(target),
+            scored
+                .iter()
+                .map(|&(c, score)| format!("{}={score:.0}", name(c)))
+                .collect::<Vec<_>>()
+                .join(" "),
+            if best.is_empty() {
+                "the draw".to_string()
+            } else {
+                best.iter().map(|&c| name(c)).collect::<Vec<_>>().join("|")
+            }
+        )
+    });
+    Some(RouteAnswer { candidates, best })
+}
+
+// Scores of one decision's items and routes, each worked out once.
+#[derive(Default)]
+struct RouteScores {
+    items: HashMap<u64, f64>,
+    routes: HashMap<u64, f64>,
+}
+
+impl RouteScores {
+    // What the route from `node` on to `target` is worth: `node`'s stats plus
+    // the best way on. The target's own stats are left out, since every route
+    // ends on them.
+    #[allow(clippy::too_many_arguments)]
+    unsafe fn route(
+        &mut self,
+        graph: &RouteGraph,
+        catalog: usize,
+        catalog_len: u64,
+        node: u64,
+        target: u64,
+        table: &crate::route_choice::RouteTable,
+        weights: &crate::route_choice::Weights,
+        depth: u32,
+    ) -> f64 {
+        if let Some(&score) = self.routes.get(&node) {
+            return score;
+        }
+        let own = match self.items.get(&node) {
+            Some(&score) => score,
+            None => {
+                let score = catalog_name_in(catalog, catalog_len, node)
+                    .map_or(0.0, |key| crate::route_choice::item_score(table, &key, weights));
+                self.items.insert(node, score);
+                score
+            }
+        };
+        // Item trees are a few steps deep; the cap only guards a bad read.
+        let mut on: Option<f64> = None;
+        if depth < 8 {
+            for next in graph.next(node) {
+                let score = if next == target {
+                    0.0
+                } else if graph.flag(next) && graph.reaches(next, target) {
+                    self.route(graph, catalog, catalog_len, next, target, table, weights, depth + 1)
+                } else {
+                    continue;
+                };
+                on = Some(on.map_or(score, |best: f64| best.max(score)));
+            }
+        }
+        let score = own + on.unwrap_or(0.0);
+        self.routes.insert(node, score);
+        score
+    }
+}
+
+// The game's route graph for a catalog, read through its cache.
+struct RouteGraph {
+    next: usize,
+    next_len: u64,
+    flags: Vec<u8>,
+    reach: usize,
+    reach_len: u64,
+    stride: u64,
+}
+
+impl RouteGraph {
+    unsafe fn of(catalog: usize, catalog_len: u64) -> Option<Self> {
+        let base = exe_base_addr();
+        let getter: unsafe extern "win64" fn(usize, usize, usize) -> usize =
+            core::mem::transmute(base + ROUTE_GRAPH_RVA);
+        let rc = getter(base + ROUTE_GRAPH_KEY_RVA, catalog, catalog_len as usize);
+        if rc < 0x10000 {
+            return None;
+        }
+        // The reference goes straight back: the cache keeps its own, and
+        // nothing below touches the cache. Under two, the cache would not, and
+        // the graph is left alone (one reference leaked) rather than freed.
+        let strong = safe_read_u64(rc)?;
+        if strong < 2 {
+            return None;
+        }
+        wr_u64(rc, strong - 1);
+        let flags_ptr = safe_read_u64(rc + O_GRAPH_FLAGS_PTR)? as usize;
+        let flags_len = safe_read_u64(rc + O_GRAPH_FLAGS_LEN)? as usize;
+        let mut flags = Vec::new();
+        if flags_len == 0 || !safe_read_bytes(flags_ptr, flags_len, &mut flags) {
+            return None;
+        }
+        Some(Self {
+            next: safe_read_u64(rc + O_GRAPH_NEXT_PTR)? as usize,
+            next_len: safe_read_u64(rc + O_GRAPH_NEXT_LEN)?,
+            flags,
+            reach: safe_read_u64(rc + O_GRAPH_REACH_PTR)? as usize,
+            reach_len: safe_read_u64(rc + O_GRAPH_REACH_LEN)?,
+            stride: safe_read_u64(rc + O_GRAPH_REACH_STRIDE)?,
+        })
+    }
+
+    // Whether the picker considers item `i` at all.
+    fn flag(&self, i: u64) -> bool {
+        self.flags.get(i as usize).is_some_and(|&flag| flag != 0)
+    }
+
+    // Whether item `i` builds into `target` (or is it).
+    unsafe fn reaches(&self, i: u64, target: u64) -> bool {
+        if target as usize >= self.flags.len() {
+            return false;
+        }
+        let word = i * self.stride + (target >> 6);
+        word < self.reach_len
+            && safe_read_u64(self.reach + word as usize * 8)
+                .is_some_and(|bits| (bits >> (target & 63)) & 1 != 0)
+    }
+
+    // Item `i`'s next steps.
+    unsafe fn next(&self, i: u64) -> Vec<u64> {
+        if i >= self.next_len || self.next < 0x10000 {
+            return Vec::new();
+        }
+        let entry = self.next + i as usize * 24;
+        let (Some(ptr), Some(len)) = (safe_read_u64(entry + 8), safe_read_u64(entry + 0x10)) else {
+            return Vec::new();
+        };
+        if ptr < 0x10000 || len > 64 {
+            return Vec::new();
+        }
+        (0..len as usize)
+            .filter_map(|j| safe_read_u64(ptr as usize + j * 8))
+            .collect()
+    }
+}
+
+// Catalog index of the entry named `key`, whatever its tier (unlike
+// [`scan_catalog_index`], which wants a recipe). Kept per thread by catalog
+// length and checked by name before use.
+unsafe fn route_index_of(catalog: usize, catalog_len: u64, key: &str) -> Option<u64> {
+    let kept = ROUTE_INDEX
+        .try_with(|index| {
+            index
+                .borrow()
+                .get(&catalog_len)
+                .and_then(|keys| keys.get(key).copied())
+        })
+        .ok()
+        .flatten();
+    if let Some(i) = kept {
+        if catalog_entry_named(catalog, catalog_len, i, key.as_bytes()) {
+            return Some(i);
+        }
+    }
+    let found = (0..catalog_len).find(|&i| catalog_entry_named(catalog, catalog_len, i, key.as_bytes()))?;
+    let _ = ROUTE_INDEX.try_with(|index| {
+        let mut index = index.borrow_mut();
+        if index.len() >= 8 {
+            index.clear();
+        }
+        index.entry(catalog_len).or_default().insert(key.to_string(), found);
+    });
+    Some(found)
+}
+
+// Getters `catalog_call` has proven to be code; their own ring, so they never
+// push out the name getters.
+static ROUTE_GETTERS: [AtomicUsize; 32] = [const { AtomicUsize::new(0) }; 32];
+static ROUTE_GETTER_NEXT: AtomicUsize = AtomicUsize::new(0);
+
+// Catalog entry `idx`'s answer from the getter in its vtable `slot`
+// ([`VT_PRICE`], [`VT_TIER`]).
+unsafe fn catalog_call(data: usize, len: u64, idx: u64, slot: usize) -> Option<u64> {
+    if idx >= len || data < 0x10000 {
+        return None;
+    }
+    let e = data + (idx as usize) * 16;
+    let edata = safe_read_u64(e)? as usize;
+    let evt = safe_read_u64(e + 8)? as usize;
+    if edata < 0x10000 || evt < 0x10000 {
+        return None;
+    }
+    let getter = safe_read_u64(evt + slot)? as usize;
+    if !proven_code(&ROUTE_GETTERS, &ROUTE_GETTER_NEXT, getter) {
+        return None;
+    }
+    let getter: unsafe extern "win64" fn(usize) -> usize = core::mem::transmute(getter);
+    Some(getter(edata) as u64)
+}
+
+// The champion `athlete` plays, into `name`; its length. VEH-guarded.
+unsafe fn athlete_champion(athlete: usize, name: &mut [u8; CHAMP_NAME_MAX]) -> Option<usize> {
+    let ptr = safe_read_u64(athlete + O_ATHLETE_CHAMP_PTR)? as usize;
+    let len = safe_read_u64(athlete + O_ATHLETE_CHAMP_LEN)? as usize;
+    if ptr < 0x10000 || len == 0 || len > CHAMP_NAME_MAX {
+        return None;
+    }
+    safe_copy(name.as_mut_ptr(), ptr as *const u8, len).then_some(len)
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  Game version gate: on any other build every feature disables itself
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// This half depends on hardcoded RVAs, byte patches and struct offsets, so on
+// a mismatch not one hook or patch is installed. Two checks: the exe's size,
+// and the entry prologues of hooks no other mod shares.
+const GAME_EXE_SIZE_070_BETA: u64 = 91_006_464; // 0.7.0-beta, the exe that reports 0.7.0_beta1 (0.6.4: 87_228_416, 0.6.3: 86_804_992)
 static VERSION_MSG: Mutex<String> = Mutex::new(String::new());
 // Decides whether this is the one game build this half is pinned to. Called once from init.
 fn check_game_version() -> bool {
@@ -4409,22 +4104,16 @@ fn check_game_version() -> bool {
             false
         }
     };
-    // (2) entry prologues of the key hooks (caught here even if the size matches but the code differs)
-    //  WARNING WARNING **a chain-hooking exception is mandatory** (real incident 2026-07-30): for functions like launcher it is **normal** for
-    //    **another mod (serpen) to have hooked first**, leaving the entry overwritten with `48 b8 <tgt> ... ff e0` (movabs+jmp).
-    //    Misjudging that as a "version mismatch" disabled the whole mod (user report: "the 4-slot mod suddenly stopped working").
-    //    => accept an entry that is in **foreign-hook form** as passing, and only byte-compare when it is the original prologue.
-    //  WARNING the same form also appears when we ourselves already installed (re-init / hot reload).
+    // (2) Entry prologues. An entry already in hook form (`movabs rax; jmp
+    // rax`) passes: another mod's, or ours after a re-init.
     let proto_ok = if size_ok {
         let base = exe_base_addr();
         if base == 0 {
             why = "module base 0".into();
             false
         } else {
-            // * Only check places with **no cross-mod shared hooking**.
-            //   launcher (CL_LAUNCHER_RVA) is a chain-hooking point shared with serpen etc., so its entry may be
-            //   overwritten by someone else's hook and its state depends on init order => **unsuitable as version evidence**.
-            //   buy/seedctor are exclusive to this mod, so at init time they always hold the original prologue.
+            // Only hooks no other mod shares: serpen may chain onto the
+            // launcher first, so its entry is no evidence.
             let checks: [(&str, usize, &[u8]); 2] = [
                 ("BUY", RVA_BUY_ITEM, &BUY_PROLOGUE),
                 ("SEEDCTOR", SEEDCTOR_RVA, &SEEDCTOR_PROLOGUE),
@@ -4468,37 +4157,14 @@ fn check_game_version() -> bool {
     ok
 }
 
-// Was `init(_ctx: &GameCtx) -> ModRegistration` + `declare_mod!(init)`.
-//
-// Returns whether the tactics half is active. The host mod registers its own
-// extensions unconditionally and consults this before routing anything here,
-// which reproduces the old "return a bare `ModRegistration`" behaviour: on a
-// version mismatch not one hook or patch is installed.
-//
-// The version gate matters more than it used to. The host mod's `mod.mod_info`
-// says `base >= 0.5.3` (its stable-ABI half keeps working across updates),
-// while everything here is hardcoded RVAs, byte patches and struct offsets for
-// exactly 0.5.3 — so the loader will happily attach this DLL on 0.5.4 and this
-// gate is the only thing standing between that and a corrupted game.
+// Whether the tactics half is active; the host consults this before routing
+// anything here. The gate is all that stands between a game update and patching
+// the wrong code, since the host mod itself loads on any version.
 fn tactics_init() -> bool {
-    // Register the VEH before anything else. `safe_copy` returns `false` on
-    // entry while `SEH_INSTALLED` is false, so until this runs EVERY protected
-    // read in this module fails — `safe_read_u64`, `safe_read_bytes`, all of it.
-    //
-    // It used to be registered only as a side effect of a per-frame UI
-    // handler, and gating that handler off left it unregistered.
-    //
-    // The symptom was total and silent. `install_launcher_hook` returned at its
-    // first `safe_read_u64` on all 18,902 calls, so `LIVE_SEED` stayed 0 and no
-    // buy was ever classified as live; `is_my_athlete` could not read
-    // `athlete+0x810`, so the buy detour early-exited before touching a build.
-    // Every counter read 0 and every hook reported healthy.
-    //
-    // Idempotent (`SEH_INSTALLED.swap`), so init is simply the correct place.
+    // The VEH first: until it is registered every guarded read fails, which
+    // once left every hook silently inert.
     seh_install();
 
-    // ** Version gate: if this is not 0.5.3, install **no hooks or patches at all** and return an empty registration.
-    //   (It depends on hardcoded RVAs, byte patches and struct offsets, so other versions risk misbehaviour.)
     let version_ok = check_game_version();
     crate::own_team_log::line(|| {
         format!(
@@ -4511,10 +4177,8 @@ fn tactics_init() -> bool {
             .lock()
             .unwrap_or_else(|e| e.into_inner())
             .clone();
-        // Written once so the user can tell why this half is disabled. Silenced
-        // with the other trace files — after a game update the symptom is "the
-        // 4th item quietly stopped working" with nothing on disk saying why, so
-        // `TRACE_FILES` is the first thing to flip if that ever happens.
+        // Written once so the user can tell why this half is off, with the
+        // other trace files (`TRACE_FILES`).
         if TRACE_FILES {
             if let Some(d) = mod_dir() {
                 let _ = fs::create_dir_all(&d);
@@ -4523,22 +4187,20 @@ fn tactics_init() -> bool {
                     format!(
                         "{}
 
-This half of the mod (the 4th item slot) requires game version 0.5.3 exactly.
-If the game has updated, please wait for a mod update. The rest of the mod is unaffected.
+This half of the mod (own-team-only builds and the 5th and 6th item slots) works only on the
+game version it was made for. If the game has updated, please wait for a mod update. The rest
+of the mod is unaffected.
 ",
                         msg
                     ),
                 );
             }
         }
-        // Register only, attaching **not a single** extension, hook or patch = completely disabled.
         return false;
     }
-    // Byte-patch results always leave a trace, regardless of `LOG_ENABLED`.
-    // Every patch validates its target byte-for-byte and skips silently on a
-    // mismatch, so through `append_log`, which `LOG_ENABLED = false` turns off
-    // in production, "the signature moved" and "the feature works" would
-    // produce identical evidence: no file either way.
+    // The patch report: every patch skips silently on a mismatch, so without it
+    // "the signature moved" and "it works" look the same. Written when
+    // `TRACE_FILES` is on.
     let mut patch_report = String::new();
     // * 5th and 6th item slots.
     if EXTRA_SLOT_PATCHES && crate::build_config::picker_slots() > 4 {

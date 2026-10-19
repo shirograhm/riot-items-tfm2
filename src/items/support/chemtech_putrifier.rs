@@ -23,10 +23,10 @@ impl ChemtechPutrifier {
                 &["bandleglass_mirror"],
                 &["radiant_chemtech_putrifier"],
             ),
-            price: 500,
+            price: 700,
             hp: 150,
             hp_regen: 2,
-            magic_power: 15,
+            magic_power: 25,
             skill_cooldown_mult: 15,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2.0,
@@ -39,7 +39,7 @@ impl ChemtechPutrifier {
             price: 750,
             hp: 250,
             hp_regen: 3,
-            magic_power: 25,
+            magic_power: 35,
             skill_cooldown_mult: 15,
             ..Self::base()
         }

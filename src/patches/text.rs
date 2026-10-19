@@ -1,35 +1,17 @@
-//! Item text under a balance patch: what an item's tooltip has to say once
-//! its numbers have moved, and putting that on screen.
+//! Item text under a balance patch: what an item's tooltip says once its
+//! numbers have moved, and putting that on screen.
 //!
-//! # Why the mod writes into the game's tooltips
+//! The game draws a tooltip's stat lines from its own copy of the item's
+//! numbers and its effect text from `text/item.i18n`, neither of which follows
+//! a patch, so the label on screen is read and its unpatched numbers replaced
+//! ([`sync_tooltips`]); anything not found is left as it is. Numbers the
+//! player's `config.json` changed are rewritten the same way (`Base::custom`).
 //!
-//! The game draws an item's tooltip from two things. The stat lines come from
-//! the numbers it holds for the item, and for one of this mod's items those
-//! are a copy taken when the mod loaded (0.5.2: `ModItemEntry::stat` copies
-//! them out of the entry and never asks the item). The effect text is looked
-//! up by the item's key (`ModItemEntry::option_desc`), in `text/item.i18n`,
-//! which has the default numbers already in the sentences.
-//! Neither follows a patch, and the stable API can change neither, so the
-//! text a tooltip is showing is corrected where it is shown: the label is
-//! read, the unpatched stat lines and effect text are found in it, and it is
-//! written back with the patched ones in their place ([`sync_tooltips`]).
-//! Anything not found is left as it is, so a tooltip in a shape this does
-//! not know shows the unpatched text rather than a broken one.
-//!
-//! # Where the patched sentences come from
-//!
-//! `item-templates.json`, compiled into the DLL: every item's effect text in
-//! every language, with a slot naming the config field where each number
-//! goes. It is the source of those texts: `text/item.i18n` is written from it
-//! (`tools/item_i18n.py`), so filled with the numbers of
-//! `config-default.json` it gives that file back, letter for letter. The
-//! same check is run here at start-up against the text file as the player
-//! has it ([`Texts::unverified`]), and an item that fails it is not patched
-//! in any number its text shows.
-//!
-//! The text the game holds is that default one, whatever the player's
-//! `config.json` says. So a tooltip is rewritten for a number the player
-//! changed just as it is for one a patch moved (`Base::custom`).
+//! The patched sentences come from `item-templates.json`, compiled in: every
+//! effect text in every language with slots for config fields, from which
+//! `text/item.i18n` is generated (`tools/item_i18n.py`). An item whose text
+//! file fails that round trip at start-up ([`Texts::unverified`]) has none of
+//! its quoted numbers patched.
 
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
@@ -113,11 +95,9 @@ impl Template {
         out
     }
 
-    // The name of the passive `item`'s `field` is a number of, and whether
-    // the sentence puts a percent sign after the number. A passive's text
-    // opens with its name and a colon, in every language. The name is empty
-    // for a number in a sentence that has none: the lethality an item gives
-    // is a sentence of its own, "Gain 18 Lethality."
+    // The passive `item`'s `field` belongs to (a passive's text opens with its
+    // name and a colon), and whether a percent sign follows the number. The
+    // name is empty for a sentence of its own, "Gain 18 Lethality."
     fn passive_of(&self, item: &str, field: &str) -> Option<(String, bool)> {
         let mut text = String::new();
         let mut found = None;
@@ -150,12 +130,9 @@ impl Template {
         Some((name.to_string(), percent))
     }
 
-    // How the text draws `item`'s `field`: the colour of the span the
-    // number is in, and the icon the text has for what it is a number of.
-    // That icon is the one of the number's colour, in a span of that colour
-    // or bare and followed by one ("of your <icon> <#60e84dff>maximum
-    // health<>"): the nearest after the number in its paragraph, or failing
-    // one the nearest before it. Neither for a number in no colour span.
+    // How the text draws `item`'s `field`: the colour of its span, and the icon
+    // of that colour nearest after it in its paragraph, or before. Neither for
+    // a number in no colour span.
     fn tint_of(&self, item: &str, field: &str) -> Tint {
         // The paragraph's icons: where each comes among its numbers and
         // icons, the icon, and its colour.
@@ -243,11 +220,10 @@ impl Template {
         }
     }
 
-    // How the text writes the range of `item` that runs from `low` to
-    // `high`: what stands between the two numbers (" - "), and the bracket
-    // that follows the second where it holds words and no number
-    // (" (based on level)"), with the colours and the icon the text has in
-    // it. Nothing where the two are not written one after the other.
+    // How the text writes `item`'s range from `low` to `high`: what stands
+    // between the numbers (" - "), and a wordy bracket after the second ("
+    // (based on level)"), colours and icon included. `None` where the two are
+    // not adjacent.
     fn range_of(&self, item: &str, low: &str, high: &str) -> Option<(String, String)> {
         let is = |part: &Part, field: &str| {
             matches!(
@@ -347,10 +323,8 @@ fn plain(text: &str) -> String {
     out
 }
 
-// A slot's number as it is written into a sentence, in `text/item.i18n` as
-// here (`tools/item_i18n.py` writes that file the same way): an `int` slot
-// rounds a half to the even number, and a `double` is written to fifteen
-// significant digits.
+// A slot's number as written into a sentence, matching `tools/item_i18n.py`: an
+// `int` rounds half to even, a `double` takes fifteen significant digits.
 fn shown(terms: &[Term], value: &dyn Fn(&str, &str) -> f64) -> String {
     let read = |term: &Term| {
         let number = value(&term.item, &term.field);
@@ -424,6 +398,18 @@ const TEMPLATES: &str = include_str!("../../item-templates.json");
 pub(crate) fn texts() -> &'static Texts {
     static TEXTS: OnceLock<Texts> = OnceLock::new();
     TEXTS.get_or_init(Texts::load)
+}
+
+// The English name of the passive `item`'s `field` belongs to
+// ([`Template::passive_of`]), or nothing for a number in no named passive.
+pub(crate) fn passive_name(item: &str, field: &str) -> Option<String> {
+    texts()
+        .templates
+        .get("en")?
+        .get(item)?
+        .passive_of(item, field)
+        .map(|(name, _)| name)
+        .filter(|name| !name.is_empty())
 }
 
 impl Texts {
@@ -540,14 +526,10 @@ impl Texts {
             .any(|(_, lines)| lines.get(field).is_some_and(|line| line.contains("{Value}")))
     }
 
-    // The items whose effect text, in some language, is not what its
-    // template makes of the default numbers (`shipped`): a text file from
-    // another version than the templates. What a patch would write into such
-    // a tooltip cannot be trusted to be the sentence that is in it.
-    //
-    // A text made of the player's own numbers (`value`) passes too: a folder
-    // whose text file was written from the player's config shows the right
-    // numbers already.
+    // Items whose effect text in some language differs from what its template
+    // makes of the default numbers (`shipped`) or the player's (`value`): a
+    // text file from another version, which a patch cannot be trusted to
+    // rewrite.
     pub(crate) fn unverified(
         &self,
         shipped: &dyn Fn(&str, &str) -> f64,
@@ -653,10 +635,9 @@ impl Texts {
         Some((sheet.to_string(), tag.to_string()))
     }
 
-    // How `key`'s effect text writes the range from `low` to `high`
-    // ([`Template::range_of`]), in `lang` or failing that in English: what
-    // stands between the two numbers, and what follows them. A dash and
-    // nothing where the text has no such range.
+    // How `key`'s effect text writes the range `low`-`high`
+    // ([`Template::range_of`]), in `lang` or else English; a dash and nothing
+    // where it has none.
     fn range_words(&self, lang: &str, key: &str, low: &str, high: &str) -> (String, String) {
         [lang, "en"]
             .iter()
@@ -665,10 +646,9 @@ impl Texts {
             .unwrap_or_else(|| (" - ".to_string(), String::new()))
     }
 
-    // How `key`'s effect text draws its `field` ([`Template::tint_of`]). Read
-    // off the English text whatever the language: the colours and icons are
-    // the same in every one, and a translation moves the words around them.
-    // Less the icon for a number of [`NO_ICON`].
+    // How `key`'s effect text draws its `field` ([`Template::tint_of`]), read
+    // off the English, since colours and icons are the same in every language;
+    // no icon for [`NO_ICON`].
     fn tint(&self, key: &str, field: &str) -> Tint {
         let mut tint = self
             .templates
@@ -695,10 +675,9 @@ fn lines_of(value: &Value) -> HashMap<String, String> {
         .unwrap_or_default()
 }
 
-// The game's language, from its own settings file (`config/game/base.json`
-// beside the executable, `lang`). The stable API does not say, and answers
-// every text lookup in English. Read again every few seconds: the player
-// can change it in the options.
+// The game's language, from `config/game/base.json` beside the executable (the
+// stable API answers everything in English). Re-read every few seconds, since
+// the options can change it.
 pub(crate) fn game_language() -> String {
     static LANG: Mutex<Option<(Instant, String)>> = Mutex::new(None);
     let Ok(mut cached) = LANG.lock() else {
@@ -808,10 +787,8 @@ const DISCOVER_FRAMES: u32 = 45;
 // own root with the same nodes inside: in a match, on the match result
 // (whose layout's root is `main` too), and on the solo rank page.
 const TOOLTIP: &str = "item_tooltip";
-// The description panel of the Item Info page (`item_info.ui`), under Game
-// Info and in the strategy screen's Item Info popup. Inside the page's
-// `#data`: the page is `main.top.right.item_info`, and the panel is not
-// straight under it.
+// The description panel of the Item Info page (`item_info.ui`), under Game Info
+// and in the strategy screen's Item Info popup: inside the page's `#data`.
 const DETAIL: &str = "data.item_detail";
 
 fn site_paths(root: String, inner: &str) -> (String, String, String) {
@@ -820,10 +797,8 @@ fn site_paths(root: String, inner: &str) -> (String, String, String) {
     (root, name, desc)
 }
 
-// Finds the description labels now on screen. The two roots a layout puts
-// its tooltip under are known; where a screen is mounted inside the
-// management UI is game code's doing, so those are looked for one level
-// down from the places screens are put.
+// Finds the description labels on screen: under the two known tooltip roots,
+// and one level below where management screens are mounted.
 fn discover(ctx: &StableClient<'_>, sites: &mut Vec<Site>) {
     let mut wanted = vec![
         site_paths(format!("ingame.{TOOLTIP}"), "data."),
@@ -868,13 +843,10 @@ fn discover(ctx: &StableClient<'_>, sites: &mut Vec<Site>) {
     }
 }
 
-// Puts the patched numbers into whatever item description the game is
-// showing. Every client frame; one atomic read while no patch shows
-// anything.
-//
-// The label is written again whenever it stops saying what was written,
-// which covers both ways game code may fill it: once when the hover
-// starts, or every frame.
+// Puts the patched numbers into whatever item description is showing; every
+// frame, one atomic read while nothing patched shows. Rewritten whenever the
+// label stops saying what was written, which covers game code filling it once
+// or every frame.
 pub(crate) fn sync_tooltips(ctx: &mut StableClient<'_>) {
     let Some(live) = super::live::current().filter(|live| !live.display.is_empty()) else {
         return;
@@ -942,10 +914,9 @@ fn note_number(value: f64, percent: bool) -> String {
     format!("{}{}", number_text(value), if percent { "%" } else { "" })
 }
 
-// What a note calls the number a change moved, and whether it reads as a
-// percentage: a flat stat by its tooltip line, a passive's number by the
-// passive's name. Empty where neither is found, and for a passive's number
-// in a sentence with no name.
+// What a note calls a changed number, and whether it is a percentage: a flat
+// stat by its tooltip line, a passive's number by the passive's name; empty
+// where neither is found.
 fn label_of(texts: &Texts, lang: &str, change: &Change) -> (String, bool) {
     let Some(first) = change.members.first() else {
         return (String::new(), false);
@@ -981,10 +952,9 @@ const NERF_COLOR: &str = "#ff6b6bff";
 const ADJUST_COLOR: &str = "#f0c05aff";
 const REASON_COLOR: &str = "#8b8d9aff";
 
-// One changed number of an entry: the icon the row opens with, which a
-// flat stat has where its tooltip line has one and a passive's number never
-// has, and the line. A passive's number that has a row format has its
-// colour and icon in the line itself ([`Tint`]).
+// One changed number of an entry: the stat icon a flat stat's row opens with (a
+// passive's never has one), and the line, which carries a formatted passive's
+// colour and icon ([`Tint`]).
 struct NoteRow {
     icon: Option<(String, String)>,
     text: String,
@@ -1006,9 +976,8 @@ struct NoteEntry {
     // ([`Change::leader`]), under that tier's key: the same change carried
     // over, and not one the patch made of the other tier by itself.
     followers: Vec<(String, Vec<NoteRow>)>,
-    // Whether any of its numbers got stronger, and whether any got weaker.
-    // The section it is listed under goes by these, and not by which way
-    // the patch meant the item to go: a nerf made up for in another number
+    // Whether any number got stronger, and any weaker: the entry's section
+    // follows these, not the patch's intent, so a nerf made up for elsewhere
     // has both.
     stronger: bool,
     weaker: bool,
@@ -1029,11 +998,9 @@ impl NoteEntry {
     }
 }
 
-// The other tier of the item whose entry lists the row of the tier `key`
-// that writes `fields`, and that tier's change of them: where every change
-// `patch` makes of `key` in them follows that tier ([`Change::leader`]), and
-// that tier has a change of them in the patch as well. Nothing where the
-// row is `key`'s own.
+// The other tier whose entry lists `key`'s row for `fields`, with that tier's
+// change: where all of `key`'s changes to them follow that tier
+// ([`Change::leader`]) and it changed them too. `None` for `key`'s own row.
 fn followed<'a>(patch: &'a Patch, key: &str, fields: &[&str]) -> Option<(&'a str, &'a Change)> {
     let has = |change: &Change, key: &str| {
         fields.contains(&change.field.as_str())
@@ -1073,23 +1040,15 @@ const WINNING: f64 = 0.6;
 const LOSING: f64 = 0.45;
 const OFTEN_HELD: f64 = 0.8;
 
-// The reasons that fit one item's change, as keys of the `item_patch`
-// strings in `text/ui.i18n` (`why_nerf_early_1`, ...).
+// The reasons that fit one item's change, as `item_patch` keys in
+// `text/ui.i18n` (`why_nerf_early_1`, ...): a designer's sentence in the voice
+// of the game's and League's notes, never the record read out or calling an
+// item oppressive.
 //
-// A reason is a designer's sentence, in the voice of the game's own
-// champion notes and of League's patch notes, and not the item's record
-// read out. An item that stacks is talked of as an early-game item and one
-// that scales as a late-game one, and no sentence calls an item oppressive.
-// What picks the sentences is
-// still the record: an item nobody held gets one about being left on the
-// shelf, one that won and was held a lot gets one about the meta, and so
-// on; and the item's kind adds the early- or late-game ones.
-//
-// An item builds do not choose (`Family::chosen`: boots, the jungle items,
-// what only a support builds) is in every build it can be in, and is judged
-// on how it wins alone. Nothing is said of how often it is built: it is too
-// strong, or it is too weak. And a component is patched for the items it is
-// built into, which is all there is to say of it.
+// The record picks the pool (left on the shelf, the meta, ...) and the item's
+// tempo adds early- or late-game ones. Items builds do not choose
+// (`Family::chosen`) are only too strong or too weak, and a component is
+// patched for what it builds into.
 fn reason_pool(
     buff: bool,
     chosen: bool,
@@ -1161,1099 +1120,523 @@ fn seed_of(number: u32, text: &str) -> usize {
     (hash >> 16) as usize
 }
 
-// How a patch note words one passive's number. Its row is called by the
-// passive's name and then by what the number does, "Flux - Base Ultimate
-// Haste: 10 -> 12", and the words that lead up to the number and that
-// follow it, where there are any, are given too: "Sweet Spot - Bonus Damage:
-// up to 25% -> up to 30%", "Stasis - Stasis Duration: 2.5 seconds -> 3
-// seconds". A format with no label has the passive's name alone ahead of
-// the numbers.
-//
-// Every one is written by hand. Nothing is read off the item's sentence but
-// the passive's name and the number's percent sign
-// ([`Template::passive_of`]), so a number with no format here, and none of
-// [`FIELD_FORMATS`], is a bare one under its passive's name.
-//
-// `item` is the base key, so a radiant reads as its legendary does. The
-// strings are `item_patch` ones in `text/ui.i18n`, here as their key and
-// the English.
+// How a patch note words one passive's number: the passive's name, what the
+// number does, and any words around it ("Sweet Spot - Bonus Damage: up to 25%
+// -> up to 30%"); a format with no label has the name alone. All written by
+// hand: without one here or in [`FIELD_FORMATS`] a number is bare under its
+// passive's name, and `item` is the base key.
 struct RowFormat {
     item: &'static str,
     field: &'static str,
-    label: Option<(&'static str, &'static str)>,
-    lead: Option<(&'static str, &'static str)>,
-    unit: Option<(&'static str, &'static str)>,
+    label: Option<Words>,
+    lead: Option<Words>,
+    unit: Option<Words>,
 }
 
-// How a patch note words a passive's number of one kind, whichever item it
-// is of: by config field. An amount of a stat the game has no tooltip line
-// for is called by the stat, and a cooldown, a duration and a slow by what
-// they are, each after the passive's name where the sentence has one:
-// "Lethality: 18 -> 19", "Illusion - Adaptive Force: 30 -> 33", "Annul -
-// Cooldown: 40 seconds -> 35 seconds", "Icy - Slow: 20% -> 25%". An item's
-// own row format comes first ([`ROW_FORMATS`]): a cooldown that is one per
-// target has one, and so has each duration of an item with two of them.
+// How a patch note words a passive's number by config field, whatever the item:
+// a stat with no tooltip line by the stat, a cooldown, duration or slow by what
+// it is, after the passive's name ("Annul - Cooldown: 40 seconds -> 35
+// seconds"). An item's own format ([`ROW_FORMATS`]) comes first.
 struct FieldFormat {
     fields: &'static [&'static str],
-    label: (&'static str, &'static str),
-    unit: Option<(&'static str, &'static str)>,
+    label: Words,
+    unit: Option<Words>,
+}
+
+// A patch note's words, as (key in `text/ui.i18n`, English), shared by
+// [`FIELD_FORMATS`], [`ROW_FORMATS`] and [`AMOUNT_FORMATS`].
+type Words = (&'static str, &'static str);
+
+// What a number does: "Movement Speed".
+mod label {
+    use super::Words;
+
+    pub(super) const ABILITY_HASTE: Words = ("row_ability_haste", "Ability Haste");
+    pub(super) const ABILITY_POWER: Words = ("row_ability_power", "Ability Power");
+    pub(super) const ADAPTIVE_FORCE: Words = ("row_adaptive_force", "Adaptive Force");
+    pub(super) const AOE_DAMAGE: Words = ("row_aoe_damage", "AoE Damage");
+    pub(super) const ARMOR: Words = ("row_armor", "Armor");
+    pub(super) const ARMOR_PENETRATION: Words = ("row_armor_penetration", "Armor Penetration");
+    pub(super) const ARMOR_REDUCTION: Words = ("row_armor_reduction", "Armor Reduction");
+    pub(super) const ATTACK_DAMAGE: Words = ("row_attack_damage", "Attack Damage");
+    pub(super) const ATTACK_SPEED: Words = ("row_attack_speed", "Attack Speed");
+    pub(super) const ATTACK_SPEED_REDUCTION: Words = ("row_attack_speed_reduction", "Attack Speed Reduction");
+    pub(super) const BASE_AD_KILL_BONUS: Words = ("row_base_ad_kill_bonus", "Base AD Kill Bonus");
+    pub(super) const BASE_SKILL_DAMAGE_REDUCTION: Words = ("row_base_skill_damage_reduction", "Base Skill Damage Reduction");
+    pub(super) const BLEED_CRIT_RATIO: Words = ("row_bleed_crit_ratio", "Bleed Crit Ratio");
+    pub(super) const BONUS_CRIT_DAMAGE: Words = ("row_bonus_crit_damage", "Bonus Crit Damage");
+    pub(super) const BONUS_DAMAGE: Words = ("row_bonus_damage", "Bonus Damage");
+    pub(super) const BONUS_DAMAGE_CAP: Words = ("row_bonus_damage_cap", "Bonus Damage Cap");
+    pub(super) const BONUS_HEALING_RECEIVED: Words = ("row_bonus_healing_received", "Bonus Healing Received");
+    pub(super) const BONUS_HEALTH: Words = ("row_bonus_health", "Bonus Health");
+    pub(super) const BONUS_MAGIC_DAMAGE: Words = ("row_bonus_magic_damage", "Bonus Magic Damage");
+    pub(super) const BURN_DAMAGE: Words = ("row_burn_damage", "Burn Damage");
+    pub(super) const BURST_WINDOW: Words = ("row_burst_window", "Burst Window");
+    pub(super) const CHAINED_HEALING: Words = ("row_chained_healing", "Chained Healing");
+    pub(super) const COOLDOWN: Words = ("row_cooldown", "Cooldown");
+    pub(super) const COOLDOWN_REFUND: Words = ("row_cooldown_refund", "Cooldown Refund");
+    pub(super) const CRIT_CHANCE: Words = ("row_crit_chance", "Crit Chance");
+    pub(super) const CRIT_HEALING: Words = ("row_crit_healing", "Critical Strike Healing");
+    pub(super) const DAMAGE: Words = ("row_damage", "Damage");
+    pub(super) const DAMAGE_REDUCTION: Words = ("row_damage_reduction", "Damage Reduction");
+    pub(super) const DAMAGE_REDUCTION_DURATION: Words = ("row_damage_reduction_duration", "Damage Reduction Duration");
+    pub(super) const DAMAGE_STORED: Words = ("row_damage_stored", "Damage Stored");
+    pub(super) const DAMAGE_TAKEN_BONUS: Words = ("row_damage_taken_bonus", "Damage Taken Bonus");
+    pub(super) const DELAYED_DAMAGE_CAP: Words = ("row_delayed_damage_cap", "Delayed Damage Cap");
+    pub(super) const EFFECT_DURATION: Words = ("row_effect_duration", "Effect Duration");
+    pub(super) const FIRST_ATTACK_MULTIPLIER: Words = ("row_first_attack_multiplier", "First Attack Multiplier");
+    pub(super) const HEALING: Words = ("row_healing", "Healing");
+    pub(super) const HEALING_REDUCTION: Words = ("row_healing_reduction", "Healing Reduction");
+    pub(super) const HEALTH_REGENERATION: Words = ("row_health_regeneration", "Health Regeneration");
+    pub(super) const LETHALITY: Words = ("row_lethality", "Lethality");
+    pub(super) const LETHALITY_DURATION: Words = ("row_lethality_duration", "Lethality Duration");
+    pub(super) const MAGIC_RESISTANCE: Words = ("row_magic_resistance", "Magic Resistance");
+    pub(super) const MARK_DURATION: Words = ("row_mark_duration", "Mark Duration");
+    pub(super) const MAX_HEALTH: Words = ("row_max_health", "Max Health");
+    pub(super) const MISSING_HEALTH_SCALING: Words = ("row_missing_health_scaling", "Missing Health Scaling");
+    pub(super) const MOVEMENT_SPEED: Words = ("row_movement_speed", "Movement Speed");
+    pub(super) const MR_PENETRATION: Words = ("row_mr_penetration", "Magic Resistance Penetration");
+    pub(super) const MR_REDUCTION: Words = ("row_mr_reduction", "Magic Resistance Reduction");
+    pub(super) const OMNIVAMP: Words = ("row_omnivamp", "Omnivamp");
+    pub(super) const ON_HIT_AD_RATIO: Words = ("row_on_hit_ad_ratio", "On-Hit Damage AD Ratio");
+    pub(super) const ON_HIT_CRIT_RATIO: Words = ("row_on_hit_crit_ratio", "On-Hit Damage Crit Ratio");
+    pub(super) const ON_HIT_DAMAGE: Words = ("row_on_hit_damage", "On-Hit Damage");
+    pub(super) const ON_HIT_DAMAGE_CAP: Words = ("row_on_hit_damage_cap", "On-Hit Damage Cap");
+    pub(super) const OUT_OF_COMBAT_HEALING: Words = ("row_out_of_combat_healing", "Out of Combat Healing");
+    pub(super) const OUT_OF_COMBAT_TIMER: Words = ("row_out_of_combat_timer", "Out of Combat Timer");
+    pub(super) const PERMANENT_HEALTH: Words = ("row_permanent_health", "Permanent Health");
+    pub(super) const RESURRECT_HEALTH: Words = ("row_resurrect_health", "Resurrect Health");
+    pub(super) const SCALING: Words = ("row_scaling", "Scaling");
+    pub(super) const SHIELDING: Words = ("row_shielding", "Shielding");
+    pub(super) const SHIELD_DURATION: Words = ("row_shield_duration", "Shield Duration");
+    pub(super) const SKILL_DAMAGE_REDUCTION: Words = ("row_skill_damage_reduction", "Skill Damage Reduction");
+    pub(super) const SLOW: Words = ("row_slow", "Slow");
+    pub(super) const SLOW_DURATION: Words = ("row_slow_duration", "Slow Duration");
+    pub(super) const STACK_DURATION: Words = ("row_stack_duration", "Stack Duration");
+    pub(super) const STASIS_DURATION: Words = ("row_stasis_duration", "Stasis Duration");
+    pub(super) const STORM_DAMAGE: Words = ("row_storm_damage", "Storm Damage");
+    pub(super) const TRUE_DAMAGE_RATIO: Words = ("row_true_damage_ratio", "True Damage Ratio");
+}
+
+// The words after a number: "15 seconds".
+mod unit {
+    use super::Words;
+
+    pub(super) const AD: Words = ("unit_ad", " AD");
+    pub(super) const HEALTH: Words = ("unit_health", " health");
+    pub(super) const MAX_HP: Words = ("unit_max_hp", " max HP");
+    pub(super) const MAX_HP_PER_SECOND: Words = ("unit_max_hp_per_second", " max HP per second");
+    pub(super) const OF_DAMAGE_DEALT: Words = ("unit_of_damage_dealt", " of the damage dealt");
+    pub(super) const OF_ORIGINAL_AMOUNT: Words = ("unit_of_original_amount", " of the original amount");
+    pub(super) const OF_YOUR_DAMAGE_DEALT: Words = ("unit_of_your_damage_dealt", " of your damage dealt");
+    pub(super) const PER_MOMENTUM_STACK: Words = ("unit_per_momentum_stack", " per <#92dc7bff>Momentum<> stack");
+    pub(super) const PER_SECOND: Words = ("unit_per_second", " per second");
+    pub(super) const PER_STACK: Words = ("unit_per_stack", " per stack");
+    pub(super) const SECONDS: Words = ("unit_seconds", " seconds");
+    pub(super) const SECONDS_PER_TARGET: Words = ("unit_seconds_per_target", " seconds per target");
+    pub(super) const TARGET_CURRENT_HP: Words = ("unit_target_current_hp", " target current HP");
+    pub(super) const TARGET_MAX_HP: Words = ("unit_target_max_hp", " target max HP");
+}
+
+// The words before a number: "up to 30%".
+mod lead {
+    use super::Words;
+
+    pub(super) const UP_TO: Words = ("lead_up_to", "up to ");
+}
+
+// A row of [`ROW_FORMATS`]: `item`'s `field` under `label`, with no words
+// round the number until [`RowFormat::unit`] or [`RowFormat::lead`] gives some.
+const fn row(item: &'static str, field: &'static str, label: Words) -> RowFormat {
+    RowFormat {
+        item,
+        field,
+        label: Some(label),
+        lead: None,
+        unit: None,
+    }
+}
+
+impl RowFormat {
+    // The words after the number.
+    const fn unit(self, unit: Words) -> Self {
+        Self {
+            unit: Some(unit),
+            ..self
+        }
+    }
+
+    // The words before it.
+    const fn lead(self, lead: Words) -> Self {
+        Self {
+            lead: Some(lead),
+            ..self
+        }
+    }
 }
 
 const FIELD_FORMATS: [FieldFormat; 5] = [
     FieldFormat {
         fields: &["effect_lethality", "effect_bonus_lethality"],
-        label: ("row_lethality", "Lethality"),
+        label: label::LETHALITY,
         unit: None,
     },
     FieldFormat {
         fields: &["adaptive_force", "effect_adaptive_force"],
-        label: ("row_adaptive_force", "Adaptive Force"),
+        label: label::ADAPTIVE_FORCE,
         unit: None,
     },
     FieldFormat {
         fields: &["effect_cooldown_seconds"],
-        label: ("row_cooldown", "Cooldown"),
-        unit: Some(("unit_seconds", " seconds")),
+        label: label::COOLDOWN,
+        unit: Some(unit::SECONDS),
     },
     FieldFormat {
         fields: &["effect_duration_seconds", "effect_shield_seconds"],
-        label: ("row_effect_duration", "Effect Duration"),
-        unit: Some(("unit_seconds", " seconds")),
+        label: label::EFFECT_DURATION,
+        unit: Some(unit::SECONDS),
     },
     FieldFormat {
         fields: &["effect_slow_amount"],
-        label: ("row_slow", "Slow"),
+        label: label::SLOW,
         unit: None,
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 120] = [
-    RowFormat {
-        item: "deaths_dance",
-        field: "effect_delayed_damage_percent",
-        label: Some(("row_damage_reduction", "Damage Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "echoes_of_helia",
-        field: "effect_damage_conversion",
-        label: Some(("row_damage_stored", "Damage Stored")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "heartsteel",
-        field: "effect_bonus_hp_percent_of_damage",
-        label: Some(("row_permanent_health", "Permanent Health")),
-        lead: None,
-        unit: Some(("unit_of_damage_dealt", " of the damage dealt")),
-    },
-    RowFormat {
-        item: "randuins_omen",
-        field: "effect_crit_damage_percent_heal",
-        label: Some(("row_crit_healing", "Critical Strike Healing")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "hubris",
-        field: "effect_stack_attack",
-        label: Some(("row_scaling", "Scaling")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "zhonyas_hourglass",
-        field: "effect_duration_seconds",
-        label: Some(("row_stasis_duration", "Stasis Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "hubris",
-        field: "effect_bonus_flat_attack",
-        label: Some(("row_base_ad_kill_bonus", "Base AD Kill Bonus")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "cloak_of_starry_night",
-        field: "effect_skill_damaged_reduce",
-        label: Some(("row_base_skill_damage_reduction", "Base Skill Damage Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "black_cleaver",
-        field: "effect_percent_armor_shred",
-        label: Some(("row_armor_reduction", "Armor Reduction")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "bloodletters_curse",
-        field: "effect_percent_mr_shred",
-        label: Some(("row_mr_reduction", "Magic Resistance Reduction")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "abyssal_mask",
-        field: "effect_percent_mr_shred",
-        label: Some(("row_mr_reduction", "Magic Resistance Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "frozen_heart",
-        field: "effect_attack_speed_reduce",
-        label: Some(("row_attack_speed_reduction", "Attack Speed Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "executioners_calling",
-        field: "effect_heal_reduce",
-        label: Some(("row_healing_reduction", "Healing Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "mortal_reminder",
-        field: "effect_heal_reduce",
-        label: Some(("row_healing_reduction", "Healing Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "chempunk_chainsword",
-        field: "effect_heal_reduce",
-        label: Some(("row_healing_reduction", "Healing Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "chemtech_putrifier",
-        field: "effect_heal_reduce",
-        label: Some(("row_healing_reduction", "Healing Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "morellonomicon",
-        field: "effect_heal_reduce",
-        label: Some(("row_healing_reduction", "Healing Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "oblivion_orb",
-        field: "effect_heal_reduce",
-        label: Some(("row_healing_reduction", "Healing Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "bloodsong",
-        field: "effect_damaged_amplify",
-        label: Some(("row_damage_taken_bonus", "Damage Taken Bonus")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "imperial_mandate",
-        field: "effect_damaged_amplify",
-        label: Some(("row_damage_taken_bonus", "Damage Taken Bonus")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "celestial_opposition",
-        field: "effect_damaged_reduce",
-        label: Some(("row_damage_reduction", "Damage Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "spirit_visage",
-        field: "effect_heal_mult",
-        label: Some(("row_bonus_healing_received", "Bonus Healing Received")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "lord_dominiks_regards",
-        field: "effect_max_percent_bonus",
-        label: Some(("row_bonus_damage_cap", "Bonus Damage Cap")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "eclipse",
-        field: "effect_cooldown_seconds",
-        label: Some(("row_cooldown", "Cooldown")),
-        lead: None,
-        unit: Some(("unit_seconds_per_target", " seconds per target")),
-    },
-    RowFormat {
-        item: "heartsteel",
-        field: "effect_cooldown_seconds",
-        label: Some(("row_cooldown", "Cooldown")),
-        lead: None,
-        unit: Some(("unit_seconds_per_target", " seconds per target")),
-    },
-    RowFormat {
-        item: "night_harvester",
-        field: "effect_cooldown_seconds",
-        label: Some(("row_cooldown", "Cooldown")),
-        lead: None,
-        unit: Some(("unit_seconds_per_target", " seconds per target")),
-    },
-    RowFormat {
-        item: "stormsurge",
-        field: "effect_cooldown_seconds",
-        label: Some(("row_cooldown", "Cooldown")),
-        lead: None,
-        unit: Some(("unit_seconds_per_target", " seconds per target")),
-    },
-    RowFormat {
-        item: "sundered_sky",
-        field: "effect_cooldown_seconds",
-        label: Some(("row_cooldown", "Cooldown")),
-        lead: None,
-        unit: Some(("unit_seconds_per_target", " seconds per target")),
-    },
-    RowFormat {
-        item: "celestial_opposition",
-        field: "effect_duration_seconds",
-        label: Some(("row_damage_reduction_duration", "Damage Reduction Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "celestial_opposition",
-        field: "effect_slow_seconds",
-        label: Some(("row_slow_duration", "Slow Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "eclipse",
-        field: "effect_duration_seconds",
-        label: Some(("row_mark_duration", "Mark Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "eclipse",
-        field: "effect_shield_seconds",
-        label: Some(("row_shield_duration", "Shield Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "opportunity",
-        field: "effect_out_of_combat_seconds",
-        label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "opportunity",
-        field: "effect_duration_seconds",
-        label: Some(("row_lethality_duration", "Lethality Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "rite_of_ruin",
-        field: "effect_shield_seconds",
-        label: Some(("row_shield_duration", "Shield Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "rite_of_ruin",
-        field: "effect_duration_seconds",
-        label: Some(("row_stack_duration", "Stack Duration")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "haunting_guise",
-        field: "effect_out_of_combat_seconds",
-        label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "warmogs_armor",
-        field: "effect_duration_seconds",
-        label: Some(("row_out_of_combat_timer", "Out of Combat Timer")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "stormsurge",
-        field: "effect_duration_seconds",
-        label: Some(("row_burst_window", "Burst Window")),
-        lead: None,
-        unit: Some(("unit_seconds", " seconds")),
-    },
-    RowFormat {
-        item: "grezs_spectral_lantern",
-        field: "effect_percent_bonus_damage",
-        label: Some(("row_bonus_magic_damage", "Bonus Magic Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "spirit_stone",
-        field: "effect_percent_bonus_damage",
-        label: Some(("row_bonus_magic_damage", "Bonus Magic Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "diamond_tipped_spear",
-        field: "effect_max_percent_bonus",
-        label: Some(("row_bonus_damage", "Bonus Damage")),
-        lead: Some(("lead_up_to", "up to ")),
-        unit: None,
-    },
-    RowFormat {
-        item: "fiendhunter_bolts",
-        field: "effect_percent_bonus_damage",
-        label: Some(("row_bonus_damage", "Bonus Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "haunting_guise",
-        field: "effect_stack_percent_damage",
-        label: Some(("row_bonus_damage", "Bonus Damage")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "infinity_edge",
-        field: "effect_crit_damage_bonus",
-        label: Some(("row_bonus_crit_damage", "Bonus Crit Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "kraken_slayer",
-        field: "effect_max_percent_bonus",
-        label: Some(("row_missing_health_scaling", "Missing Health Scaling")),
-        lead: Some(("lead_up_to", "up to ")),
-        unit: None,
-    },
-    RowFormat {
-        item: "lord_dominiks_regards",
-        field: "effect_percent_bonus_damage",
-        label: Some(("row_bonus_damage", "Bonus Damage")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "sundered_sky",
-        field: "effect_percent_bonus_damage",
-        label: Some(("row_first_attack_multiplier", "First Attack Multiplier")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "grezs_spectral_lantern",
-        field: "effect_bonus_hp_percent_of_damage",
-        label: Some(("row_healing", "Healing")),
-        lead: None,
-        unit: Some(("unit_of_your_damage_dealt", " of your damage dealt")),
-    },
-    RowFormat {
-        item: "spirit_stone",
-        field: "effect_bonus_hp_percent_of_damage",
-        label: Some(("row_healing", "Healing")),
-        lead: None,
-        unit: Some(("unit_of_your_damage_dealt", " of your damage dealt")),
-    },
-    RowFormat {
-        item: "feral_flare",
-        field: "effect_bonus_flat_heal",
-        label: Some(("row_healing", "Healing")),
-        lead: None,
-        unit: Some(("unit_health", " health")),
-    },
-    RowFormat {
-        item: "guardian_angel",
-        field: "effect_caster_hp_percent_heal",
-        label: Some(("row_resurrect_health", "Resurrect Health")),
-        lead: None,
-        unit: Some(("unit_max_hp", " max HP")),
-    },
-    RowFormat {
-        item: "moonstone_renewer",
-        field: "effect_heal_chain_percent",
-        label: Some(("row_chained_healing", "Chained Healing")),
-        lead: None,
-        unit: Some(("unit_of_original_amount", " of the original amount")),
-    },
-    RowFormat {
-        item: "steraks_gage",
-        field: "effect_caster_hp_percent_shield",
-        label: Some(("row_shielding", "Shielding")),
-        lead: None,
-        unit: Some(("unit_max_hp", " max HP")),
-    },
-    RowFormat {
-        item: "warmogs_armor",
-        field: "effect_caster_hp_percent_heal",
-        label: Some(("row_out_of_combat_healing", "Out of Combat Healing")),
-        lead: None,
-        unit: Some(("unit_max_hp_per_second", " max HP per second")),
-    },
-    RowFormat {
-        item: "guinsoos_rageblade",
-        field: "effect_bonus_magic_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "wits_end",
-        field: "effect_bonus_magic_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "ravenous_hydra",
-        field: "effect_ad_percent_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: Some(("unit_ad", " AD")),
-    },
-    RowFormat {
-        item: "tiamat",
-        field: "effect_ad_percent_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: Some(("unit_ad", " AD")),
-    },
-    RowFormat {
-        item: "hextech_alternator",
-        field: "effect_bonus_flat_damage",
-        label: Some(("row_bonus_damage", "Bonus Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "scouts_slingshot",
-        field: "effect_bonus_flat_damage",
-        label: Some(("row_bonus_damage", "Bonus Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "ardent_censer",
-        field: "effect_attack_speed_mult",
-        label: Some(("row_attack_speed", "Attack Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "ardent_censer",
-        field: "effect_enemy_max_hp_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: Some(("unit_target_max_hp", " target max HP")),
-    },
-    RowFormat {
-        item: "blade_of_the_ruined_king",
-        field: "effect_hp_percent_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: Some(("unit_target_current_hp", " target current HP")),
-    },
-    RowFormat {
-        item: "dead_mans_plate",
-        field: "effect_max_bonus_damage",
-        label: Some(("row_on_hit_damage_cap", "On-Hit Damage Cap")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "deaths_dance",
-        field: "effect_burn_hp_percent_cap",
-        label: Some(("row_delayed_damage_cap", "Delayed Damage Cap")),
-        lead: None,
-        unit: Some(("unit_max_hp_per_second", " max HP per second")),
-    },
-    RowFormat {
-        item: "eclipse",
-        field: "effect_hp_percent_damage",
-        label: Some(("row_damage", "Damage")),
-        lead: None,
-        unit: Some(("unit_target_max_hp", " target max HP")),
-    },
-    RowFormat {
-        item: "essence_reaver",
-        field: "effect_ad_percent_damage",
-        label: Some(("row_on_hit_ad_ratio", "On-Hit Damage AD Ratio")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "essence_reaver",
-        field: "effect_crit_percent_damage",
-        label: Some(("row_on_hit_crit_ratio", "On-Hit Damage Crit Ratio")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "fiendhunter_bolts",
-        field: "effect_damage_conversion",
-        label: Some(("row_true_damage_ratio", "True Damage Ratio")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "hamstringer",
-        field: "effect_crit_percent_damage",
-        label: Some(("row_bleed_crit_ratio", "Bleed Crit Ratio")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "kraken_slayer",
-        field: "effect_bonus_flat_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "liandrys_torment",
-        field: "effect_hp_percent_damage",
-        label: Some(("row_burn_damage", "Burn Damage")),
-        lead: None,
-        unit: Some(("unit_target_max_hp", " target max HP")),
-    },
-    RowFormat {
-        item: "night_harvester",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "stormrazor",
-        field: "effect_bonus_flat_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "stormrazor",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "titanic_hydra",
-        field: "effect_caster_hp_percent_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: Some(("unit_max_hp", " max HP")),
-    },
-    RowFormat {
-        item: "titanic_hydra",
-        field: "effect_splash_caster_hp_percent",
-        label: Some(("row_aoe_damage", "AoE Damage")),
-        lead: None,
-        unit: Some(("unit_max_hp", " max HP")),
-    },
-    RowFormat {
-        item: "voltaic_cyclosword",
-        field: "effect_hp_percent_damage",
-        label: Some(("row_on_hit_damage", "On-Hit Damage")),
-        lead: None,
-        unit: Some(("unit_target_current_hp", " target current HP")),
-    },
-    RowFormat {
-        item: "zekes_herald",
-        field: "effect_bonus_magic_damage",
-        label: Some(("row_storm_damage", "Storm Damage")),
-        lead: None,
-        unit: Some(("unit_per_second", " per second")),
-    },
-    RowFormat {
-        item: "atmas_reckoning",
-        field: "effect_stack_crit_chance",
-        label: Some(("row_crit_chance", "Crit Chance")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "bandlepipes",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "bandlepipes",
-        field: "effect_attack_speed_mult",
-        label: Some(("row_attack_speed", "Attack Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "blackfire_torch",
-        field: "effect_stack_magic_power",
-        label: Some(("row_ability_power", "Ability Power")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "cosmic_drive",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "dead_mans_plate",
-        field: "effect_move_speed_per_stack",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: Some(("unit_per_momentum_stack", " per <#92dc7bff>Momentum<> stack")),
-    },
-    RowFormat {
-        item: "dream_maker",
-        field: "effect_skill_damaged_reduce",
-        label: Some(("row_skill_damage_reduction", "Skill Damage Reduction")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "endless_hunger",
-        field: "effect_vamp",
-        label: Some(("row_omnivamp", "Omnivamp")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "experimental_hexplate",
-        field: "effect_attack_speed_mult",
-        label: Some(("row_attack_speed", "Attack Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "experimental_hexplate",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "fiendhunter_bolts",
-        field: "effect_attack_speed_mult",
-        label: Some(("row_attack_speed", "Attack Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "grezs_spectral_lantern",
-        field: "effect_stack_magic_power",
-        label: Some(("row_ability_power", "Ability Power")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "guinsoos_rageblade",
-        field: "effect_stack_attack_speed_mult",
-        label: Some(("row_attack_speed", "Attack Speed")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "hullbreaker",
-        field: "effect_bonus_defence",
-        label: Some(("row_armor", "Armor")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "hullbreaker",
-        field: "effect_bonus_magic_resistance",
-        label: Some(("row_magic_resistance", "Magic Resistance")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "jaksho_the_protean",
-        field: "effect_stack_defence_mult",
-        label: Some(("row_armor", "Armor")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "jaksho_the_protean",
-        field: "effect_stack_magic_resistance_mult",
-        label: Some(("row_magic_resistance", "Magic Resistance")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "locket_of_the_iron_solari",
-        field: "effect_bonus_defence",
-        label: Some(("row_armor", "Armor")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "locket_of_the_iron_solari",
-        field: "effect_bonus_magic_resistance",
-        label: Some(("row_magic_resistance", "Magic Resistance")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "locket_of_the_iron_solari",
-        field: "effect_bonus_hp_regen",
-        label: Some(("row_health_regeneration", "Health Regeneration")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "mirage_blade",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "overlords_bloodmail",
-        field: "effect_caster_hp_percent_attack",
-        label: Some(("row_attack_damage", "Attack Damage")),
-        lead: None,
-        unit: Some(("unit_max_hp", " max HP")),
-    },
-    RowFormat {
-        item: "phage",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "philosophers_stone",
-        field: "effect_stack_hp_mult",
-        label: Some(("row_bonus_health", "Bonus Health")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "riftmaker",
-        field: "effect_vamp",
-        label: Some(("row_omnivamp", "Omnivamp")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "riftmaker",
-        field: "effect_caster_hp_percent_power",
-        label: Some(("row_ability_power", "Ability Power")),
-        lead: None,
-        unit: Some(("unit_max_hp", " max HP")),
-    },
-    RowFormat {
-        item: "rite_of_ruin",
-        field: "effect_stack_crit_chance",
-        label: Some(("row_crit_chance", "Crit Chance")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "rod_of_ages",
-        field: "effect_growth_hp",
-        label: Some(("row_max_health", "Max Health")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "rod_of_ages",
-        field: "effect_growth_magic_power",
-        label: Some(("row_ability_power", "Ability Power")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "rod_of_ages",
-        field: "effect_growth_skill_cooldown_mult",
-        label: Some(("row_ability_haste", "Ability Haste")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "seekers_armguard",
-        field: "effect_stack_defence",
-        label: Some(("row_armor", "Armor")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "solstice_sleigh",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "spear_of_shojin",
-        field: "effect_stack_attack_mult",
-        label: Some(("row_attack_damage", "Attack Damage")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "staff_of_flowing_water",
-        field: "effect_magic_power",
-        label: Some(("row_ability_power", "Ability Power")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "staff_of_flowing_water",
-        field: "effect_skill_cooldown_mult",
-        label: Some(("row_ability_haste", "Ability Haste")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "terminus",
-        field: "effect_armor_pen_per_stack",
-        label: Some(("row_armor_penetration", "Armor Penetration")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "terminus",
-        field: "effect_magic_pen_per_stack",
-        label: Some(("row_mr_penetration", "Magic Resistance Penetration")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
-    RowFormat {
-        item: "warmogs_armor",
-        field: "effect_move_speed_mult",
-        label: Some(("row_movement_speed", "Movement Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "yun_tal_wildarrows",
-        field: "effect_flurry_attack_speed_mult",
-        label: Some(("row_attack_speed", "Attack Speed")),
-        lead: None,
-        unit: None,
-    },
-    RowFormat {
-        item: "yun_tal_wildarrows",
-        field: "effect_stack_crit_chance",
-        label: Some(("row_crit_chance", "Crit Chance")),
-        lead: None,
-        unit: Some(("unit_per_stack", " per stack")),
-    },
+const ROW_FORMATS: [RowFormat; 131] = [
+    row("deaths_dance", "effect_delayed_damage_percent", label::DAMAGE_REDUCTION),
+    row("echoes_of_helia", "effect_damage_conversion", label::DAMAGE_STORED),
+    row("heartsteel", "effect_bonus_hp_percent_of_damage", label::PERMANENT_HEALTH)
+        .unit(unit::OF_DAMAGE_DEALT),
+    row("randuins_omen", "effect_crit_damage_percent_heal", label::CRIT_HEALING),
+    row("hubris", "effect_stack_attack", label::SCALING).unit(unit::PER_STACK),
+    row("zhonyas_hourglass", "effect_duration_seconds", label::STASIS_DURATION).unit(unit::SECONDS),
+    row("hubris", "effect_bonus_flat_attack", label::BASE_AD_KILL_BONUS),
+    row("cloak_of_starry_night", "effect_skill_damaged_reduce", label::BASE_SKILL_DAMAGE_REDUCTION),
+    row("black_cleaver", "effect_percent_armor_shred", label::ARMOR_REDUCTION)
+        .unit(unit::PER_STACK),
+    row("bloodletters_curse", "effect_percent_mr_shred", label::MR_REDUCTION).unit(unit::PER_STACK),
+    row("abyssal_mask", "effect_percent_mr_shred", label::MR_REDUCTION),
+    row("frozen_heart", "effect_attack_speed_reduce", label::ATTACK_SPEED_REDUCTION),
+    row("executioners_calling", "effect_heal_reduce", label::HEALING_REDUCTION),
+    row("mortal_reminder", "effect_heal_reduce", label::HEALING_REDUCTION),
+    row("chempunk_chainsword", "effect_heal_reduce", label::HEALING_REDUCTION),
+    row("chemtech_putrifier", "effect_heal_reduce", label::HEALING_REDUCTION),
+    row("morellonomicon", "effect_heal_reduce", label::HEALING_REDUCTION),
+    row("oblivion_orb", "effect_heal_reduce", label::HEALING_REDUCTION),
+    row("bloodsong", "effect_damaged_amplify", label::DAMAGE_TAKEN_BONUS),
+    row("imperial_mandate", "effect_damaged_amplify", label::DAMAGE_TAKEN_BONUS),
+    row("celestial_opposition", "effect_damaged_reduce", label::DAMAGE_REDUCTION),
+    row("spirit_visage", "effect_heal_mult", label::BONUS_HEALING_RECEIVED),
+    row("lord_dominiks_regards", "effect_max_percent_bonus", label::BONUS_DAMAGE_CAP),
+    row("eclipse", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
+    row("heartsteel", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
+    row("night_harvester", "effect_cooldown_seconds", label::COOLDOWN)
+        .unit(unit::SECONDS_PER_TARGET),
+    row("stormsurge", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
+    row("sundered_sky", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
+    row("celestial_opposition", "effect_duration_seconds", label::DAMAGE_REDUCTION_DURATION)
+        .unit(unit::SECONDS),
+    row("celestial_opposition", "effect_slow_seconds", label::SLOW_DURATION).unit(unit::SECONDS),
+    row("eclipse", "effect_duration_seconds", label::MARK_DURATION).unit(unit::SECONDS),
+    row("eclipse", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
+    row("opportunity", "effect_out_of_combat_seconds", label::OUT_OF_COMBAT_TIMER)
+        .unit(unit::SECONDS),
+    row("opportunity", "effect_duration_seconds", label::LETHALITY_DURATION).unit(unit::SECONDS),
+    row("rite_of_ruin", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
+    row("rite_of_ruin", "effect_duration_seconds", label::STACK_DURATION).unit(unit::SECONDS),
+    row("haunting_guise", "effect_out_of_combat_seconds", label::OUT_OF_COMBAT_TIMER)
+        .unit(unit::SECONDS),
+    row("warmogs_armor", "effect_duration_seconds", label::OUT_OF_COMBAT_TIMER).unit(unit::SECONDS),
+    row("stormsurge", "effect_duration_seconds", label::BURST_WINDOW).unit(unit::SECONDS),
+    row("grezs_spectral_lantern", "effect_percent_bonus_damage", label::BONUS_MAGIC_DAMAGE),
+    row("spirit_stone", "effect_percent_bonus_damage", label::BONUS_MAGIC_DAMAGE),
+    row("diamond_tipped_spear", "effect_max_percent_bonus", label::BONUS_DAMAGE).lead(lead::UP_TO),
+    row("fiendhunter_bolts", "effect_percent_bonus_damage", label::BONUS_DAMAGE),
+    row("haunting_guise", "effect_stack_percent_damage", label::BONUS_DAMAGE).unit(unit::PER_STACK),
+    row("infinity_edge", "effect_crit_damage_bonus", label::BONUS_CRIT_DAMAGE),
+    row("kraken_slayer", "effect_max_percent_bonus", label::MISSING_HEALTH_SCALING)
+        .lead(lead::UP_TO),
+    row("lord_dominiks_regards", "effect_percent_bonus_damage", label::BONUS_DAMAGE)
+        .unit(unit::PER_STACK),
+    row("sundered_sky", "effect_percent_bonus_damage", label::FIRST_ATTACK_MULTIPLIER),
+    row("grezs_spectral_lantern", "effect_bonus_hp_percent_of_damage", label::HEALING)
+        .unit(unit::OF_YOUR_DAMAGE_DEALT),
+    row("spirit_stone", "effect_bonus_hp_percent_of_damage", label::HEALING)
+        .unit(unit::OF_YOUR_DAMAGE_DEALT),
+    row("feral_flare", "effect_bonus_flat_heal", label::HEALING).unit(unit::HEALTH),
+    row("madreds_razors", "effect_bonus_flat_heal", label::HEALING).unit(unit::HEALTH),
+    row("guardian_angel", "effect_caster_hp_percent_heal", label::RESURRECT_HEALTH)
+        .unit(unit::MAX_HP),
+    row("moonstone_renewer", "effect_heal_chain_percent", label::CHAINED_HEALING)
+        .unit(unit::OF_ORIGINAL_AMOUNT),
+    row("steraks_gage", "effect_caster_hp_percent_shield", label::SHIELDING).unit(unit::MAX_HP),
+    row("warmogs_armor", "effect_caster_hp_percent_heal", label::OUT_OF_COMBAT_HEALING)
+        .unit(unit::MAX_HP_PER_SECOND),
+    row("guinsoos_rageblade", "effect_bonus_magic_damage", label::ON_HIT_DAMAGE),
+    row("wits_end", "effect_bonus_magic_damage", label::ON_HIT_DAMAGE),
+    row("ravenous_hydra", "effect_ad_percent_damage", label::ON_HIT_DAMAGE).unit(unit::AD),
+    row("tiamat", "effect_ad_percent_damage", label::ON_HIT_DAMAGE).unit(unit::AD),
+    row("hextech_alternator", "effect_bonus_flat_damage", label::BONUS_DAMAGE),
+    row("scouts_slingshot", "effect_bonus_flat_damage", label::BONUS_DAMAGE),
+    row("ardent_censer", "effect_attack_speed_mult", label::ATTACK_SPEED),
+    row("ardent_censer", "effect_enemy_max_hp_damage", label::ON_HIT_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
+    row("blade_of_the_ruined_king", "effect_hp_percent_damage", label::ON_HIT_DAMAGE)
+        .unit(unit::TARGET_CURRENT_HP),
+    row("dead_mans_plate", "effect_max_bonus_damage", label::ON_HIT_DAMAGE_CAP),
+    row("deaths_dance", "effect_burn_hp_percent_cap", label::DELAYED_DAMAGE_CAP)
+        .unit(unit::MAX_HP_PER_SECOND),
+    row("eclipse", "effect_hp_percent_damage", label::DAMAGE).unit(unit::TARGET_MAX_HP),
+    row("essence_reaver", "effect_ad_percent_damage", label::ON_HIT_AD_RATIO),
+    row("essence_reaver", "effect_crit_percent_damage", label::ON_HIT_CRIT_RATIO),
+    row("fiendhunter_bolts", "effect_damage_conversion", label::TRUE_DAMAGE_RATIO),
+    row("hamstringer", "effect_crit_percent_damage", label::BLEED_CRIT_RATIO),
+    row("kraken_slayer", "effect_bonus_flat_damage", label::ON_HIT_DAMAGE),
+    row("liandrys_torment", "effect_hp_percent_damage", label::BURN_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
+    row("night_harvester", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("stormrazor", "effect_bonus_flat_damage", label::ON_HIT_DAMAGE),
+    row("stormrazor", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("titanic_hydra", "effect_caster_hp_percent_damage", label::ON_HIT_DAMAGE)
+        .unit(unit::MAX_HP),
+    row("titanic_hydra", "effect_splash_caster_hp_percent", label::AOE_DAMAGE).unit(unit::MAX_HP),
+    row("voltaic_cyclosword", "effect_hp_percent_damage", label::ON_HIT_DAMAGE)
+        .unit(unit::TARGET_CURRENT_HP),
+    row("zekes_herald", "effect_bonus_magic_damage", label::STORM_DAMAGE).unit(unit::PER_SECOND),
+    row("atmas_reckoning", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
+    row("bandlepipes", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("bandlepipes", "effect_attack_speed_mult", label::ATTACK_SPEED),
+    row("blackfire_torch", "effect_stack_magic_power", label::ABILITY_POWER).unit(unit::PER_STACK),
+    row("cosmic_drive", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("dead_mans_plate", "effect_move_speed_per_stack", label::MOVEMENT_SPEED)
+        .unit(unit::PER_MOMENTUM_STACK),
+    row("dream_maker", "effect_skill_damaged_reduce", label::SKILL_DAMAGE_REDUCTION),
+    row("endless_hunger", "effect_vamp", label::OMNIVAMP),
+    row("experimental_hexplate", "effect_attack_speed_mult", label::ATTACK_SPEED),
+    row("experimental_hexplate", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("fiendhunter_bolts", "effect_attack_speed_mult", label::ATTACK_SPEED),
+    row("force_of_nature", "effect_bonus_magic_resistance", label::MAGIC_RESISTANCE),
+    row("force_of_nature", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("grezs_spectral_lantern", "effect_stack_magic_power", label::ABILITY_POWER)
+        .unit(unit::PER_STACK),
+    row("guinsoos_rageblade", "effect_stack_attack_speed_mult", label::ATTACK_SPEED)
+        .unit(unit::PER_STACK),
+    row("hullbreaker", "effect_bonus_defence", label::ARMOR),
+    row("hullbreaker", "effect_bonus_magic_resistance", label::MAGIC_RESISTANCE),
+    row("jaksho_the_protean", "effect_stack_defence_mult", label::ARMOR).unit(unit::PER_STACK),
+    row("jaksho_the_protean", "effect_stack_magic_resistance_mult", label::MAGIC_RESISTANCE)
+        .unit(unit::PER_STACK),
+    row("locket_of_the_iron_solari", "effect_bonus_defence", label::ARMOR),
+    row("locket_of_the_iron_solari", "effect_bonus_magic_resistance", label::MAGIC_RESISTANCE),
+    row("locket_of_the_iron_solari", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
+    row("mirage_blade", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("overlords_bloodmail", "effect_caster_hp_percent_attack", label::ATTACK_DAMAGE)
+        .unit(unit::MAX_HP),
+    row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("philosophers_medallion", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
+    row("philosophers_medallion", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
+    row("philosophers_medallion", "effect_duration_seconds", label::EFFECT_DURATION)
+        .unit(unit::SECONDS),
+    row("philosophers_medallion", "effect_hp_percent_damage", label::BURN_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
+    row("philosophers_stone", "effect_stack_hp_mult", label::BONUS_HEALTH).unit(unit::PER_STACK),
+    row("philosophers_stone", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
+    row("philosophers_stone", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
+    row("philosophers_stone", "effect_duration_seconds", label::EFFECT_DURATION)
+        .unit(unit::SECONDS),
+    row("philosophers_stone", "effect_hp_percent_damage", label::BURN_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
+    row("riftmaker", "effect_vamp", label::OMNIVAMP).unit(unit::PER_STACK),
+    row("riftmaker", "effect_caster_hp_percent_power", label::ABILITY_POWER).unit(unit::MAX_HP),
+    row("rite_of_ruin", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
+    row("rod_of_ages", "effect_growth_hp", label::MAX_HEALTH).unit(unit::PER_STACK),
+    row("rod_of_ages", "effect_growth_magic_power", label::ABILITY_POWER).unit(unit::PER_STACK),
+    row("rod_of_ages", "effect_growth_skill_cooldown_mult", label::ABILITY_HASTE)
+        .unit(unit::PER_STACK),
+    row("seekers_armguard", "effect_stack_defence", label::ARMOR).unit(unit::PER_STACK),
+    row("solstice_sleigh", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("spear_of_shojin", "effect_stack_attack_mult", label::ATTACK_DAMAGE).unit(unit::PER_STACK),
+    row("staff_of_flowing_water", "effect_magic_power", label::ABILITY_POWER),
+    row("staff_of_flowing_water", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
+    row("terminus", "effect_armor_pen_per_stack", label::ARMOR_PENETRATION).unit(unit::PER_STACK),
+    row("terminus", "effect_magic_pen_per_stack", label::MR_PENETRATION).unit(unit::PER_STACK),
+    row("warmogs_armor", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("yun_tal_wildarrows", "effect_flurry_attack_speed_mult", label::ATTACK_SPEED),
+    row("yun_tal_wildarrows", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
 ];
 
-// A row of two or three of a passive's numbers that make one amount, a
-// flat part and its shares: "Defy - Healing: 45 + 15% missing HP -> 50 +
-// 15% missing HP", "Shadow - On-Hit Damage: 30 (+5% AD) (+10% AP) -> ...".
-// Every number of it is written whichever of them the patch moved, as the
-// ends of a level range are ([`amount_rows`]).
-//
-// `amount` is the amount with `{A}`, `{B}` and `{C}` where the numbers go,
-// in the order of `fields`, percent signs and all, and with each number's
-// part of it in square brackets ([`amount_text`]): "[{A}] + [{B}% missing
-// HP]". `item` is the base key, and the strings are `item_patch` ones, by
-// key and the English.
+// A row of a passive's numbers that make one amount, a flat part and its shares
+// ("Defy - Healing: 45 + 15% missing HP -> 50 + 15% missing HP"), written whole
+// whichever part moved ([`amount_rows`]). `amount` has `{A}`/`{B}`/`{C}` in
+// `fields` order, each number's part in square brackets ([`amount_text`]);
+// `item` is the base key.
 struct AmountFormat {
     item: &'static str,
     fields: &'static [&'static str],
-    label: (&'static str, &'static str),
+    label: Words,
     amount: (&'static str, &'static str),
 }
 
 // The placeholders of an amount's numbers, in the order of its fields.
 const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
 
-const AMOUNT_FORMATS: [AmountFormat; 26] = [
+const AMOUNT_FORMATS: [AmountFormat; 25] = [
     AmountFormat {
         item: "deaths_dance",
         fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
-        label: ("row_healing", "Healing"),
+        label: label::HEALING,
         amount: ("amount_flat_missing_hp", "[{A}] + [{B}% missing HP]"),
     },
     AmountFormat {
         item: "dusk_and_dawn",
         fields: &["effect_caster_ap_percent_heal", "effect_caster_hp_percent_heal"],
-        label: ("row_healing", "Healing"),
+        label: label::HEALING,
         amount: ("amount_ap_and_max_hp", "[{A}% AP] and [{B}% max HP]"),
     },
     AmountFormat {
         item: "eclipse",
         fields: &["effect_bonus_flat_shield", "effect_ad_percent_shield"],
-        label: ("row_shielding", "Shielding"),
+        label: label::SHIELDING,
         amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
     },
     AmountFormat {
         item: "sundered_sky",
         fields: &["effect_bonus_flat_heal", "effect_caster_hp_percent_heal"],
-        label: ("row_healing", "Healing"),
+        label: label::HEALING,
         amount: ("amount_flat_missing_hp", "[{A}] + [{B}% missing HP]"),
     },
     AmountFormat {
         item: "unending_despair",
         fields: &["effect_bonus_flat_heal", "effect_caster_hp_percent_heal"],
-        label: ("row_healing", "Healing"),
+        label: label::HEALING,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
     AmountFormat {
         item: "bamis_cinder",
         fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
-        label: ("row_burn_damage", "Burn Damage"),
+        label: label::BURN_DAMAGE,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
     AmountFormat {
         item: "hollow_radiance",
         fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
-        label: ("row_burn_damage", "Burn Damage"),
-        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
-    },
-    AmountFormat {
-        item: "philosophers_stone",
-        fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
-        label: ("row_burn_damage", "Burn Damage"),
+        label: label::BURN_DAMAGE,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
     AmountFormat {
         item: "dusk_and_dawn",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
         item: "lich_bane",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
         item: "bastionbreaker",
         fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
     },
     AmountFormat {
         item: "heartsteel",
         fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
     AmountFormat {
         item: "hollow_radiance",
         fields: &["effect_explosion_flat_damage", "effect_explosion_caster_hp_percent"],
-        label: ("row_damage", "Damage"),
+        label: label::DAMAGE,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
     AmountFormat {
         item: "feral_flare",
         fields: &["effect_bonus_magic_damage", "effect_stack_magic_damage"],
-        label: ("row_damage", "Damage"),
+        label: label::DAMAGE,
         amount: ("amount_flat_per_feral_stack", "[{A}] ([+{B}] per <#92dc7bff>Feral<> stack)"),
     },
     AmountFormat {
         item: "hullbreaker",
         fields: &["effect_ad_percent_damage", "effect_caster_hp_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_ad_max_hp", "[{A}% AD] ([+{B}% max HP])"),
     },
     AmountFormat {
         item: "nashors_tooth",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
         item: "night_harvester",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
-        label: ("row_damage", "Damage"),
+        label: label::DAMAGE,
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
         item: "serpents_fang",
         fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
-        label: ("row_bonus_damage", "Bonus Damage"),
+        label: label::BONUS_DAMAGE,
         amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
     },
     AmountFormat {
         item: "stormsurge",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
-        label: ("row_damage", "Damage"),
+        label: label::DAMAGE,
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
         item: "trinity_force",
         fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_ad", "[{A}] + [{B}% AD]"),
     },
     AmountFormat {
         item: "terminus",
         fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage", "effect_ap_percent_damage"],
-        label: ("row_on_hit_damage", "On-Hit Damage"),
+        label: label::ON_HIT_DAMAGE,
         amount: ("amount_flat_ad_ap", "[{A}] ([+{B}% AD]) ([+{C}% AP])"),
     },
     AmountFormat {
         item: "zazzaks_realmspike",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage", "effect_enemy_max_hp_damage"],
-        label: ("row_damage", "Damage"),
+        label: label::DAMAGE,
         amount: ("amount_flat_ap_target_max_hp", "[{A}] ([+{B}% AP]) ([+{C}% target max HP])"),
     },
     AmountFormat {
         item: "axiom_arc",
         fields: &["effect_ult_cooldown_mult", "effect_ult_cooldown_per_lethality"],
-        label: ("row_ultimate_haste", "Ultimate Haste"),
-        amount: ("amount_flat_per_lethality", "[{A}] ([+{B}] per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>)"),
+        label: label::COOLDOWN_REFUND,
+        amount: ("amount_percent_per_lethality", "[{A}%] ([+{B}%] per <#ffdd8eff>1 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>)"),
     },
     AmountFormat {
         item: "endless_hunger",
         fields: &["effect_skill_cooldown_mult", "effect_ad_percent_haste"],
-        label: ("row_ability_haste", "Ability Haste"),
+        label: label::ABILITY_HASTE,
         amount: ("amount_flat_ad_bracket", "[{A}] ([+{B}% AD])"),
     },
     AmountFormat {
         item: "protectors_vow",
         fields: &["effect_bonus_flat_hp", "effect_caster_defence_percent_hp"],
-        label: ("row_bonus_health", "Bonus Health"),
+        label: label::BONUS_HEALTH,
         amount: ("amount_flat_armor", "[{A}] + [{B}% Armor]"),
     },
     AmountFormat {
         item: "protoplasm_harness",
         fields: &["effect_bonus_flat_hp", "effect_hp_percent_boost"],
-        label: ("row_bonus_health", "Bonus Health"),
+        label: label::BONUS_HEALTH,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
     },
 ];
 
-// The amount `pattern` makes of `numbers`: [`AMOUNT_SLOTS`] are the
-// numbers, and what stands in square brackets is drawn as the item's text
-// draws the number in it ([`Tint::draw`]), the rest as it is written. An
-// icon two parts in a row share is put in once, ahead of the first.
+// The amount `pattern` makes of `numbers` ([`AMOUNT_SLOTS`]): bracketed parts
+// are drawn as the item's text draws them ([`Tint::draw`]), and an icon shared
+// by two adjacent parts is put in once.
 fn amount_text(pattern: &str, numbers: &[String], tints: &[Tint]) -> String {
     let fill = |text: &str| {
         let mut text = text.to_string();
@@ -2300,15 +1683,10 @@ fn row_text(label: &str, numbers: String) -> String {
     }
 }
 
-// The rows of the numbers of `change`'s item that a note writes as one
-// amount, `fields`: a row a tier, with the tier it is of, the whole amount
-// as it was and as it is, whichever of its numbers the patch moved. `write`
-// makes the amount of the numbers, which it is given in the order of
-// `fields`. A number the patch left where it was is read at the balance the
-// save has, which is `state` before the patch is taken into it.
-//
-// Nothing where a tier has some of the numbers and not the others, or no
-// tier's amount moved: the numbers then get rows of their own.
+// The rows of the numbers `fields` that a note writes as one amount: a row a
+// tier, the whole amount before and after, unmoved numbers read from `state`
+// (before the patch). `None` where a tier has only some of them or no amount
+// moved; they then get rows of their own.
 fn amount_rows(
     state: &State,
     patch: &Patch,
@@ -2360,11 +1738,10 @@ fn amount_rows(
     (!rows.is_empty()).then_some(rows)
 }
 
-// The rows of a range that grows with level, `low` to `high` of `change`'s
-// item, under the passive's name: "40 - 100 (based on level) -> 45 - 110
-// (based on level)", whichever of its ends the patch moved
-// ([`amount_rows`]). Each end is in its colour, behind the icon the text
-// has for the amount: once, where the two ends have the same one.
+// The rows of a level-scaling range, `low` to `high`, under the passive's name
+// ("40 - 100 (based on level) -> 45 - 110 (based on level)"), whichever end
+// moved ([`amount_rows`]); each end in its colour, behind the amount's icon
+// once where both share it.
 fn range_rows(
     texts: &Texts,
     state: &State,
@@ -2388,11 +1765,9 @@ fn range_rows(
     })
 }
 
-// The number that names the row of a patch's notes the number `field` of
-// the item `key` is written in: the low end of a range ([`range_rows`]),
-// the first number of an amount ([`AMOUNT_FORMATS`]), and any other number
-// itself. So the rows an item gets are counted the way they are written,
-// for the most a patch gives one (`max_changes_per_item`).
+// The number whose row `key`'s `field` is written in: a range's low end, an
+// amount's first number, else itself. Rows are counted the way they are
+// written, for `max_changes_per_item`.
 pub(crate) fn row_of<'a>(key: &str, field: &'a str) -> &'a str {
     if let Some((low, _)) = super::fields::range_of(field) {
         return low;
@@ -2404,22 +1779,14 @@ pub(crate) fn row_of<'a>(key: &str, field: &'a str) -> &'a str {
         .map_or(field, |format| format.fields[0])
 }
 
-// A patch's items, an entry an item: the ones it set out to buff and then
-// the ones it set out to nerf, each lot in the order the patch has them. A
-// legendary and its radiant are two items here, each with the numbers of
-// its own that moved, and a patch that moved one of them lists that one.
-// A number of one that was only brought level with the other's
-// ([`Change::leader`]) is no number of its own: it is listed in the other's
-// entry, under the tier's name ([`NoteEntry::followers`]), and has no say
-// in which section that entry is in.
+// A patch's items, an entry each: the buffs, then the nerfs, in the patch's
+// order, a legendary and its radiant as separate entries. A number only brought
+// level with the other tier's ([`Change::leader`]) is listed in that tier's
+// entry ([`NoteEntry::followers`]) and does not decide its section.
 //
-// A row is one changed number: "Attack Damage: 20 -> 21". An entry's flat
-// stats come first and its passives' numbers after them, each lot in a set
-// order. A passive's number is worded by its row format ([`ROW_FORMATS`]),
-// "Flux - Base Ultimate Haste: 10 -> 12", or by its field's
-// ([`FIELD_FORMATS`]). The two ends of a range that grows with level are one
-// row ([`range_rows`]), and so are the numbers that make one amount
-// ([`AMOUNT_FORMATS`]).
+// Each row is one changed number, flat stats first, then passives' numbers
+// worded by [`ROW_FORMATS`] or [`FIELD_FORMATS`]; a level range
+// ([`range_rows`]) and an amount ([`AMOUNT_FORMATS`]) are one row each.
 fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     let texts = texts();
     let base = super::base::base();
@@ -2564,11 +1931,9 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         // A flat stat's row opens with the stat's icon. A passive's number
         // has none: its row is named for the passive.
         let icon = flat.and_then(|_| texts.line_icon(&change.field));
-        // A passive's number is called by its passive's name and then by
-        // what it does, with the words that lead up to it and that follow
-        // it: all as the item's row format has them, or failing one as the
-        // format of the number's field has. One with neither is the bare
-        // number under the passive's name.
+        // A passive's number is called by its passive's name and what it does,
+        // as the item's row format or else its field's format words it; with
+        // neither, it is the bare number under the name.
         let worded = if flat.is_some() {
             None
         } else {
@@ -2596,10 +1961,8 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         } else {
             format!("{label} - {what}")
         };
-        // A passive's number that has a format is drawn as the item's text
-        // draws it, in its colour and behind its icon, with the words that
-        // follow it. A flat stat's number, and a passive's that has no
-        // format yet, are left as they are.
+        // A formatted passive number is drawn in its text's colour and behind
+        // its icon; flat stats and unformatted numbers as they are.
         let tint = if worded.is_some() {
             texts.tint(&first.key, &change.field)
         } else {
@@ -2654,15 +2017,10 @@ fn style_tag(text: &str) -> Option<&str> {
     style.then_some(tag)
 }
 
-// `text` as a line of one size. Every run of it between two style tags is
-// written out whole and by itself, `<s#size><f#font><#colour>run<><f><s>`,
-// with the font and the colour that are open around it; a run is words and
-// inline icons, and an icon is drawn the size of the words.
-//
-// One size span around the line does not do: the game draws what follows
-// the close of a colour at the label's own size again, size span or not.
-// Written this way nothing is drawn after a tag has closed, which is how
-// the article's headings are written.
+// `text` as a line of one size: each run between style tags written whole as
+// `<s#size><f#font><#colour>run<><f><s>`, icons included. One size span around
+// the line fails, since the game draws whatever follows a closed colour at the
+// label's own size.
 fn sized(text: &str, size: u32) -> String {
     let mut out = String::new();
     // The colour and the font tags open where the text has got to.
@@ -2713,43 +2071,18 @@ fn sized(text: &str, size: u32) -> String {
     out
 }
 
-// The news article for one patch: title, body, author. In the game's
-// language as it is when the patch lands; an article is text once written.
-// `state` is the save's balance before the patch is taken into it, which
-// is where a number the patch did not move is read from.
+// The news article for one patch: title, body, author, in the game's language
+// when it lands. `state` is the balance before the patch, for numbers it did
+// not move.
 //
-// The body is formatted in the markup the game's own text uses (a colour
-// `<#rrggbbaa>..<>`, a font `<f#asset>..<f>`, a size `<s#n>..<s>`, an inline
-// icon `<i#sheet:tag>`). The layout: the buffs, the adjustments and the
-// nerfs, each under a heading in its colour, and for each item
+// The body uses the game's markup (`<#rrggbbaa>..<>`, `<f#asset>..<f>`,
+// `<s#n>..<s>`, `<i#sheet:tag>`): Buffs, Adjustments and Nerfs headings, then
+// per item its icon and name, a reason and its rows, with the other tier's
+// levelled numbers last under that tier's name. An item is a buff where every
+// number got stronger, a nerf where every one got weaker, else an adjustment.
 //
-// ```text
-// <icon> Trinity Force
-// <reason>
-//     <stat icon> Attack Damage: 20 -> 21
-//     Spellblade: 40 - 100 (based on level) -> 45 - 110 (based on level)
-//     <icon> Radiant Trinity Force (to match):
-//         <stat icon> Attack Damage: 25 -> 26
-// ```
-//
-// A flat stat's row opens with the stat's icon. A passive's number has no
-// icon there: its row opens with the passive's name. The number, with the
-// words that follow it where it is written as a phrase, "10 health" or "30
-// + 3% max HP", is in the colour the item's text has it in, behind the icon
-// the text has for it.
-//
-// Every item is an entry, a radiant apart from its legendary, but for the
-// numbers one tier only had brought level with the other's: those are the
-// last rows of the other's entry, under a grey line with the tier's name.
-// An item is a buff where every number of it got stronger, a nerf where
-// every one got weaker, and an adjustment where it has both. Only where it is listed
-// goes by that: its reason is still the one for what the patch set out to
-// do with it.
-//
-// One article and one column, however long the patch. A long one is read
-// by scrolling, which a plain article has by the mod's override of its
-// layout (`ui/layout/news_component/simple_content.ui`) and
-// [`sync_article_scroll`].
+// One article however long, scrolled by the mod's
+// `news_component/simple_content.ui` override and [`sync_article_scroll`].
 pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
     let texts = texts();
     let lang = game_language();
@@ -2864,13 +2197,10 @@ pub(crate) fn ui_string(key: &str, english: &str) -> String {
     texts().ui(&game_language(), key, english)
 }
 
-// What the window calls the number `field` of the item `key`, and whether
-// it reads as a percentage: as a patch note's row calls it, a stat by its
-// tooltip line, "Attack Damage", and a passive's number by the passive's
-// name and what the number does, "Flux - Ultimate Haste". The numbers that
-// make one amount in the notes share those words, and so do the two ends of
-// a range: the window tells them apart by the config field it shows under
-// each. Empty for a number nothing names.
+// What the window calls `key`'s `field`, and whether it is a percentage, as a
+// patch note's row would ("Attack Damage", "Flux - Ultimate Haste"). An
+// amount's numbers and a range's ends share words, told apart by their config
+// field; empty where nothing names it.
 pub(crate) fn field_label(key: &str, field: &str) -> (String, bool) {
     let texts = texts();
     let lang = game_language();
@@ -2923,12 +2253,8 @@ pub(crate) fn field_label(key: &str, field: &str) -> (String, bool) {
 
 // -- a plain article's scroll ---------------------------------------------------
 
-// The news screen, and a plain article in it
-// (`news_component/simple_content`, mounted under its root's name): its
-// title, author and date, and its text.
-const NEWS_SCREEN: &str = "main.top.right.news";
-const ARTICLE_TITLE: &str = "main.top.right.news.contents.simple_container.top.title";
-const ARTICLE_AUTHOR: &str = "main.top.right.news.contents.simple_container.top.author";
+// A plain article on the news screen (`news_component/simple_content`,
+// mounted under its root's name): its date and its text.
 const ARTICLE_TIME: &str = "main.top.right.news.contents.simple_container.top.time";
 const ARTICLE_TEXT: &str = "main.top.right.news.contents.simple_container.contents.text";
 // The node whose height is how far the body scrolls.
@@ -2943,16 +2269,13 @@ const ARTICLE_TEXT_SIZE: f32 = 20.0;
 // Room under the last line: a line.
 const ARTICLE_FOOT: f32 = 36.0;
 
-// A height set that the nodes then did not have, with the heights they had
-// instead (the scroll's, the text box's): the same is not set a second
-// time. Setting a height every frame that never takes is how a fix for the
-// scroll would become what stops it.
+// A height set that did not take, with the heights the nodes had instead: it is
+// not set again, so a fix for the scroll cannot become what stops it.
 static SCROLL_TRIED: Mutex<Option<(f32, f32, f32)>> = Mutex::new(None);
 
-// The article whose scroll was last worked out, by its title, and what that
-// came to ([`scroll_for`]). Finding an article's text can mean reading the
-// whole inbox, which is done once an article and not on every frame it is
-// open.
+// What the scroll was last worked out from (the time shown, the row clicked)
+// and the result ([`scroll_for`]), since finding the text can mean reading
+// every inbox row.
 static SCROLL_FOR: Mutex<Option<(String, Option<f32>)>> = Mutex::new(None);
 
 // Whether a character is drawn a full size wide (Chinese, Japanese, Korean
@@ -2970,17 +2293,10 @@ fn is_wide(c: char) -> bool {
     )
 }
 
-// How tall an article's text is drawn: a line of the layout's height for
-// every line of the text, and for a line wider than the label as many as
-// it wraps to.
-//
-// Worked out from the text because the host does not measure it: the
-// label's rect and its contents rect are both its authored box, and
-// `fit_height` does not grow it here (a 35px box whatever the text). The
-// widths are a guess at the font, a little wide.
-// Nothing the mod writes wraps, so its own articles come out exact; the
-// guess only decides whether one of the game's long articles gets a short
-// scroll it did not have.
+// How tall an article's text draws: the layout's line height per line, wrapped
+// lines included. Worked out from the text since the host does not measure it;
+// the width guess runs a little wide, and only matters for the game's long
+// articles, since nothing the mod writes wraps.
 fn article_text_height(text: &str) -> f32 {
     let mut lines = 0usize;
     for line in text.split('\n') {
@@ -3010,36 +2326,20 @@ fn article_text_height(text: &str) -> f32 {
     lines as f32 * ARTICLE_LINE_H
 }
 
-// Makes the open article scroll as far as its text is long, and no
-// further. Every client frame; off the news screen it is one failed
-// lookup.
-//
-// The mod's override of the plain article layout makes its body a scroll
-// view. Two things about one, neither of them to be had from the layouts:
-//
-// - It is as long as a node in it says, and does not take its length from
-//   a label: with only the label in it the article does not scroll. The
-//   game's own scrolling article (`news_component/tutorial_last`) has a
-//   `#dummy` node for the length, whose height game code sets, and the
-//   override has the same node.
-// - A node whose box has left the view is not drawn, text and all: a label
-//   35px high, with the text running out under it, is gone at the first
-//   turn of the wheel. So the label's box is as long as the scroll, always.
-//
-// The layout gives both a height that is enough for the longest patch
-// notes, and this sets both to what the open article's text takes
-// ([`scroll_for`]): the patch notes scroll to their last line and no
-// further, and a short article does not scroll at all. One whose text
-// cannot be had keeps the layout's length, and scrolls past its end.
-//
-// For any plain article, the mod's own or not: the layout is every plain
-// article's.
+// Makes the open plain article scroll exactly as far as its text; every frame,
+// one failed lookup off the news screen. The mod's layout override makes the
+// body a scroll view whose length is a `#dummy` node's height and whose label
+// box must be as long as the scroll or it is culled; both are set from the text
+// ([`scroll_for`]), and kept at the layout's length where the text cannot be
+// had.
 pub(crate) fn sync_article_scroll(ctx: &mut StableClient<'_>) {
+    if !listen_to_rows(ctx) {
+        return;
+    }
     // A plain article in the mod's layout is up: its length node is there.
     let Some((_, _, _, length)) = ctx.ui_node_rect(ARTICLE_EXTENT) else {
         return;
     };
-    probe_article(ctx);
     let Some((_, _, _, text_box)) = ctx.ui_node_rect(ARTICLE_TEXT) else {
         return;
     };
@@ -3083,25 +2383,19 @@ fn label_text(ctx: &StableClient<'_>, path: &str) -> Option<String> {
     })
 }
 
-// How long the scroll of the open article is to be: as long as its text is
-// drawn, and never shorter than the view, which is no scroll at all.
-// Nothing where the text could not be had.
-//
-// The text is the label's where the host gives it. For the patch notes it
-// has been seen to give none, with the label there, and why is not known.
-// So failing that the article is looked up in the inbox by its title
-// ([`inbox_article`]). An article the inbox does not have by its title is
-// one of the game's own, and has no scroll, as in the game's own layout.
+// The scroll length for the open article: its text's height, never under the
+// view. In the mod's layout the article's title and text do not read as
+// labels, only its time does, so the article is the one whose inbox row was
+// clicked last ([`on_news_row`]) if that row shows the open article's time,
+// else the longest of the articles whose rows show that time. A game article
+// (no plain text in the record) has no scroll; nothing found keeps the
+// layout's length.
 fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
-    let title = label_text(ctx, ARTICLE_TITLE);
-    let body = label_text(ctx, ARTICLE_TEXT);
+    let time = label_text(ctx, ARTICLE_TIME);
+    let clicked = CLICKED.lock().ok().and_then(|clicked| *clicked);
     // What the answer was worked out from: while it is the same, so is the
     // answer.
-    let asked = format!(
-        "{}\n{}",
-        title.as_deref().unwrap_or_default(),
-        body.as_ref().map_or(0, String::len)
-    );
+    let asked = format!("{}\n{clicked:?}", time.as_deref().unwrap_or_default());
     if let Ok(known) = SCROLL_FOR.lock() {
         if let Some((_, length)) = known.as_ref().filter(|(known, _)| *known == asked) {
             return *length;
@@ -3112,17 +2406,39 @@ fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
             .max(ARTICLE_VIEW_H)
             .ceil()
     };
-    let (length, from) = match (&body, &title) {
-        (Some(body), _) => (Some(length_of(body)), "the label's text"),
-        (None, Some(title)) => match inbox_article(ctx, title) {
-            Some(Some(text)) => (Some(length_of(&text)), "the inbox's text"),
-            Some(None) => (Some(ARTICLE_VIEW_H), "no article of that title in the inbox"),
-            None => (None, "an inbox that could not be read"),
-        },
-        (None, None) => (None, "nothing: neither the title nor the text can be read"),
+    let (length, from) = match &time {
+        Some(time) => {
+            // The clicked row, unless it shows another time: then the article
+            // was opened some other way, and the rows at its time stand in.
+            let rows = match clicked
+                .filter(|&row| row_time(ctx, row).map_or(true, |shown| same_time(&shown, time)))
+            {
+                Some(row) => vec![row],
+                None => rows_at(ctx, time),
+            };
+            let texts: Vec<Option<Option<String>>> =
+                rows.iter().map(|&row| inbox_article(ctx, row)).collect();
+            let longest = texts
+                .iter()
+                .flatten()
+                .flatten()
+                .map(|text| length_of(text.as_str()))
+                .fold(None, |most: Option<f32>, length| Some(most.map_or(length, |most| most.max(length))));
+            let from = format!("rows {rows:?} (clicked {clicked:?})");
+            match longest {
+                Some(length) => (Some(length), from),
+                // Every one of them read, and none is plain text: a game
+                // article, which does not scroll.
+                None if !texts.is_empty() && texts.iter().all(Option::is_some) => {
+                    (Some(ARTICLE_VIEW_H), from)
+                }
+                None => (None, from),
+            }
+        }
+        None => (None, "nothing: the article's time cannot be read".to_string()),
     };
     super::log("patch.scroll.for", || {
-        format!("title {title:?}: {length:?}px, from {from}")
+        format!("time {time:?}: {length:?}px, from {from}")
     });
     if let Ok(mut known) = SCROLL_FOR.lock() {
         *known = Some((asked, length));
@@ -3130,156 +2446,128 @@ fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
     length
 }
 
-// The text of the newest plain article in the player's inbox that goes by
-// `title`. Nothing inside where the inbox has none by that title: a title
-// the game makes from a template is not kept as it is shown, and one the
-// mod posts is. Nothing at all where the inbox could not be read.
-fn inbox_article(ctx: &StableClient<'_>, title: &str) -> Option<Option<String>> {
+// The plain text of the article at `index` in the team's `news`: `Some(None)`
+// for another kind of article, `None` where it could not be read.
+fn inbox_article(ctx: &StableClient<'_>, index: usize) -> Option<Option<String>> {
     let team = ctx.player_team_id()?;
-    let news = ctx.record_get_json(RecordKindV1::Team, team, "news")?;
-    let news: Value = serde_json::from_str(&news).ok()?;
-    let articles = news.as_array()?;
-    Some(articles.iter().rev().find_map(|article| {
-        let named = article.get("title")?.as_str()?;
-        if named.trim() != title.trim() {
-            return None;
-        }
+    let article = ctx.record_get_json(RecordKindV1::Team, team, &format!("news.{index}"))?;
+    let article: Value = serde_json::from_str(&article).ok()?;
+    Some(
         article
-            .pointer("/ty/Simple/content")?
-            .as_str()
-            .map(str::to_string)
-    }))
+            .pointer("/ty/Simple/content")
+            .and_then(Value::as_str)
+            .map(str::to_string),
+    )
 }
 
-// Children of a node [`tree`] writes out.
-const TREE_WIDTH: usize = 6;
+// -- which article is open ---------------------------------------------------------
 
-// What the news screen gives of an open plain article, for the test log:
-// what each of its labels answers, the screen's tree, and the newest of the
-// inbox. Looked at every thirtieth frame and written when it has changed.
-// With the log off it is a counter.
-fn probe_article(ctx: &StableClient<'_>) {
-    use std::sync::atomic::{AtomicU32, Ordering};
+// The inbox list: a row per article, named by the article's place in the
+// team's `news`, among date headers (`h_YYYYMMDD`).
+const NEWS_ROWS: &str = "main.top.right.news.background.list.contents";
 
-    static LOOKS: AtomicU32 = AtomicU32::new(0);
-    if LOOKS.fetch_add(1, Ordering::Relaxed) % 30 != 0 {
+// Frames between two looks over the list for rows not yet listened to, where
+// its length has not changed (another category shows as many).
+const ROWS_LOOK_EVERY: u32 = 60;
+
+// The inbox rows listened to ([`on_news_row`]).
+static ROWS: crate::ui::Registered = crate::ui::Registered::new(on_news_row);
+
+// The list's length when last looked over, and the frames since.
+static ROWS_LOOKED: Mutex<Option<(usize, u32)>> = Mutex::new(None);
+
+// The article whose inbox row was clicked last, by its place in the team's
+// `news`; forgotten when the news screen closes.
+static CLICKED: Mutex<Option<usize>> = Mutex::new(None);
+
+// Listens for clicks on the inbox's rows, the only sure way to know which
+// article is open. Whether the news screen is up: off it, everything here is
+// forgotten.
+fn listen_to_rows(ctx: &mut StableClient<'_>) -> bool {
+    let Ok(mut looked) = ROWS_LOOKED.lock() else {
+        return false;
+    };
+    let Some(count) = ctx.ui_child_count(NEWS_ROWS) else {
+        if looked.take().is_some() {
+            ROWS.forget();
+            if let Ok(mut clicked) = CLICKED.lock() {
+                *clicked = None;
+            }
+        }
+        return false;
+    };
+    let due = match looked.as_mut() {
+        Some((known, frames)) if *known == count && *frames < ROWS_LOOK_EVERY => {
+            *frames += 1;
+            false
+        }
+        _ => true,
+    };
+    if due {
+        *looked = Some((count, 0));
+        for name in ctx.ui_child_names(NEWS_ROWS) {
+            if name.parse::<usize>().is_ok() {
+                ROWS.register(ctx, &format!("{NEWS_ROWS}.{name}"));
+            }
+        }
+    }
+    true
+}
+
+// A click on an inbox row: that row's article is the one opening.
+fn on_news_row(ctx: &mut StableClient<'_>) {
+    let Some(event) = ctx.ui_current_event() else {
+        return;
+    };
+    // An unreported kind counts as a click, as in `crate::ui`.
+    if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
         return;
     }
-    let head = |text: Option<String>| {
-        text.map(|text| {
-            format!(
-                "{} bytes {:?}",
-                text.len(),
-                text.chars().take(40).collect::<String>()
-            )
-        })
+    let Some(row) = event
+        .path
+        .strip_prefix(NEWS_ROWS)
+        .and_then(|rest| rest.strip_prefix('.'))
+        .and_then(|name| name.parse::<usize>().ok())
+    else {
+        return;
     };
-    super::log("patch.scroll.labels", || {
-        [ARTICLE_TITLE, ARTICLE_AUTHOR, ARTICLE_TIME, ARTICLE_TEXT, ARTICLE_EXTENT]
-            .iter()
-            .map(|&path| {
-                format!(
-                    "{}: a {:?}, visible={:?}, size={:?}, text={:?}, state={:?}",
-                    path.rsplit('.').next().unwrap_or(path),
-                    ctx.ui_runner_name(path),
-                    ctx.ui_visible(path),
-                    ctx.ui_node_rect(path).map(|(_, _, width, height)| (width, height)),
-                    head(ctx.ui_text(path)),
-                    head(ctx.ui_state_json(path)),
-                )
-            })
-            .collect::<Vec<_>>()
-            .join(" | ")
-    });
-    super::log("patch.scroll.tree", || tree(ctx, NEWS_SCREEN, 5, &mut 160));
-    super::log("patch.scroll.inbox", || {
-        let Some(team) = ctx.player_team_id() else {
-            return "the player's team is not known".to_string();
-        };
-        let news = ctx
-            .record_get_json(RecordKindV1::Team, team, "news")
-            .and_then(|json| serde_json::from_str::<Value>(&json).ok());
-        let Some(Value::Array(list)) = news else {
-            return format!("team {team}'s news could not be read");
-        };
-        let newest: Vec<String> = list
-            .iter()
-            .rev()
-            .take(5)
-            .map(|article| {
-                format!(
-                    "{:?} a {:?}, read={:?}, {:?} bytes of plain text",
-                    article
-                        .get("title")
-                        .and_then(Value::as_str)
-                        .map(|title| title.chars().take(40).collect::<String>()),
-                    article
-                        .get("ty")
-                        .and_then(Value::as_object)
-                        .and_then(|ty| ty.keys().next()),
-                    article.get("is_read"),
-                    article
-                        .pointer("/ty/Simple/content")
-                        .and_then(Value::as_str)
-                        .map(str::len),
-                )
-            })
-            .collect();
-        format!(
-            "{} articles, the newest first: {}",
-            list.len(),
-            newest.join(" | ")
-        )
-    });
+    if let Ok(mut clicked) = CLICKED.lock() {
+        *clicked = Some(row);
+    }
+    super::log("patch.scroll.row", || format!("row {row} clicked"));
 }
 
-// The UI tree under `path` by name and kind, `depth` levels of it, the first
-// [`TREE_WIDTH`] children of each node and no more than `budget` nodes in
-// all: a label with the start of its text, a selectable with whether it is
-// selected, and of a node with more children which of them are.
-fn tree(ctx: &StableClient<'_>, path: &str, depth: usize, budget: &mut usize) -> String {
-    let kind = ctx.ui_runner_name(path).unwrap_or_default();
-    let mut out = format!("{}:{kind}", path.rsplit('.').next().unwrap_or(path));
-    if kind == "label" {
-        let text = label_text(ctx, path).map(|text| text.chars().take(24).collect::<String>());
-        out.push_str(&format!("={text:?}"));
-    }
-    if let Some(selected) = ctx.ui_selectable_selected(path) {
-        out.push_str(&format!("(selected={selected})"));
-    }
-    if ctx.ui_visible(path) == Some(false) {
-        out.push_str("(hidden)");
-    }
-    let children = ctx.ui_child_names(path);
-    if children.is_empty() {
-        return out;
-    }
-    if depth == 0 {
-        out.push_str(&format!("[{} children]", children.len()));
-        return out;
-    }
-    if children.len() > TREE_WIDTH {
-        let selected: Vec<&String> = children
-            .iter()
-            .filter(|child| ctx.ui_selectable_selected(&format!("{path}.{child}")) == Some(true))
-            .collect();
-        out.push_str(&format!(
-            "({} children, selected {selected:?})",
-            children.len()
-        ));
-    }
-    out.push('[');
-    for (at, child) in children.iter().take(TREE_WIDTH).enumerate() {
-        if *budget == 0 {
-            out.push_str(" ...");
-            break;
+// The time an inbox row shows: its `time` label, a level or two down.
+fn row_time(ctx: &StableClient<'_>, row: usize) -> Option<String> {
+    let mut paths = vec![format!("{NEWS_ROWS}.{row}")];
+    for _ in 0..3 {
+        let mut next = Vec::new();
+        for path in paths {
+            for child in ctx.ui_child_names(&path) {
+                let child_path = format!("{path}.{child}");
+                if child == "time" {
+                    return label_text(ctx, &child_path);
+                }
+                next.push(child_path);
+            }
         }
-        *budget -= 1;
-        if at > 0 {
-            out.push(' ');
-        }
-        out.push_str(&tree(ctx, &format!("{path}.{child}"), depth - 1, budget));
+        paths = next;
     }
-    out.push(']');
-    out
+    None
+}
+
+// The inbox rows showing `time`.
+fn rows_at(ctx: &StableClient<'_>, time: &str) -> Vec<usize> {
+    ctx.ui_child_names(NEWS_ROWS)
+        .iter()
+        .filter_map(|name| name.parse::<usize>().ok())
+        .filter(|&row| row_time(ctx, row).is_some_and(|shown| same_time(&shown, time)))
+        .collect()
+}
+
+// Whether two times shown are one: the same, or one the end of the other,
+// should the article and its row write it at different lengths.
+fn same_time(a: &str, b: &str) -> bool {
+    let (a, b) = (a.trim(), b.trim());
+    !a.is_empty() && !b.is_empty() && (a == b || a.ends_with(b) || b.ends_with(a))
 }

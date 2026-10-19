@@ -11,9 +11,9 @@ use crate::{
 // frost zone under the target for 2 seconds (1.5 second cooldown, starting
 // after using the empowered attack). Enemies within the zone are slowed by 20%.
 //
-// The damage is Sheen's, so the upgrade keeps what the component did. The
-// zone is a spot and a timer, like Hollow Radiance's eruption: no unit stands
-// for it, so it stays where the target was hit and nothing can attack it.
+// The damage is Sheen's, so the upgrade keeps what the component did. The zone
+// is a spot and a timer like Hollow Radiance's eruption, staying where the
+// target was hit.
 
 // A zone slows what stands in it four times a second.
 const SLOW_TICK_SECONDS: f64 = 0.25;
@@ -30,10 +30,9 @@ const SLOW_GRACE_TICKS: usize = 10;
 const ZONE_FORM_EFFECT: &str = "riot_frost_zone_form";
 const ZONE_HOLD_EFFECT: &str = "riot_frost_zone_hold";
 const ZONE_MELT_EFFECT: &str = "riot_frost_zone_melt";
-// How long one play lasts, in ticks: each is five frames of 0.1 s. A zone's
-// first play spreads, its last melts and the ones between hold, so the
-// picture covers whatever the config makes the zone's duration, to within one
-// play.
+// One play in ticks: five 0.1 s frames. The first play spreads, the last melts
+// and those between hold, so the picture covers any configured duration to
+// within one play.
 const ZONE_PLAY_TICKS: usize = 30;
 
 // A frost zone lying in the world.
@@ -78,9 +77,9 @@ impl IcebornGauntlet {
         Self {
             meta: ItemMeta::base("iceborn_gauntlet", &["sheen"], &["radiant_iceborn_gauntlet"]),
             price: 750,
-            hp: 150,
+            hp: 250,
             defence: 15,
-            attack_speed_mult: 20,
+            attack_speed_mult: 15,
             skill_cooldown_mult: 10,
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,
@@ -99,9 +98,9 @@ impl IcebornGauntlet {
         Self {
             meta: ItemMeta::radiant("radiant_iceborn_gauntlet", &["iceborn_gauntlet"]),
             price: 1000,
-            hp: 250,
+            hp: 350,
             defence: 25,
-            attack_speed_mult: 25,
+            attack_speed_mult: 20,
             skill_cooldown_mult: 15,
             effect_min_bonus_damage: 30,
             effect_max_bonus_damage: 85,

@@ -15,35 +15,17 @@ const WISP_TICKS: u64 = 10;
 // together still get a visible flight rather than a hop.
 const WISP_MIN_SPEED: u64 = 500;
 
-// Moonstone Renewer — Starlit Grace, a share of every heal the carrier gives
-// an ally passed on to another ally near them.
+// Moonstone Renewer: Starlit Grace, a share of every heal the carrier gives an
+// ally passed on to another ally near them. The passive is the same on both
+// tiers.
 //
-// # Where the amounts come from
+// The host only says a skill was cast and at whom, so the heal is read back
+// from the carrier's healing statistics ([`HealWatch`]), self-casts that heal
+// around them included; shields cannot be read, so they are not chained.
 //
-// The host says that an ally-targeted skill was cast and at whom, never what
-// it did. So the heal is read back afterwards from the carrier's own healing
-// statistics ([`HealWatch`]): the host credits the carrier with the health
-// they really restored to another champion, so both who was healed and by how
-// much are the host's own figures. A skill cast on the carrier that heals
-// around them counts as well.
-//
-// Shields are not chained. Riot's item does, but the host credits nothing as
-// a shield is given, so one could only be guessed at.
-//
-// # The wisp is only a picture
-//
-// The chained heal lands at once and a wisp is sent after it from the ally
-// who was healed. It could not carry the heal: a projectile has no payload,
-// so the amount would have to be worked out again on arrival, and a heal that
-// lands later would be read back as one of the carrier's to chain.
-//
-// # A chained heal does not chain again
-//
-// It is given in the carrier's name, so the host credits it like any other;
-// the watch is read again straight after, or it would come back next tick as
-// a heal to chain.
-//
-// The passive is the same on base and Radiant; Radiant buys the stat line.
+// The chained heal lands at once and the wisp after it is only a picture, since
+// a projectile has no payload. It is given in the carrier's name, so the watch
+// is re-read straight after, or it would chain again.
 #[derive(Clone, Debug)]
 pub struct MoonstoneRenewer {
     meta: ItemMeta,
@@ -69,7 +51,7 @@ impl MoonstoneRenewer {
                 &["bandleglass_mirror"],
                 &["radiant_moonstone_renewer"],
             ),
-            price: 550,
+            price: 750,
             hp: 150,
             hp_regen: 2,
             magic_power: 20,
@@ -118,10 +100,9 @@ impl MoonstoneRenewer {
         self
     }
 
-    // Who a heal on `from` chains to: the nearest living allied champion
-    // within range of `from`, the carrier and `from` aside. The range is
-    // measured from the ally, not the carrier, so the carrier's size does not
-    // stretch it.
+    // Who a heal on `from` chains to: the nearest living allied champion within
+    // range of `from`, the carrier and `from` aside. Measured from the ally, so
+    // the carrier's size does not stretch it.
     fn chain_target(&self, ctx: &StableSim<'_>, caster: usize, from: usize) -> Option<usize> {
         let caster_team = ctx.get_entity(caster)?.team();
         let range = (self.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
@@ -231,10 +212,9 @@ impl StableItem for MoonstoneRenewer {
         self.heals.close();
     }
 
-    // Starlit Grace. `is_ally` marks an ally-targeted skill — a heal, shield or
-    // buff — and nothing has landed yet when this fires, so the heal is watched
-    // for. Whoever the skill was cast on, the carrier included: a heal cast on
-    // the carrier can reach the allies around them.
+    // Starlit Grace: an ally-targeted skill was cast (`is_ally`) and nothing
+    // has landed yet, so the heal is watched for, whoever the target, the
+    // carrier included.
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,

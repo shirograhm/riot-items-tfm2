@@ -17,7 +17,7 @@ impl Default for ScoutsSlingshot {
     fn default() -> Self {
         Self {
             price: 400,
-            attack_speed_mult: 30,
+            attack_speed_mult: 25,
             effect_bonus_flat_damage: 40,
             effect_cooldown_seconds: 20.0,
             // Non-vital stats (internals)
@@ -80,6 +80,7 @@ impl StableItem for ScoutsSlingshot {
             "fiendhunter_bolts".to_string(),
             "runaans_hurricane".to_string(),
             "statikk_shiv".to_string(),
+            "navori_flickerblade".to_string(),
         ]
     }
 

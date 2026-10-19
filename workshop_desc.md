@@ -1,4 +1,4 @@
-Adds 6 item slots & 237 new items (138 base + 99 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 245 new items (144 base + 101 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 Champions start each match with 250 gold instead of 500.  
 
@@ -61,13 +61,7 @@ During a match, you can see both sides' planned builds using the [b]Check Tactic
 [h1] Item Patches [/h1]
 Whenever the game patches its champions, this mod patches its items too: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
 
-To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. In the copy you can change:  
-- [b]enabled[/b]: set to false to turn item patches off.  
-- [b]automatic[/b]: set to false to stop item patches from arriving with the champion patches. Manual item patches still work, and patches you already have stay in effect.  
-- [b]step_size[/b]: how much each stat changes at a time (for example 50 health, 5 attack damage). Set a stat to 0 to prevent item patches from changing it.  
-- [b]limits[/b]: how many games an item needs before it can be patched, how many items one patch nerfs and buffs, how far an item's numbers may move from the original in total (40% to 165% by default), and how many changes one patch can make to an item ([b]max_changes_per_item[/b], 2 by default). An item and its Radiant share that number.  
-
-Re-run the game after editing it. Without a config-autopatch.json, and for anything yours leaves out, the mod uses config-autopatch-default.json.  
+To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. Re-run the game after editing it. Without a rename, your numbers could be overwritten on update.  
 
 [h1] Smart Builds [/h1]
 [b]Enforce Smart Builds[/b] cleans up the AI's picks using the following rules:
@@ -76,7 +70,7 @@ Re-run the game after editing it. Without a config-autopatch.json, and for anyth
 3. Crit capped at 100%, incl. passives  
 4. Support items only on supports  
 5. Items match the champion's scaling (AD/AP/hybrid)  
-6. Stacking items only in the first two slots, scaling items only from the third on  
+6. Stacking items only in the first two slots, scaling items only from the third on (supports exempt)  
 7. One pair of boots  
 8. One jungle item, junglers only  
 9. Role items bought first, a jungler's jungle item in slot 1 (none if you pin slot 1)  
@@ -86,13 +80,11 @@ Re-run the game after editing it. Without a config-autopatch.json, and for anyth
 13. Heal/shield/buff items for supports that aid allies  
 14. Guinsoo's, Statikk Shiv and Sword of Blossoming Dawn for marksmen characters only  
 15. One Spellblade item  
-16. Tank supports build only Tank/Support items  
-17. Heal/shield/buff supports build only Tank/Support items, with Ardent/Helia/Staff prioritized  
+16. Supports build only Tank/Support items (mages only when tank-tagged or on Dream Maker)  
+17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
+18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
 
 Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
-
-[h1] Item Rules [/h1]
-The game's [b]Options[/b] menu has an [b]Item Rules[/b] setting on the Competition tab. [b]All Radiants[/b] (default) upgrades every item in a build to Radiant. [b]First Item Radiant[/b] upgrades only the first item of each build to Radiant and stops the rest at Legendary. [b]No Radiants[/b] stops every item at Legendary. Both apply to both teams and to pinned items. The setting is kept in your save file, so each save can have its own (save the game after changing it). It can only be changed between matches, not during a draft or a match.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  

@@ -3,26 +3,14 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, sized_range, ticks, ImmobilizeWatch, ItemMeta};
 
-// Solstice Sleigh — what World Atlas grows into for a support that locks
-// enemies down: Going Sledding, and the gold the Atlas line pays
-// ([`crate::SharedRiches`]).
+// Solstice Sleigh: World Atlas's upgrade for a support that locks enemies down:
+// Going Sledding, and the Atlas line's gold ([`crate::SharedRiches`]).
 //
-// # Going Sledding
-//
-// When the carrier immobilizes an enemy champion ([`ImmobilizeWatch`], the
-// trigger Imperial Mandate's Command uses), the carrier and the most wounded
-// allied champion in range speed up and gain bonus health for a moment.
-//
-// The bonus health is maximum health on the buff, and the same amount is
-// restored as it lands: a buff's `hp` raises the ceiling and leaves the
-// health under it where it was, so without that the bonus would be health
-// nobody has. When the buff runs out the ceiling comes back down.
-//
-// # Both variants share the buff name
-//
-// Re-applying is a remove followed by an add, and one `entity_remove_buff`
-// clears every copy, so two Sleighs sledding the same ally leave one buff on
-// them, not two.
+// When the carrier immobilizes an enemy champion ([`ImmobilizeWatch`]), it and
+// the most wounded allied champion in range gain speed and bonus health for a
+// moment. The bonus is maximum health on the buff with the same amount restored
+// as it lands (a buff's `hp` only raises the ceiling); both tiers share the
+// buff name, so two Sleighs leave one buff.
 #[derive(Clone, Debug)]
 pub struct SolsticeSleigh {
     meta: ItemMeta,
@@ -68,7 +56,7 @@ impl SolsticeSleigh {
     pub fn radiant() -> Self {
         Self {
             meta: ItemMeta::radiant("radiant_solstice_sleigh", &["solstice_sleigh"]),
-            price: 750,
+            price: 550,
             hp: 300,
             hp_regen: 5,
             // Going Sledding itself is unchanged — Radiant buys the stat line only.

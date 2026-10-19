@@ -24,7 +24,7 @@ impl ChempunkChainsword {
             ),
             price: 650,
             attack: 20,
-            hp: 200,
+            hp: 300,
             skill_cooldown_mult: 10,
             effect_heal_reduce: 40,
             effect_duration_seconds: 2.0,
@@ -36,7 +36,7 @@ impl ChempunkChainsword {
             meta: ItemMeta::radiant("radiant_chempunk_chainsword", &["chempunk_chainsword"]),
             price: 950,
             attack: 30,
-            hp: 300,
+            hp: 400,
             skill_cooldown_mult: 15,
             ..Self::base()
         }

@@ -43,14 +43,9 @@ fn reserve_landing(ctx: &mut StableSim<'_>, target: usize) -> usize {
     (landing - now).max(1)
 }
 
-// Whether `target` is still the entity the proc was queued against.
-//
-// Entity ids are bare slot indices -- `EntityHandleV1::from_id` is just
-// `id + 1`, with no generation counter -- so the id of something that died
-// is free to be handed to whatever spawns next. A proc that only checks
-// this at its landing tick can hit a stranger sitting in the dead target's
-// slot, which is why the queue re-checks every tick and drops the proc the
-// moment its target goes down.
+// Whether `target` is still alive. Entity ids are reused slot indices with no
+// generation, so the queue re-checks every tick and drops a proc the moment its
+// target dies, before a stranger takes the slot.
 fn target_still_valid(ctx: &StableSim<'_>, target: usize) -> bool {
     ctx.get_entity(target)
         .is_some_and(|target_ref| target_ref.is_alive())
@@ -66,16 +61,10 @@ impl ProcQueue {
         Self::default()
     }
 
-    // Queues a hit to land in a few ticks.
-    //
-    // Landing procs go out through `deal_damage` as `AttackTypeV1::Item`,
-    // so they come back around through `on_attack`. A caller that queues
-    // off an `Item` hit feeds its own procs and cycles forever -- the
-    // stagger cap only paces that loop, it does not end it. Gate on
-    // `attack_type` first: most items take `BaseAttack` only, and the ones
-    // that want skills too still have to reject `Item` explicitly. Serpent's
-    // Fang takes `Item` hits as well and turns away only its own procs, by
-    // flagging the call to [`ProcQueue::update`] that lands them.
+    // Queues a hit to land in a few ticks. Landing procs come back through
+    // `on_attack` as `AttackTypeV1::Item`, so a caller that queues off an
+    // `Item` hit cycles forever: gate on `attack_type` first (Serpent's Fang
+    // flags its own procs instead).
     pub(crate) fn push(
         &mut self,
         ctx: &mut StableSim<'_>,
@@ -108,10 +97,9 @@ impl ProcQueue {
         self.push(ctx, target, 0, magic);
     }
 
-    // Physical damage on-hit. It is part of the swing, so it goes into the
-    // swing's own `damage`, with two exceptions that are queued as a proc
-    // instead: a crit, which the bonus must not share in, and a swing of
-    // another damage type, which would deal it as that type.
+    // Physical damage on-hit, added to the swing's own `damage` unless the
+    // swing crit (the bonus must not share in it) or is of another damage type;
+    // those are queued as a proc.
     pub(crate) fn on_hit_physical(
         &mut self,
         ctx: &mut StableSim<'_>,

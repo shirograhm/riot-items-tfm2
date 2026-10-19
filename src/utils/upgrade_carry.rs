@@ -1,21 +1,11 @@
-//! Carries an item's state into the instance that replaces it on an upgrade.
+//! Carries an item's state into the instance that replaces it on an upgrade,
+//! since the host never calls `on_upgrade`/`on_upgraded_from` (0.6.2).
 //!
-//! `on_upgrade` / `on_upgraded_from` are meant for this, and the host does not
-//! call them (game 0.6.2): neither fires on an upgrade, and without this every
-//! Radiant item would arrive holding nothing.
-//!
-//! So an item notes its state here whenever it changes, under its upgrade line
-//! (the base item's key), the match seed and the player. The instance that
-//! replaces it reads the latest note back, once.
-//!
-//! A seed is not one run of a match. The same logs show a seed played on four
-//! threads at once: sometimes tick for tick the same, sometimes the same up to
-//! a point and then apart. So a note also carries the match's history when it
-//! was made (its kills so far, as a hash), and an instance takes only notes
-//! from before its own tick whose history is its own. Those are notes it made
-//! itself, or ones a run identical up to there made first. Notes of one tick
-//! are a set and the largest value wins, so the answer never depends on which
-//! run wrote last.
+//! An item notes its state under (upgrade line, seed, player) whenever it
+//! changes, and its replacement reads the latest note back once. A seed runs on
+//! several threads that may diverge, so a note carries the match's kill history
+//! and is only taken by a run with the same history; within one tick the
+//! largest value wins.
 
 use std::collections::HashMap;
 use std::sync::Mutex;
@@ -128,10 +118,9 @@ pub(crate) struct StackCarry {
 }
 
 impl StackCarry {
-    // Keeps `stacks` where an upgrade can find them, on the upgrade line
-    // `line` (the base item's key). The Radiant item arrives as a fresh
-    // instance: it takes over the base item's stacks once, clamped to its
-    // own ceiling `max`, and every instance notes its count when it changes.
+    // Keeps `stacks` where an upgrade can find them, under `line` (the base
+    // item's key). A new instance takes over the base item's stacks once,
+    // clamped to `max`, and every instance notes its count when it changes.
     pub(crate) fn carry(
         &mut self,
         line: &'static str,

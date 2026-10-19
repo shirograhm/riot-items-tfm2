@@ -1,36 +1,12 @@
-//! What Smart Builds needs to know about a champion: what its damage scales
-//! with, to pick its boots, its class and whether it tanks or keeps allies
-//! alive, whether its kit can immobilize an enemy (a support that can builds
-//! Imperial Mandate), and whether it attacks from range (ranged and melee
-//! champions keep different items).
+//! What Smart Builds needs to know about a champion: damage scaling, class,
+//! tanking or sustain, whether its kit immobilizes or aids allies, and whether
+//! it attacks from range.
 //!
-//! # Where the answer comes from
-//!
-//! The game's own champion data, asked for at runtime through
-//! `StableClient::champion_brief`. That covers champions added by other mods,
-//! which declare the same `category` and `tags` a vanilla one does. The build
-//! paths cannot ask themselves — the item-build context carries only the
-//! champion's key, and two of the three paths are not on the client at all —
-//! so [`learn`] asks on the client frame loop and caches the answers here.
-//!
-//! `champion_brief` had never been called on this host when this was written
-//! (its sibling `champion_names()` returns nothing), so it is not trusted to
-//! answer. Two fallbacks back it up: [`VANILLA`] for the base game's
-//! champions, and [`MOD_CHAMPIONS`] for everyone else's, read from the other
-//! mods' own `.data_champion` files at startup. A champion none of the three
-//! knows gets no restriction at all: a missing tag must never cost a build an
-//! item.
-//!
-//! The file fallback is also what covers a champion's *first* build. The host
-//! is only asked on the client frame after a build path wants the answer, so
-//! with the host alone the first build decided for a modded champion (a
-//! Twitch from another mod, building pure AP) would go unchecked.
-//!
-//! The host's answer has no attack range in it, so whether a champion is
-//! ranged always comes from the fallbacks where they know it: both carry the
-//! reach of the basic attack itself. See [`ranged_of`]. Whether a kit
-//! immobilizes is not in the host's answer either, only the broader `CC` tag,
-//! so that comes from the fallbacks the same way.
+//! The host is asked (`champion_brief`) on the client frame loop by [`learn`]
+//! and the answers cached, since the build paths cannot ask. [`VANILLA`] and
+//! [`MOD_CHAMPIONS`] (other mods' `.data_champion` files) back it up, covering
+//! the first build and what the host does not report; a champion nothing knows
+//! gets no restriction.
 
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
@@ -80,20 +56,16 @@ impl Class {
     }
 }
 
-// What a kit immobilizes with: the crowd control that takes movement out of
-// an enemy's hands, the set Imperial Mandate's Command answers to. A slow, a
-// silence or a disarm is none of it.
+// What a kit immobilizes with: crowd control that takes away movement, the set
+// Imperial Mandate answers to (not slows, silences or disarms).
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(crate) struct Immobilize {
-    // A taunt. Kept apart because a taunt names its taunter, so Command
-    // credits it without guessing.
+    // A taunt, kept apart because a taunt names its taunter.
     pub taunt: bool,
     // Anything else: a stun, root, knock-up, knockback, pull, fear or charm.
     pub other: bool,
-    // How long the kit immobilizes for in all, in ticks: every stun, root,
-    // knock-up, knockback, pull, fear, charm and taunt of its abilities and
-    // its ultimate, added up. An immobilize the source puts no figure on
-    // adds nothing.
+    // Total immobilize time of its abilities and ultimate, in ticks; one with
+    // no figure adds nothing.
     pub ticks: usize,
 }
 
@@ -105,13 +77,11 @@ pub(crate) struct ChampionTraits {
     pub class: Option<Class>,
     // Tagged `Tank`.
     pub tank: bool,
-    // Tagged `Heal` or `Shield`. The tags do not say whom: a Vampire's healing
-    // is all its own.
+    // Tagged `Heal` or `Shield`, for whomever (a Vampire's healing is its own).
     pub sustains: bool,
-    // Whether a basic ability of its kit heals, shields or buffs an ally,
-    // which is what the items that answer to that need. Narrower than
-    // `sustains` (the Vampire) and wider (a Bard only buffs). `None` when
-    // only the tags are known.
+    // Whether a basic ability heals, shields or buffs an ally (narrower than
+    // `sustains` for the Vampire, wider for a Bard); `None` when only the tags
+    // are known.
     pub aids: Option<bool>,
     // Tagged `CC`: its kit slows, stuns or otherwise holds enemies.
     pub cc: bool,
@@ -168,18 +138,14 @@ impl ChampionTraits {
     }
 }
 
-// The longest basic attack that still counts as melee, in the range units
-// tooltips use: a champion reaching further is ranged. The same 35 the melee
-// items measure their falloff from (`effect_melee_distance`), so a champion
-// is ranged exactly when its own attacks land at reduced strength. Vanilla
-// melee champions reach 23-30 and the ranged ones 40-80.
+// The longest basic attack still counted as melee, in tooltip range units: the
+// same 35 the melee items' falloff uses. Vanilla melee champions reach 23-30,
+// ranged ones 40-80.
 const MELEE_ATTACK_RANGE: usize = 35;
 
-// Whether a champion attacks from range, `None` when nothing says: the reach
-// of its basic attack (world units) where the source states one, else its
-// `Range` or `Melee` tag, else its class where that settles it. The tags and
-// classes are a last resort: only six vanilla champions carry either tag,
-// Vampire is a Magician that attacks at 25, and Clown an Assassin at 40.
+// Whether a champion attacks from range: its attack reach where known, else its
+// `Range` or `Melee` tag, else its class. Tags and classes are a last resort
+// (Vampire is a Magician that attacks at 25).
 fn ranged_of(
     attack_range: Option<usize>,
     range_tag: bool,
@@ -234,14 +200,10 @@ fn flags_of<'a>(tags: impl IntoIterator<Item = &'a str>) -> u8 {
     })
 }
 
-// The base game's champions, from `setting/champion_info` (`category`, `tags`
-// and `attack.range`), including the eight it ships under `mod_champions`.
-// Only a fallback: an answer from the host always wins. Kept true to the
-// game's tags; corrections go in [`SCALING_OVERRIDES`], which beat both.
-//
-// The last column is the reach of the basic attack in range units (the
-// game's value over 1000), which the host does not report. The `Range` and
-// `Melee` tags are left out of the flags: the reach says the same and more.
+// The base game's champions from `setting/champion_info`, including the eight
+// under `mod_champions`: flags, class and basic attack reach in range units.
+// Only a fallback, kept true to the game's tags; corrections go in
+// [`SCALING_OVERRIDES`].
 const VANILLA: &[(&str, u8, Class, usize)] = &[
     ("alchemist", AP | CC, Class::Magician, 60),
     ("android", AD | TANK | CC, Class::Melee, 25),
@@ -313,19 +275,12 @@ const VANILLA: &[(&str, u8, Class, usize)] = &[
     ("wind_mage", AP | CC, Class::Magician, 60),
 ];
 
-// The base game's champions with an ability that taunts ([`Immobilize::taunt`]).
-// Knight and Shield Bearer immobilize with nothing else. Sorted, for the
-// binary search.
+// Base game champions whose abilities taunt. Sorted, for the binary search.
 const VANILLA_TAUNTERS: &[&str] = &["illusionist", "knight", "prisoner", "shield_bearer"];
 
-// The base game's champions with an ability that immobilizes some other way
-// ([`Immobilize::other`]). Both lists are read off each kit's parameters in
-// `setting/champion_info` and its skill text (0.6.2). Not the `CC` tag: four
-// tagged champions only slow, silence or disarm (Alchemist, Astrologer,
-// Taoist, Voodoo Shaman), and thirteen with a stun, root, knockback, fear or
-// charm carry no tag at all. Werewolf is here for the pull among its charge's
-// parameters, though its text speaks only of the slow. Sorted, for the binary
-// search.
+// Base game champions whose abilities immobilize some other way, read off their
+// kits (0.6.2) rather than the `CC` tag, which misses many and includes
+// slow-only kits. Sorted, for the binary search.
 const VANILLA_IMMOBILIZERS: &[&str] = &[
     "android",
     "archer",
@@ -367,14 +322,9 @@ const VANILLA_IMMOBILIZERS: &[&str] = &[
     "wind_mage",
 ];
 
-// How long each of the base game's champions immobilizes for in all, in
-// ticks ([`Immobilize::ticks`]): every immobilizing parameter of its
-// abilities and its ultimate added up, from `setting/champion_info` and the
-// champions that are data kits of their own (0.6.3; the comment says which
-// ability holds what). A champion not listed has none with a figure on it.
-// Three have an immobilize the data gives no length for, which adds nothing:
-// Archer's stun ("briefly"), Executioner's grab and Harpooner's pull. Knight's
-// taunt is its skill's own `tick`. Sorted, for the binary search.
+// Each base game champion's total immobilize time in ticks, from its abilities'
+// data (0.6.3); unlisted means none with a figure. Sorted, for the binary
+// search.
 const VANILLA_IMMOBILIZE_TICKS: &[(&str, usize)] = &[
     ("android", 60),          // skill2 60
     ("barrier_magician", 60), // ult 60
@@ -415,14 +365,9 @@ const VANILLA_IMMOBILIZE_TICKS: &[(&str, usize)] = &[
     ("wind_mage", 40),        // ult 40
 ];
 
-// The base game's champions with a basic ability that heals, shields or
-// buffs an ally ([`ChampionTraits::aids`]), read off each kit's skill text
-// (0.6.2). Not the `Heal` and `Shield` tags: Vampire, Werewolf and Dokkaebi
-// carry one for what they do to themselves, and Bard, Enchanter, Exorcist
-// and Plague Doctor aid allies all day with neither. An ultimate alone does
-// not count (Android's shield, Strongman's throw, Knight's ward): the items
-// this is for want it done every few seconds. Sorted, for the binary
-// search.
+// Base game champions with a basic ability that heals, shields or buffs an
+// ally, read off their skill text (0.6.2) rather than the tags; an ultimate
+// alone does not count. Sorted, for the binary search.
 const VANILLA_ALLY_AIDS: &[&str] = &[
     "bard",
     "barrier_magician",
@@ -627,14 +572,9 @@ const STEAM_APP_ID: &str = "3009300";
 // is the usual place, and a Workshop item may nest its mod one folder deeper.
 const SCAN_DEPTH: usize = 4;
 
-// Reads every `.data_champion` file under the game's `mods` folder and its
-// Workshop content folder into [`MOD_CHAMPIONS`]. Called once from `init`, on
-// the main thread, because the build paths that read the result run on sim
-// workers, where file IO has no business. About 50 files and under 1 MB with
-// the usual champion mods installed.
-//
-// Disabled mods are read too. That costs nothing, because a champion no
-// enabled mod adds never reaches a build, and ids are unique across mods.
+// Reads every `.data_champion` under the game's `mods` folder and its Workshop
+// folder into [`MOD_CHAMPIONS`], once from `init`, so the sim workers never do
+// file IO. Disabled mods are read too, harmlessly.
 pub(crate) fn load_mod_champions() {
     MOD_CHAMPIONS.get_or_init(|| {
         let mut found = HashMap::new();
@@ -690,14 +630,10 @@ struct ChampionFile {
     category: String,
     #[serde(default)]
     tags: Vec<String>,
-    // The basic attack, of which only `range` is read. Left untyped so that an
-    // attack written some other way costs the champion its reach, not the
-    // rest of what the file says.
+    // Untyped, so an attack written another way costs only its reach.
     #[serde(default)]
     attack: serde_json::Value,
-    // Everything else, the abilities among it: read for what they immobilize
-    // with. The basic attack is left out, since Imperial Mandate only answers
-    // to abilities.
+    // Everything else, abilities included, read for what they immobilize with.
     #[serde(flatten)]
     rest: HashMap<String, serde_json::Value>,
 }
@@ -717,24 +653,19 @@ fn read_champion(path: &Path) -> Option<(String, ChampionTraits)> {
         .map(|range| range as usize);
     let shows = |sign: &KitSign| file.rest.values().any(|part| kit_shows(part, sign));
     let (taunt, other) = (shows(&TAUNT_SIGN), shows(&IMMOBILIZE_SIGN));
-    // Native code may immobilize with nothing in the file to show for it. A kit
-    // that shows nothing at all is then not known to have none, so its `CC` tag
-    // decides; one that shows only a taunt is taken to have more.
+    // Native code may immobilize with nothing in the file: a kit showing
+    // nothing is unknown (its `CC` tag decides), and one showing only a taunt
+    // is assumed to have more.
     let native = file.rest.values().any(runs_native_code);
     let immobilize = (taunt || other || !native).then_some(Immobilize {
         taunt,
         other: other || native,
-        // What the file shows, added up. Native code may add to it with
-        // nothing to show; a kit that shows none at all and runs some is not
-        // known either way (`None`, above), and its `CC` tag decides.
+        // What the file shows, added up.
         ticks: file.rest.values().map(kit_ticks).sum(),
     });
-    // Aiding allies takes both: a basic ability aimed at one, and a heal, shield
-    // or buff in it. Aimed at an ally alone is not enough (another mod's Dummy
-    // sets a decoy down beside one, and was handed Dream Maker for it). The
-    // same doubt as above over native code, which may aid with nothing in the
-    // file to show: a kit that runs some and shows no aid is not known either
-    // way, so its `Heal` and `Shield` tags decide.
+    // Aiding allies takes a basic ability both aimed at an ally and healing,
+    // shielding or buffing. With native code and no visible aid it is unknown,
+    // and the tags decide.
     let aids = ["skill", "skill2"]
         .iter()
         .filter_map(|part| file.rest.get(*part))
@@ -756,10 +687,8 @@ fn fallback(champion: &str) -> Option<ChampionTraits> {
     vanilla(champion).or_else(|| MOD_CHAMPIONS.get()?.get(champion).copied())
 }
 
-// Settled answers, by champion key: the host's where it gave one, otherwise
-// the [`fallback`] or `None`. Misses are settled too, so a champion the
-// host does not know costs one lookup here rather than a trip to [`PENDING`]
-// on every item the build hook scores.
+// Settled answers by champion: the host's, else the [`fallback`] or `None`.
+// Misses are settled too, so they cost one lookup.
 static LEARNED: RwLock<Option<HashMap<String, Option<ChampionTraits>>>> = RwLock::new(None);
 
 // Keys already put to the host, answered or not, so a champion the host does
@@ -770,14 +699,8 @@ static ASKED: Mutex<Option<HashSet<String>>> = Mutex::new(None);
 // paths are not on the client, so they leave the question here for [`learn`].
 static PENDING: Mutex<Option<HashSet<String>>> = Mutex::new(None);
 
-// Champions whose `AD`/`AP` tags misstate what their kit scales with, and
-// what Smart Builds treats them as instead. These win over every source,
-// the host included, which is why they are not simply edits to [`VANILLA`].
-//
-// Magic Knight is tagged both, but only its basic attack is physical: both
-// abilities deal magic damage off Ability Power, and its ultimate's attack
-// speed scales with Ability Power too. Left hybrid, rule 5 never touches it
-// and the engine has it building full AD.
+// Champions whose `AD`/`AP` tags misstate their scaling, overriding every
+// source. Magic Knight is tagged both, but only its basic attack is physical.
 const SCALING_OVERRIDES: &[(&str, Scaling)] = &[("magic_knight", Scaling::Ap)];
 
 // What is known about `champion`, or `None` when nothing is — which the rules
@@ -879,9 +802,8 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                     tank: has(ChampionTagV1::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
                     cc: has(ChampionTagV1::Cc),
-                    // The brief says neither what the kit immobilizes with, nor
-                    // whether it aids allies, nor how far the attack reaches, so
-                    // the fallbacks' answers stand where they have one.
+                    // The brief lacks immobilizes, ally aid and attack reach,
+                    // so the fallbacks' answers stand.
                     aids: fallback(&key).and_then(|known| known.aids),
                     immobilize: fallback(&key).and_then(|known| known.immobilize),
                     ranged: fallback(&key).and_then(|known| known.ranged).or_else(|| {

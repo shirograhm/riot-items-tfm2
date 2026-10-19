@@ -1,37 +1,17 @@
-//! Tells when the carrier has immobilized an enemy champion. Shared by
-//! Imperial Mandate's Command and Solstice Sleigh's Going Sledding; each item
-//! owns what happens when it does.
+//! Tells when the carrier has immobilized an enemy champion, for Imperial
+//! Mandate's Command and Solstice Sleigh's Going Sledding.
 //!
-//! A taunt is the easy one: it names its taunter, so `update` reports every
-//! new taunt onto the carrier, with no skill hit needed (Knight's taunt deals
-//! no damage, and it never set Command off while it waited on one).
-//!
-//! For the rest the host does not say who applied a crowd control, so "you
-//! immobilized them" is read as two things happening to the same enemy
-//! champion within [`WINDOW_TICKS`] of each other, in either order: one of
-//! your skills hitting it, and it becoming newly immobilized. "Newly" means
-//! more immobilizing effects than a tick before, so chaining a second stun
-//! onto a stunned target counts again.
-//!
-//! Either order, and a window of a sixth of a second, because how a skill
-//! lays its crowd control down beside its damage is the skill's own business:
-//! a stun that lands before its hit is remembered for it, and a skill's hit
-//! is taken from `on_attack` as well as `on_skill_hit`. Waiting for the stun
-//! on the hit alone, for two ticks, misses a knock-up like Berserker's slam.
-//!
-//! An ally's stun landing on a champion inside that window of your skill
-//! hitting it reads the same and is credited to you, which is why a carrier
-//! with no such skill of its own claims nothing (`claims_hits`): its slows
-//! would otherwise collect every stun its allies land.
+//! A taunt names its taunter, so new taunts onto the carrier are reported
+//! directly. For the rest the host does not say who applied it, so a skill hit
+//! and a new immobilize on the same enemy within [`WINDOW_TICKS`], in either
+//! order, count as the carrier's; a carrier whose kit cannot immobilize claims
+//! nothing (`claims_hits`), or it would collect its allies' stuns.
 
 use mod_api_stable::*;
 
-// Crowd control that takes movement out of the target's hands: stun, root,
-// knock-up, knockback/pull, fear and charm, and taunt, which is counted on its
-// own below. League's "immobilize" set, plus the three that walk the target
-// somewhere; disarm, silence and ground leave them free to walk, and a slow
-// is not crowd control here at all. `champion_traits::Immobilize` is the same
-// set read off a champion's kit: keep the two in step.
+// Crowd control that takes movement out of the target's hands: League's
+// immobilize set plus fear, charm and forced movement, with taunts counted
+// apart. Keep in step with `champion_traits::Immobilize`.
 const IMMOBILIZING: [CcKindV1; 6] = [
     CcKindV1::Airborne,
     CcKindV1::Stun,
@@ -41,10 +21,8 @@ const IMMOBILIZING: [CcKindV1; 6] = [
     CcKindV1::Charm,
 ];
 
-// What the entity is under right now, read in one pass: (immobilizing effects,
-// taunts aside; taunts onto `taunter`). A taunt names who it forces its target
-// to attack, which is who applied it: the one immobilize whose source the host
-// does give.
+// What the entity is under right now, read in one pass: (immobilizing effects
+// other than taunts, taunts onto `taunter`).
 fn held(entity: &StableEntity<'_, '_>, taunter: usize) -> (usize, usize) {
     let (mut immobilized, mut taunted) = (0, 0);
     for cc in (0..entity.cc_count()).filter_map(|i| entity.cc_at(i)) {
@@ -85,8 +63,7 @@ const WINDOW_TICKS: usize = 10;
 #[derive(Clone, Debug, Default)]
 pub(crate) struct ImmobilizeWatch {
     // Each enemy champion as of the last tick: (entity, immobilize count,
-    // taunts onto the carrier). What a new immobilize, or a new taunt, is
-    // new against.
+    // taunts onto the carrier).
     baseline: Vec<(usize, usize, usize)>,
     // The tick before's `baseline`, kept to swap with rather than reallocate.
     previous: Vec<(usize, usize, usize)>,
@@ -96,10 +73,9 @@ pub(crate) struct ImmobilizeWatch {
     // Enemy champions newly immobilized and still waiting for a skill of the
     // carrier's to hit them: (target, tick it was seen).
     stuns: Vec<(usize, usize)>,
-    // Whether a skill hit may claim an immobilize that lands with it: not for
-    // a carrier whose kit is known to immobilize with nothing but a taunt, or
-    // nothing at all, or every stun an ally lands on a target of its slows
-    // would be credited to it. `None` until the carrier's champion is read.
+    // Whether a skill hit may claim an immobilize: not for a carrier whose kit
+    // immobilizes with nothing but a taunt, or nothing. `None` until the
+    // carrier's champion is read.
     claims_hits: Option<bool>,
 }
 
@@ -113,14 +89,10 @@ impl ImmobilizeWatch {
         self.stuns.clear();
     }
 
-    // From `on_skill_hit`, and from `on_attack` for a hit of a skill's:
-    // whether this hit of the carrier's goes with an immobilize on `target`,
-    // one already seen or one that is there now. A hit with neither is
-    // remembered for [`WINDOW_TICKS`], and `update` reports it if its
-    // immobilize turns up.
-    //
-    // Both hooks may tell of the same hit, and a skill may hit the same
-    // champion several times: an immobilize is only ever answered to once.
+    // From `on_skill_hit`, and from `on_attack` for a skill's hit: whether this
+    // hit goes with an immobilize on `target`, already seen or there now.
+    // Otherwise the hit waits [`WINDOW_TICKS`] for `update`; each immobilize is
+    // answered once, however many hooks report the hit.
     pub(crate) fn skill_hit(&mut self, ctx: &StableSim<'_>, target: usize, is_ally: bool) -> bool {
         if is_ally || self.claims_hits == Some(false) {
             return false;
@@ -176,10 +148,7 @@ impl ImmobilizeWatch {
             .claims_hits
             .get_or_insert_with(|| claims_hits(&carrier));
 
-        // This tick's counts are what the next is new against. A champion
-        // under more immobilizing effects than a tick ago has just been
-        // immobilized by someone; one under more of the carrier's taunts, by
-        // the carrier.
+        // This tick's counts are what the next is new against.
         std::mem::swap(&mut self.baseline, &mut self.previous);
         self.baseline.clear();
         for index in 0..ctx.champion_count() {

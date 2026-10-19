@@ -33,7 +33,7 @@ impl EdgeOfNight {
             ),
             price: 750,
             attack: 35,
-            hp: 100,
+            hp: 200,
             effect_lethality: 15,
             effect_cooldown_seconds: 40.0,
             // Non-vital stats (internals)
@@ -46,7 +46,7 @@ impl EdgeOfNight {
             meta: ItemMeta::radiant("radiant_edge_of_night", &[BASE_KEY]),
             price: 1000,
             attack: 60,
-            hp: 150,
+            hp: 250,
             effect_lethality: 15,
             effect_cooldown_seconds: 40.0,
             annul: Annul::on_line(BASE_KEY, true),

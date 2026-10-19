@@ -151,13 +151,10 @@ fn strength(rule: fields::Rule, base: f64, value: f64) -> f64 {
     }
 }
 
-// Whether a tier's number may be where `moved` puts it: inside the band of
-// its unpatched value, or one step from it. The one step is for the number
-// whose first step is already outside (10 Ability Haste in fives, the 33 of
-// Trinity Force in tens): it has that step each way and no more.
-//
-// A number the player gave a least or a most of its own (`State::limits`)
-// is held to those and not to the band: see [`State::within`].
+// Whether a tier's number may be where `moved` puts it: inside its band, or one
+// step out for a number whose first step already leaves it (10 Ability Haste in
+// fives). A number with the player's own least or most is held to those
+// ([`State::within`]).
 fn in_bounds(state: &State, family: &Family, field: &str, moved: &Moved) -> bool {
     let Some(member) = family.members.iter().find(|member| member.key == moved.key) else {
         return false;
@@ -174,14 +171,11 @@ fn in_bounds(state: &State, family: &Family, field: &str, moved: &Moved) -> bool
         || (moved.after - base).abs() <= step + 1e-9
 }
 
-// `field` of `family` made stronger or weaker by the least that moves its
-// number, looked for from `from` to `to` (shares of the number, a hundredth
-// at a time). Nothing where no step is to be had: none that near, or the
-// number is at its bounds.
-//
-// `family` is one tier as a patch plans it. Given more, the number that has
-// to move is the first tier's ([`lead`]), and of the ratios that give it
-// that one step the one is taken that moves the most tiers.
+// `field` of `family` made stronger or weaker by the smallest move of its
+// number, searched from `from` to `to` (shares of the number, a hundredth at a
+// time); `None` where no step is near enough or the number is at its bounds.
+// Measured on the lead tier ([`lead`]), preferring the ratio that moves the
+// most tiers.
 fn nudge(
     state: &State,
     id: &str,
@@ -270,11 +264,9 @@ fn nudge(
     found.map(|(step, _)| step)
 }
 
-// The move of `field` that best makes up for a step of `got` where `rate`
-// was wanted: `stronger` is the way it goes, against the step. Best is what
-// leaves the two nearest `rate` together, and nothing is returned where no
-// move of the field leaves them within [`NET_SPAN`] of it. The move itself
-// is never a big one ([`Step::big`]).
+// The move of `field` that best makes up for a step of `got` where `rate` was
+// wanted, going `stronger`: the one leaving the pair nearest `rate`, within
+// [`NET_SPAN`], and never a big one ([`Step::big`]).
 fn counter(
     state: &State,
     id: &str,
@@ -309,11 +301,9 @@ fn counter(
     best.map(|(_, step)| step)
 }
 
-// The item's total: how far each of its numbers is from its unpatched
-// value, as a share of it and counted as strength, all added up. With the
-// numbers as the state has them, but for the fields `plan` moves.
-//
-// Of the one tier being planned, like every change.
+// The item's total: each number's distance from unpatched, as a share counted
+// as strength, summed, with `plan`'s fields as planned. Of the one tier being
+// planned.
 fn total(state: &State, id: &str, family: &Family, plan: &[&Step]) -> f64 {
     let mut seen: Vec<&str> = Vec::new();
     let mut sum = 0.0;
@@ -386,22 +376,14 @@ fn with_partner(state: &State, id: &str, family: &Family, first: Step) -> Vec<St
     ]
 }
 
-// The steps a patch takes on one tier of an item: one or two of its
-// numbers, picked at random among those that can move, the other end of a
-// range with it, and what makes up for a step that is more than was wanted.
+// The steps a patch takes on one tier: one or two numbers picked at random, a
+// range's other end with them, and a counter-move where a smallest step
+// overshoots twice what was wanted ([`counter`]; only then may a step be big).
+// Numbers with no counter are passed over, and if nothing else fits, any step
+// that is not big is taken.
 //
-// A number moves by its smallest step. Twice what was wanted or less, the
-// step stands as it is. More, and another number of the tier is moved the
-// other way ([`counter`]): then a step may even be a big one, over a
-// quarter of the number, which nothing else lets through. A number that
-// finds nothing to make up for it is passed over, and once every number
-// has been asked that way, whatever is still wanted is taken as it used to
-// be: any step that is no big one, however far over.
-//
-// `tier` is the item with that one tier in it, and `id` the tier's own key,
-// which its ratios are kept under. `seed` is what orders the numbers that
-// are tried, and `allowed` is asked of every step before it is taken, with
-// the plan so far.
+// `tier` holds that one tier and `id` is its key, `seed` orders the tries, and
+// `allowed` vets every step against the plan so far.
 #[allow(clippy::too_many_arguments)]
 fn plan_for(
     state: &State,
@@ -493,15 +475,9 @@ fn plan_for(
     plan
 }
 
-// The tiers of an item that a patch moves, by their place among its tiers.
-//
-// A patch does not have to move every tier of an item. A tier is moved
-// where its own record says what the item's does: its holders' win share,
-// taken with the same imaginary even games as the item's, on the item's
-// side of even by half of what an item needs to be touched. Where no
-// tier's record says that much, which is what an item touched for how
-// often it is built comes to, the tier that was held the most is moved, the
-// first of them where they were held as much.
+// The tiers of an item a patch moves, by place. A tier moves where its own
+// record (with the same imaginary games) sits on the item's side of even by
+// half the touch threshold; failing that, the most-held tier moves.
 fn tiers_to_move(family: &Family, tallies: &HashMap<String, Tally>, buff: bool) -> Vec<usize> {
     let of = |member: &Member| tallies.get(&member.key).copied().unwrap_or_default();
     let lean = |tally: Tally| {
@@ -525,12 +501,10 @@ fn tiers_to_move(family: &Family, tallies: &HashMap<String, Tally>, buff: bool) 
         .collect()
 }
 
-// Whether `steps`, taken on the tier at `at`, would turn the order of two
-// tiers round in one of their numbers: a radiant left with less attack
-// damage than its legendary, or a longer cooldown. Asked only of numbers
-// the two tiers do not have alike unpatched. The other tiers are read as
-// this patch has left them (`landed`: tier, field, what it reads), or as
-// the state has them.
+// Whether `steps` on the tier at `at` would reverse two tiers' order in a
+// number they do not share unpatched (a radiant left weaker than its
+// legendary). Other tiers are read as this patch left them (`landed`) or as the
+// state has them.
 fn crosses(
     state: &State,
     family: &Family,
@@ -594,20 +568,11 @@ fn level_with(member: &Member, field: &str, value: f64, lower: bool) -> Option<f
     Some(if lower { near - step } else { near + step })
 }
 
-// Keeps a radiant no weaker than its legendary, in the numbers `changes`
-// moved: the changes of one patch to one item. Every number the two tiers
-// both have, a stat the item gives or a number of its passive.
-//
-// Where the patch leaves the legendary's number the stronger of the two,
-// the radiant's comes level with it; and where it leaves the radiant's the
-// weaker by moving the radiant alone, the legendary's comes level with
-// that. So a buff to the legendary's Rapids is a buff to the radiant's as
-// well, and a nerf to it leaves the radiant's where it is.
-//
-// The tier that comes level gets a change of its own for the number, or
-// has the one the patch already made for it set to the level. A change of
-// its own follows the other tier's (`Change::leader`), and the notes list
-// it in that tier's entry.
+// Keeps a radiant no weaker than its legendary in the numbers `changes` moved:
+// where the legendary ends stronger, the radiant comes level; where the radiant
+// alone was made weaker, the legendary comes down with it. The levelled tier
+// gets a change following the other's (`Change::leader`), listed in that tier's
+// notes.
 fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec<Change>) {
     let family = judged.family;
     let (Some(legendary), Some(radiant)) = (
@@ -722,27 +687,15 @@ fn level_tiers(state: &State, judged: &Judged<'_>, buff: bool, changes: &mut Vec
     }
 }
 
-// The changes to one item: the steps of each tier a patch moves
-// ([`tiers_to_move`]), every tier planned by itself ([`plan_for`]). So a
-// patch may move the legendary and leave its radiant, or the other way
-// round, and where it moves both they need not move in the same numbers:
-// as it falls for the item in the patch, the tiers try their numbers in one
-// order, and then mostly move the same ones, or each in an order of its
-// own. What they may not do is change places ([`crosses`]), or take a stat
-// under what a part of the item gives (`floors`, [`stat_floors`]); and no
-// number the two share is left the weaker on the radiant ([`level_tiers`]).
+// The changes to one item: each tier a patch moves ([`tiers_to_move`]) planned
+// by itself ([`plan_for`]), so tiers may move differently or not at all. They
+// may not swap order ([`crosses`]), drop a stat under a part's (`floors`,
+// [`stat_floors`]), or leave the radiant weaker in a shared number
+// ([`level_tiers`]).
 //
-// Every row a change brings is the item's, under its buff or its nerf: what
-// makes up for a buff is a number going down in the list of buffs.
-//
-// And no more of those rows than the player's settings allow an item
-// (`max_changes_per_item`, [`within_rows`]), counted as the notes write
-// them: a number made up for another is a row of its own, the two ends of
-// a range are one. The tiers share the count, so each tier's notes keep to
-// it too, and still do once a tier left the weaker is brought level
-// ([`level_tiers`]), which only moves a number the other tier moved. The
-// upgrades kept no weaker than their parts afterwards (`level_upgrades`)
-// are not held to it.
+// The rows, counted as the notes write them, stay within `max_changes_per_item`
+// across the tiers ([`within_rows`]); `level_upgrades` afterwards is not held
+// to it.
 fn changes_for(
     state: &State,
     judged: &Judged<'_>,
@@ -816,10 +769,9 @@ fn changes_for(
     changes
 }
 
-// Whether an item's notes keep to `cap` rows with `steps` taken on top of
-// `plan`, the steps of its tier `key` so far, and `rows`, what the tiers
-// planned before took ([`super::text::row_of`] names a row). A number whose
-// row is taken already, by this tier or another, takes none.
+// Whether an item's notes stay within `cap` rows with `steps` on top of `plan`
+// and `rows` (what earlier tiers took, named by [`super::text::row_of`]); a
+// number whose row is taken already adds none.
 fn within_rows(rows: &[String], key: &str, plan: &[Step], steps: &[Step], cap: usize) -> bool {
     let mut taken: Vec<&str> = rows.iter().map(String::as_str).collect();
     for step in plan.iter().chain(steps) {
@@ -858,12 +810,10 @@ fn stat_held(base: &Base, key: &str, field: &str) -> f64 {
         .unwrap_or(0.0)
 }
 
-// The least each tier's stats may be taken down to: for every stat that a
-// tier and a part it is built from both give, what the part gives as the
-// state has it. A nerf is not planned under it, since the stat would only
-// be put back ([`level_upgrades`]). A radiant's legendary is no such part:
-// it comes down with its radiant ([`level_tiers`]), and the radiant has the
-// legendary's floors.
+// The least each tier's stats may be lowered to: what a part it is built from
+// gives, as the state has it, since [`level_upgrades`] would put it back. A
+// radiant takes its legendary's floors rather than counting it as a part
+// ([`level_tiers`]).
 fn stat_floors(base: &Base, state: &State) -> HashMap<String, HashMap<String, f64>> {
     let members = tiers_of(base);
     let family_of = |key: &str| members.get(key).map(|(family, _)| *family);
@@ -943,12 +893,10 @@ fn stat_now(
     patched.unwrap_or_else(|| stat_held(base, key, field))
 }
 
-// Sets the stat `field` of the tier `key` level with `level`: the nearest
-// of its own steps that is no less where `up`, and no more where not. A
-// tier `changes` has already moved in the stat has that change end at the
-// level, and one it has not gets a change of its own: one that follows
-// `leader`, the item the level is read off, where that is another tier of
-// the same item. Whether anything was changed.
+// Sets `field` of tier `key` level with `level`, at its nearest own step no
+// less (`up`) or no more. A change already made ends at the level; otherwise a
+// new one follows `leader` when that is another tier of the same item. Whether
+// anything changed.
 #[allow(clippy::too_many_arguments)]
 fn set_level(
     members: &HashMap<&str, (&str, &Member)>,
@@ -994,10 +942,12 @@ fn set_level(
         let sister = members
             .get(leader)
             .is_some_and(|(other, _)| *other == family);
+        // Up is a buff, but for a number where the smaller is the stronger.
+        let lower = fields::rule_for(key, field).is_some_and(|rule| rule.lower_is_stronger);
         changes.push(Change {
             family: family.to_string(),
             field: field.to_string(),
-            buff: up,
+            buff: up != lower,
             ratio,
             members: vec![Moved {
                 key: key.to_string(),
@@ -1044,23 +994,62 @@ fn set_level(
     true
 }
 
-// Keeps every upgrade at least what it is built from, in the stats an item
-// gives: with `changes` in, no item has less of a stat than a part it is
-// built from has. Every upgrade there is, a component and its legendary as
-// a legendary and its radiant, and the parts no patch moves as well: a
-// component's stat does not go under what the part under it gives.
-//
-// The upgrade comes up to its part. A buff to a component that takes it
-// over one of its legendaries is a buff to that legendary too, and a nerf
-// that would take an item under one of its parts stops at the part. Where
-// no patch can move the upgrade's stat, the part comes down to it.
-//
-// Not where the upgrade starts out with less of the stat than the part, or
-// with none of it: that is an item whose passive makes up for it, as
-// Overlord's Bloodmail gives its attack damage by its health, and the two
-// stay as they are.
+// The passive numbers a part shares with what it builds into, under one
+// passive name ([`super::text::passive_name`]): Sheen's and Trinity Force's
+// Spellblade cooldown, Madred's Razors' and Feral Flare's Maim heal. A number
+// only counts where both items keep it in the same field, so Spellblade's
+// damage is compared on Iceborn Gauntlet alone. As (part, upgrade, field,
+// whether the smaller number is the stronger), for patched items whose rule
+// reads the field the same way on both.
+fn tracked_passives(
+    base: &Base,
+    members: &HashMap<&str, (&str, &Member)>,
+) -> Vec<(String, String, String, bool)> {
+    let mut tracked = Vec::new();
+    for (part, upgrade) in &base.upgrades {
+        let (Some((_, part_member)), Some((_, upgrade_member))) =
+            (members.get(part.as_str()), members.get(upgrade.as_str()))
+        else {
+            continue;
+        };
+        for field in part_member.values.keys() {
+            if fields::FLAT.contains(&field.as_str()) || !upgrade_member.values.contains_key(field) {
+                continue;
+            }
+            let (Some(part_rule), Some(upgrade_rule)) =
+                (fields::rule_for(part, field), fields::rule_for(upgrade, field))
+            else {
+                continue;
+            };
+            if part_rule.lower_is_stronger != upgrade_rule.lower_is_stronger {
+                continue;
+            }
+            let name = super::text::passive_name(part, field);
+            if name.is_none() || name != super::text::passive_name(upgrade, field) {
+                continue;
+            }
+            tracked.push((
+                part.clone(),
+                upgrade.clone(),
+                field.clone(),
+                part_rule.lower_is_stronger,
+            ));
+        }
+    }
+    tracked
+}
+
+// Keeps every upgrade at least as strong as its parts in each stat both give,
+// components and unmoved parts included: the upgrade comes up to the part, or
+// where it cannot move, the part comes down. Not where the upgrade starts with
+// less or none of the stat, as when a passive makes up for it (Overlord's
+// Bloodmail). And a part's passive numbers no stronger than the same passive's
+// on what it builds into ([`tracked_passives`]): there the part follows,
+// coming down to the upgrade (the user's, 2026-10-17), and the upgrade comes up
+// only where the part cannot move.
 fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
     let members = tiers_of(base);
+    let tracked = tracked_passives(base, &members);
     let frozen = &super::tuning::tuning().frozen;
     // Whether a patch can move the stat of the item: not one the player's
     // settings hold still, for every item or for this one.
@@ -1094,6 +1083,28 @@ fn level_upgrades(base: &Base, state: &State, changes: &mut Vec<Change>) {
                 };
                 settled &= !moved;
             }
+        }
+        for (part, upgrade, field, lower) in &tracked {
+            let held = stat_now(&members, base, state, &changes[..], part, field);
+            let bar = stat_now(&members, base, state, &changes[..], upgrade, field);
+            let stronger = if *lower {
+                held < bar - 1e-9
+            } else {
+                held > bar + 1e-9
+            };
+            if !stronger {
+                continue;
+            }
+            // `up` is the way toward the weaker number for the part and the
+            // stronger one for the upgrade.
+            let moved = if moves(part, field) {
+                set_level(&members, state, changes, part, field, bar, *lower, upgrade)
+            } else if moves(upgrade, field) {
+                set_level(&members, state, changes, upgrade, field, held, !*lower, part)
+            } else {
+                false
+            };
+            settled &= !moved;
         }
         if settled {
             break;
@@ -1163,25 +1174,14 @@ pub(crate) fn decide(
         })
         .collect();
 
-    // A component has no record worth judging: it is held at the end of a
-    // match by whoever did not finish what it builds into. It is patched
-    // for the finished items it is built into, and only where they say one
-    // thing: every one of them that has the games to be judged is over the
-    // mark to be nerfed, or every one is under the mark to be buffed, and
-    // there are two of them at least. Then the patch moves the component in
-    // their place: what they share, once, and none of them. Where they do
-    // not agree, the ones over the mark are patched themselves, like any
-    // item, and the component is left alone.
+    // A component is patched for the finished items it builds into, only when
+    // at least two of them with enough games all point the same way; it then
+    // moves in their place, and otherwise they are patched themselves. A
+    // component of a single item is patched in its place one time in
+    // [`ALONE_ONE_IN`], decided per patch and component.
     //
-    // A component built into one finished item only shares nothing, and as
-    // a rule that item is patched itself. Now and then the component is
-    // patched in its place all the same ([`ALONE_ONE_IN`]), or its numbers
-    // would never move: which patches, falls by the patch and the
-    // component, the same whenever that patch is made.
-    //
-    // Its score is the furthest of theirs, which puts it ahead of them all
-    // where the changes are picked, and its changes are sized by the middle
-    // of them. Its record, for the notes, is theirs added up.
+    // Its score is the furthest of theirs (so it is picked first), sized by
+    // their middle, and its record for the notes is theirs added up.
     let verdicts: HashMap<&str, (f64, Tally)> = judged
         .iter()
         .filter(|item| item.tally.games >= tuning.min_games)
@@ -1294,16 +1294,9 @@ pub(crate) fn reads(state: &State, member: &Member, field: &str) -> Option<f64> 
     ))
 }
 
-// The patch the player made by hand: every number waiting in
-// [`State::staged`], set to what the player typed for it in the Item Patcher
-// Settings window.
-//
-// Nothing is judged and nothing is added. A number is taken as it was
-// typed, on a patch's steps or off them, inside the item's band or outside
-// it, and no other number is moved to go with it: what a patch otherwise
-// keeps in order (a radiant no weaker than its legendary, an upgrade no
-// weaker than its parts) is left as the player has it. One that reads what
-// was typed already, or that the mod no longer has, is no change.
+// The patch the player made by hand: every number in [`State::staged`], set
+// exactly as typed. Nothing is judged, banded or levelled; a number already at
+// its value, or no longer the mod's, is no change.
 pub(crate) fn manual(base: &Base, state: &State, number: u32, version: &str) -> Patch {
     let members = tiers_of(base);
     let mut changes = Vec::new();

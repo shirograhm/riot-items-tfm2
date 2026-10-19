@@ -1,7 +1,6 @@
-//! The patch system's settings, from two files beside the DLL:
-//! `config-autopatch-default.json`, which the mod ships, and
-//! `config-autopatch.json`, the player's own copy of it. They pair up as
-//! `config-default.json` and `config.json` do.
+//! The patch system's settings: `config-autopatch-default.json`, which the mod
+//! ships, and the player's `config-autopatch.json` over it, paired as
+//! `config-default.json` and `config.json` are.
 //!
 //! ```json
 //! {
@@ -16,11 +15,9 @@
 //! }
 //! ```
 //!
-//! Read once, the player's file over the shipped one: a value the player's
-//! file does not give, or gives as something that cannot be used, is the
-//! shipped file's, and every value is where the player has no file. One that
-//! neither file gives keeps the default built in here. A step of 0 is no step
-//! at all: no patch moves that stat.
+//! Read once: a value the player's file lacks or gets wrong is the shipped
+//! file's, else the built-in default. A step of 0 means no patch moves that
+//! stat.
 
 use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
@@ -58,10 +55,8 @@ pub(crate) struct Tuning {
     pub max_ratio: f64,
 }
 
-// The names `step_size` goes by, and the config field each is. A name can
-// be several fields: lethality is the lethality an item gives and the bonus
-// some give on top of it. A config field's own name is taken too, a
-// passive's number among them (`effect_slow_amount`).
+// The names `step_size` goes by, and the config field each is; one name can
+// cover several fields (lethality), and a config field's own name works too.
 const STAT_NAMES: [(&str, &str); 23] = [
     ("health", "hp"),
     ("health_regen", "hp_regen"),

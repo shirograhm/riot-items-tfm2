@@ -180,10 +180,9 @@ impl StableItem for Eclipse {
             return;
         }
 
-        // Consume: one `entity_remove_buff` clears every instance, so the
-        // duplicate marks a multi-hit cast can stack up (a fresh buff is not
-        // visible for ~3 ticks, so the next hit inside that window re-marks
-        // rather than reading it) all go at once.
+        // Consume: one `entity_remove_buff` clears every instance, including
+        // duplicate marks a multi-hit cast stacks up before a fresh buff is
+        // visible (~3 ticks).
         ctx.entity_remove_buff(target, self.mark_buff);
 
         let bonus_damage = percent_of(target_max_hp, self.effect_hp_percent_damage);

@@ -1,26 +1,3 @@
-//! Immolate on the vanilla Sunfire Cape.
-//!
-//! Sunfire Cape is the base game's `hourglass_of_eternity`, renamed in
-//! `text/item.i18n`. It is an engine item, so there is no `StableItem` to hang
-//! the passive on: its Mending regen is the data field `flat_regen`, and
-//! registering a mod item under the same key is not a documented override for
-//! items. Instead the match hook looks for holders every tick and burns their
-//! surroundings once a second, which leaves the vanilla item itself untouched.
-//!
-//! Radiant Sunfire Cape (`giants_horn_shard`) already has this aura built into
-//! the engine (`flat_aoe_damage` / `max_hp_aoe_ratio` / `aoe_range`), so its
-//! burn is deliberately not handled here. The hook gives its holders the same
-//! Immolate flames, and adds the part the engine lacks: the bonus against
-//! minions and monsters, as a second hit on them alone. That assumes the
-//! engine burns once a second like every other Immolate. The other part it
-//! lacks is the reach a bigger holder gets: the engine's range is fixed, so the
-//! hook burns the band past it itself, which assumes the engine measures
-//! centre to centre the way the mod does. Its numbers, like the
-//! rest of the HP line's stats, are written into
-//! `setting/item_setting.item_setting` from the config
-//! (`item_stats::game_item_file`). The hook reads
-//! the same config entries, `sunfire_cape` and `radiant_sunfire_cape`.
-
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
@@ -32,11 +9,8 @@ use crate::{
 use super::immolate_burn_between;
 
 const SUNFIRE_KEY: &str = "hourglass_of_eternity";
-// Radiant Sunfire Cape. The engine burns for it; the hook only adds the flames.
 const RADIANT_SUNFIRE_KEY: &str = "giants_horn_shard";
 
-// Immolate numbers for one of the two capes. Defaults mirror Radiant Sunfire
-// Cape's vanilla aura, matching the tooltip.
 #[derive(Clone, Debug)]
 pub(crate) struct Immolate {
     effect_bonus_flat_damage: usize,
@@ -51,7 +25,7 @@ impl Default for Immolate {
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
-            effect_minion_bonus_percent: 50.0,
+            effect_minion_bonus_percent: 150.0,
         }
     }
 }
@@ -72,30 +46,24 @@ impl Immolate {
         immolate
     }
 
-    // One second of the burn from a champion with `max_hp`.
     fn damage(&self, max_hp: usize) -> usize {
         self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage)
     }
 
-    // What minions and monsters take on top of `damage`.
     fn minion_bonus(&self, damage: usize) -> usize {
         percent_of(damage, self.effect_minion_bonus_percent)
     }
 }
 
-// Deals one second of Immolate for every living Sunfire Cape holder, adds
-// the minion and monster bonus to the engine's burn for every Radiant Sunfire
-// Cape holder, and keeps the Immolate flames up on both.
 fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     if sim.tick() % TICKS_PER_SECOND as usize != 0 {
         return;
     }
 
     let mut flames = Vec::new();
-    // (caster, team, champion damage, minion and monster damage)
     let mut burns = Vec::new();
-    // (caster, team, champion damage, minion and monster bonus)
     let mut radiant_burns = Vec::new();
+
     for index in 0..sim.player_count() {
         let Some(player) = sim.player_at(index) else {
             continue;
@@ -135,12 +103,8 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     }
 
     for (caster, caster_team, damage, minion_bonus) in radiant_burns {
-        // The engine burns everyone within its own range for the base damage
-        // itself, so there the hook only adds the bonus.
         let engine_reach = (radiant.effect_max_distance * DISTANCE_UNITS_PER_RANGE) as u64;
         immolate_burn_between(sim, caster, caster_team, 0, engine_reach, 0, minion_bonus);
-        // The engine's range does not grow with the holder, so the band a
-        // bigger holder adds past it ([`sized_range`]) is burnt here in full.
         let reach = sized_range(sim, caster, radiant.effect_max_distance);
         if reach > engine_reach {
             let minion_damage = damage + minion_bonus;
@@ -157,12 +121,9 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
     }
 }
 
-// The mod's one match hook: Immolate and Shared Riches while the match runs,
-// then the end-of-match item capture.
 pub(crate) struct MatchHooks {
     pub(crate) immolate: Immolate,
     pub(crate) radiant_immolate: Immolate,
-    // The World Atlas line's gold, which keeps coming while its carrier is dead.
     pub(crate) riches: crate::SharedRiches,
 }
 
@@ -173,21 +134,13 @@ impl StableMatchHook for MatchHooks {
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         use crate::perf::{self, Section};
-        // Which match is on screen, for the Check Tactics panel's builds. One
-        // tick read and a return for every simulation but the client's own.
         crate::match_builds::on_match_tick(sim);
-        // And what its athletes buy, for what the item tooltips say each
-        // item has cost. One origin read and a return for the same ones.
         crate::item_spend::on_match_tick(sim);
-        // And what they hold as the match goes, for the counts drawn on
-        // their item icons. The same return for the same ones.
         crate::item_counts::on_match_tick(sim);
         if perf::ENABLED {
             perf::sim_tick(sim.seed(), sim.tick(), sim.is_end());
         }
         let _probe = perf::Probe::sim(Section::MatchTick);
-        // What a balance patch has made of the flat stats of the items each
-        // champion holds, kept on the champion.
         crate::patches::on_match_tick(sim);
         if !sim.is_end() {
             perf::time(Section::MatchImmolate, || {

@@ -13,12 +13,14 @@ fn sabotage_bonus(ctx: &mut StableSim<'_>, caster: usize, flat: usize, ad_percen
 }
 
 // Gain 22 Lethality.
-// Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack
-// against a turret to deal 150 + 15% AD as bonus true damage.
 //
-// While Sabotage is held, a molten shard glows by the carrier: the `view_buffs`
-// binding of the same name in `view/effects.view_effects` (`effects/sabotage_charge`).
-// The attack that spends it bursts on the turret ([`BLAST_EFFECT`]).
+// Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90
+// seconds, empowering your next basic attack against a turret to deal 150 + 15%
+// AD as bonus true damage.
+//
+// A molten shard glows by the carrier while Sabotage is held (the `view_buffs`
+// binding of the same name, `effects/sabotage_charge`), and the attack that
+// spends it bursts on the turret ([`BLAST_EFFECT`]).
 #[derive(Clone, Debug)]
 pub struct Bastionbreaker {
     meta: ItemMeta,
@@ -73,9 +75,8 @@ impl Bastionbreaker {
         Self::radiant().configured(cfg)
     }
 
-    // Grants Sabotage, or starts its time over on a carrier that already has
-    // it. Replaced rather than added: Sabotage is one empowered attack however
-    // many takedowns came before it, and one buff is one picture.
+    // Grants Sabotage, or restarts its timer: replaced rather than added, since
+    // it is one empowered attack however many takedowns came first.
     fn grant_sabotage(&self, sim: &mut StableSim<'_>, entity: usize) {
         refresh_buff(
             sim,

@@ -1,73 +1,21 @@
 //! What an item has built up over a match, as a number on its icon in the
 //! in-match player rows.
 //!
-//! A few items count something up as the match goes: the health Heartsteel
-//! has banked, the stacks of Hubris, Feral Flare and Rod of Ages, the Ability
-//! Power Grez's Spectral Lantern has drained, what Philosopher's Stone and
-//! Yun Tal Wildarrows have gained. The count is the item's own, and only the
-//! simulation holds the item, so each of them says what it stands at as it
-//! updates ([`note`]), for the simulation the client is showing and no other.
+//! Counting items report from their `update` ([`note`], [`note_with`]);
+//! fight-scoped counts ([`note_in_combat`]) show only during a fight and are
+//! zeroed on death by [`on_match_tick`]. Only the simulation the client shows
+//! is recorded.
 //!
-//! Overlord's Bloodmail shows a stat it adds instead, the Attack Damage
-//! Tyranny gives ([`note_with`]).
+//! That simulation runs ahead and may replay the match from the start, so every
+//! count and holding is kept by tick and drawn as of the tick the match clock
+//! reads ([`shown_tick`]); a rewind drops what was kept from that tick on.
+//! Nothing is drawn where the clock cannot be read.
 //!
-//! And some count the fight the carrier is in rather than the match:
-//! Haunting Guise's Madness, the damage Death's Dance has stored, and the
-//! stacks Riftmaker, Spear of Shojin, Blackfire Torch, Guinsoo's Rageblade
-//! and Jak'Sho keep on the champion ([`note_in_combat`]). Those show only
-//! while there is a fight to count, and a death ends one: an item is not
-//! updated while its carrier is dead, so it cannot say so itself, and
-//! [`on_match_tick`] notes 0 for it.
-//!
-//! # The moment on screen
-//!
-//! That simulation is not the match as the screen shows it: it runs ahead,
-//! and in game (2026-10-14) it was seen to play the match again from the
-//! start partway through, every item back to its base tier. Drawn as the
-//! simulation had them, the counts raced ahead of the match.
-//!
-//! So nothing is drawn as the simulation has it now. Every count is kept as
-//! it changed, by tick, and so is what each athlete held ([`on_match_tick`]),
-//! and the icons show the match as of the tick the match clock over the map
-//! reads ([`shown_tick`]): the item in each slot then, and its count then. A
-//! simulation that goes back to a tick it has been past is the match played
-//! again from there, and what was kept from that tick on is let go for it to
-//! write again. Where the clock cannot be read nothing is drawn, rather than
-//! a count from a moment not on screen.
-//!
-//! # The labels
-//!
-//! The rows are the game's: it spawns a slot an item into each half of each
-//! row. [`sync`] spawns a `count` label into the slot the item is in, found
-//! among the slots the row's half holds (`item_spend::slot_nodes`), and
-//! writes the number into it from then on. One authored in this mod's copy
-//! of `ingame_component/item_slot` was not found in game, and game code
-//! spawns its slots again now and then: a slot spawned again has lost its
-//! label, and gets another.
-//!
-//! The label is pinned to the slot's bottom right corner and wider than the
-//! slot, with its text set to the right: three digits fit an icon, and a
-//! longer number runs out to the left, over the slot before it.
-//!
-//! Nothing is drawn for a count of zero, in a match that is not simulated
-//! through the hook (a spectated one), or on the match result screen, whose
-//! slots are another layout.
-//!
-//! # The test log
-//!
-//! With `match_builds::LOG` on, each step is in `match-builds.log`:
-//!
-//! - `counts.origins`: the kinds of simulation the items have noted from
-//!   (`SimOriginKindV1` codes), which have to take in a client one (2);
-//! - `counts.note.<item>.<athlete>`: the side and lane the client's own
-//!   simulation has the athlete in;
-//! - `counts.clock`: every half minute on the clock, the tick it stands for
-//!   and the tick the simulation has got to; or that it could not be read;
-//! - `counts.<view>`: the player rows the view holds, by name, and the slots
-//!   the counts were placed on; `counts.tree.<half>`, where a half has no
-//!   slot of that number, what there is on the way to it;
-//! - `counts.label.<label>`: whether the label was spawned, or written and
-//!   shown, and how many times labels have been spawned in all.
+//! [`sync`] spawns a `count` label into each game-spawned item slot
+//! (`item_spend::slot_nodes`), again whenever game code respawns the slot; zero
+//! counts, spectated matches and the result screen show nothing. With
+//! `match_builds::LOG` on, each step is logged to `match-builds.log` under
+//! `counts.`.
 
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::Mutex;
@@ -156,10 +104,9 @@ fn record(seed: u64, tick: usize, write: impl FnOnce(&mut Counts)) {
     write(counts);
 }
 
-// Notes what the athletes of the match on screen hold, and ends the in-combat
-// counts of the dead. Called from the mod's match hook on every tick of every
-// simulation: a tick read and a return for all but each [`NOTE_EVERY`]th,
-// and then for any simulation but the client's own.
+// Notes what the on-screen match's athletes hold and ends the dead's in-combat
+// counts. From the match hook on every tick of every simulation; it works only
+// every [`NOTE_EVERY`]th tick of the client's own.
 pub(crate) fn on_match_tick(sim: &StableSim<'_>) {
     let tick = sim.tick();
     if tick % NOTE_EVERY != 0 || !item_spend::on_screen(sim) {
@@ -199,18 +146,14 @@ pub(crate) fn on_match_tick(sim: &StableSim<'_>) {
     });
 }
 
-// Notes what `player`'s item `key` stands at. Called by a counting item from
-// its `update`, on every tick of every simulation: a tick read and a return
-// for all but each [`NOTE_EVERY`]th, and then for any simulation but the
-// client's own.
+// Notes what `player`'s item `key` stands at, from its `update`; it works only
+// every [`NOTE_EVERY`]th tick of the client's own simulation.
 pub(crate) fn note(ctx: &StableSim<'_>, player: usize, key: &'static str, count: u64) {
     note_as(ctx, player, key, false, || count);
 }
 
-// Notes what `player`'s item `key` stands at in the fight the carrier is in:
-// a count a death ends. `count` is only asked for on the ticks a note is
-// taken, which spares a count that has to be looked for (Riftmaker's,
-// among the carrier's buffs) every other tick.
+// Notes a count of the fight the carrier is in, which a death ends. `count` is
+// only asked for on the ticks a note is taken.
 pub(crate) fn note_in_combat(
     ctx: &StableSim<'_>,
     player: usize,
@@ -252,10 +195,8 @@ pub(crate) fn buff_sum(
         })
 }
 
-// How many copies of the buff `name` the champion of `player` wears: the
-// stacks of an item that keeps them on the champion (`crate::add_stack`),
-// Riftmaker's, Spear of Shojin's, Guinsoo's Rageblade's, Jak'Sho's and
-// Blackfire Torch's.
+// How many copies of the buff `name` the champion of `player` wears: the stacks
+// of an item that keeps them on the champion (`crate::add_stack`).
 pub(crate) fn buff_copies(ctx: &StableSim<'_>, player: usize, name: &str) -> u64 {
     ctx.get_player(player)
         .and_then(|player| player.champion())
@@ -399,10 +340,9 @@ fn at_clock(ctx: &StableClient<'_>) -> Vec<(usize, usize, usize, u64)> {
 
 // -- the labels ---------------------------------------------------------------
 
-// The label's name in its slot, and the label, with `%TEXT%` for its number.
-// Like the game's own number over a skill icon (`#cooldown` in `ingame.ui`):
-// out of the palette, outlined, and taking no events, so the slot under it
-// still answers the cursor.
+// The label's name in its slot, and the label, with `%TEXT%` for its number:
+// outlined like the game's skill cooldown number, and taking no events so the
+// slot still answers the cursor.
 const LABEL: &str = "count";
 const LABEL_SOURCE: &str = r##"count:label {
   palette: false;
@@ -487,13 +427,9 @@ fn wanted(ctx: &StableClient<'_>) -> Vec<(String, String)> {
     wanted
 }
 
-// Draws every count of the match on screen on its item's icon, and takes
-// off the ones whose item is gone. Every client frame: a counter and a return
-// for all but each [`SYNC_EVERY`]th, and outside a match no lookup at all.
-//
-// A label is asked what it says, and whether it is there and shows, rather
-// than taken to be as it was last left: game code spawns the slots, and a
-// slot spawned again has none.
+// Draws every count of the match on screen on its item's icon, and takes off
+// the ones whose item is gone. Every [`SYNC_EVERY`]th frame in a match; labels
+// are re-read each time, since game code respawns slots without them.
 pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     static FRAME: AtomicU32 = AtomicU32::new(0);
     static SPAWNED: AtomicU32 = AtomicU32::new(0);

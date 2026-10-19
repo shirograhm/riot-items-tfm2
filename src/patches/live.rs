@@ -1,30 +1,17 @@
-//! The balance as a match reads it: everything the patch state comes to,
-//! worked out once when it changes and read from the simulation, the build
-//! hooks and the tooltips without working anything out again.
+//! The balance as a match reads it: worked out once when the patch state
+//! changes ([`rebuild`]), then read by the simulation, the build hooks and the
+//! tooltips.
 //!
-//! # How a patched number reaches a match
+//! A passive's number reaches a mod item through `perf::Timed`, which rebuilds
+//! each purchased copy from the patched config on its first hook
+//! ([`config_for`]). Flat stats, the game's own items' included, are one buff
+//! per holder ([`DELTA_BUFF`], [`on_match_tick`]), since the game holds its own
+//! copy of an item's stats and a mid-session server settings write would not
+//! reach a watched match; a buff cannot lower unsigned stats, so those are
+//! never patched down.
 //!
-//! - **One of this mod's items, a passive's number.** Every item is built
-//!   from an `ItemConfig`, and the game copies the registered item for each
-//!   purchase. The wrapper every item registers in (`perf::Timed`) builds it
-//!   again from the patched config the first time any hook of the copy runs
-//!   ([`config_for`]), so a copy carries one balance for as long as it lives.
-//! - **A flat stat, of any item.** The game holds its own copy of an item's
-//!   stats and does not ask the item again, so the difference is kept on the
-//!   holder as one buff, [`DELTA_BUFF`], the sum over what it holds
-//!   ([`on_match_tick`]). A buff cannot take away from the stats the game
-//!   keeps unsigned, which is why those are never patched down
-//!   (`fields::Rule::unsigned`).
-//!
-//!   The game's own thirty items go the same way, and not through the
-//!   server's item settings, which is where their stats live. The server
-//!   takes such a write, but the client's copy of the settings is not kept
-//!   up with a write made in the middle of a session. A match the player
-//!   watches is played from that copy, so it would run on other numbers
-//!   than the server's run of the same match. The buff is the same in both.
-//! - **What sits outside the item.** Axiom Arc reads every lethality item's
-//!   number from a table, and the Spellblade items theirs from another; both
-//!   are told (`crate::set_lethality_patches`, `Base::refreshes`).
+//! Tables outside the items are told too: Axiom Arc's lethality and the
+//! Spellblade items' (`crate::set_lethality_patches`, `Base::refreshes`).
 
 use std::collections::{HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -443,14 +430,10 @@ pub(crate) fn shown_flat(key: &str, field: &str) -> Option<i64> {
 
 // -- in the match ---------------------------------------------------------------
 
-// Keeps every champion's [`DELTA_BUFF`] at the sum of what its items'
-// patched flat stats add. From the match hook, every tick of every
-// simulation; while no flat stat is patched it is an atomic read.
-//
-// One buff for all of a champion's items and not one an item, so nothing is
-// left behind when an item is built into the next: the sum is taken from
-// what the champion holds now. It is only touched when it is not what it
-// should be, which after a purchase is once.
+// Keeps every champion's [`DELTA_BUFF`] at what its items' patched flat stats
+// add, from the match hook every tick; an atomic read while nothing is patched.
+// One buff for all items, recomputed from what is held, so an upgrade leaves
+// nothing behind; written only when it is off.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
     let tick = sim.tick();
     if !ANY_DELTAS.load(Ordering::Relaxed) || tick % DELTA_CHECK_TICKS != 0 || sim.is_end() {

@@ -172,11 +172,10 @@ impl StableItem for Hubris {
         }
     }
 
-    // A respawn ends Eminence: its bonuses and its stacks. But the host tells
-    // an item bought in the middle of a life `on_spawn` too, and an upgrade
-    // to the Radiant item is one: that lost every stack and bonus (user,
-    // 2026-10-14). A note from the champion as it is now is this life's, so
-    // there the stacks are taken over and the bonuses left running.
+    // A respawn ends Eminence, but the host also calls `on_spawn` for an item
+    // bought mid-life, a Radiant upgrade included, which used to lose every
+    // stack (user, 2026-10-14). A note from the current champion entity is this
+    // life's, so its stacks are taken over and the bonuses left running.
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
         let Some(entity) = champion_of(ctx, player) else {
             return;
@@ -191,13 +190,9 @@ impl StableItem for Hubris {
         upgrade_carry::note(BASE_KEY, ctx, player, pack(entity, 0));
     }
 
-    // The stacks are taken over first, so a Radiant item has the base item's
-    // from its first tick and not only from its first takedown, which is
-    // when it would take them over anyway.
-    //
-    // The number on the item's icon is the Attack Damage Eminence gives now:
-    // every takedown's `hubris_bonus` still running, added up. It goes up
-    // with each takedown and down as each runs out, and a death clears them.
+    // Stacks are taken over first, so a Radiant item has them from its first
+    // tick. The icon shows Eminence's current Attack Damage: every running
+    // `hubris_bonus`, added up.
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
         self.inherit_stacks(ctx, player);
         item_counts::note_in_combat(ctx, player, self.meta.key, || {
@@ -247,11 +242,9 @@ impl StableItem for Hubris {
         self.takedown(sim, player, entity);
     }
 
-    // Eminence is bought, not earned twice: the kills banked on the base item
-    // keep scaling the bonus after the Radiant upgrade replaces it.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `inherit_stacks` does the carrying, and they stay for a host that does.
+    // Eminence's banked kills keep scaling after the Radiant upgrade. The host
+    // (0.6.2) never calls these (`crate::upgrade_carry`); `inherit_stacks` does
+    // the carrying.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.eminence_stacks as u64

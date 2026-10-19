@@ -3,12 +3,12 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, Lifeline};
 
-// Lifeline: If you would take damage below 30% of your maximum health, you first
-// gain a shield that absorbs damage equal to 45% of your maximum health for 4
-// seconds (90 second cooldown).
+// Lifeline: If you would take damage below 30% of your maximum health, you
+// first gain a shield that absorbs damage equal to 45% of your maximum health
+// for 4 seconds (90 second cooldown).
 //
-// While that shield is up the carrier shows Lifeline's bubble
-// ([`crate::Lifeline`]), the one Immortal Shieldbow's Lifeline shows too.
+// While it is up the carrier shows Lifeline's bubble ([`crate::Lifeline`]),
+// shared with Immortal Shieldbow.
 #[derive(Clone, Debug)]
 pub struct SteraksGage {
     meta: ItemMeta,
@@ -32,7 +32,7 @@ impl SteraksGage {
             cooldown_buff: "steraks_gage_cooldown_buff",
             price: 700,
             attack: 20,
-            hp: 200,
+            hp: 300,
             toughness: 15,
             effect_hp_percent_threshold: 30.0,
             effect_caster_hp_percent_shield: 45.0,
@@ -49,7 +49,7 @@ impl SteraksGage {
             cooldown_buff: "steraks_gage_cooldown_buff",
             price: 1000,
             attack: 25,
-            hp: 350,
+            hp: 450,
             toughness: 20,
             effect_hp_percent_threshold: 30.0,
             effect_caster_hp_percent_shield: 45.0,

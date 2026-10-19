@@ -1,8 +1,15 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, apply_lethality, has_buff, total_lethality, ItemMeta};
+use crate::{apply_config, apply_lethality, percent_of, total_lethality, ItemMeta};
 
+// A streak of teal light spiralling up the carrier when Flux gives cooldown
+// back (`view/effects.view_effects`, art from `docs/vfx/make_axiom_flux.py`).
+const FLUX_EFFECT: &str = "riot_axiom_flux";
+
+// Axiom Arc: Lethality, and Flux, a takedown on an enemy champion refunding a
+// share of the ultimate's full cooldown (`entity_reduce_cooldown`, ABI level
+// 10; an older host refunds nothing).
 #[derive(Clone, Debug)]
 pub struct AxiomArc {
     meta: ItemMeta,
@@ -10,11 +17,12 @@ pub struct AxiomArc {
     attack: i32,
     skill_cooldown_mult: i32,
     effect_lethality: usize,
+    // Flux's refund, in percent of the ultimate's full cooldown: this much,
+    // plus `effect_ult_cooldown_per_lethality` for each point of the
+    // carrier's Lethality. The names are from when Flux was Ultimate Haste;
+    // they are kept so configs and item patches carry over.
     effect_ult_cooldown_mult: i32,
     effect_ult_cooldown_per_lethality: f64,
-    // Name of the buff Flux applies. Distinct per variant so the base and the
-    // Radiant version cannot be mistaken for one another.
-    flux_buff: &'static str,
 }
 
 impl AxiomArc {
@@ -27,7 +35,6 @@ impl AxiomArc {
             effect_lethality: 18,
             effect_ult_cooldown_mult: 10,
             effect_ult_cooldown_per_lethality: 0.2,
-            flux_buff: "axiom_arc_flux",
         }
     }
 
@@ -40,7 +47,6 @@ impl AxiomArc {
             effect_lethality: 18,
             effect_ult_cooldown_mult: 10,
             effect_ult_cooldown_per_lethality: 0.2,
-            flux_buff: "radiant_axiom_arc_flux",
             ..Self::base()
         }
     }
@@ -67,6 +73,37 @@ impl AxiomArc {
             ]
         );
         self
+    }
+
+    // Flux: takes the refund off what is left of the ultimate's cooldown. The
+    // Lethality is read at the takedown, so it counts every item held then.
+    fn flux(&self, ctx: &mut StableSim<'_>, player: usize, entity: usize) {
+        let Some((cooltime, remaining)) = ctx
+            .get_entity(entity)
+            .and_then(|e| e.cooldown(SkillSlotV1::Ult))
+            .filter(|cooldown| cooldown.unlocked)
+            .map(|cooldown| (cooldown.cooltime, cooldown.remaining))
+        else {
+            return;
+        };
+        let lethality = total_lethality(ctx, player);
+        let percent = self.effect_ult_cooldown_mult as f64
+            + self.effect_ult_cooldown_per_lethality * lethality as f64;
+        let refund = percent_of(cooltime, percent);
+        if refund > 0 {
+            ctx.entity_reduce_cooldown(entity, SkillSlotV1::Ult, refund);
+            // The burst only when there was cooldown to give back.
+            if remaining > 0 {
+                ctx.play_view_effect(
+                    FLUX_EFFECT,
+                    entity,
+                    &InputTargetV1::target(entity),
+                    0,
+                    0,
+                    0,
+                );
+            }
+        }
     }
 }
 
@@ -113,32 +150,22 @@ impl StableItem for AxiomArc {
         }
     }
 
-    // Flux. The wielder's lethality is fixed for the match — it comes from the
-    // items they bought — so this is resolved once on spawn rather than ticked.
-    // Guarded by `has_buff` the way `apply_adaptive_force` is: there is no
-    // remove API and same-name buffs stack, so a second application on respawn
-    // would double the reduction.
-    fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        let lethality = total_lethality(ctx, player);
-
-        let Some((champion_id, already_applied)) = ctx.get_player(player).and_then(|p| {
-            let champion_ref = p.champion()?;
-            Some((champion_ref.id(), has_buff(&champion_ref, self.flux_buff)))
-        }) else {
-            return;
-        };
-
-        if already_applied {
-            return;
+    // A takedown on a champion. Minions, monsters and turrets refund nothing.
+    fn on_kill(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _rng_seed: u64,
+        player: usize,
+        entity: usize,
+        victim: usize,
+    ) {
+        if ctx.get_entity(victim).is_some_and(|victim| victim.is_champion()) {
+            self.flux(ctx, player, entity);
         }
+    }
 
-        let bonus = self.effect_ult_cooldown_mult as f64
-            + self.effect_ult_cooldown_per_lethality * lethality as f64;
-        let buff = BuffV1 {
-            ult_cooldown_mult: bonus.round() as i32,
-            ..BuffV1::named(self.flux_buff)
-        };
-        ctx.add_buff(champion_id, &buff);
+    fn on_assist(&mut self, ctx: &mut StableSim<'_>, player: usize, entity: usize) {
+        self.flux(ctx, player, entity);
     }
 
     fn on_attack(
