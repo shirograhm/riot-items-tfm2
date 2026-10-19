@@ -38,7 +38,7 @@ impl FiendhunterBolts {
                 &["radiant_fiendhunter_bolts"],
             ),
             price: 700,
-            attack_speed_mult: 35,
+            attack_speed_mult: 30,
             crit_chance: 20,
             move_speed_mult: 4,
             ult_cooldown_mult: 15,
@@ -61,7 +61,7 @@ impl FiendhunterBolts {
         Self {
             meta: ItemMeta::radiant("radiant_fiendhunter_bolts", &["fiendhunter_bolts"]),
             price: 1000,
-            attack_speed_mult: 55,
+            attack_speed_mult: 50,
             crit_chance: 25,
             move_speed_mult: 4,
             ult_cooldown_mult: 25,
@@ -206,11 +206,9 @@ impl StableItem for FiendhunterBolts {
         self.cooldown_ticks = ticks(self.effect_cooldown_seconds);
     }
 
-    // An empowered attack that did not crit is made one at the item's own
-    // rate. One that did keeps the engine's crit (already 200% when it gets
-    // here) and adds the true damage instead. The true damage lands as an
-    // `Item` hit, which this `BaseAttack` gate keeps from spending another
-    // charge.
+    // An empowered attack that did not crit is made one at the item's own rate;
+    // one that did (already 200%) adds the true damage instead, which lands as
+    // an `Item` hit and so spends no charge.
     fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,

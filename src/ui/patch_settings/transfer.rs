@@ -1,29 +1,15 @@
-//! **Import** and **Export** in the Item Patcher Settings window: every
-//! setting the window keeps for this save, New Value, Minimum, Maximum and
-//! Protected, written to a file outside the save and read back from it into
-//! another.
+//! **Import** and **Export** in the Item Patcher Settings window: every setting
+//! the window keeps for this save, written to a file and read back into another
+//! save.
 //!
-//! Both open a Windows file dialog in the mod's own folder, beside the DLL
-//! (`config::mod_dir`, so the Workshop's copy and one put in the mods folder
-//! by hand each start in their own), every time, whichever folder the player
-//! chose the time before ([`show_dialog`]): Export a Save As dialog with
-//! `item-patch-settings.json` filled in, Import an Open dialog. The player can
-//! take either anywhere else, and Import any file an export wrote.
+//! Both open a Windows file dialog in the mod's own folder every time
+//! ([`show_dialog`]), on a thread of its own owned by the game's window
+//! ([`pick`]), so the game keeps drawing. The window polls [`finished`] and
+//! does the file work on the game's thread.
 //!
-//! A dialog runs on a thread of its own ([`pick`]). On the game's, it would
-//! hold the frame it was opened in until it closed, and run its own message
-//! loop inside the game's. It is owned by the game's window, so it stays in
-//! front of it and the game takes no clicks while it is up, and the game
-//! keeps drawing. The window asks [`finished`] every frame, and the file is
-//! written or read there, on the game's thread, once one was chosen.
-//!
-//! An import puts the file's settings in place of the save's, all of them: a
-//! number the file has nothing for has nothing afterwards. What this save
-//! cannot take is left out and counted: anything of an item or a number no
-//! patch moves in this build, a New Value the window would refuse
-//! ([`super::settable`]), a Minimum over the Maximum. A New Value the number
-//! reads already is left out as well, as the window leaves it, but not
-//! counted: there is nothing in it to release.
+//! An import replaces all of the save's settings. What this save cannot take
+//! (an unpatched item or number, a New Value the window would refuse, a Minimum
+//! over the Maximum) is left out and counted.
 
 use std::collections::BTreeMap;
 use std::ffi::{c_void, OsStr, OsString};
@@ -112,11 +98,9 @@ static PICKING: AtomicBool = AtomicBool::new(false);
 // What the last dialog gave back, until [`finished`] takes it.
 static PICKED: Mutex<Option<Picked>> = Mutex::new(None);
 
-// The dialogs are the shell's `IFileOpenDialog` and `IFileSaveDialog`, both
-// driven through `IFileDialog` (shobjidl.h), and not `GetOpenFileNameW`: that
-// one opens in the folder it is given the first time only, and every time
-// after in whatever folder the player last chose in a file dialog of the
-// game's. `IFileDialog::SetFolder` opens in the folder given every time.
+// The shell's `IFileOpenDialog`/`IFileSaveDialog` through `IFileDialog`, not
+// `GetOpenFileNameW`, which opens in the given folder only the first time;
+// `SetFolder` works every time.
 
 // A COM GUID.
 #[repr(C)]

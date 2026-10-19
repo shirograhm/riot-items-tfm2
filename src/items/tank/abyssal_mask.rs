@@ -1,24 +1,23 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, sized_range, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS};
+use crate::{
+    apply_config, refresh_buff, sized_range, ItemMeta, AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
+};
 
-// Abyssal Mask — Unmake, an aura that lowers the magic resistance of the
-// enemy champions around the carrier.
+const AURA_BUFF: &str = "abyssal_mask_aura";
+
+// Unmake's reach. Not configurable: the ring art is drawn at this size.
+const UNMAKE_RANGE: usize = 50;
+
+// Abyssal Mask: Unmake, an aura lowering the magic resistance of enemy
+// champions around the carrier (Riot's older form; it now reads "take 12% more
+// magic damage").
 //
-// The same shape as `FrozenHeart`'s Winter's Caress: a short buff on every
-// enemy champion in range, put back on the shared aura cycle
-// ([`AURA_REFRESH_TICKS`]), so an enemy who walks out keeps it for at most
-// [`AURA_DURATION_TICKS`] and one who walks in has it within a cycle.
-//
-// Riot's Unmake now reads "take 12% more magic damage". This is the older
-// form of it: less magic resistance.
-//
-// # Both variants share the buff name
-//
-// Same-name buffs stack, and re-applying is a remove followed by an add: one
-// `entity_remove_buff` clears every copy. So two Masks standing by the same
-// enemy leave one Unmake on them, not two.
+// Like `FrozenHeart`'s Winter's Caress, a short buff is put back on every enemy
+// champion in range each aura cycle ([`AURA_REFRESH_TICKS`]) and lingers at
+// most [`AURA_DURATION_TICKS`] after they leave. Both tiers share the buff name
+// and re-applying removes every copy first, so two Masks leave one Unmake.
 #[derive(Clone, Debug)]
 pub struct AbyssalMask {
     meta: ItemMeta,
@@ -28,7 +27,6 @@ pub struct AbyssalMask {
     magic_resistance: i32,
     skill_cooldown_mult: i32,
     effect_percent_mr_shred: i32,
-    effect_max_distance: usize,
     // Non-vital stats (internals)
     // Ticks until the aura re-applies, on the shared cycle.
     refresh_cooldown: usize,
@@ -40,11 +38,10 @@ impl AbyssalMask {
             meta: ItemMeta::base("abyssal_mask", &["dusk_raven"], &["radiant_abyssal_mask"]),
             unmake_buff: "abyssal_mask_unmake",
             price: 700,
-            hp: 150,
+            hp: 250,
             magic_resistance: 50,
             skill_cooldown_mult: 10,
             effect_percent_mr_shred: 20,
-            effect_max_distance: 50,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
         }
@@ -54,7 +51,7 @@ impl AbyssalMask {
         Self {
             meta: ItemMeta::radiant("radiant_abyssal_mask", &["abyssal_mask"]),
             price: 950,
-            hp: 250,
+            hp: 350,
             magic_resistance: 75,
             skill_cooldown_mult: 15,
             // Unmake itself is unchanged — Radiant buys the stat line only.
@@ -79,8 +76,7 @@ impl AbyssalMask {
                 hp,
                 magic_resistance,
                 skill_cooldown_mult,
-                effect_percent_mr_shred,
-                effect_max_distance
+                effect_percent_mr_shred
             ]
         );
         self
@@ -104,7 +100,7 @@ impl AbyssalMask {
         let caster_id = caster.id();
         let caster_team = caster.team();
 
-        let range = sized_range(ctx, caster_id, self.effect_max_distance);
+        let range = sized_range(ctx, caster_id, UNMAKE_RANGE);
         let range_sq = range * range;
 
         let mut targets: Vec<usize> = Vec::new();
@@ -123,6 +119,15 @@ impl AbyssalMask {
                 continue;
             }
             targets.push(id);
+        }
+
+        if !targets.is_empty() {
+            refresh_buff(
+                ctx,
+                caster_id,
+                AURA_BUFF,
+                &BuffV1::timed(AURA_BUFF, AURA_DURATION_TICKS),
+            );
         }
 
         for id in targets {

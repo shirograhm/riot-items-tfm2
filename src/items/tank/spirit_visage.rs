@@ -21,7 +21,7 @@ impl SpiritVisage {
                 &["radiant_spirit_visage"],
             ),
             price: 700,
-            hp: 200,
+            hp: 350,
             magic_resistance: 50,
             effect_heal_mult: 20.0,
         }
@@ -31,7 +31,7 @@ impl SpiritVisage {
         Self {
             meta: ItemMeta::radiant("radiant_spirit_visage", &["spirit_visage"]),
             price: 950,
-            hp: 300,
+            hp: 550,
             magic_resistance: 75,
             effect_heal_mult: 20.0,
             ..Self::base()

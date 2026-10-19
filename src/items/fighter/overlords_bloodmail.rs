@@ -28,7 +28,7 @@ impl OverlordsBloodmail {
             tyranny_buff: "overlords_bloodmail_tyranny",
             price: 700,
             attack: 15,
-            hp: 200,
+            hp: 550,
             effect_caster_hp_percent_attack: 2.5,
             // Non-vital stats (internals)
             refresh_cooldown: 0,
@@ -41,7 +41,7 @@ impl OverlordsBloodmail {
             tyranny_buff: "overlords_bloodmail_tyranny",
             price: 1000,
             attack: 20,
-            hp: 350,
+            hp: 700,
             effect_caster_hp_percent_attack: 2.5,
             ..Self::base()
         }

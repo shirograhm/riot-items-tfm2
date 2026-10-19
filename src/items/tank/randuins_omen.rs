@@ -22,7 +22,7 @@ impl RanduinsOmen {
                 &["radiant_randuins_omen"],
             ),
             price: 750,
-            hp: 150,
+            hp: 300,
             defence: 35,
             effect_crit_damage_percent_heal: 30.0,
         }
@@ -32,7 +32,7 @@ impl RanduinsOmen {
         Self {
             meta: ItemMeta::radiant("radiant_randuins_omen", &["randuins_omen"]),
             price: 1000,
-            hp: 300,
+            hp: 400,
             defence: 45,
             effect_crit_damage_percent_heal: 30.0,
             ..Self::base()

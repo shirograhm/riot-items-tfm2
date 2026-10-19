@@ -1,66 +1,24 @@
-//! Both teams' item builds in the in-match Check Tactics panel.
+//! Both teams' item builds in the in-match Check Tactics panel, drawn over
+//! vanilla's Personal Tactics table (which reads "Let Player Decide" with this
+//! mod): a line a lane, blue's build left and red's right, as icons with a
+//! tooltip.
 //!
-//! Vanilla's Personal Tactics table lists four item columns for one team, and
-//! with this mod every cell reads "Let Player Decide": the builds are made by
-//! the Build Editor and the item-build hooks, which the game's own personal
-//! tactics know nothing about. This draws a table of its own over it: one
-//! line a lane, the blue champion's build on the left and the red one's on
-//! the right, as item icons with a tooltip for the one under the cursor.
+//! The on-screen match is the client's own simulation ([`on_match_tick`]) or,
+//! for a spectated one, found by its athletes ([`camera_seats`],
+//! [`seed_by_athletes`]). Each cell shows the build the buy detour grew
+//! ([`note_grown`]), or until then what the item-build hooks decided
+//! ([`note_decision`]); with no match made out the vanilla table stays.
 //!
-//! # Where the builds come from
+//! The drafted lineup ([`note_lineup`]) is a fallback for a host that cannot
+//! say where a simulation runs. The player's side ([`player_side`]) only
+//! decides pin borders under `own_team_only` until the detour says, and which
+//! cells take athlete names.
 //!
-//! Nothing hands a mod the builds of the match on screen, so they are pieced
-//! together:
-//!
-//! * **Which match is on screen.** Two ways. The match hook is called for
-//!   every simulation, and `sim_origin` says which is the client's own
-//!   ([`on_match_tick`]): a watched match says so (`ClientMatchView`, seen in
-//!   game), and its players give both lineups by lane and its seed. A
-//!   spectated match is not simulated through the hook at all, so it is
-//!   found by its athletes instead: the layout's camera
-//!   buttons name every athlete by side and lane ([`camera_seats`]), the buy
-//!   detour files each grown build under its athlete's id, and the newest
-//!   match whose athletes are those, seat for seat, is the one on screen
-//!   ([`seed_by_athletes`]).
-//! * **What each athlete will buy.** The native buy detour grows every
-//!   build to six in the athlete's first moments in the match and reports
-//!   what it leaves ([`note_grown`]): all six, in buying order, filed under
-//!   the match's seed, side and lane. That is the build a cell shows.
-//! * **Until then, or where the detour is not running**, what the item-build
-//!   hooks decided for the champion ([`note_decision`]): the game's four
-//!   slots, found by lineup, with whatever is pinned in the last two.
-//!
-//! When no match can be made out nothing is drawn and the vanilla table
-//! stays.
-//!
-//! The draft the player watched is kept as a second source for the lineup
-//! ([`note_lineup`], from [`super::draft_watch`] by way of the strategy
-//! screen), for a host too old to say where a simulation runs.
-//!
-//! Whose side the player is on only decides two details: which cells may
-//! carry pin borders under `own_team_only` until the buy detour has said so
-//! itself ([`Grown::pins`]), and which side's cells can be labelled with the
-//! athletes' names the vanilla rows hold ([`player_side`]). A side nobody
-//! could be placed on is labelled by champion.
-//!
-//! # Hover
-//!
-//! The stable UI API reports clicks and nothing about the cursor: no hover
-//! event, no focus, no mouse position (see `item_stats::ui`, which settled for
-//! a click for that reason). So the cursor is read from Windows
-//! ([`client_cursor`]), scaled from the window's client area into the
-//! 1920x1080 space `ui_node_rect` answers in ([`cursor`]), and tested against
-//! the slots' own rects. The tooltip is this module's node, not the game's
-//! `#item_tooltip`, which game code shows and hides on its own schedule.
-//!
-//! Seen working in game on a 2560x1440 window. The scaling
-//! assumes the layout is fitted to the window and centred; should that be
-//! wrong on some other shape of window, a click on an icon shows the same
-//! tooltip ([`handle_event`]). Clicks stop counting once a hover has been
-//! seen.
-//!
-//! While [`LOG`] is on, `match-builds.log` beside the DLL says how each match
-//! was identified and what the rules make of every item shown.
+//! The UI API reports nothing about the cursor, so hover reads it from Windows
+//! ([`client_cursor`]), scaled into the layout's 1920x1080 ([`cursor`]); a
+//! click shows the tooltip too until a hover is seen. Seen working at
+//! 2560x1440; with [`LOG`] on, `match-builds.log` says how each match was
+//! identified.
 
 use std::collections::{HashMap, VecDeque};
 use std::ffi::c_void;
@@ -87,10 +45,8 @@ const PERSONAL: &str = "ingame.strategy_info.personal_panel";
 // Vanilla's column headings and its rows, both hidden while the board is up.
 const HEADER: &str = "ingame.strategy_info.personal_panel.header";
 const ROWS_PATH: &str = "ingame.strategy_info.personal_panel.rows";
-// The panel's heading, a label: "Personal Tactics" as the game has it, and
-// while the board is up what the board shows instead ("Planned Builds", in
-// a lane test, a 5v5 test and a match alike, which are this one layout).
-// The key is this mod's, the fallback its English.
+// The panel's heading: "Personal Tactics" from the game, "Planned Builds" while
+// the board is up (this mod's key, English fallback).
 const TITLE: &str = "ingame.strategy_info.personal_panel.title";
 const TITLE_VANILLA: &str = "#asset/base/text/ui?strategy.personal";
 const TITLE_BOARD: (&str, &str) = ("builds.planned", "Planned Builds");
@@ -166,11 +122,8 @@ const SLOT_FILL: &str = "#1d1f2cff";
 const PICKED_LINE: &str = "#4a4c56ff";
 const PINNED_LINE: &str = "#37d5b3ff";
 const HOVER_LINE: &str = "#e8e8e8ff";
-// How wide each border is. A pin's is two: at one pixel it comes out on a
-// 1440p screen as a line a pixel and a third wide, blended down to two
-// thirds of its colour, and is lost beside the gold frames the icons have
-// of their own. The line is drawn centred on the slot's edge, so at two it
-// still clears the icon.
+// Border widths. A pin's is two, since one pixel is lost at 1440p beside the
+// icons' gold frames; drawn on the slot's edge, it still clears the icon.
 const PICKED_STROKE: usize = 1;
 const PINNED_STROKE: usize = 2;
 // What shows of a pinned slot between its border and its icon: a dark teal
@@ -188,10 +141,8 @@ const LINE_H: usize = 20;
 // The description label's box while its text is measured: taller than any
 // description, so what comes back is the text's height and not the box's.
 const DESC_BOX: usize = 600;
-// Characters of description taken to fill one line, for when the text cannot
-// be measured: one for every eight pixels of the text's width. On the short
-// side, so the estimate runs tall rather than leaving text hanging out of
-// the tooltip.
+// Description characters a line when the text cannot be measured (one per eight
+// pixels), on the short side so the estimate runs tall.
 const DESC_LINE_CHARS: usize = (TIP_W - 2 * TIP_PAD) / 8;
 const STATS_PER_LINE: usize = 4;
 // Gap kept between the tooltip and the slot, and the edge of the screen.
@@ -212,18 +163,10 @@ const STAT_ICONS: &str = "asset/base/ui/banpick/champion_stat_icon";
 // -- test log ------------------------------------------------------------------
 
 // Whether `match-builds.log` is written beside the DLL: how each match was
-// identified, a line whenever an answer changes, and the two stats lines of
-// `crate::item_stats`: `traits:`, what `prime_item_traits` read of the
-// game's damage items and what it made of them, and `server items:`, what
-// the server's item settings held when the mod went over them and how the
-// write went. And the `patch.` lines of `crate::patches`: the save's patch
-// state as it loads, each patch as it lands, every tooltip found and whether
-// its text could be rewritten. And the `counts.` lines of
-// `crate::item_counts`, each step of drawing the item counts. And Item
-// Rules': `rules.` from `crate::item_tiers`, the setting's dealings with the
-// save, and `options.` from `crate::options_row`, its row in the Options
-// dialog. On while something is being tried in game. Turn it off before a
-// release.
+// identified and every changed answer, plus the `traits:`/`server items:` lines
+// of `item_stats`, `patch.` of `patches`, `counts.` of `item_counts`, `rules.`
+// of `item_tiers`, `options.` of `options_row` and `routes` of the native
+// half's route picker (Smart Builds rule 18). Off for releases.
 const LOG: bool = false;
 
 // Lines written in one session at most.
@@ -270,10 +213,9 @@ struct Card {
     // Tag in [`ICON_SHEET`].
     frame: String,
     price: usize,
-    // The stats it gives, in [`STAT_ROWS`] order: field, stat icon tag,
-    // whether it reads as a percentage, and the amount the item registered
-    // with. What is drawn is what an item balance patch has made of that,
-    // where one has: see [`fill_tip`].
+    // The stats it gives, in [`STAT_ROWS`] order: field, icon tag, whether it
+    // is a percentage, and the registered amount; patches are applied when
+    // drawn ([`fill_tip`]).
     stats: Vec<(&'static str, &'static str, bool, i64)>,
     // What stands for each placeholder in the item's effect text, for the
     // few items whose text has any: see [`FILLS`].
@@ -281,16 +223,9 @@ struct Card {
 }
 
 // The placeholders the game's own items carry in their effect text, the
-// settings field each is filled from, and what the field's value is divided
-// by to be shown. Read off the game's own text and settings: Thornmail's
-// `{Flat} + {Ratio}%` of armor is `flat_damage` and `defence_ratio`, the
-// health items' `{Flat} + {Ratio}%` a second is `flat_regen` and
-// `max_hp_regen_ratio`, and the Sunfire line names its four outright. A range
-// is kept in thousandths.
-//
-// One placeholder can stand for two fields, on different items; an item has
-// only one of them, and the first it has is the one. This mod's own items
-// have their numbers written into their text and need none of this.
+// settings field each is filled from, and its divisor for display (ranges are
+// in thousandths). One placeholder may stand for different fields on different
+// items, the first an item has winning; this mod's items need none.
 const FILLS: &[(&str, &str, f64)] = &[
     ("Flat", "flat_damage", 1.0),
     ("Flat", "flat_regen", 1.0),
@@ -454,10 +389,9 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
             found.push((key.to_string(), card));
         },
     );
-    // Mods' items are in the document from the moment they register, and
-    // the game's own only around a match: it is read for good once one of
-    // the game's is in it, and not before. See
-    // `item_stats::prime_item_traits`, which was caught out by exactly that.
+    // Mods' items are in the document from registration, the game's own only
+    // around a match, so it is read for good once one of the game's is there
+    // (see `item_stats::prime_item_traits`).
     let games = found
         .iter()
         .any(|(key, _)| key == crate::item_stats::A_GAME_ITEM);
@@ -549,12 +483,9 @@ pub(crate) fn note_decision(
     decisions.push_back(decision);
 }
 
-// A build as the slots a cell draws.
-//
-// A slot is pinned where the pin row names the item it holds, when `pins`
-// apply to this athlete at all. A build the buy detour has grown is whole.
-// One it has not holds the game's slots, and past them only what is pinned
-// there: no hook decides those.
+// A build as the slots a cell draws: a slot is pinned where `pins` apply and
+// the pin row names its item. An ungrown build holds the game's slots, then
+// only what is pinned past them.
 fn slots_of(champion: &str, lane: usize, keys: &[String], pins: bool, grown: bool) -> Vec<Slot> {
     let row = if pins {
         // Publishes the pin snapshot `pin_row` reads.
@@ -593,18 +524,11 @@ fn slots_of(champion: &str, lane: usize, keys: &[String], pins: bool, grown: boo
     slots
 }
 
-// `key` as Item Rules has a build hold it in `slot` (`crate::item_tiers`):
-// the legendary in every slot the setting caps. What
-// reaches this is a build as it was decided, in radiants; the buy detour
-// makes it this as the match gets under way, and the board says so from the
-// start. Only where the other form is known to exist: the game's own six
-// pairs always are, and another item where this mod has a card for it, so
-// an item it cannot place is drawn as decided.
-//
-// The game's pairs are not asked for a card. Theirs come from the settings
-// document, which is first read when the panel opens, and a board is worked
-// out before that and kept: asked for one, the game's radiants stayed
-// radiant on a board whose every other slot was capped (2026-10-08).
+// `key` as Item Rules has a build hold it in `slot` (`crate::item_tiers`): the
+// legendary in a capped slot, where the other form is known (the game's six
+// pairs always, mod items with a card). The game's pairs are not asked for a
+// card, since theirs load only when the panel opens, after the board is worked
+// out (2026-10-08).
 fn ruled_key(key: &str, slot: usize) -> String {
     crate::item_tiers::for_slot(key, slot)
         .filter(|other| crate::item_tiers::is_game_tier(other) || card(other).is_some())
@@ -627,11 +551,9 @@ struct Grown {
     keys: Vec<String>,
     // The items the growth added and how each was come by, for the test log.
     picks: Vec<(String, &'static str)>,
-    // Whether the detour gave this athlete its pins: everyone with
-    // `own_team_only` off, the player's own with it on, and both sides of a
-    // lane or 5v5 test either way. The detour's own answer, because the
-    // panel's idea of the player's side is one side at most, which would
-    // leave the red team of a 5v5 test without a single pin border.
+    // Whether the detour gave this athlete its pins: everyone without
+    // `own_team_only`, the player's with it, both sides of a test. The detour's
+    // own answer, since the panel knows at most one player side.
     pins: bool,
 }
 
@@ -705,18 +627,11 @@ struct Found {
     pins: bool,
 }
 
-// The grown build of one seat of the match on screen, if the detour has made
-// one. Three ways, the surest first:
-//
-// 1. The same seat of the same match, by seed, which is the athlete itself.
-// 2. The newest build grown for this champion in this lane that holds
-//    everything the hook decided for it.
-// 3. With the lineup read off the simulation on screen, the newest build
-//    grown for this champion in this lane on this side: the match on screen
-//    grows its builds as it starts, so that is nearly always its own.
-//
-// The last two stand in until the first is there, which the caller keeps
-// looking for.
+// The grown build of one seat of the match on screen, the surest first: the
+// same seat by seed; else the newest for this champion and lane holding
+// everything the hook decided; else, with the simulation's lineup, the newest
+// for this champion, lane and side. The last two stand in until the first
+// appears.
 fn grown_for(
     grown: &VecDeque<Grown>,
     game: &Match,
@@ -810,14 +725,9 @@ static KINDS_SEEN: AtomicU32 = AtomicU32::new(0);
 // screen, or the drafted lineup. A panel resolved before that starts over.
 static SOURCES: AtomicU32 = AtomicU32::new(0);
 
-// Reads both lineups off the simulation the client is showing. Called from
-// the mod's match hook on every tick of every simulation, so it leaves at
-// once for any tick but each [`SCREEN_EVERY`]th, and for any simulation but
-// the client's own.
-//
-// Only what the host vouches for. A spectated match never gets here (see
-// the module's notes); guessing at it by how fast a simulation ticks was
-// tried for one build and matched nothing.
+// Reads both lineups off the simulation the client is showing. From the match
+// hook every tick, leaving at once for all but each [`SCREEN_EVERY`]th tick of
+// the client's own; a spectated match never gets here.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
     if sim.tick() % SCREEN_EVERY != 0 {
         return;
@@ -927,11 +837,9 @@ pub(crate) fn note_lineup(sides: [Vec<String>; 2]) {
     SOURCES.fetch_add(1, Ordering::Relaxed);
 }
 
-// Enemy picks that have to be known before a decision is taken for a side,
-// when the lineup is the drafted one. Fewer than five, because a pick the
-// draft grid named in a way no champion answers to is missing from it; not
-// fewer than this, because one side's five alone could be some other
-// fixture's.
+// Enemy picks needed before deciding for a side from the drafted lineup: fewer
+// than five, since a pick may not resolve, but enough that one side's five
+// cannot match another fixture.
 const ENEMIES_NEEDED: usize = 3;
 
 // The athletes of both sides as the layout's camera buttons name them, by
@@ -1103,22 +1011,11 @@ fn seed_by_athletes(athletes: &Athletes) -> Option<u64> {
     found
 }
 
-// Which side of the match the panel's team is on: 0 blue, 1 red.
-//
-// Three ways, the first that gives an answer:
-//
-// 1. The set's replay record names both teams by id, and the host says which
-//    is the player's. A replayed set has its record; a match being played
-//    for the first time does not yet.
-// 2. The panel names the team it is about, and the layout names both sides
-//    in two places. Tried exactly and then as one name inside the other: the
-//    header says "G2 Esports #1" where the panel says "G2 Esports". This is
-//    the one seen answering in a match of the player's own.
-// 3. The panel names its athletes and so do the camera buttons, by side. A
-//    spectated match has no team names in its header, so this is its one.
-//
-// An answer that fits both sides or neither is no answer, and then the
-// board does without: see the module's notes.
+// Which side of the match the panel's team is on (0 blue, 1 red), from the
+// first of: the replay record's team ids; the panel's team name against the
+// layout's side names (exact, then contained, as "G2 Esports #1"); the panel's
+// athletes against the camera buttons (a spectated match). An answer fitting
+// both sides or neither is none.
 fn player_side(ctx: &StableClient<'_>, replay: Option<u64>, cameras: &Athletes) -> Option<usize> {
     let pick = |blue: bool, red: bool| match (blue, red) {
         (true, false) => Some(0),
@@ -1449,10 +1346,9 @@ fn describe(
     )
 }
 
-// The cells to draw for a match: each seat's grown build where the buy
-// detour has made one, its decided build until then, nothing where neither
-// is known. And whether every seat has the build grown for that very seat,
-// after which there is nothing more to wait for.
+// The cells to draw for a match: each seat's grown build, else its decided one,
+// else nothing. And whether every seat has its own grown build, after which
+// nothing is left to wait for.
 fn board_of(game: &Match) -> (Board, bool) {
     // Looked up under the lock and turned into slots after it: the pin row
     // has locks of its own.
@@ -1483,10 +1379,9 @@ fn board_of(game: &Match) -> (Board, bool) {
                     continue;
                 };
                 let players = game.player_side == Some(side);
-                // Under `own_team_only` only the player's athletes carry the
-                // pins, and in a test that is both sides. A side nobody could
-                // be placed on carries none. This is the panel's reckoning,
-                // for a seat the detour has not answered for itself.
+                // Under `own_team_only` only the player's athletes carry pins
+                // (both sides in a test); the panel's reckoning, for a seat the
+                // detour has not answered for.
                 let pins = !own_only || players || test;
                 exact &= found.as_ref().is_some_and(|found| found.exact);
                 let (slots, how, picks) = match found {
@@ -1811,11 +1706,9 @@ fn heading(ctx: &StableClient<'_>, (key, fallback): (&str, &str)) -> String {
     }
 }
 
-// Keeps the board in the panel and the vanilla table out of it. False while
-// the board could not be spawned, and the vanilla table is left alone then.
-//
-// Re-asserted every frame the panel is open: game code owns the rows and the
-// headings, and what it does to them when it refills the panel is not known.
+// Keeps the board in the panel and the vanilla table out, re-asserted every
+// frame the panel is open since game code owns its rows. False while the board
+// could not be spawned, leaving vanilla alone.
 fn paint(ctx: &mut StableClient<'_>, board: &Rows) -> bool {
     let cards = ENGINE_CARDS.load(Ordering::Relaxed);
     let redraw = with(|panel| {
@@ -1902,10 +1795,9 @@ fn frame_of(key: &str) -> String {
     card(key).map_or_else(|| key.to_string(), |card| card.frame)
 }
 
-// The whole board, stated up front: a heading over each side, then a line
-// for every lane somebody's build is known in, the lane's icon and the two
-// cells. It is spawned again whole when a build changes, which each does
-// once, as the buy detour grows it.
+// The whole board: a heading per side, then a line per lane with a known build,
+// its lane icon and two cells. Respawned whole when a build changes, once per
+// build as the detour grows it.
 fn board_source(board: &Board, heads: &[String; 2]) -> String {
     let lines = board
         .iter()
@@ -1972,11 +1864,9 @@ fn board_source(board: &Board, heads: &[String; 2]) -> String {
     source
 }
 
-// One champion's cell: its side's bar, its portrait (filled in after the
-// spawn, by the host), its name and its slots.
-//
-// A filled slot is a button so that it takes a click and draws its own hover
-// border; an empty one is a plain square.
+// One champion's cell: its side's bar, its portrait (filled in by the host
+// after the spawn), its name and its slots. A filled slot is a button, for its
+// click and hover border.
 fn cell_source(side: usize, cell: &Cell) -> String {
     let mut source = format!(
         "#{node}:empty {{\n\
@@ -2165,11 +2055,8 @@ fn canvas(ctx: &StableClient<'_>) -> (f32, f32, f32, f32) {
         .unwrap_or((0.0, 0.0, 1920.0, 1080.0))
 }
 
-// The cursor in the space `ui_node_rect` answers in.
-//
-// Taken as the layout scaled by one factor to fit the window and centred in
-// it, which on a window of the layout's own shape is plain proportion. Not
-// confirmed in game on any window.
+// The cursor in the space `ui_node_rect` answers in, taking the layout as
+// scaled by one factor to fit the window and centred.
 pub(super) fn cursor(ctx: &StableClient<'_>) -> Option<(f32, f32)> {
     let (x, y, client_w, client_h) = client_cursor()?;
     let (left, top, width, height) = canvas(ctx);
@@ -2378,10 +2265,9 @@ fn tip_source() -> String {
     )
 }
 
-// A text key as a reference the label resolves itself, in the game's
-// language, beside what it says in English. `ctx.i18n` answers in English
-// whatever the locale, which is what tells a key that exists from one that
-// would be drawn as a literal `#asset/...`.
+// A text key as a reference the label resolves in the game's language, with its
+// English. `ctx.i18n` answers in English whatever the locale, which tells a
+// real key from one that would show as a literal `#asset/...`.
 fn text_ref(ctx: &StableClient<'_>, key: &str) -> Option<(String, String)> {
     let reference = format!("#asset/base/text/item?{key}");
     let english = ctx
@@ -2510,10 +2396,9 @@ fn fill_tip(ctx: &mut StableClient<'_>, key: &str, cost: Option<usize>) -> TipBo
     }
 }
 
-// The tooltip's border for the slot it is up for: the slot's own, colour
-// and width, so a pin's tooltip is edged in the pin's teal. The border is
-// what shows of the tooltip's own colour around its `#bg`, which is inset
-// by this width.
+// The tooltip's border for its slot: the slot's own colour and width, so a
+// pin's tooltip is edged in teal (the border is the tooltip's colour showing
+// around its inset `#bg`).
 fn tip_edge(pinned: bool) -> (&'static str, usize) {
     if pinned {
         (PINNED_LINE, PINNED_STROKE)
@@ -2579,16 +2464,10 @@ fn place_tip(ctx: &mut StableClient<'_>, body: TipBody, slot: &str, edge: usize)
     );
 }
 
-// Fills in the placeholders in the effect text the tooltip is showing, for
-// an item whose text has them: `{Flat}` and the like, which the game's own
-// tooltip fills from the item's settings and a label leaves as written.
-//
-// The text went to the label as a reference, which it resolves in the
-// game's language, and nothing tells a mod which language that is. So the
-// label is asked for what it now holds: where that is the resolved text, the
-// numbers go into it and it stays in the game's language. Where the label
-// hands the reference back, they go into the English text, which is the
-// only one a mod can ask for. Either way no placeholder is left showing.
+// Fills `{Flat}`-style placeholders in the effect text the tooltip shows, which
+// a label leaves as written. Read back from the label: resolved text gets the
+// numbers in the game's language, and a reference handed back gets the English,
+// the only one a mod can ask for.
 fn fill_placeholders(ctx: &mut StableClient<'_>, key: &str) {
     let Some(card) = card(key).filter(|card| !card.fills.is_empty()) else {
         return;
@@ -2621,12 +2500,9 @@ fn fill_placeholders(ctx: &mut StableClient<'_>, key: &str) {
     ctx.ui_set_text(&path, &text);
 }
 
-// Puts the tooltip up for `target`, or takes it down for none.
-//
-// A new item's text is written with the tooltip parked off screen. A frame
-// on its placeholders are filled in, and it is only sized and placed
-// [`MEASURE_AFTER`] frames on, once a layout pass has said how tall that
-// text is.
+// Puts the tooltip up for `target`, or takes it down. A new item's text is
+// written parked off screen, its placeholders filled a frame later, and it is
+// sized and placed [`MEASURE_AFTER`] frames on, after a layout pass.
 fn show_tip(ctx: &mut StableClient<'_>, board: &Rows, target: Option<Spot>) {
     let (changed, age, body) = with(|panel| {
         let changed = panel.shown != target;

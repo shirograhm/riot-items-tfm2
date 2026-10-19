@@ -14,7 +14,7 @@ impl Default for HearthboundAxe {
         Self {
             price: 500,
             attack: 20,
-            attack_speed_mult: 20,
+            attack_speed_mult: 15,
         }
     }
 }
@@ -53,10 +53,7 @@ impl StableItem for HearthboundAxe {
     }
 
     fn next_tier(&self) -> Vec<String> {
-        vec![
-            "feral_flare".to_string(),
-            "blade_of_the_ruined_king".to_string(),
-        ]
+        vec!["blade_of_the_ruined_king".to_string()]
     }
 
     fn stat(&self) -> BuffV1 {

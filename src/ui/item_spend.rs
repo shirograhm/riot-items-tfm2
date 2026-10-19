@@ -1,35 +1,16 @@
 //! What an item has cost the athlete holding it, for the two tooltips a match
 //! shows an item in.
 //!
-//! An item's price is the price of one step: what it costs to build it out of
-//! the item below it. That is what the game's tooltip shows, so a Radiant an
-//! athlete has put five purchases into reads as the last of them. Nor is the
-//! whole of it a number the item has: most items can be built out of more
-//! than one thing (`previous_tier` lists alternatives, not ingredients), each
-//! at its own price, so what was paid depends on the way the athlete took.
+//! An item's price is one step's, and most items have more than one way up
+//! (`previous_tier` lists alternatives), so the match hook watches every slot
+//! of the on-screen match each tick ([`on_match_tick`]) and sums the prices of
+//! what each slot has held ([`Ledger`]). Where nothing was watched (a spectated
+//! match) the first way each item names is assumed ([`route_to`]).
 //!
-//! So the way is watched. The match hook reads what every athlete of the
-//! match on screen holds, on every tick ([`on_match_tick`]), and keeps for
-//! each item slot every item it has held ([`Ledger`]): an upgrade replaces
-//! the item in its slot and is charged at the new item's price, so the sum of
-//! those prices is what the slot has cost.
-//!
-//! * The game's own tooltip, over an item an athlete holds ([`sync`]): its
-//!   price label is written with what that athlete has paid for the item.
-//!   Whose slot is under the cursor is found the way the Check Tactics board
-//!   finds its own ([`hovered`]).
-//! * The Check Tactics board's tooltip, over an item an athlete is to buy
-//!   ([`planned`]): what the item comes to in all once it is built, which is
-//!   what its slot has cost so far and the steps still to go.
-//!
-//! Where nothing was watched (a spectated match is not simulated through the
-//! hook) the way is taken to be the first one each item names
-//! ([`route_to`]).
-//!
-//! Not seen in game yet. The names game code gives the player rows are not
-//! known: `spend.rows` in the test log says what they are, and an item whose
-//! slot could not be placed is still answered for by whoever holds it
-//! ([`spent`]).
+//! The game's tooltip over a held item gets that sum ([`sync`]); the Check
+//! Tactics board's over a planned item gets the slot's cost so far plus the
+//! steps still to go ([`planned`]). Not seen in game yet (`spend.rows` in the
+//! test log).
 
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Mutex, OnceLock};
@@ -69,14 +50,44 @@ pub(super) fn note_mod_item(key: &str, price: usize, below: Vec<String>, above: 
     }
 }
 
-// Every item by key: the game's own thirty from the mod's settings file,
-// which has the prices matches are played at, and this mod's as they
-// registered. Made on first use, which is in a match and long after the last
-// item registered.
-//
-// One of the game's items only says what it is built into, so every link is
-// filled in at both of its ends. In the order the items came in, the game's
-// first: the first way into an item is then the same one on every run.
+// Where [`export_paths`] writes, beside the DLL.
+const PATHS_FILE: &str = "item_recipes.json";
+
+// Writes this mod's items' prices and build paths beside the DLL, as they
+// registered (the player's config applied), for Item Scroller's total price
+// on the Item Info screen, which has no other way to read them: the game's
+// item settings carry no `previous_tier`, and that is the only side the links
+// from the game's items to this mod's components are written on. Called once
+// the items have registered; rewritten only when it changed.
+pub(crate) fn export_paths() {
+    let mut root = serde_json::Map::new();
+    if let Ok(items) = MOD_ITEMS.lock() {
+        for (key, entry) in items.iter() {
+            root.insert(
+                key.clone(),
+                serde_json::json!({
+                    "price": entry.price,
+                    "previous_tier": entry.below,
+                    "next_tier": entry.above,
+                }),
+            );
+        }
+    }
+    let Ok(text) = serde_json::to_string_pretty(&Value::Object(root)) else {
+        return;
+    };
+    let path = crate::config::mod_dir().join(PATHS_FILE);
+    if std::fs::read_to_string(&path).ok().as_deref() != Some(text.as_str()) {
+        let written = std::fs::write(&path, &text).is_ok();
+        match_builds::log("paths.export", || {
+            format!("{} written: {written}", path.display())
+        });
+    }
+}
+
+// Every item by key: the game's thirty from the mod's settings file (match
+// prices) and this mod's as registered. Links are filled in at both ends, in
+// arrival order, so the first way into an item is the same every run.
 fn catalog() -> &'static HashMap<String, Entry> {
     static CATALOG: OnceLock<HashMap<String, Entry>> = OnceLock::new();
     CATALOG.get_or_init(|| {
@@ -201,10 +212,9 @@ fn steps<'a>(items: &'a HashMap<String, Entry>, from: &str, to: &str) -> Option<
     None
 }
 
-// The purchases that turn `from` into `to` as an athlete is taken to make
-// them: along the way nobody watched where `from` is on it, so that a slot
-// comes to the same before its first purchase and after it, and by the
-// fewest steps where it is not.
+// The purchases from `from` to `to` as an athlete is taken to make them: along
+// the unwatched way where `from` is on it, so a slot costs the same before and
+// after its first purchase, else the fewest steps.
 fn way_from(items: &HashMap<String, Entry>, from: &str, to: &str) -> Option<Vec<String>> {
     let route = route_to(items, to);
     match route.iter().position(|key| key == from) {
@@ -248,13 +258,9 @@ pub(super) fn on_screen(sim: &StableSim<'_>) -> bool {
     })
 }
 
-// Follows what the athletes of the match on screen hold. Called from the
-// mod's match hook on every tick of every simulation: one read of where the
-// simulation runs and a return for any but the client's own.
-//
-// On every tick and not now and then, because an athlete with the gold for
-// it buys a step a tick, and the way it went is only known while each step
-// is seen.
+// Follows what the on-screen match's athletes hold, every tick, since a step
+// can be bought each tick and the way is only known if every step is seen. One
+// read and a return for any other simulation.
 pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
     if !on_screen(sim) {
         return;
@@ -309,9 +315,8 @@ pub(crate) fn on_match_tick(sim: &mut StableSim<'_>) {
                 continue;
             }
             // The step up from what it held, or the steps where some went
-            // unseen. And for a slot first seen with more than a starter
-            // item in it, or holding something its last item is not built
-            // into, the way up nobody watched.
+            // unseen; the unwatched way for a slot first seen past a starter
+            // item, or holding something its last item does not build into.
             match bought.last().and_then(|last| way_from(items, last, &key)) {
                 Some(way) => bought.extend(way),
                 None => *bought = route_to(items, &key),
@@ -328,16 +333,10 @@ pub(super) fn clear() {
     }
 }
 
-// What a held `key` has cost its athlete. `seat` is the slot the cursor is
-// over, where that could be found: side, lane where the row said which, and
-// slot.
-//
-// The slot's own sum where it holds `key`. Where the slot could not be
-// placed, or holds something else, what everyone holding `key` has paid for
-// it, if they have all paid the same: first those on the cursor's side with
-// it in the cursor's slot, then anyone. Two athletes only differ where they
-// took two ways up to the same item at two prices. And where the match was
-// not watched, the way nobody watched.
+// What a held `key` has cost its athlete; `seat` is the slot under the cursor
+// (side, lane if known, slot). The slot's own sum where it holds `key`, else
+// what everyone holding `key` paid if they all paid the same (the cursor's side
+// and slot first), else the unwatched way.
 fn spent(seat: Option<(usize, Option<usize>, usize)>, key: &str) -> Option<usize> {
     let items = catalog();
     if let Ok(ledger) = LEDGER.lock() {
@@ -387,14 +386,9 @@ fn spent(seat: Option<(usize, Option<usize>, usize)>, key: &str) -> Option<usize
     cost(items, &route_to(items, key))
 }
 
-// What the item an athlete is to buy in a slot comes to in all: what the
-// slot has cost so far, and the steps from what it holds up to `key`. `seed`
-// is the match the board is drawn for and `spot` the slot's side, lane and
-// place in the build, which is its place among what the athlete holds: a
-// build is bought in order.
-//
-// A slot nothing has been bought for yet, or holding something `key` is not
-// built out of, comes to the way nobody watched.
+// What the item an athlete is to buy in a slot comes to in all: the slot's cost
+// so far plus the steps up to `key` (`spot` is side, lane and build slot;
+// builds are bought in order). Else the unwatched way.
 pub(super) fn planned(
     seed: Option<u64>,
     (side, lane, slot): (usize, usize, usize),
@@ -434,11 +428,10 @@ pub(super) fn row_lane(rows: &[String], place: usize) -> Option<usize> {
     match_builds::lane_of(rows.get(place)?).or((rows.len() == LANES).then_some(place))
 }
 
-// The item slots game code has spawned into `items`, a half of a player row,
-// by path and in the order of the items they show: by the number their
-// names end in where they all have one, and else as they come. What game
-// code calls them is not taken for granted: `slot0` was, and in game
-// (2026-10-14) no `items.slot0` was there to be found.
+// The item slots game code spawned into `items`, a half of a player row, in
+// item order: by the number their names end in where all have one, else as they
+// come. Slot names are not assumed (`items.slot0` was not there in game,
+// 2026-10-14).
 pub(super) fn slot_nodes(ctx: &StableClient<'_>, items: &str) -> Vec<String> {
     let mut names = ctx.ui_child_names(items);
     let number = |name: &str| {
@@ -452,10 +445,8 @@ pub(super) fn slot_nodes(ctx: &StableClient<'_>, items: &str) -> Vec<String> {
     names.into_iter().map(|name| format!("{items}.{name}")).collect()
 }
 
-// The item slot of a player row the cursor is over: side, lane, slot.
-//
-// The lane is the row's ([`row_lane`]). [`spent`] checks the answer against
-// what that athlete holds, so a row placed wrongly costs nothing but the
+// The item slot under the cursor: side, lane ([`row_lane`]), slot. [`spent`]
+// checks it against what that athlete holds, so a misplaced row only costs the
 // check.
 fn hovered(ctx: &StableClient<'_>) -> Option<(usize, Option<usize>, usize)> {
     let (x, y) = match_builds::cursor(ctx)?;
@@ -493,13 +484,10 @@ fn hovered(ctx: &StableClient<'_>) -> Option<(usize, Option<usize>, usize)> {
     None
 }
 
-// Writes what the item under the cursor has cost its athlete into the game's
-// tooltip, in place of the item's own price. Every client frame: outside a
-// match one failed lookup, and in one a single read while no tooltip is up.
-//
-// The label is written whenever it does not say the sum, which covers both
-// ways game code may fill it: once when the hover starts, or every frame.
-// An item this cannot put a sum to (another mod's) keeps its price.
+// Writes what the hovered item cost its athlete into the game's tooltip, in
+// place of its price; every frame, one lookup outside a match. Written whenever
+// it differs, so it holds whether game code fills the label once or every
+// frame; another mod's item keeps its price.
 pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     if ctx.ui_visible(TOOLTIP) != Some(true) {
         return;

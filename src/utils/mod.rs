@@ -1,10 +1,5 @@
-//! Shared plumbing: config loading, constants, item metadata, the delayed proc
-//! queue, the own-team debug log, the carry across an item upgrade, the watches
-//! for the heals a carrier lands on allies and for the enemies it immobilizes,
-//! the World Atlas line's gold income, the clock for countdowns that keep
-//! running through a death, the match rules the mod changes, and the timing
-//! probe. `lib.rs` re-exports what the rest of the crate reaches for, so these
-//! are addressed from the crate root.
+//! Shared plumbing, re-exported from `lib.rs` so the rest of the crate reaches
+//! it from the crate root.
 
 pub(crate) mod config;
 pub(crate) mod constants;

@@ -74,6 +74,14 @@
         },
         {
             "type": "Animation",
+            "name": "riot_axiom_flux",
+            "anim": "asset/riot_items_tfm2/effects/axiom_flux",
+            "tag": "flux",
+            "z": 1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
             "name": "riot_protoplasm_heal",
             "anim": "asset/riot_items_tfm2/effects/protoplasm_heal",
             "tag": "heal",
@@ -287,6 +295,13 @@
         },
         {
             "type": "Animated",
+            "name": "abyssal_mask_aura",
+            "anim": "asset/riot_items_tfm2/effects/abyssal_aura",
+            "tag": "aura",
+            "z": -1
+        },
+        {
+            "type": "Animated",
             "name": "riot_energized",
             "anim": "asset/riot_items_tfm2/effects/energized_charge",
             "tag": "charge",
@@ -360,6 +375,13 @@
             "name": "seryldas_grudge_slow_small",
             "anim": "asset/riot_items_tfm2/effects/rylais_frost_small",
             "tag": "frost",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "solstice_sleigh_sledding",
+            "anim": "asset/riot_items_tfm2/effects/solstice_sleigh_aura",
+            "tag": "aura",
             "z": -1
         }
     ]

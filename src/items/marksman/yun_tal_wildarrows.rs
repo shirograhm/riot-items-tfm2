@@ -112,9 +112,9 @@ impl YunTalWildarrows {
     }
 
     // Keeps the stacks where an upgrade can find them
-    // (`upgrade_carry::StackCarry`). Only the counter moves. The crit chance
-    // earned this life is already on the champion as `yun_tal_practice`
-    // buffs, and `on_spawn` re-applies it from the count on the next respawn.
+    // (`upgrade_carry::StackCarry`). Only the counter moves; the crit already
+    // earned is on the champion as `yun_tal_practice` buffs, re-applied on
+    // respawn.
     fn carry_stacks(&mut self, ctx: &StableSim<'_>, player: usize) {
         self.carry.carry(
             BASE_KEY,
@@ -183,10 +183,9 @@ impl StableItem for YunTalWildarrows {
             return;
         };
         let champion_id = champion_ref.id();
-        // Same-name buffs stack and this carries the whole banked total, so
-        // the previous life's copies go before the new one lands. Without the
-        // remove, every respawn added another full total on top of the ones
-        // already worn and the cap stopped meaning anything.
+        // Same-name buffs stack and this carries the whole banked total, so the
+        // previous life's copies are removed first, or every respawn would add
+        // another total past the cap.
         ctx.entity_remove_buff(champion_id, self.yun_tal_practice_buff);
         ctx.add_buff(
             champion_id,
@@ -216,9 +215,7 @@ impl StableItem for YunTalWildarrows {
         let is_flurry_on_cooldown = has_buff(&caster_ref, self.yun_tal_flurry_cooldown_buff);
 
         // Practice: every third base attack grants permanent crit chance,
-        // capped. Attacks are counted, not hits: `on_attack` fires for every
-        // hit the carrier lands, and an attack that lands several (a second
-        // on-hit damage instance, splash) counted once for each. Its hits all
+        // capped. Attacks are counted, not hits: an attack's several hits all
         // land on one tick, and two attacks never do.
         let tick = ctx.tick();
         if self.accumulated_stacks < self.effect_max_stacks && self.counted_at != Some(tick) {
@@ -269,13 +266,9 @@ impl StableItem for YunTalWildarrows {
         item_counts::note(ctx, player, self.meta.key, gained.max(0) as u64);
     }
 
-    // Practice stacks are permanent, so they cross the Radiant upgrade. Only
-    // the counter moves: the crit chance already granted this life is sitting
-    // on the champion as `yun_tal_practice` buffs, and `on_spawn` re-applies it
-    // from the carried count on the next respawn.
-    //
-    // The host of game 0.6.2 never calls these two (`crate::upgrade_carry`);
-    // `carry_stacks` does the carrying, and they stay for a host that does.
+    // Practice stacks are permanent, so they cross the Radiant upgrade; only
+    // the counter moves (see `carry_stacks`). The host (0.6.2) never calls
+    // these two (`crate::upgrade_carry`), and they stay for a host that does.
     fn on_upgrade(&mut self, next_key: &str) -> u64 {
         if self.meta.upgrades_to(next_key) {
             self.accumulated_stacks as u64

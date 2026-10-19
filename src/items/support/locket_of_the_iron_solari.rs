@@ -40,7 +40,7 @@ impl LocketOfTheIronSolari {
             ),
             aura_buff: "locket_of_the_iron_solari_aura",
             price: 550,
-            hp: 100,
+            hp: 150,
             defence: 20,
             magic_resistance: 30,
             skill_cooldown_mult: 10,
@@ -71,7 +71,7 @@ impl LocketOfTheIronSolari {
             ),
             aura_buff: "radiant_locket_of_the_iron_solari_aura",
             price: 850,
-            hp: 150,
+            hp: 250,
             defence: 40,
             magic_resistance: 50,
             skill_cooldown_mult: 15,
@@ -122,15 +122,10 @@ impl LocketOfTheIronSolari {
         self.effect_min_shield + level.saturating_sub(1) * per_level
     }
 
-    // Devotion. The host has already resolved the hit by the time `on_damaged`
-    // runs, so "falling below the threshold" is read after the fact: the shield
-    // lands on the tick the carrier crosses under it, the way `steraks_gage`
-    // reads its own Lifeline.
-    //
-    // The cooldown is an item-side tick counter rather than a second buff on
-    // the carrier: `has_buff` cannot see a buff for its first few ticks, and a
-    // gate that blind is beatable by a fast second hit — 90 seconds of uptime
-    // is too much to hand out twice for one dip below half health.
+    // Devotion. The hit is resolved before `on_damaged`, so the shield lands on
+    // the tick the carrier crosses under the threshold, as `steraks_gage` reads
+    // Lifeline. The cooldown is an item-side counter, since `has_buff` is blind
+    // for a few ticks and a fast second hit would get the shield twice.
     fn cast_devotion(&mut self, ctx: &mut StableSim<'_>, caster: usize) {
         if self.devotion_cooldown > 0 {
             return;

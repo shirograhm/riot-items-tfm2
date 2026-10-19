@@ -5,6 +5,7 @@ items! {
     atmas_reckoning,
     cloak_of_starry_night,
     dead_mans_plate,
+    force_of_nature,
     frozen_heart,
     heartsteel,
     hollow_radiance,

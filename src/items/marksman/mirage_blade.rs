@@ -7,10 +7,8 @@ use crate::{apply_config, apply_tiered_adaptive_force, has_buff, ticks, ItemMeta
 pub struct MirageBlade {
     meta: ItemMeta,
     adaptive_force_buff: &'static str,
-    // The previous tier's buff and the Adaptive Force it grants. When the holder
-    // already carries that item, this one only tops up the difference instead of
-    // granting its full amount. `None` on the base variant, which has no earlier
-    // Adaptive Force tier to stack with.
+    // The previous tier's buff and its Adaptive Force: on a holder of that item
+    // this one only tops up the difference. `None` on the base variant.
     upgrades_from: Option<(&'static str, i32)>,
     price: usize,
     attack_speed_mult: i32,
@@ -31,7 +29,7 @@ impl MirageBlade {
             adaptive_force_buff: "mirage_blade_adaptive_force",
             upgrades_from: None,
             price: 750,
-            attack_speed_mult: 40,
+            attack_speed_mult: 35,
             move_speed_mult: 10,
             adaptive_force: 30,
             effect_move_speed_mult: 20,
@@ -45,7 +43,7 @@ impl MirageBlade {
             adaptive_force_buff: "radiant_mirage_blade_adaptive_force",
             upgrades_from: Some(("mirage_blade_adaptive_force", 30)),
             price: 1050,
-            attack_speed_mult: 65,
+            attack_speed_mult: 60,
             move_speed_mult: 15,
             adaptive_force: 50,
             ..Self::base()

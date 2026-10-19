@@ -6,11 +6,9 @@ use crate::{apply_config, refresh_buff, ticks, ImmobilizeWatch, ItemMeta};
 #[derive(Clone, Debug)]
 pub struct ImperialMandate {
     meta: ItemMeta,
-    // Shared by both variants: Vulnerable is a state on the target, and the
-    // two variants grant the same amount, so a second carrier refreshes it
-    // rather than doubling it. The name is also the `view_buffs` binding in
-    // `view/effects.view_effects` that draws the mini flag over the target;
-    // rename both together or the flag stops showing.
+    // Shared by both tiers, so a second carrier refreshes Vulnerable rather
+    // than doubling it. Also the `view_buffs` binding of the mini flag over the
+    // target; rename both together.
     vulnerable_buff: &'static str,
     price: usize,
     hp: i32,
@@ -32,10 +30,10 @@ impl ImperialMandate {
                 &["radiant_imperial_mandate"],
             ),
             vulnerable_buff: "imperial_mandate_vulnerable",
-            price: 550,
-            hp: 100,
+            price: 750,
+            hp: 150,
             hp_regen: 1,
-            magic_power: 25,
+            magic_power: 35,
             skill_cooldown_mult: 15,
             effect_damaged_amplify: 9,
             effect_duration_seconds: 3.0,
@@ -48,9 +46,9 @@ impl ImperialMandate {
         Self {
             meta: ItemMeta::radiant("radiant_imperial_mandate", &["imperial_mandate"]),
             price: 750,
-            hp: 150,
+            hp: 250,
             hp_regen: 2,
-            magic_power: 40,
+            magic_power: 50,
             skill_cooldown_mult: 20,
             effect_damaged_amplify: 9,
             effect_duration_seconds: 3.0,
@@ -145,10 +143,9 @@ impl StableItem for ImperialMandate {
         self.watch.reset();
     }
 
-    // Command: immobilizing an enemy champion marks them. What counts as the
-    // carrier immobilizing someone is `ImmobilizeWatch`'s to say: a skill hit
-    // that leaves its target newly immobilized, there and then or a moment
-    // later, and any new taunt onto the carrier.
+    // Command: immobilizing an enemy champion marks them, as `ImmobilizeWatch`
+    // judges it (a skill hit leaving its target newly immobilized, or a new
+    // taunt onto the carrier).
     fn on_skill_hit(
         &mut self,
         ctx: &mut StableSim<'_>,

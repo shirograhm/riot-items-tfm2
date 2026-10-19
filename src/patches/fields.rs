@@ -85,8 +85,8 @@ const FROZEN: &[&str] = &[
     "effect_max_targets",
     "effect_max_growth_stacks",
     "effect_stacks_per_second",
+    "effect_immobilize_stacks",
     "effect_hp_per_stack",
-    "effect_attack_interval",
     "effect_melee_distance",
     "effect_max_distance",
     "effect_explosion_distance",
@@ -103,6 +103,8 @@ const FROZEN: &[&str] = &[
     "effect_minion_percent",
     "effect_minion_bonus_percent",
     "effect_minion_damage_cap",
+    "effect_burn_duration_seconds",
+    "effect_burn_damage_cap",
     "effect_tower_ad_percent_damage",
     "effect_tower_caster_hp_percent_damage",
     "effect_hp_percent_threshold",
@@ -113,13 +115,9 @@ const FROZEN: &[&str] = &[
 // Fields where the smaller number is the stronger item.
 const LOWER_IS_STRONGER: &[&str] = &["effect_cooldown_seconds", "effect_out_of_combat_seconds"];
 
-// Numbers that go the other way from their field, as (base item, field).
-// Warmog's Armor's is the time its holder has to go without taking damage,
-// where every other duration is how long something good lasts: the shorter
-// the stronger. Haunting Guise's is how long its stacks are kept out of
-// combat, where the field is otherwise a wait: the longer the stronger.
-// Liandry's Torment's is the time its burn takes to deal a set amount: the
-// shorter the stronger.
+// Numbers that go the other way from their field, as (base item, field):
+// Warmog's Armor's out-of-combat wait and Liandry's Torment's burn time are
+// stronger shorter, Haunting Guise's stack time stronger longer.
 const REVERSED: &[(&str, &str)] = &[
     ("warmogs_armor", "effect_duration_seconds"),
     ("haunting_guise", "effect_out_of_combat_seconds"),
@@ -263,10 +261,9 @@ pub(crate) fn step(item: &str, field: &str, base: f64, whole: bool) -> f64 {
     }
 }
 
-// The numbers the player has set by hand in the save that is loaded, by
-// item and field (`State::exact`). Such a number reads exactly as it was
-// set, whatever steps a patch would count it in, and every reading of a
-// number goes through [`quantize`]: so it is kept where that can see it.
+// The numbers the player set by hand in the loaded save, by item and field
+// (`State::exact`), kept here because every reading goes through [`quantize`],
+// which reads them exactly as set.
 static EXACT: RwLock<Option<HashMap<String, HashMap<String, f64>>>> = RwLock::new(None);
 // Whether there is any, so that asking costs one atomic read while there
 // is none.

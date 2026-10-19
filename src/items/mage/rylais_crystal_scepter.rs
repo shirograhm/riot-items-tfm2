@@ -3,10 +3,9 @@ use mod_api_stable::*;
 use crate::config::ItemConfig;
 use crate::{apply_config, refresh_buff, ticks, ItemMeta};
 
-// Rimefrost's slow. The name is also the `view_buffs` binding in
-// `view/effects.view_effects` that draws frost at the slowed unit's feet
-// (`effects/rylais_frost`), so the picture is up exactly while the slow is.
-// The base item and its Radiant share it.
+// Rimefrost's slow, and the `view_buffs` binding that draws frost under the
+// slowed unit (`effects/rylais_frost`), so the picture lasts exactly as long.
+// Shared by both tiers.
 const SLOW_BUFF: &str = "rylais_crystal_scepter_slow";
 // The same slow on a minion, under a name of its own for frost drawn at a
 // minion's size (`effects/rylais_frost_small`).
@@ -31,7 +30,7 @@ impl RylaisCrystalScepter {
                 &["radiant_rylais_crystal_scepter"],
             ),
             price: 700,
-            hp: 150,
+            hp: 250,
             magic_power: 65,
             effect_slow_amount: 15,
             effect_duration_seconds: 2.0,
@@ -45,7 +44,7 @@ impl RylaisCrystalScepter {
                 &["rylais_crystal_scepter"],
             ),
             price: 950,
-            hp: 200,
+            hp: 300,
             magic_power: 100,
             effect_slow_amount: 15,
             effect_duration_seconds: 2.0,

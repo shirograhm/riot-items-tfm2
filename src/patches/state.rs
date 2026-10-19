@@ -1,21 +1,15 @@
-//! What a save remembers of its item patches: how far every patched number
-//! has moved, and the last few patches as they were announced.
-//!
-//! Kept in the mod's own namespace inside the save file, like the item
-//! totals it is worked out from (`item_stats`), so it goes where the save
-//! goes: loading an older save shows that save's balance, and a new game
-//! starts unpatched.
+//! What a save remembers of its item patches: how far every patched number has
+//! moved, and the last few patches as announced. Kept in the save's mod
+//! namespace beside the item totals, so an older save shows its own balance and
+//! a new game starts unpatched.
 
 use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-// The shape this build writes, and the oldest it reads. A state in a shape
-// outside the two is left where it is and the save starts over unpatched.
-//
-// 2: the ratios are kept a tier of an item ([`State::ratios`]). In 1 they
-// were kept an item, under its legendary's key, for all of its tiers, and
-// such a state is read and spread over the tiers (`read_state`).
+// The shape this build writes, and the oldest it reads; any other is left alone
+// and the save starts unpatched. Format 1 kept an item's ratios once under its
+// legendary, and is read and spread over the tiers (`read_state`).
 pub(crate) const FORMAT: u32 = 2;
 const OLDEST_FORMAT: u32 = 1;
 
@@ -42,19 +36,17 @@ pub(crate) struct State {
     // A hotfix the player has queued, which goes out with the next news.
     #[serde(rename = "q")]
     pub queued: bool,
-    // Item -> field -> what the field is of its unpatched value after
-    // every patch so far. An item here is one tier: a legendary and its
-    // radiant are patched one by one, and need not move together or in the
-    // same numbers.
+    // Item -> field -> its share of the unpatched value after every patch so
+    // far. An item is one tier: a legendary and its radiant are patched
+    // separately.
     #[serde(rename = "r")]
     pub ratios: BTreeMap<String, BTreeMap<String, f64>>,
     // Newest last.
     #[serde(rename = "h")]
     pub history: Vec<Patch>,
-    // Item -> field -> the numbers the player has set by hand that read
-    // exactly as set, where a patch's own steps would read another
-    // (`fields::quantize`): 23 Attack Damage where patches count in fives.
-    // Gone again once a patch moves the number.
+    // Item -> field -> numbers the player set by hand, which read exactly as
+    // set rather than on a patch's steps (`fields::quantize`) until a patch
+    // moves them.
     #[serde(rename = "x", skip_serializing_if = "BTreeMap::is_empty")]
     pub exact: BTreeMap<String, BTreeMap<String, f64>>,
     // Item -> field -> a number the player has set in the Item Patcher
@@ -147,10 +139,9 @@ pub(crate) struct Change {
     // exactly as set.
     #[serde(rename = "m")]
     pub manual: bool,
-    // The other tier of the item this change brings level with that tier's
-    // own change: a radiant raised with its legendary, a legendary taken
-    // down with its radiant. Its notes are in that tier's entry. Empty for
-    // every other change, and in a patch from before this was kept.
+    // The other tier this change brings level (a radiant raised with its
+    // legendary, or a legendary lowered with its radiant), whose notes are in
+    // that tier's entry. Empty otherwise.
     #[serde(rename = "l")]
     pub leader: String,
 }
@@ -180,10 +171,9 @@ impl State {
         serde_json::to_string(&state).unwrap_or_default()
     }
 
-    // Takes a patch in: its ratios, for the tiers each change moved, and
-    // its place in the history. A number the player set reads exactly as
-    // set from here on, and one a patch moved reads in the patch's steps
-    // again.
+    // Takes a patch in: its ratios for the tiers each change moved, and its
+    // place in the history. Hand-set numbers it moved go back to the patch's
+    // steps.
     pub(crate) fn adopt(&mut self, patch: Patch) {
         for change in &patch.changes {
             for moved in &change.members {
@@ -234,10 +224,9 @@ impl State {
         self.limit(key, field).protected
     }
 
-    // Whether a patch may take `field` of the item `key` from `before` to
-    // `after`, by the least and the most the player gave the number: inside
-    // them, or on the way back to them from outside, which is where a number
-    // set by hand can be. Nothing where the player gave neither.
+    // Whether a patch may take `field` of `key` from `before` to `after` within
+    // the player's least and most, or back towards them from outside; `None`
+    // where neither is given.
     pub(crate) fn within(&self, key: &str, field: &str, before: f64, after: f64) -> Option<bool> {
         let limit = self.limit(key, field);
         if limit.min.is_none() && limit.max.is_none() {

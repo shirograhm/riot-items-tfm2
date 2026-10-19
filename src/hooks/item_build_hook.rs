@@ -4,16 +4,13 @@ use crate::{build_config, smart_builds};
 
 const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
 
-// What a support item gets in place of [`MOD_ITEM_SCORE_BONUS`] from a
-// support that prefers them (Smart Builds rule 9): enough to rank it over the
-// mod's other items, not over what the engine itself wants for the
-// champion's class. Double the plain bonus, a guess on a score scale nothing
-// documents.
+// Bonus for a support item on a support that prefers them (Smart Builds rule
+// 9): above the mod's other items, below the engine's own class picks. The
+// score scale is undocumented, so this is a guess.
 const SUPPORT_ITEM_SCORE_BONUS: f32 = 1.0;
 
-// What a heal, shield or buff item gets from a support that looks to those
-// before its other support items (Smart Builds rule 17): half as much again
-// as [`SUPPORT_ITEM_SCORE_BONUS`], as much of a guess on the same scale.
+// Bonus for a heal, shield or buff item on a support that prefers those (Smart
+// Builds rule 17).
 const ALLY_AID_ITEM_SCORE_BONUS: f32 = 1.5;
 
 pub struct ConfiguredBuilds;
@@ -37,14 +34,10 @@ impl StableItemBuildHook for ConfiguredBuilds {
         let Some(key) = ctx.item_key(candidate) else {
             return StableDraftDecision::Pass;
         };
-        // What the save's item balance patches have made of the item: a
-        // nerfed one is worth a little less to a build and a buffed one a
-        // little more, so that how often an item is built follows its
-        // patches (`patches`, "What follows a patch"). Nothing for an item no
-        // patch has moved, which is every item while there are none.
+        // Nudge by the item's balance patches, so how often it is built follows
+        // its nerfs and buffs.
         let lean = crate::patches::leaning(key) * crate::patches::LEAN_SCORE;
-        // Already wanted, or not ours: the engine's ranking is left alone,
-        // bar that lean.
+        // Items the engine already wants keep its ranking, plus the patch lean.
         if base_score > 0.0 {
             return if lean == 0.0 {
                 StableDraftDecision::Pass
@@ -52,17 +45,13 @@ impl StableItemBuildHook for ConfiguredBuilds {
                 StableDraftDecision::Add(lean)
             };
         }
-        // Boots are listed with the finals for the editor's picker, but they
-        // reach a build through Smart Builds' boots rule, never the ranking.
+        // Boots reach a build only through Smart Builds' boots rule, never the
+        // ranking.
         if !crate::strategy_ui::is_mod_final_item(key) || smart_builds::is_boots(key) {
             return StableDraftDecision::Pass;
         }
-        // The bonus exists because the engine's scoring model does not know
-        // the mod's items, not because every one suits every champion: pushing
-        // Death's Dance on an Ice Mage as hard as on a Swordsman is how mages
-        // ended up building it. An item the champion could not keep under the
-        // Smart Builds rules gets no push, toggle or not — declining to promote
-        // an item is not overriding a pick.
+        // Only push items the champion could keep under the Smart Builds rules,
+        // so mages are not pushed into Death's Dance.
         let fit = champion_fit(ctx);
         if smart_builds::Budget::empty(fit).rejects(key).is_some() {
             return StableDraftDecision::Pass;
@@ -70,8 +59,6 @@ impl StableItemBuildHook for ConfiguredBuilds {
         if fit.is_preferred_aid_item(key) {
             return StableDraftDecision::Add(ALLY_AID_ITEM_SCORE_BONUS + lean);
         }
-        // A support's World Atlas item is its one dedicated support item, and
-        // past that it prefers support items without being held to one.
         if fit.is_preferred_support_item(key) {
             return StableDraftDecision::Add(SUPPORT_ITEM_SCORE_BONUS + lean);
         }
@@ -81,51 +68,30 @@ impl StableItemBuildHook for ConfiguredBuilds {
     fn decide_build(&self, ctx: &StableItemBuildContext<'_>) -> Vec<usize> {
         let _probe = crate::perf::Probe::start(crate::perf::Section::StableBuildHook);
         let base = ctx.base_build();
-        // `own_team_only` hands the configured builds to the native buy detour,
-        // which is the only half of the mod that can tell the player's athletes
-        // from the enemy's.
-        //
-        // `ctx.team()` exists, but it does not say which side is the player's.
-        // It is a **0/1 side index within the match**, not a team id: five
-        // `team=0` lines then five `team=1` lines per match, uniform per
-        // lineup. It says which of the two lineups a build belongs to and
-        // nothing else.
-        //
-        // That is not enough to gate on, for two separate reasons. It cannot
-        // say *which* side is the player's — that alternates per match — and it
-        // cannot say whether the player is in this match at all: every one of
-        // those 40 decisions was a background league fixture between two AI
-        // teams, where `team=0` means only "the first lineup". Applying a build
-        // here would still reach both sides, which is exactly what the toggle
-        // is off for.
-        //
-        // The Smart Builds pass below still runs: it is about the shape of a
-        // build, not about whose it is, and it applies to the engine's own
-        // picks too.
+        // `ctx.team()` is only a 0/1 side index, so this hook cannot tell the
+        // player's side apart; `own_team_only` hands configured builds to the
+        // native buy detour instead. Smart Builds still runs here, since it
+        // shapes builds whoever owns them.
         let own_team_only = build_config::own_team_only_enabled();
         let configured = if own_team_only {
             None
         } else {
             self.configured_build(ctx)
         };
-        // With no configured build every slot is the engine's, so none is pinned.
         let merged = configured.unwrap_or_else(|| build_config::MergedBuild {
             items: base.to_vec(),
             pinned: Vec::new(),
             reserved: Vec::new(),
         });
         let mut build = merged.items;
-        // What the player's athlete on this champion holds, where that is not
-        // `build`: the pin-aware twin `own_team_only` keeps back from the enemy.
+        // The player's athlete's build when `own_team_only` makes it differ
+        // from `build`.
         let mut own = None;
 
         if build_config::smart_builds_enabled() {
-            // Under `own_team_only` this build reaches both teams, so it must
-            // not know the pins: an enemy on a pinned champion would lose the
-            // boots slots, the pinned items and gain the player's pair. The
-            // pin-aware build goes to the spawn injector instead, which gives
-            // it to the player's athletes only. See `remember_pinned_build`.
-            // (Nor, then, whether a pin holds the 5th or 6th slot.)
+            // Under `own_team_only` this build reaches both teams, so it
+            // ignores pins; the pin-aware build goes to the spawn injector
+            // instead (see `remember_pinned_build`).
             let later_open = !own_team_only
                 && build_config::later_slot_open(&build_config::pin_row(
                     ctx.champion_key(),
@@ -149,11 +115,8 @@ impl StableItemBuildHook for ConfiguredBuilds {
 }
 
 impl ConfiguredBuilds {
-    // No team gate, and none that can be written from this context alone: a
-    // build is keyed by champion and applies to whoever plays it, enemy
-    // included. A player who does not want that turns on `own_team_only`, which
-    // stops `decide_build` calling this at all — see there for what `ctx.team()`
-    // turned out to be and why it does not close the gap.
+    // Not team-gated: a build applies to whoever plays the champion, enemies
+    // included, unless `own_team_only` is on.
     fn configured_build(
         &self,
         ctx: &StableItemBuildContext<'_>,
@@ -163,8 +126,7 @@ impl ConfiguredBuilds {
             return None;
         }
 
-        // The lane is the half the buy detour has to infer; here the host
-        // states it outright, so a role build is picked without guessing.
+        // The host states the lane, so role builds need no guessing.
         let role = ctx
             .lane()
             .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
@@ -187,39 +149,20 @@ fn is_selectable_final(ctx: &StableItemBuildContext<'_>, index: usize) -> bool {
         .is_some_and(|tier| tier >= SELECTABLE_FINAL_TIER)
 }
 
-// The lane the host states, as a build role.
 fn champion_role(ctx: &StableItemBuildContext<'_>) -> build_config::Role {
     ctx.lane()
         .map(|lane| build_config::Role::from_lane_code(lane.code() as usize))
         .unwrap_or(build_config::Role::Any)
 }
 
-// The Smart Builds [`smart_builds::Fit`] of the champion this build is for, in
-// the lane the host states.
 fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
     smart_builds::fit(ctx.champion_key(), champion_role(ctx))
 }
 
-// The build the player's athlete gets under `own_team_only`, handed to the
-// spawn injector rather than returned.
-//
-// This hook cannot tell the teams apart (see [`build_config::own_team_only_enabled`]),
-// so what it returns reaches the enemy too, and that is the build the Smart
-// Builds pass makes without the pins. The player's athletes get the one the
-// toggle-off path gives: the pins merged into the engine's build
-// ([`build_config::merge_pin_row`]), which slides the engine's picks into the
-// slots between them rather than under them, and the Smart Builds pass over
-// that with the pins held in place. (Running the pass first and pasting the
-// pins over its result would throw away whatever the pass had put in a pinned
-// slot: a pin in the first slot would cost the engine's first pick.)
-//
-// Recorded next to `unpinned`, the build the athlete will hold, for
-// `tactics::spawn_paste_pinned_build` to swap in — which it does only for the
-// player's own athletes — and keyed by the pin row it was made from, the one
-// the detours read ([`build_config::pin_row`]).
-//
-// Returns the pin-aware build, for the in-match tactics panel to show; nothing
-// when no pin applies and the athlete holds `unpinned` like anyone else.
+// Under `own_team_only`, records the pin-aware build (pins merged into the
+// engine's build, then the Smart Builds pass) for
+// `tactics::spawn_paste_pinned_build` to give only the player's athletes.
+// Returns it for the tactics panel, or `None` when no pin applies.
 fn remember_pinned_build(
     ctx: &StableItemBuildContext<'_>,
     unpinned: &[usize],
@@ -258,10 +201,8 @@ fn remember_pinned_build(
     Some(pinned)
 }
 
-// The build the player's athlete holds under `own_team_only` with Smart
-// Builds off, where nothing is recorded for the spawn injector to swap in:
-// the detours lay each pin over its own slot of the build they find. Nothing
-// when no pin applies.
+// The player's build under `own_team_only` with Smart Builds off: each pin laid
+// over its slot. `None` when no pin applies.
 fn pins_over(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> Option<Vec<usize>> {
     // Publishes the pin snapshot `pin_row` reads.
     build_config::load_cached();
@@ -281,12 +222,9 @@ fn pins_over(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> Option<Vec<us
     pinned.then_some(own)
 }
 
-// Hands the build this champion ends up with to the in-match tactics panel
-// ([`crate::match_builds`]), which shows both teams. Every match's builds
-// pass through here and this cannot tell whose a build is, so all of them
-// are noted and the panel picks its match out by lineup: `build` is what
-// anyone playing the champion is handed, and `own` what the player's athlete
-// is, where `own_team_only` makes that another build.
+// Notes every build for the in-match tactics panel, which finds its match by
+// lineup; `own` is the player's athlete's build when `own_team_only` makes it
+// differ.
 fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize], own: Option<&[usize]>) {
     let keys = |build: &[usize]| {
         build
@@ -307,10 +245,8 @@ fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize], own: 
     );
 }
 
-// The Smart Builds pass over a build the host handed us, with the catalog seen
-// through `StableItemBuildContext`. The rules themselves live in
-// [`crate::smart_builds`], which the training-screen detour in `crate::hook`
-// drives over the same build with its own accessors.
+// The Smart Builds pass over a build from the host; the rules live in
+// `smart_builds`, which the training-screen detour in `hook` also drives.
 fn enforce_smart_build(
     ctx: &StableItemBuildContext<'_>,
     build: &mut [usize],
@@ -318,8 +254,7 @@ fn enforce_smart_build(
     reserved: &[usize],
     later_open: bool,
 ) {
-    // This is the one path that sees the enemy lineup, which is what picks a
-    // tank's boots.
+    // Only this path sees the enemy lineup, which picks a tank's boots.
     let enemies = ctx.enemy_champions();
     let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
     build_config::remember_rule_boots(ctx.champion_key(), boots);

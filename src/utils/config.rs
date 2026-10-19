@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use serde_json::Value;
 use std::collections::HashMap;
 use std::ffi::{c_void, OsString};
 use std::os::windows::ffi::OsStringExt;
@@ -146,13 +147,14 @@ pub struct ItemConfig {
     pub effect_growth_skill_cooldown_mult: Option<i32>,
     pub effect_growth_interval_seconds: Option<f64>,
     pub effect_max_growth_stacks: Option<usize>,
+    pub effect_immobilize_stacks: Option<usize>,
+    pub effect_remaining_cooldown_percent: Option<f64>,
+    pub effect_burn_duration_seconds: Option<f64>,
+    pub effect_burn_damage_cap: Option<usize>,
 }
 
-// Overwrites the listed fields of an item with whatever the config file set,
-// leaving the item's built-in default in place for every key the file omits.
-//
-// The field names are identical on both sides — `ItemConfig` mirrors the item
-// structs — so the list is just the set of stats a given item exposes to config:
+// Overwrites the listed fields of an item with the config file's values,
+// keeping the built-in default for every key the file omits:
 //
 // ```ignore
 // fn configured(mut self, cfg: &ItemConfig) -> Self {
@@ -171,15 +173,85 @@ macro_rules! apply_config {
     };
 }
 
-pub fn load() -> HashMap<String, ItemConfig> {
+// The player's `config.json` beside the DLL, by item, and what in it could not
+// be used, for the game's log. Read the way the tooltips and the game's own
+// items read it (`patches::base::read_object`): a byte-order mark is ignored,
+// and each number is taken on its own ([`usable_entry`]). The whole file was
+// once dropped over a single bad number, leaving every item quietly at its
+// defaults while the tooltips showed the player's numbers.
+pub fn load() -> (HashMap<String, ItemConfig>, Vec<String>) {
     let path = dll_dir()
         .map(|d| d.join("config.json"))
         .unwrap_or_else(|| PathBuf::from("config.json"));
+    // No file is the usual case: every item at its defaults.
+    let Ok(text) = std::fs::read_to_string(&path) else {
+        return (HashMap::new(), Vec::new());
+    };
+    let root = match serde_json::from_str::<Value>(text.trim_start_matches('\u{feff}')) {
+        Ok(Value::Object(root)) => root,
+        Ok(_) => {
+            return (
+                HashMap::new(),
+                vec!["config.json is not a JSON object, so every item keeps its defaults".into()],
+            )
+        }
+        Err(error) => {
+            return (
+                HashMap::new(),
+                vec![format!("config.json could not be read ({error}), so every item keeps its defaults")],
+            )
+        }
+    };
+    let mut items = HashMap::new();
+    let mut skipped = Vec::new();
+    for (key, entry) in root {
+        let Value::Object(fields) = entry else {
+            skipped.push(format!("{key} (not an object)"));
+            continue;
+        };
+        let (kept, left_out) = usable_entry(fields);
+        skipped.extend(left_out.into_iter().map(|field| format!("{key}.{field}")));
+        // Every field kept reads on its own, so they read together.
+        if let Ok(config) = serde_json::from_value::<ItemConfig>(Value::Object(kept)) {
+            items.insert(key, config);
+        }
+    }
+    (items, skipped)
+}
 
-    std::fs::read_to_string(&path)
-        .ok()
-        .and_then(|s| serde_json::from_str(&s).ok())
-        .unwrap_or_default()
+// The fields of one `config.json` entry an [`ItemConfig`] can hold, and the
+// names of those it cannot. A number goes in as written where it fits, else
+// rounded to a whole number, half to even as the tooltips round it (`40.0`, or
+// `40.5`, for a whole-number field). A field no item reads stays: the config
+// ignores it.
+pub(crate) fn usable_entry(
+    fields: serde_json::Map<String, Value>,
+) -> (serde_json::Map<String, Value>, Vec<String>) {
+    let fits = |field: &str, value: &Value| {
+        let mut one = serde_json::Map::new();
+        one.insert(field.to_string(), value.clone());
+        serde_json::from_value::<ItemConfig>(Value::Object(one)).is_ok()
+    };
+    let mut kept = serde_json::Map::new();
+    let mut left_out = Vec::new();
+    for (field, value) in fields {
+        let usable = if fits(&field, &value) {
+            Some(value)
+        } else {
+            value
+                .as_f64()
+                .filter(|number| number.is_finite())
+                .map(|number| Value::from(number.round_ties_even() as i64))
+                .filter(|whole| fits(&field, whole))
+        };
+        match usable {
+            Some(value) => {
+                kept.insert(field, value);
+            }
+            None => left_out.push(field),
+        }
+    }
+    (kept, left_out)
 }
 
 pub(crate) fn mod_dir() -> PathBuf {

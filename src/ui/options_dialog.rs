@@ -1,30 +1,13 @@
-//! The game's Options dialog as the mod finds it: where it is in the UI
-//! tree, whether it is showing, and whether its Competition tab is the one
-//! up. For the rows the mod adds to that tab: `super::options_row`'s Item
-//! Rules and, under it, `super::patch_settings`' Item Patcher Settings.
+//! The game's Options dialog as the mod finds it: where it is, whether it is
+//! showing, and whether its Competition tab is up. For the Item Rules
+//! (`super::options_row`) and Item Patcher Settings (`super::patch_settings`)
+//! rows.
 //!
-//! # The dialog
-//!
-//! `ui/layout/option.ui` declares `option:option_ui`, holding `#option` and
-//! under it `#tabs` (system, gameplay, competition, display) and `#contents`,
-//! a top-to-bottom list of one row a setting. The rows of the other three
-//! tabs are authored there and shown or hidden as the tab changes. The
-//! Competition tab's are not: game code builds League Rules and the rest at
-//! run time, as children of `#contents` like every other row, so a row
-//! appended there is laid out under them.
-//!
-//! The dialog is not a layout root. It is `pause_ui.option.option`
-//! ([`KNOWN_DIALOG`]), and should a game update move it, it is looked for by
-//! its shape: a node with `tabs.competition` and `contents` under it
-//! ([`sweep`]). That search runs only while the pause menu is up, which is
-//! where the dialog is opened from: a sweep of the tree on every screen is
-//! how a mod makes a game stutter. The title screen's Options has no row for
-//! that reason, and no save to patch either.
-//!
-//! Which tab is showing cannot be asked of the tab: the host answers nothing
-//! for a `color_selectable`'s selected state. The Competition tab is taken to
-//! be up while none of the rows the layout authors for the other three tabs
-//! is showing ([`AUTHORED_ROWS`]).
+//! The Competition rows are built at run time as children of `#contents`, so an
+//! appended row lays out under them. The dialog is at [`KNOWN_DIALOG`], else
+//! found by its shape ([`sweep`]) only while the pause menu is up; the
+//! Competition tab counts as up while none of the other tabs' rows
+//! ([`AUTHORED_ROWS`]) is showing, since a tab's selected state cannot be read.
 
 use std::sync::Mutex;
 
@@ -157,13 +140,9 @@ pub(super) fn competition_up(ctx: &StableClient<'_>, dialog: &str) -> bool {
             .any(|row| ctx.ui_visible(&format!("{dialog}.contents.{row}")) == Some(true))
 }
 
-// The dialog's path while it is showing, on the `frame`th frame of whoever
-// asks. With the dialog out of the tree this is one lookup.
-//
-// The layout's own root is authored hidden and game code shows it; it is the
-// dialog's parent wherever the layout was hung. A host that does not say is
-// taken to be showing it: a row is a child of the dialog, so the worst that
-// costs is the tab test on every frame.
+// The dialog's path while it is showing; one lookup while it is out of the
+// tree. A host that does not say whether the layout root is shown is taken to
+// be showing it.
 pub(super) fn showing(ctx: &StableClient<'_>, frame: u32) -> Option<String> {
     let dialog = locate(ctx, frame)?;
     let parent = dialog.rsplit_once('.').map(|(parent, _)| parent);
