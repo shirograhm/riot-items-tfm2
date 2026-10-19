@@ -883,10 +883,33 @@ pub(crate) fn same_setting(a: &Value, b: &Value) -> bool {
     }
 }
 
+// A game item's `next_tier` as the server holds it, less the links to this
+// mod's items that no longer name it (`key`) as what they are built from. The
+// game writes each mod item into the `next_tier` of its `previous_tier` as a
+// save loads but never takes one out, so a save older than a recipe change
+// kept building by the old recipe: Long Sword into Madred's Razors, long after
+// Madred's came to build from Hunter's Machete alone. The game's own items and
+// other mods' are left as they are.
+fn current_next_tier(key: &str, next_tier: &Value) -> Value {
+    let Some(list) = next_tier.as_array() else {
+        return next_tier.clone();
+    };
+    let mod_items = &crate::patches::base::base().mod_items;
+    let kept = list.iter().filter(|next| {
+        next.as_str()
+            .and_then(|next| mod_items.get(next))
+            .is_none_or(|item| item.previous.iter().any(|previous| previous == key))
+    });
+    Value::Array(kept.cloned().collect())
+}
+
 // Makes the server's item settings hold the mod's numbers for the game's thirty
 // items, once per server, merging each from [`game_item_file`] and writing only
 // what changed. Matches use the server's settings, and the client's view shows
-// base-game numbers, so the `mod.override_info` merge cannot be relied on.
+// base-game numbers, so the `mod.override_info` merge cannot be relied on. Each
+// item's `next_tier` stays the server's own, which has this mod's items in it,
+// but for links an old save kept from a recipe since changed
+// ([`current_next_tier`]).
 pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
     if SERVER_ITEMS_SYNCED.load(Ordering::Relaxed) {
         return;
@@ -917,8 +940,11 @@ pub(crate) fn sync_server_items(ctx: &mut StableServerCtx<'_>) {
         }
         let mut merged = held.clone();
         merge_over(&mut merged, over);
+        let key = held.get("key").and_then(Value::as_str).unwrap_or(name);
         match held.get("next_tier") {
-            Some(next_tier) => merged.insert("next_tier".to_string(), next_tier.clone()),
+            Some(next_tier) => {
+                merged.insert("next_tier".to_string(), current_next_tier(key, next_tier))
+            }
             None => merged.remove("next_tier"),
         };
         let merged = Value::Object(merged);
