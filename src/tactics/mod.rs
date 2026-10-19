@@ -3408,8 +3408,8 @@ unsafe fn lift_server_mod_items(state: usize, keys: &[String]) -> Option<ModItem
 // can, each with even odds (`previous_tier` order plays no part). Its detour
 // lets the game draw first, so the RNG moves as it always did, then puts in
 // the candidate `crate::route_choice` scores highest out of that same set and
-// redoes the gold check. Every caller gets that choice: buy_item, the upgrade
-// decider (0xf75440) and six "can I buy now" checks.
+// redoes the gold check. Every caller gets that choice: 8 call sites on
+// 0.7.0-beta, buy_item's among them.
 //
 // Arguments: rcx the RNG, rdx the athlete, r8/r9 the catalog, then on the
 // stack the build entries done, the upgrade flag (1 = upgrade) and the owned
@@ -3417,36 +3417,32 @@ unsafe fn lift_server_mod_items(state: usize, keys: &[String]) -> Option<ModItem
 //
 // To re-derive: buy_item's call after the done-count function. It reads the
 // build at +0x358/+0x360 at once and ends on the gold check against
-// `O_ATHLETE_GOLD`; the graph getter is its first direct call on both paths.
+// `O_ATHLETE_GOLD`. On 0.7.0-beta (as on 0.6.3) it draws through two callees,
+// 0xec4970 for a new item and 0xec4fc0 for an upgrade, and those call the
+// graph getter; 0.6.4 inlined them.
 
 // Kill switch for rule 18's detour and the lineup and seat notes that feed it.
 const ROUTE_CHOICE: bool = true;
-// NOT derived for 0.7.0-beta: these are 0.6.4's addresses and neither 48-byte
-// signature occurs in the beta exe, so the detour never installs there and
-// rule 18 is off on this branch. Beta's resolver is 0.6.3's (0xe94780, see
-// `patch_final_gate`), whose arguments have to be re-read before porting.
-const ROUTE_PICKER_RVA: usize = 0xe933d0; // 0.6.4 (0.6.3: 0xea1ea0)
-// 48 bytes, unique in .text: the 8 pushes, `sub rsp,0xa8`, the frame setup and
-// the argument moves.
+// 0.7.0-beta's is 0.6.3's resolver, the same contract as 0.6.4's: the stack
+// arguments at entry+0x28/+0x30/+0x38 and the rax/rdx return, read off both.
+const ROUTE_PICKER_RVA: usize = 0xe94780; // 0.7.0-beta (0.6.4: 0xe933d0, 0.6.3: 0xea1ea0)
+// 48 bytes, unique in .text: the 8 pushes, `sub rsp,0xa8` and the argument
+// moves (no frame pointer on this build).
 const ROUTE_PICKER_SIG: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xa8,
-    0x00, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0f, 0x29, 0x75, 0x10, 0x48,
-    0xc7, 0x45, 0x08, 0xfe, 0xff, 0xff, 0xff, 0x4c, 0x89, 0xce, 0x4c, 0x89, 0xc7, 0x48, 0x89, 0x4d,
+    0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x55, 0x53, 0x48, 0x81, 0xec, 0xa8,
+    0x00, 0x00, 0x00, 0x4d, 0x89, 0xce, 0x4c, 0x89, 0x44, 0x24, 0x40, 0x48, 0x89, 0xd6, 0x48, 0x89,
+    0x4c, 0x24, 0x48, 0x4c, 0x8b, 0xac, 0x24, 0x10, 0x01, 0x00, 0x00, 0x48, 0x8b, 0x9a, 0x58, 0x03,
 ];
 const ROUTE_PICKER_ORIG_LEN: usize = 12; // the 8 pushes, an instruction boundary
-// The route graph's cache getter: rcx its thread-local key, rdx/r8 the
-// catalog -> the graph `Rc` with its strong count raised. Called at picker
-// +0x199.
-const ROUTE_GRAPH_RVA: usize = 0x1ab3a10; // 0.6.4
+// The route graph's cache getter: rcx/rdx the catalog -> the graph `Rc` with
+// its strong count raised. Its thread-local cache is inlined here (`gs:[0x58]`
+// and a TLS index); 0.6.4's getter takes the key in rcx instead.
+const ROUTE_GRAPH_RVA: usize = 0x12cb660; // 0.7.0-beta (0.6.4: 0x1ab3a10)
 const ROUTE_GRAPH_SIG: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0xf8,
-    0x00, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x48, 0xc7, 0x45, 0x70, 0xfe,
-    0xff, 0xff, 0xff, 0x4c, 0x89, 0xc6, 0x48, 0x89, 0xd7, 0x48, 0x89, 0xc8, 0x31, 0xc9, 0xff, 0x10,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xec, 0x48,
+    0x01, 0x00, 0x00, 0x48, 0x8d, 0xac, 0x24, 0x80, 0x00, 0x00, 0x00, 0x48, 0xc7, 0x85, 0xc0, 0x00,
+    0x00, 0x00, 0xfe, 0xff, 0xff, 0xff, 0x48, 0x89, 0xd3, 0x48, 0x89, 0xce, 0x8b, 0x05, 0x1e, 0x70,
 ];
-// The getter's key (`lea rcx,[rip+..]` before every call to it), whose first
-// word is the key's accessor.
-const ROUTE_GRAPH_KEY_RVA: usize = 0x3b8e0a0; // 0.6.4
-const ROUTE_GRAPH_KEY_ACCESSOR_RVA: usize = 0x12cacb0; // 0.6.4
 // The graph, from the `Rc`'s start (strong count at +0): the next steps of
 // every item (`Vec<Vec<usize>>`, its pointer and length), a byte per item the
 // picker requires set, and a bit matrix of what builds into what (row = item,
@@ -3458,8 +3454,8 @@ const O_GRAPH_FLAGS_LEN: usize = 0x38;
 const O_GRAPH_REACH_PTR: usize = 0x48;
 const O_GRAPH_REACH_LEN: usize = 0x50; // in words
 const O_GRAPH_REACH_STRIDE: usize = 0x58; // words per row
-// The athlete's gold: the picker's last check, `mov rsi,[rax+0x868]`.
-const O_ATHLETE_GOLD: usize = 0x868; // 0.6.4
+// The athlete's gold: the picker's last check, `mov rsi,[rsi+0x868]`.
+const O_ATHLETE_GOLD: usize = 0x868; // 0.7.0-beta, 0.6.4
 // Catalog vtable slots the picker calls: the step's price and the tier.
 const VT_PRICE: usize = 0x68;
 const VT_TIER: usize = 0x70;
@@ -3499,15 +3495,12 @@ fn install_route_hook() {
     });
 }
 
-// Whether the graph getter and its key are where this build has them; the
-// detour is not installed otherwise, since it reads the graph through them.
+// Whether the graph getter is where this build has it; the detour is not
+// installed otherwise, since it reads the graph through it.
 unsafe fn route_graph_ok() -> bool {
-    let base = exe_base_addr();
-    let getter = base + ROUTE_GRAPH_RVA;
+    let getter = exe_base_addr() + ROUTE_GRAPH_RVA;
     readable(getter, ROUTE_GRAPH_SIG.len())
         && (0..ROUTE_GRAPH_SIG.len()).all(|i| *((getter + i) as *const u8) == ROUTE_GRAPH_SIG[i])
-        && safe_read_u64(base + ROUTE_GRAPH_KEY_RVA)
-            == Some((base + ROUTE_GRAPH_KEY_ACCESSOR_RVA) as u64)
 }
 
 // Installs a detour that runs after the original. The stub calls the original
@@ -3944,10 +3937,9 @@ struct RouteGraph {
 
 impl RouteGraph {
     unsafe fn of(catalog: usize, catalog_len: u64) -> Option<Self> {
-        let base = exe_base_addr();
-        let getter: unsafe extern "win64" fn(usize, usize, usize) -> usize =
-            core::mem::transmute(base + ROUTE_GRAPH_RVA);
-        let rc = getter(base + ROUTE_GRAPH_KEY_RVA, catalog, catalog_len as usize);
+        let getter: unsafe extern "win64" fn(usize, usize) -> usize =
+            core::mem::transmute(exe_base_addr() + ROUTE_GRAPH_RVA);
+        let rc = getter(catalog, catalog_len as usize);
         if rc < 0x10000 {
             return None;
         }
