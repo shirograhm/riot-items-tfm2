@@ -103,6 +103,8 @@ const FROZEN: &[&str] = &[
     "effect_minion_percent",
     "effect_minion_bonus_percent",
     "effect_minion_damage_cap",
+    "effect_burn_duration_seconds",
+    "effect_burn_damage_cap",
     "effect_tower_ad_percent_damage",
     "effect_tower_caster_hp_percent_damage",
     "effect_hp_percent_threshold",

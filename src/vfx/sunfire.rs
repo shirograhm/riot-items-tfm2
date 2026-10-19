@@ -25,7 +25,7 @@ impl Default for Immolate {
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,
             effect_max_distance: 30,
-            effect_minion_bonus_percent: 50.0,
+            effect_minion_bonus_percent: 150.0,
         }
     }
 }

@@ -48,8 +48,9 @@
 //!     be built more than one way, the AI takes the route
 //!     [`crate::route_choice`] scores highest (armor or magic resist by the
 //!     enemies' damage, damage stats by what the champion scales with) instead
-//!     of the game's random one. Native half only; it changes how an item is
-//!     built, never which.
+//!     of the game's random one, and a jungler starts its jungle item on its
+//!     jungle starter (Hunter's Machete or Talisman). Native half only; it
+//!     changes how an item is built, never which.
 //!
 //! The rules only replace AI picks: a pinned slot is kept and counts toward the
 //! budgets like any other item, and an earlier slot wins over a later one.

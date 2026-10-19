@@ -33,7 +33,8 @@ pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
-    Energized, Eternity, Lifeline, Spellblade, SpellbladeBonus,
+    Energized, Eternity, Lifeline, Spellblade, SpellbladeBonus, Transmutation,
+    TransmutationNumbers,
 };
 
 fn percent_of(value: usize, percent: f64) -> usize {
@@ -515,6 +516,8 @@ fn init(host: &StableHost) -> StableMod {
     // Tier 1
     reg.add_item(configured!("boots" => Boots));
     reg.add_item(configured!("glowing_mote" => GlowingMote));
+    reg.add_item(configured!("hunters_machete" => HuntersMachete));
+    reg.add_item(configured!("hunters_talisman" => HuntersTalisman));
     reg.add_item(configured!("world_atlas" => WorldAtlas, shared_riches));
 
     // Tier 2
@@ -547,6 +550,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("needlessly_large_rod" => NeedlesslyLargeRod));
     reg.add_item(configured!("noonquiver" => Noonquiver));
     reg.add_item(configured!("phage" => Phage));
+    reg.add_item(configured!("philosophers_medallion" => PhilosophersMedallion));
     reg.add_item(configured!("plated_steelcaps" => PlatedSteelcaps, boots));
     reg.add_item(configured!("scouts_slingshot" => ScoutsSlingshot));
     reg.add_item(configured!("seekers_armguard" => SeekersArmguard));

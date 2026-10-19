@@ -149,6 +149,8 @@ pub struct ItemConfig {
     pub effect_max_growth_stacks: Option<usize>,
     pub effect_immobilize_stacks: Option<usize>,
     pub effect_remaining_cooldown_percent: Option<f64>,
+    pub effect_burn_duration_seconds: Option<f64>,
+    pub effect_burn_damage_cap: Option<usize>,
 }
 
 // Overwrites the listed fields of an item with the config file's values,

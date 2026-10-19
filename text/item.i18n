@@ -178,11 +178,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters."
         },
         "giants_horn_shard": {
             "name": "Radiant Sunfire Cape",
-            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters."
+            "option": "\n<#ff7a3eff>Mending<>: Recover <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<> every second.\n\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters."
         },
         "bf_sword": {
             "name": "B.F. Sword",
@@ -814,7 +814,7 @@
         },
         "bamis_cinder": {
             "name": "Bami's Cinder",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>5<> + <#60e84dff>0.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>5<> + <#60e84dff>0.5%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters."
         },
         "bandlepipes": {
             "name": "Bandlepipes",
@@ -938,11 +938,11 @@
         },
         "hollow_radiance": {
             "name": "Hollow Radiance",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>30<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>30<> + <#60e84dff>2%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
         },
         "radiant_hollow_radiance": {
             "name": "Radiant Hollow Radiance",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>50% more damage<> to minions and monsters.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>60<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Desolate<>: Killing a unit causes an eruption around their death location, dealing <#60e84dff>60<> + <#60e84dff>4%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies nearby. This effect is <#e8a800ff>50% as effective<> against minions and monsters."
         },
         "cosmic_drive": {
             "name": "Cosmic Drive",
@@ -1034,11 +1034,11 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> and <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>10 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>5% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Immolate<>: Deal <#60e84dff>10<> + <#60e84dff>1%<> of your <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> as <#a974ffff>magic damage<> to all enemies within <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>. This effect deals <#e8a800ff>150% more damage<> to minions and monsters.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> and <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>10 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>5% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Iceborn Gauntlet",
@@ -1143,6 +1143,18 @@
         "madreds_razors": {
             "name": "Madred's Razors",
             "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
+        },
+        "hunters_machete": {
+            "name": "Hunter's Machete",
+            "option": "\nGain <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> against monsters.\n\n<#ff7a3eff>Nail<>: Basic attacks against monsters deal <#ff9028ff>15 bonus physical damage<> <#ffff99ff>on-hit<>."
+        },
+        "hunters_talisman": {
+            "name": "Hunter's Talisman",
+            "option": "\nGain <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> against monsters.\n\n<#ff7a3eff>Tooth<>: Dealing damage to a monster burns it for <#d94c49ff>5% of its maximum health<> over <#e8a800ff>4 seconds<>."
+        },
+        "philosophers_medallion": {
+            "name": "Philosopher's Medallion",
+            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> and <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>10 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>5% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second."
         }
     },
     "vi": {
@@ -1324,11 +1336,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Áo Choàng Lửa Mặt Trời",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái."
         },
         "giants_horn_shard": {
             "name": "Áo Choàng Lửa Mặt Trời Ánh Sáng",
-            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái."
+            "option": "\n<#ff7a3eff>Sửa chữa<>: Hồi <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Máu<> Tối Đa mỗi giây.\n\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>{Range}<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái."
         },
         "bf_sword": {
             "name": "Kiếm B.F.",
@@ -1960,7 +1972,7 @@
         },
         "bamis_cinder": {
             "name": "Tàn Tích Bami",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>5<> + <#60e84dff>0.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>5<> + <#60e84dff>0.5%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái."
         },
         "tiamat": {
             "name": "Rìu Tiamat",
@@ -2084,11 +2096,11 @@
         },
         "hollow_radiance": {
             "name": "Áo Choàng Hắc Quang",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>30<> + <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>30<> + <#60e84dff>2%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
         },
         "radiant_hollow_radiance": {
             "name": "Áo Choàng Hắc Quang Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>50% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>60<> + <#60e84dff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
+            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Tàn Phá<>: Tiêu diệt một đơn vị sẽ gây ra một vụ phun trào quanh vị trí nó ngã xuống, gây <#60e84dff>60<> + <#60e84dff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch ở gần. Hiệu ứng này chỉ có <#e8a800ff>50% hiệu quả<> với lính và quái."
         },
         "cosmic_drive": {
             "name": "Động Cơ Vũ Trụ",
@@ -2180,11 +2192,11 @@
         },
         "philosophers_stone": {
             "name": "Đá Hiền Triết",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> và <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>10 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>5% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Đá Hiền Triết Ánh Sáng",
-            "option": "\n<#ff7a3eff>Hiến Tế<>: Gây <#60e84dff>10<> + <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> của bạn thành <#a974ffff>sát thương phép<> lên tất cả kẻ địch trong phạm vi <#ff86c2ff>30<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> . Hiệu ứng này gây thêm <#e8a800ff>150% sát thương<> lên lính và quái.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> và <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>10 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>5% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Găng Tay Băng Giá",
@@ -2289,6 +2301,18 @@
         "madreds_razors": {
             "name": "Móng Vuốt Madred",
             "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
+        },
+        "hunters_machete": {
+            "name": "Rựa Thợ Săn",
+            "option": "\nNhận <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> lên quái.\n\n<#ff7a3eff>Móng Vuốt<>: Đòn đánh thường lên quái gây <#ff9028ff>15 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>."
+        },
+        "hunters_talisman": {
+            "name": "Bùa Thợ Săn",
+            "option": "\nNhận <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> lên quái.\n\n<#ff7a3eff>Răng Nanh<>: Gây sát thương lên quái sẽ thiêu đốt nó, khiến nó chịu <#d94c49ff>5% máu tối đa của nó<> trong <#e8a800ff>4 giây<>."
+        },
+        "philosophers_medallion": {
+            "name": "Mề Đay Hiền Triết",
+            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> và <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>10 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>5% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây."
         }
     },
     "zh-hans": {
@@ -2470,11 +2494,11 @@
         },
         "hourglass_of_eternity": {
             "name": "日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{Flat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。"
         },
         "giants_horn_shard": {
             "name": "光明版日炎斗篷",
-            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>愈合<>：每秒回复 <#60e84dff>{RegenFlat}点 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。\n\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>{DmgFlat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>{DmgRatio}%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。"
         },
         "bf_sword": {
             "name": "暴风之剑",
@@ -3106,7 +3130,7 @@
         },
         "bamis_cinder": {
             "name": "斑比的熔渣",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>5<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>0.5%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>5<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>0.5%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。"
         },
         "tiamat": {
             "name": "提亚马特",
@@ -3230,11 +3254,11 @@
         },
         "hollow_radiance": {
             "name": "璀璨回响",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>30<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>30<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>2%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
         },
         "radiant_hollow_radiance": {
             "name": "光明版璀璨回响",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>50%<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>60<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>4%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
+            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>荒弃<>：击杀一个单位时，会在其死亡位置引发喷发，对附近所有敌人造成 <#60e84dff>60<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>4%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪的效果为 <#e8a800ff>50%<>。"
         },
         "cosmic_drive": {
             "name": "星界驱驰",
@@ -3326,11 +3350,11 @@
         },
         "philosophers_stone": {
             "name": "贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#61d1bcff>5 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>和 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>10秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其5%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
         },
         "radiant_philosophers_stone": {
             "name": "光明版贤者之石",
-            "option": "\n<#ff7a3eff>献祭<>：对 <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内的所有敌人造成 <#60e84dff>10<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>的 <#60e84dff>1%<> 的<#a974ffff>魔法伤害<>。该效果对小兵和野怪造成的伤害提高 <#e8a800ff>150%<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>25%<>。"
+            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#61d1bcff>5 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>和 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>10秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其5%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>25%<>。"
         },
         "iceborn_gauntlet": {
             "name": "冰脉护手",
@@ -3435,6 +3459,18 @@
         "madreds_razors": {
             "name": "麦瑞德之爪",
             "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>5 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+        },
+        "hunters_machete": {
+            "name": "猎人的宽刃刀",
+            "option": "\n对野怪获得 <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。\n\n<#ff7a3eff>利爪<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#ff9028ff>15 点物理伤害<>。"
+        },
+        "hunters_talisman": {
+            "name": "猎人的护身符",
+            "option": "\n对野怪获得 <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。\n\n<#ff7a3eff>尖牙<>：对野怪造成伤害时会灼烧它，使其在 <#e8a800ff>4秒<>内受到相当于<#d94c49ff>其5%最大生命值<>的伤害。"
+        },
+        "philosophers_medallion": {
+            "name": "贤者印章",
+            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#61d1bcff>5 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>和 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>10秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其5%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。"
         }
     },
     "pt-BR": {
@@ -3616,11 +3652,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Capa do Sol Nascente",
-            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros."
+            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{Flat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros."
         },
         "giants_horn_shard": {
             "name": "Capa do Sol Nascente Radiante",
-            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{RegenFlat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros."
+            "option": "\n<#ff7a3eff>Coração<>: Restaura <#60e84dff>{RegenFlat} de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Vida<> por segundo.\n\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros."
         },
         "bf_sword": {
             "name": "Espada G. p. C.",
@@ -4252,7 +4288,7 @@
         },
         "bamis_cinder": {
             "name": "Brasa de Bami",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>5<> + <#60e84dff>0.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>5<> + <#60e84dff>0.5%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros."
         },
         "tiamat": {
             "name": "Tiamat",
@@ -4376,11 +4412,11 @@
         },
         "hollow_radiance": {
             "name": "Resplendor Vazio",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>30<> + <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>30<> + <#60e84dff>2%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
         },
         "radiant_hollow_radiance": {
             "name": "Resplendor Vazio Radiante",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>50% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>60<> + <#60e84dff>4%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
+            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Desolar<>: Abater uma unidade causa uma erupção no local da morte, causando <#60e84dff>60<> + <#60e84dff>4%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> a todos os inimigos próximos. Este efeito é <#e8a800ff>50% eficaz<> contra tropas e monstros."
         },
         "cosmic_drive": {
             "name": "Ímpeto Cósmico",
@@ -4472,11 +4508,11 @@
         },
         "philosophers_stone": {
             "name": "Pedra Filosofal",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#61d1bcff>5 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> e <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>10 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>5% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Pedra Filosofal Radiante",
-            "option": "\n<#ff7a3eff>Imolar<>: Causa <#60e84dff>10<> + <#60e84dff>1%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> como <#a974ffff>dano mágico<> por segundo a inimigos dentro de <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>. Este efeito causa <#e8a800ff>150% mais dano<> a tropas e monstros.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#61d1bcff>5 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> e <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>10 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>5% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Manopla dos Glacinatas",
@@ -4581,6 +4617,18 @@
         "madreds_razors": {
             "name": "Navalhas de Madred",
             "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>5 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
+        },
+        "hunters_machete": {
+            "name": "Machete do Caçador",
+            "option": "\nGanha <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> contra monstros.\n\n<#ff7a3eff>Garra<>: Ataques básicos contra monstros causam <#ff9028ff>15 de dano físico bônus<> <#ffff99ff>ao contato<>."
+        },
+        "hunters_talisman": {
+            "name": "Talismã do Caçador",
+            "option": "\nGanha <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> contra monstros.\n\n<#ff7a3eff>Dente<>: Causar dano a um monstro o queima, fazendo-o sofrer <#d94c49ff>5% da Vida Máxima dele<> ao longo de <#e8a800ff>4 segundos<>."
+        },
+        "philosophers_medallion": {
+            "name": "Medalhão Filosofal",
+            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#61d1bcff>5 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> e <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>10 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>5% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo."
         }
     },
     "ru": {
@@ -4762,11 +4810,11 @@
         },
         "hourglass_of_eternity": {
             "name": "Плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{Flat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>."
         },
         "giants_horn_shard": {
             "name": "Светоносный плащ солнечного пламени",
-            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>."
+            "option": "\n<#ff7a3eff>Восстановление<>: Восстанавливает <#60e84dff>{RegenFlat} <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<> каждую секунду.\n\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>{DmgFlat}<> + <#60e84dff>{DmgRatio}%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>."
         },
         "bf_sword": {
             "name": "Самый Лучший Меч",
@@ -5398,7 +5446,7 @@
         },
         "bamis_cinder": {
             "name": "Пепел Бами",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>5<> + <#60e84dff>0.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>5<> + <#60e84dff>0.5%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>."
         },
         "tiamat": {
             "name": "Тиамат",
@@ -5522,11 +5570,11 @@
         },
         "hollow_radiance": {
             "name": "Сияние пустоты",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>30<> + <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>30<> + <#60e84dff>2%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
         },
         "radiant_hollow_radiance": {
             "name": "Лучезарное Сияние пустоты",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>50% больше урона<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>60<> + <#60e84dff>4%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
+            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Истребление<>: Убийство бойца вызывает извержение в месте его гибели, нанося всем ближайшим врагам <#60e84dff>60<> + <#60e84dff>4%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<>. Против миньонов и монстров эффект действует на <#e8a800ff>50%<>."
         },
         "cosmic_drive": {
             "name": "Космический ускоритель",
@@ -5618,11 +5666,11 @@
         },
         "philosophers_stone": {
             "name": "Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> и <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>10 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>5% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Лучезарный Философский камень",
-            "option": "\n<#ff7a3eff>Изничтожение<>: Наносит <#60e84dff>10<> + <#60e84dff>1%<> от вашего <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<> как <#a974ffff>магический урон<> всем врагам в радиусе <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>. Против миньонов и монстров эффект наносит на <#e8a800ff>150% больше урона<>.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> и <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>10 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>5% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Хладорожденная рукавица",
@@ -5727,6 +5775,18 @@
         "madreds_razors": {
             "name": "Когти Мадреда",
             "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
+        },
+        "hunters_machete": {
+            "name": "Мачете охотника",
+            "option": "\nДаёт <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> против монстров.\n\n<#ff7a3eff>Коготь<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#ff9028ff>15 дополнительного физического урона<>."
+        },
+        "hunters_talisman": {
+            "name": "Талисман охотника",
+            "option": "\nДаёт <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> против монстров.\n\n<#ff7a3eff>Клык<>: Нанесение урона монстру поджигает его, заставляя получить <#d94c49ff>5% его максимального здоровья<> в течение <#e8a800ff>4 секунд<>."
+        },
+        "philosophers_medallion": {
+            "name": "Философский медальон",
+            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> и <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>10 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>5% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду."
         }
     },
     "ko": {
@@ -5908,11 +5968,11 @@
         },
         "hourglass_of_eternity": {
             "name": "태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{Flat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다."
         },
         "giants_horn_shard": {
             "name": "찬란한 태양불꽃 망토",
-            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다."
+            "option": "\n<#ff7a3eff>회복<>: 매초 <#60e84dff>{RegenFlat}의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다.\n\n<#ff7a3eff>불사르기<>: <#ff86c2ff>{Range} <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>{DmgFlat}<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>{DmgRatio}%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다."
         },
         "bf_sword": {
             "name": "B.F. 대검",
@@ -6544,7 +6604,7 @@
         },
         "bamis_cinder": {
             "name": "바미의 불씨",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>5<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>0.5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>5<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>0.5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다."
         },
         "tiamat": {
             "name": "티아맷",
@@ -6668,11 +6728,11 @@
         },
         "hollow_radiance": {
             "name": "공허한 광휘",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>30<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>30<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>2%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
         },
         "radiant_hollow_radiance": {
             "name": "찬란한 공허한 광휘",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>50%<> 증가합니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>4%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
+            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>황폐<>: 유닛을 처치하면 그 자리에서 분출이 일어나 주변의 모든 적에게 <#60e84dff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>4%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 <#e8a800ff>50%<>의 효과만 적용됩니다."
         },
         "cosmic_drive": {
             "name": "우주의 추진력",
@@ -6764,11 +6824,11 @@
         },
         "philosophers_stone": {
             "name": "현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>10초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>15<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
         },
         "radiant_philosophers_stone": {
             "name": "찬란한 현자의 돌",
-            "option": "\n<#ff7a3eff>불사르기<>: <#ff86c2ff>30 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 사거리<> 안의 모든 적에게 <#60e84dff>10<> + <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>의 <#60e84dff>1%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 미니언과 몬스터에게는 피해량이 <#e8a800ff>150%<> 증가합니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>25%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>10초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>15<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>25%<>까지 쌓입니다."
         },
         "iceborn_gauntlet": {
             "name": "얼어붙은 건틀릿",
@@ -6873,6 +6933,18 @@
         "madreds_razors": {
             "name": "마드레드의 갈퀴손",
             "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>5<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
+        },
+        "hunters_machete": {
+            "name": "사냥꾼의 마체테",
+            "option": "\n몬스터 대상 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 8%<>를 얻습니다.\n\n<#ff7a3eff>손톱<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#ff9028ff>15의 추가 물리 피해<>를 입힙니다."
+        },
+        "hunters_talisman": {
+            "name": "사냥꾼의 부적",
+            "option": "\n몬스터 대상 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 8%<>를 얻습니다.\n\n<#ff7a3eff>이빨<>: 몬스터에게 피해를 입히면 불태워 <#e8a800ff>4초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 5%<>만큼 피해를 입힙니다."
+        },
+        "philosophers_medallion": {
+            "name": "현자의 메달",
+            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>10초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>15<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다."
         }
     }
 }

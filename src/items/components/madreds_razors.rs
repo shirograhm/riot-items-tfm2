@@ -16,8 +16,8 @@ pub struct MadredsRazors {
 impl Default for MadredsRazors {
     fn default() -> Self {
         Self {
-            price: 400,
-            attack: 15,
+            price: 650,
+            attack: 25,
             attack_speed_mult: 15,
             effect_bonus_magic_damage: 25,
             effect_bonus_flat_heal: 5,
@@ -67,7 +67,7 @@ impl StableItem for MadredsRazors {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["soldiers_longsword".to_string(), "wind_dagger".to_string()]
+        vec!["hunters_machete".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {

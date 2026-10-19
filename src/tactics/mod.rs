@@ -3804,6 +3804,23 @@ unsafe fn route_answer(
             best: Vec::new(),
         });
     }
+    // A jungle starter is a jungler's first buy, whatever the stats say.
+    if ask.from == u64::MAX {
+        let starters: Vec<u64> = candidates
+            .iter()
+            .copied()
+            .filter(|&c| {
+                catalog_name_in(catalog, catalog_len, c)
+                    .is_some_and(|key| crate::route_choice::is_jungle_starter(&key))
+            })
+            .collect();
+        if !starters.is_empty() && starters.len() < candidates.len() {
+            return Some(RouteAnswer {
+                candidates,
+                best: starters,
+            });
+        }
+    }
     let enemies = crate::route_choice::enemy_damage(ask.seed, ask.side, champion);
     let weights = crate::route_choice::Weights::new(champion, lane, enemies);
     let table = crate::route_choice::route_table();

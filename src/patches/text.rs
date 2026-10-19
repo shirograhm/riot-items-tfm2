@@ -1303,7 +1303,7 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 123] = [
+const ROW_FORMATS: [RowFormat; 131] = [
     row("deaths_dance", "effect_delayed_damage_percent", label::DAMAGE_REDUCTION),
     row("echoes_of_helia", "effect_damage_conversion", label::DAMAGE_STORED),
     row("heartsteel", "effect_bonus_hp_percent_of_damage", label::PERMANENT_HEALTH)
@@ -1434,7 +1434,19 @@ const ROW_FORMATS: [RowFormat; 123] = [
     row("overlords_bloodmail", "effect_caster_hp_percent_attack", label::ATTACK_DAMAGE)
         .unit(unit::MAX_HP),
     row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("philosophers_medallion", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
+    row("philosophers_medallion", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
+    row("philosophers_medallion", "effect_duration_seconds", label::EFFECT_DURATION)
+        .unit(unit::SECONDS),
+    row("philosophers_medallion", "effect_hp_percent_damage", label::BURN_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
     row("philosophers_stone", "effect_stack_hp_mult", label::BONUS_HEALTH).unit(unit::PER_STACK),
+    row("philosophers_stone", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
+    row("philosophers_stone", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
+    row("philosophers_stone", "effect_duration_seconds", label::EFFECT_DURATION)
+        .unit(unit::SECONDS),
+    row("philosophers_stone", "effect_hp_percent_damage", label::BURN_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
     row("riftmaker", "effect_vamp", label::OMNIVAMP).unit(unit::PER_STACK),
     row("riftmaker", "effect_caster_hp_percent_power", label::ABILITY_POWER).unit(unit::MAX_HP),
     row("rite_of_ruin", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
@@ -1469,7 +1481,7 @@ struct AmountFormat {
 // The placeholders of an amount's numbers, in the order of its fields.
 const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
 
-const AMOUNT_FORMATS: [AmountFormat; 26] = [
+const AMOUNT_FORMATS: [AmountFormat; 25] = [
     AmountFormat {
         item: "deaths_dance",
         fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
@@ -1508,12 +1520,6 @@ const AMOUNT_FORMATS: [AmountFormat; 26] = [
     },
     AmountFormat {
         item: "hollow_radiance",
-        fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
-        label: label::BURN_DAMAGE,
-        amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
-    },
-    AmountFormat {
-        item: "philosophers_stone",
         fields: &["effect_bonus_flat_damage", "effect_caster_hp_percent_damage"],
         label: label::BURN_DAMAGE,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),

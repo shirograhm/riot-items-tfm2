@@ -2,12 +2,14 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, immolate_burn, is_monster, item_counts, mark_immolate, percent_of,
-    upgrade_carry, ItemMeta, TICKS_PER_SECOND,
+    apply_config, is_monster, item_counts, upgrade_carry, ItemMeta, Transmutation,
+    TransmutationNumbers,
 };
 
-// Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies
-// within 30 range. This effect deals 150% more damage to minions and monsters.
+// Transmutation: Killing monsters grants 5 Ability Haste and 15 bonus health
+// regeneration for 10 seconds. Additionally, monsters that damage you burn for
+// 5% of their maximum health as true damage over 3 seconds, capped at 150
+// damage per second. (Philosopher's Medallion has it too: `crate::Transmutation`.)
 //
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
 // killed, up to 15% (Radiant: up to 25%).
@@ -26,14 +28,16 @@ pub struct PhilosophersStone {
     hp: i32,
     defence: i32,
     magic_resistance: i32,
-    effect_bonus_flat_damage: usize,
-    effect_caster_hp_percent_damage: f64,
-    effect_max_distance: usize,
-    effect_minion_bonus_percent: f64,
+    effect_skill_cooldown_mult: i32,
+    effect_bonus_hp_regen: i32,
+    effect_duration_seconds: f64,
+    effect_hp_percent_damage: f64,
+    effect_burn_duration_seconds: f64,
+    effect_burn_damage_cap: usize,
     effect_stack_hp_mult: i32,
     effect_max_stacks: usize,
     // Non-vital stats (internals)
-    until_next_burn: usize,
+    transmutation: Transmutation,
     cinderhulk_stacks: usize,
     // What carries the stacks into an upgrade.
     carry: upgrade_carry::StackCarry,
@@ -42,19 +46,25 @@ pub struct PhilosophersStone {
 impl PhilosophersStone {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base(BASE_KEY, &["bamis_cinder"], &["radiant_philosophers_stone"]),
+            meta: ItemMeta::base(
+                BASE_KEY,
+                &["bamis_cinder", "philosophers_medallion"],
+                &["radiant_philosophers_stone"],
+            ),
             price: 750,
             hp: 350,
             defence: 15,
             magic_resistance: 25,
-            effect_bonus_flat_damage: 10,
-            effect_caster_hp_percent_damage: 1.0,
-            effect_max_distance: 30,
-            effect_minion_bonus_percent: 150.0,
+            effect_skill_cooldown_mult: 5,
+            effect_bonus_hp_regen: 15,
+            effect_duration_seconds: 10.0,
+            effect_hp_percent_damage: 5.0,
+            effect_burn_duration_seconds: 3.0,
+            effect_burn_damage_cap: 150,
             effect_stack_hp_mult: 1,
             effect_max_stacks: 15,
             // Non-vital stats (internals)
-            until_next_burn: TICKS_PER_SECOND as usize,
+            transmutation: Transmutation::default(),
             cinderhulk_stacks: 0,
             carry: upgrade_carry::StackCarry::default(),
         }
@@ -67,10 +77,12 @@ impl PhilosophersStone {
             hp: 450,
             defence: 30,
             magic_resistance: 45,
-            effect_bonus_flat_damage: 10,
-            effect_caster_hp_percent_damage: 1.0,
-            effect_max_distance: 30,
-            effect_minion_bonus_percent: 150.0,
+            effect_skill_cooldown_mult: 5,
+            effect_bonus_hp_regen: 15,
+            effect_duration_seconds: 10.0,
+            effect_hp_percent_damage: 5.0,
+            effect_burn_duration_seconds: 3.0,
+            effect_burn_damage_cap: 150,
             effect_stack_hp_mult: 1,
             effect_max_stacks: 25,
             ..Self::base()
@@ -94,15 +106,28 @@ impl PhilosophersStone {
                 hp,
                 defence,
                 magic_resistance,
-                effect_bonus_flat_damage,
-                effect_caster_hp_percent_damage,
-                effect_max_distance,
-                effect_minion_bonus_percent,
+                effect_skill_cooldown_mult,
+                effect_bonus_hp_regen,
+                effect_duration_seconds,
+                effect_hp_percent_damage,
+                effect_burn_duration_seconds,
+                effect_burn_damage_cap,
                 effect_stack_hp_mult,
                 effect_max_stacks
             ]
         );
         self
+    }
+
+    fn transmutation_numbers(&self) -> TransmutationNumbers {
+        TransmutationNumbers {
+            haste: self.effect_skill_cooldown_mult,
+            hp_regen: self.effect_bonus_hp_regen,
+            seconds: self.effect_duration_seconds,
+            burn_percent: self.effect_hp_percent_damage,
+            burn_seconds: self.effect_burn_duration_seconds,
+            burn_cap_per_second: self.effect_burn_damage_cap,
+        }
     }
 
     // Cinderhulk: one more capped step of maximum health. The buff carries the
@@ -182,18 +207,8 @@ impl StableItem for PhilosophersStone {
     }
 
     fn on_spawn(&mut self, ctx: &mut StableSim<'_>, player: usize) {
-        self.until_next_burn = TICKS_PER_SECOND as usize;
+        self.transmutation.clear();
         self.carry_stacks(ctx, player);
-
-        let Some(champion) = ctx
-            .get_player(player)
-            .and_then(|p| p.champion())
-            .map(|c| c.id())
-        else {
-            return;
-        };
-        // Flames up from the first frame rather than the first burn.
-        mark_immolate(ctx, champion);
 
         // Cinderhulk is permanent, so the health earned so far is re-applied
         // each spawn from the banked count. Same-name buffs stack and this one
@@ -201,6 +216,13 @@ impl StableItem for PhilosophersStone {
         if self.cinderhulk_stacks == 0 {
             return;
         }
+        let Some(champion) = ctx
+            .get_player(player)
+            .and_then(|p| p.champion())
+            .map(|c| c.id())
+        else {
+            return;
+        };
         ctx.entity_remove_buff(champion, CINDERHULK_BUFF);
         ctx.add_buff(
             champion,
@@ -217,35 +239,22 @@ impl StableItem for PhilosophersStone {
         // number on the item's icon.
         let gained = self.cinderhulk_stacks as i32 * self.effect_stack_hp_mult;
         item_counts::note(ctx, player, self.meta.key, gained.max(0) as u64);
+        self.transmutation.update(ctx, player);
+    }
 
-        // Immolate, once a second while alive, the same burn as Bami's Cinder.
-        self.until_next_burn = self.until_next_burn.saturating_sub(1);
-        if self.until_next_burn > 0 {
-            return;
-        }
-        self.until_next_burn = TICKS_PER_SECOND as usize;
-
-        let Some((caster, team, max_hp)) = ctx
-            .get_player(player)
-            .and_then(|p| p.champion())
-            .filter(|c| c.is_alive())
-            .map(|c| (c.id(), c.team(), c.hp().1))
-        else {
-            return;
-        };
-
-        mark_immolate(ctx, caster);
-        let damage = self.effect_bonus_flat_damage
-            + percent_of(max_hp, self.effect_caster_hp_percent_damage);
-        let minion_damage = damage + percent_of(damage, self.effect_minion_bonus_percent);
-        immolate_burn(
-            ctx,
-            caster,
-            team,
-            self.effect_max_distance,
-            damage,
-            minion_damage,
-        );
+    fn on_damaged(
+        &mut self,
+        ctx: &mut StableSim<'_>,
+        _player: usize,
+        _entity: usize,
+        attacker: usize,
+        damage: usize,
+        _damage_type: DamageTypeV1,
+        _attack_type: AttackTypeV1,
+        _is_crit: bool,
+    ) {
+        let numbers = self.transmutation_numbers();
+        self.transmutation.on_damaged(ctx, attacker, damage, &numbers);
     }
 
     fn on_kill(
@@ -256,6 +265,8 @@ impl StableItem for PhilosophersStone {
         entity: usize,
         victim: usize,
     ) {
+        let numbers = self.transmutation_numbers();
+        self.transmutation.on_kill(ctx, entity, victim, &numbers);
         let Some(victim_ref) = ctx.get_entity(victim) else {
             return;
         };
@@ -292,7 +303,8 @@ impl StableItem for PhilosophersStone {
             ItemTagV1::Hp,
             ItemTagV1::Defense,
             ItemTagV1::MagicResistance,
-            ItemTagV1::DotDamage,
+            ItemTagV1::CooltimeReduce,
+            ItemTagV1::HpRegen,
         ]
     }
 

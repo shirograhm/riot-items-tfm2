@@ -24,7 +24,7 @@ impl Default for BamisCinder {
             effect_bonus_flat_damage: 5,
             effect_caster_hp_percent_damage: 0.5,
             effect_max_distance: 30,
-            effect_minion_bonus_percent: 50.0,
+            effect_minion_bonus_percent: 150.0,
             // Non-vital stats (internals)
             until_next_burn: TICKS_PER_SECOND as usize,
         }
