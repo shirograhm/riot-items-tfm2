@@ -9,7 +9,6 @@ use mod_api_stable::*;
 #[derive(Clone, Debug)]
 pub struct HuntersMachete {
     price: usize,
-    attack: i32,
     effect_bonus_flat_damage: usize,
     effect_vamp: i32,
     // Non-vital stats (internals)
@@ -20,7 +19,6 @@ impl Default for HuntersMachete {
     fn default() -> Self {
         Self {
             price: 250,
-            attack: 10,
             effect_bonus_flat_damage: 15,
             effect_vamp: 8,
             // Non-vital stats (internals)
@@ -35,7 +33,7 @@ impl HuntersMachete {
         apply_config!(
             item,
             cfg,
-            [price, attack, effect_bonus_flat_damage, effect_vamp]
+            [price, effect_bonus_flat_damage, effect_vamp]
         );
         item
     }
@@ -70,11 +68,9 @@ impl StableItem for HuntersMachete {
         vec!["madreds_razors".to_string()]
     }
 
+    // No stats of its own: everything it gives is its passives.
     fn stat(&self) -> BuffV1 {
-        BuffV1 {
-            attack: self.attack,
-            ..Default::default()
-        }
+        BuffV1::default()
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
@@ -121,7 +117,7 @@ impl StableItem for HuntersMachete {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Ad, ItemTagV1::Vamp]
+        vec![ItemTagV1::Vamp]
     }
 
     fn category(&self) -> ItemCategoryV1 {

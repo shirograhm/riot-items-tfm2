@@ -10,7 +10,6 @@ use mod_api_stable::*;
 #[derive(Clone, Debug)]
 pub struct HuntersTalisman {
     price: usize,
-    hp: i32,
     effect_hp_percent_damage: f64,
     effect_duration_seconds: f64,
     effect_vamp: i32,
@@ -22,9 +21,8 @@ impl Default for HuntersTalisman {
     fn default() -> Self {
         Self {
             price: 250,
-            hp: 100,
             effect_hp_percent_damage: 5.0,
-            effect_duration_seconds: 4.0,
+            effect_duration_seconds: 5.0,
             effect_vamp: 8,
             burns: Vec::new(),
         }
@@ -39,7 +37,6 @@ impl HuntersTalisman {
             cfg,
             [
                 price,
-                hp,
                 effect_hp_percent_damage,
                 effect_duration_seconds,
                 effect_vamp
@@ -128,11 +125,9 @@ impl StableItem for HuntersTalisman {
         ]
     }
 
+    // No stats of its own: everything it gives is its passives.
     fn stat(&self) -> BuffV1 {
-        BuffV1 {
-            hp: self.hp,
-            ..Default::default()
-        }
+        BuffV1::default()
     }
 
     fn on_spawn(&mut self, _ctx: &mut StableSim<'_>, _player: usize) {
@@ -186,7 +181,7 @@ impl StableItem for HuntersTalisman {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::DotDamage, ItemTagV1::Vamp]
+        vec![ItemTagV1::DotDamage, ItemTagV1::Vamp]
     }
 
     fn category(&self) -> ItemCategoryV1 {
