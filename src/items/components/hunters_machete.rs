@@ -20,7 +20,7 @@ impl Default for HuntersMachete {
         Self {
             price: 250,
             effect_bonus_flat_damage: 15,
-            effect_vamp: 8,
+            effect_vamp: 7,
             // Non-vital stats (internals)
             procs: ProcQueue::new(),
         }

@@ -1146,11 +1146,11 @@
         },
         "hunters_machete": {
             "name": "Hunter's Machete",
-            "option": "\nGain <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> against monsters.\n\n<#ff7a3eff>Nail<>: Basic attacks against monsters deal <#ff9028ff>15 bonus physical damage<> <#ffff99ff>on-hit<>."
+            "option": "\nGain <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> against monsters.\n\n<#ff7a3eff>Nail<>: Basic attacks against monsters deal <#ff9028ff>15 bonus physical damage<> <#ffff99ff>on-hit<>."
         },
         "hunters_talisman": {
             "name": "Hunter's Talisman",
-            "option": "\nGain <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> against monsters.\n\n<#ff7a3eff>Tooth<>: Dealing damage to a monster burns it for <#d94c49ff>5% of its maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>5 seconds<>."
+            "option": "\nGain <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>Omnivamp<> against monsters.\n\n<#ff7a3eff>Tooth<>: Dealing damage to a monster burns it for <#d94c49ff>5% of its maximum health<> as <#a974ffff>magic damage<> over <#e8a800ff>5 seconds<>."
         },
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
@@ -2304,11 +2304,11 @@
         },
         "hunters_machete": {
             "name": "Rựa Thợ Săn",
-            "option": "\nNhận <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> lên quái.\n\n<#ff7a3eff>Móng Vuốt<>: Đòn đánh thường lên quái gây <#ff9028ff>15 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>."
+            "option": "\nNhận <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> lên quái.\n\n<#ff7a3eff>Móng Vuốt<>: Đòn đánh thường lên quái gây <#ff9028ff>15 sát thương vật lí cộng thêm<> <#ffff99ff>khi đánh trúng<>."
         },
         "hunters_talisman": {
             "name": "Bùa Thợ Săn",
-            "option": "\nNhận <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> lên quái.\n\n<#ff7a3eff>Răng Nanh<>: Gây sát thương lên quái sẽ thiêu đốt nó, khiến nó chịu <#d94c49ff>5% máu tối đa của nó<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>5 giây<>."
+            "option": "\nNhận <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>hút máu toàn phần<> lên quái.\n\n<#ff7a3eff>Răng Nanh<>: Gây sát thương lên quái sẽ thiêu đốt nó, khiến nó chịu <#d94c49ff>5% máu tối đa của nó<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>5 giây<>."
         },
         "philosophers_medallion": {
             "name": "Mề Đay Hiền Triết",
@@ -3462,11 +3462,11 @@
         },
         "hunters_machete": {
             "name": "猎人的宽刃刀",
-            "option": "\n对野怪获得 <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。\n\n<#ff7a3eff>利爪<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#ff9028ff>15 点物理伤害<>。"
+            "option": "\n对野怪获得 <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。\n\n<#ff7a3eff>利爪<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#ff9028ff>15 点物理伤害<>。"
         },
         "hunters_talisman": {
             "name": "猎人的护身符",
-            "option": "\n对野怪获得 <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。\n\n<#ff7a3eff>尖牙<>：对野怪造成伤害时会灼烧它，使其在 <#e8a800ff>5秒<>内受到相当于<#d94c49ff>其5%最大生命值<>的<#a974ffff>魔法伤害<>。"
+            "option": "\n对野怪获得 <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>全能吸血<>。\n\n<#ff7a3eff>尖牙<>：对野怪造成伤害时会灼烧它，使其在 <#e8a800ff>5秒<>内受到相当于<#d94c49ff>其5%最大生命值<>的<#a974ffff>魔法伤害<>。"
         },
         "philosophers_medallion": {
             "name": "贤者印章",
@@ -4620,11 +4620,11 @@
         },
         "hunters_machete": {
             "name": "Machete do Caçador",
-            "option": "\nGanha <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> contra monstros.\n\n<#ff7a3eff>Garra<>: Ataques básicos contra monstros causam <#ff9028ff>15 de dano físico bônus<> <#ffff99ff>ao contato<>."
+            "option": "\nGanha <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> contra monstros.\n\n<#ff7a3eff>Garra<>: Ataques básicos contra monstros causam <#ff9028ff>15 de dano físico bônus<> <#ffff99ff>ao contato<>."
         },
         "hunters_talisman": {
             "name": "Talismã do Caçador",
-            "option": "\nGanha <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> contra monstros.\n\n<#ff7a3eff>Dente<>: Causar dano a um monstro o queima, fazendo-o sofrer <#d94c49ff>5% da Vida Máxima dele<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>5 segundos<>."
+            "option": "\nGanha <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>roubo de vida<> contra monstros.\n\n<#ff7a3eff>Dente<>: Causar dano a um monstro o queima, fazendo-o sofrer <#d94c49ff>5% da Vida Máxima dele<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>5 segundos<>."
         },
         "philosophers_medallion": {
             "name": "Medalhão Filosofal",
@@ -5778,11 +5778,11 @@
         },
         "hunters_machete": {
             "name": "Мачете охотника",
-            "option": "\nДаёт <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> против монстров.\n\n<#ff7a3eff>Коготь<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#ff9028ff>15 дополнительного физического урона<>."
+            "option": "\nДаёт <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> против монстров.\n\n<#ff7a3eff>Коготь<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#ff9028ff>15 дополнительного физического урона<>."
         },
         "hunters_talisman": {
             "name": "Талисман охотника",
-            "option": "\nДаёт <#b7462dff>8%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> против монстров.\n\n<#ff7a3eff>Клык<>: Нанесение урона монстру поджигает его, заставляя получить <#d94c49ff>5% его максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>5 секунд<>."
+            "option": "\nДаёт <#b7462dff>7%<> <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>всестороннего вытягивания жизни<> против монстров.\n\n<#ff7a3eff>Клык<>: Нанесение урона монстру поджигает его, заставляя получить <#d94c49ff>5% его максимального здоровья<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>5 секунд<>."
         },
         "philosophers_medallion": {
             "name": "Философский медальон",
@@ -6936,11 +6936,11 @@
         },
         "hunters_machete": {
             "name": "사냥꾼의 마체테",
-            "option": "\n몬스터 대상 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 8%<>를 얻습니다.\n\n<#ff7a3eff>손톱<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#ff9028ff>15의 추가 물리 피해<>를 입힙니다."
+            "option": "\n몬스터 대상 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 7%<>를 얻습니다.\n\n<#ff7a3eff>손톱<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#ff9028ff>15의 추가 물리 피해<>를 입힙니다."
         },
         "hunters_talisman": {
             "name": "사냥꾼의 부적",
-            "option": "\n몬스터 대상 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 8%<>를 얻습니다.\n\n<#ff7a3eff>이빨<>: 몬스터에게 피해를 입히면 불태워 <#e8a800ff>5초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
+            "option": "\n몬스터 대상 <i#asset/base/ui/banpick/champion_stat_icon:vamp_0> <#b7462dff>모든 피해 흡혈 7%<>를 얻습니다.\n\n<#ff7a3eff>이빨<>: 몬스터에게 피해를 입히면 불태워 <#e8a800ff>5초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 5%<>만큼 <#a974ffff>마법 피해<>를 입힙니다."
         },
         "philosophers_medallion": {
             "name": "현자의 메달",

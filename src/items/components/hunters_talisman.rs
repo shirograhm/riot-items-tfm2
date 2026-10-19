@@ -23,7 +23,7 @@ impl Default for HuntersTalisman {
             price: 250,
             effect_hp_percent_damage: 5.0,
             effect_duration_seconds: 5.0,
-            effect_vamp: 8,
+            effect_vamp: 7,
             burns: Vec::new(),
         }
     }

@@ -74,8 +74,8 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | --- | --- | --- | --- |
 | **Boots** | 250G | +7% MS | — |
 | **Glowing Mote** | 250G | +10 Ability Haste | — |
-| **Hunter's Machete** | 250G | — | Gain 8% Omnivamp against monsters.<br>Nail: Basic attacks against monsters deal 15 bonus physical damage on-hit. |
-| **Hunter's Talisman** | 250G | — | Gain 8% Omnivamp against monsters.<br>Tooth: Dealing damage to a monster burns it for 5% of its maximum health as magic damage over 5 seconds. |
+| **Hunter's Machete** | 250G | — | Gain 7% Omnivamp against monsters.<br>Nail: Basic attacks against monsters deal 15 bonus physical damage on-hit. |
+| **Hunter's Talisman** | 250G | — | Gain 7% Omnivamp against monsters.<br>Tooth: Dealing damage to a monster burns it for 5% of its maximum health as magic damage over 5 seconds. |
 | **World Atlas** | 250G | +3 HP Regen | Shared Riches: Gain 2 gold every 5 seconds. |
 
 #### Tier 2
