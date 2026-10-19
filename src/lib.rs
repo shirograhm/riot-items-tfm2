@@ -844,6 +844,9 @@ fn init(host: &StableHost) -> StableMod {
     // in-game build picker
     reg.set_extension(strategy_ui::StrategyPicker);
 
+    // Every item has registered, so their build paths are complete.
+    item_spend::export_paths();
+
     host.log(
         LogLevel::Info,
         &format!(

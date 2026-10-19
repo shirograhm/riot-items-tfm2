@@ -28,7 +28,7 @@ impl Default for PhilosophersMedallion {
             defence: 10,
             magic_resistance: 10,
             effect_skill_cooldown_mult: 5,
-            effect_bonus_hp_regen: 30,
+            effect_bonus_hp_regen: 15,
             effect_duration_seconds: 5.0,
             effect_hp_percent_damage: 5.0,
             effect_burn_duration_seconds: 3.0,

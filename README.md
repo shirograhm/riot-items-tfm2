@@ -111,7 +111,7 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Noonquiver** | 400G | +25 AD<br>+10% Crit Chance | — |
 | **Oblivion Orb** | 650G | +45 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Phage** | 500G | +200 HP<br>+20 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
-| **Philosopher's Medallion** | 650G | +200 HP<br>+10 Armor<br>+10 MR | Transmutation: Killing monsters grants 5 Ability Haste and 30 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 5% of their maximum health as true damage over 3 seconds, capped at 50 damage per second. |
+| **Philosopher's Medallion** | 650G | +200 HP<br>+10 Armor<br>+10 MR | Transmutation: Killing monsters grants 5 Ability Haste and 15 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 5% of their maximum health as true damage over 3 seconds, capped at 50 damage per second. |
 | **Plated Steelcaps** | 650G | +15 Armor<br>+10% MS | Plating: Reduce damage taken from basic attacks by 5%. |
 | **Scout's Slingshot** | 400G | +25% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Seeker's Armguard** | 500G | +30 AP<br>+20 Armor | Witch's Path: Killing a unit grants 0.5 armor, up to a maximum of 15. |

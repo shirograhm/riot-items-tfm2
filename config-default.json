@@ -1441,11 +1441,13 @@
   "thornmail": {
     "price": 700,
     "defence": 50,
+    "hp": 150,
     "base_attack_damaged_reduce": 8
   },
   "radiant_thornmail": {
     "price": 1000,
     "defence": 70,
+    "hp": 250,
     "base_attack_damaged_reduce": 12,
     "effect_bonus_flat_damage": 10,
     "effect_caster_defence_percent_damage": 2
@@ -2335,7 +2337,7 @@
     "defence": 10,
     "magic_resistance": 10,
     "effect_skill_cooldown_mult": 5,
-    "effect_bonus_hp_regen": 30,
+    "effect_bonus_hp_regen": 15,
     "effect_duration_seconds": 5,
     "effect_hp_percent_damage": 5.0,
     "effect_burn_duration_seconds": 3,

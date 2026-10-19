@@ -50,6 +50,41 @@ pub(super) fn note_mod_item(key: &str, price: usize, below: Vec<String>, above: 
     }
 }
 
+// Where [`export_paths`] writes, beside the DLL.
+const PATHS_FILE: &str = "item_recipes.json";
+
+// Writes this mod's items' prices and build paths beside the DLL, as they
+// registered (the player's config applied), for Item Scroller's total price
+// on the Item Info screen, which has no other way to read them: the game's
+// item settings carry no `previous_tier`, and that is the only side the links
+// from the game's items to this mod's components are written on. Called once
+// the items have registered; rewritten only when it changed.
+pub(crate) fn export_paths() {
+    let mut root = serde_json::Map::new();
+    if let Ok(items) = MOD_ITEMS.lock() {
+        for (key, entry) in items.iter() {
+            root.insert(
+                key.clone(),
+                serde_json::json!({
+                    "price": entry.price,
+                    "previous_tier": entry.below,
+                    "next_tier": entry.above,
+                }),
+            );
+        }
+    }
+    let Ok(text) = serde_json::to_string_pretty(&Value::Object(root)) else {
+        return;
+    };
+    let path = crate::config::mod_dir().join(PATHS_FILE);
+    if std::fs::read_to_string(&path).ok().as_deref() != Some(text.as_str()) {
+        let written = std::fs::write(&path, &text).is_ok();
+        match_builds::log("paths.export", || {
+            format!("{} written: {written}", path.display())
+        });
+    }
+}
+
 // Every item by key: the game's thirty from the mod's settings file (match
 // prices) and this mod's as registered. Links are filled in at both ends, in
 // arrival order, so the first way into an item is the same every run.
