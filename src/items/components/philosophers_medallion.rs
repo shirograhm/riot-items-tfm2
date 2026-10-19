@@ -24,7 +24,7 @@ impl Default for PhilosophersMedallion {
     fn default() -> Self {
         Self {
             price: 650,
-            hp: 300,
+            hp: 200,
             defence: 10,
             magic_resistance: 10,
             effect_skill_cooldown_mult: 5,

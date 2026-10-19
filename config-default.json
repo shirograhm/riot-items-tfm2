@@ -2013,8 +2013,8 @@
   },
   "spirit_stone": {
     "price": 650,
-    "hp": 250,
-    "magic_power": 25,
+    "hp": 200,
+    "magic_power": 20,
     "effect_percent_bonus_damage": 10.0,
     "effect_bonus_hp_percent_of_damage": 2.0
   },
@@ -2313,8 +2313,8 @@
   },
   "madreds_razors": {
     "price": 650,
-    "attack": 25,
-    "attack_speed_mult": 15,
+    "attack": 20,
+    "attack_speed_mult": 10,
     "effect_bonus_magic_damage": 25,
     "effect_bonus_flat_heal": 5
   },
@@ -2333,7 +2333,7 @@
   },
   "philosophers_medallion": {
     "price": 650,
-    "hp": 300,
+    "hp": 200,
     "defence": 10,
     "magic_resistance": 10,
     "effect_skill_cooldown_mult": 5,

@@ -105,20 +105,20 @@ Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste
 | **Hextech Alternator** | 400G | +50 AP | Revved: Damaging an enemy champion deals 65 bonus magic damage (40 second cooldown). |
 | **Ionian Boots of Lucidity** | 650G | +15 Ability Haste<br>+10% MS | — |
 | **Last Whisper** | 500G | +25 AD<br>+10% Armor Pen | — |
-| **Madred's Razors** | 650G | +25 AD<br>+15% AS | Maim: Basic attacks against monsters deal 25 bonus magic damage on-hit and restore 5 health. |
+| **Madred's Razors** | 650G | +20 AD<br>+10% AS | Maim: Basic attacks against monsters deal 25 bonus magic damage on-hit and restore 5 health. |
 | **Mercury's Treads** | 650G | +20 MR<br>+20% Tenacity<br>+10% MS | — |
 | **Needlessly Large Rod** | 450G | +60 Ability Power | — |
 | **Noonquiver** | 400G | +25 AD<br>+10% Crit Chance | — |
 | **Oblivion Orb** | 650G | +45 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Phage** | 500G | +200 HP<br>+20 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
-| **Philosopher's Medallion** | 650G | +300 HP<br>+10 Armor<br>+10 MR | Transmutation: Killing monsters grants 5 Ability Haste and 15 bonus health regeneration for 10 seconds. Additionally, monsters that damage you burn for 5% of their maximum health as true damage over 3 seconds, capped at 150 damage per second. |
+| **Philosopher's Medallion** | 650G | +200 HP<br>+10 Armor<br>+10 MR | Transmutation: Killing monsters grants 5 Ability Haste and 15 bonus health regeneration for 10 seconds. Additionally, monsters that damage you burn for 5% of their maximum health as true damage over 3 seconds, capped at 150 damage per second. |
 | **Plated Steelcaps** | 650G | +15 Armor<br>+10% MS | Plating: Reduce damage taken from basic attacks by 5%. |
 | **Scout's Slingshot** | 400G | +25% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Seeker's Armguard** | 500G | +30 AP<br>+20 Armor | Witch's Path: Killing a unit grants 0.5 armor, up to a maximum of 15. |
 | **Serrated Dirk** | 400G | +25 AD | Gain 10 Lethality. |
 | **Sheen** | 650G | +15% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 30 - 85 (based on level) bonus physical damage on-hit (1.5 second cooldown, starting after using the empowered attack). |
 | **Sorcerer's Shoes** | 650G | +15% Magic Pen<br>+10% MS | — |
-| **Spirit Stone** | 650G | +250 HP<br>+25 AP | Butcher: Against monsters, deal 10% bonus magic damage and restore health equal to 2% of your damage dealt. |
+| **Spirit Stone** | 650G | +200 HP<br>+20 AP | Butcher: Against monsters, deal 10% bonus magic damage and restore health equal to 2% of your damage dealt. |
 | **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Verdant Barrier** | 400G | +35 AP<br>+25 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |

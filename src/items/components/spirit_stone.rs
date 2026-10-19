@@ -18,8 +18,8 @@ impl Default for SpiritStone {
     fn default() -> Self {
         Self {
             price: 650,
-            hp: 250,
-            magic_power: 25,
+            hp: 200,
+            magic_power: 20,
             effect_percent_bonus_damage: 10.0,
             effect_bonus_hp_percent_of_damage: 2.0,
             // Non-vital stats (internals)

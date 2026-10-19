@@ -205,9 +205,9 @@ pub(crate) fn item_score(table: &RouteTable, key: &str, weights: &Weights) -> f6
 }
 
 // The jungle starters. A route that starts on one wins outright: only junglers
-// build the jungle items they lead to, and the stats along a longer route (Long
-// Sword, Soldier's Longsword, Madred's Razors) would otherwise always outscore
-// the starter's single step.
+// build the jungle items they lead to, and the stats along a longer route would
+// otherwise always outscore the starter's single step (Philosopher's Stone
+// through Ruby Crystal, Kindlegem and Bami's Cinder, say).
 const JUNGLE_STARTERS: [&str; 2] = ["hunters_machete", "hunters_talisman"];
 
 pub(crate) fn is_jungle_starter(key: &str) -> bool {
