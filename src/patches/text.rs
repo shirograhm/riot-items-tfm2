@@ -1303,7 +1303,7 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 131] = [
+const ROW_FORMATS: [RowFormat; 136] = [
     row("deaths_dance", "effect_delayed_damage_percent", label::DAMAGE_REDUCTION),
     row("echoes_of_helia", "effect_damage_conversion", label::DAMAGE_STORED),
     row("heartsteel", "effect_bonus_hp_percent_of_damage", label::PERMANENT_HEALTH)
@@ -1366,6 +1366,13 @@ const ROW_FORMATS: [RowFormat; 131] = [
         .unit(unit::OF_YOUR_DAMAGE_DEALT),
     row("feral_flare", "effect_bonus_flat_heal", label::HEALING).unit(unit::HEALTH),
     row("madreds_razors", "effect_bonus_flat_heal", label::HEALING).unit(unit::HEALTH),
+    row("hunters_machete", "effect_bonus_flat_damage", label::ON_HIT_DAMAGE),
+    row("hunters_machete", "effect_vamp", label::OMNIVAMP),
+    row("hunters_talisman", "effect_hp_percent_damage", label::BURN_DAMAGE)
+        .unit(unit::TARGET_MAX_HP),
+    row("hunters_talisman", "effect_duration_seconds", label::EFFECT_DURATION)
+        .unit(unit::SECONDS),
+    row("hunters_talisman", "effect_vamp", label::OMNIVAMP),
     row("guardian_angel", "effect_caster_hp_percent_heal", label::RESURRECT_HEALTH)
         .unit(unit::MAX_HP),
     row("moonstone_renewer", "effect_heal_chain_percent", label::CHAINED_HEALING)
