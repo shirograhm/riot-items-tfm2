@@ -32,8 +32,9 @@ const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-// Signature for game 0.6.4, where the target is `0x21a6530` (2709 bytes); 47
-// bytes already match 2 functions, so do not shorten it.
+// Signature for game 0.6.5 (the same 48 bytes as 0.6.4), where the target is
+// `0x23c1610` (2709 bytes); 47 bytes already match 2 functions, so do not
+// shorten it.
 //
 // When it is stale, league builds still work but training-screen builds and the
 // tactics half stop. Re-run `tools/find_item_build_hook.py` and paste the
@@ -276,7 +277,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.6.4 and this build differs — \
+            "{error}; the built-in signature is for game 0.6.5 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
