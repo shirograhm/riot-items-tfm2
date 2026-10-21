@@ -8,7 +8,7 @@ use crate::{
 
 // Transmutation: Killing monsters grants 5 Ability Haste and 30 bonus health
 // regeneration for 5 seconds. Additionally, monsters that damage you burn for
-// 5% of their maximum health as true damage over 3 seconds, capped at 150
+// 10% of their maximum health as true damage over 3 seconds, capped at 150
 // damage per second. (Philosopher's Medallion has it too: `crate::Transmutation`.)
 //
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
@@ -58,7 +58,7 @@ impl PhilosophersStone {
             effect_skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 30,
             effect_duration_seconds: 5.0,
-            effect_hp_percent_damage: 5.0,
+            effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
             effect_burn_damage_cap: 150,
             effect_stack_hp_mult: 1,
@@ -80,7 +80,7 @@ impl PhilosophersStone {
             effect_skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 30,
             effect_duration_seconds: 5.0,
-            effect_hp_percent_damage: 5.0,
+            effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
             effect_burn_damage_cap: 150,
             effect_stack_hp_mult: 1,

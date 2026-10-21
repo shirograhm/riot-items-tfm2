@@ -30,7 +30,7 @@ impl Default for PhilosophersMedallion {
             effect_skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 15,
             effect_duration_seconds: 5.0,
-            effect_hp_percent_damage: 5.0,
+            effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
             effect_burn_damage_cap: 50,
             // Non-vital stats (internals)
