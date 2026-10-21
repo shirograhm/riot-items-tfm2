@@ -32,18 +32,19 @@ const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-// Signature for game 0.7.0-beta (the same 48 bytes as 0.6.2 and 0.6.4), where
-// the target is `0x2518460` (2709 bytes); 47 bytes already match 2 functions,
-// so do not shorten it.
+// Signature for game 0.7.0-beta2, where the target is `0x2dcbef0` (2628 bytes;
+// the beam search's only caller, frame 0x218). 0.7.0-beta's was `0x2518460`,
+// the same 48 bytes as 0.6.2/0.6.4/0.6.5, whose first 47 already matched 2
+// functions there, so do not shorten it.
 //
 // When it is stale, league builds still work but training-screen builds and the
 // tactics half stop. Re-run `tools/find_item_build_hook.py` and paste the
 // result here, or ship a `hook-target.json`, which takes precedence and needs
 // no rebuild.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x38,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0xA0, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0x98, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4D, 0x89, 0xCE,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x18,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x80, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x78, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0xCB,
 ];
 
 // Size range for the diagnostic candidate list only; never used to pick the
@@ -280,7 +281,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.7.0-beta and this build differs — \
+            "{error}; the built-in signature is for game 0.7.0-beta2 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
