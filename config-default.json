@@ -2028,7 +2028,7 @@
     "effect_skill_cooldown_mult": 5,
     "effect_bonus_hp_regen": 30,
     "effect_duration_seconds": 5,
-    "effect_hp_percent_damage": 5.0,
+    "effect_hp_percent_damage": 10.0,
     "effect_burn_duration_seconds": 3,
     "effect_burn_damage_cap": 150,
     "effect_stack_hp_mult": 1,
@@ -2042,7 +2042,7 @@
     "effect_skill_cooldown_mult": 5,
     "effect_bonus_hp_regen": 30,
     "effect_duration_seconds": 5,
-    "effect_hp_percent_damage": 5.0,
+    "effect_hp_percent_damage": 10.0,
     "effect_burn_duration_seconds": 3,
     "effect_burn_damage_cap": 150,
     "effect_stack_hp_mult": 1,
@@ -2339,7 +2339,7 @@
     "effect_skill_cooldown_mult": 5,
     "effect_bonus_hp_regen": 15,
     "effect_duration_seconds": 5,
-    "effect_hp_percent_damage": 5.0,
+    "effect_hp_percent_damage": 10.0,
     "effect_burn_duration_seconds": 3,
     "effect_burn_damage_cap": 50
   }
