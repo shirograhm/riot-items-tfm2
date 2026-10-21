@@ -5,9 +5,11 @@
 //! moved ([`text::news`]).
 //!
 //! The game's patch is noticed in the player's inbox, where its patch notes
-//! arrive ([`watch_news`]), or failing that by the first match on a newer
-//! version, and the item patch lands at once so its notes come with the game's
-//! ([`ALERT_FRAMES`]). A number is only patched where the match ([`live`]), the
+//! arrive ([`watch_news`]); only notes the game signed count, so another mod's
+//! patches (toxicsnek's Auto Balance Patcher hotfixes) bring none of the items'
+//! ([`by_the_game`]). Where the inbox cannot be read, the first match on a newer
+//! version stands in. The item patch lands at once so its notes come with the
+//! game's ([`ALERT_FRAMES`]). A number is only patched where the match ([`live`]), the
 //! tooltips ([`text`]) and the builds can follow it: build choices lean with an
 //! item's patches ([`leaning`]), or a nerfed popular item would stay just as
 //! popular.
@@ -332,6 +334,27 @@ fn version_order(a: &str, b: &str) -> Order {
 // Looks at the inbox between two full readings of it.
 const WATCH_REREAD: u32 = 30;
 
+// The text the game signs its own patch notes with (`patch_note.author` in
+// `asset/base/text/news`), written into each note in the language the game was
+// in then. The current language's is asked of the game ([`GAME_AUTHOR_KEY`]);
+// these four, every language's as of 0.6.5, keep notes from before a language
+// change counting.
+const GAME_PATCH_AUTHORS: [&str; 4] = [
+    "Team Samoyed",
+    "Ban Phân Tích Bản Cập Nhật",
+    "Zespół balansujący",
+    "Hui Samoyed",
+];
+const GAME_AUTHOR_KEY: &str = "#asset/base/text/news?patch_note.author";
+
+// Whether a patch note is the game's own, by its author. Another mod's patch
+// notes announce no patch of the game's (toxicsnek's Auto Balance Patcher,
+// `sanity_protection`, signs the hotfixes it deploys "toxicsnek"), and the items
+// patch only with the game. A note with no author is taken as the game's.
+fn by_the_game(author: &str, game_author: Option<&str>) -> bool {
+    author.is_empty() || Some(author) == game_author || GAME_PATCH_AUTHORS.contains(&author)
+}
+
 // What the player's inbox has said of the game's own patches.
 struct Watch {
     // The team whose news was read.
@@ -340,7 +363,8 @@ struct Watch {
     seen: usize,
     // The last of them, by its date and title.
     tail: Option<String>,
-    // The newest version a champion patch note among them announces.
+    // The newest version a champion patch note among them announces, of the
+    // game's own notes ([`by_the_game`]).
     newest: Option<String>,
     looks: u32,
 }
@@ -359,8 +383,9 @@ impl Watch {
 
 // Keeps [`Watch::newest`], the version of the newest champion patch notes in
 // the player's inbox (a `PatchNote` with a `version` in the team record's
-// `news`), since the game states its version nowhere else. Every two seconds on
-// the management screens, and every frame for a while after the calendar moves.
+// `news`), since the game states its version nowhere else. Only the game's own
+// notes count ([`by_the_game`]). Every two seconds on the management screens,
+// and every frame for a while after the calendar moves.
 //
 // A look reads only the article after the last one seen; when one has come, or
 // every [`WATCH_REREAD`]th look, the list is read whole. Each reading with news
@@ -391,10 +416,21 @@ fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
         log("patch.watch", || format!("team {team}'s news could not be read"));
         return;
     };
-    let notes: Vec<&Value> = articles
-        .iter()
-        .filter_map(|article| article.pointer("/ty/PatchNote"))
-        .collect();
+    let game_author = ctx.i18n(GAME_AUTHOR_KEY);
+    let mut notes: Vec<&Value> = Vec::new();
+    // Patch notes another author signed, by author.
+    let mut others: HashMap<String, usize> = HashMap::new();
+    for article in &articles {
+        let Some(note) = article.pointer("/ty/PatchNote") else {
+            continue;
+        };
+        let author = article.get("author").and_then(Value::as_str).unwrap_or("");
+        if by_the_game(author, game_author.as_deref()) {
+            notes.push(note);
+        } else {
+            *others.entry(author.to_string()).or_default() += 1;
+        }
+    }
     let newest = notes
         .iter()
         .filter_map(|note| note.get("version")?.as_str().map(str::to_string))
@@ -416,9 +452,14 @@ fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
             .find(|note| note.get("version").and_then(Value::as_str).is_none())
             .map(|note| note.to_string().chars().take(160).collect::<String>());
         format!(
-            "team {team}: {} champion patch note(s), newest v{newest:?}{}",
+            "team {team}: {} champion patch note(s) by the game ({game_author:?}), newest v{newest:?}{}{}",
             notes.len(),
-            odd.map(|odd| format!("; one reads {odd}")).unwrap_or_default()
+            odd.map(|odd| format!("; one reads {odd}")).unwrap_or_default(),
+            if others.is_empty() {
+                String::new()
+            } else {
+                format!("; ignored, by other authors: {others:?}")
+            }
         )
     });
     // The newest article, by what stays as it was posted: reading one marks
@@ -438,6 +479,31 @@ fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
     watch.seen = articles.len();
     watch.tail = tail;
     watch.newest = newest;
+}
+
+// How every item did between two of the game's patches: the matches of each
+// version counted from `judged`, the one the items were settled on, up to
+// `announced`, the new one; and how many matches that is. Usually one version.
+// A mod that moves the game's version between the game's own patches splits
+// that time into several, and it is judged whole.
+fn window_tallies(judged: &str, announced: &str) -> (HashMap<String, balance::Tally>, u32) {
+    let mut tallies: HashMap<String, balance::Tally> = HashMap::new();
+    let mut matches = 0;
+    for version in crate::item_stats::patches() {
+        if version_order(&version, judged) == Order::Less
+            || version_order(&version, announced) != Order::Less
+        {
+            continue;
+        }
+        let window = crate::item_stats::snapshot(Some(version.as_str()), None);
+        matches += window.matches;
+        for (key, totals) in &window.rows {
+            let tally = tallies.entry(key.clone()).or_default();
+            tally.games += totals.games;
+            tally.wins += totals.wins;
+        }
+    }
+    (tallies, matches)
 }
 
 // The screens a patch lands on: the management ones and the pre-match lineup,
@@ -464,16 +530,26 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
     let hotfix_due = HOTFIX_QUEUED.load(Ordering::Relaxed)
         && (CALENDAR_TICKS.load(Ordering::Relaxed) != QUEUED_AT_TICK.load(Ordering::Relaxed)
             || NEWS_CYCLES.load(Ordering::Relaxed) != QUEUED_AT_CYCLE.load(Ordering::Relaxed));
-    // The version the game is on: the newest its patch notes announce, or
-    // the newest a counted match was played on, whichever is further along.
-    let played = crate::item_stats::patches()
-        .into_iter()
-        .max_by(|a, b| version_order(a, b));
-    let Some(current) = [played, session.watch.newest.clone()]
-        .into_iter()
-        .flatten()
-        .max_by(|a, b| version_order(a, b))
-    else {
+    // The version the game is on: the newest its own patch notes announce.
+    // The items patch only when the game releases a patch, so a version that
+    // only matches carry (another mod can move it between the game's patches)
+    // starts no patch. A match's version stands in where the inbox could not be
+    // read, and for the version this save starts on before any patch note.
+    let played = || {
+        crate::item_stats::patches()
+            .into_iter()
+            .max_by(|a, b| version_order(a, b))
+    };
+    let current = if session.watch.team.is_some() {
+        match session.watch.newest.clone() {
+            Some(newest) => Some(newest),
+            None if session.state.version.is_none() => played(),
+            None => None,
+        }
+    } else {
+        played()
+    };
+    let Some(current) = current else {
         // No match has been counted in this save yet, and no patch note read.
         return;
     };
@@ -541,20 +617,7 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
         note_staged(&session.state);
         patch
     } else {
-        let window = crate::item_stats::snapshot(Some(judged.as_str()), None);
-        let tallies: HashMap<String, balance::Tally> = window
-            .rows
-            .iter()
-            .map(|(key, totals)| {
-                (
-                    key.clone(),
-                    balance::Tally {
-                        games: totals.games,
-                        wins: totals.wins,
-                    },
-                )
-            })
-            .collect();
+        let (tallies, matches) = window_tallies(&judged, &announced);
         // Whether there is enough to judge an item on is asked item by item
         // (`tuning`'s `min_games`). A version of few matches has few such
         // items, or none, and then no patch.
@@ -562,7 +625,7 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
             base::base(),
             &session.state,
             &tallies,
-            window.matches,
+            matches,
             number,
             &judged,
         )
