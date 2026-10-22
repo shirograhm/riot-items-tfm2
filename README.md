@@ -1,14 +1,14 @@
-Adds items inspired from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the 30 existing items and also adds 245 new items (144 base + 101 Radiant) to the game.
+Adds items from Riot Games (LoL, TFT) to Teamfight Manager 2.  
+Reskins the game's 30 items and adds 245 new ones (144 base + 101 Radiant).
 
 ##### Instructions  
-If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded), that means the save you are playing is not loading the mod order. To fix this, try the following:
+If you only see vanilla items (Bloodthirster, Luden's, Sunfire), your save isn't loading the mod. To fix it:
 
-1. Save your current game and go back to the main menu.
-2. Click Load -> Load on the save you just made. It will probably say "No Info" under mods.
-2. Once launched, progress once and save again. Then go back to the main menu.
-3. Click Load -> Load again, this time the mods column should read "Match". <-- (That means it's loading correctly)
-4. Play as you would normally!
+1. Save your game and go back to the main menu.
+2. Click Load and load that save. The mods column will probably say "No Info".
+3. Play a little, save again, and go back to the main menu.
+4. Load the save again. The mods column should now say "Match", which means the mod is loaded.
+5. Play as normal!
 
 ##### Check it out on Steam Workshop! 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3739568852
@@ -27,47 +27,72 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 
 
 ##### Smart Builds
-The Build Editor footer has a toggle, **Enforce Smart Builds**, on by default. It cleans up what the AI picks. Any of these is swapped for another final item of the same category:
-- a duplicate item
+**Enforce Smart Builds** (a toggle in the Build Editor footer, on by default) fixes bad AI item picks. Switch it to **Allow Any Builds** to turn it off. Items you pin are never changed: the AI builds around them.
+
+**Removed picks.** The AI replaces these with a similar finished item:
+- duplicate items
 - a second Grievous Wounds item
-- a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet or Bloodsong). Sheen doesn't count, since it's the component they build from. A support whose World Atlas item is Bloodsong keeps that one and no other. If you pinned a Spellblade item yourself, the AI adds none (your own pins can hold more than one)
-- a crit item that would push the build past 100% crit chance (counting crit from item passives as fully stacked)
-- a jungle item (Feral Flare, Grez's Spectral Lantern or Philosopher's Stone) on any champion not playing the jungle role, and on a jungler any jungle item other than its one (see below).
-- a melee item on a ranged champion (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), or a ranged item on a melee champion (Runaan's Hurricane, Diamond Tipped Spear). A champion is melee when its basic attack range is 35 or less; champions from other mods are covered too
-- a support item (except Protoplasm Harness) on any champion not playing the support role
-- any item that isn't a Tank or Support item on a support, whatever its damage type (boots aside). Mages (the game's Magician class) are the exception unless they carry the game's Tank tag or build Dream Maker: they can build items of their class (see below). A heal, shield and buff support (one whose World Atlas item is Dream Maker, see below) also prefers Ardent Censer, Echoes of Helia and Staff of Flowing Water: they are the first replacements it gets, and its 5th and 6th items while any are left. Moonstone Renewer is not preferred, since it only strengthens heals
-- an item that only works when its carrier heals, shields or buffs an ally (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water) on a support whose kit does none of that, or on a mage (see below). What counts is the champion's basic abilities, not the game's Heal and Shield tags: a Vampire only heals itself, and a Bard only buffs
-- an item the champion doesn't scale with: attack, attack speed or crit on an AP champion, or ability power on an AD champion. That includes Hextech Gunblade, the one hybrid item (attack damage together with ability power), which only hybrid champions keep. Hybrid champions are left alone, and so are the four heal, shield and buff items above, which are for what the champion casts. Magic Knight counts as an AP champion, since only its basic attack is physical. Dusk and Dawn, Lich Bane and Nashor's Tooth count as AP items despite their attack speed, and so does Rite of Ruin, whose crit only feeds its own shield
-- Guinsoo's Rageblade, Statikk Shiv or Sword of Blossoming Dawn on any champion that isn't a marksman (the game's Range class). Marksmen keep them whatever their damage type. Sword of Blossoming Dawn is a support item, so it is for a marksman playing support
+- a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count
+- crit items past 100% crit chance
+- jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) on non-junglers
+- melee items on ranged champions (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), and ranged items on melee champions (Runaan's Hurricane, Diamond Tipped Spear). Melee means an attack range of 35 or less
+- support items (except Protoplasm Harness) on non-supports
+- items that don't fit the champion's damage type: attack damage, attack speed or crit on AP champions, and ability power on AD champions. Hextech Gunblade is for hybrid champions only. Magic Knight counts as AP, and Dusk and Dawn, Lich Bane, Nashor's Tooth and Rite of Ruin count as AP items
+- Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn on non-marksmen
 
-For the last three, the replacement follows the rest of the build instead of the removed item: it comes from the same category as the build's other items, starting with the first slot.
+**Supports**
+- Every support starts with a World Atlas item in slot 1. World Atlas upgrades into Runic Compass, then into one of five items:
+  - **Solstice Sleigh**: tanks whose abilities immobilize for 1 second or more in total
+  - **Celestial Opposition**: other tanks
+  - **Dream Maker**: supports that heal, shield or buff allies (plus Chef and Monk)
+  - **Zaz'Zak's Realmspike**: mages and other AP supports
+  - **Bloodsong**: everyone else
+- After that, supports build only Tank and Support items, and favor support items.
+- Mage supports are the exception: they get one AP support item (Imperial Mandate, Mikael's Blessing or Chemtech Putrifier), then build AP items like any other mage.
+- Supports that immobilize (stun, root, knock-up, knockback, pull, taunt, fear, charm) build Imperial Mandate as their support item if they deal AP damage. Supports that don't immobilize never keep Mandate.
+- Supports that heal, shield or buff allies get Ardent Censer, Echoes of Helia, Moonstone Renewer or Staff of Flowing Water as their support item. Supports that don't, and mages, never keep these four.
+- Pinning anything in a support's slot 1 skips the World Atlas item.
 
-Every support also gets a World Atlas item as its first pick, always in the first slot, so it starts the match on World Atlas and its gold: World Atlas grows into Runic Compass and then one of five finished items. A support with the game's Tank tag whose kit immobilizes for a second or more in total (ultimate included) gets Solstice Sleigh. Any other support with the Tank tag gets Celestial Opposition, since it is the one being hit. Chef and Monk are the two exceptions: both carry the Tank tag and get Dream Maker. Otherwise, a support whose kit heals, shields or buffs allies gets Dream Maker, since its casts on allies are what set it off. Otherwise, a mage (the game's Magician class) gets Zaz'Zak's Realmspike, since its abilities are there to deal damage, and so does any other AP support. Every other support gets Bloodsong. It replaces the AI's last pick, unless you pinned one yourself. The AI only ever gets that one: any other it picked is swapped out (your own pins can hold more than one). If you pin anything in a support's first slot, the AI gives it no World Atlas item at all.
+**Junglers**
+- Every jungler gets one jungle item in slot 1: Philosopher's Stone for tanks, otherwise Feral Flare or Grez's Spectral Lantern, depending on damage type. Ranged tanks get the damage item, since Philosopher's Stone is melee.
+- Feral Flare is built from Hunter's Machete, and Grez's Spectral Lantern and Philosopher's Stone from Hunter's Talisman.
+- Pinning anything in a jungler's slot 1 skips the jungle item.
 
-Junglers also get an item for their role, always in the first slot: Philosopher's Stone for a champion with the game's Tank tag, otherwise Feral Flare or Grez's Spectral Lantern (whichever suits the champion's damage type). A ranged tank takes its damage item too, since Philosopher's Stone is a melee item. The AI only ever gets that one jungle item: any other it picked is swapped out, and if you pinned a jungle item yourself it adds none (your own pins can hold as many as you like). If the AI didn't pick one and you haven't pinned one, its last pick is swapped for one. If you pin anything in a jungler's first slot, the AI gives it no jungle item at all. Only one is guaranteed; the rest of the build is still the AI's own choice.
+**Boots.** Every AI build gets boots as its 2nd item (3rd if an early item takes slot 2), unless you pinned boots:
+- **Berserker's Greaves**: marksmen
+- **Sorcerer's Shoes**: mages
+- **Plated Steelcaps** or **Mercury's Treads**: tanks, including tank supports (whichever counters the enemy's main damage type)
+- **Gluttonous Greaves**: fighters
+- **Ionian Boots of Lucidity**: assassins and supports
+- **Boots of Swiftness**: everyone else
 
-A support's World Atlas item is its one guaranteed support item. After it, supports build only Tank and Support items (see above) and prefer the support ones: the AI leans toward support items when it picks (ones that suit the champion's damage type, so an AD support leans toward the tank ones, not the AP ones), buys any it picked right after the World Atlas item, and looks at support items first when it has to replace one of its picks. Mages (the game's Magician class) are the exception: they lean only toward the support items that give ability power (Imperial Mandate, Mikael's Blessing, Chemtech Putrifier), always get one bought right after their Zaz'Zak's Realmspike (unless you pinned a support item yourself), and then build AP items like any other mage. A mage whose kit immobilizes gets Imperial Mandate as that item. If the AI did pick a support item, a support whose kit immobilizes (a stun, root, knock-up, knockback, pull, taunt, fear or charm; a slow, silence or disarm doesn't count) makes it Imperial Mandate, unless you pinned a support item yourself; Mandate is an AP item, so an AD support keeps its own. A support that doesn't immobilize never keeps a Mandate the AI picked: it's swapped for another support item (a Mandate you pin is always kept). A support whose kit heals, shields or buffs allies makes another support item the AI picked one of the four items that need that (Ardent Censer, Echoes of Helia, Moonstone Renewer, Staff of Flowing Water), whatever its damage type, unless you pinned a support item yourself. Neither adds a support item the AI didn't pick. Mages never keep one of those four, even when their kit shields: it's swapped for an item matching the rest of their build.
+Boots also have their own **Boots** group in the Build Editor.
 
-It also decides the order the AI buys its picks in. A support's World Atlas item comes first of all, then its support items (not a mage's), or a jungler's jungle item. After that, items that get stronger the longer you own them are bought first: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern, Collector and Rod of Ages. Items that scale off stats from the rest of the build are bought last: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards. Everything else keeps the AI's order. The first group is only ever built in the first two slots, and the second only from the third slot on: an item that can't fit (say, a third early item) is swapped for an item of the same category that is in neither group. A jungler's jungle item stays wherever it lands, and the AI never picks one of the early items for the 5th or 6th slot. Supports are left out of both groups: their items keep the order above and stay wherever they land.
+**Buy order**
+- A support's World Atlas item and support items come first, as does a jungler's jungle item.
+- Items that grow stronger over time are bought in slots 1-2: Heartsteel, Yun Tal Wildarrows, Hubris, Feral Flare, Grez's Spectral Lantern, Collector and Rod of Ages.
+- Items that scale off the rest of the build are bought in slot 3 or later: Riftmaker, Overlord's Bloodmail, Atma's Reckoning, Protector's Vow, Cloak of Starry Night, Rabadon's Deathcap, Deathblade, Infinity Edge and Lord Dominik's Regards.
+- Supports skip both of these rules.
 
-It covers all six slots, but only ever changes items the AI picked: an item you pin in the editor is always kept exactly as set, in the slot you put it in, and the AI's picks around it make way for it (for example, the AI won't also build an item you pinned elsewhere in the build). Support items get no pass on the damage-type check: an AD support won't keep an AP support item like Imperial Mandate, though tank support items are fine (and so are the four heal, shield and buff items). Sword of Blossoming Dawn counts as an AP item here, despite its attack speed. Switch it to **Allow Any Builds** to leave every pick alone.
-
-It also gives every AI build a pair of boots, as its second pick (its third when an early item takes the second), unless you pinned boots yourself: Berserker's Greaves for marksmen, Sorcerer's Shoes for mages, Plated Steelcaps or Mercury's Treads for tanks (whichever answers the enemy's main damage type), Gluttonous Greaves for fighters and Ionian Boots of Lucidity for assassins. Supports get Ionian Boots of Lucidity too, unless they're tanks, who get tank boots. Boots of Swiftness goes to champions none of that fits. Boots are also in the Build Editor under their own **Boots** group.
-
-It also picks how the AI builds each item. Many items can be built more than one way (Jak'Sho starts from Cloth Armor or Null-Magic Mantle), and the game picks the components at random. With Smart Builds on, the AI takes the components that suit it: armor or magic resist depending on how many enemy champions deal physical or magic damage, the damage stats the champion scales with (attack speed and crit first for marksmen), and more health and resists the more the champion tanks. A jungler always starts its jungle item on its jungle starter: Hunter's Machete for Feral Flare, Hunter's Talisman for Grez's Spectral Lantern and Philosopher's Stone. This covers your pinned items too, since it only changes how an item is built, never which item.
+**Components.** Many items can be built from different components (Jak'Sho starts from Cloth Armor or Null-Magic Mantle), and the game picks them at random. Smart Builds picks the ones that fit: armor or magic resist based on the enemy team's damage, the damage stats the champion uses (attack speed and crit first for marksmen), and more health and resists for tankier champions. This applies to pinned items too.
 
 ##### Item Rules
-The game's **Options** menu has an **Item Rules** setting on its Competition tab. **All Radiants** is the default: every item in a build is upgraded all the way to Radiant. **First Item Radiant** upgrades only the first item of each build to Radiant and stops every other item at Legendary. **No Radiants** stops every item at Legendary. Both apply to both teams and to pinned items alike. It can only be changed between matches: during a draft or a match the option is greyed out. The setting is stored in your save file, so each save has its own: save the game after changing it, and a save that has never been set is on All Radiants.
+**Options > Competition > Item Rules** sets how far items upgrade. It applies to both teams, pinned items included:
+- **All Radiants** (default): every item upgrades to Radiant.
+- **First Item Radiant**: only the first item upgrades to Radiant. The rest stop at Legendary.
+- **No Radiants**: every item stops at Legendary.
+
+It can't be changed during a draft or a match. Each save has its own setting, so save the game after changing it.
 
 ##### Builds in Check Tactics
-During a match, **Check Tactics** shows both teams' item builds as icons, in place of the base game's four "Let Player Decide" columns: one line per lane, with the Blue Team on the left and the Red Team on the right. An item you pinned has a teal border, and one the AI picked has a grey one. All six slots are shown, in the order the items will be bought; the fifth and sixth appear a moment after the match starts, when the AI picks them. Hover an icon to see the item's price, stats and effect. It works for matches you watch and matches you spectate. The base game's columns stay when the mod can't tell which builds the match was given.
+During a match, **Check Tactics** shows both teams' builds as item icons instead of the four "Let Player Decide" columns: one row per lane, Blue Team on the left, Red Team on the right. Pinned items have a teal border and AI picks a grey one. Items are shown in buy order. The 5th and 6th appear shortly after the match starts. Hover an icon to see the item's price, stats and effect. If the mod can't tell which builds a match uses, the normal columns stay.
 
 ##### In-Game Chat Fix
-The champion info tooltip draws on top of the in-match chat instead of underneath it. This is the [Ingame Chat Foreground Fix](https://steamcommunity.com/sharedfiles/filedetails/?id=3743712915) mod, built in. If you have the standalone mod, disable it: both replace the same in-match layout, so only one can apply, and if the standalone one wins, the wide scoreboard goes back to the base game's width, which six item slots don't fit.
+The champion info tooltip now draws above the in-match chat instead of below it. This is the [Ingame Chat Foreground Fix](https://steamcommunity.com/sharedfiles/filedetails/?id=3743712915) mod, built in. If you have that mod, disable it. Otherwise it can reset the scoreboard to its normal width, which is too narrow for six item slots.
 
 ### Added Items
 
-Ability Haste works like League's: cooldown = base × 100 / (100 + Ability Haste), so 20 Ability Haste is a 16.7% shorter cooldown. It applies to every skill, ultimate included; Ultimate Ability Haste stacks on top for the ultimate only.
+Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Haste), so 20 Ability Haste means 16.7% shorter cooldowns. It applies to every ability, ultimate included. Ultimate Ability Haste adds more for the ultimate only.
 
 #### Tier 1
 | Item | Cost | Stats | Passive |
