@@ -981,6 +981,12 @@ struct NoteEntry {
     // has both.
     stronger: bool,
     weaker: bool,
+    // The change the entry was made for, whose kind picks the reason.
+    why: Change,
+    // Which way the patch meant to move the item, buff or not, from the
+    // first change it was judged on: none for one only brought level or set
+    // by hand. What an adjustment's reason says ([`adjust_pool`]).
+    intent: Option<bool>,
 }
 
 impl NoteEntry {
@@ -1109,6 +1115,17 @@ fn reason_pool(
         });
     }
     pool
+}
+
+// The reasons for an adjustment, an item whose numbers went both ways: a step
+// that went too far, made up for by another number moved back
+// (`balance::plan_for`). `buff` is which way the patch meant to move it.
+fn adjust_pool(buff: bool) -> Vec<&'static str> {
+    if buff {
+        vec!["why_adjust_buff_1", "why_adjust_buff_2", "why_adjust_buff_3"]
+    } else {
+        vec!["why_adjust_nerf_1", "why_adjust_nerf_2", "why_adjust_nerf_3"]
+    }
 }
 
 // A number from a patch and an item, to start a pick at.
@@ -1795,57 +1812,31 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     // number: another of their numbers that comes up is in the row the first
     // one made.
     let mut ranged: Vec<(&str, &str)> = Vec::new();
-    // Reasons given so far, so that no two items share one while another
-    // fits.
-    let mut used: Vec<&'static str> = Vec::new();
     // Where the entry of the item `key` is among `entries`, made where it
     // has none yet. `change` is one of the patch's changes to the item, or
     // to another tier of it: what it was touched for is the same.
-    let mut entry_of = |entries: &mut Vec<NoteEntry>, key: &str, change: &Change| -> usize {
-        if let Some(at) = entries.iter().position(|entry| entry.key == key) {
-            return at;
-        }
-        // One of the sentences that fit the item, a different one for
-        // every item of the article as far as the pool goes, and the same
-        // one whenever this patch's notes are written.
-        let family = base.families.get(&change.family);
-        let chosen = family.map_or(true, |family| family.chosen);
-        let component = family.is_some_and(|family| family.component);
-        // An item moved only to keep an upgrade no weaker than its part
-        // was not judged, and says so. One the player set by hand gives no
-        // reason at all: the article says whose patch it is.
-        let pool = if change.manual {
-            Vec::new()
-        } else if change.follows {
-            vec!["why_follow_1", "why_follow_2"]
-        } else {
-            reason_pool(
-                change.buff,
-                chosen,
-                component,
-                base.tempo(key),
-                change,
-                patch.matches,
-            )
+    let entry_of = |entries: &mut Vec<NoteEntry>, key: &str, change: &Change| -> usize {
+        let at = match entries.iter().position(|entry| entry.key == key) {
+            Some(at) => at,
+            None => {
+                entries.push(NoteEntry {
+                    key: key.to_string(),
+                    reason: String::new(),
+                    rows: Vec::new(),
+                    followers: Vec::new(),
+                    stronger: false,
+                    weaker: false,
+                    why: change.clone(),
+                    intent: None,
+                });
+                entries.len() - 1
+            }
         };
-        let from = seed_of(patch.number, key) % pool.len().max(1);
-        let picked = (0..pool.len())
-            .map(|step| pool[(from + step) % pool.len()])
-            .find(|reason| !used.contains(reason))
-            .or_else(|| pool.get(from).copied());
-        let reason = picked.map_or_else(String::new, |reason| {
-            used.push(reason);
-            texts.ui(lang, reason, "")
-        });
-        entries.push(NoteEntry {
-            key: key.to_string(),
-            reason,
-            rows: Vec::new(),
-            followers: Vec::new(),
-            stronger: false,
-            weaker: false,
-        });
-        entries.len() - 1
+        let entry = &mut entries[at];
+        if entry.intent.is_none() && !change.follows && !change.manual {
+            entry.intent = Some(change.buff);
+        }
+        at
     };
     let buffs = patch.changes.iter().filter(|change| change.buff);
     let nerfs = patch.changes.iter().filter(|change| !change.buff);
@@ -1994,6 +1985,47 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         for (_, rows) in &mut entry.followers {
             rows.sort_by_key(|row| row.rank);
         }
+    }
+    // Each entry's reason, once its numbers are all in and so which way they
+    // went: one of the sentences that fit the item, a different one for every
+    // item of the article as far as the pool goes, and the same one whenever
+    // this patch's notes are written.
+    let mut used: Vec<&'static str> = Vec::new();
+    for entry in &mut entries {
+        let why = &entry.why;
+        let family = base.families.get(&why.family);
+        let chosen = family.map_or(true, |family| family.chosen);
+        let component = family.is_some_and(|family| family.component);
+        // An item whose numbers went both ways is an adjustment, and says
+        // what for. One moved only to keep an upgrade no weaker than its part
+        // was not judged, and says so. One the player set by hand gives no
+        // reason at all: the article says whose patch it is.
+        let adjusted = entry.intent.filter(|_| entry.stronger && entry.weaker);
+        let pool = if why.manual {
+            Vec::new()
+        } else if let Some(buff) = adjusted {
+            adjust_pool(buff)
+        } else if why.follows {
+            vec!["why_follow_1", "why_follow_2"]
+        } else {
+            reason_pool(
+                why.buff,
+                chosen,
+                component,
+                base.tempo(&entry.key),
+                why,
+                patch.matches,
+            )
+        };
+        let from = seed_of(patch.number, &entry.key) % pool.len().max(1);
+        let picked = (0..pool.len())
+            .map(|step| pool[(from + step) % pool.len()])
+            .find(|reason| !used.contains(reason))
+            .or_else(|| pool.get(from).copied());
+        entry.reason = picked.map_or_else(String::new, |reason| {
+            used.push(reason);
+            texts.ui(lang, reason, "")
+        });
     }
     entries
 }

@@ -29,7 +29,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{item_counts, item_spend, match_builds, options_row, solo_rank_ui, strategy_ui};
-pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
+pub(crate) use utils::{config, extra_stats, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
@@ -426,9 +426,10 @@ fn init(host: &StableHost) -> StableMod {
     // boots in the editor beside the radiants, and `shared_riches` pays World
     // Atlas gold from the match hook.
     //
-    // Every item is wrapped in `perf::Timed`, which times its hooks and is
-    // where an item balance patch reaches it; the constructor handed over with
-    // it is for that.
+    // Every item is wrapped in `extra_stats::WithStats`, which adds the base
+    // stats its `config.json` entry gives that the item does not read itself,
+    // then in `perf::Timed`, which times its hooks and is where an item balance
+    // patch reaches it; the constructor handed over with it is for that.
     macro_rules! configured {
         ($key:literal => $T:ty, shared_riches) => {{
             let item = configured!($key => $T);
@@ -462,13 +463,22 @@ fn init(host: &StableHost) -> StableMod {
             item
         }};
         ($key:literal => $T:ty) => {{
-            let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
+            extra_stats::learn($key, <$T>::with_config);
+            let build: fn(&config::ItemConfig) -> extra_stats::WithStats<$T> = |config| {
+                extra_stats::WithStats::new($key, <$T>::with_config(config), Some(config))
+            };
+            let config = configs.get($key);
+            let item = extra_stats::WithStats::new(
+                $key,
+                config.map(<$T>::with_config).unwrap_or_default(),
+                config,
+            );
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             route_choice::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
-            patches::note_mod_item($key, &item, <$T>::with_config);
-            perf::timed($key, item, <$T>::with_config)
+            patches::note_mod_item($key, &item, build);
+            perf::timed($key, item, build)
         }};
     }
     macro_rules! configured_radiant {
@@ -499,17 +509,25 @@ fn init(host: &StableHost) -> StableMod {
             item
         }};
         ($key:literal => $T:ty) => {{
-            let item = configs
-                .get($key)
-                .map(<$T>::radiant_with_config)
-                .unwrap_or_else(<$T>::radiant);
+            extra_stats::learn($key, <$T>::radiant_with_config);
+            let build: fn(&config::ItemConfig) -> extra_stats::WithStats<$T> = |config| {
+                extra_stats::WithStats::new($key, <$T>::radiant_with_config(config), Some(config))
+            };
+            let config = configs.get($key);
+            let item = extra_stats::WithStats::new(
+                $key,
+                config
+                    .map(<$T>::radiant_with_config)
+                    .unwrap_or_else(<$T>::radiant),
+                config,
+            );
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             route_choice::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key);
-            patches::note_mod_item($key, &item, <$T>::radiant_with_config);
-            perf::timed($key, item, <$T>::radiant_with_config)
+            patches::note_mod_item($key, &item, build);
+            perf::timed($key, item, build)
         }};
     }
 

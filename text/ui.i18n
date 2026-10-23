@@ -223,7 +223,13 @@
       "why_buff_weak_1": "It has been sitting at a particularly low state of power for a while now.",
       "why_buff_weak_2": "It has fallen behind the other options for its class.",
       "why_buff_niche_1": "Rarely the right answer at the moment, so we're widening its uses.",
-      "why_buff_niche_2": "It has slipped out of most builds. A small push to get it back in."
+      "why_buff_niche_2": "It has slipped out of most builds. A small push to get it back in.",
+      "why_adjust_buff_1": "We pulled one number down a touch so we could push the rest further.",
+      "why_adjust_buff_2": "We're giving it more where it counts and taking a little back where it doesn't.",
+      "why_adjust_buff_3": "Call it a buff with a small price: we added more than we took away.",
+      "why_adjust_nerf_1": "We had to rein it in, but we've left it a little extra elsewhere to make up for it.",
+      "why_adjust_nerf_2": "We're moving some of its power around rather than simply taking it away.",
+      "why_adjust_nerf_3": "This is a nerf at heart, but we've softened it so the item still feels good to build."
     }
   },
   "ko": {
@@ -450,7 +456,13 @@
       "why_buff_weak_1": "한동안 유독 낮은 파워 수준에 머물러 있었습니다.",
       "why_buff_weak_2": "같은 계열의 다른 선택지에 비해 뒤처졌습니다.",
       "why_buff_niche_1": "지금은 정답인 경우가 드물어, 쓰임새를 넓힙니다.",
-      "why_buff_niche_2": "대부분의 빌드에서 밀려났습니다. 다시 돌아오도록 살짝 밀어 줍니다."
+      "why_buff_niche_2": "대부분의 빌드에서 밀려났습니다. 다시 돌아오도록 살짝 밀어 줍니다.",
+      "why_adjust_buff_1": "나머지를 더 끌어올리기 위해 한 수치를 살짝 낮췄습니다.",
+      "why_adjust_buff_2": "중요한 부분은 강화하고, 덜 중요한 부분은 조금 되돌립니다.",
+      "why_adjust_buff_3": "작은 대가가 따르는 상향이라고 보시면 됩니다. 덜어 낸 것보다 더해 준 것이 많습니다.",
+      "why_adjust_nerf_1": "힘을 줄여야 했지만, 그만큼을 메울 수 있도록 다른 곳에 조금 더 얹어 두었습니다.",
+      "why_adjust_nerf_2": "파워를 단순히 빼앗기보다 일부를 다른 곳으로 옮깁니다.",
+      "why_adjust_nerf_3": "본질적으로는 하향이지만, 여전히 살 만한 아이템이 되도록 충격을 줄였습니다."
     }
   },
   "zh-hans": {
@@ -677,7 +689,13 @@
       "why_buff_weak_1": "它已经在特别低的强度水平上停留了一段时间。",
       "why_buff_weak_2": "它已经落后于同类的其他选项。",
       "why_buff_niche_1": "它目前很少是正确答案，所以我们拓宽它的用途。",
-      "why_buff_niche_2": "它已经从大多数出装中消失，轻推一把让它回来。"
+      "why_buff_niche_2": "它已经从大多数出装中消失，轻推一把让它回来。",
+      "why_adjust_buff_1": "我们把一项数值稍微调低，好把其余的推得更高。",
+      "why_adjust_buff_2": "我们在关键之处给它更多，在次要之处收回一点。",
+      "why_adjust_buff_3": "可以把它看作一次带点代价的增强：我们加的比减的多。",
+      "why_adjust_nerf_1": "我们不得不收一收它的强度，但在别处给它留了一点额外的补偿。",
+      "why_adjust_nerf_2": "我们是在重新分配它的强度，而不只是单纯削弱。",
+      "why_adjust_nerf_3": "这本质上是一次削弱，但我们减轻了力度，让它依然值得购买。"
     }
   },
   "ja": {
@@ -904,7 +922,13 @@
       "why_buff_weak_1": "しばらくの間、特に低いパワー水準にとどまっていました。",
       "why_buff_weak_2": "同系統の他の選択肢に後れを取っていました。",
       "why_buff_niche_1": "現状では正解となる場面が少ないため、用途を広げます。",
-      "why_buff_niche_2": "ほとんどのビルドから外れていました。戻ってこられるよう少し後押しします。"
+      "why_buff_niche_2": "ほとんどのビルドから外れていました。戻ってこられるよう少し後押しします。",
+      "why_adjust_buff_1": "残りをさらに伸ばすために、ある数値を少しだけ下げました。",
+      "why_adjust_buff_2": "重要な部分は強化し、そうでない部分は少し抑えます。",
+      "why_adjust_buff_3": "ちょっとした代償つきの強化だと思ってください。削った分より足した分のほうが多くなっています。",
+      "why_adjust_nerf_1": "抑える必要がありましたが、その埋め合わせとして別の部分に少しだけ上乗せしています。",
+      "why_adjust_nerf_2": "単に力を奪うのではなく、その一部を別の部分へ移します。",
+      "why_adjust_nerf_3": "本質的には弱体化ですが、今後も買う価値を感じられるよう影響を和らげました。"
     }
   },
   "pt-BR": {
@@ -1131,7 +1155,13 @@
       "why_buff_weak_1": "Ele está há algum tempo em um nível de poder particularmente baixo.",
       "why_buff_weak_2": "Ele ficou para trás em relação às outras opções da sua classe.",
       "why_buff_niche_1": "Raramente é a resposta certa no momento, então estamos ampliando seus usos.",
-      "why_buff_niche_2": "Ele saiu da maioria das builds. Um empurrãozinho para trazê-lo de volta."
+      "why_buff_niche_2": "Ele saiu da maioria das builds. Um empurrãozinho para trazê-lo de volta.",
+      "why_adjust_buff_1": "Baixamos um pouco um número para poder levar o resto mais longe.",
+      "why_adjust_buff_2": "Estamos dando mais a ele onde importa e tirando um pouco onde não importa.",
+      "why_adjust_buff_3": "Pense nisso como um buff com um pequeno preço: adicionamos mais do que tiramos.",
+      "why_adjust_nerf_1": "Tivemos que segurá-lo, mas deixamos um pouco a mais em outro ponto para compensar.",
+      "why_adjust_nerf_2": "Estamos redistribuindo parte do poder dele em vez de simplesmente retirá-lo.",
+      "why_adjust_nerf_3": "No fundo é um nerf, mas suavizamos o golpe para que o item continue valendo a compra."
     }
   },
   "ru": {
@@ -1358,7 +1388,13 @@
       "why_buff_weak_1": "Он уже какое-то время находится на особенно низком уровне силы.",
       "why_buff_weak_2": "Он отстал от других вариантов своего класса.",
       "why_buff_niche_1": "Сейчас он редко бывает правильным выбором, поэтому мы расширяем его применение.",
-      "why_buff_niche_2": "Он выпал из большинства сборок. Небольшой толчок, чтобы вернуть его."
+      "why_buff_niche_2": "Он выпал из большинства сборок. Небольшой толчок, чтобы вернуть его.",
+      "why_adjust_buff_1": "Мы чуть-чуть опустили одно значение, чтобы поднять остальные повыше.",
+      "why_adjust_buff_2": "Даём ему больше там, где это важно, и немного забираем там, где нет.",
+      "why_adjust_buff_3": "Считайте это усилением с небольшой ценой: добавили мы больше, чем забрали.",
+      "why_adjust_nerf_1": "Нам пришлось его придержать, но в другом месте мы оставили ему немного сверху в качестве компенсации.",
+      "why_adjust_nerf_2": "Мы не просто отнимаем у него силу, а частично перераспределяем её.",
+      "why_adjust_nerf_3": "По сути это ослабление, но мы смягчили его, чтобы предмет по-прежнему стоило покупать."
     }
   },
   "vi": {
@@ -1585,7 +1621,13 @@
       "why_buff_weak_1": "Nó đã ở mức sức mạnh đặc biệt thấp trong một thời gian.",
       "why_buff_weak_2": "Nó đã tụt lại so với các lựa chọn khác trong nhóm.",
       "why_buff_niche_1": "Hiện hiếm khi là lựa chọn đúng, nên chúng tôi mở rộng công dụng của nó.",
-      "why_buff_niche_2": "Nó đã rời khỏi hầu hết lối lên đồ. Một cú hích nhỏ để đưa nó trở lại."
+      "why_buff_niche_2": "Nó đã rời khỏi hầu hết lối lên đồ. Một cú hích nhỏ để đưa nó trở lại.",
+      "why_adjust_buff_1": "Chúng tôi hạ nhẹ một thông số để có thể đẩy những thông số còn lại lên cao hơn.",
+      "why_adjust_buff_2": "Chúng tôi tăng thêm ở chỗ quan trọng và lấy lại một chút ở chỗ ít quan trọng hơn.",
+      "why_adjust_buff_3": "Hãy coi đây là một lần tăng sức mạnh có chút cái giá: chúng tôi thêm vào nhiều hơn những gì đã lấy đi.",
+      "why_adjust_nerf_1": "Chúng tôi buộc phải kìm nó lại, nhưng đã để thêm cho nó một chút ở chỗ khác để bù đắp.",
+      "why_adjust_nerf_2": "Chúng tôi phân bổ lại một phần sức mạnh của nó thay vì chỉ đơn giản lấy đi.",
+      "why_adjust_nerf_3": "Về bản chất đây là một lần giảm sức mạnh, nhưng chúng tôi đã làm nhẹ tay để món đồ vẫn đáng mua."
     }
   }
 }
