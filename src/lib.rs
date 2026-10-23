@@ -29,7 +29,7 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{item_counts, item_spend, match_builds, options_row, solo_rank_ui, strategy_ui};
-pub(crate) use utils::{config, extra_stats, own_team_log, perf, upgrade_carry};
+pub(crate) use utils::{config, extra_stats, game_text, own_team_log, perf, upgrade_carry};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,

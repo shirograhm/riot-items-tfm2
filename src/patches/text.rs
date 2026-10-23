@@ -384,6 +384,9 @@ pub(crate) struct Texts {
     // Language -> the mod's own patch-note strings (`text/ui.i18n`,
     // `item_patch`).
     ui: HashMap<String, HashMap<String, String>>,
+    // Language -> the Build Editor's strings (`text/ui.i18n`, `builds`), for
+    // the ones it writes into a label along with other text.
+    builds: HashMap<String, HashMap<String, String>>,
 }
 
 fn read_json(path: &Path) -> Option<Value> {
@@ -423,6 +426,7 @@ impl Texts {
             name_keys: HashMap::new(),
             shown: HashMap::new(),
             ui: HashMap::new(),
+            builds: HashMap::new(),
         };
 
         if let Some(Value::Object(langs)) = read_json(&dir.join("text").join("item.i18n")) {
@@ -498,6 +502,9 @@ impl Texts {
             for (lang, entries) in &langs {
                 if let Some(strings) = entries.get("item_patch") {
                     texts.ui.insert(lang.clone(), lines_of(strings));
+                }
+                if let Some(strings) = entries.get("builds") {
+                    texts.builds.insert(lang.clone(), lines_of(strings));
                 }
             }
         }
@@ -2288,6 +2295,22 @@ pub(crate) fn item_frame(key: &str) -> String {
 // English given.
 pub(crate) fn ui_string(key: &str, english: &str) -> String {
     texts().ui(&game_language(), key, english)
+}
+
+// One of the Build Editor's strings in `lang`, in the mod's English where that
+// language has none, or the English given.
+pub(crate) fn builds_string(lang: &str, key: &str, english: &str) -> String {
+    [lang, "en"]
+        .iter()
+        .find_map(|lang| texts().builds.get(*lang)?.get(key))
+        .cloned()
+        .unwrap_or_else(|| english.to_string())
+}
+
+// An item's name in `lang` as the mod's text file has it, if that language
+// has one: the mod's items, and the game's own items it renames.
+pub(crate) fn item_name_in(lang: &str, key: &str) -> Option<&'static str> {
+    texts().names.get(lang)?.get(key).map(String::as_str)
 }
 
 // What the window calls `key`'s `field`, and whether it is a percentage, as a

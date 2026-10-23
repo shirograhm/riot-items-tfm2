@@ -33,7 +33,15 @@
       "item_rules_locked": "Item Rules can only be changed between matches, not during a draft or a match.",
       "save": "Save Item Builds",
       "ai_slot": "Let Player Decide",
-      "no_champion": "(champion)"
+      "no_champion": "(champion)",
+      "item_search_placeholder": "Search item name...",
+      "class_assassin": "Assassin",
+      "class_fighter": "Fighter",
+      "class_marksman": "Marksman",
+      "class_mage": "Mage",
+      "class_tank": "Tank",
+      "class_support": "Support",
+      "class_boots": "Boots"
     },
     "item_stats": {
       "tab": "Item Stats",
@@ -271,7 +279,15 @@
       "item_rules_locked": "아이템 규칙은 경기 사이에만 변경할 수 있습니다. 밴픽이나 경기 중에는 변경할 수 없습니다.",
       "save": "빌드 저장",
       "ai_slot": "선수에게 맡기기",
-      "no_champion": "(챔피언)"
+      "no_champion": "(챔피언)",
+      "item_search_placeholder": "아이템 이름 검색...",
+      "class_assassin": "암살자",
+      "class_fighter": "전사",
+      "class_marksman": "원거리 딜러",
+      "class_mage": "마법사",
+      "class_tank": "탱커",
+      "class_support": "서포터",
+      "class_boots": "장화"
     },
     "item_stats": {
       "tab": "아이템 통계",
@@ -509,7 +525,15 @@
       "item_rules_locked": "装备规则只能在比赛之间更改，禁选阶段和比赛中无法更改。",
       "save": "保存装备构建",
       "ai_slot": "交给选手决定",
-      "no_champion": "(英雄)"
+      "no_champion": "(英雄)",
+      "item_search_placeholder": "搜索装备名称...",
+      "class_assassin": "刺客",
+      "class_fighter": "战士",
+      "class_marksman": "射手",
+      "class_mage": "法师",
+      "class_tank": "坦克",
+      "class_support": "辅助",
+      "class_boots": "鞋子"
     },
     "item_stats": {
       "tab": "物品统计",
@@ -747,7 +771,15 @@
       "item_rules_locked": "アイテムルールは試合の合間にのみ変更できます。ドラフト中や試合中は変更できません。",
       "save": "ビルドを保存",
       "ai_slot": "選手に任せる",
-      "no_champion": "(チャンピオン)"
+      "no_champion": "(チャンピオン)",
+      "item_search_placeholder": "アイテム名を検索...",
+      "class_assassin": "アサシン",
+      "class_fighter": "ファイター",
+      "class_marksman": "マークスマン",
+      "class_mage": "メイジ",
+      "class_tank": "タンク",
+      "class_support": "サポート",
+      "class_boots": "ブーツ"
     },
     "item_stats": {
       "tab": "アイテム統計",
@@ -985,7 +1017,15 @@
       "item_rules_locked": "As Regras de Itens só podem ser alteradas entre partidas, não durante o draft ou a partida.",
       "save": "Salvar Builds",
       "ai_slot": "Deixar o Jogador Decidir",
-      "no_champion": "(campeão)"
+      "no_champion": "(campeão)",
+      "item_search_placeholder": "Buscar nome do item...",
+      "class_assassin": "Assassino",
+      "class_fighter": "Lutador",
+      "class_marksman": "Atirador",
+      "class_mage": "Mago",
+      "class_tank": "Tanque",
+      "class_support": "Suporte",
+      "class_boots": "Botas"
     },
     "item_stats": {
       "tab": "Estat. Itens",
@@ -1223,7 +1263,15 @@
       "item_rules_locked": "Правила предметов можно менять только между матчами, но не во время драфта или матча.",
       "save": "Сохранить сборки",
       "ai_slot": "На усмотрение игрока",
-      "no_champion": "(чемпион)"
+      "no_champion": "(чемпион)",
+      "item_search_placeholder": "Искать по названию предмета...",
+      "class_assassin": "Убийца",
+      "class_fighter": "Боец",
+      "class_marksman": "Стрелок",
+      "class_mage": "Маг",
+      "class_tank": "Танк",
+      "class_support": "Поддержка",
+      "class_boots": "Ботинки"
     },
     "item_stats": {
       "tab": "Статистика предметов",
@@ -1461,7 +1509,15 @@
       "item_rules_locked": "Luật trang bị chỉ có thể thay đổi giữa các trận, không phải trong lúc cấm chọn hay trong trận.",
       "save": "Lưu cách lên đồ",
       "ai_slot": "Để tuyển thủ quyết định",
-      "no_champion": "(tướng)"
+      "no_champion": "(tướng)",
+      "item_search_placeholder": "Tìm tên Trang Bị...",
+      "class_assassin": "Sát Thủ",
+      "class_fighter": "Đấu Sĩ",
+      "class_marksman": "Xạ Thủ",
+      "class_mage": "Pháp Sư",
+      "class_tank": "Đỡ Đòn",
+      "class_support": "Hỗ Trợ",
+      "class_boots": "Giày"
     },
     "item_stats": {
       "tab": "Thống kê Trang bị",

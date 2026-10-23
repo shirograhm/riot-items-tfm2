@@ -478,11 +478,39 @@ build_editor:empty {
       }
     }
 
+    #search:text_edit {
+      @"asset/base/style/main#text_edit";
+      x: 6px;
+      y: 6px;
+      width: 308px;
+      height: 34px;
+      size: 14;
+      align_y: Center;
+      padding: {
+        left: 36px;
+        top: 4px;
+        right: 10px;
+        bottom: 4px;
+      }
+      placeholder: "Search item name...";
+      max_length: 40;
+
+      #icon:image {
+        ignore_event: true;
+        x: -26px;
+        y: 4px;
+        width: 18px;
+        height: 18px;
+        source: "asset/base/ui/banpick/fi-rr-search";
+        color: #858d9dff;
+      }
+    }
+
     #list:scroll_view {
       x: 3px;
-      y: 3px;
+      y: 46px;
       width: 314px;
-      height: 424px;
+      height: 381px;
 
       speed: 100;
 
@@ -582,11 +610,39 @@ build_editor:empty {
       }
     }
 
+    #search:text_edit {
+      @"asset/base/style/main#text_edit";
+      x: 6px;
+      y: 6px;
+      width: 248px;
+      height: 34px;
+      size: 14;
+      align_y: Center;
+      padding: {
+        left: 36px;
+        top: 4px;
+        right: 10px;
+        bottom: 4px;
+      }
+      placeholder: "Search champion name...";
+      max_length: 40;
+
+      #icon:image {
+        ignore_event: true;
+        x: -26px;
+        y: 4px;
+        width: 18px;
+        height: 18px;
+        source: "asset/base/ui/banpick/fi-rr-search";
+        color: #858d9dff;
+      }
+    }
+
     #list:scroll_view {
       x: 3px;
-      y: 3px;
+      y: 46px;
       width: 254px;
-      height: 424px;
+      height: 381px;
 
       speed: 100;
 

@@ -22,25 +22,33 @@
 //! `ignore_event: true` so the button gets the click.
 //!
 //! The search box spawns only matching rows, each named for its index in the
-//! saved list, so paths keep their meaning under a filter. Every path is
-//! registered once through `REGISTERED` ([`super::Registered`]), forgotten when
-//! the screen goes away and only then: a set kept for the process left the
-//! editor dead on every later screen.
+//! saved list, so paths keep their meaning under a filter; the champion and
+//! item lists are searched the same way, each from a box of its own. Every
+//! path is registered once through `REGISTERED` ([`super::Registered`]),
+//! forgotten when the screen goes away and only then: a set kept for the
+//! process left the editor dead on every later screen.
+//!
+//! Champion and item names are written into the lists in the game's language,
+//! from the game's own text and the mod's ([`crate::game_text`]): `ctx.i18n()`
+//! answers in English, and a name drawn by reference could not be searched.
 
 use std::sync::{Arc, Mutex, OnceLock};
 
 use mod_api_stable::*;
 
-use super::draft_watch;
+use super::{draft_watch, name_search};
 use crate::build_config::{self, picker_slots, ChampionRow, Focus, Role};
+use crate::game_text;
 use crate::item_catalog;
+use crate::patches::text::{builds_string, game_language, item_name_in};
 use crate::tactics;
 
 // The editor's text as `#asset/…?key` references the game resolves at draw time
 // in the active locale, since `ctx.i18n()` always answers in English.
 // LabelRunner substitutes only whole-string labels, so every key is a complete
-// label and anything concatenated here stays English; `text/ui.i18n` is merged
-// into the base document for this ([`UI_TEXT_DOC`]).
+// label, and the few this mod writes along with other text are looked up in the
+// game's language here instead; `text/ui.i18n` is merged into the base document
+// for this ([`UI_TEXT_DOC`]).
 #[derive(Clone)]
 struct Strings {
     tab: String,
@@ -68,6 +76,12 @@ struct Strings {
     save: String,
     ai_slot: String,
     no_champion: String,
+    // The placeholders of the champion and item lists' search boxes.
+    champ_search: String,
+    item_search: String,
+    // The item list's category headers, by the category each heads
+    // ([`header_classes`]).
+    classes: Vec<(&'static str, String)>,
 }
 
 impl Default for Strings {
@@ -99,9 +113,23 @@ impl Default for Strings {
             save: "Save Item Builds".into(),
             ai_slot: AI_SLOT_LABEL_FALLBACK.into(),
             no_champion: NO_CHAMPION_LABEL_FALLBACK.into(),
+            champ_search: "Search champion name...".into(),
+            item_search: "Search item name...".into(),
+            classes: header_classes()
+                .map(|class| (class, class.to_string()))
+                .collect(),
         }
     }
 }
+
+// The item list's headers: the categories in [`item_catalog::CATEGORY_ORDER`],
+// then Boots, which [`item_catalog::category_rank`] files after them.
+fn header_classes() -> impl Iterator<Item = &'static str> {
+    item_catalog::CATEGORY_ORDER.into_iter().chain(["Boots"])
+}
+
+// The game's own wording for its champion search, in every language it has.
+const CHAMP_SEARCH_TEXT: &str = "#asset/base/text/ui?banpick.champion_search_placeholder";
 
 // Where the editor's labels live. `text/ui.i18n` is merged into this base
 // document by `mod.override_info`; LabelRunner resolves references against the
@@ -125,20 +153,16 @@ fn load_strings(ctx: &StableClient<'_>) {
     // A reference only once the key is known to resolve, or it would draw as
     // literal `#asset/...`; `ctx.i18n` answers in English whatever the locale,
     // which makes it an existence check.
-    let reference = |key: &str, fallback: &str| {
-        let path = format!("{UI_TEXT_DOC}?builds.{key}");
-        match ctx.i18n(&path) {
-            Some(text) if !text.is_empty() && !text.starts_with('#') => path,
-            _ => fallback.to_string(),
-        }
+    let resolves = |path: String, fallback: &str| match ctx.i18n(&path) {
+        Some(text) if !text.is_empty() && !text.starts_with('#') => path,
+        _ => fallback.to_string(),
     };
+    let reference =
+        |key: &str, fallback: &str| resolves(format!("{UI_TEXT_DOC}?builds.{key}"), fallback);
     // For text this mod concatenates: LabelRunner never sees it as a whole
-    // label, so it has to be resolved here and stays `en`.
-    let resolved = |key: &str, fallback: &str| {
-        ctx.i18n(&format!("{UI_TEXT_DOC}?builds.{key}"))
-            .filter(|text| !text.is_empty() && !text.starts_with('#'))
-            .unwrap_or_else(|| fallback.to_string())
-    };
+    // label, so it is looked up here, in the game's language.
+    let lang = game_language();
+    let resolved = |key: &str, fallback: &str| builds_string(&lang, key, fallback);
     let resolved_strings = Strings {
         tab: reference("tab", &fallback.tab),
         add: reference("add_champion", &fallback.add),
@@ -164,6 +188,14 @@ fn load_strings(ctx: &StableClient<'_>) {
         filter: reference("filter_placeholder", &fallback.filter),
         ai_slot: resolved("ai_slot", &fallback.ai_slot),
         no_champion: resolved("no_champion", &fallback.no_champion),
+        champ_search: resolves(CHAMP_SEARCH_TEXT.to_string(), &fallback.champ_search),
+        item_search: reference("item_search_placeholder", &fallback.item_search),
+        classes: header_classes()
+            .map(|class| {
+                let key = format!("class_{}", class.to_lowercase());
+                (class, reference(&key, class))
+            })
+            .collect(),
     };
     if let Ok(mut strings) = STRINGS.lock() {
         *strings = Some(Arc::new(resolved_strings));
@@ -181,10 +213,13 @@ fn apply_strings(ctx: &mut StableClient<'_>) {
     for (path, text) in [(add_path(), &strings.add), (save_path(), &strings.save)] {
         ctx.ui_set_properties(path, &format!("text: {{ text: \"{}\"; }}", escape(text)));
     }
-    ctx.ui_set_properties(
-        search_path(),
-        &format!("placeholder: \"{}\";", escape(&strings.filter)),
-    );
+    for (path, text) in [
+        (search_path(), &strings.filter),
+        (champlist_search_path(), &strings.champ_search),
+        (itemlist_search_path(), &strings.item_search),
+    ] {
+        ctx.ui_set_properties(path, &format!("placeholder: \"{}\";", escape(text)));
+    }
     ctx.ui_set_text(hint_path(), &strings.hint);
     ctx.ui_set_text(
         &format!("{}.c_champion", colheader_path()),
@@ -625,11 +660,23 @@ struct EditorState {
     // too long for one line. `None` for a subtree fresh from source. See
     // [`fit_search`].
     search_fit: Option<(u32, bool)>,
-    // The item list, headers included. Cached for the process lifetime — the
-    // item pool cannot change without a restart.
+    // The item list, headers included, and the language its names are in.
+    // Cached until that is not the game's language: the item pool cannot
+    // change without a restart.
     entries: Vec<ListEntry>,
-    // The champion list. Cached for the same reason.
+    entries_lang: String,
+    // The champion list, cached the same way.
     champions: Vec<ChampionChoice>,
+    champions_lang: String,
+    // The language the spawned editor's names were written in, so a change of
+    // language under it is seen ([`sync_language`]).
+    shown_lang: String,
+    // What the item and champion lists have spawned ([`fill_item_list`]).
+    item_fill: ListFill,
+    champ_fill: ListFill,
+    // Frames for which the open list's search box may still read back what it
+    // held before the opening cleared it, like [`EditorState::side_settle`].
+    list_settle: u8,
     // Where the vanilla Item Info popup was found on this screen, and frames
     // since it was looked for; the search is a tree walk, so it is throttled
     // ([`find_info_popup`]).
@@ -643,6 +690,16 @@ struct EditorState {
     // ([`resolve_comp_tactics`]).
     comp_tactics: Option<String>,
     comp_probe_tick: u32,
+}
+
+// What one floating list has spawned: its entries' indices, in the order shown,
+// and the search they were spawned for. `search` is `None` when they answer no
+// search that holds now (the subtree is new, or the names have changed
+// language), so the next fill respawns whatever it is asked for.
+#[derive(Default)]
+struct ListFill {
+    search: Option<String>,
+    spawned: Vec<usize>,
 }
 
 static STATE: Mutex<Option<EditorState>> = Mutex::new(None);
@@ -703,7 +760,7 @@ pub(crate) fn is_mod_final_item(key: &str) -> bool {
 
 // Every path inside the editor, resolved against one of its two hosts. Leaked
 // as `&'static str` so the ~95 call sites stay simple; bounded by the two
-// hosts, about 52 small strings.
+// hosts, about 60 small strings.
 struct EditorPaths {
     // The node the window is spawned under. Never addressed except to spawn.
     parent: &'static str,
@@ -764,6 +821,10 @@ struct EditorPaths {
     itemlist_scroll: &'static str,
     champlist_scroll: &'static str,
     rolelist_scroll: &'static str,
+    // The item and champion lists' search boxes, polled like the filter box
+    // while their list is open ([`sync_list_search`]).
+    itemlist_search: &'static str,
+    champlist_search: &'static str,
 }
 
 // Leaks one path. See [`EditorPaths`] for why this is bounded.
@@ -806,6 +867,8 @@ impl EditorPaths {
             itemlist_scroll: leak(format!("{editor}.itemlist.list")),
             champlist_scroll: leak(format!("{editor}.champlist.list")),
             rolelist_scroll: leak(format!("{editor}.rolelist.list")),
+            itemlist_search: leak(format!("{editor}.itemlist.search")),
+            champlist_search: leak(format!("{editor}.champlist.search")),
         }))
     }
 }
@@ -925,6 +988,12 @@ fn champlist_scroll() -> &'static str {
 fn rolelist_scroll() -> &'static str {
     paths().rolelist_scroll
 }
+fn itemlist_search_path() -> &'static str {
+    paths().itemlist_search
+}
+fn champlist_search_path() -> &'static str {
+    paths().champlist_search
+}
 // Resting `speed` of all three, restored to whichever one is live. Must match
 // the value the three views are authored with in `build_editor.ui`.
 const SCROLL_SPEED: i32 = 100;
@@ -998,24 +1067,27 @@ fn sanitize(text: &str) -> String {
 // -- item list ----------------------------------------------------------
 
 // Every final item the game knows, grouped into [`item_catalog`]'s categories
-// and sorted by name, read from the item settings document so new items need no
-// wiring.
-fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
+// and sorted by name in `lang`, read from the item settings document so new
+// items need no wiring.
+fn load_entries(ctx: &StableClient<'_>, lang: &str) -> Vec<ListEntry> {
     let mut choices = Vec::new();
     if let Some(json) = ctx.setting_get_json(SettingTargetV1::ItemSetting, "") {
         if let Ok(serde_json::Value::Object(root)) =
             serde_json::from_str::<serde_json::Value>(&json)
         {
-            collect_items(ctx, &root, 0, &mut choices);
+            collect_items(ctx, lang, &root, 0, &mut choices);
         }
     }
-    merge_mod_finals(ctx, &mut choices);
+    merge_mod_finals(ctx, lang, &mut choices);
 
-    // Category first, then name, so the headers come out in CATEGORY_ORDER.
-    choices.sort_by(|a, b| {
-        item_catalog::category_rank(a.category)
-            .cmp(&item_catalog::category_rank(b.category))
-            .then_with(|| a.name.cmp(&b.name))
+    // Category first, then name, so the headers come out in CATEGORY_ORDER;
+    // names accents aside ([`name_search::sort_key`]).
+    choices.sort_by_cached_key(|choice| {
+        (
+            item_catalog::category_rank(choice.category),
+            name_search::sort_key(&choice.name),
+            choice.name.clone(),
+        )
     });
 
     let mut entries = Vec::with_capacity(choices.len() + item_catalog::CATEGORY_ORDER.len() + 2);
@@ -1031,22 +1103,33 @@ fn load_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     entries
 }
 
-// One [`ItemChoice`] from an item key; `None` for an item with no category,
-// which keeps it out of the list.
-fn make_choice(ctx: &StableClient<'_>, key: &str) -> Option<ItemChoice> {
+// One [`ItemChoice`] from an item key, named in `lang`; `None` for an item
+// with no category, which keeps it out of the list.
+fn make_choice(ctx: &StableClient<'_>, lang: &str, key: &str) -> Option<ItemChoice> {
     let slug = build_config::base_slug(key);
     Some(ItemChoice {
         frame: item_catalog::icon_frame(slug, is_mod_item(key)).map(sanitize),
         category: item_catalog::category_of(slug)?,
-        name: sanitize(&item_display_name(ctx, key, slug)),
+        name: sanitize(&item_display_name(ctx, lang, key, slug)),
         key: sanitize(key),
     })
 }
 
 // Display name for an item without the "Radiant" tier word, which every pool
-// item has: the base item's translated name. The six reskinned vanilla finals
-// have no base, so their radiant name is trimmed, in English only.
-fn item_display_name(ctx: &StableClient<'_>, key: &str, slug: &str) -> String {
+// item has: in `lang`, the name of the item it is the radiant of (the mod's
+// base item, or for the six reskinned vanilla finals the legendary under each),
+// else its own. The mod's text comes first, being merged over the game's in
+// game. Where neither has the item in `lang`, the game's English, with a
+// radiant name trimmed.
+fn item_display_name(ctx: &StableClient<'_>, lang: &str, key: &str, slug: &str) -> String {
+    let base = item_catalog::GAME_RADIANTS
+        .iter()
+        .find(|&&(_, game, _)| game == key)
+        .map_or(slug, |&(_, _, legendary)| legendary);
+    let named = |name: &str| item_name_in(lang, name).or_else(|| game_text::item_name(lang, name));
+    if let Some(name) = named(base).or_else(|| named(key)) {
+        return name.to_string();
+    }
     // The `#` prefix is part of the key: the probe found this spelling resolves
     // ("Radiant Bloodthirster") while the bare path returns nothing. Same form
     // the `.ui` text properties use.
@@ -1054,7 +1137,7 @@ fn item_display_name(ctx: &StableClient<'_>, key: &str, slug: &str) -> String {
         ctx.i18n(&format!("#asset/base/text/item?{name}.name"))
             .filter(|text| !text.is_empty())
     };
-    if let Some(base) = lookup(slug) {
+    if let Some(base) = lookup(base) {
         return base;
     }
     lookup(key)
@@ -1064,7 +1147,7 @@ fn item_display_name(ctx: &StableClient<'_>, key: &str, slug: &str) -> String {
 
 // Adds the mod's own final items to `choices`, skipping keys the settings
 // document already gave (renamed vanilla finals overlap).
-fn merge_mod_finals(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
+fn merge_mod_finals(ctx: &StableClient<'_>, lang: &str, choices: &mut Vec<ItemChoice>) {
     let Ok(finals) = MOD_FINALS.lock() else {
         return;
     };
@@ -1075,7 +1158,7 @@ fn merge_mod_finals(ctx: &StableClient<'_>, choices: &mut Vec<ItemChoice>) {
         if choices.iter().any(|choice| choice.key == key) {
             continue;
         }
-        choices.extend(make_choice(ctx, &key));
+        choices.extend(make_choice(ctx, lang, &key));
     }
 }
 
@@ -1090,6 +1173,7 @@ fn is_item(value: &serde_json::Value) -> bool {
 // into a deep traversal on the UI thread.
 fn collect_items(
     ctx: &StableClient<'_>,
+    lang: &str,
     map: &serde_json::Map<String, serde_json::Value>,
     depth: usize,
     out: &mut Vec<ItemChoice>,
@@ -1102,7 +1186,7 @@ fn collect_items(
             // Two levels, not one: mod items sit under a per-mod bucket
             // (`mod_items.riot_items_tfm2.collector`).
             if depth < 2 {
-                collect_items(ctx, object, depth + 1, out);
+                collect_items(ctx, lang, object, depth + 1, out);
             }
             continue;
         }
@@ -1116,20 +1200,27 @@ fn collect_items(
         if !is_final {
             continue;
         }
-        out.extend(make_choice(ctx, key));
+        out.extend(make_choice(ctx, lang, key));
     }
 }
 
-// The item list, loading it on first use. Empty is a valid (if useless)
-// answer — it means the client cannot read the item settings document — and is
-// not cached, so a later frame can retry.
+// The item list in the game's language, loading it when there is none in that
+// language yet. Empty is a valid (if useless) answer — it means the client
+// cannot read the item settings document — and is not cached, so a later frame
+// can retry.
 fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
-    let cached = with_state(|state| state.entries.clone()).unwrap_or_default();
+    let lang = game_language();
+    let cached = with_state(|state| {
+        (state.entries_lang == lang)
+            .then(|| state.entries.clone())
+            .unwrap_or_default()
+    })
+    .unwrap_or_default();
     if !cached.is_empty() {
         return cached;
     }
 
-    let loaded = load_entries(ctx);
+    let loaded = load_entries(ctx, &lang);
     let items = loaded
         .iter()
         .filter(|entry| matches!(entry, ListEntry::Item(_)))
@@ -1138,7 +1229,10 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
         // Not `loaded.is_empty()`: the Clear row is always there, so the list
         // being non-empty says nothing about whether any item was found.
     } else {
-        let _ = with_state(|state| state.entries = loaded.clone());
+        let _ = with_state(|state| {
+            state.entries = loaded.clone();
+            state.entries_lang = lang;
+        });
     }
     loaded
 }
@@ -1169,11 +1263,11 @@ fn canonicalize_rows(entries: &[ListEntry], rows: &mut [ChampionRow]) {
     }
 }
 
-// Champion list, in display order, cached. From the hook's roster, since the
-// client's `champion_names()` returns nothing (still tried first); taken whole,
-// other mods' champions and a stray dummy included, because a missing modded
-// champion is worse than a wart.
-fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
+// Champion list, named in `lang` and in display order. From the hook's roster,
+// since the client's `champion_names()` returns nothing (still tried first);
+// taken whole, other mods' champions and a stray dummy included, because a
+// missing modded champion is worse than a wart.
+fn load_champions(ctx: &StableClient<'_>, lang: &str) -> Vec<ChampionChoice> {
     let mut ids = ctx.champion_names();
     if ids.is_empty() {
         ids = build_config::champion_roster();
@@ -1182,11 +1276,11 @@ fn load_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
     let mut out: Vec<ChampionChoice> = ids
         .iter()
         .map(|id| ChampionChoice {
-            name: sanitize(&champion_display_name(ctx, id)),
+            name: sanitize(&champion_display_name(ctx, lang, id)),
             id: sanitize(id),
         })
         .collect();
-    out.sort_by(|a, b| a.name.cmp(&b.name));
+    out.sort_by_cached_key(|choice| (name_search::sort_key(&choice.name), choice.name.clone()));
     out
 }
 
@@ -1212,10 +1306,16 @@ fn strip_mod_prefixes(id: &str) -> &str {
     }
 }
 
-// Readable name for a champion id: the game's translation where it has one (two
-// spellings tried), else the id prettified (`snake_case` -> `Snake Case`).
-fn champion_display_name(ctx: &StableClient<'_>, id: &str) -> String {
+// Readable name for a champion id: what the game calls it in `lang`; for a
+// champion the game's own text lacks (another mod's), the English its text was
+// merged with (three spellings tried); else the id prettified (`snake_case` ->
+// `Snake Case`).
+fn champion_display_name(ctx: &StableClient<'_>, lang: &str, id: &str) -> String {
+    if let Some(name) = game_text::champion_name(lang, id) {
+        return name.to_string();
+    }
     for key in [
+        format!("#asset/base/text/champion?description.{id}.name"),
         format!("#asset/base/text/champion?{id}.name"),
         format!("#asset/base/text/champion?{id}"),
     ] {
@@ -1243,15 +1343,25 @@ fn champion_display_name(ctx: &StableClient<'_>, id: &str) -> String {
         .join(" ")
 }
 
+// The champion list in the game's language, loaded like [`cached_entries`].
 fn cached_champions(ctx: &StableClient<'_>) -> Vec<ChampionChoice> {
-    let cached = with_state(|state| state.champions.clone()).unwrap_or_default();
+    let lang = game_language();
+    let cached = with_state(|state| {
+        (state.champions_lang == lang)
+            .then(|| state.champions.clone())
+            .unwrap_or_default()
+    })
+    .unwrap_or_default();
     if !cached.is_empty() {
         return cached;
     }
-    let loaded = load_champions(ctx);
+    let loaded = load_champions(ctx, &lang);
     if loaded.is_empty() {
     } else {
-        let _ = with_state(|state| state.champions = loaded.clone());
+        let _ = with_state(|state| {
+            state.champions = loaded.clone();
+            state.champions_lang = lang;
+        });
     }
     loaded
 }
@@ -1554,8 +1664,9 @@ fn scope_applies() -> bool {
 
 // -- side cells -----------------------------------------------------------
 
-// How long the filter box is given to read back what a side cell wrote into
-// it, in frames. See [`sync_filter`].
+// How long a text box is given to read back what was written into it, in
+// frames: the filter box after a side cell ([`sync_filter`]), and a list's
+// search box after an opening ([`sync_list_search`]).
 const SIDE_SETTLE_FRAMES: u8 = 3;
 
 // The filter box's left edge and the width it has for a line that fits, as
@@ -1712,9 +1823,8 @@ fn drafted_label(
 
 // The listed champion one drafted pick is, if any: by id where one can be read
 // (a `#asset/…?description.<id>.name` reference, else the slot's node name),
-// and in between by name through [`fold`] against the game's names, the
-// editor's labels and the ids. The name route only works with the game in
-// English.
+// and in between by name through [`fold`] against the game's English names,
+// the editor's labels (in the game's language) and the ids.
 fn drafted_champion<'a>(
     champions: &'a [ChampionChoice],
     game_names: &[String],
@@ -2049,28 +2159,36 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
         ),
         // A `color` band with the label as its child, since a label has no
         // fill; both ignore events so a click on a header falls through to the
-        // catcher and closes the list.
-        ListEntry::Header(name) => format!(
-            "e{index}:color {{\n\
-             width: 304px;\n\
-             height: {ENTRY_HEADER_H}px;\n\
-             color: {LIST_HEADER_FILL};\n\
-             rounding: Uniform {{ rounding: 4; }}\n\
-             ignore_event: true;\n\
-             \n\
-             #text:label {{\n\
-             @\"asset/base/style/main#bold_label\";\n\
-             width: 304px;\n\
-             height: {ENTRY_HEADER_H}px;\n\
-             align_x: Center;\n\
-             align_y: Center;\n\
-             size: 13;\n\
-             color: #a5a5abff;\n\
-             ignore_event: true;\n\
-             text: \"{name}\";\n\
-             }}\n\
-             }}"
-        ),
+        // catcher and closes the list. The label is the class's name alone, so
+        // it can be a reference ([`Strings::classes`]).
+        ListEntry::Header(name) => {
+            let label = strings
+                .classes
+                .iter()
+                .find(|(class, _)| class == name)
+                .map_or(*name, |(_, label)| label.as_str());
+            format!(
+                "e{index}:color {{\n\
+                 width: 304px;\n\
+                 height: {ENTRY_HEADER_H}px;\n\
+                 color: {LIST_HEADER_FILL};\n\
+                 rounding: Uniform {{ rounding: 4; }}\n\
+                 ignore_event: true;\n\
+                 \n\
+                 #text:label {{\n\
+                 @\"asset/base/style/main#bold_label\";\n\
+                 width: 304px;\n\
+                 height: {ENTRY_HEADER_H}px;\n\
+                 align_x: Center;\n\
+                 align_y: Center;\n\
+                 size: 13;\n\
+                 color: #a5a5abff;\n\
+                 ignore_event: true;\n\
+                 text: \"{label}\";\n\
+                 }}\n\
+                 }}"
+            )
+        }
         ListEntry::Item(item) => {
             let icon = match &item.frame {
                 Some(frame) => format!(
@@ -2634,36 +2752,15 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
     // Before anything reads a label. The subtree was just respawned from source,
     // so its English literals are back and everything below — the headers, the
     // rows, the buttons — has to be told the game's language again.
+    let lang = game_language();
     load_strings(ctx);
     apply_strings(ctx);
     sync_column_headers(ctx);
 
+    // The item and champion lists are spawned as they are opened, for what is
+    // searched ([`fill_item_list`]).
     let entries = cached_entries(ctx);
-    let champions = cached_champions(ctx);
-
-    let contents = list_contents_path();
-    for (index, entry) in entries.iter().enumerate() {
-        if !ctx.ui_spawn_source(&contents, &entry_source(index, entry)) {
-            break;
-        }
-        if !matches!(entry, ListEntry::Header(_)) {
-            REGISTERED.register(ctx, &entry_path(index));
-        }
-    }
-    let content_height: i32 = entries.iter().map(entry_height).sum();
-    ctx.ui_set_properties(&contents, &format!("height: {content_height}px;"));
-
-    let champ_contents = champ_contents_path();
-    for (index, choice) in champions.iter().enumerate() {
-        if !ctx.ui_spawn_source(&champ_contents, &champ_entry_source(index, choice)) {
-            break;
-        }
-        REGISTERED.register(ctx, &champ_entry_path(index));
-    }
-    ctx.ui_set_properties(
-        &champ_contents,
-        &format!("height: {}px;", champions.len() as i32 * ENTRY_ITEM_H),
-    );
+    cached_champions(ctx);
 
     // The six roles are fixed, so unlike the champion list this one is spawned
     // complete and never rebuilt.
@@ -2692,6 +2789,10 @@ fn ensure_editor(ctx: &mut StableClient<'_>) -> bool {
         state.side_red = false;
         state.side_settle = 0;
         state.search_fit = None;
+        // The lists' entries went with the old subtree.
+        state.item_fill = ListFill::default();
+        state.champ_fill = ListFill::default();
+        state.shown_lang = lang;
     });
     rebuild_rows(ctx, &entries);
 
@@ -2878,24 +2979,14 @@ fn host_origin(ctx: &StableClient<'_>) -> (i32, i32) {
         .unwrap_or((0, 0))
 }
 
-// Shows the item list under the slot that was clicked, with the slot's current
-// pick ticked.
+// Shows the item list under the slot that was clicked, unsearched, with the
+// slot's current pick ticked.
 fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, slot: usize) {
     place_list(ctx, itemlist_path(), &combo_path(row, slot), LIST_W);
 
-    let pinned = pinned_key(&snapshot_rows(), row, slot);
-    for (index, entry) in entries.iter().enumerate() {
-        let selected = match entry {
-            ListEntry::Clear => pinned.is_none(),
-            ListEntry::Item(item) => pinned.as_deref() == Some(item.key.as_str()),
-            ListEntry::Header(_) => continue,
-        };
-        let idle = match entry {
-            ListEntry::Clear => LIST_CLEAR_TEXT,
-            _ => LIST_ROW_TEXT,
-        };
-        ctx.ui_set_properties(&entry_path(index), &list_entry_style(selected, idle));
-    }
+    clear_list_search(ctx, itemlist_search_path());
+    fill_item_list(ctx, entries, "");
+    paint_item_list(ctx, entries, row, slot);
 
     ctx.ui_set_visible(listcatch_path(), true);
     ctx.ui_set_visible(itemlist_path(), true);
@@ -2903,26 +2994,248 @@ fn open_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize,
     let _ = with_state(|state| state.open_list = Some(OpenList::Item { row, slot }));
 }
 
-// Shows the champion list under the row's champion button, with the row's
-// current champion ticked.
+// Shows the champion list under the row's champion button, unsearched, with
+// the row's current champion ticked.
 fn open_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row: usize) {
     place_list(ctx, champlist_path(), &champ_path(row), CHAMP_LIST_W);
 
+    clear_list_search(ctx, champlist_search_path());
+    fill_champ_list(ctx, champions, "");
+    paint_champ_list(ctx, champions, row);
+
+    ctx.ui_set_visible(listcatch_path(), true);
+    ctx.ui_set_visible(champlist_path(), true);
+    focus_scroll(ctx, champlist_scroll());
+    let _ = with_state(|state| state.open_list = Some(OpenList::Champion { row }));
+}
+
+// Empties a list's search box for an opening, and gives the box the frames a
+// written text edit may take to read back ([`sync_list_search`]).
+fn clear_list_search(ctx: &mut StableClient<'_>, search: &str) {
+    ctx.ui_set_text_edit_text(search, "");
+    let _ = with_state(|state| state.list_settle = SIDE_SETTLE_FRAMES);
+}
+
+// The item list's entries a search shows, as indices into it: all of them for
+// none; else the items whose name starts with it ([`name_search`]) under their
+// category headers, without the Clear row.
+fn item_matches(entries: &[ListEntry], search: &str) -> Vec<usize> {
+    if search.is_empty() {
+        return (0..entries.len()).collect();
+    }
+    let mut shown = Vec::new();
+    let mut header = None;
+    for (index, entry) in entries.iter().enumerate() {
+        match entry {
+            ListEntry::Clear => {}
+            ListEntry::Header(_) => header = Some(index),
+            ListEntry::Item(item) => {
+                if name_search::starts_with(&item.name, search) {
+                    shown.extend(header.take());
+                    shown.push(index);
+                }
+            }
+        }
+    }
+    shown
+}
+
+// Spawns the item list's entries for `search` in place of the ones it has,
+// unless those are its already; returns whether it spawned, which leaves the
+// entries to be painted. Each is named for its index in the whole list, so a
+// click means the same entry under any search.
+fn fill_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], search: &str) -> bool {
+    let Some(previous) = with_state(|state| {
+        (state.item_fill.search.as_deref() != Some(search)).then(|| {
+            state.item_fill.search = Some(search.to_string());
+            std::mem::take(&mut state.item_fill.spawned)
+        })
+    })
+    .flatten() else {
+        return false;
+    };
+    for index in previous {
+        ctx.ui_remove_node(&entry_path(index));
+    }
+
+    let contents = list_contents_path();
+    let mut spawned = Vec::new();
+    for index in item_matches(entries, search) {
+        if !ctx.ui_spawn_source(&contents, &entry_source(index, &entries[index])) {
+            break;
+        }
+        spawned.push(index);
+        if !matches!(entries[index], ListEntry::Header(_)) {
+            REGISTERED.register(ctx, &entry_path(index));
+        }
+    }
+    let height: i32 = spawned
+        .iter()
+        .map(|&index| entry_height(&entries[index]))
+        .sum();
+    ctx.ui_set_properties(&contents, &format!("height: {height}px;"));
+    let _ = with_state(|state| state.item_fill.spawned = spawned);
+    true
+}
+
+// Paints the item list's spawned entries, the slot's current pick lit.
+fn paint_item_list(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize, slot: usize) {
+    let pinned = pinned_key(&snapshot_rows(), row, slot);
+    let spawned = with_state(|state| state.item_fill.spawned.clone()).unwrap_or_default();
+    for index in spawned {
+        let (selected, idle) = match entries.get(index) {
+            Some(ListEntry::Clear) => (pinned.is_none(), LIST_CLEAR_TEXT),
+            Some(ListEntry::Item(item)) => {
+                (pinned.as_deref() == Some(item.key.as_str()), LIST_ROW_TEXT)
+            }
+            _ => continue,
+        };
+        ctx.ui_set_properties(&entry_path(index), &list_entry_style(selected, idle));
+    }
+}
+
+// [`fill_item_list`] for the champion list.
+fn fill_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], search: &str) -> bool {
+    let Some(previous) = with_state(|state| {
+        (state.champ_fill.search.as_deref() != Some(search)).then(|| {
+            state.champ_fill.search = Some(search.to_string());
+            std::mem::take(&mut state.champ_fill.spawned)
+        })
+    })
+    .flatten() else {
+        return false;
+    };
+    for index in previous {
+        ctx.ui_remove_node(&champ_entry_path(index));
+    }
+
+    let contents = champ_contents_path();
+    let mut spawned = Vec::new();
+    for (index, choice) in champions.iter().enumerate() {
+        if !name_search::starts_with(&choice.name, search) {
+            continue;
+        }
+        if !ctx.ui_spawn_source(&contents, &champ_entry_source(index, choice)) {
+            break;
+        }
+        spawned.push(index);
+        REGISTERED.register(ctx, &champ_entry_path(index));
+    }
+    ctx.ui_set_properties(
+        &contents,
+        &format!("height: {}px;", spawned.len() as i32 * ENTRY_ITEM_H),
+    );
+    let _ = with_state(|state| state.champ_fill.spawned = spawned);
+    true
+}
+
+// Paints the champion list's spawned entries, the row's champion lit.
+fn paint_champ_list(ctx: &mut StableClient<'_>, champions: &[ChampionChoice], row: usize) {
     let current = snapshot_rows()
         .get(row)
         .and_then(|entry| entry.champion.clone());
-    for (index, choice) in champions.iter().enumerate() {
+    let spawned = with_state(|state| state.champ_fill.spawned.clone()).unwrap_or_default();
+    for index in spawned {
+        let Some(choice) = champions.get(index) else {
+            continue;
+        };
         let selected = current.as_deref() == Some(choice.id.as_str());
         ctx.ui_set_properties(
             &champ_entry_path(index),
             &list_entry_style(selected, LIST_ROW_TEXT),
         );
     }
+}
 
-    ctx.ui_set_visible(listcatch_path(), true);
-    ctx.ui_set_visible(champlist_path(), true);
-    focus_scroll(ctx, champlist_scroll());
-    let _ = with_state(|state| state.open_list = Some(OpenList::Champion { row }));
+// Reads the open list's search box every frame (its only event fires on
+// commit, as the filter box's does) and respawns the list when the search
+// changed. Just after an opening emptied the box, old text read back is waited
+// out for [`EditorState::list_settle`] frames.
+fn sync_list_search(ctx: &mut StableClient<'_>) {
+    let Some(open) = with_state(|state| state.open_list).flatten() else {
+        return;
+    };
+    let search_path = match open {
+        OpenList::Item { .. } => itemlist_search_path(),
+        OpenList::Champion { .. } => champlist_search_path(),
+        OpenList::Role { .. } => return,
+    };
+    let Some(text) = ctx.ui_text_edit_text(search_path) else {
+        return;
+    };
+    let search = text.trim();
+    let settling = with_state(|state| {
+        let fill = match open {
+            OpenList::Item { .. } => &state.item_fill,
+            _ => &state.champ_fill,
+        };
+        if fill.search.as_deref() == Some(search) {
+            state.list_settle = 0;
+            return true;
+        }
+        if state.list_settle > 0 {
+            state.list_settle -= 1;
+            return true;
+        }
+        false
+    })
+    .unwrap_or(true);
+    if settling {
+        return;
+    }
+
+    match open {
+        OpenList::Item { row, slot } => {
+            let entries = snapshot_entries();
+            if fill_item_list(ctx, &entries, search) {
+                paint_item_list(ctx, &entries, row, slot);
+            }
+        }
+        OpenList::Champion { row } => {
+            let champions = snapshot_champions();
+            if fill_champ_list(ctx, &champions, search) {
+                paint_champ_list(ctx, &champions, row);
+            }
+        }
+        OpenList::Role { .. } => {}
+    }
+}
+
+// Renames the editor when the game's language is no longer the one its names
+// were written in: the Options dialog can change it over this screen. The
+// lists are reloaded here, in `post_update`, since the item settings cannot be
+// read from a click handler; the rows are respawned at once, the floating lists
+// at their next opening.
+fn sync_language(ctx: &mut StableClient<'_>) {
+    let lang = game_language();
+    let Some((entries_stale, champions_stale, shown_stale)) = with_state(|state| {
+        (
+            !state.entries.is_empty() && state.entries_lang != lang,
+            !state.champions.is_empty() && state.champions_lang != lang,
+            state.modal_ready && state.shown_lang != lang,
+        )
+    }) else {
+        return;
+    };
+    if entries_stale {
+        cached_entries(ctx);
+    }
+    if champions_stale {
+        cached_champions(ctx);
+    }
+    if !shown_stale || !ctx.ui_exists(editor_path()) {
+        return;
+    }
+
+    load_strings(ctx);
+    close_list(ctx);
+    let _ = with_state(|state| {
+        state.shown_lang = lang;
+        state.item_fill.search = None;
+        state.champ_fill.search = None;
+    });
+    let entries = snapshot_entries();
+    rebuild_rows(ctx, &entries);
 }
 
 // Opens the role list under a row's Role button.
@@ -3420,6 +3733,10 @@ impl StableExtension for StrategyPicker {
         // Proves two things at once when it lands in the log: the client
         // extension is registered and being called, and the log file is
         // writable at the path the DLL resolves.
+
+        // The game's names for the editor's lists, off the UI thread, before
+        // the strategy screen first asks for them.
+        game_text::warm();
     }
 
     fn post_update(&self, ctx: &mut StableClient<'_>, _dt_micros: u64) {
@@ -3512,11 +3829,14 @@ impl StableExtension for StrategyPicker {
         if let Some(tactics) = resolve_comp_tactics(ctx) {
             if ctx.ui_visible(&tactics).unwrap_or(false) {
                 comp_test_host(ctx, &tactics);
+                // After the line above, which points the paths at this host.
+                sync_language(ctx);
                 // The editor's own upkeep, minus the strategy-screen half
                 // (`ITEM_INFO_BTN`, `keep_matchup`): those paths do not exist
                 // here.
                 if with_state(|state| state.showing).unwrap_or(false) {
                     sync_filter(ctx);
+                    sync_list_search(ctx);
                     sync_info_popup(ctx);
                 }
                 return;
@@ -3565,6 +3885,10 @@ impl StableExtension for StrategyPicker {
         // paths at itself.
         set_host(UI_ROOT);
 
+        // Every frame, built editor or not: a Builds tab opened after a change
+        // of language finds the lists already renamed.
+        sync_language(ctx);
+
         if !with_state(|state| state.wired).unwrap_or(true) {
             // Loaded here, in `post_update`, not from a click handler:
             // `setting_get_json` returned None when called inside one, matching
@@ -3590,6 +3914,7 @@ impl StableExtension for StrategyPicker {
             ctx.ui_set_visible(ITEM_INFO_BTN, true);
             keep_matchup(ctx);
             sync_filter(ctx);
+            sync_list_search(ctx);
             sync_info_popup(ctx);
         }
     }
