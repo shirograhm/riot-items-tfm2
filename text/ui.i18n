@@ -13,6 +13,9 @@
       "col_item4": "ITEM 4",
       "col_item5": "ITEM 5",
       "col_item6": "ITEM 6",
+      "col_focus": "COMPONENTS",
+      "focus_offense": "Offense",
+      "focus_defense": "Defense",
       "unique_on": "Enforce Smart Builds",
       "unique_off": "Allow Any Builds",
       "scope_all": "Apply To All Players",
@@ -224,12 +227,14 @@
       "why_buff_weak_2": "It has fallen behind the other options for its class.",
       "why_buff_niche_1": "Rarely the right answer at the moment, so we're widening its uses.",
       "why_buff_niche_2": "It has slipped out of most builds. A small push to get it back in.",
-      "why_adjust_buff_1": "We pulled one number down a touch so we could push the rest further.",
-      "why_adjust_buff_2": "We're giving it more where it counts and taking a little back where it doesn't.",
-      "why_adjust_buff_3": "Call it a buff with a small price: we added more than we took away.",
-      "why_adjust_nerf_1": "We had to rein it in, but we've left it a little extra elsewhere to make up for it.",
-      "why_adjust_nerf_2": "We're moving some of its power around rather than simply taking it away.",
-      "why_adjust_nerf_3": "This is a nerf at heart, but we've softened it so the item still feels good to build."
+      "why_adjust_buff_1": "This item has been a bit weak, so we're raising its {Up} and trimming its {Down} slightly to keep it in check.",
+      "why_adjust_buff_2": "{Item} has been falling behind the other options, so we're investing in its {Up}, paid for with a small cut to its {Down}.",
+      "why_adjust_buff_3": "We'd like to see {Item} in more builds. We're giving it more {Up} to make it a stronger pick, and pulling its {Down} back a little so the buff doesn't overshoot.",
+      "why_adjust_nerf_1": "This item has been quite strong, so we're toning down its {Down} and giving it back some power elsewhere.",
+      "why_adjust_nerf_2": "{Item} has been overperforming, so we're pulling back on its {Down} while compensating with a bit more {Up} to keep it a satisfying buy.",
+      "why_adjust_nerf_3": "We're shifting some of {Item}'s power out of its {Down} and into its {Up}, which should bring its overall output down a notch.",
+      "list_and": "{A} and {B}",
+      "list_sep": ", "
     }
   },
   "ko": {
@@ -246,6 +251,9 @@
       "col_item4": "아이템 4",
       "col_item5": "아이템 5",
       "col_item6": "아이템 6",
+      "col_focus": "하위 아이템",
+      "focus_offense": "공격",
+      "focus_defense": "방어",
       "unique_on": "스마트 빌드 적용",
       "unique_off": "모든 빌드 허용",
       "scope_all": "모든 선수에게 적용",
@@ -457,12 +465,14 @@
       "why_buff_weak_2": "같은 계열의 다른 선택지에 비해 뒤처졌습니다.",
       "why_buff_niche_1": "지금은 정답인 경우가 드물어, 쓰임새를 넓힙니다.",
       "why_buff_niche_2": "대부분의 빌드에서 밀려났습니다. 다시 돌아오도록 살짝 밀어 줍니다.",
-      "why_adjust_buff_1": "나머지를 더 끌어올리기 위해 한 수치를 살짝 낮췄습니다.",
-      "why_adjust_buff_2": "중요한 부분은 강화하고, 덜 중요한 부분은 조금 되돌립니다.",
-      "why_adjust_buff_3": "작은 대가가 따르는 상향이라고 보시면 됩니다. 덜어 낸 것보다 더해 준 것이 많습니다.",
-      "why_adjust_nerf_1": "힘을 줄여야 했지만, 그만큼을 메울 수 있도록 다른 곳에 조금 더 얹어 두었습니다.",
-      "why_adjust_nerf_2": "파워를 단순히 빼앗기보다 일부를 다른 곳으로 옮깁니다.",
-      "why_adjust_nerf_3": "본질적으로는 하향이지만, 여전히 살 만한 아이템이 되도록 충격을 줄였습니다."
+      "why_adjust_buff_1": "이 아이템은 다소 약했기에, {Up} 수치를 올리고 균형을 위해 {Down} 수치를 살짝 낮춥니다.",
+      "why_adjust_buff_2": "{Item}의 성능이 다른 선택지에 뒤처졌기에 {Up} 수치를 강화하고, 그 대가로 {Down} 수치를 조금 줄입니다.",
+      "why_adjust_buff_3": "{Item}의 채용률이 더 높아지길 바랍니다. 더 강력한 선택지가 되도록 {Up} 수치를 올리고, 상향이 지나치지 않도록 {Down} 수치는 조금 되돌립니다.",
+      "why_adjust_nerf_1": "이 아이템은 상당히 강했기에, {Down} 수치를 낮추고 대신 다른 부분에서 힘을 일부 돌려줍니다.",
+      "why_adjust_nerf_2": "{Item}의 성능이 기대 이상이었기에 {Down} 수치를 줄이는 대신, 여전히 만족스러운 구매가 되도록 {Up} 수치를 조금 올려 보상합니다.",
+      "why_adjust_nerf_3": "{Item}의 힘 일부를 {Down}에서 {Up} 쪽으로 옮겨, 전체적인 성능을 한 단계 낮춥니다.",
+      "list_and": "{A} 및 {B}",
+      "list_sep": ", "
     }
   },
   "zh-hans": {
@@ -479,6 +489,9 @@
       "col_item4": "装备 4",
       "col_item5": "装备 5",
       "col_item6": "装备 6",
+      "col_focus": "合成材料",
+      "focus_offense": "进攻",
+      "focus_defense": "防御",
       "unique_on": "启用智能出装",
       "unique_off": "允许任意出装",
       "scope_all": "适用于所有选手",
@@ -690,12 +703,14 @@
       "why_buff_weak_2": "它已经落后于同类的其他选项。",
       "why_buff_niche_1": "它目前很少是正确答案，所以我们拓宽它的用途。",
       "why_buff_niche_2": "它已经从大多数出装中消失，轻推一把让它回来。",
-      "why_adjust_buff_1": "我们把一项数值稍微调低，好把其余的推得更高。",
-      "why_adjust_buff_2": "我们在关键之处给它更多，在次要之处收回一点。",
-      "why_adjust_buff_3": "可以把它看作一次带点代价的增强：我们加的比减的多。",
-      "why_adjust_nerf_1": "我们不得不收一收它的强度，但在别处给它留了一点额外的补偿。",
-      "why_adjust_nerf_2": "我们是在重新分配它的强度，而不只是单纯削弱。",
-      "why_adjust_nerf_3": "这本质上是一次削弱，但我们减轻了力度，让它依然值得购买。"
+      "why_adjust_buff_1": "这件装备一直有点弱，所以我们提高了它的{Up}，并略微下调{Down}以免它过强。",
+      "why_adjust_buff_2": "{Item}一直落后于其他选择，所以我们加强了它的{Up}，代价是小幅削减它的{Down}。",
+      "why_adjust_buff_3": "我们希望{Item}出现在更多出装中。我们提高了它的{Up}，让它成为更强的选择，同时稍微回调{Down}，以免增强过头。",
+      "why_adjust_nerf_1": "这件装备一直相当强势，所以我们下调了它的{Down}，并在其他方面还给它一些强度。",
+      "why_adjust_nerf_2": "{Item}一直表现过强，所以我们削减了它的{Down}，同时以少量{Up}作为补偿，让它依然值得购买。",
+      "why_adjust_nerf_3": "我们把{Item}的一部分强度从{Down}转移到{Up}上，这应该会让它的整体输出稍降一档。",
+      "list_and": "{A}和{B}",
+      "list_sep": "、"
     }
   },
   "ja": {
@@ -712,6 +727,9 @@
       "col_item4": "アイテム 4",
       "col_item5": "アイテム 5",
       "col_item6": "アイテム 6",
+      "col_focus": "素材",
+      "focus_offense": "攻撃",
+      "focus_defense": "防御",
       "unique_on": "スマートビルド適用",
       "unique_off": "全ビルド許可",
       "scope_all": "全選手に適用",
@@ -923,12 +941,14 @@
       "why_buff_weak_2": "同系統の他の選択肢に後れを取っていました。",
       "why_buff_niche_1": "現状では正解となる場面が少ないため、用途を広げます。",
       "why_buff_niche_2": "ほとんどのビルドから外れていました。戻ってこられるよう少し後押しします。",
-      "why_adjust_buff_1": "残りをさらに伸ばすために、ある数値を少しだけ下げました。",
-      "why_adjust_buff_2": "重要な部分は強化し、そうでない部分は少し抑えます。",
-      "why_adjust_buff_3": "ちょっとした代償つきの強化だと思ってください。削った分より足した分のほうが多くなっています。",
-      "why_adjust_nerf_1": "抑える必要がありましたが、その埋め合わせとして別の部分に少しだけ上乗せしています。",
-      "why_adjust_nerf_2": "単に力を奪うのではなく、その一部を別の部分へ移します。",
-      "why_adjust_nerf_3": "本質的には弱体化ですが、今後も買う価値を感じられるよう影響を和らげました。"
+      "why_adjust_buff_1": "このアイテムはやや弱かったため、「{Up}」を引き上げ、行き過ぎないよう「{Down}」を少しだけ下げます。",
+      "why_adjust_buff_2": "「{Item}」は他の選択肢に後れを取っていたため、「{Up}」を強化し、その代わりに「{Down}」を少し削ります。",
+      "why_adjust_buff_3": "「{Item}」をもっと多くのビルドで見たいと考えています。より強い選択肢となるよう「{Up}」を上げ、強化しすぎないよう「{Down}」は少し戻します。",
+      "why_adjust_nerf_1": "このアイテムはかなり強力だったため、「{Down}」を引き下げ、代わりに別の部分で力を一部戻します。",
+      "why_adjust_nerf_2": "「{Item}」は期待以上の成績を収めていたため、「{Down}」を抑える一方、満足できる買い物であり続けるよう「{Up}」を少し上げて補います。",
+      "why_adjust_nerf_3": "「{Item}」の力の一部を「{Down}」から「{Up}」へ移し、全体の性能を一段階引き下げます。",
+      "list_and": "{A}と{B}",
+      "list_sep": "、"
     }
   },
   "pt-BR": {
@@ -945,6 +965,9 @@
       "col_item4": "ITEM 4",
       "col_item5": "ITEM 5",
       "col_item6": "ITEM 6",
+      "col_focus": "COMPONENTES",
+      "focus_offense": "Ataque",
+      "focus_defense": "Defesa",
       "unique_on": "Builds inteligentes",
       "unique_off": "Qualquer build",
       "scope_all": "Vale para todos os jogadores",
@@ -1156,12 +1179,14 @@
       "why_buff_weak_2": "Ele ficou para trás em relação às outras opções da sua classe.",
       "why_buff_niche_1": "Raramente é a resposta certa no momento, então estamos ampliando seus usos.",
       "why_buff_niche_2": "Ele saiu da maioria das builds. Um empurrãozinho para trazê-lo de volta.",
-      "why_adjust_buff_1": "Baixamos um pouco um número para poder levar o resto mais longe.",
-      "why_adjust_buff_2": "Estamos dando mais a ele onde importa e tirando um pouco onde não importa.",
-      "why_adjust_buff_3": "Pense nisso como um buff com um pequeno preço: adicionamos mais do que tiramos.",
-      "why_adjust_nerf_1": "Tivemos que segurá-lo, mas deixamos um pouco a mais em outro ponto para compensar.",
-      "why_adjust_nerf_2": "Estamos redistribuindo parte do poder dele em vez de simplesmente retirá-lo.",
-      "why_adjust_nerf_3": "No fundo é um nerf, mas suavizamos o golpe para que o item continue valendo a compra."
+      "why_adjust_buff_1": "Este item tem estado um pouco fraco, então estamos aumentando o valor de {Up} e reduzindo levemente o de {Down} para mantê-lo sob controle.",
+      "why_adjust_buff_2": "O item {Item} ficou para trás em relação às outras opções, então estamos investindo em {Up}, em troca de um pequeno corte em {Down}.",
+      "why_adjust_buff_3": "Queremos ver o item {Item} em mais builds. Estamos dando mais {Up} para torná-lo uma escolha mais forte e recuando um pouco em {Down} para que o buff não passe do ponto.",
+      "why_adjust_nerf_1": "Este item tem sido bem forte, então estamos reduzindo o valor de {Down} e devolvendo um pouco de poder em outro ponto.",
+      "why_adjust_nerf_2": "O item {Item} vem tendo um desempenho acima do esperado, então estamos reduzindo o valor de {Down} e compensando com um pouco mais de {Up} para que ele continue valendo a compra.",
+      "why_adjust_nerf_3": "Estamos transferindo parte do poder do item {Item} de {Down} para {Up}, o que deve reduzir um pouco o desempenho geral dele.",
+      "list_and": "{A} e {B}",
+      "list_sep": ", "
     }
   },
   "ru": {
@@ -1178,6 +1203,9 @@
       "col_item4": "ПРЕДМЕТ 4",
       "col_item5": "ПРЕДМЕТ 5",
       "col_item6": "ПРЕДМЕТ 6",
+      "col_focus": "КОМПОНЕНТЫ",
+      "focus_offense": "Атака",
+      "focus_defense": "Защита",
       "unique_on": "Умные сборки",
       "unique_off": "Любые сборки",
       "scope_all": "Действуют для всех игроков",
@@ -1389,12 +1417,14 @@
       "why_buff_weak_2": "Он отстал от других вариантов своего класса.",
       "why_buff_niche_1": "Сейчас он редко бывает правильным выбором, поэтому мы расширяем его применение.",
       "why_buff_niche_2": "Он выпал из большинства сборок. Небольшой толчок, чтобы вернуть его.",
-      "why_adjust_buff_1": "Мы чуть-чуть опустили одно значение, чтобы поднять остальные повыше.",
-      "why_adjust_buff_2": "Даём ему больше там, где это важно, и немного забираем там, где нет.",
-      "why_adjust_buff_3": "Считайте это усилением с небольшой ценой: добавили мы больше, чем забрали.",
-      "why_adjust_nerf_1": "Нам пришлось его придержать, но в другом месте мы оставили ему немного сверху в качестве компенсации.",
-      "why_adjust_nerf_2": "Мы не просто отнимаем у него силу, а частично перераспределяем её.",
-      "why_adjust_nerf_3": "По сути это ослабление, но мы смягчили его, чтобы предмет по-прежнему стоило покупать."
+      "why_adjust_buff_1": "Этот предмет был слабоват, поэтому мы повышаем показатель «{Up}» и немного снижаем «{Down}», чтобы удержать его в рамках.",
+      "why_adjust_buff_2": "Предмет «{Item}» отстаёт от других вариантов, поэтому мы усиливаем показатель «{Up}», а взамен немного урезаем «{Down}».",
+      "why_adjust_buff_3": "Мы хотим чаще видеть предмет «{Item}» в сборках. Мы повышаем показатель «{Up}», чтобы сделать его более сильным выбором, и немного откатываем «{Down}», чтобы усиление не оказалось чрезмерным.",
+      "why_adjust_nerf_1": "Этот предмет был довольно сильным, поэтому мы снижаем показатель «{Down}» и возвращаем ему немного силы в другом месте.",
+      "why_adjust_nerf_2": "Предмет «{Item}» показывал слишком высокие результаты, поэтому мы снижаем показатель «{Down}», а в качестве компенсации немного повышаем «{Up}», чтобы его по-прежнему было приятно покупать.",
+      "why_adjust_nerf_3": "Мы переносим часть силы предмета «{Item}» из показателя «{Down}» в «{Up}», что должно немного снизить его общую эффективность.",
+      "list_and": "{A} и {B}",
+      "list_sep": ", "
     }
   },
   "vi": {
@@ -1411,6 +1441,9 @@
       "col_item4": "TRANG BỊ 4",
       "col_item5": "TRANG BỊ 5",
       "col_item6": "TRANG BỊ 6",
+      "col_focus": "THÀNH PHẦN",
+      "focus_offense": "Tấn công",
+      "focus_defense": "Phòng thủ",
       "unique_on": "Ép trang bị thông minh",
       "unique_off": "Cho phép mọi trang bị",
       "scope_all": "Áp dụng cho mọi tuyển thủ",
@@ -1622,12 +1655,14 @@
       "why_buff_weak_2": "Nó đã tụt lại so với các lựa chọn khác trong nhóm.",
       "why_buff_niche_1": "Hiện hiếm khi là lựa chọn đúng, nên chúng tôi mở rộng công dụng của nó.",
       "why_buff_niche_2": "Nó đã rời khỏi hầu hết lối lên đồ. Một cú hích nhỏ để đưa nó trở lại.",
-      "why_adjust_buff_1": "Chúng tôi hạ nhẹ một thông số để có thể đẩy những thông số còn lại lên cao hơn.",
-      "why_adjust_buff_2": "Chúng tôi tăng thêm ở chỗ quan trọng và lấy lại một chút ở chỗ ít quan trọng hơn.",
-      "why_adjust_buff_3": "Hãy coi đây là một lần tăng sức mạnh có chút cái giá: chúng tôi thêm vào nhiều hơn những gì đã lấy đi.",
-      "why_adjust_nerf_1": "Chúng tôi buộc phải kìm nó lại, nhưng đã để thêm cho nó một chút ở chỗ khác để bù đắp.",
-      "why_adjust_nerf_2": "Chúng tôi phân bổ lại một phần sức mạnh của nó thay vì chỉ đơn giản lấy đi.",
-      "why_adjust_nerf_3": "Về bản chất đây là một lần giảm sức mạnh, nhưng chúng tôi đã làm nhẹ tay để món đồ vẫn đáng mua."
+      "why_adjust_buff_1": "Món đồ này hơi yếu, nên chúng tôi tăng {Up} của nó và giảm nhẹ {Down} để giữ nó trong tầm kiểm soát.",
+      "why_adjust_buff_2": "{Item} đang tụt lại so với các lựa chọn khác, nên chúng tôi đầu tư vào {Up} của nó, đổi lại là cắt giảm nhẹ {Down}.",
+      "why_adjust_buff_3": "Chúng tôi muốn thấy {Item} xuất hiện trong nhiều lối lên đồ hơn. Chúng tôi tăng {Up} để nó trở thành lựa chọn mạnh hơn, và giảm lại một chút {Down} để lần tăng sức mạnh này không quá đà.",
+      "why_adjust_nerf_1": "Món đồ này đã khá mạnh, nên chúng tôi giảm {Down} của nó và trả lại cho nó một chút sức mạnh ở chỗ khác.",
+      "why_adjust_nerf_2": "{Item} đang hoạt động quá tốt, nên chúng tôi giảm {Down} của nó, đồng thời bù lại bằng một chút {Up} để nó vẫn đáng mua.",
+      "why_adjust_nerf_3": "Chúng tôi chuyển một phần sức mạnh của {Item} từ {Down} sang {Up}, điều này sẽ làm sức mạnh tổng thể của nó giảm nhẹ.",
+      "list_and": "{A} và {B}",
+      "list_sep": ", "
     }
   }
 }

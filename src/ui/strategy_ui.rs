@@ -32,7 +32,7 @@ use std::sync::{Arc, Mutex, OnceLock};
 use mod_api_stable::*;
 
 use super::draft_watch;
-use crate::build_config::{self, picker_slots, ChampionRow, Role};
+use crate::build_config::{self, picker_slots, ChampionRow, Focus, Role};
 use crate::item_catalog;
 use crate::tactics;
 
@@ -51,6 +51,10 @@ struct Strings {
     col_role: String,
     // One complete label per column — LabelRunner cannot compose `"ITEM " + n`.
     col_items: [String; 6],
+    // The component focus column and its two cells ([`build_config::Focus`]).
+    col_focus: String,
+    focus_offense: String,
+    focus_defense: String,
     // The two cells of each footer toggle. Both are on screen at once, so these
     // name the choice a cell makes rather than describing the current state.
     unique_on: String,
@@ -83,6 +87,9 @@ impl Default for Strings {
                 "ITEM 5".into(),
                 "ITEM 6".into(),
             ],
+            col_focus: "COMPONENTS".into(),
+            focus_offense: "Offense".into(),
+            focus_defense: "Defense".into(),
             unique_on: "Enforce Smart Builds".into(),
             unique_off: "Allow Any Builds".into(),
             scope_all: "Apply To All Players".into(),
@@ -141,6 +148,9 @@ fn load_strings(ctx: &StableClient<'_>) {
         col_items: std::array::from_fn(|i| {
             reference(&format!("col_item{}", i + 1), &fallback.col_items[i])
         }),
+        col_focus: reference("col_focus", &fallback.col_focus),
+        focus_offense: reference("focus_offense", &fallback.focus_offense),
+        focus_defense: reference("focus_defense", &fallback.focus_defense),
         unique_on: reference("unique_on", &fallback.unique_on),
         unique_off: reference("unique_off", &fallback.unique_off),
         scope_all: reference("scope_all", &fallback.scope_all),
@@ -204,6 +214,11 @@ const AI_SLOT_LABEL_FALLBACK: &str = "Let Player Decide";
 // What an unpinned slot button shows, in every language, padded so the dash
 // sits where a pinned slot's icon is centred.
 const EMPTY_SLOT_LABEL: &str = "     -";
+
+// What the Role button shows for `Any`, which has no lane icon: a dash where
+// the icon would be, as an unpinned slot has, since the word does not fit
+// beside the arrow. The role list still names it.
+const ROLE_ANY_LABEL: &str = "  -";
 
 // Shown for a row whose champion has not been chosen yet. Such a row is kept in
 // the editor but never written.
@@ -407,34 +422,101 @@ const COMBO_H: u32 = 40;
 // Square buttons (clear, swap glyph target, delete), centred in the row.
 const MINI_Y: u32 = 14;
 const CHAMP_X: u32 = 8;
-const CHAMP_W: u32 = 224;
-// The Role column, between the champion button and the item band. Narrow: it
-// holds one of six short words, and every px here comes off the item columns.
-const ROLE_X: u32 = 240;
-const ROLE_W: u32 = 100;
+// The champion button takes what the other columns leave ([`champ_w`]): about
+// 274px on the strategy screen, down to the least a narrow host (the lane and
+// 5v5 tests) takes it, so the item columns keep room for their clear buttons.
+// 140 still holds a name like "Crossbowman" beside the drop arrow.
+const CHAMP_MAX_W: u32 = 280;
+const CHAMP_MIN_W: u32 = 140;
+// The Role column, between the champion button and the item band: the lane's
+// icon, or "Any", and the drop arrow. Every px here comes off the item columns.
+const ROLE_W: u32 = 60;
+// The lane icon on the Role button and in its list: the game's own 18x18 SVGs.
+const ROLE_ICON_X: u32 = 12;
+const ROLE_ICON_SIZE: u32 = 18;
+// Air between the champion, role and item columns.
+const COLUMN_AIR: u32 = 8;
 
-// The band the item columns share, between the champion button and the delete
-// button, and the gap left between two columns for a swap button (34px wide,
-// plus a few px of air on each side).
-const COLUMNS_LEFT: u32 = 348;
+// The game's icon for a lane, as the strategy screen's matchup card and the
+// Item Stats lane filter draw it. `Any` has none: the button shows a dash
+// ([`ROLE_ANY_LABEL`]) and the list the word.
+fn role_icon(role: Role) -> Option<&'static str> {
+    match role {
+        Role::Any => None,
+        Role::Top => Some("asset/base/ui/icons/top"),
+        Role::Jungle => Some("asset/base/ui/icons/jungle"),
+        Role::Mid => Some("asset/base/ui/icons/mid"),
+        Role::Bottom => Some("asset/base/ui/icons/bottom"),
+        Role::Support => Some("asset/base/ui/icons/support"),
+    }
+}
+
+// The gap left between two item columns for a swap button (34px wide, plus a
+// few px of air on each side).
 const COLUMN_GAP: u32 = 44;
 
 // Widest an item column gets: the icon at 8px, the clear button at `combo_w -
-// 52` and the drop arrow at `combo_w - 24` fit in 88px.
+// 52` and the drop arrow at `combo_w - 24` fit in 88px. Below
+// [`CLEAR_FITS_W`] the clear button would sit on the icon, so it takes the
+// arrow's place instead ([`row_source`]).
 const COMBO_MAX_W: u32 = 88;
+const CLEAR_FITS_W: u32 = 84;
+
+// Right edge of the band the item columns share, short of the focus column.
+fn band_right() -> u32 {
+    columns_right().min(focus_x().saturating_sub(FOCUS_GAP))
+}
+
+// The champion button's width: whatever the item columns at their widest leave
+// of the row, between [`CHAMP_MIN_W`] and [`CHAMP_MAX_W`].
+fn champ_w() -> u32 {
+    let slots = picker_slots() as u32;
+    let items = slots * COMBO_MAX_W + (slots - 1) * COLUMN_GAP;
+    band_right()
+        .saturating_sub(CHAMP_X + 2 * COLUMN_AIR + ROLE_W + items)
+        .clamp(CHAMP_MIN_W, CHAMP_MAX_W)
+}
+
+// Left edge of the Role column.
+fn role_x() -> u32 {
+    CHAMP_X + champ_w() + COLUMN_AIR
+}
+
+// Left edge of the item band.
+fn columns_left() -> u32 {
+    role_x() + ROLE_W + COLUMN_AIR
+}
 
 // Width of one item column: [`COMBO_MAX_W`], or less where the shared band is
 // narrower; the unused band is left empty.
 fn combo_w() -> u32 {
     let slots = picker_slots() as u32;
-    let split = (columns_right() - COLUMNS_LEFT - (slots - 1) * COLUMN_GAP) / slots;
+    let split = band_right()
+        .saturating_sub(columns_left() + (slots - 1) * COLUMN_GAP)
+        / slots;
     split.min(COMBO_MAX_W)
+}
+
+// The component focus column ([`build_config::Focus`]): two cells in a framed
+// strip like the footer's toggles, between the item band and the delete button.
+const FOCUS_CELL_W: u32 = 60;
+const FOCUS_PAD: u32 = 4;
+const FOCUS_W: u32 = 2 * FOCUS_CELL_W + 2 * FOCUS_PAD;
+// Air either side of it.
+const FOCUS_GAP: u32 = 8;
+// Its cells' label size: one down from the footer's, for "Phòng thủ" and the
+// like to fit.
+const FOCUS_TEXT_SIZE: u32 = 12;
+
+// Left edge of the focus column.
+fn focus_x() -> u32 {
+    delete_x().saturating_sub(FOCUS_GAP + FOCUS_W)
 }
 
 // Left edge of an item column, after the Role column; `sync_column_headers`
 // places the headers from here.
 fn combo_x(slot: usize) -> u32 {
-    COLUMNS_LEFT + slot as u32 * (combo_w() + COLUMN_GAP)
+    columns_left() + slot as u32 * (combo_w() + COLUMN_GAP)
 }
 
 // Left edge of the swap button between `slot` and `slot + 1`: tucked into the
@@ -875,6 +957,13 @@ fn delete_path(row: usize) -> String {
     format!("{}.delete", editor_row_path(row))
 }
 
+// The row's Offense and Defense cells, by the focus each sets.
+const FOCUS_CELLS: [(&str, Focus); 2] = [("offense", Focus::Offense), ("defense", Focus::Defense)];
+
+fn focus_cell_path(row: usize, cell: &str) -> String {
+    format!("{}.focus.{cell}", editor_row_path(row))
+}
+
 fn list_contents_path() -> String {
     format!("{}.itemlist.list.contents", editor_path())
 }
@@ -1262,6 +1351,14 @@ fn refresh_combo(
     ctx.ui_set_properties(&combo_icon_path(row, slot), &icon);
 
     ctx.ui_set_visible(&clear_path(row, slot), pinned.is_some());
+    // In a narrow column the clear button stands where the arrow is
+    // ([`row_source`]), so the arrow goes while it shows.
+    if combo_w() < CLEAR_FITS_W {
+        ctx.ui_set_visible(
+            &format!("{}.arrow", combo_path(row, slot)),
+            pinned.is_none(),
+        );
+    }
 }
 
 // Repaints one row's champion button. A row with no champion is shown muted,
@@ -1288,22 +1385,37 @@ fn refresh_champ(
     );
 }
 
-// Paints a row's Role button; `Any` is dimmed like an unassigned champion,
+// Paints a row's Role button: the lane's icon, which keeps the column narrow,
+// or for `Any` a dash ([`ROLE_ANY_LABEL`]), dimmed like an unassigned champion,
 // being the default rather than a choice.
 fn refresh_role(ctx: &mut StableClient<'_>, rows: &[ChampionRow], row: usize) {
     let role = rows.get(row).map(|entry| entry.role).unwrap_or_default();
-    let color = if role == Role::Any {
-        "#a5a5abff"
-    } else {
-        "#e8e8e8ff"
+    let icon_path = format!("{}.icon", role_path(row));
+    let text = match role_icon(role) {
+        Some(source) => {
+            ctx.ui_set_properties(&icon_path, &format!("visible: true; source: \"{source}\";"));
+            String::new()
+        }
+        None => {
+            ctx.ui_set_visible(&icon_path, false);
+            ROLE_ANY_LABEL.to_string()
+        }
     };
     ctx.ui_set_properties(
         &role_path(row),
-        &format!(
-            "text: {{ text: \"{PLAIN_PAD}{}\"; color: {color}; }}",
-            role.label()
-        ),
+        &format!("text: {{ text: \"{text}\"; color: #a5a5abff; }}"),
     );
+}
+
+// Lights the row's focus cell, if it has one, and dims the other.
+fn refresh_focus(ctx: &mut StableClient<'_>, rows: &[ChampionRow], row: usize) {
+    let focus = rows.get(row).map(|entry| entry.focus).unwrap_or_default();
+    for (cell, sets) in FOCUS_CELLS {
+        ctx.ui_set_properties(
+            &focus_cell_path(row, cell),
+            &toggle_style_sized(focus == sets, FOCUS_TEXT_SIZE),
+        );
+    }
 }
 
 // Repaints one row's buttons.
@@ -1314,6 +1426,7 @@ fn refresh_row(ctx: &mut StableClient<'_>, entries: &[ListEntry], row: usize) {
     for slot in 0..picker_slots() {
         refresh_combo(ctx, entries, &rows, row, slot);
     }
+    refresh_focus(ctx, &rows, row);
 }
 
 // Lights the chosen cell of a two-option footer toggle and dims the other.
@@ -1656,6 +1769,8 @@ fn row_source(row: usize) -> String {
     // shape for the other; see [`want_panel_size`].
     let row_w = row_width();
     let delete_x = delete_x();
+    let champ_w = champ_w();
+    let role_x = role_x();
     let mut source = format!(
         "row{row}:color {{\n\
          width: {row_w}px;\n\
@@ -1667,7 +1782,7 @@ fn row_source(row: usize) -> String {
          @\"asset/base/style/main#tertiary_button\";\n\
          x: {CHAMP_X}px;\n\
          y: {COMBO_Y}px;\n\
-         width: {CHAMP_W}px;\n\
+         width: {champ_w}px;\n\
          height: {COMBO_H}px;\n\
          \n\
          text: {{\n\
@@ -1694,17 +1809,28 @@ fn row_source(row: usize) -> String {
          \n\
          #role:color_icon_button {{\n\
          @\"asset/base/style/main#tertiary_button\";\n\
-         x: {ROLE_X}px;\n\
+         x: {role_x}px;\n\
          y: {COMBO_Y}px;\n\
          width: {ROLE_W}px;\n\
          height: {COMBO_H}px;\n\
          \n\
          text: {{\n\
-         text: \"{PLAIN_PAD}Any\";\n\
+         text: \"{ROLE_ANY_LABEL}\";\n\
          align_x: Left;\n\
          align_y: Center;\n\
          size: 14;\n\
          color: #a5a5abff;\n\
+         }}\n\
+         \n\
+         #icon:image {{\n\
+         ignore_event: true;\n\
+         x: {ROLE_ICON_X}px;\n\
+         anchor_y: 0.5;\n\
+         pivot_y: 0.5;\n\
+         width: {ROLE_ICON_SIZE}px;\n\
+         height: {ROLE_ICON_SIZE}px;\n\
+         visible: false;\n\
+         source: \"asset/base/ui/icons/top\";\n\
          }}\n\
          \n\
          #arrow:image {{\n\
@@ -1727,7 +1853,14 @@ fn row_source(row: usize) -> String {
         let x = combo_x(slot);
         // The clear button sits inside the right end of its slot, left of the
         // drop arrow, so clearing a slot does not need the list opened first.
-        let clear_x = x + combo_w - 52;
+        // In a column too narrow for it beside the icon, it takes the arrow's
+        // place, the arrow showing only while the slot is empty
+        // ([`refresh_combo`]).
+        let clear_x = if combo_w >= CLEAR_FITS_W {
+            x + combo_w - 52
+        } else {
+            x + combo_w - 29
+        };
         source.push_str(&format!(
             "#slot{slot}:color_icon_button {{\n\
              @\"asset/base/style/main#tertiary_button\";\n\
@@ -1823,6 +1956,40 @@ fn row_source(row: usize) -> String {
              }}\n"
         ));
     }
+
+    // The component focus: a framed pair of cells like the footer's toggles,
+    // painted by `refresh_focus`.
+    let focus_x = focus_x();
+    let cell_h = COMBO_H - 2 * FOCUS_PAD;
+    source.push_str(&format!(
+        "#focus:color {{\n\
+         x: {focus_x}px;\n\
+         y: {COMBO_Y}px;\n\
+         width: {FOCUS_W}px;\n\
+         height: {COMBO_H}px;\n\
+         padding: {{ left: {FOCUS_PAD}px; right: {FOCUS_PAD}px; top: {FOCUS_PAD}px; bottom: {FOCUS_PAD}px; }}\n\
+         color: #4a4c56ff;\n\
+         stroke: 1;\n\
+         back_color: #00000000;\n\
+         child_type: LeftToRight {{ spacing: 0px; }}\n\
+         rounding: Uniform {{ rounding: 8; }}\n"
+    ));
+    for (cell, text) in [
+        (FOCUS_CELLS[0].0, &strings.focus_offense),
+        (FOCUS_CELLS[1].0, &strings.focus_defense),
+    ] {
+        source.push_str(&format!(
+            "#{cell}:color_selectable {{\n\
+             @\"asset/base/style/main#strategy_option\";\n\
+             width: {FOCUS_CELL_W}px;\n\
+             height: {cell_h}px;\n\
+             label: {{ size: {FOCUS_TEXT_SIZE}; align_x: Center; }}\n\
+             selected_label: {{ size: {FOCUS_TEXT_SIZE}; align_x: Center; }}\n\
+             text: \"{text}\";\n\
+             }}\n"
+        ));
+    }
+    source.push_str("}\n");
 
     source.push_str(&format!(
         "#delete:color_icon_button {{\n\
@@ -1957,16 +2124,31 @@ fn champ_entry_source(index: usize, choice: &ChampionChoice) -> String {
     )
 }
 
-// `.ui` source for one entry of the role list. Label only, like the champion
-// list: a role is a word, and there is no art for one.
+// `.ui` source for one entry of the role list: the lane's icon, as the Role
+// button shows it, beside its name. `Any` has no icon, and its name lines up
+// with the others'.
 fn role_entry_source(index: usize, role: Role) -> String {
+    let icon = role_icon(role).map_or_else(String::new, |source| {
+        format!(
+            "#icon:image {{\n\
+             ignore_event: true;\n\
+             x: 8px;\n\
+             anchor_y: 0.5;\n\
+             pivot_y: 0.5;\n\
+             width: {ROLE_ICON_SIZE}px;\n\
+             height: {ROLE_ICON_SIZE}px;\n\
+             source: \"{source}\";\n\
+             }}\n"
+        )
+    });
     format!(
         "r{index}:color_selectable {{\n\
          @\"asset/base/style/main#strategy_option\";\n\
          width: 144px;\n\
          height: {ENTRY_ITEM_H}px;\n\
          label: {{ size: 14; align_x: Left; color: {LIST_ROW_TEXT}; }}\n\
-         text: \"{PLAIN_PAD}{}\";\n\
+         text: \"{ICON_PAD}{}\";\n\
+         {icon}\
          }}",
         role.label()
     )
@@ -1990,6 +2172,9 @@ fn rebuild_rows(ctx: &mut StableClient<'_>, entries: &[ListEntry]) {
         REGISTERED.register(ctx, &champ_path(row));
         REGISTERED.register(ctx, &role_path(row));
         REGISTERED.register(ctx, &delete_path(row));
+        for (cell, _) in FOCUS_CELLS {
+            REGISTERED.register(ctx, &focus_cell_path(row, cell));
+        }
         for slot in 0..picker_slots() {
             REGISTERED.register(ctx, &combo_path(row, slot));
             REGISTERED.register(ctx, &clear_path(row, slot));
@@ -2037,6 +2222,16 @@ fn header_source(slot: usize) -> String {
 // and spawning the rest; the subtree is rebuilt on every [`ensure_editor`], so
 // no stale header is left.
 fn sync_column_headers(ctx: &mut StableClient<'_>) {
+    // The champion and role headers are authored, at the strategy screen's
+    // widths; a narrow host moves them with their columns.
+    ctx.ui_set_properties(
+        &format!("{}.c_champion", colheader_path()),
+        &format!("width: {}px;", champ_w()),
+    );
+    ctx.ui_set_properties(
+        &format!("{}.c_role", colheader_path()),
+        &format!("x: {}px; width: {ROLE_W}px;", role_x()),
+    );
     for slot in 0..picker_slots() {
         let path = format!("{}.c_item{}", colheader_path(), slot + 1);
         if ctx.ui_exists(&path) {
@@ -2056,6 +2251,39 @@ fn sync_column_headers(ctx: &mut StableClient<'_>) {
             ctx.ui_spawn_source(colheader_path(), &header_source(slot));
         }
     }
+    // The focus column's, over its cells.
+    let path = format!("{}.c_focus", colheader_path());
+    if ctx.ui_exists(&path) {
+        ctx.ui_set_properties(
+            &path,
+            &format!(
+                "x: {}px; width: {FOCUS_W}px; text: \"{}\";",
+                focus_x(),
+                strings().col_focus
+            ),
+        );
+    } else {
+        ctx.ui_spawn_source(colheader_path(), &focus_header_source());
+    }
+}
+
+// `.ui` source for the focus column's header, like [`header_source`]'s.
+fn focus_header_source() -> String {
+    let x = focus_x();
+    let label = strings().col_focus.clone();
+    format!(
+        "c_focus:label {{\n\
+         @\"asset/base/style/main#label\";\n\
+         x: {x}px;\n\
+         width: {FOCUS_W}px;\n\
+         height: 32px;\n\
+         align_x: Left;\n\
+         align_y: Center;\n\
+         size: 13;\n\
+         color: #a5a5abff;\n\
+         text: \"{label}\";\n\
+         }}\n"
+    )
 }
 
 // Rows that pass the current filter, as indices into `state.rows`; filtered by
@@ -3029,6 +3257,29 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     let Some(row) = row_from_path(&path) else {
         return;
     };
+
+    // Each focus cell is its own switch, as the side cells are: a click on the
+    // lit one puts it out, back to neither. Only a click counts, or other
+    // events would undo it.
+    if let Some(&(_, picked)) = FOCUS_CELLS
+        .iter()
+        .find(|(cell, _)| path == focus_cell_path(row, cell))
+    {
+        if !matches!(event.kind, Some(UiEventKindV1::Click) | None) {
+            return;
+        }
+        edit_row(row, |entry| {
+            entry.focus = if entry.focus == picked {
+                Focus::Neither
+            } else {
+                picked
+            };
+        });
+        clear_saved(ctx);
+        close_list(ctx);
+        refresh_row(ctx, &entries, row);
+        return;
+    }
 
     if path.ends_with(".delete") {
         let _ =

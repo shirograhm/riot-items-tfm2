@@ -76,6 +76,8 @@ Boots also have their own **Boots** group in the Build Editor.
 
 **Components.** Many items can be built from different components (Jak'Sho starts from Cloth Armor or Null-Magic Mantle), and the game picks them at random. Smart Builds picks the ones that fit: armor or magic resist based on the enemy team's damage, the damage stats the champion uses (attack speed and crit first for marksmen), and more health and resists for tankier champions. This applies to pinned items too.
 
+**Offense / Defense.** Each row in the Build Editor has **Offense** and **Defense** cells. Pick one to make that champion take the offensive (damage, attack speed, crit, penetration) or defensive (health, armor, magic resist, tenacity) components wherever an item can be built more than one way. Click the lit cell again to go back to neither. It works under Allow Any Builds too, and follows Apply To Your Players Only like pins do.
+
 ##### Item Rules
 **Options > Competition > Item Rules** sets how far items upgrade. It applies to both teams, pinned items included:
 - **All Radiants** (default): every item upgrades to Radiant.

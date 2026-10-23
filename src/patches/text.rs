@@ -987,6 +987,10 @@ struct NoteEntry {
     // first change it was judged on: none for one only brought level or set
     // by hand. What an adjustment's reason says ([`adjust_pool`]).
     intent: Option<bool>,
+    // What the numbers that got stronger, and those that got weaker, are
+    // called ([`short_label`]), for an adjustment's reason to name.
+    ups: Vec<String>,
+    downs: Vec<String>,
 }
 
 impl NoteEntry {
@@ -1119,12 +1123,54 @@ fn reason_pool(
 
 // The reasons for an adjustment, an item whose numbers went both ways: a step
 // that went too far, made up for by another number moved back
-// (`balance::plan_for`). `buff` is which way the patch meant to move it.
+// (`balance::plan_for`). `buff` is which way the patch meant to move it. Each
+// names what moved, in the way of League's notes ("so we're toning down its
+// {Down} ..."): `{Up}` and `{Down}` the numbers that got stronger and weaker,
+// `{Item}` the item.
 fn adjust_pool(buff: bool) -> Vec<&'static str> {
     if buff {
         vec!["why_adjust_buff_1", "why_adjust_buff_2", "why_adjust_buff_3"]
     } else {
         vec!["why_adjust_nerf_1", "why_adjust_nerf_2", "why_adjust_nerf_3"]
+    }
+}
+
+// What a reason calls the number `change` moved: a flat stat by its tooltip
+// line and a passive's number by the passive's name, as a note's row is
+// ([`label_of`]), or for a number in a sentence with no name what its format
+// says it is ("Lethality"). Empty where none of them names it.
+fn short_label(texts: &Texts, lang: &str, change: &Change) -> String {
+    let (name, _) = label_of(texts, lang, change);
+    if !name.is_empty() {
+        return name;
+    }
+    let slug = change
+        .members
+        .first()
+        .map_or("", |first| crate::build_config::base_slug(&first.key));
+    ROW_FORMATS
+        .iter()
+        .find(|format| format.item == slug && format.field == change.field)
+        .and_then(|format| format.label)
+        .or_else(|| {
+            FIELD_FORMATS
+                .iter()
+                .find(|format| format.fields.contains(&change.field.as_str()))
+                .map(|format| format.label)
+        })
+        .map_or_else(String::new, |(key, english)| texts.ui(lang, key, english))
+}
+
+// `names` as a sentence lists them: "Armor", "Armor and Health", "Armor,
+// Health and Magic Resist".
+fn listed(texts: &Texts, lang: &str, names: &[String]) -> String {
+    match names {
+        [] => String::new(),
+        [only] => only.clone(),
+        [rest @ .., last] => texts
+            .ui(lang, "list_and", "{A} and {B}")
+            .replace("{A}", &rest.join(texts.ui(lang, "list_sep", ", ").as_str()))
+            .replace("{B}", last),
     }
 }
 
@@ -1828,6 +1874,8 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
                     weaker: false,
                     why: change.clone(),
                     intent: None,
+                    ups: Vec::new(),
+                    downs: Vec::new(),
                 });
                 entries.len() - 1
             }
@@ -1849,6 +1897,7 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         // own entry.
         let lower = super::fields::rule_for(&first.key, &change.field)
             .is_some_and(|rule| rule.lower_is_stronger);
+        let name = short_label(texts, lang, change);
         for moved in &change.members {
             // A number brought level with the other tier's went that tier's
             // way, and is told in that tier's entry.
@@ -1856,10 +1905,16 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
                 continue;
             }
             let at = entry_of(&mut entries, &moved.key, change);
-            if (moved.after.abs() > moved.before.abs()) != lower {
-                entries[at].stronger = true;
+            let entry = &mut entries[at];
+            let names = if (moved.after.abs() > moved.before.abs()) != lower {
+                entry.stronger = true;
+                &mut entry.ups
             } else {
-                entries[at].weaker = true;
+                entry.weaker = true;
+                &mut entry.downs
+            };
+            if !name.is_empty() && !names.contains(&name) {
+                names.push(name.clone());
             }
         }
         if let Some((low, high)) = super::fields::range_of(&change.field) {
@@ -1997,19 +2052,21 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         let chosen = family.map_or(true, |family| family.chosen);
         let component = family.is_some_and(|family| family.component);
         // An item whose numbers went both ways is an adjustment, and says
-        // what for. One moved only to keep an upgrade no weaker than its part
-        // was not judged, and says so. One the player set by hand gives no
-        // reason at all: the article says whose patch it is.
+        // what moved; where a number has no name to say, it reads as the buff
+        // or nerf it was meant as. One moved only to keep an upgrade no weaker
+        // than its part was not judged, and says so. One the player set by
+        // hand gives no reason at all: the article says whose patch it is.
         let adjusted = entry.intent.filter(|_| entry.stronger && entry.weaker);
+        let named = !entry.ups.is_empty() && !entry.downs.is_empty();
         let pool = if why.manual {
             Vec::new()
-        } else if let Some(buff) = adjusted {
+        } else if let Some(buff) = adjusted.filter(|_| named) {
             adjust_pool(buff)
         } else if why.follows {
             vec!["why_follow_1", "why_follow_2"]
         } else {
             reason_pool(
-                why.buff,
+                adjusted.unwrap_or(why.buff),
                 chosen,
                 component,
                 base.tempo(&entry.key),
@@ -2024,7 +2081,11 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             .or_else(|| pool.get(from).copied());
         entry.reason = picked.map_or_else(String::new, |reason| {
             used.push(reason);
-            texts.ui(lang, reason, "")
+            texts
+                .ui(lang, reason, "")
+                .replace("{Item}", &texts.name(lang, &entry.key))
+                .replace("{Up}", &listed(texts, lang, &entry.ups))
+                .replace("{Down}", &listed(texts, lang, &entry.downs))
         });
     }
     entries
