@@ -3791,7 +3791,7 @@
             "option": "\n<#ff7a3eff>Nefastidão<>: Suas mágias te dão <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>4 segundos<> (acumula 4x)."
         },
         "radiant_blackfire_torch": {
-            "name": "Tocha de Chamas Negras",
+            "name": "Tocha de Chamas Negras Radiante",
             "option": "\n<#ff7a3eff>Nefastidão<>: Suas mágias te dão <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>4 segundos<> (acumula 4x)."
         },
         "executioners_calling": {
@@ -6945,6 +6945,6619 @@
         "philosophers_medallion": {
             "name": "현자의 메달",
             "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>15<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 10%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>50의 피해<>를 입힙니다."
+        }
+    },
+    "ja": {
+        "ironsword": {
+            "name": "ロング ソード"
+        },
+        "soldiers_longsword": {
+            "name": "ピッケル"
+        },
+        "ruinous_blade": {
+            "name": "ヴァンパイア セプター"
+        },
+        "conquerors_greatsword": {
+            "name": "ブラッドサースター"
+        },
+        "warlords_final_judgement": {
+            "name": "レディアント ブラッドサースター"
+        },
+        "dagger": {
+            "name": "ダガー"
+        },
+        "wind_dagger": {
+            "name": "リカーブ ボウ"
+        },
+        "twin_stormblade": {
+            "name": "ジール"
+        },
+        "thunderclaw": {
+            "name": "ファントム ダンサー"
+        },
+        "storm_sovereign": {
+            "name": "レディアント ファントム ダンサー"
+        },
+        "steel_armor": {
+            "name": "クロース アーマー"
+        },
+        "gatekeepers_armor": {
+            "name": "チェイン ベスト"
+        },
+        "black_knights_heavy_plate": {
+            "name": "ブランブル ベスト"
+        },
+        "eternal_iron_plate": {
+            "name": "ソーンメイル"
+        },
+        "impregnable_fortress": {
+            "name": "レディアント ソーンメイル"
+        },
+        "mystic_cloak": {
+            "name": "ヌルマジック マント"
+        },
+        "night_hood": {
+            "name": "ネガトロン クローク"
+        },
+        "dusk_raven": {
+            "name": "スペクター カウル"
+        },
+        "souls_edge": {
+            "name": "ドラゴン クロウ"
+        },
+        "veil_of_annihilation": {
+            "name": "レディアント ドラゴン クロウ"
+        },
+        "arcane_crystal": {
+            "name": "増魔の書"
+        },
+        "spirit_crystal": {
+            "name": "ブラスティング ワンド"
+        },
+        "staff_of_rapture": {
+            "name": "ロスト チャプター"
+        },
+        "angels_fang": {
+            "name": "ルーデン テンペスト"
+        },
+        "prophet_of_the_abyss": {
+            "name": "レディアント ルーデン テンペスト"
+        },
+        "vital_orb": {
+            "name": "ルビー クリスタル"
+        },
+        "hardened_heart": {
+            "name": "キンドルジェム"
+        },
+        "ring_of_reincarnation": {
+            "name": "ジャイアント ベルト"
+        },
+        "warmogs_armor": {
+            "name": "ワーモグ アーマー"
+        },
+        "radiant_warmogs_armor": {
+            "name": "レディアント ワーモグ アーマー"
+        },
+        "hourglass_of_eternity": {
+            "name": "サンファイア ケープ"
+        },
+        "giants_horn_shard": {
+            "name": "レディアント サンファイア ケープ"
+        },
+        "bf_sword": {
+            "name": "B. F. ソード"
+        },
+        "phage": {
+            "name": "ファージ"
+        },
+        "haunting_guise": {
+            "name": "悲愴な仮面"
+        },
+        "infinity_edge": {
+            "name": "インフィニティ エッジ"
+        },
+        "radiant_infinity_edge": {
+            "name": "レディアント インフィニティ エッジ"
+        },
+        "black_cleaver": {
+            "name": "ブラック クリーバー"
+        },
+        "radiant_black_cleaver": {
+            "name": "レディアント ブラック クリーバー"
+        },
+        "bloodletters_curse": {
+            "name": "ブラッドレターの呪い"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "レディアント ブラッドレターの呪い"
+        },
+        "deathblade": {
+            "name": "デスブレード"
+        },
+        "radiant_deathblade": {
+            "name": "レディアント デスブレード"
+        },
+        "deaths_dance": {
+            "name": "デス ダンス"
+        },
+        "radiant_deaths_dance": {
+            "name": "レディアント デス ダンス"
+        },
+        "needlessly_large_rod": {
+            "name": "ムダニ デカイ ロッド"
+        },
+        "rabadons_deathcap": {
+            "name": "ラバドン デスキャップ"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "レディアント ラバドン デスキャップ"
+        },
+        "protectors_vow": {
+            "name": "プロテクターの誓い"
+        },
+        "radiant_protectors_vow": {
+            "name": "レディアント プロテクターの誓い"
+        },
+        "protoplasm_harness": {
+            "name": "プロトプラズム ハーネス"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "レディアント プロトプラズム ハーネス"
+        },
+        "frozen_mallet": {
+            "name": "フローズン マレット"
+        },
+        "radiant_frozen_mallet": {
+            "name": "レディアント フローズン マレット"
+        },
+        "riftmaker": {
+            "name": "リフトメーカー"
+        },
+        "radiant_riftmaker": {
+            "name": "レディアント リフトメーカー"
+        },
+        "shadowflame": {
+            "name": "シャドウフレイム"
+        },
+        "radiant_shadowflame": {
+            "name": "レディアント シャドウフレイム"
+        },
+        "yun_tal_wildarrows": {
+            "name": "ユン・タル ワイルドアロー"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "レディアント ユン・タル ワイルドアロー"
+        },
+        "unending_despair": {
+            "name": "終わりなき絶望"
+        },
+        "radiant_unending_despair": {
+            "name": "レディアント 終わりなき絶望"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "ルインドキング・ブレード"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "レディアント ルインドキング・ブレード"
+        },
+        "blackfire_torch": {
+            "name": "黒炎のトーチ"
+        },
+        "radiant_blackfire_torch": {
+            "name": "レディアント 黒炎のトーチ"
+        },
+        "executioners_calling": {
+            "name": "エクスキューショナー コーリング"
+        },
+        "mortal_reminder": {
+            "name": "モータル リマインダー"
+        },
+        "radiant_mortal_reminder": {
+            "name": "レディアント モータル リマインダー"
+        },
+        "last_whisper": {
+            "name": "ラスト ウィスパー"
+        },
+        "lord_dominiks_regards": {
+            "name": "ドミニク リガード"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "レディアント ドミニク リガード"
+        },
+        "experimental_hexplate": {
+            "name": "実験的ヘクスプレート"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "レディアント 実験的ヘクスプレート"
+        },
+        "nashors_tooth": {
+            "name": "ナッシャー トゥース"
+        },
+        "radiant_nashors_tooth": {
+            "name": "レディアント ナッシャー トゥース"
+        },
+        "jaksho_the_protean": {
+            "name": "変幻自在のジャック＝ショー"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "レディアント 変幻自在のジャック＝ショー"
+        },
+        "terminus": {
+            "name": "テルミヌス"
+        },
+        "radiant_terminus": {
+            "name": "レディアント テルミヌス"
+        },
+        "spirit_visage": {
+            "name": "スピリット ビサージュ"
+        },
+        "radiant_spirit_visage": {
+            "name": "レディアント スピリット ビサージュ"
+        },
+        "guinsoos_rageblade": {
+            "name": "グインソー レイジブレード"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "レディアント グインソー レイジブレード"
+        },
+        "wits_end": {
+            "name": "ウィッツ エンド"
+        },
+        "radiant_wits_end": {
+            "name": "レディアント ウィッツ エンド"
+        },
+        "kraken_slayer": {
+            "name": "クラーケン スレイヤー"
+        },
+        "radiant_kraken_slayer": {
+            "name": "レディアント クラーケン スレイヤー"
+        },
+        "atmas_reckoning": {
+            "name": "アトマの報い"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "レディアント アトマの報い"
+        },
+        "mirage_blade": {
+            "name": "ミラージュ ブレード"
+        },
+        "radiant_mirage_blade": {
+            "name": "レディアント ミラージュ ブレード"
+        },
+        "collector": {
+            "name": "コレクター"
+        },
+        "radiant_collector": {
+            "name": "レディアント コレクター"
+        },
+        "heartsteel": {
+            "name": "心の鋼"
+        },
+        "radiant_heartsteel": {
+            "name": "レディアント 心の鋼"
+        },
+        "spear_of_shojin": {
+            "name": "ショウジンの矛"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "レディアント ショウジンの矛"
+        },
+        "oblivion_orb": {
+            "name": "忘却のオーブ"
+        },
+        "morellonomicon": {
+            "name": "モレロノミコン"
+        },
+        "radiant_morellonomicon": {
+            "name": "レディアント モレロノミコン"
+        },
+        "overlords_bloodmail": {
+            "name": "覇王のブラッドメイル"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "レディアント 覇王のブラッドメイル"
+        },
+        "night_harvester": {
+            "name": "ナイト ハーベスター"
+        },
+        "radiant_night_harvester": {
+            "name": "レディアント ナイト ハーベスター"
+        },
+        "hextech_gunblade": {
+            "name": "ヘクステック ガンブレード"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "レディアント ヘクステック ガンブレード"
+        },
+        "rylais_crystal_scepter": {
+            "name": "リーライ クリスタル セプター"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "レディアント リーライ クリスタル セプター"
+        },
+        "stormrazor": {
+            "name": "ストームレイザー"
+        },
+        "radiant_stormrazor": {
+            "name": "レディアント ストームレイザー"
+        },
+        "voltaic_cyclosword": {
+            "name": "ボルテイク サイクロソード"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "レディアント ボルテイク サイクロソード"
+        },
+        "diamond_tipped_spear": {
+            "name": "ダイヤモンドチップスピア"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "レディアント ダイヤモンドチップスピア"
+        },
+        "scouts_slingshot": {
+            "name": "偵察兵のパチンコ"
+        },
+        "bandleglass_mirror": {
+            "name": "バンドルグラスの鏡"
+        },
+        "zekes_herald": {
+            "name": "ジーク コンバージェンス"
+        },
+        "radiant_zekes_herald": {
+            "name": "レディアント ジーク コンバージェンス"
+        },
+        "liandrys_torment": {
+            "name": "ライアンドリーの仮面"
+        },
+        "radiant_liandrys_torment": {
+            "name": "レディアント ライアンドリーの仮面"
+        },
+        "noonquiver": {
+            "name": "ヌーンクィヴァー"
+        },
+        "blighting_jewel": {
+            "name": "枯死の宝石"
+        },
+        "steel_sigil": {
+            "name": "スチール シジル"
+        },
+        "aegis_of_the_legion": {
+            "name": "イージスの盾"
+        },
+        "void_staff": {
+            "name": "ヴォイド スタッフ"
+        },
+        "radiant_void_staff": {
+            "name": "レディアント ヴォイド スタッフ"
+        },
+        "malignance": {
+            "name": "マリグナンス"
+        },
+        "radiant_malignance": {
+            "name": "レディアント マリグナンス"
+        },
+        "rite_of_ruin": {
+            "name": "破滅の儀式"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "レディアント 破滅の儀式"
+        },
+        "glowing_mote": {
+            "name": "輝きのモート"
+        },
+        "echoes_of_helia": {
+            "name": "ヘリアの残響"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "レディアント ヘリアの残響"
+        },
+        "sundered_sky": {
+            "name": "サンダード スカイ"
+        },
+        "radiant_sundered_sky": {
+            "name": "レディアント サンダード スカイ"
+        },
+        "sheen": {
+            "name": "シーン"
+        },
+        "trinity_force": {
+            "name": "トリニティ フォース"
+        },
+        "radiant_trinity_force": {
+            "name": "レディアント トリニティ フォース"
+        },
+        "frozen_heart": {
+            "name": "フローズン ハート"
+        },
+        "radiant_frozen_heart": {
+            "name": "レディアント フローズン ハート"
+        },
+        "glacial_buckler": {
+            "name": "グレイシャル バックラー"
+        },
+        "dusk_and_dawn": {
+            "name": "黄昏と暁"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "レディアント 黄昏と暁"
+        },
+        "bloodsong": {
+            "name": "ブラッドソング"
+        },
+        "radiant_bloodsong": {
+            "name": "レディアント ブラッドソング"
+        },
+        "serrated_dirk": {
+            "name": "セレイテッド ダーク"
+        },
+        "caulfields_warhammer": {
+            "name": "コールフィールド ウォーハンマー"
+        },
+        "hubris": {
+            "name": "ヒュブリス"
+        },
+        "radiant_hubris": {
+            "name": "レディアント ヒュブリス"
+        },
+        "bastionbreaker": {
+            "name": "バスティオンブレイカー"
+        },
+        "radiant_bastionbreaker": {
+            "name": "レディアント バスティオンブレイカー"
+        },
+        "serpents_fang": {
+            "name": "毒蛇の牙"
+        },
+        "radiant_serpents_fang": {
+            "name": "レディアント 毒蛇の牙"
+        },
+        "opportunity": {
+            "name": "オポチュニティー"
+        },
+        "radiant_opportunity": {
+            "name": "レディアント オポチュニティー"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "ソラリのロケット"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "レディアント ソラリのロケット"
+        },
+        "dead_mans_plate": {
+            "name": "デッド マン プレート"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "レディアント デッド マン プレート"
+        },
+        "winged_moonplate": {
+            "name": "翼のムーンプレート"
+        },
+        "steraks_gage": {
+            "name": "ステラックの篭手"
+        },
+        "radiant_steraks_gage": {
+            "name": "レディアント ステラックの篭手"
+        },
+        "randuins_omen": {
+            "name": "ランデュイン オーメン"
+        },
+        "radiant_randuins_omen": {
+            "name": "レディアント ランデュイン オーメン"
+        },
+        "eclipse": {
+            "name": "赤月の刃"
+        },
+        "radiant_eclipse": {
+            "name": "レディアント 赤月の刃"
+        },
+        "axiom_arc": {
+            "name": "アクシオム アーク"
+        },
+        "radiant_axiom_arc": {
+            "name": "レディアント アクシオム アーク"
+        },
+        "hearthbound_axe": {
+            "name": "ハースバウンド アックス"
+        },
+        "feral_flare": {
+            "name": "野獣の灯火"
+        },
+        "radiant_feral_flare": {
+            "name": "レディアント 野獣の灯火"
+        },
+        "forbidden_idol": {
+            "name": "フォビドゥン アイドル"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "花咲く夜明けの剣"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "レディアント 花咲く夜明けの剣"
+        },
+        "ardent_censer": {
+            "name": "アーデント センサー"
+        },
+        "radiant_ardent_censer": {
+            "name": "レディアント アーデント センサー"
+        },
+        "grezs_spectral_lantern": {
+            "name": "グレズの亡霊ランタン"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "レディアント グレズの亡霊ランタン"
+        },
+        "cloak_of_starry_night": {
+            "name": "星空のマント"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "レディアント 星空のマント"
+        },
+        "hamstringer": {
+            "name": "ハムストリンガー"
+        },
+        "radiant_hamstringer": {
+            "name": "レディアント ハムストリンガー"
+        },
+        "hextech_alternator": {
+            "name": "ヘクステック オルタネーター"
+        },
+        "fated_ashes": {
+            "name": "運命の灰"
+        },
+        "stormsurge": {
+            "name": "ストームサージ"
+        },
+        "radiant_stormsurge": {
+            "name": "レディアント ストームサージ"
+        },
+        "ravenous_hydra": {
+            "name": "ラヴァナス ハイドラ"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "レディアント ラヴァナス ハイドラ"
+        },
+        "bamis_cinder": {
+            "name": "バミ シンダー"
+        },
+        "bandlepipes": {
+            "name": "バンドルパイプ"
+        },
+        "radiant_bandlepipes": {
+            "name": "レディアント バンドルパイプ"
+        },
+        "tiamat": {
+            "name": "ティアマット"
+        },
+        "seryldas_grudge": {
+            "name": "セリルダの怨恨"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "レディアント セリルダの怨恨"
+        },
+        "chemtech_putrifier": {
+            "name": "ケミテック ピュートリファイアー"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "レディアント ケミテック ピュートリファイアー"
+        },
+        "chempunk_chainsword": {
+            "name": "ケミパンク チェーンソード"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "レディアント ケミパンク チェーンソード"
+        },
+        "guardian_angel": {
+            "name": "ガーディアン エンジェル"
+        },
+        "radiant_guardian_angel": {
+            "name": "レディアント ガーディアン エンジェル"
+        },
+        "boots": {
+            "name": "ブーツ"
+        },
+        "berserkers_greaves": {
+            "name": "バーサーカー ブーツ"
+        },
+        "boots_of_swiftness": {
+            "name": "スイフトネス ブーツ"
+        },
+        "gluttonous_greaves": {
+            "name": "グラトナス ブーツ"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "アイオニア ブーツ"
+        },
+        "mercurys_treads": {
+            "name": "マーキュリー ブーツ"
+        },
+        "plated_steelcaps": {
+            "name": "プレート スチールキャップ"
+        },
+        "sorcerers_shoes": {
+            "name": "ソーサラー シューズ"
+        },
+        "staff_of_flowing_water": {
+            "name": "フロー ウォーター スタッフ"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "レディアント フロー ウォーター スタッフ"
+        },
+        "immortal_shieldbow": {
+            "name": "イモータル シールドボウ"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "レディアント イモータル シールドボウ"
+        },
+        "lich_bane": {
+            "name": "リッチ ベイン"
+        },
+        "radiant_lich_bane": {
+            "name": "レディアント リッチ ベイン"
+        },
+        "imperial_mandate": {
+            "name": "帝国の指令"
+        },
+        "radiant_imperial_mandate": {
+            "name": "レディアント 帝国の指令"
+        },
+        "zhonyas_hourglass": {
+            "name": "ゾーニャの砂時計"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "レディアント ゾーニャの砂時計"
+        },
+        "seekers_armguard": {
+            "name": "シーカー アームガード"
+        },
+        "hollow_radiance": {
+            "name": "ホロウ レディアンス"
+        },
+        "radiant_hollow_radiance": {
+            "name": "レディアント ホロウ レディアンス"
+        },
+        "cosmic_drive": {
+            "name": "コズミック ドライブ"
+        },
+        "radiant_cosmic_drive": {
+            "name": "レディアント コズミック ドライブ"
+        },
+        "fiendhunter_bolts": {
+            "name": "フィーンドハンターの矢"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "レディアント フィーンドハンターの矢"
+        },
+        "essence_reaver": {
+            "name": "エッセンス リーバー"
+        },
+        "radiant_essence_reaver": {
+            "name": "レディアント エッセンス リーバー"
+        },
+        "endless_hunger": {
+            "name": "終わりなき飢え"
+        },
+        "radiant_endless_hunger": {
+            "name": "レディアント 終わりなき飢え"
+        },
+        "banshees_veil": {
+            "name": "バンシー ヴェール"
+        },
+        "radiant_banshees_veil": {
+            "name": "レディアント バンシー ヴェール"
+        },
+        "edge_of_night": {
+            "name": "ナイト エッジ"
+        },
+        "radiant_edge_of_night": {
+            "name": "レディアント ナイト エッジ"
+        },
+        "verdant_barrier": {
+            "name": "ヴァーダント バリア"
+        },
+        "runaans_hurricane": {
+            "name": "ルナーン ハリケーン"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "レディアント ルナーン ハリケーン"
+        },
+        "statikk_shiv": {
+            "name": "スタティック シヴ"
+        },
+        "radiant_statikk_shiv": {
+            "name": "レディアント スタティック シヴ"
+        },
+        "titanic_hydra": {
+            "name": "タイタン ハイドラ"
+        },
+        "radiant_titanic_hydra": {
+            "name": "レディアント タイタン ハイドラ"
+        },
+        "hullbreaker": {
+            "name": "ハルブレイカー"
+        },
+        "radiant_hullbreaker": {
+            "name": "レディアント ハルブレイカー"
+        },
+        "spirit_stone": {
+            "name": "精霊石"
+        },
+        "philosophers_stone": {
+            "name": "賢者の石"
+        },
+        "radiant_philosophers_stone": {
+            "name": "レディアント 賢者の石"
+        },
+        "iceborn_gauntlet": {
+            "name": "アイスボーン ガントレット"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "レディアント アイスボーン ガントレット"
+        },
+        "moonstone_renewer": {
+            "name": "ムーンストーンの再生"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "レディアント ムーンストーンの再生"
+        },
+        "abyssal_mask": {
+            "name": "アビサル マスク"
+        },
+        "radiant_abyssal_mask": {
+            "name": "レディアント アビサル マスク"
+        },
+        "world_atlas": {
+            "name": "ワールド アトラス"
+        },
+        "runic_compass": {
+            "name": "ルーニック コンパス"
+        },
+        "solstice_sleigh": {
+            "name": "至点のソリ"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "レディアント 至点のソリ"
+        },
+        "zazzaks_realmspike": {
+            "name": "ザズ＝ザクのレルムスパイク"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "レディアント ザズ＝ザクのレルムスパイク"
+        },
+        "celestial_opposition": {
+            "name": "セレスティアル オポジション"
+        },
+        "radiant_celestial_opposition": {
+            "name": "レディアント セレスティアル オポジション"
+        },
+        "dream_maker": {
+            "name": "ドリーム メーカー"
+        },
+        "radiant_dream_maker": {
+            "name": "レディアント ドリーム メーカー"
+        },
+        "catalyst_of_aeons": {
+            "name": "久遠のカタリスト"
+        },
+        "rod_of_ages": {
+            "name": "ロッド オブ エイジス"
+        },
+        "radiant_rod_of_ages": {
+            "name": "レディアント ロッド オブ エイジス"
+        },
+        "mikaels_blessing": {
+            "name": "ミカエルの祝福"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "レディアント ミカエルの祝福"
+        },
+        "force_of_nature": {
+            "name": "自然の力"
+        },
+        "radiant_force_of_nature": {
+            "name": "レディアント 自然の力"
+        },
+        "navori_flickerblade": {
+            "name": "ナヴォリ フリッカーブレード"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "レディアント ナヴォリ フリッカーブレード"
+        },
+        "madreds_razors": {
+            "name": "マッドレッドの鉤爪"
+        },
+        "hunters_machete": {
+            "name": "ハンター マチェット"
+        },
+        "hunters_talisman": {
+            "name": "ハンタータリスマン"
+        },
+        "philosophers_medallion": {
+            "name": "賢者のメダル"
+        }
+    },
+    "de": {
+        "ironsword": {
+            "name": "Langschwert"
+        },
+        "soldiers_longsword": {
+            "name": "Spitzhacke"
+        },
+        "ruinous_blade": {
+            "name": "Vampirisches Zepter"
+        },
+        "conquerors_greatsword": {
+            "name": "Blutdürster"
+        },
+        "warlords_final_judgement": {
+            "name": "Lichtversion von Blutdürster"
+        },
+        "dagger": {
+            "name": "Dolch"
+        },
+        "wind_dagger": {
+            "name": "Rekursivbogen"
+        },
+        "twin_stormblade": {
+            "name": "Eifer"
+        },
+        "thunderclaw": {
+            "name": "Phantomtänzer"
+        },
+        "storm_sovereign": {
+            "name": "Lichtversion von Phantomtänzer"
+        },
+        "steel_armor": {
+            "name": "Stoffrüstung"
+        },
+        "gatekeepers_armor": {
+            "name": "Kettenweste"
+        },
+        "black_knights_heavy_plate": {
+            "name": "Dornenweste"
+        },
+        "eternal_iron_plate": {
+            "name": "Dornenpanzer"
+        },
+        "impregnable_fortress": {
+            "name": "Lichtversion von Dornenpanzer"
+        },
+        "mystic_cloak": {
+            "name": "Nullmagie-Mantel"
+        },
+        "night_hood": {
+            "name": "Negatron-Mantel"
+        },
+        "dusk_raven": {
+            "name": "Geisterkutte"
+        },
+        "souls_edge": {
+            "name": "Drachenklaue"
+        },
+        "veil_of_annihilation": {
+            "name": "Lichtversion von Drachenklaue"
+        },
+        "arcane_crystal": {
+            "name": "Verstärkender Wälzer"
+        },
+        "spirit_crystal": {
+            "name": "Zauberstab"
+        },
+        "staff_of_rapture": {
+            "name": "Verlorenes Kapitel"
+        },
+        "angels_fang": {
+            "name": "Ludens Sturm"
+        },
+        "prophet_of_the_abyss": {
+            "name": "Lichtversion von Ludens Sturm"
+        },
+        "vital_orb": {
+            "name": "Rubinkristall"
+        },
+        "hardened_heart": {
+            "name": "Zündjuwel"
+        },
+        "ring_of_reincarnation": {
+            "name": "Gürtel des Riesen"
+        },
+        "warmogs_armor": {
+            "name": "Warmogs Rüstung"
+        },
+        "radiant_warmogs_armor": {
+            "name": "Lichtversion von Warmogs Rüstung"
+        },
+        "hourglass_of_eternity": {
+            "name": "Sonnenfeuer-Umhang"
+        },
+        "giants_horn_shard": {
+            "name": "Lichtversion von Sonnenfeuer-Umhang"
+        },
+        "bf_sword": {
+            "name": "Riesenschwert"
+        },
+        "phage": {
+            "name": "Phage"
+        },
+        "haunting_guise": {
+            "name": "Geisterhafte Erscheinung"
+        },
+        "infinity_edge": {
+            "name": "Klinge der Unendlichkeit"
+        },
+        "radiant_infinity_edge": {
+            "name": "Lichtversion von Klinge der Unendlichkeit"
+        },
+        "black_cleaver": {
+            "name": "Schwarzes Beil"
+        },
+        "radiant_black_cleaver": {
+            "name": "Lichtversion von Schwarzes Beil"
+        },
+        "bloodletters_curse": {
+            "name": "Fluch des Aderlassers"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Lichtversion von Fluch des Aderlassers"
+        },
+        "deathblade": {
+            "name": "Klinge des Todes"
+        },
+        "radiant_deathblade": {
+            "name": "Lichtversion von Klinge des Todes"
+        },
+        "deaths_dance": {
+            "name": "Tanz des Todes"
+        },
+        "radiant_deaths_dance": {
+            "name": "Lichtversion von Tanz des Todes"
+        },
+        "needlessly_large_rod": {
+            "name": "Übergroßer Stab"
+        },
+        "rabadons_deathcap": {
+            "name": "Rabadons Todeshaube"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "Lichtversion von Rabadons Todeshaube"
+        },
+        "protectors_vow": {
+            "name": "Schwur des Beschützers"
+        },
+        "radiant_protectors_vow": {
+            "name": "Lichtversion von Schwur des Beschützers"
+        },
+        "protoplasm_harness": {
+            "name": "Protoplasma-Gurt"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "Lichtversion von Protoplasma-Gurt"
+        },
+        "frozen_mallet": {
+            "name": "Frosthammer"
+        },
+        "radiant_frozen_mallet": {
+            "name": "Lichtversion von Frosthammer"
+        },
+        "riftmaker": {
+            "name": "Kluftformer"
+        },
+        "radiant_riftmaker": {
+            "name": "Lichtversion von Kluftformer"
+        },
+        "shadowflame": {
+            "name": "Schattenflamme"
+        },
+        "radiant_shadowflame": {
+            "name": "Lichtversion von Schattenflamme"
+        },
+        "yun_tal_wildarrows": {
+            "name": "Yun Tal-Wildpfeile"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Lichtversion von Yun Tal-Wildpfeile"
+        },
+        "unending_despair": {
+            "name": "Endlose Verzweiflung"
+        },
+        "radiant_unending_despair": {
+            "name": "Lichtversion von Endlose Verzweiflung"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "Klinge des gestürzten Königs"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "Lichtversion von Klinge des gestürzten Königs"
+        },
+        "blackfire_torch": {
+            "name": "Schwarzfeuer-Fackel"
+        },
+        "radiant_blackfire_torch": {
+            "name": "Lichtversion von Schwarzfeuer-Fackel"
+        },
+        "executioners_calling": {
+            "name": "Ruf des Henkers"
+        },
+        "mortal_reminder": {
+            "name": "Sterbliche Mahnung"
+        },
+        "radiant_mortal_reminder": {
+            "name": "Lichtversion von Sterbliche Mahnung"
+        },
+        "last_whisper": {
+            "name": "Letzter Atemzug"
+        },
+        "lord_dominiks_regards": {
+            "name": "Lord Dominiks Grüße"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Lichtversion von Lord Dominiks Grüße"
+        },
+        "experimental_hexplate": {
+            "name": "Experimentelle Hexpanzerung"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "Lichtversion von Experimentelle Hexpanzerung"
+        },
+        "nashors_tooth": {
+            "name": "Nashors Zahn"
+        },
+        "radiant_nashors_tooth": {
+            "name": "Lichtversion von Nashors Zahn"
+        },
+        "jaksho_the_protean": {
+            "name": "Jak'Sho, der Proteaner"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "Lichtversion von Jak'Sho, der Proteaner"
+        },
+        "terminus": {
+            "name": "Terminus"
+        },
+        "radiant_terminus": {
+            "name": "Lichtversion von Terminus"
+        },
+        "spirit_visage": {
+            "name": "Geistessicht"
+        },
+        "radiant_spirit_visage": {
+            "name": "Lichtversion von Geistessicht"
+        },
+        "guinsoos_rageblade": {
+            "name": "Guinsoos Wutklinge"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "Lichtversion von Guinsoos Wutklinge"
+        },
+        "wits_end": {
+            "name": "Ende der Weisheit"
+        },
+        "radiant_wits_end": {
+            "name": "Lichtversion von Ende der Weisheit"
+        },
+        "kraken_slayer": {
+            "name": "Krakenbezwinger"
+        },
+        "radiant_kraken_slayer": {
+            "name": "Lichtversion von Krakenbezwinger"
+        },
+        "atmas_reckoning": {
+            "name": "Atmas Abrechnung"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Lichtversion von Atmas Abrechnung"
+        },
+        "mirage_blade": {
+            "name": "Trugbildklinge"
+        },
+        "radiant_mirage_blade": {
+            "name": "Lichtversion von Trugbildklinge"
+        },
+        "collector": {
+            "name": "Der Sammler"
+        },
+        "radiant_collector": {
+            "name": "Lichtversion von Sammler"
+        },
+        "heartsteel": {
+            "name": "Herzstahl"
+        },
+        "radiant_heartsteel": {
+            "name": "Lichtversion von Herzstahl"
+        },
+        "spear_of_shojin": {
+            "name": "Speer von Shojin"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "Lichtversion von Speer von Shojin"
+        },
+        "oblivion_orb": {
+            "name": "Kugel des Untergangs"
+        },
+        "morellonomicon": {
+            "name": "Morellonomikon"
+        },
+        "radiant_morellonomicon": {
+            "name": "Lichtversion von Morellonomikon"
+        },
+        "overlords_bloodmail": {
+            "name": "Blutpanzer des Gebieters"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "Lichtversion von Blutpanzer des Gebieters"
+        },
+        "night_harvester": {
+            "name": "Nachternte"
+        },
+        "radiant_night_harvester": {
+            "name": "Lichtversion von Nachternte"
+        },
+        "hextech_gunblade": {
+            "name": "Hextech-Gunblade"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "Lichtversion von Hextech-Gunblade"
+        },
+        "rylais_crystal_scepter": {
+            "name": "Rylais Kristallzepter"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Lichtversion von Rylais Kristallzepter"
+        },
+        "stormrazor": {
+            "name": "Sturmschneide"
+        },
+        "radiant_stormrazor": {
+            "name": "Lichtversion von Sturmschneide"
+        },
+        "voltaic_cyclosword": {
+            "name": "Voltaisches Zykloschwert"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "Lichtversion von Voltaisches Zykloschwert"
+        },
+        "diamond_tipped_spear": {
+            "name": "Diamantbesetzter Speer"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Lichtversion von Diamantbesetzter Speer"
+        },
+        "scouts_slingshot": {
+            "name": "Schleuder des Spähers"
+        },
+        "bandleglass_mirror": {
+            "name": "Bandleglas-Spiegel"
+        },
+        "zekes_herald": {
+            "name": "Zekes Konvergenz"
+        },
+        "radiant_zekes_herald": {
+            "name": "Lichtversion von Zekes Konvergenz"
+        },
+        "liandrys_torment": {
+            "name": "Liandrys Qual"
+        },
+        "radiant_liandrys_torment": {
+            "name": "Lichtversion von Liandrys Qual"
+        },
+        "noonquiver": {
+            "name": "Sonnenköcher"
+        },
+        "blighting_jewel": {
+            "name": "Pestjuwel"
+        },
+        "steel_sigil": {
+            "name": "Stahlsiegel"
+        },
+        "aegis_of_the_legion": {
+            "name": "Ägide der Legion"
+        },
+        "void_staff": {
+            "name": "Leerenstab"
+        },
+        "radiant_void_staff": {
+            "name": "Lichtversion von Leerenstab"
+        },
+        "malignance": {
+            "name": "Bösartigkeit"
+        },
+        "radiant_malignance": {
+            "name": "Lichtversion von Bösartigkeit"
+        },
+        "rite_of_ruin": {
+            "name": "Ritual des Ruins"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Lichtversion von Ritual des Ruins"
+        },
+        "glowing_mote": {
+            "name": "Glühendes Partikel"
+        },
+        "echoes_of_helia": {
+            "name": "Echos von Helia"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Lichtversion von Echos von Helia"
+        },
+        "sundered_sky": {
+            "name": "Gespaltener Himmel"
+        },
+        "radiant_sundered_sky": {
+            "name": "Lichtversion von Gespaltener Himmel"
+        },
+        "sheen": {
+            "name": "Glanz"
+        },
+        "trinity_force": {
+            "name": "Stärke der Dreieinigkeit"
+        },
+        "radiant_trinity_force": {
+            "name": "Lichtversion von Stärke der Dreieinigkeit"
+        },
+        "frozen_heart": {
+            "name": "Gefrorenes Herz"
+        },
+        "radiant_frozen_heart": {
+            "name": "Lichtversion von Gefrorenes Herz"
+        },
+        "glacial_buckler": {
+            "name": "Eisiger Faustschild"
+        },
+        "dusk_and_dawn": {
+            "name": "Tag und Nacht"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Lichtversion von Tag und Nacht"
+        },
+        "bloodsong": {
+            "name": "Blutgesang"
+        },
+        "radiant_bloodsong": {
+            "name": "Lichtversion von Blutgesang"
+        },
+        "serrated_dirk": {
+            "name": "Gezackter Langdolch"
+        },
+        "caulfields_warhammer": {
+            "name": "Caulfields Kriegshammer"
+        },
+        "hubris": {
+            "name": "Überheblichkeit"
+        },
+        "radiant_hubris": {
+            "name": "Lichtversion von Überheblichkeit"
+        },
+        "bastionbreaker": {
+            "name": "Bastionsbrecher"
+        },
+        "radiant_bastionbreaker": {
+            "name": "Lichtversion von Bastionsbrecher"
+        },
+        "serpents_fang": {
+            "name": "Giftzahn der Schlange"
+        },
+        "radiant_serpents_fang": {
+            "name": "Lichtversion von Giftzahn der Schlange"
+        },
+        "opportunity": {
+            "name": "Gelegenheit"
+        },
+        "radiant_opportunity": {
+            "name": "Lichtversion von Gelegenheit"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Amulett der eisernen Solari"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Lichtversion von Amulett der eisernen Solari"
+        },
+        "dead_mans_plate": {
+            "name": "Panzer des toten Mannes"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Lichtversion von Panzer des toten Mannes"
+        },
+        "winged_moonplate": {
+            "name": "Geflügelter Mondpanzer"
+        },
+        "steraks_gage": {
+            "name": "Steraks Pegel"
+        },
+        "radiant_steraks_gage": {
+            "name": "Lichtversion von Steraks Pegel"
+        },
+        "randuins_omen": {
+            "name": "Randuins Omen"
+        },
+        "radiant_randuins_omen": {
+            "name": "Lichtversion von Randuins Omen"
+        },
+        "eclipse": {
+            "name": "Eklipse"
+        },
+        "radiant_eclipse": {
+            "name": "Lichtversion von Eklipse"
+        },
+        "axiom_arc": {
+            "name": "Axiombogen"
+        },
+        "radiant_axiom_arc": {
+            "name": "Lichtversion von Axiombogen"
+        },
+        "hearthbound_axe": {
+            "name": "Axt der Herdgebundenen"
+        },
+        "feral_flare": {
+            "name": "Wilde Fackel"
+        },
+        "radiant_feral_flare": {
+            "name": "Lichtversion von Wilde Fackel"
+        },
+        "forbidden_idol": {
+            "name": "Verbotener Götze"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Schwert des aufblühenden Morgens"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Lichtversion von Schwert des aufblühenden Morgens"
+        },
+        "ardent_censer": {
+            "name": "Thymiaterion"
+        },
+        "radiant_ardent_censer": {
+            "name": "Lichtversion von Thymiaterion"
+        },
+        "grezs_spectral_lantern": {
+            "name": "Grez' Spektrallaterne"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Lichtversion von Grez' Spektrallaterne"
+        },
+        "cloak_of_starry_night": {
+            "name": "Mantel der Sternennacht"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "Lichtversion von Mantel der Sternennacht"
+        },
+        "hamstringer": {
+            "name": "Häcksler"
+        },
+        "radiant_hamstringer": {
+            "name": "Lichtversion von Häcksler"
+        },
+        "hextech_alternator": {
+            "name": "Hextech-Generator"
+        },
+        "fated_ashes": {
+            "name": "Schicksalhafte Asche"
+        },
+        "stormsurge": {
+            "name": "Sturmblitz"
+        },
+        "radiant_stormsurge": {
+            "name": "Lichtversion von Sturmblitz"
+        },
+        "ravenous_hydra": {
+            "name": "Gefräßige Hydra"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Lichtversion von Gefräßige Hydra"
+        },
+        "bamis_cinder": {
+            "name": "Bamis Glutstein"
+        },
+        "bandlepipes": {
+            "name": "Bandlesack"
+        },
+        "radiant_bandlepipes": {
+            "name": "Lichtversion von Bandlesack"
+        },
+        "tiamat": {
+            "name": "Tiamat"
+        },
+        "seryldas_grudge": {
+            "name": "Seryldas Bitterkeit"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Lichtversion von Seryldas Bitterkeit"
+        },
+        "chemtech_putrifier": {
+            "name": "Chemtech-Verpester"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Lichtversion von Chemtech-Verpester"
+        },
+        "chempunk_chainsword": {
+            "name": "Chempunk-Kettenschwert"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Lichtversion von Chempunk-Kettenschwert"
+        },
+        "guardian_angel": {
+            "name": "Schutzengel"
+        },
+        "radiant_guardian_angel": {
+            "name": "Lichtversion von Schutzengel"
+        },
+        "boots": {
+            "name": "Stiefel"
+        },
+        "berserkers_greaves": {
+            "name": "Beinschienen des Berserkers"
+        },
+        "boots_of_swiftness": {
+            "name": "Stiefel der Wendigkeit"
+        },
+        "gluttonous_greaves": {
+            "name": "Unersättliche Beinschienen"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Ionische Stiefel der Deutlichkeit"
+        },
+        "mercurys_treads": {
+            "name": "Merkurs Schuhe"
+        },
+        "plated_steelcaps": {
+            "name": "Beschichtete Stahlkappen"
+        },
+        "sorcerers_shoes": {
+            "name": "Zaubererschuhe"
+        },
+        "staff_of_flowing_water": {
+            "name": "Stab des fließenden Wassers"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Lichtversion von Stab des fließenden Wassers"
+        },
+        "immortal_shieldbow": {
+            "name": "Schildbogen der Unsterblichkeit"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Lichtversion von Schildbogen der Unsterblichkeit"
+        },
+        "lich_bane": {
+            "name": "Fluch des Lichs"
+        },
+        "radiant_lich_bane": {
+            "name": "Lichtversion von Fluch des Lichs"
+        },
+        "imperial_mandate": {
+            "name": "Imperiale Verfügung"
+        },
+        "radiant_imperial_mandate": {
+            "name": "Lichtversion von Imperiale Verfügung"
+        },
+        "zhonyas_hourglass": {
+            "name": "Zhonyas Stundenglas"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Lichtversion von Zhonyas Stundenglas"
+        },
+        "seekers_armguard": {
+            "name": "Armschutz des Suchenden"
+        },
+        "hollow_radiance": {
+            "name": "Hohler Glanz"
+        },
+        "radiant_hollow_radiance": {
+            "name": "Lichtversion von Hohler Glanz"
+        },
+        "cosmic_drive": {
+            "name": "Kosmischer Antrieb"
+        },
+        "radiant_cosmic_drive": {
+            "name": "Lichtversion von Kosmischer Antrieb"
+        },
+        "fiendhunter_bolts": {
+            "name": "Unholdjägerbolzen"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Lichtversion von Unholdjägerbolzen"
+        },
+        "essence_reaver": {
+            "name": "Essenzräuber"
+        },
+        "radiant_essence_reaver": {
+            "name": "Lichtversion von Essenzräuber"
+        },
+        "endless_hunger": {
+            "name": "Endloser Hunger"
+        },
+        "radiant_endless_hunger": {
+            "name": "Lichtversion von Endloser Hunger"
+        },
+        "banshees_veil": {
+            "name": "Schleier der Todesfee"
+        },
+        "radiant_banshees_veil": {
+            "name": "Lichtversion von Schleier der Todesfee"
+        },
+        "edge_of_night": {
+            "name": "Saum der Nacht"
+        },
+        "radiant_edge_of_night": {
+            "name": "Lichtversion von Saum der Nacht"
+        },
+        "verdant_barrier": {
+            "name": "Tiefgrüne Barriere"
+        },
+        "runaans_hurricane": {
+            "name": "Runaans Wirbelsturm"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Lichtversion von Runaans Wirbelsturm"
+        },
+        "statikk_shiv": {
+            "name": "Statikks Stich"
+        },
+        "radiant_statikk_shiv": {
+            "name": "Lichtversion von Statikks Stich"
+        },
+        "titanic_hydra": {
+            "name": "Titanische Hydra"
+        },
+        "radiant_titanic_hydra": {
+            "name": "Lichtversion von Titanische Hydra"
+        },
+        "hullbreaker": {
+            "name": "Rumpfbrecher"
+        },
+        "radiant_hullbreaker": {
+            "name": "Lichtversion von Rumpfbrecher"
+        },
+        "spirit_stone": {
+            "name": "Geisterstein"
+        },
+        "philosophers_stone": {
+            "name": "Stein des Weisen"
+        },
+        "radiant_philosophers_stone": {
+            "name": "Lichtversion von Stein des Weisen"
+        },
+        "iceborn_gauntlet": {
+            "name": "Eisgeborenen-Handschuh"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Lichtversion von Eisgeborenen-Handschuh"
+        },
+        "moonstone_renewer": {
+            "name": "Mondstein-Erneuerer"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Lichtversion von Mondstein-Erneuerer"
+        },
+        "abyssal_mask": {
+            "name": "Höllenmaske"
+        },
+        "radiant_abyssal_mask": {
+            "name": "Lichtversion von Höllenmaske"
+        },
+        "world_atlas": {
+            "name": "Weltatlas"
+        },
+        "runic_compass": {
+            "name": "Runenkompass"
+        },
+        "solstice_sleigh": {
+            "name": "Sonnwendschlitten"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Lichtversion von Sonnwendschlitten"
+        },
+        "zazzaks_realmspike": {
+            "name": "Zaz'Zaks Weltenstachel"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Lichtversion von Zaz'Zaks Weltenstachel"
+        },
+        "celestial_opposition": {
+            "name": "Himmlischer Widerstand"
+        },
+        "radiant_celestial_opposition": {
+            "name": "Lichtversion von Himmlischer Widerstand"
+        },
+        "dream_maker": {
+            "name": "Traumweber"
+        },
+        "radiant_dream_maker": {
+            "name": "Lichtversion von Traumweber"
+        },
+        "catalyst_of_aeons": {
+            "name": "Katalysator der Äonen"
+        },
+        "rod_of_ages": {
+            "name": "Stab der Zeitalter"
+        },
+        "radiant_rod_of_ages": {
+            "name": "Lichtversion von Stab der Zeitalter"
+        },
+        "mikaels_blessing": {
+            "name": "Mikaels Segen"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Lichtversion von Mikaels Segen"
+        },
+        "force_of_nature": {
+            "name": "Naturgewalt"
+        },
+        "radiant_force_of_nature": {
+            "name": "Lichtversion von Naturgewalt"
+        },
+        "navori_flickerblade": {
+            "name": "Flimmerklinge der Navori"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Lichtversion von Flimmerklinge der Navori"
+        },
+        "madreds_razors": {
+            "name": "Madreds Schnitter"
+        },
+        "hunters_machete": {
+            "name": "Machete des Jägers"
+        },
+        "hunters_talisman": {
+            "name": "Talisman des Jägers"
+        },
+        "philosophers_medallion": {
+            "name": "Medaillon des Weisen"
+        }
+    },
+    "tr": {
+        "ironsword": {
+            "name": "Uzun Kılıç"
+        },
+        "soldiers_longsword": {
+            "name": "Kazma"
+        },
+        "ruinous_blade": {
+            "name": "Vampirî Asa"
+        },
+        "conquerors_greatsword": {
+            "name": "Kanasusamış"
+        },
+        "warlords_final_judgement": {
+            "name": "Işıltılı Kanasusamış"
+        },
+        "dagger": {
+            "name": "Hançer"
+        },
+        "wind_dagger": {
+            "name": "Nişancı Yayı"
+        },
+        "twin_stormblade": {
+            "name": "Coşku"
+        },
+        "thunderclaw": {
+            "name": "Hayalet Dansçı"
+        },
+        "storm_sovereign": {
+            "name": "Işıltılı Hayalet Dansçı"
+        },
+        "steel_armor": {
+            "name": "Dokuma Zırh"
+        },
+        "gatekeepers_armor": {
+            "name": "Zincir Yelek"
+        },
+        "black_knights_heavy_plate": {
+            "name": "Dikenli Yelek"
+        },
+        "eternal_iron_plate": {
+            "name": "Çivili Zırh"
+        },
+        "impregnable_fortress": {
+            "name": "Işıltılı Çivili Zırh"
+        },
+        "mystic_cloak": {
+            "name": "Büyüsavar Pelerin"
+        },
+        "night_hood": {
+            "name": "Negatron Pelerini"
+        },
+        "dusk_raven": {
+            "name": "Hayalet Pelerini"
+        },
+        "souls_edge": {
+            "name": "Ejder Pençesi"
+        },
+        "veil_of_annihilation": {
+            "name": "Işıltılı Ejder Pençesi"
+        },
+        "arcane_crystal": {
+            "name": "Kuvvet Kitabı"
+        },
+        "spirit_crystal": {
+            "name": "İnfilak Değneği"
+        },
+        "staff_of_rapture": {
+            "name": "Kayıp Cilt"
+        },
+        "angels_fang": {
+            "name": "Luden'in Çığlığı"
+        },
+        "prophet_of_the_abyss": {
+            "name": "Işıltılı Luden'in Çığlığı"
+        },
+        "vital_orb": {
+            "name": "Yakut Kristal"
+        },
+        "hardened_heart": {
+            "name": "Alazcevher"
+        },
+        "ring_of_reincarnation": {
+            "name": "Dev Kemeri"
+        },
+        "warmogs_armor": {
+            "name": "Warmog'un Zırhı"
+        },
+        "radiant_warmogs_armor": {
+            "name": "Işıltılı Warmog'un Zırhı"
+        },
+        "hourglass_of_eternity": {
+            "name": "Günateşi Pelerini"
+        },
+        "giants_horn_shard": {
+            "name": "Işıltılı Günateşi Pelerini"
+        },
+        "bf_sword": {
+            "name": "TEK Kılıcı"
+        },
+        "phage": {
+            "name": "Ağırkan"
+        },
+        "haunting_guise": {
+            "name": "Lanetli Maske"
+        },
+        "infinity_edge": {
+            "name": "Ebedi Kılıç"
+        },
+        "radiant_infinity_edge": {
+            "name": "Işıltılı Ebedi Kılıç"
+        },
+        "black_cleaver": {
+            "name": "Kara Balta"
+        },
+        "radiant_black_cleaver": {
+            "name": "Işıltılı Kara Balta"
+        },
+        "bloodletters_curse": {
+            "name": "Kandöken'in Laneti"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Işıltılı Kandöken'in Laneti"
+        },
+        "deathblade": {
+            "name": "Ölüm Kılıcı"
+        },
+        "radiant_deathblade": {
+            "name": "Işıltılı Ölüm Kılıcı"
+        },
+        "deaths_dance": {
+            "name": "Ölümün Dansı"
+        },
+        "radiant_deaths_dance": {
+            "name": "Işıltılı Ölümün Dansı"
+        },
+        "needlessly_large_rod": {
+            "name": "Aşırı Büyük Sopa"
+        },
+        "rabadons_deathcap": {
+            "name": "Rabadon'un Şapkası"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "Işıltılı Rabadon'un Şapkası"
+        },
+        "protectors_vow": {
+            "name": "Muhafızın Adağı"
+        },
+        "radiant_protectors_vow": {
+            "name": "Işıltılı Muhafızın Adağı"
+        },
+        "protoplasm_harness": {
+            "name": "Protoplazma Teçhizatı"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "Işıltılı Protoplazma Teçhizatı"
+        },
+        "frozen_mallet": {
+            "name": "Donmuş Balyoz"
+        },
+        "radiant_frozen_mallet": {
+            "name": "Işıltılı Donmuş Balyoz"
+        },
+        "riftmaker": {
+            "name": "Vadiyaran"
+        },
+        "radiant_riftmaker": {
+            "name": "Işıltılı Vadiyaran"
+        },
+        "shadowflame": {
+            "name": "Gölgealev"
+        },
+        "radiant_shadowflame": {
+            "name": "Işıltılı Gölgealev"
+        },
+        "yun_tal_wildarrows": {
+            "name": "Yun Tal Yabanokları"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Işıltılı Yun Tal Yabanokları"
+        },
+        "unending_despair": {
+            "name": "Sonsuz Çaresizlik"
+        },
+        "radiant_unending_despair": {
+            "name": "Işıltılı Sonsuz Çaresizlik"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "Mahvolmuş Kralın Kılıcı"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "Işıltılı Mahvolmuş Kralın Kılıcı"
+        },
+        "blackfire_torch": {
+            "name": "Siyahateş Meşalesi"
+        },
+        "radiant_blackfire_torch": {
+            "name": "Işıltılı Siyahateş Meşalesi"
+        },
+        "executioners_calling": {
+            "name": "Celladın Çağrısı"
+        },
+        "mortal_reminder": {
+            "name": "Fani Hatıratı"
+        },
+        "radiant_mortal_reminder": {
+            "name": "Işıltılı Fani Hatıratı"
+        },
+        "last_whisper": {
+            "name": "Son Fısıltı"
+        },
+        "lord_dominiks_regards": {
+            "name": "Dominik Efendi'nin Hürmetleri"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Işıltılı Dominik Efendi'nin Hürmetleri"
+        },
+        "experimental_hexplate": {
+            "name": "Deneysel Hexzırh"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "Işıltılı Deneysel Hexzırh"
+        },
+        "nashors_tooth": {
+            "name": "Nashor'un Dişi"
+        },
+        "radiant_nashors_tooth": {
+            "name": "Işıltılı Nashor'un Dişi"
+        },
+        "jaksho_the_protean": {
+            "name": "Şahbaz Jak'Sho"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "Işıltılı Şahbaz Jak'Sho"
+        },
+        "terminus": {
+            "name": "Son Durak"
+        },
+        "radiant_terminus": {
+            "name": "Işıltılı Son Durak"
+        },
+        "spirit_visage": {
+            "name": "Ruh Gömleği"
+        },
+        "radiant_spirit_visage": {
+            "name": "Işıltılı Ruh Gömleği"
+        },
+        "guinsoos_rageblade": {
+            "name": "Guinsoo'nun Hiddeti"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "Işıltılı Guinsoo'nun Hiddeti"
+        },
+        "wits_end": {
+            "name": "Aklın Sonu"
+        },
+        "radiant_wits_end": {
+            "name": "Işıltılı Aklın Sonu"
+        },
+        "kraken_slayer": {
+            "name": "Kraken Katili"
+        },
+        "radiant_kraken_slayer": {
+            "name": "Işıltılı Kraken Katili"
+        },
+        "atmas_reckoning": {
+            "name": "Atma'nın Hesaplaşması"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Işıltılı Atma'nın Hesaplaşması"
+        },
+        "mirage_blade": {
+            "name": "Serap Kılıcı"
+        },
+        "radiant_mirage_blade": {
+            "name": "Işıltılı Serap Kılıcı"
+        },
+        "collector": {
+            "name": "Tahsildar"
+        },
+        "radiant_collector": {
+            "name": "Işıltılı Tahsildar"
+        },
+        "heartsteel": {
+            "name": "Çelikyürek"
+        },
+        "radiant_heartsteel": {
+            "name": "Işıltılı Çelikyürek"
+        },
+        "spear_of_shojin": {
+            "name": "Shojin'in Mızrağı"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "Işıltılı Shojin'in Mızrağı"
+        },
+        "oblivion_orb": {
+            "name": "Bilinmezlik Küresi"
+        },
+        "morellonomicon": {
+            "name": "Morellonomikon"
+        },
+        "radiant_morellonomicon": {
+            "name": "Işıltılı Morellonomikon"
+        },
+        "overlords_bloodmail": {
+            "name": "Savaş Beyinin Kanzırhı"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "Işıltılı Savaş Beyinin Kanzırhı"
+        },
+        "night_harvester": {
+            "name": "Gece Tırpanı"
+        },
+        "radiant_night_harvester": {
+            "name": "Işıltılı Gece Tırpanı"
+        },
+        "hextech_gunblade": {
+            "name": "Hextech Silahkılıç"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "Işıltılı Hextech Silahkılıç"
+        },
+        "rylais_crystal_scepter": {
+            "name": "Rylai'nin Kristal Asası"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Işıltılı Rylai'nin Kristal Asası"
+        },
+        "stormrazor": {
+            "name": "Fırtınabiçen"
+        },
+        "radiant_stormrazor": {
+            "name": "Işıltılı Fırtınabiçen"
+        },
+        "voltaic_cyclosword": {
+            "name": "Elektrikli Devirkılıcı"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "Işıltılı Elektrikli Devirkılıcı"
+        },
+        "diamond_tipped_spear": {
+            "name": "Elmas Uçlu Mızrak"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Işıltılı Elmas Uçlu Mızrak"
+        },
+        "scouts_slingshot": {
+            "name": "İzci Sapanı"
+        },
+        "bandleglass_mirror": {
+            "name": "Bandle Camı Ayna"
+        },
+        "zekes_herald": {
+            "name": "Zeke'nin Ahengi"
+        },
+        "radiant_zekes_herald": {
+            "name": "Işıltılı Zeke'nin Ahengi"
+        },
+        "liandrys_torment": {
+            "name": "Liandry'nin Eziyeti"
+        },
+        "radiant_liandrys_torment": {
+            "name": "Işıltılı Liandry'nin Eziyeti"
+        },
+        "noonquiver": {
+            "name": "Doruk Sadağı"
+        },
+        "blighting_jewel": {
+            "name": "Felaket Mücevheri"
+        },
+        "steel_sigil": {
+            "name": "Çelik Mühür"
+        },
+        "aegis_of_the_legion": {
+            "name": "Ordu Kalkanı"
+        },
+        "void_staff": {
+            "name": "Hiçlik Değneği"
+        },
+        "radiant_void_staff": {
+            "name": "Işıltılı Hiçlik Değneği"
+        },
+        "malignance": {
+            "name": "Habaset"
+        },
+        "radiant_malignance": {
+            "name": "Işıltılı Habaset"
+        },
+        "rite_of_ruin": {
+            "name": "Yıkım Ayini"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Işıltılı Yıkım Ayini"
+        },
+        "glowing_mote": {
+            "name": "Işık Partikülü"
+        },
+        "echoes_of_helia": {
+            "name": "Helia'nın Yankıları"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Işıltılı Helia'nın Yankıları"
+        },
+        "sundered_sky": {
+            "name": "Yarık Gökyüzü"
+        },
+        "radiant_sundered_sky": {
+            "name": "Işıltılı Yarık Gökyüzü"
+        },
+        "sheen": {
+            "name": "Pırıltı"
+        },
+        "trinity_force": {
+            "name": "Üçlü Kuvvet"
+        },
+        "radiant_trinity_force": {
+            "name": "Işıltılı Üçlü Kuvvet"
+        },
+        "frozen_heart": {
+            "name": "Donmuş Yürek"
+        },
+        "radiant_frozen_heart": {
+            "name": "Işıltılı Donmuş Yürek"
+        },
+        "glacial_buckler": {
+            "name": "Buzul Kalkan"
+        },
+        "dusk_and_dawn": {
+            "name": "Gündüz ve Gece"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Işıltılı Gündüz ve Gece"
+        },
+        "bloodsong": {
+            "name": "Kan Şarkısı"
+        },
+        "radiant_bloodsong": {
+            "name": "Işıltılı Kan Şarkısı"
+        },
+        "serrated_dirk": {
+            "name": "Dişli Kama"
+        },
+        "caulfields_warhammer": {
+            "name": "Caulfield'ın Savaş Çekici"
+        },
+        "hubris": {
+            "name": "Kibir"
+        },
+        "radiant_hubris": {
+            "name": "Işıltılı Kibir"
+        },
+        "bastionbreaker": {
+            "name": "Hisaryıkan"
+        },
+        "radiant_bastionbreaker": {
+            "name": "Işıltılı Hisaryıkan"
+        },
+        "serpents_fang": {
+            "name": "Yılan Dişi"
+        },
+        "radiant_serpents_fang": {
+            "name": "Işıltılı Yılan Dişi"
+        },
+        "opportunity": {
+            "name": "Fırsat"
+        },
+        "radiant_opportunity": {
+            "name": "Işıltılı Fırsat"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Demir Solari'nin Broşu"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Işıltılı Demir Solari'nin Broşu"
+        },
+        "dead_mans_plate": {
+            "name": "Ölü Adamın Zırhı"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Işıltılı Ölü Adamın Zırhı"
+        },
+        "winged_moonplate": {
+            "name": "Kanatlı Ayzırhı"
+        },
+        "steraks_gage": {
+            "name": "Sterak'ın Güvencesi"
+        },
+        "radiant_steraks_gage": {
+            "name": "Işıltılı Sterak'ın Güvencesi"
+        },
+        "randuins_omen": {
+            "name": "Randuin'in Alameti"
+        },
+        "radiant_randuins_omen": {
+            "name": "Işıltılı Randuin'in Alameti"
+        },
+        "eclipse": {
+            "name": "Kararma"
+        },
+        "radiant_eclipse": {
+            "name": "Işıltılı Kararma"
+        },
+        "axiom_arc": {
+            "name": "Aksiyom Akımı"
+        },
+        "radiant_axiom_arc": {
+            "name": "Işıltılı Aksiyom Akımı"
+        },
+        "hearthbound_axe": {
+            "name": "Ocakbağlı Baltası"
+        },
+        "feral_flare": {
+            "name": "Yaban Alevi"
+        },
+        "radiant_feral_flare": {
+            "name": "Işıltılı Yaban Alevi"
+        },
+        "forbidden_idol": {
+            "name": "Yasak İdol"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Seher Kılıcı"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Işıltılı Seher Kılıcı"
+        },
+        "ardent_censer": {
+            "name": "Kızgın Buhurdanlık"
+        },
+        "radiant_ardent_censer": {
+            "name": "Işıltılı Kızgın Buhurdanlık"
+        },
+        "grezs_spectral_lantern": {
+            "name": "Grez'in Hayalet Feneri"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Işıltılı Grez'in Hayalet Feneri"
+        },
+        "cloak_of_starry_night": {
+            "name": "Yıldızlı Gece Pelerini"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "Işıltılı Yıldızlı Gece Pelerini"
+        },
+        "hamstringer": {
+            "name": "Köstekleyici"
+        },
+        "radiant_hamstringer": {
+            "name": "Işıltılı Köstekleyici"
+        },
+        "hextech_alternator": {
+            "name": "Hextech Alternatörü"
+        },
+        "fated_ashes": {
+            "name": "Feleğin Külleri"
+        },
+        "stormsurge": {
+            "name": "Yıldırım Asası"
+        },
+        "radiant_stormsurge": {
+            "name": "Işıltılı Yıldırım Asası"
+        },
+        "ravenous_hydra": {
+            "name": "Vahşi Hydra"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Işıltılı Vahşi Hydra"
+        },
+        "bamis_cinder": {
+            "name": "Bami'nin Alevi"
+        },
+        "bandlepipes": {
+            "name": "Bandle Gaydası"
+        },
+        "radiant_bandlepipes": {
+            "name": "Işıltılı Bandle Gaydası"
+        },
+        "tiamat": {
+            "name": "Tiamat"
+        },
+        "seryldas_grudge": {
+            "name": "Serylda'nın Garezi"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Işıltılı Serylda'nın Garezi"
+        },
+        "chemtech_putrifier": {
+            "name": "Kimyasal Çürütücü"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Işıltılı Kimyasal Çürütücü"
+        },
+        "chempunk_chainsword": {
+            "name": "Zaun Zincirkılıcı"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Işıltılı Zaun Zincirkılıcı"
+        },
+        "guardian_angel": {
+            "name": "Koruyucu Melek"
+        },
+        "radiant_guardian_angel": {
+            "name": "Işıltılı Koruyucu Melek"
+        },
+        "boots": {
+            "name": "Çizme"
+        },
+        "berserkers_greaves": {
+            "name": "Savaşçı Çizmeleri"
+        },
+        "boots_of_swiftness": {
+            "name": "Atiklik Çizmeleri"
+        },
+        "gluttonous_greaves": {
+            "name": "Açgözlü Çizmeleri"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Ionia Çizmeleri"
+        },
+        "mercurys_treads": {
+            "name": "Merkür'ün Adımları"
+        },
+        "plated_steelcaps": {
+            "name": "Çelik Kaplamalı Çizme"
+        },
+        "sorcerers_shoes": {
+            "name": "Sihirbaz Pabuçları"
+        },
+        "staff_of_flowing_water": {
+            "name": "Akan Su Asası"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Işıltılı Akan Su Asası"
+        },
+        "immortal_shieldbow": {
+            "name": "Ölümsüz Kalkanyay"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Işıltılı Ölümsüz Kalkanyay"
+        },
+        "lich_bane": {
+            "name": "Lich Boğan"
+        },
+        "radiant_lich_bane": {
+            "name": "Işıltılı Lich Boğan"
+        },
+        "imperial_mandate": {
+            "name": "İmparatorun Fermanı"
+        },
+        "radiant_imperial_mandate": {
+            "name": "Işıltılı İmparatorun Fermanı"
+        },
+        "zhonyas_hourglass": {
+            "name": "Zhonya'nın Kumsaati"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Işıltılı Zhonya'nın Kumsaati"
+        },
+        "seekers_armguard": {
+            "name": "Maceracının Pazubendi"
+        },
+        "hollow_radiance": {
+            "name": "Donuk Işıltı"
+        },
+        "radiant_hollow_radiance": {
+            "name": "Işıltılı Donuk Işıltı"
+        },
+        "cosmic_drive": {
+            "name": "Kozmik Hızlandırıcı"
+        },
+        "radiant_cosmic_drive": {
+            "name": "Işıltılı Kozmik Hızlandırıcı"
+        },
+        "fiendhunter_bolts": {
+            "name": "İblis Avcısı Oku"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Işıltılı İblis Avcısı Oku"
+        },
+        "essence_reaver": {
+            "name": "Canbiçen"
+        },
+        "radiant_essence_reaver": {
+            "name": "Işıltılı Canbiçen"
+        },
+        "endless_hunger": {
+            "name": "Ebedi Açlık"
+        },
+        "radiant_endless_hunger": {
+            "name": "Işıltılı Ebedi Açlık"
+        },
+        "banshees_veil": {
+            "name": "Banshee'nin Duvağı"
+        },
+        "radiant_banshees_veil": {
+            "name": "Işıltılı Banshee'nin Duvağı"
+        },
+        "edge_of_night": {
+            "name": "Gecenin Kıyısı"
+        },
+        "radiant_edge_of_night": {
+            "name": "Işıltılı Gecenin Kıyısı"
+        },
+        "verdant_barrier": {
+            "name": "Yeşil Bariyer"
+        },
+        "runaans_hurricane": {
+            "name": "Runaan'ın Kasırgası"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Işıltılı Runaan'ın Kasırgası"
+        },
+        "statikk_shiv": {
+            "name": "Statikk Hançer"
+        },
+        "radiant_statikk_shiv": {
+            "name": "Işıltılı Statikk Hançer"
+        },
+        "titanic_hydra": {
+            "name": "Haşmetli Hydra"
+        },
+        "radiant_titanic_hydra": {
+            "name": "Işıltılı Haşmetli Hydra"
+        },
+        "hullbreaker": {
+            "name": "Omurgakıran"
+        },
+        "radiant_hullbreaker": {
+            "name": "Işıltılı Omurgakıran"
+        },
+        "spirit_stone": {
+            "name": "Tin Taşı"
+        },
+        "philosophers_stone": {
+            "name": "Felsefe Taşı"
+        },
+        "radiant_philosophers_stone": {
+            "name": "Işıltılı Felsefe Taşı"
+        },
+        "iceborn_gauntlet": {
+            "name": "Buzdoğan Eldiven"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Işıltılı Buzdoğan Eldiven"
+        },
+        "moonstone_renewer": {
+            "name": "Dinçleştirici Aytaşı"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Işıltılı Dinçleştirici Aytaşı"
+        },
+        "abyssal_mask": {
+            "name": "Cehennem Maskesi"
+        },
+        "radiant_abyssal_mask": {
+            "name": "Işıltılı Cehennem Maskesi"
+        },
+        "world_atlas": {
+            "name": "Dünya Atlası"
+        },
+        "runic_compass": {
+            "name": "Rün Pusulası"
+        },
+        "solstice_sleigh": {
+            "name": "Gündönümü Kızağı"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Işıltılı Gündönümü Kızağı"
+        },
+        "zazzaks_realmspike": {
+            "name": "Zaz'Zak'ın Taşkını"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Işıltılı Zaz'Zak'ın Taşkını"
+        },
+        "celestial_opposition": {
+            "name": "Semavi Muhalefet"
+        },
+        "radiant_celestial_opposition": {
+            "name": "Işıltılı Semavi Muhalefet"
+        },
+        "dream_maker": {
+            "name": "Düşgetiren"
+        },
+        "radiant_dream_maker": {
+            "name": "Işıltılı Düşgetiren"
+        },
+        "catalyst_of_aeons": {
+            "name": "Antik Dönüştürücü"
+        },
+        "rod_of_ages": {
+            "name": "Asırlık Sopa"
+        },
+        "radiant_rod_of_ages": {
+            "name": "Işıltılı Asırlık Sopa"
+        },
+        "mikaels_blessing": {
+            "name": "Mikael'in Lütfu"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Işıltılı Mikael'in Lütfu"
+        },
+        "force_of_nature": {
+            "name": "Doğanın Kudreti"
+        },
+        "radiant_force_of_nature": {
+            "name": "Işıltılı Doğanın Kudreti"
+        },
+        "navori_flickerblade": {
+            "name": "Navori Tezbıçağı"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Işıltılı Navori Tezbıçağı"
+        },
+        "madreds_razors": {
+            "name": "Madred'in Pençeleri"
+        },
+        "hunters_machete": {
+            "name": "Avcı Palası"
+        },
+        "hunters_talisman": {
+            "name": "Avcı Tılsımı"
+        },
+        "philosophers_medallion": {
+            "name": "Felsefe Madalyonu"
+        }
+    },
+    "es-ES": {
+        "ironsword": {
+            "name": "Espada larga"
+        },
+        "soldiers_longsword": {
+            "name": "Pico"
+        },
+        "ruinous_blade": {
+            "name": "Cetro vampírico"
+        },
+        "conquerors_greatsword": {
+            "name": "Sanguinaria"
+        },
+        "warlords_final_judgement": {
+            "name": "Sanguinaria radiante"
+        },
+        "dagger": {
+            "name": "Daga"
+        },
+        "wind_dagger": {
+            "name": "Arco curvo"
+        },
+        "twin_stormblade": {
+            "name": "Fervor"
+        },
+        "thunderclaw": {
+            "name": "Bailarín espectral"
+        },
+        "storm_sovereign": {
+            "name": "Bailarín espectral radiante"
+        },
+        "steel_armor": {
+            "name": "Armadura de tela"
+        },
+        "gatekeepers_armor": {
+            "name": "Chaleco de cadenas"
+        },
+        "black_knights_heavy_plate": {
+            "name": "Chaleco de zarzas"
+        },
+        "eternal_iron_plate": {
+            "name": "Malla de espinas"
+        },
+        "impregnable_fortress": {
+            "name": "Malla de espinas radiante"
+        },
+        "mystic_cloak": {
+            "name": "Manto de anulación de magia"
+        },
+        "night_hood": {
+            "name": "Capa negatrón"
+        },
+        "dusk_raven": {
+            "name": "Hábito del espectro"
+        },
+        "souls_edge": {
+            "name": "Garra de dragón"
+        },
+        "veil_of_annihilation": {
+            "name": "Garra de dragón radiante"
+        },
+        "arcane_crystal": {
+            "name": "Tomo amplificador"
+        },
+        "spirit_crystal": {
+            "name": "Vara explosiva"
+        },
+        "staff_of_rapture": {
+            "name": "Capítulo perdido"
+        },
+        "angels_fang": {
+            "name": "Tempestad de Luden"
+        },
+        "prophet_of_the_abyss": {
+            "name": "Tempestad de Luden radiante"
+        },
+        "vital_orb": {
+            "name": "Cristal de rubí"
+        },
+        "hardened_heart": {
+            "name": "Gema avivadora"
+        },
+        "ring_of_reincarnation": {
+            "name": "Cinturón de gigante"
+        },
+        "warmogs_armor": {
+            "name": "Armadura de Warmog"
+        },
+        "radiant_warmogs_armor": {
+            "name": "Armadura de Warmog radiante"
+        },
+        "hourglass_of_eternity": {
+            "name": "Capa de fuego solar"
+        },
+        "giants_horn_shard": {
+            "name": "Capa de fuego solar radiante"
+        },
+        "bf_sword": {
+            "name": "Espadón"
+        },
+        "phage": {
+            "name": "Bacteriófago"
+        },
+        "haunting_guise": {
+            "name": "Disfraz encantado"
+        },
+        "infinity_edge": {
+            "name": "Filo infinito"
+        },
+        "radiant_infinity_edge": {
+            "name": "Filo infinito radiante"
+        },
+        "black_cleaver": {
+            "name": "Cuchilla negra"
+        },
+        "radiant_black_cleaver": {
+            "name": "Cuchilla negra radiante"
+        },
+        "bloodletters_curse": {
+            "name": "Maldición sanguinolenta"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Maldición sanguinolenta radiante"
+        },
+        "deathblade": {
+            "name": "Filo mortal"
+        },
+        "radiant_deathblade": {
+            "name": "Filo mortal radiante"
+        },
+        "deaths_dance": {
+            "name": "Baile de la muerte"
+        },
+        "radiant_deaths_dance": {
+            "name": "Baile de la muerte radiante"
+        },
+        "needlessly_large_rod": {
+            "name": "Vara innecesariamente grande"
+        },
+        "rabadons_deathcap": {
+            "name": "Sombrero mortal de Rabadon"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "Sombrero mortal de Rabadon radiante"
+        },
+        "protectors_vow": {
+            "name": "Promesa del protector"
+        },
+        "radiant_protectors_vow": {
+            "name": "Promesa del protector radiante"
+        },
+        "protoplasm_harness": {
+            "name": "Arnés de protoplasma"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "Arnés de protoplasma radiante"
+        },
+        "frozen_mallet": {
+            "name": "Mazo helado"
+        },
+        "radiant_frozen_mallet": {
+            "name": "Mazo helado radiante"
+        },
+        "riftmaker": {
+            "name": "Creagrietas"
+        },
+        "radiant_riftmaker": {
+            "name": "Creagrietas radiante"
+        },
+        "shadowflame": {
+            "name": "Llamasombría"
+        },
+        "radiant_shadowflame": {
+            "name": "Llamasombría radiante"
+        },
+        "yun_tal_wildarrows": {
+            "name": "Flechas de los Yun Tal"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Flechas de los Yun Tal radiante"
+        },
+        "unending_despair": {
+            "name": "Desesperanza eterna"
+        },
+        "radiant_unending_despair": {
+            "name": "Desesperanza eterna radiante"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "Hoja del rey arruinado"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "Hoja del rey arruinado radiante"
+        },
+        "blackfire_torch": {
+            "name": "Antorcha de fuego negro"
+        },
+        "radiant_blackfire_torch": {
+            "name": "Antorcha de fuego negro radiante"
+        },
+        "executioners_calling": {
+            "name": "Llamada del verdugo"
+        },
+        "mortal_reminder": {
+            "name": "Recordatorio letal"
+        },
+        "radiant_mortal_reminder": {
+            "name": "Recordatorio letal radiante"
+        },
+        "last_whisper": {
+            "name": "Últimas palabras"
+        },
+        "lord_dominiks_regards": {
+            "name": "Recuerdos de lord Dominik"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Recuerdos de lord Dominik radiante"
+        },
+        "experimental_hexplate": {
+            "name": "Experimento de hexarmadura"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "Experimento de hexarmadura radiante"
+        },
+        "nashors_tooth": {
+            "name": "Diente de Nashor"
+        },
+        "radiant_nashors_tooth": {
+            "name": "Diente de Nashor radiante"
+        },
+        "jaksho_the_protean": {
+            "name": "Jak'Sho el Proteico"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "Jak'Sho el Proteico radiante"
+        },
+        "terminus": {
+            "name": "El final"
+        },
+        "radiant_terminus": {
+            "name": "Final radiante"
+        },
+        "spirit_visage": {
+            "name": "Rostro espiritual"
+        },
+        "radiant_spirit_visage": {
+            "name": "Rostro espiritual radiante"
+        },
+        "guinsoos_rageblade": {
+            "name": "Hoja de furia de Guinsoo"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "Hoja de furia de Guinsoo radiante"
+        },
+        "wits_end": {
+            "name": "Final del ingenio"
+        },
+        "radiant_wits_end": {
+            "name": "Final del ingenio radiante"
+        },
+        "kraken_slayer": {
+            "name": "Verdugo de krakens"
+        },
+        "radiant_kraken_slayer": {
+            "name": "Verdugo de krakens radiante"
+        },
+        "atmas_reckoning": {
+            "name": "Juicio de Atma"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Juicio de Atma radiante"
+        },
+        "mirage_blade": {
+            "name": "Hoja espejismo"
+        },
+        "radiant_mirage_blade": {
+            "name": "Hoja espejismo radiante"
+        },
+        "collector": {
+            "name": "Recaudadora"
+        },
+        "radiant_collector": {
+            "name": "Recaudadora radiante"
+        },
+        "heartsteel": {
+            "name": "Corazón de acero"
+        },
+        "radiant_heartsteel": {
+            "name": "Corazón de acero radiante"
+        },
+        "spear_of_shojin": {
+            "name": "Lanza de Shojin"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "Lanza de Shojin radiante"
+        },
+        "oblivion_orb": {
+            "name": "Orbe del olvido"
+        },
+        "morellonomicon": {
+            "name": "Morellonomicón"
+        },
+        "radiant_morellonomicon": {
+            "name": "Morellonomicón radiante"
+        },
+        "overlords_bloodmail": {
+            "name": "Sangría del soberano"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "Sangría del soberano radiante"
+        },
+        "night_harvester": {
+            "name": "Cosechador nocturno"
+        },
+        "radiant_night_harvester": {
+            "name": "Cosechador nocturno radiante"
+        },
+        "hextech_gunblade": {
+            "name": "Sable-pistola hextech"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "Sable-pistola hextech radiante"
+        },
+        "rylais_crystal_scepter": {
+            "name": "Cetro de cristal de Rylai"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Cetro de cristal de Rylai radiante"
+        },
+        "stormrazor": {
+            "name": "Navaja de asalto"
+        },
+        "radiant_stormrazor": {
+            "name": "Navaja de asalto radiante"
+        },
+        "voltaic_cyclosword": {
+            "name": "Espada ciclovoltaica"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "Espada ciclovoltaica radiante"
+        },
+        "diamond_tipped_spear": {
+            "name": "Lanza de punta de diamante"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Lanza de punta de diamante radiante"
+        },
+        "scouts_slingshot": {
+            "name": "Honda de explorador"
+        },
+        "bandleglass_mirror": {
+            "name": "Espejo de cristal de Bandle"
+        },
+        "zekes_herald": {
+            "name": "Convergencia de Zeke"
+        },
+        "radiant_zekes_herald": {
+            "name": "Convergencia de Zeke radiante"
+        },
+        "liandrys_torment": {
+            "name": "Tormento de Liandry"
+        },
+        "radiant_liandrys_torment": {
+            "name": "Tormento de Liandry radiante"
+        },
+        "noonquiver": {
+            "name": "Carcaj del mediodía"
+        },
+        "blighting_jewel": {
+            "name": "Joya de la plaga"
+        },
+        "steel_sigil": {
+            "name": "Sello de acero"
+        },
+        "aegis_of_the_legion": {
+            "name": "Protección de la legión"
+        },
+        "void_staff": {
+            "name": "Bastón del Vacío"
+        },
+        "radiant_void_staff": {
+            "name": "Bastón del Vacío radiante"
+        },
+        "malignance": {
+            "name": "Malignidad"
+        },
+        "radiant_malignance": {
+            "name": "Malignidad radiante"
+        },
+        "rite_of_ruin": {
+            "name": "Rito de la ruina"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Rito de la ruina radiante"
+        },
+        "glowing_mote": {
+            "name": "Mota brillante"
+        },
+        "echoes_of_helia": {
+            "name": "Ecos de Helia"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Ecos de Helia radiante"
+        },
+        "sundered_sky": {
+            "name": "Firmamento desgarrado"
+        },
+        "radiant_sundered_sky": {
+            "name": "Firmamento desgarrado radiante"
+        },
+        "sheen": {
+            "name": "Brillo"
+        },
+        "trinity_force": {
+            "name": "Fuerza de trinidad"
+        },
+        "radiant_trinity_force": {
+            "name": "Fuerza de trinidad radiante"
+        },
+        "frozen_heart": {
+            "name": "Corazón de hielo"
+        },
+        "radiant_frozen_heart": {
+            "name": "Corazón de hielo radiante"
+        },
+        "glacial_buckler": {
+            "name": "Broquel glacial"
+        },
+        "dusk_and_dawn": {
+            "name": "Amanecer y anochecer"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Amanecer y anochecer radiante"
+        },
+        "bloodsong": {
+            "name": "Tonada sanguina"
+        },
+        "radiant_bloodsong": {
+            "name": "Tonada sanguina radiante"
+        },
+        "serrated_dirk": {
+            "name": "Daga dentada"
+        },
+        "caulfields_warhammer": {
+            "name": "Martillo de guerra de Caulfield"
+        },
+        "hubris": {
+            "name": "Soberbia"
+        },
+        "radiant_hubris": {
+            "name": "Soberbia radiante"
+        },
+        "bastionbreaker": {
+            "name": "Quiebrabastiones"
+        },
+        "radiant_bastionbreaker": {
+            "name": "Quiebrabastiones radiante"
+        },
+        "serpents_fang": {
+            "name": "Colmillo de serpiente"
+        },
+        "radiant_serpents_fang": {
+            "name": "Colmillo de serpiente radiante"
+        },
+        "opportunity": {
+            "name": "Oportunidades"
+        },
+        "radiant_opportunity": {
+            "name": "Oportunidades radiante"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Medallón de los Solari de Hierro"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Medallón de los Solari de Hierro radiante"
+        },
+        "dead_mans_plate": {
+            "name": "Coraza del muerto"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Coraza del muerto radiante"
+        },
+        "winged_moonplate": {
+            "name": "Armadura lunar alada"
+        },
+        "steraks_gage": {
+            "name": "Calibrador de Sterak"
+        },
+        "radiant_steraks_gage": {
+            "name": "Calibrador de Sterak radiante"
+        },
+        "randuins_omen": {
+            "name": "Presagio de Randuin"
+        },
+        "radiant_randuins_omen": {
+            "name": "Presagio de Randuin radiante"
+        },
+        "eclipse": {
+            "name": "Eclipse"
+        },
+        "radiant_eclipse": {
+            "name": "Eclipse radiante"
+        },
+        "axiom_arc": {
+            "name": "Arco axiomático"
+        },
+        "radiant_axiom_arc": {
+            "name": "Arco axiomático radiante"
+        },
+        "hearthbound_axe": {
+            "name": "Hacha hogareña"
+        },
+        "feral_flare": {
+            "name": "Llamarada salvaje"
+        },
+        "radiant_feral_flare": {
+            "name": "Llamarada salvaje radiante"
+        },
+        "forbidden_idol": {
+            "name": "Ídolo prohibido"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Espada del amanecer floreciente"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Espada del amanecer floreciente radiante"
+        },
+        "ardent_censer": {
+            "name": "Incensario ardiente"
+        },
+        "radiant_ardent_censer": {
+            "name": "Incensario ardiente radiante"
+        },
+        "grezs_spectral_lantern": {
+            "name": "Linterna Espectral de Grez"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Linterna Espectral de Grez radiante"
+        },
+        "cloak_of_starry_night": {
+            "name": "Capa de la noche estrellada"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "Capa de la noche estrellada radiante"
+        },
+        "hamstringer": {
+            "name": "Quematalones"
+        },
+        "radiant_hamstringer": {
+            "name": "Quematalones radiante"
+        },
+        "hextech_alternator": {
+            "name": "Alternador hextech"
+        },
+        "fated_ashes": {
+            "name": "Cenizas predestinadas"
+        },
+        "stormsurge": {
+            "name": "Sobrecarga tormentosa"
+        },
+        "radiant_stormsurge": {
+            "name": "Sobrecarga tormentosa radiante"
+        },
+        "ravenous_hydra": {
+            "name": "Hidra voraz"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Hidra voraz radiante"
+        },
+        "bamis_cinder": {
+            "name": "Rescoldo de Bami"
+        },
+        "bandlepipes": {
+            "name": "Bandlemusa"
+        },
+        "radiant_bandlepipes": {
+            "name": "Bandlemusa radiante"
+        },
+        "tiamat": {
+            "name": "Tiamat"
+        },
+        "seryldas_grudge": {
+            "name": "Rencor de Serylda"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Rencor de Serylda radiante"
+        },
+        "chemtech_putrifier": {
+            "name": "Putrificador tecnoquímico"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Putrificador tecnoquímico radiante"
+        },
+        "chempunk_chainsword": {
+            "name": "Mecanoespada punki"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Mecanoespada punki radiante"
+        },
+        "guardian_angel": {
+            "name": "Ángel de la guarda"
+        },
+        "radiant_guardian_angel": {
+            "name": "Ángel de la guarda radiante"
+        },
+        "boots": {
+            "name": "Botas"
+        },
+        "berserkers_greaves": {
+            "name": "Grebas de berserker"
+        },
+        "boots_of_swiftness": {
+            "name": "Botas de rapidez"
+        },
+        "gluttonous_greaves": {
+            "name": "Grebas codiciosas"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Botas jonias de la lucidez"
+        },
+        "mercurys_treads": {
+            "name": "Botas de mercurio"
+        },
+        "plated_steelcaps": {
+            "name": "Botas blindadas"
+        },
+        "sorcerers_shoes": {
+            "name": "Botas de hechicero"
+        },
+        "staff_of_flowing_water": {
+            "name": "Bastón de aguas fluidas"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Bastón de aguas fluidas radiante"
+        },
+        "immortal_shieldbow": {
+            "name": "Arcoescudo inmortal"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Arcoescudo inmortal radiante"
+        },
+        "lich_bane": {
+            "name": "Perdición del liche"
+        },
+        "radiant_lich_bane": {
+            "name": "Perdición del liche radiante"
+        },
+        "imperial_mandate": {
+            "name": "Mandato imperial"
+        },
+        "radiant_imperial_mandate": {
+            "name": "Mandato imperial radiante"
+        },
+        "zhonyas_hourglass": {
+            "name": "Reloj de arena de Zhonya"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Reloj de arena de Zhonya radiante"
+        },
+        "seekers_armguard": {
+            "name": "Brazalete de la buscadora"
+        },
+        "hollow_radiance": {
+            "name": "Fulgor vano"
+        },
+        "radiant_hollow_radiance": {
+            "name": "Fulgor vano radiante"
+        },
+        "cosmic_drive": {
+            "name": "Impulso cósmico"
+        },
+        "radiant_cosmic_drive": {
+            "name": "Impulso cósmico radiante"
+        },
+        "fiendhunter_bolts": {
+            "name": "Dardos rastreademonios"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Dardos rastreademonios radiante"
+        },
+        "essence_reaver": {
+            "name": "Segador de esencia"
+        },
+        "radiant_essence_reaver": {
+            "name": "Segador de esencia radiante"
+        },
+        "endless_hunger": {
+            "name": "Hambre insaciable"
+        },
+        "radiant_endless_hunger": {
+            "name": "Hambre insaciable radiante"
+        },
+        "banshees_veil": {
+            "name": "Velo del hada de la muerte"
+        },
+        "radiant_banshees_veil": {
+            "name": "Velo del hada de la muerte radiante"
+        },
+        "edge_of_night": {
+            "name": "Filo de la noche"
+        },
+        "radiant_edge_of_night": {
+            "name": "Filo de la noche radiante"
+        },
+        "verdant_barrier": {
+            "name": "Barrera frondosa"
+        },
+        "runaans_hurricane": {
+            "name": "Huracán de Runaan"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Huracán de Runaan radiante"
+        },
+        "statikk_shiv": {
+            "name": "Puñal de Statikk"
+        },
+        "radiant_statikk_shiv": {
+            "name": "Puñal de Statikk radiante"
+        },
+        "titanic_hydra": {
+            "name": "Hidra titánica"
+        },
+        "radiant_titanic_hydra": {
+            "name": "Hidra titánica radiante"
+        },
+        "hullbreaker": {
+            "name": "Rompecascos"
+        },
+        "radiant_hullbreaker": {
+            "name": "Rompecascos radiante"
+        },
+        "spirit_stone": {
+            "name": "Piedra espiritual"
+        },
+        "philosophers_stone": {
+            "name": "Piedra filosofal"
+        },
+        "radiant_philosophers_stone": {
+            "name": "Piedra filosofal radiante"
+        },
+        "iceborn_gauntlet": {
+            "name": "Guantelete de hielo"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Guantelete de hielo radiante"
+        },
+        "moonstone_renewer": {
+            "name": "Renovación de piedra lunar"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Renovación de piedra lunar radiante"
+        },
+        "abyssal_mask": {
+            "name": "Máscara abisal"
+        },
+        "radiant_abyssal_mask": {
+            "name": "Máscara abisal radiante"
+        },
+        "world_atlas": {
+            "name": "Atlas mundial"
+        },
+        "runic_compass": {
+            "name": "Brújula rúnica"
+        },
+        "solstice_sleigh": {
+            "name": "Trineo del solsticio"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Trineo del solsticio radiante"
+        },
+        "zazzaks_realmspike": {
+            "name": "Perforaplanos de Zaz'Zak"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Perforaplanos de Zaz'Zak radiante"
+        },
+        "celestial_opposition": {
+            "name": "Detracción celestial"
+        },
+        "radiant_celestial_opposition": {
+            "name": "Detracción celestial radiante"
+        },
+        "dream_maker": {
+            "name": "Tejesueños"
+        },
+        "radiant_dream_maker": {
+            "name": "Tejesueños radiante"
+        },
+        "catalyst_of_aeons": {
+            "name": "Catalizador de eones"
+        },
+        "rod_of_ages": {
+            "name": "Vara de las edades"
+        },
+        "radiant_rod_of_ages": {
+            "name": "Vara de las edades radiante"
+        },
+        "mikaels_blessing": {
+            "name": "Bendición de Mikael"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Bendición de Mikael radiante"
+        },
+        "force_of_nature": {
+            "name": "Fuerza de la naturaleza"
+        },
+        "radiant_force_of_nature": {
+            "name": "Fuerza de la naturaleza radiante"
+        },
+        "navori_flickerblade": {
+            "name": "Filofugaz de Navori"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Filofugaz de Navori radiante"
+        },
+        "madreds_razors": {
+            "name": "Navajas de Madred"
+        },
+        "hunters_machete": {
+            "name": "Machete del cazador"
+        },
+        "hunters_talisman": {
+            "name": "Talismán del cazador"
+        },
+        "philosophers_medallion": {
+            "name": "Medallón filosofal"
+        }
+    },
+    "fr": {
+        "ironsword": {
+            "name": "Épée longue"
+        },
+        "soldiers_longsword": {
+            "name": "Pioche"
+        },
+        "ruinous_blade": {
+            "name": "Sceptre vampirique"
+        },
+        "conquerors_greatsword": {
+            "name": "Soif-de-sang"
+        },
+        "warlords_final_judgement": {
+            "name": "Soif-de-sang de la lumière"
+        },
+        "dagger": {
+            "name": "Dague"
+        },
+        "wind_dagger": {
+            "name": "Arc courbe"
+        },
+        "twin_stormblade": {
+            "name": "Zèle"
+        },
+        "thunderclaw": {
+            "name": "Danseur fantôme"
+        },
+        "storm_sovereign": {
+            "name": "Danseur fantôme de la lumière"
+        },
+        "steel_armor": {
+            "name": "Armure d'étoffe"
+        },
+        "gatekeepers_armor": {
+            "name": "Cotte de mailles"
+        },
+        "black_knights_heavy_plate": {
+            "name": "Armure roncière"
+        },
+        "eternal_iron_plate": {
+            "name": "Cotte épineuse"
+        },
+        "impregnable_fortress": {
+            "name": "Cotte épineuse de la lumière"
+        },
+        "mystic_cloak": {
+            "name": "Cape de néant"
+        },
+        "night_hood": {
+            "name": "Manteau de Négatron"
+        },
+        "dusk_raven": {
+            "name": "Manteau de spectre"
+        },
+        "souls_edge": {
+            "name": "Griffe de dragon"
+        },
+        "veil_of_annihilation": {
+            "name": "Griffe de dragon de la lumière"
+        },
+        "arcane_crystal": {
+            "name": "Tome d'amplification"
+        },
+        "spirit_crystal": {
+            "name": "Baguette explosive"
+        },
+        "staff_of_rapture": {
+            "name": "Chapitre perdu"
+        },
+        "angels_fang": {
+            "name": "Tempête de Luden"
+        },
+        "prophet_of_the_abyss": {
+            "name": "Tempête de Luden de la lumière"
+        },
+        "vital_orb": {
+            "name": "Cristal de rubis"
+        },
+        "hardened_heart": {
+            "name": "Gemme exaltante"
+        },
+        "ring_of_reincarnation": {
+            "name": "Ceinture du géant"
+        },
+        "warmogs_armor": {
+            "name": "Armure de Warmog"
+        },
+        "radiant_warmogs_armor": {
+            "name": "Armure de Warmog de la lumière"
+        },
+        "hourglass_of_eternity": {
+            "name": "Cape solaire"
+        },
+        "giants_horn_shard": {
+            "name": "Cape solaire de la lumière"
+        },
+        "bf_sword": {
+            "name": "BF Glaive"
+        },
+        "phage": {
+            "name": "Phage"
+        },
+        "haunting_guise": {
+            "name": "Déguisement hanté"
+        },
+        "infinity_edge": {
+            "name": "Lame d'infini"
+        },
+        "radiant_infinity_edge": {
+            "name": "Lame d'infini de la lumière"
+        },
+        "black_cleaver": {
+            "name": "Couperet noir"
+        },
+        "radiant_black_cleaver": {
+            "name": "Couperet noir de la lumière"
+        },
+        "bloodletters_curse": {
+            "name": "Malédiction du sanguinaire"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Malédiction du sanguinaire de la lumière"
+        },
+        "deathblade": {
+            "name": "Lame funeste"
+        },
+        "radiant_deathblade": {
+            "name": "Lame funeste de la lumière"
+        },
+        "deaths_dance": {
+            "name": "Danse de la mort"
+        },
+        "radiant_deaths_dance": {
+            "name": "Danse de la mort de la lumière"
+        },
+        "needlessly_large_rod": {
+            "name": "Baguette trop grosse"
+        },
+        "rabadons_deathcap": {
+            "name": "Coiffe de Rabadon"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "Coiffe de Rabadon de la lumière"
+        },
+        "protectors_vow": {
+            "name": "Vœu du protecteur"
+        },
+        "radiant_protectors_vow": {
+            "name": "Vœu du protecteur de la lumière"
+        },
+        "protoplasm_harness": {
+            "name": "Harnais protoplasmique"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "Harnais protoplasmique de la lumière"
+        },
+        "frozen_mallet": {
+            "name": "Maillet gelé"
+        },
+        "radiant_frozen_mallet": {
+            "name": "Maillet gelé de la lumière"
+        },
+        "riftmaker": {
+            "name": "Créateur de failles"
+        },
+        "radiant_riftmaker": {
+            "name": "Créateur de failles de la lumière"
+        },
+        "shadowflame": {
+            "name": "Flamme-ombre"
+        },
+        "radiant_shadowflame": {
+            "name": "Flamme-ombre de la lumière"
+        },
+        "yun_tal_wildarrows": {
+            "name": "Flèches des Yun Tal"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Flèches des Yun Tal de la lumière"
+        },
+        "unending_despair": {
+            "name": "Désespoir infini"
+        },
+        "radiant_unending_despair": {
+            "name": "Désespoir infini de la lumière"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "Lame du roi déchu"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "Lame du roi déchu de la lumière"
+        },
+        "blackfire_torch": {
+            "name": "Torche noire"
+        },
+        "radiant_blackfire_torch": {
+            "name": "Torche noire de la lumière"
+        },
+        "executioners_calling": {
+            "name": "Marque du bourreau"
+        },
+        "mortal_reminder": {
+            "name": "Rappel mortel"
+        },
+        "radiant_mortal_reminder": {
+            "name": "Rappel mortel de la lumière"
+        },
+        "last_whisper": {
+            "name": "Dernier souffle"
+        },
+        "lord_dominiks_regards": {
+            "name": "Salutations de Dominik"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Salutations de Dominik de la lumière"
+        },
+        "experimental_hexplate": {
+            "name": "Hexplaque expérimentale"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "Hexplaque expérimentale de la lumière"
+        },
+        "nashors_tooth": {
+            "name": "Dent de Nashor"
+        },
+        "radiant_nashors_tooth": {
+            "name": "Dent de Nashor de la lumière"
+        },
+        "jaksho_the_protean": {
+            "name": "Jak'Sho, le Protéiforme"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "Jak'Sho, le Protéiforme de la lumière"
+        },
+        "terminus": {
+            "name": "Terminus"
+        },
+        "radiant_terminus": {
+            "name": "Terminus de la lumière"
+        },
+        "spirit_visage": {
+            "name": "Visage spirituel"
+        },
+        "radiant_spirit_visage": {
+            "name": "Visage spirituel de la lumière"
+        },
+        "guinsoos_rageblade": {
+            "name": "Lame enragée de Guinsoo"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "Lame enragée de Guinsoo de la lumière"
+        },
+        "wits_end": {
+            "name": "Au bout du rouleau"
+        },
+        "radiant_wits_end": {
+            "name": "Au bout du rouleau de la lumière"
+        },
+        "kraken_slayer": {
+            "name": "Tueur de krakens"
+        },
+        "radiant_kraken_slayer": {
+            "name": "Tueur de krakens de la lumière"
+        },
+        "atmas_reckoning": {
+            "name": "Jugement d'Atma"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Jugement d'Atma de la lumière"
+        },
+        "mirage_blade": {
+            "name": "Lame des mirages"
+        },
+        "radiant_mirage_blade": {
+            "name": "Lame des mirages de la lumière"
+        },
+        "collector": {
+            "name": "Percepteur"
+        },
+        "radiant_collector": {
+            "name": "Percepteur de la lumière"
+        },
+        "heartsteel": {
+            "name": "Cœuracier"
+        },
+        "radiant_heartsteel": {
+            "name": "Cœuracier de la lumière"
+        },
+        "spear_of_shojin": {
+            "name": "Lance de Shojin"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "Lance de Shojin de la lumière"
+        },
+        "oblivion_orb": {
+            "name": "Orbe de l'oubli"
+        },
+        "morellonomicon": {
+            "name": "Morellonomicon"
+        },
+        "radiant_morellonomicon": {
+            "name": "Morellonomicon de la lumière"
+        },
+        "overlords_bloodmail": {
+            "name": "Armure sanguine"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "Armure sanguine de la lumière"
+        },
+        "night_harvester": {
+            "name": "Moissonneur nocturne"
+        },
+        "radiant_night_harvester": {
+            "name": "Moissonneur nocturne de la lumière"
+        },
+        "hextech_gunblade": {
+            "name": "Pistolame Hextech"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "Pistolame Hextech de la lumière"
+        },
+        "rylais_crystal_scepter": {
+            "name": "Sceptre de Rylai"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Sceptre de Rylai de la lumière"
+        },
+        "stormrazor": {
+            "name": "Lame tempête"
+        },
+        "radiant_stormrazor": {
+            "name": "Lame tempête de la lumière"
+        },
+        "voltaic_cyclosword": {
+            "name": "Cyclosabre voltaïque"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "Cyclosabre voltaïque de la lumière"
+        },
+        "diamond_tipped_spear": {
+            "name": "Lance de diamant"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Lance de diamant de la lumière"
+        },
+        "scouts_slingshot": {
+            "name": "Fronde de l'éclaireur"
+        },
+        "bandleglass_mirror": {
+            "name": "Miroir en verre de Bandle"
+        },
+        "zekes_herald": {
+            "name": "Convergence de Zeke"
+        },
+        "radiant_zekes_herald": {
+            "name": "Convergence de Zeke de la lumière"
+        },
+        "liandrys_torment": {
+            "name": "Tourment de Liandry"
+        },
+        "radiant_liandrys_torment": {
+            "name": "Tourment de Liandry de la lumière"
+        },
+        "noonquiver": {
+            "name": "Carquois zénithien"
+        },
+        "blighting_jewel": {
+            "name": "Joyau putréfiant"
+        },
+        "steel_sigil": {
+            "name": "Sceau d'acier"
+        },
+        "aegis_of_the_legion": {
+            "name": "Égide de la légion"
+        },
+        "void_staff": {
+            "name": "Bâton du vide"
+        },
+        "radiant_void_staff": {
+            "name": "Bâton du vide de la lumière"
+        },
+        "malignance": {
+            "name": "Malfaisance"
+        },
+        "radiant_malignance": {
+            "name": "Malfaisance de la lumière"
+        },
+        "rite_of_ruin": {
+            "name": "Rite des ruines"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Rite des ruines de la lumière"
+        },
+        "glowing_mote": {
+            "name": "Poussière luisante"
+        },
+        "echoes_of_helia": {
+            "name": "Échos d'Helia"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Échos d'Helia de la lumière"
+        },
+        "sundered_sky": {
+            "name": "Ciel éventré"
+        },
+        "radiant_sundered_sky": {
+            "name": "Ciel éventré de la lumière"
+        },
+        "sheen": {
+            "name": "Brillance"
+        },
+        "trinity_force": {
+            "name": "Force de la trinité"
+        },
+        "radiant_trinity_force": {
+            "name": "Force de la trinité de la lumière"
+        },
+        "frozen_heart": {
+            "name": "Cœur gelé"
+        },
+        "radiant_frozen_heart": {
+            "name": "Cœur gelé de la lumière"
+        },
+        "glacial_buckler": {
+            "name": "Bouclier glacial"
+        },
+        "dusk_and_dawn": {
+            "name": "Aube et crépuscule"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Aube et crépuscule de la lumière"
+        },
+        "bloodsong": {
+            "name": "Mélodie du sang"
+        },
+        "radiant_bloodsong": {
+            "name": "Mélodie du sang de la lumière"
+        },
+        "serrated_dirk": {
+            "name": "Dague dentelée"
+        },
+        "caulfields_warhammer": {
+            "name": "Marteau de Caulfield"
+        },
+        "hubris": {
+            "name": "Orgueil"
+        },
+        "radiant_hubris": {
+            "name": "Orgueil de la lumière"
+        },
+        "bastionbreaker": {
+            "name": "Briseur de bastion"
+        },
+        "radiant_bastionbreaker": {
+            "name": "Briseur de bastion de la lumière"
+        },
+        "serpents_fang": {
+            "name": "Crochet de serpent"
+        },
+        "radiant_serpents_fang": {
+            "name": "Crochet de serpent de la lumière"
+        },
+        "opportunity": {
+            "name": "Opportunité"
+        },
+        "radiant_opportunity": {
+            "name": "Opportunité de la lumière"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Médaillon de l'Iron Solari"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Médaillon de l'Iron Solari de la lumière"
+        },
+        "dead_mans_plate": {
+            "name": "Plaque du mort"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Plaque du mort de la lumière"
+        },
+        "winged_moonplate": {
+            "name": "Plaque de lune ailée"
+        },
+        "steraks_gage": {
+            "name": "Gage de Sterak"
+        },
+        "radiant_steraks_gage": {
+            "name": "Gage de Sterak de la lumière"
+        },
+        "randuins_omen": {
+            "name": "Présage de Randuin"
+        },
+        "radiant_randuins_omen": {
+            "name": "Présage de Randuin de la lumière"
+        },
+        "eclipse": {
+            "name": "Éclipse"
+        },
+        "radiant_eclipse": {
+            "name": "Éclipse de la lumière"
+        },
+        "axiom_arc": {
+            "name": "Arc axiomatique"
+        },
+        "radiant_axiom_arc": {
+            "name": "Arc axiomatique de la lumière"
+        },
+        "hearthbound_axe": {
+            "name": "Hache d'Âtrinsèque"
+        },
+        "feral_flare": {
+            "name": "Flamme sauvage"
+        },
+        "radiant_feral_flare": {
+            "name": "Flamme sauvage de la lumière"
+        },
+        "forbidden_idol": {
+            "name": "Idole interdite"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Épée de l'aube"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Épée de l'aube de la lumière"
+        },
+        "ardent_censer": {
+            "name": "Encensoir ardent"
+        },
+        "radiant_ardent_censer": {
+            "name": "Encensoir ardent de la lumière"
+        },
+        "grezs_spectral_lantern": {
+            "name": "Lanterne spectrale de Grez"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Lanterne spectrale de Grez de la lumière"
+        },
+        "cloak_of_starry_night": {
+            "name": "Manteau de nuit étoilée"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "Manteau de nuit étoilée de la lumière"
+        },
+        "hamstringer": {
+            "name": "Coupe-jarrets"
+        },
+        "radiant_hamstringer": {
+            "name": "Coupe-jarrets de la lumière"
+        },
+        "hextech_alternator": {
+            "name": "Alternateur Hextech"
+        },
+        "fated_ashes": {
+            "name": "Cendres fatidiques"
+        },
+        "stormsurge": {
+            "name": "Onde orageuse"
+        },
+        "radiant_stormsurge": {
+            "name": "Onde orageuse de la lumière"
+        },
+        "ravenous_hydra": {
+            "name": "Hydre vorace"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Hydre vorace de la lumière"
+        },
+        "bamis_cinder": {
+            "name": "Cendres de Bami"
+        },
+        "bandlepipes": {
+            "name": "Flûtes de Bandle"
+        },
+        "radiant_bandlepipes": {
+            "name": "Flûtes de Bandle de la lumière"
+        },
+        "tiamat": {
+            "name": "Tiamat"
+        },
+        "seryldas_grudge": {
+            "name": "Rancune de Serylda"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Rancune de Serylda de la lumière"
+        },
+        "chemtech_putrifier": {
+            "name": "Putrificateur techno-chimique"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Putrificateur techno-chimique de la lumière"
+        },
+        "chempunk_chainsword": {
+            "name": "Épée dentelée chimico-punk"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Épée dentelée chimico-punk de la lumière"
+        },
+        "guardian_angel": {
+            "name": "Ange gardien"
+        },
+        "radiant_guardian_angel": {
+            "name": "Ange gardien de la lumière"
+        },
+        "boots": {
+            "name": "Bottes"
+        },
+        "berserkers_greaves": {
+            "name": "Jambières du berzerker"
+        },
+        "boots_of_swiftness": {
+            "name": "Bottes de célérité"
+        },
+        "gluttonous_greaves": {
+            "name": "Jambières gloutonnes"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Bottes de lucidité"
+        },
+        "mercurys_treads": {
+            "name": "Sandales de Mercure"
+        },
+        "plated_steelcaps": {
+            "name": "Coques en acier"
+        },
+        "sorcerers_shoes": {
+            "name": "Chaussures de sorcier"
+        },
+        "staff_of_flowing_water": {
+            "name": "Bâton des flots"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Bâton des flots de la lumière"
+        },
+        "immortal_shieldbow": {
+            "name": "Arc-bouclier immortel"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Arc-bouclier immortel de la lumière"
+        },
+        "lich_bane": {
+            "name": "Fléau de liche"
+        },
+        "radiant_lich_bane": {
+            "name": "Fléau de liche de la lumière"
+        },
+        "imperial_mandate": {
+            "name": "Mandat impérial"
+        },
+        "radiant_imperial_mandate": {
+            "name": "Mandat impérial de la lumière"
+        },
+        "zhonyas_hourglass": {
+            "name": "Sablier de Zhonya"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Sablier de Zhonya de la lumière"
+        },
+        "seekers_armguard": {
+            "name": "Protège-bras du savant"
+        },
+        "hollow_radiance": {
+            "name": "Rayonnement du vide"
+        },
+        "radiant_hollow_radiance": {
+            "name": "Rayonnement du vide de la lumière"
+        },
+        "cosmic_drive": {
+            "name": "Volonté cosmique"
+        },
+        "radiant_cosmic_drive": {
+            "name": "Volonté cosmique de la lumière"
+        },
+        "fiendhunter_bolts": {
+            "name": "Chasseur de monstres"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Chasseur de monstres de la lumière"
+        },
+        "essence_reaver": {
+            "name": "Faux spectrale"
+        },
+        "radiant_essence_reaver": {
+            "name": "Faux spectrale de la lumière"
+        },
+        "endless_hunger": {
+            "name": "Faim insatiable"
+        },
+        "radiant_endless_hunger": {
+            "name": "Faim insatiable de la lumière"
+        },
+        "banshees_veil": {
+            "name": "Voile de la banshee"
+        },
+        "radiant_banshees_veil": {
+            "name": "Voile de la banshee de la lumière"
+        },
+        "edge_of_night": {
+            "name": "Manteau de la nuit"
+        },
+        "radiant_edge_of_night": {
+            "name": "Manteau de la nuit de la lumière"
+        },
+        "verdant_barrier": {
+            "name": "Barrière verdoyante"
+        },
+        "runaans_hurricane": {
+            "name": "Ouragan de Runaan"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Ouragan de Runaan de la lumière"
+        },
+        "statikk_shiv": {
+            "name": "Poignard de Statikk"
+        },
+        "radiant_statikk_shiv": {
+            "name": "Poignard de Statikk de la lumière"
+        },
+        "titanic_hydra": {
+            "name": "Hydre titanesque"
+        },
+        "radiant_titanic_hydra": {
+            "name": "Hydre titanesque de la lumière"
+        },
+        "hullbreaker": {
+            "name": "Brise-coques"
+        },
+        "radiant_hullbreaker": {
+            "name": "Brise-coques de la lumière"
+        },
+        "spirit_stone": {
+            "name": "Pierre spirituelle"
+        },
+        "philosophers_stone": {
+            "name": "Pierre philosophale"
+        },
+        "radiant_philosophers_stone": {
+            "name": "Pierre philosophale de la lumière"
+        },
+        "iceborn_gauntlet": {
+            "name": "Gantelet givrant"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Gantelet givrant de la lumière"
+        },
+        "moonstone_renewer": {
+            "name": "Régénérateur de pierre de lune"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Régénérateur de pierre de lune de la lumière"
+        },
+        "abyssal_mask": {
+            "name": "Masque abyssal"
+        },
+        "radiant_abyssal_mask": {
+            "name": "Masque abyssal de la lumière"
+        },
+        "world_atlas": {
+            "name": "Atlas"
+        },
+        "runic_compass": {
+            "name": "Boussole runique"
+        },
+        "solstice_sleigh": {
+            "name": "Traîneau du solstice"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Traîneau du solstice de la lumière"
+        },
+        "zazzaks_realmspike": {
+            "name": "Pique dimensionnelle de Zaz'Zak"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Pique dimensionnelle de Zaz'Zak de la lumière"
+        },
+        "celestial_opposition": {
+            "name": "Opposition céleste"
+        },
+        "radiant_celestial_opposition": {
+            "name": "Opposition céleste de la lumière"
+        },
+        "dream_maker": {
+            "name": "Rêve éveillé"
+        },
+        "radiant_dream_maker": {
+            "name": "Rêve éveillé de la lumière"
+        },
+        "catalyst_of_aeons": {
+            "name": "Catalyseur de l'éternité"
+        },
+        "rod_of_ages": {
+            "name": "Bâton séculaire"
+        },
+        "radiant_rod_of_ages": {
+            "name": "Bâton séculaire de la lumière"
+        },
+        "mikaels_blessing": {
+            "name": "Bénédiction de Mikael"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Bénédiction de Mikael de la lumière"
+        },
+        "force_of_nature": {
+            "name": "Force de la nature"
+        },
+        "radiant_force_of_nature": {
+            "name": "Force de la nature de la lumière"
+        },
+        "navori_flickerblade": {
+            "name": "Tremblelame navori"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Tremblelame navori de la lumière"
+        },
+        "madreds_razors": {
+            "name": "Rasoir de Madred"
+        },
+        "hunters_machete": {
+            "name": "Machette du chasseur"
+        },
+        "hunters_talisman": {
+            "name": "Talisman du chasseur"
+        },
+        "philosophers_medallion": {
+            "name": "Médaillon du philosophe"
+        }
+    },
+    "it": {
+        "ironsword": {
+            "name": "Spada lunga"
+        },
+        "soldiers_longsword": {
+            "name": "Piccone"
+        },
+        "ruinous_blade": {
+            "name": "Scettro vampirico"
+        },
+        "conquerors_greatsword": {
+            "name": "Bramasangue"
+        },
+        "warlords_final_judgement": {
+            "name": "Bramasangue Radiosa"
+        },
+        "dagger": {
+            "name": "Daga"
+        },
+        "wind_dagger": {
+            "name": "Arco ricurvo"
+        },
+        "twin_stormblade": {
+            "name": "Fervore"
+        },
+        "thunderclaw": {
+            "name": "Danzatore fantasma"
+        },
+        "storm_sovereign": {
+            "name": "Danzatore fantasma Radioso"
+        },
+        "steel_armor": {
+            "name": "Armatura di stoffa"
+        },
+        "gatekeepers_armor": {
+            "name": "Cotta di maglia"
+        },
+        "black_knights_heavy_plate": {
+            "name": "Corpetto di rovi"
+        },
+        "eternal_iron_plate": {
+            "name": "Corazza spinata"
+        },
+        "impregnable_fortress": {
+            "name": "Corazza spinata Radiosa"
+        },
+        "mystic_cloak": {
+            "name": "Cappa anti-magia"
+        },
+        "night_hood": {
+            "name": "Mantello di Negatron"
+        },
+        "dusk_raven": {
+            "name": "Cappuccio spettrale"
+        },
+        "souls_edge": {
+            "name": "Artiglio del drago"
+        },
+        "veil_of_annihilation": {
+            "name": "Artiglio del drago Radioso"
+        },
+        "arcane_crystal": {
+            "name": "Tomo del potenziamento"
+        },
+        "spirit_crystal": {
+            "name": "Bacchetta distruttiva"
+        },
+        "staff_of_rapture": {
+            "name": "Capitolo perduto"
+        },
+        "angels_fang": {
+            "name": "Tempesta di Luden"
+        },
+        "prophet_of_the_abyss": {
+            "name": "Tempesta di Luden Radiosa"
+        },
+        "vital_orb": {
+            "name": "Rubino di cristallo"
+        },
+        "hardened_heart": {
+            "name": "Gemma infuocata"
+        },
+        "ring_of_reincarnation": {
+            "name": "Cintura del gigante"
+        },
+        "warmogs_armor": {
+            "name": "Armatura di Warmog"
+        },
+        "radiant_warmogs_armor": {
+            "name": "Armatura di Warmog Radiosa"
+        },
+        "hourglass_of_eternity": {
+            "name": "Mantello del Sole"
+        },
+        "giants_horn_shard": {
+            "name": "Mantello del Sole Radioso"
+        },
+        "bf_sword": {
+            "name": "M.C. Spada"
+        },
+        "phage": {
+            "name": "Flagello"
+        },
+        "haunting_guise": {
+            "name": "Maschera stregata"
+        },
+        "infinity_edge": {
+            "name": "Frammento d'infinito"
+        },
+        "radiant_infinity_edge": {
+            "name": "Frammento d'infinito Radioso"
+        },
+        "black_cleaver": {
+            "name": "Mannaia oscura"
+        },
+        "radiant_black_cleaver": {
+            "name": "Mannaia oscura Radiosa"
+        },
+        "bloodletters_curse": {
+            "name": "Maledizione della lettera insanguinata"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Maledizione della lettera insanguinata Radiosa"
+        },
+        "deathblade": {
+            "name": "Lama mortale"
+        },
+        "radiant_deathblade": {
+            "name": "Lama mortale Radiosa"
+        },
+        "deaths_dance": {
+            "name": "Danza della Morte"
+        },
+        "radiant_deaths_dance": {
+            "name": "Danza della Morte Radiosa"
+        },
+        "needlessly_large_rod": {
+            "name": "Bastone colossale"
+        },
+        "rabadons_deathcap": {
+            "name": "Copricapo di Rabadon"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "Copricapo di Rabadon Radioso"
+        },
+        "protectors_vow": {
+            "name": "Voto del Protettore"
+        },
+        "radiant_protectors_vow": {
+            "name": "Voto del Protettore Radioso"
+        },
+        "protoplasm_harness": {
+            "name": "Cintura protoplasmatica"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "Cintura protoplasmatica Radiosa"
+        },
+        "frozen_mallet": {
+            "name": "Martello ghiacciato"
+        },
+        "radiant_frozen_mallet": {
+            "name": "Martello ghiacciato Radioso"
+        },
+        "riftmaker": {
+            "name": "Araldo del Vuoto"
+        },
+        "radiant_riftmaker": {
+            "name": "Araldo del Vuoto Radioso"
+        },
+        "shadowflame": {
+            "name": "Ombrofiamma"
+        },
+        "radiant_shadowflame": {
+            "name": "Ombrofiamma Radiosa"
+        },
+        "yun_tal_wildarrows": {
+            "name": "Frecce Yun Tal"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Frecce Yun Tal Radiose"
+        },
+        "unending_despair": {
+            "name": "Disperazione eterna"
+        },
+        "radiant_unending_despair": {
+            "name": "Disperazione eterna Radiosa"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "Lama del re in rovina"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "Lama del re in rovina Radiosa"
+        },
+        "blackfire_torch": {
+            "name": "Torcia del fuoco tetro"
+        },
+        "radiant_blackfire_torch": {
+            "name": "Torcia del fuoco tetro Radiosa"
+        },
+        "executioners_calling": {
+            "name": "Chiamata del carnefice"
+        },
+        "mortal_reminder": {
+            "name": "Memento mori"
+        },
+        "radiant_mortal_reminder": {
+            "name": "Memento mori Radioso"
+        },
+        "last_whisper": {
+            "name": "Sussurro fatale"
+        },
+        "lord_dominiks_regards": {
+            "name": "Saluti di Lord Dominik"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Saluti di Lord Dominik Radiosi"
+        },
+        "experimental_hexplate": {
+            "name": "Hexcorazza sperimentale"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "Hexcorazza sperimentale Radiosa"
+        },
+        "nashors_tooth": {
+            "name": "Dente di Nashor"
+        },
+        "radiant_nashors_tooth": {
+            "name": "Dente di Nashor Radioso"
+        },
+        "jaksho_the_protean": {
+            "name": "Jak'Sho, il Mutevole"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "Jak'Sho, il Mutevole Radioso"
+        },
+        "terminus": {
+            "name": "Terminus"
+        },
+        "radiant_terminus": {
+            "name": "Terminus Radioso"
+        },
+        "spirit_visage": {
+            "name": "Corazza spirituale"
+        },
+        "radiant_spirit_visage": {
+            "name": "Corazza spirituale Radiosa"
+        },
+        "guinsoos_rageblade": {
+            "name": "Furia di Guinsoo"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "Furia di Guinsoo Radiosa"
+        },
+        "wits_end": {
+            "name": "Speranza perduta"
+        },
+        "radiant_wits_end": {
+            "name": "Speranza perduta Radiosa"
+        },
+        "kraken_slayer": {
+            "name": "Uccisore di Kraken"
+        },
+        "radiant_kraken_slayer": {
+            "name": "Uccisore di Kraken Radioso"
+        },
+        "atmas_reckoning": {
+            "name": "Giudizio di Atma"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Giudizio di Atma Radioso"
+        },
+        "mirage_blade": {
+            "name": "Lama del miraggio"
+        },
+        "radiant_mirage_blade": {
+            "name": "Lama del miraggio Radiosa"
+        },
+        "collector": {
+            "name": "Il Collezionista"
+        },
+        "radiant_collector": {
+            "name": "Collezionista Radioso"
+        },
+        "heartsteel": {
+            "name": "Cuore d'acciaio"
+        },
+        "radiant_heartsteel": {
+            "name": "Cuore d'acciaio Radioso"
+        },
+        "spear_of_shojin": {
+            "name": "Lancia di Shojin"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "Lancia di Shojin Radiosa"
+        },
+        "oblivion_orb": {
+            "name": "Sfera dell'oblio"
+        },
+        "morellonomicon": {
+            "name": "Morellonomicon"
+        },
+        "radiant_morellonomicon": {
+            "name": "Morellonomicon Radioso"
+        },
+        "overlords_bloodmail": {
+            "name": "Cotta di maglia del signore supremo"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "Cotta di maglia del signore supremo Radiosa"
+        },
+        "night_harvester": {
+            "name": "Mietitore notturno"
+        },
+        "radiant_night_harvester": {
+            "name": "Mietitore notturno Radioso"
+        },
+        "hextech_gunblade": {
+            "name": "Pistola a lame hextech"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "Pistola a lame hextech Radiosa"
+        },
+        "rylais_crystal_scepter": {
+            "name": "Scettro di cristallo di Rylai"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Scettro di cristallo di Rylai Radioso"
+        },
+        "stormrazor": {
+            "name": "Rasoio della tempesta"
+        },
+        "radiant_stormrazor": {
+            "name": "Rasoio della tempesta Radioso"
+        },
+        "voltaic_cyclosword": {
+            "name": "Ciclospada voltaica"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "Ciclospada voltaica Radiosa"
+        },
+        "diamond_tipped_spear": {
+            "name": "Lancia dalla punta diamantina"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Lancia dalla punta diamantina Radiosa"
+        },
+        "scouts_slingshot": {
+            "name": "Fionda dell'esploratore"
+        },
+        "bandleglass_mirror": {
+            "name": "Specchi di vetro di Bandle"
+        },
+        "zekes_herald": {
+            "name": "Convergenza di Zeke"
+        },
+        "radiant_zekes_herald": {
+            "name": "Convergenza di Zeke Radiosa"
+        },
+        "liandrys_torment": {
+            "name": "Tormento di Liandry"
+        },
+        "radiant_liandrys_torment": {
+            "name": "Tormento di Liandry Radioso"
+        },
+        "noonquiver": {
+            "name": "Faretra solare"
+        },
+        "blighting_jewel": {
+            "name": "Gioiello della rovina"
+        },
+        "steel_sigil": {
+            "name": "Sigillo d'acciaio"
+        },
+        "aegis_of_the_legion": {
+            "name": "Egida della legione"
+        },
+        "void_staff": {
+            "name": "Bastone del Vuoto"
+        },
+        "radiant_void_staff": {
+            "name": "Bastone del Vuoto Radioso"
+        },
+        "malignance": {
+            "name": "Malignità"
+        },
+        "radiant_malignance": {
+            "name": "Malignità Radiosa"
+        },
+        "rite_of_ruin": {
+            "name": "Rituale della rovina"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Rituale della rovina Radioso"
+        },
+        "glowing_mote": {
+            "name": "Granello luminoso"
+        },
+        "echoes_of_helia": {
+            "name": "Echi di Helia"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Echi di Helia Radiosi"
+        },
+        "sundered_sky": {
+            "name": "Cielo infranto"
+        },
+        "radiant_sundered_sky": {
+            "name": "Cielo infranto Radioso"
+        },
+        "sheen": {
+            "name": "Fulgore"
+        },
+        "trinity_force": {
+            "name": "Virtù della Triade"
+        },
+        "radiant_trinity_force": {
+            "name": "Virtù della Triade Radiosa"
+        },
+        "frozen_heart": {
+            "name": "Fulcro dei geli"
+        },
+        "radiant_frozen_heart": {
+            "name": "Fulcro dei geli Radioso"
+        },
+        "glacial_buckler": {
+            "name": "Brocchiero glaciale"
+        },
+        "dusk_and_dawn": {
+            "name": "Crepuscolo e Alba"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Crepuscolo e Alba Radiosi"
+        },
+        "bloodsong": {
+            "name": "Canto di sangue"
+        },
+        "radiant_bloodsong": {
+            "name": "Canto di sangue Radioso"
+        },
+        "serrated_dirk": {
+            "name": "Lungo pugnale seghettato"
+        },
+        "caulfields_warhammer": {
+            "name": "Martello da guerra di Caulfield"
+        },
+        "hubris": {
+            "name": "Tracotanza"
+        },
+        "radiant_hubris": {
+            "name": "Tracotanza Radiosa"
+        },
+        "bastionbreaker": {
+            "name": "Spezzabastioni"
+        },
+        "radiant_bastionbreaker": {
+            "name": "Spezzabastioni Radioso"
+        },
+        "serpents_fang": {
+            "name": "Zanna del serpente"
+        },
+        "radiant_serpents_fang": {
+            "name": "Zanna del serpente Radiosa"
+        },
+        "opportunity": {
+            "name": "Opportunità"
+        },
+        "radiant_opportunity": {
+            "name": "Opportunità Radiosa"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Medaglione dei Solari di ferro"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Medaglione dei Solari di ferro Radioso"
+        },
+        "dead_mans_plate": {
+            "name": "Corazza dell'uomo morto"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Corazza dell'uomo morto Radiosa"
+        },
+        "winged_moonplate": {
+            "name": "Lastra lunare alata"
+        },
+        "steraks_gage": {
+            "name": "Pegno di Sterak"
+        },
+        "radiant_steraks_gage": {
+            "name": "Pegno di Sterak Radioso"
+        },
+        "randuins_omen": {
+            "name": "Orgoglio di Randuin"
+        },
+        "radiant_randuins_omen": {
+            "name": "Orgoglio di Randuin Radioso"
+        },
+        "eclipse": {
+            "name": "Eclissi"
+        },
+        "radiant_eclipse": {
+            "name": "Eclissi Radiosa"
+        },
+        "axiom_arc": {
+            "name": "Arco di Assioma"
+        },
+        "radiant_axiom_arc": {
+            "name": "Arco di Assioma Radioso"
+        },
+        "hearthbound_axe": {
+            "name": "Ascia del focolare"
+        },
+        "feral_flare": {
+            "name": "Bagliore selvaggio"
+        },
+        "radiant_feral_flare": {
+            "name": "Bagliore selvaggio Radioso"
+        },
+        "forbidden_idol": {
+            "name": "Idolo proibito"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Spada dell'Alba fiorente"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Spada dell'Alba fiorente Radiosa"
+        },
+        "ardent_censer": {
+            "name": "Incensiere ardente"
+        },
+        "radiant_ardent_censer": {
+            "name": "Incensiere ardente Radioso"
+        },
+        "grezs_spectral_lantern": {
+            "name": "Lanterna spettrale di Grez"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Lanterna spettrale di Grez Radiosa"
+        },
+        "cloak_of_starry_night": {
+            "name": "Mantello della notte stellata"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "Mantello della notte stellata Radioso"
+        },
+        "hamstringer": {
+            "name": "Tendinite"
+        },
+        "radiant_hamstringer": {
+            "name": "Tendinite Radiosa"
+        },
+        "hextech_alternator": {
+            "name": "Alternatore Hextech"
+        },
+        "fated_ashes": {
+            "name": "Ceneri predestinate"
+        },
+        "stormsurge": {
+            "name": "Apice della tempesta"
+        },
+        "radiant_stormsurge": {
+            "name": "Apice della tempesta Radioso"
+        },
+        "ravenous_hydra": {
+            "name": "Idra famelica"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Idra famelica Radiosa"
+        },
+        "bamis_cinder": {
+            "name": "Tizzone di Bami"
+        },
+        "bandlepipes": {
+            "name": "Cornafusa"
+        },
+        "radiant_bandlepipes": {
+            "name": "Cornafusa Radiosa"
+        },
+        "tiamat": {
+            "name": "Tiamat"
+        },
+        "seryldas_grudge": {
+            "name": "Rancore di Serylda"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Rancore di Serylda Radioso"
+        },
+        "chemtech_putrifier": {
+            "name": "Putrificatore Chemtech"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Putrificatore Chemtech Radioso"
+        },
+        "chempunk_chainsword": {
+            "name": "Spada a catena Chempunk"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Spada a catena Chempunk Radiosa"
+        },
+        "guardian_angel": {
+            "name": "Angelo custode"
+        },
+        "radiant_guardian_angel": {
+            "name": "Angelo custode Radioso"
+        },
+        "boots": {
+            "name": "Stivali"
+        },
+        "berserkers_greaves": {
+            "name": "Gambali del berserker"
+        },
+        "boots_of_swiftness": {
+            "name": "Stivali della rapidità"
+        },
+        "gluttonous_greaves": {
+            "name": "Gambali del goloso"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Stivali dell'acume di Ionia"
+        },
+        "mercurys_treads": {
+            "name": "Calzari di Mercurio"
+        },
+        "plated_steelcaps": {
+            "name": "Piastre d'acciaio"
+        },
+        "sorcerers_shoes": {
+            "name": "Calzari del mago"
+        },
+        "staff_of_flowing_water": {
+            "name": "Staffa delle correnti"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Staffa delle correnti Radiosa"
+        },
+        "immortal_shieldbow": {
+            "name": "Arcoscudo immortale"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Arcoscudo immortale Radioso"
+        },
+        "lich_bane": {
+            "name": "Terrore dei lich"
+        },
+        "radiant_lich_bane": {
+            "name": "Terrore dei lich Radioso"
+        },
+        "imperial_mandate": {
+            "name": "Mandato imperiale"
+        },
+        "radiant_imperial_mandate": {
+            "name": "Mandato imperiale Radioso"
+        },
+        "zhonyas_hourglass": {
+            "name": "Clessidra di Zhonya"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Clessidra di Zhonya Radiosa"
+        },
+        "seekers_armguard": {
+            "name": "Parabraccia del cercatore"
+        },
+        "hollow_radiance": {
+            "name": "Luce vana"
+        },
+        "radiant_hollow_radiance": {
+            "name": "Luce vana Radiosa"
+        },
+        "cosmic_drive": {
+            "name": "Spirito cosmico"
+        },
+        "radiant_cosmic_drive": {
+            "name": "Spirito cosmico Radioso"
+        },
+        "fiendhunter_bolts": {
+            "name": "Dardi del Cacciademoni"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Dardi del Cacciademoni Radiosi"
+        },
+        "essence_reaver": {
+            "name": "Predatore d'essenza"
+        },
+        "radiant_essence_reaver": {
+            "name": "Predatore d'essenza Radioso"
+        },
+        "endless_hunger": {
+            "name": "Fame perenne"
+        },
+        "radiant_endless_hunger": {
+            "name": "Fame perenne Radiosa"
+        },
+        "banshees_veil": {
+            "name": "Velo della Banshee"
+        },
+        "radiant_banshees_veil": {
+            "name": "Velo della Banshee Radioso"
+        },
+        "edge_of_night": {
+            "name": "Fine della notte"
+        },
+        "radiant_edge_of_night": {
+            "name": "Fine della notte Radiosa"
+        },
+        "verdant_barrier": {
+            "name": "Barriera rigogliosa"
+        },
+        "runaans_hurricane": {
+            "name": "Uragano di Runaan"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Uragano di Runaan Radioso"
+        },
+        "statikk_shiv": {
+            "name": "Pugnale di Statikk"
+        },
+        "radiant_statikk_shiv": {
+            "name": "Pugnale di Statikk Radioso"
+        },
+        "titanic_hydra": {
+            "name": "Idra titanica"
+        },
+        "radiant_titanic_hydra": {
+            "name": "Idra titanica Radiosa"
+        },
+        "hullbreaker": {
+            "name": "Spaccascafo"
+        },
+        "radiant_hullbreaker": {
+            "name": "Spaccascafo Radioso"
+        },
+        "spirit_stone": {
+            "name": "Pietra spirituale"
+        },
+        "philosophers_stone": {
+            "name": "Pietra filosofale"
+        },
+        "radiant_philosophers_stone": {
+            "name": "Pietra filosofale Radiosa"
+        },
+        "iceborn_gauntlet": {
+            "name": "Guanto del gelo"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Guanto del gelo Radioso"
+        },
+        "moonstone_renewer": {
+            "name": "Pietra di luna rinnovata"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Pietra di luna rinnovata Radiosa"
+        },
+        "abyssal_mask": {
+            "name": "Maschera dell'abisso"
+        },
+        "radiant_abyssal_mask": {
+            "name": "Maschera dell'abisso Radiosa"
+        },
+        "world_atlas": {
+            "name": "Atlante del mondo"
+        },
+        "runic_compass": {
+            "name": "Bussola runica"
+        },
+        "solstice_sleigh": {
+            "name": "Slitta del solstizio"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Slitta del solstizio Radiosa"
+        },
+        "zazzaks_realmspike": {
+            "name": "Invasione di Zak'Zak"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Invasione di Zak'Zak Radiosa"
+        },
+        "celestial_opposition": {
+            "name": "Opposizione celestiale"
+        },
+        "radiant_celestial_opposition": {
+            "name": "Opposizione celestiale Radiosa"
+        },
+        "dream_maker": {
+            "name": "Plasmasogni"
+        },
+        "radiant_dream_maker": {
+            "name": "Plasmasogni Radioso"
+        },
+        "catalyst_of_aeons": {
+            "name": "Ametista degli eoni"
+        },
+        "rod_of_ages": {
+            "name": "Bastone secolare"
+        },
+        "radiant_rod_of_ages": {
+            "name": "Bastone secolare Radioso"
+        },
+        "mikaels_blessing": {
+            "name": "Benedizione di Mikael"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Benedizione di Mikael Radiosa"
+        },
+        "force_of_nature": {
+            "name": "Forza della natura"
+        },
+        "radiant_force_of_nature": {
+            "name": "Forza della natura Radiosa"
+        },
+        "navori_flickerblade": {
+            "name": "Lama rotante Navori"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Lama rotante Navori Radiosa"
+        },
+        "madreds_razors": {
+            "name": "Artigli di Madred"
+        },
+        "hunters_machete": {
+            "name": "Machete del cacciatore"
+        },
+        "hunters_talisman": {
+            "name": "Talismano del cacciatore"
+        },
+        "philosophers_medallion": {
+            "name": "Medaglione filosofale"
+        }
+    },
+    "zh-hant": {
+        "ironsword": {
+            "name": "長劍"
+        },
+        "soldiers_longsword": {
+            "name": "十字鎬"
+        },
+        "ruinous_blade": {
+            "name": "吸血鬼權杖"
+        },
+        "conquerors_greatsword": {
+            "name": "嗜血者"
+        },
+        "warlords_final_judgement": {
+            "name": "聖光嗜血者"
+        },
+        "dagger": {
+            "name": "短劍"
+        },
+        "wind_dagger": {
+            "name": "反曲弓"
+        },
+        "twin_stormblade": {
+            "name": "狂熱雙刀"
+        },
+        "thunderclaw": {
+            "name": "幻影之舞"
+        },
+        "storm_sovereign": {
+            "name": "聖光幻影之舞"
+        },
+        "steel_armor": {
+            "name": "布甲"
+        },
+        "gatekeepers_armor": {
+            "name": "鎖子甲"
+        },
+        "black_knights_heavy_plate": {
+            "name": "刺藤胸甲"
+        },
+        "eternal_iron_plate": {
+            "name": "荊棘之甲"
+        },
+        "impregnable_fortress": {
+            "name": "聖光荊棘之甲"
+        },
+        "mystic_cloak": {
+            "name": "抗魔斗篷"
+        },
+        "night_hood": {
+            "name": "負極斗篷"
+        },
+        "dusk_raven": {
+            "name": "亡靈斗篷"
+        },
+        "souls_edge": {
+            "name": "龍之爪"
+        },
+        "veil_of_annihilation": {
+            "name": "聖光龍之爪"
+        },
+        "arcane_crystal": {
+            "name": "增幅典籍"
+        },
+        "spirit_crystal": {
+            "name": "爆裂魔杖"
+        },
+        "staff_of_rapture": {
+            "name": "失落之章"
+        },
+        "angels_fang": {
+            "name": "盧登驟雨"
+        },
+        "prophet_of_the_abyss": {
+            "name": "聖光盧登驟雨"
+        },
+        "vital_orb": {
+            "name": "紅水晶"
+        },
+        "hardened_heart": {
+            "name": "燃燒寶石"
+        },
+        "ring_of_reincarnation": {
+            "name": "巨人腰帶"
+        },
+        "warmogs_armor": {
+            "name": "好戰者鎧甲"
+        },
+        "radiant_warmogs_armor": {
+            "name": "聖光好戰者鎧甲"
+        },
+        "hourglass_of_eternity": {
+            "name": "日炎斗篷"
+        },
+        "giants_horn_shard": {
+            "name": "聖光日炎斗篷"
+        },
+        "bf_sword": {
+            "name": "暴風之劍"
+        },
+        "phage": {
+            "name": "淨蝕之槌"
+        },
+        "haunting_guise": {
+            "name": "幽魂面具"
+        },
+        "infinity_edge": {
+            "name": "無盡之刃"
+        },
+        "radiant_infinity_edge": {
+            "name": "聖光無盡之刃"
+        },
+        "black_cleaver": {
+            "name": "黑色切割者"
+        },
+        "radiant_black_cleaver": {
+            "name": "聖光黑色切割者"
+        },
+        "bloodletters_curse": {
+            "name": "血書詛咒"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "聖光血書詛咒"
+        },
+        "deathblade": {
+            "name": "死神之刃"
+        },
+        "radiant_deathblade": {
+            "name": "聖光死神之刃"
+        },
+        "deaths_dance": {
+            "name": "死亡之舞"
+        },
+        "radiant_deaths_dance": {
+            "name": "聖光死亡之舞"
+        },
+        "needlessly_large_rod": {
+            "name": "巨型魔棒"
+        },
+        "rabadons_deathcap": {
+            "name": "死亡之帽"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "聖光死亡之帽"
+        },
+        "protectors_vow": {
+            "name": "保衛者之誓"
+        },
+        "radiant_protectors_vow": {
+            "name": "聖光保衛者之誓"
+        },
+        "protoplasm_harness": {
+            "name": "原質馭帶"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "聖光原質馭帶"
+        },
+        "frozen_mallet": {
+            "name": "冰霜之錘"
+        },
+        "radiant_frozen_mallet": {
+            "name": "聖光冰霜之錘"
+        },
+        "riftmaker": {
+            "name": "峽谷製造者"
+        },
+        "radiant_riftmaker": {
+            "name": "聖光峽谷製造者"
+        },
+        "shadowflame": {
+            "name": "黯影之炎"
+        },
+        "radiant_shadowflame": {
+            "name": "聖光黯影之炎"
+        },
+        "yun_tal_wildarrows": {
+            "name": "雲陶狂箭"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "聖光雲陶狂箭"
+        },
+        "unending_despair": {
+            "name": "無盡絕望"
+        },
+        "radiant_unending_despair": {
+            "name": "聖光無盡絕望"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "殞落王者之劍"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "聖光殞落王者之劍"
+        },
+        "blackfire_torch": {
+            "name": "黑焰火炬"
+        },
+        "radiant_blackfire_torch": {
+            "name": "聖光黑焰火炬"
+        },
+        "executioners_calling": {
+            "name": "死刑宣告"
+        },
+        "mortal_reminder": {
+            "name": "致死宣告"
+        },
+        "radiant_mortal_reminder": {
+            "name": "聖光致死宣告"
+        },
+        "last_whisper": {
+            "name": "最後耳語"
+        },
+        "lord_dominiks_regards": {
+            "name": "多明尼克的問候"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "聖光多明尼克的問候"
+        },
+        "experimental_hexplate": {
+            "name": "實驗型海克斯板甲"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "聖光實驗型海克斯板甲"
+        },
+        "nashors_tooth": {
+            "name": "納什之牙"
+        },
+        "radiant_nashors_tooth": {
+            "name": "聖光納什之牙"
+        },
+        "jaksho_the_protean": {
+            "name": "千變萬化之賈克修"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "聖光千變萬化之賈克修"
+        },
+        "terminus": {
+            "name": "臨界點"
+        },
+        "radiant_terminus": {
+            "name": "聖光臨界點"
+        },
+        "spirit_visage": {
+            "name": "振奮盔甲"
+        },
+        "radiant_spirit_visage": {
+            "name": "聖光振奮盔甲"
+        },
+        "guinsoos_rageblade": {
+            "name": "鬼索的狂暴之刃"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "聖光鬼索的狂暴之刃"
+        },
+        "wits_end": {
+            "name": "智慧末刃"
+        },
+        "radiant_wits_end": {
+            "name": "聖光智慧末刃"
+        },
+        "kraken_slayer": {
+            "name": "海妖殺手"
+        },
+        "radiant_kraken_slayer": {
+            "name": "聖光海妖殺手"
+        },
+        "atmas_reckoning": {
+            "name": "終末戰戟"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "聖光終末戰戟"
+        },
+        "mirage_blade": {
+            "name": "幻象之刃"
+        },
+        "radiant_mirage_blade": {
+            "name": "聖光幻象之刃"
+        },
+        "collector": {
+            "name": "蒐集者"
+        },
+        "radiant_collector": {
+            "name": "聖光蒐集者"
+        },
+        "heartsteel": {
+            "name": "雄心之鋼"
+        },
+        "radiant_heartsteel": {
+            "name": "聖光雄心之鋼"
+        },
+        "spear_of_shojin": {
+            "name": "精進之矛"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "聖光精進之矛"
+        },
+        "oblivion_orb": {
+            "name": "遺忘寶珠"
+        },
+        "morellonomicon": {
+            "name": "黑魔禁書"
+        },
+        "radiant_morellonomicon": {
+            "name": "聖光黑魔禁書"
+        },
+        "overlords_bloodmail": {
+            "name": "狂霸血甲"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "聖光狂霸血甲"
+        },
+        "night_harvester": {
+            "name": "闇夜收割者"
+        },
+        "radiant_night_harvester": {
+            "name": "聖光闇夜收割者"
+        },
+        "hextech_gunblade": {
+            "name": "海克斯科技槍刃"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "聖光海克斯科技槍刃"
+        },
+        "rylais_crystal_scepter": {
+            "name": "瑞萊的冰晶節杖"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "聖光瑞萊的冰晶節杖"
+        },
+        "stormrazor": {
+            "name": "狂暴利刃"
+        },
+        "radiant_stormrazor": {
+            "name": "聖光狂暴利刃"
+        },
+        "voltaic_cyclosword": {
+            "name": "電流旋風劍"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "聖光電流旋風劍"
+        },
+        "diamond_tipped_spear": {
+            "name": "鑽石尖矛"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "聖光鑽石尖矛"
+        },
+        "scouts_slingshot": {
+            "name": "斥候彈弓"
+        },
+        "bandleglass_mirror": {
+            "name": "班德爾玻璃之鏡"
+        },
+        "zekes_herald": {
+            "name": "錫柯的聚合之力"
+        },
+        "radiant_zekes_herald": {
+            "name": "聖光錫柯的聚合之力"
+        },
+        "liandrys_torment": {
+            "name": "黎安卓的折磨"
+        },
+        "radiant_liandrys_torment": {
+            "name": "聖光黎安卓的折磨"
+        },
+        "noonquiver": {
+            "name": "正午箭筒"
+        },
+        "blighting_jewel": {
+            "name": "枯萎寶石"
+        },
+        "steel_sigil": {
+            "name": "鋼鐵紋章"
+        },
+        "aegis_of_the_legion": {
+            "name": "軍團聖盾"
+        },
+        "void_staff": {
+            "name": "虛空之杖"
+        },
+        "radiant_void_staff": {
+            "name": "聖光虛空之杖"
+        },
+        "malignance": {
+            "name": "惡意"
+        },
+        "radiant_malignance": {
+            "name": "聖光惡意"
+        },
+        "rite_of_ruin": {
+            "name": "殞落之祭"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "聖光殞落之祭"
+        },
+        "glowing_mote": {
+            "name": "發光結晶"
+        },
+        "echoes_of_helia": {
+            "name": "希利亞的迴響"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "聖光希利亞的迴響"
+        },
+        "sundered_sky": {
+            "name": "突破天際"
+        },
+        "radiant_sundered_sky": {
+            "name": "聖光突破天際"
+        },
+        "sheen": {
+            "name": "閃耀劍"
+        },
+        "trinity_force": {
+            "name": "三相之力"
+        },
+        "radiant_trinity_force": {
+            "name": "聖光三相之力"
+        },
+        "frozen_heart": {
+            "name": "冰霜之心"
+        },
+        "radiant_frozen_heart": {
+            "name": "聖光冰霜之心"
+        },
+        "glacial_buckler": {
+            "name": "冰川圓盾"
+        },
+        "dusk_and_dawn": {
+            "name": "暮夜與黎明"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "聖光暮夜與黎明"
+        },
+        "bloodsong": {
+            "name": "血歌"
+        },
+        "radiant_bloodsong": {
+            "name": "聖光血歌"
+        },
+        "serrated_dirk": {
+            "name": "殘暴之力"
+        },
+        "caulfields_warhammer": {
+            "name": "考菲爾德的戰槌"
+        },
+        "hubris": {
+            "name": "傲慢"
+        },
+        "radiant_hubris": {
+            "name": "聖光傲慢"
+        },
+        "bastionbreaker": {
+            "name": "破堡者"
+        },
+        "radiant_bastionbreaker": {
+            "name": "聖光破堡者"
+        },
+        "serpents_fang": {
+            "name": "巨蛇鋒牙"
+        },
+        "radiant_serpents_fang": {
+            "name": "聖光巨蛇鋒牙"
+        },
+        "opportunity": {
+            "name": "機會"
+        },
+        "radiant_opportunity": {
+            "name": "聖光機會"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "日輪的加冕"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "聖光日輪的加冕"
+        },
+        "dead_mans_plate": {
+            "name": "死者肩甲"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "聖光死者肩甲"
+        },
+        "winged_moonplate": {
+            "name": "飛翼月甲"
+        },
+        "steraks_gage": {
+            "name": "史特拉克手套"
+        },
+        "radiant_steraks_gage": {
+            "name": "聖光史特拉克手套"
+        },
+        "randuins_omen": {
+            "name": "蘭頓之兆"
+        },
+        "radiant_randuins_omen": {
+            "name": "聖光蘭頓之兆"
+        },
+        "eclipse": {
+            "name": "星蝕"
+        },
+        "radiant_eclipse": {
+            "name": "聖光星蝕"
+        },
+        "axiom_arc": {
+            "name": "公理弧刃"
+        },
+        "radiant_axiom_arc": {
+            "name": "聖光公理弧刃"
+        },
+        "hearthbound_axe": {
+            "name": "爐縛之斧"
+        },
+        "feral_flare": {
+            "name": "野性烈炎"
+        },
+        "radiant_feral_flare": {
+            "name": "聖光野性烈炎"
+        },
+        "forbidden_idol": {
+            "name": "禁忌之像"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "破曉綻放之劍"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "聖光破曉綻放之劍"
+        },
+        "ardent_censer": {
+            "name": "熾灼魔器"
+        },
+        "radiant_ardent_censer": {
+            "name": "聖光熾灼魔器"
+        },
+        "grezs_spectral_lantern": {
+            "name": "格雷提燈"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "聖光格雷提燈"
+        },
+        "cloak_of_starry_night": {
+            "name": "星夜斗篷"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "聖光星夜斗篷"
+        },
+        "hamstringer": {
+            "name": "斷筋"
+        },
+        "radiant_hamstringer": {
+            "name": "聖光斷筋"
+        },
+        "hextech_alternator": {
+            "name": "海克斯科技發電機"
+        },
+        "fated_ashes": {
+            "name": "命定灰燼"
+        },
+        "stormsurge": {
+            "name": "雷霆風暴"
+        },
+        "radiant_stormsurge": {
+            "name": "聖光雷霆風暴"
+        },
+        "ravenous_hydra": {
+            "name": "狂怒九頭蛇"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "聖光狂怒九頭蛇"
+        },
+        "bamis_cinder": {
+            "name": "巴米灰燼"
+        },
+        "bandlepipes": {
+            "name": "班德爾笛子"
+        },
+        "radiant_bandlepipes": {
+            "name": "聖光班德爾笛子"
+        },
+        "tiamat": {
+            "name": "海神之斧"
+        },
+        "seryldas_grudge": {
+            "name": "席利妲咒怨"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "聖光席利妲咒怨"
+        },
+        "chemtech_putrifier": {
+            "name": "生化科技腐化器"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "聖光生化科技腐化器"
+        },
+        "chempunk_chainsword": {
+            "name": "生化龐克鏈鋸之劍"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "聖光生化龐克鏈鋸之劍"
+        },
+        "guardian_angel": {
+            "name": "守護天使"
+        },
+        "radiant_guardian_angel": {
+            "name": "聖光守護天使"
+        },
+        "boots": {
+            "name": "鞋子"
+        },
+        "berserkers_greaves": {
+            "name": "狂戰士護脛"
+        },
+        "boots_of_swiftness": {
+            "name": "輕靈之靴"
+        },
+        "gluttonous_greaves": {
+            "name": "貪婪護脛"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "愛歐尼亞之靴"
+        },
+        "mercurys_treads": {
+            "name": "水星之靴"
+        },
+        "plated_steelcaps": {
+            "name": "鍍板鋼蓋"
+        },
+        "sorcerers_shoes": {
+            "name": "法師之靴"
+        },
+        "staff_of_flowing_water": {
+            "name": "流水之杖"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "聖光流水之杖"
+        },
+        "immortal_shieldbow": {
+            "name": "不朽盾弓"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "聖光不朽盾弓"
+        },
+        "lich_bane": {
+            "name": "巫妖之禍"
+        },
+        "radiant_lich_bane": {
+            "name": "聖光巫妖之禍"
+        },
+        "imperial_mandate": {
+            "name": "帝王命令"
+        },
+        "radiant_imperial_mandate": {
+            "name": "聖光帝王命令"
+        },
+        "zhonyas_hourglass": {
+            "name": "中婭沙漏"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "聖光中婭沙漏"
+        },
+        "seekers_armguard": {
+            "name": "探索者護腕"
+        },
+        "hollow_radiance": {
+            "name": "虛偽光彩"
+        },
+        "radiant_hollow_radiance": {
+            "name": "聖光虛偽光彩"
+        },
+        "cosmic_drive": {
+            "name": "星河馳騁"
+        },
+        "radiant_cosmic_drive": {
+            "name": "聖光星河馳騁"
+        },
+        "fiendhunter_bolts": {
+            "name": "獵魔弩箭"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "聖光獵魔弩箭"
+        },
+        "essence_reaver": {
+            "name": "奪魄之鐮"
+        },
+        "radiant_essence_reaver": {
+            "name": "聖光奪魄之鐮"
+        },
+        "endless_hunger": {
+            "name": "無盡飢渴"
+        },
+        "radiant_endless_hunger": {
+            "name": "聖光無盡飢渴"
+        },
+        "banshees_veil": {
+            "name": "女妖面紗"
+        },
+        "radiant_banshees_veil": {
+            "name": "聖光女妖面紗"
+        },
+        "edge_of_night": {
+            "name": "夜色緣界"
+        },
+        "radiant_edge_of_night": {
+            "name": "聖光夜色緣界"
+        },
+        "verdant_barrier": {
+            "name": "蒼翠屏障"
+        },
+        "runaans_hurricane": {
+            "name": "芮蘭颶風箭"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "聖光芮蘭颶風箭"
+        },
+        "statikk_shiv": {
+            "name": "史提克彈簧刀"
+        },
+        "radiant_statikk_shiv": {
+            "name": "聖光史提克彈簧刀"
+        },
+        "titanic_hydra": {
+            "name": "泰坦九頭蛇"
+        },
+        "radiant_titanic_hydra": {
+            "name": "聖光泰坦九頭蛇"
+        },
+        "hullbreaker": {
+            "name": "破船戰斧"
+        },
+        "radiant_hullbreaker": {
+            "name": "聖光破船戰斧"
+        },
+        "spirit_stone": {
+            "name": "精靈之石"
+        },
+        "philosophers_stone": {
+            "name": "賢者之石"
+        },
+        "radiant_philosophers_stone": {
+            "name": "聖光賢者之石"
+        },
+        "iceborn_gauntlet": {
+            "name": "寒冰霸拳"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "聖光寒冰霸拳"
+        },
+        "moonstone_renewer": {
+            "name": "月之石再生裝置"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "聖光月之石再生裝置"
+        },
+        "abyssal_mask": {
+            "name": "深淵面具"
+        },
+        "radiant_abyssal_mask": {
+            "name": "聖光深淵面具"
+        },
+        "world_atlas": {
+            "name": "世界地圖"
+        },
+        "runic_compass": {
+            "name": "符文指針"
+        },
+        "solstice_sleigh": {
+            "name": "冬至雪橇"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "聖光冬至雪橇"
+        },
+        "zazzaks_realmspike": {
+            "name": "薩茲薩克的領域之刺"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "聖光薩茲薩克的領域之刺"
+        },
+        "celestial_opposition": {
+            "name": "星體抗力"
+        },
+        "radiant_celestial_opposition": {
+            "name": "聖光星體抗力"
+        },
+        "dream_maker": {
+            "name": "夢寐以求"
+        },
+        "radiant_dream_maker": {
+            "name": "聖光夢寐以求"
+        },
+        "catalyst_of_aeons": {
+            "name": "催化魔方"
+        },
+        "rod_of_ages": {
+            "name": "時光之杖"
+        },
+        "radiant_rod_of_ages": {
+            "name": "聖光時光之杖"
+        },
+        "mikaels_blessing": {
+            "name": "米凱的祝福"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "聖光米凱的祝福"
+        },
+        "force_of_nature": {
+            "name": "自然之力"
+        },
+        "radiant_force_of_nature": {
+            "name": "聖光自然之力"
+        },
+        "navori_flickerblade": {
+            "name": "那歐閃刃"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "聖光那歐閃刃"
+        },
+        "madreds_razors": {
+            "name": "麥瑞德之爪"
+        },
+        "hunters_machete": {
+            "name": "狩獵者彎刀"
+        },
+        "hunters_talisman": {
+            "name": "狩獵者護符"
+        }
+    },
+    "pl": {
+        "ironsword": {
+            "name": "Długi Miecz"
+        },
+        "soldiers_longsword": {
+            "name": "Kilof"
+        },
+        "ruinous_blade": {
+            "name": "Wampiryczny Kostur"
+        },
+        "conquerors_greatsword": {
+            "name": "Krwiopijec"
+        },
+        "warlords_final_judgement": {
+            "name": "Świetlisty Krwiopijec"
+        },
+        "dagger": {
+            "name": "Sztylet"
+        },
+        "wind_dagger": {
+            "name": "Wygięty Łuk"
+        },
+        "twin_stormblade": {
+            "name": "Zapał"
+        },
+        "thunderclaw": {
+            "name": "Widmowy Tancerz"
+        },
+        "storm_sovereign": {
+            "name": "Świetlisty Widmowy Tancerz"
+        },
+        "steel_armor": {
+            "name": "Lekka Szata"
+        },
+        "gatekeepers_armor": {
+            "name": "Kamizelka Kolcza"
+        },
+        "black_knights_heavy_plate": {
+            "name": "Kamizelka Cierniowa"
+        },
+        "eternal_iron_plate": {
+            "name": "Kolczasta Kolczuga"
+        },
+        "impregnable_fortress": {
+            "name": "Świetlista Kolczasta Kolczuga"
+        },
+        "mystic_cloak": {
+            "name": "Opończa Antymagiczna"
+        },
+        "night_hood": {
+            "name": "Płaszcz Negacji"
+        },
+        "dusk_raven": {
+            "name": "Widmowa Osłona"
+        },
+        "souls_edge": {
+            "name": "Smoczy Szpon"
+        },
+        "veil_of_annihilation": {
+            "name": "Świetlisty Smoczy Szpon"
+        },
+        "arcane_crystal": {
+            "name": "Wzmacniająca Księga"
+        },
+        "spirit_crystal": {
+            "name": "Różdżka Zniszczenia"
+        },
+        "staff_of_rapture": {
+            "name": "Zaginiony Rozdział"
+        },
+        "angels_fang": {
+            "name": "Nawałnica Luden"
+        },
+        "prophet_of_the_abyss": {
+            "name": "Świetlista Nawałnica Luden"
+        },
+        "vital_orb": {
+            "name": "Rubinowy Kryształ"
+        },
+        "hardened_heart": {
+            "name": "Rozgrzany Klejnot"
+        },
+        "ring_of_reincarnation": {
+            "name": "Pas Giganta"
+        },
+        "warmogs_armor": {
+            "name": "Plemienna Zbroja"
+        },
+        "radiant_warmogs_armor": {
+            "name": "Świetlista Plemienna Zbroja"
+        },
+        "hourglass_of_eternity": {
+            "name": "Słoneczna Peleryna"
+        },
+        "giants_horn_shard": {
+            "name": "Świetlista Słoneczna Peleryna"
+        },
+        "bf_sword": {
+            "name": "K. W. Miecz"
+        },
+        "phage": {
+            "name": "Pożeracz"
+        },
+        "haunting_guise": {
+            "name": "Nawiedzona Maska"
+        },
+        "infinity_edge": {
+            "name": "Ostrze Nieskończoności"
+        },
+        "radiant_infinity_edge": {
+            "name": "Świetliste Ostrze Nieskończoności"
+        },
+        "black_cleaver": {
+            "name": "Czarny Tasak"
+        },
+        "radiant_black_cleaver": {
+            "name": "Świetlisty Czarny Tasak"
+        },
+        "bloodletters_curse": {
+            "name": "Klątwa Krwawego Listu"
+        },
+        "radiant_bloodletters_curse": {
+            "name": "Świetlista Klątwa Krwawego Listu"
+        },
+        "deathblade": {
+            "name": "Ostrze Śmierci"
+        },
+        "radiant_deathblade": {
+            "name": "Świetliste Ostrze Śmierci"
+        },
+        "deaths_dance": {
+            "name": "Taniec Śmierci"
+        },
+        "radiant_deaths_dance": {
+            "name": "Świetlisty Taniec Śmierci"
+        },
+        "needlessly_large_rod": {
+            "name": "Absurdalnie Wielka Różdżka"
+        },
+        "rabadons_deathcap": {
+            "name": "Zabójczy Kapelusz Rabadona"
+        },
+        "radiant_rabadons_deathcap": {
+            "name": "Świetlisty Zabójczy Kapelusz Rabadona"
+        },
+        "protectors_vow": {
+            "name": "Ślubowanie Protektora"
+        },
+        "radiant_protectors_vow": {
+            "name": "Świetliste Ślubowanie Protektora"
+        },
+        "protoplasm_harness": {
+            "name": "Uprząż Protoplazmowa"
+        },
+        "radiant_protoplasm_harness": {
+            "name": "Świetlista Uprząż Protoplazmowa"
+        },
+        "frozen_mallet": {
+            "name": "Lodowy Młot"
+        },
+        "radiant_frozen_mallet": {
+            "name": "Świetlisty Lodowy Młot"
+        },
+        "riftmaker": {
+            "name": "Szczelinotwórca"
+        },
+        "radiant_riftmaker": {
+            "name": "Świetlisty Szczelinotwórca"
+        },
+        "shadowflame": {
+            "name": "Płomień Cienia"
+        },
+        "radiant_shadowflame": {
+            "name": "Świetlisty Płomień Cienia"
+        },
+        "yun_tal_wildarrows": {
+            "name": "Nieokiełznane Strzały Yun Tal"
+        },
+        "radiant_yun_tal_wildarrows": {
+            "name": "Świetliste Nieokiełznane Strzały Yun Tal"
+        },
+        "unending_despair": {
+            "name": "Nieskończona Rozpacz"
+        },
+        "radiant_unending_despair": {
+            "name": "Świetlista Nieskończona Rozpacz"
+        },
+        "blade_of_the_ruined_king": {
+            "name": "Ostrze Zniszczonego Króla"
+        },
+        "radiant_blade_of_the_ruined_king": {
+            "name": "Świetliste Ostrze Zniszczonego Króla"
+        },
+        "blackfire_torch": {
+            "name": "Pochodnia Mrocznego Ognia"
+        },
+        "radiant_blackfire_torch": {
+            "name": "Świetlista Pochodnia Mrocznego Ognia"
+        },
+        "executioners_calling": {
+            "name": "Wezwanie Kata"
+        },
+        "mortal_reminder": {
+            "name": "Śmiertelne Przypomnienie"
+        },
+        "radiant_mortal_reminder": {
+            "name": "Świetliste Śmiertelne Przypomnienie"
+        },
+        "last_whisper": {
+            "name": "Ostatni Szept"
+        },
+        "lord_dominiks_regards": {
+            "name": "Pozdrowienia Lorda Dominika"
+        },
+        "radiant_lord_dominiks_regards": {
+            "name": "Świetliste Pozdrowienia Lorda Dominika"
+        },
+        "experimental_hexplate": {
+            "name": "Eksperymentalny Hexpierśnik"
+        },
+        "radiant_experimental_hexplate": {
+            "name": "Świetlisty Eksperymentalny Hexpierśnik"
+        },
+        "nashors_tooth": {
+            "name": "Ząb Nashora"
+        },
+        "radiant_nashors_tooth": {
+            "name": "Świetlisty Ząb Nashora"
+        },
+        "jaksho_the_protean": {
+            "name": "Jak'Sho Zmienny"
+        },
+        "radiant_jaksho_the_protean": {
+            "name": "Świetlisty Jak'Sho Zmienny"
+        },
+        "terminus": {
+            "name": "Ostatni Przystanek"
+        },
+        "radiant_terminus": {
+            "name": "Świetlisty Ostatni Przystanek"
+        },
+        "spirit_visage": {
+            "name": "Oblicze Ducha"
+        },
+        "radiant_spirit_visage": {
+            "name": "Świetliste Oblicze Ducha"
+        },
+        "guinsoos_rageblade": {
+            "name": "Ostrze Gniewu Guinsoo"
+        },
+        "radiant_guinsoos_rageblade": {
+            "name": "Świetliste Ostrze Gniewu Guinsoo"
+        },
+        "wits_end": {
+            "name": "Koniec Rozumu"
+        },
+        "radiant_wits_end": {
+            "name": "Świetlisty Koniec Rozumu"
+        },
+        "kraken_slayer": {
+            "name": "Pogromca Krakenów"
+        },
+        "radiant_kraken_slayer": {
+            "name": "Świetlisty Pogromca Krakenów"
+        },
+        "atmas_reckoning": {
+            "name": "Osąd Atmy"
+        },
+        "radiant_atmas_reckoning": {
+            "name": "Świetlisty Osąd Atmy"
+        },
+        "mirage_blade": {
+            "name": "Ostrze Mirażu"
+        },
+        "radiant_mirage_blade": {
+            "name": "Świetliste Ostrze Mirażu"
+        },
+        "collector": {
+            "name": "Kolekcjoner"
+        },
+        "radiant_collector": {
+            "name": "Świetlisty Kolekcjoner"
+        },
+        "heartsteel": {
+            "name": "Stalowe Serce"
+        },
+        "radiant_heartsteel": {
+            "name": "Świetliste Stalowe Serce"
+        },
+        "spear_of_shojin": {
+            "name": "Włócznia Shojin"
+        },
+        "radiant_spear_of_shojin": {
+            "name": "Świetlista Włócznia Shojin"
+        },
+        "oblivion_orb": {
+            "name": "Kula Zagłady"
+        },
+        "morellonomicon": {
+            "name": "Morellonomicon"
+        },
+        "radiant_morellonomicon": {
+            "name": "Świetlisty Morellonomicon"
+        },
+        "overlords_bloodmail": {
+            "name": "Krwawa Kolczuga Władcy"
+        },
+        "radiant_overlords_bloodmail": {
+            "name": "Świetlista Krwawa Kolczuga Władcy"
+        },
+        "night_harvester": {
+            "name": "Nocny Żniwiarz"
+        },
+        "radiant_night_harvester": {
+            "name": "Świetlisty Nocny Żniwiarz"
+        },
+        "hextech_gunblade": {
+            "name": "Miecz-Pistolet Hextech"
+        },
+        "radiant_hextech_gunblade": {
+            "name": "Świetlisty Miecz-Pistolet Hextech"
+        },
+        "rylais_crystal_scepter": {
+            "name": "Kryształowy Kostur Rylai"
+        },
+        "radiant_rylais_crystal_scepter": {
+            "name": "Świetlisty Kryształowy Kostur Rylai"
+        },
+        "stormrazor": {
+            "name": "Klinga Burzy"
+        },
+        "radiant_stormrazor": {
+            "name": "Świetlista Klinga Burzy"
+        },
+        "voltaic_cyclosword": {
+            "name": "Woltaiczny Cyklomiecz"
+        },
+        "radiant_voltaic_cyclosword": {
+            "name": "Świetlisty Woltaiczny Cyklomiecz"
+        },
+        "diamond_tipped_spear": {
+            "name": "Włócznia o Diamentowym Grocie"
+        },
+        "radiant_diamond_tipped_spear": {
+            "name": "Świetlista Włócznia o Diamentowym Grocie"
+        },
+        "scouts_slingshot": {
+            "name": "Proca Zwiadowcy"
+        },
+        "bandleglass_mirror": {
+            "name": "Lustro ze Szkła Bandle"
+        },
+        "zekes_herald": {
+            "name": "Konwergencja Zeke'a"
+        },
+        "radiant_zekes_herald": {
+            "name": "Świetlista Konwergencja Zeke'a"
+        },
+        "liandrys_torment": {
+            "name": "Udręka Liandry'ego"
+        },
+        "radiant_liandrys_torment": {
+            "name": "Świetlista Udręka Liandry'ego"
+        },
+        "noonquiver": {
+            "name": "Kołczan Południa"
+        },
+        "blighting_jewel": {
+            "name": "Klejnot Rozpadu"
+        },
+        "steel_sigil": {
+            "name": "Stalowy Znak"
+        },
+        "aegis_of_the_legion": {
+            "name": "Egida Legionu"
+        },
+        "void_staff": {
+            "name": "Kostur Pustki"
+        },
+        "radiant_void_staff": {
+            "name": "Świetlisty Kostur Pustki"
+        },
+        "malignance": {
+            "name": "Złowrogość"
+        },
+        "radiant_malignance": {
+            "name": "Świetlista Złowrogość"
+        },
+        "rite_of_ruin": {
+            "name": "Rytuał Ruiny"
+        },
+        "radiant_rite_of_ruin": {
+            "name": "Świetlisty Rytuał Ruiny"
+        },
+        "glowing_mote": {
+            "name": "Lśniąca Cząstka"
+        },
+        "echoes_of_helia": {
+            "name": "Echa Helii"
+        },
+        "radiant_echoes_of_helia": {
+            "name": "Świetliste Echa Helii"
+        },
+        "sundered_sky": {
+            "name": "Rozdarte Niebo"
+        },
+        "radiant_sundered_sky": {
+            "name": "Świetliste Rozdarte Niebo"
+        },
+        "sheen": {
+            "name": "Blask"
+        },
+        "trinity_force": {
+            "name": "Moc Trójcy"
+        },
+        "radiant_trinity_force": {
+            "name": "Świetlista Moc Trójcy"
+        },
+        "frozen_heart": {
+            "name": "Mroźne Serce"
+        },
+        "radiant_frozen_heart": {
+            "name": "Świetliste Mroźne Serce"
+        },
+        "glacial_buckler": {
+            "name": "Mroźny Puklerz"
+        },
+        "dusk_and_dawn": {
+            "name": "Zmierzch i Brzask"
+        },
+        "radiant_dusk_and_dawn": {
+            "name": "Świetliste Zmierzch i Brzask"
+        },
+        "bloodsong": {
+            "name": "Krwawa Pieśń"
+        },
+        "radiant_bloodsong": {
+            "name": "Świetlista Krwawa Pieśń"
+        },
+        "serrated_dirk": {
+            "name": "Ząbkowany Sztylet"
+        },
+        "caulfields_warhammer": {
+            "name": "Młot Bojowy Caulfielda"
+        },
+        "hubris": {
+            "name": "Pycha"
+        },
+        "radiant_hubris": {
+            "name": "Świetlista Pycha"
+        },
+        "bastionbreaker": {
+            "name": "Łamacz Bastionów"
+        },
+        "radiant_bastionbreaker": {
+            "name": "Świetlisty Łamacz Bastionów"
+        },
+        "serpents_fang": {
+            "name": "Wężowy Kieł"
+        },
+        "radiant_serpents_fang": {
+            "name": "Świetlisty Wężowy Kieł"
+        },
+        "opportunity": {
+            "name": "Okazja"
+        },
+        "radiant_opportunity": {
+            "name": "Świetlista Okazja"
+        },
+        "locket_of_the_iron_solari": {
+            "name": "Naszyjnik Żelaznych Solari"
+        },
+        "radiant_locket_of_the_iron_solari": {
+            "name": "Świetlisty Naszyjnik Żelaznych Solari"
+        },
+        "dead_mans_plate": {
+            "name": "Pancerz Umrzyka"
+        },
+        "radiant_dead_mans_plate": {
+            "name": "Świetlisty Pancerz Umrzyka"
+        },
+        "winged_moonplate": {
+            "name": "Skrzydlaty Księżycowy Pancerz"
+        },
+        "steraks_gage": {
+            "name": "Gruboskórność Steraka"
+        },
+        "radiant_steraks_gage": {
+            "name": "Świetlista Gruboskórność Steraka"
+        },
+        "randuins_omen": {
+            "name": "Omen Randuina"
+        },
+        "radiant_randuins_omen": {
+            "name": "Świetlisty Omen Randuina"
+        },
+        "eclipse": {
+            "name": "Zaćmienie"
+        },
+        "radiant_eclipse": {
+            "name": "Świetliste Zaćmienie"
+        },
+        "axiom_arc": {
+            "name": "Aksjomatyczny Łuk"
+        },
+        "radiant_axiom_arc": {
+            "name": "Świetlisty Aksjomatyczny Łuk"
+        },
+        "hearthbound_axe": {
+            "name": "Ogniolubny Topór"
+        },
+        "feral_flare": {
+            "name": "Dzika Flara"
+        },
+        "radiant_feral_flare": {
+            "name": "Świetlista Dzika Flara"
+        },
+        "forbidden_idol": {
+            "name": "Bluźnierczy Bożek"
+        },
+        "sword_of_blossoming_dawn": {
+            "name": "Miecz Kwitnącego Świtu"
+        },
+        "radiant_sword_of_blossoming_dawn": {
+            "name": "Świetlisty Miecz Kwitnącego Świtu"
+        },
+        "ardent_censer": {
+            "name": "Ognisty Trybularz"
+        },
+        "radiant_ardent_censer": {
+            "name": "Świetlisty Ognisty Trybularz"
+        },
+        "grezs_spectral_lantern": {
+            "name": "Widmowa Latarnia Greza"
+        },
+        "radiant_grezs_spectral_lantern": {
+            "name": "Świetlista Widmowa Latarnia Greza"
+        },
+        "cloak_of_starry_night": {
+            "name": "Peleryna Gwieździstej Nocy"
+        },
+        "radiant_cloak_of_starry_night": {
+            "name": "Świetlista Peleryna Gwieździstej Nocy"
+        },
+        "hamstringer": {
+            "name": "Ścięgnopruj"
+        },
+        "radiant_hamstringer": {
+            "name": "Świetlisty Ścięgnopruj"
+        },
+        "hextech_alternator": {
+            "name": "Alternator Hextech"
+        },
+        "fated_ashes": {
+            "name": "Popioły Przeznaczenia"
+        },
+        "stormsurge": {
+            "name": "Przepływ Burzy"
+        },
+        "radiant_stormsurge": {
+            "name": "Świetlisty Przepływ Burzy"
+        },
+        "ravenous_hydra": {
+            "name": "Krwiożercza Hydra"
+        },
+        "radiant_ravenous_hydra": {
+            "name": "Świetlista Krwiożercza Hydra"
+        },
+        "bamis_cinder": {
+            "name": "Żar Bami"
+        },
+        "bandlepipes": {
+            "name": "Dudy Bandle"
+        },
+        "radiant_bandlepipes": {
+            "name": "Świetliste Dudy Bandle"
+        },
+        "tiamat": {
+            "name": "Tiamat"
+        },
+        "seryldas_grudge": {
+            "name": "Uraza Seryldy"
+        },
+        "radiant_seryldas_grudge": {
+            "name": "Świetlista Uraza Seryldy"
+        },
+        "chemtech_putrifier": {
+            "name": "Chemtechowy Skaziciel"
+        },
+        "radiant_chemtech_putrifier": {
+            "name": "Świetlisty Chemtechowy Skaziciel"
+        },
+        "chempunk_chainsword": {
+            "name": "Chempunkowy Łańcuchowy Miecz"
+        },
+        "radiant_chempunk_chainsword": {
+            "name": "Świetlisty Chempunkowy Łańcuchowy Miecz"
+        },
+        "guardian_angel": {
+            "name": "Anioł Stróż"
+        },
+        "radiant_guardian_angel": {
+            "name": "Świetlisty Anioł Stróż"
+        },
+        "boots": {
+            "name": "Buty"
+        },
+        "berserkers_greaves": {
+            "name": "Nagolenniki Berserkera"
+        },
+        "boots_of_swiftness": {
+            "name": "Buty Prędkości"
+        },
+        "gluttonous_greaves": {
+            "name": "Nagolenniki Pasibrzucha"
+        },
+        "ionian_boots_of_lucidity": {
+            "name": "Ioniańskie Buty Jasności Umysłu"
+        },
+        "mercurys_treads": {
+            "name": "Obuwie Merkurego"
+        },
+        "plated_steelcaps": {
+            "name": "Pancerniaki"
+        },
+        "sorcerers_shoes": {
+            "name": "Obuwie Maga"
+        },
+        "staff_of_flowing_water": {
+            "name": "Kostur Płynącej Wody"
+        },
+        "radiant_staff_of_flowing_water": {
+            "name": "Świetlisty Kostur Płynącej Wody"
+        },
+        "immortal_shieldbow": {
+            "name": "Nieśmiertelny Łuklerz"
+        },
+        "radiant_immortal_shieldbow": {
+            "name": "Świetlisty Nieśmiertelny Łuklerz"
+        },
+        "lich_bane": {
+            "name": "Zmora Licza"
+        },
+        "radiant_lich_bane": {
+            "name": "Świetlista Zmora Licza"
+        },
+        "imperial_mandate": {
+            "name": "Imperialny Mandat"
+        },
+        "radiant_imperial_mandate": {
+            "name": "Świetlisty Imperialny Mandat"
+        },
+        "zhonyas_hourglass": {
+            "name": "Klepsydra Zhonyi"
+        },
+        "radiant_zhonyas_hourglass": {
+            "name": "Świetlista Klepsydra Zhonyi"
+        },
+        "seekers_armguard": {
+            "name": "Naramiennik Poszukiwacza"
+        },
+        "hollow_radiance": {
+            "name": "Głucha Poświata"
+        },
+        "radiant_hollow_radiance": {
+            "name": "Świetlista Głucha Poświata"
+        },
+        "cosmic_drive": {
+            "name": "Kosmiczny Impuls"
+        },
+        "radiant_cosmic_drive": {
+            "name": "Świetlisty Kosmiczny Impuls"
+        },
+        "fiendhunter_bolts": {
+            "name": "Bełty Łowcy Diabłów"
+        },
+        "radiant_fiendhunter_bolts": {
+            "name": "Świetliste Bełty Łowcy Diabłów"
+        },
+        "essence_reaver": {
+            "name": "Złodziej Esencji"
+        },
+        "radiant_essence_reaver": {
+            "name": "Świetlisty Złodziej Esencji"
+        },
+        "endless_hunger": {
+            "name": "Bezustanny Głód"
+        },
+        "radiant_endless_hunger": {
+            "name": "Świetlisty Bezustanny Głód"
+        },
+        "banshees_veil": {
+            "name": "Całun Banshee"
+        },
+        "radiant_banshees_veil": {
+            "name": "Świetlisty Całun Banshee"
+        },
+        "edge_of_night": {
+            "name": "Ostrze Nocy"
+        },
+        "radiant_edge_of_night": {
+            "name": "Świetliste Ostrze Nocy"
+        },
+        "verdant_barrier": {
+            "name": "Roślinna Bariera"
+        },
+        "runaans_hurricane": {
+            "name": "Huragan Runaana"
+        },
+        "radiant_runaans_hurricane": {
+            "name": "Świetlisty Huragan Runaana"
+        },
+        "statikk_shiv": {
+            "name": "Kosa Statikka"
+        },
+        "radiant_statikk_shiv": {
+            "name": "Świetlista Kosa Statikka"
+        },
+        "titanic_hydra": {
+            "name": "Kolosalna Hydra"
+        },
+        "radiant_titanic_hydra": {
+            "name": "Świetlista Kolosalna Hydra"
+        },
+        "hullbreaker": {
+            "name": "Kadłubołamacz"
+        },
+        "radiant_hullbreaker": {
+            "name": "Świetlisty Kadłubołamacz"
+        },
+        "spirit_stone": {
+            "name": "Kamień Duchowy"
+        },
+        "philosophers_stone": {
+            "name": "Kamień Filozoficzny"
+        },
+        "radiant_philosophers_stone": {
+            "name": "Świetlisty Kamień Filozoficzny"
+        },
+        "iceborn_gauntlet": {
+            "name": "Lodowa Rękawica"
+        },
+        "radiant_iceborn_gauntlet": {
+            "name": "Świetlista Lodowa Rękawica"
+        },
+        "moonstone_renewer": {
+            "name": "Odnowienie Kamienia Księżycowego"
+        },
+        "radiant_moonstone_renewer": {
+            "name": "Świetliste Odnowienie Kamienia Księżycowego"
+        },
+        "abyssal_mask": {
+            "name": "Maska Otchłani"
+        },
+        "radiant_abyssal_mask": {
+            "name": "Świetlista Maska Otchłani"
+        },
+        "world_atlas": {
+            "name": "Atlas Świata"
+        },
+        "runic_compass": {
+            "name": "Runiczny Kompas"
+        },
+        "solstice_sleigh": {
+            "name": "Sanie Przesilenia"
+        },
+        "radiant_solstice_sleigh": {
+            "name": "Świetliste Sanie Przesilenia"
+        },
+        "zazzaks_realmspike": {
+            "name": "Kolec Królestwa Zaz'Zaka"
+        },
+        "radiant_zazzaks_realmspike": {
+            "name": "Świetlisty Kolec Królestwa Zaz'Zaka"
+        },
+        "celestial_opposition": {
+            "name": "Astralny Sprzeciw"
+        },
+        "radiant_celestial_opposition": {
+            "name": "Świetlisty Astralny Sprzeciw"
+        },
+        "dream_maker": {
+            "name": "Spełniacz Marzeń"
+        },
+        "radiant_dream_maker": {
+            "name": "Świetlisty Spełniacz Marzeń"
+        },
+        "catalyst_of_aeons": {
+            "name": "Katalizator Eonów"
+        },
+        "rod_of_ages": {
+            "name": "Różdżka Wieków"
+        },
+        "radiant_rod_of_ages": {
+            "name": "Świetlista Różdżka Wieków"
+        },
+        "mikaels_blessing": {
+            "name": "Błogosławieństwo Mikaela"
+        },
+        "radiant_mikaels_blessing": {
+            "name": "Świetliste Błogosławieństwo Mikaela"
+        },
+        "force_of_nature": {
+            "name": "Siła Natury"
+        },
+        "radiant_force_of_nature": {
+            "name": "Świetlista Siła Natury"
+        },
+        "navori_flickerblade": {
+            "name": "Migoczące Ostrze Navori"
+        },
+        "radiant_navori_flickerblade": {
+            "name": "Świetliste Migoczące Ostrze Navori"
+        },
+        "madreds_razors": {
+            "name": "Szpony Madreda"
+        },
+        "hunters_machete": {
+            "name": "Maczeta Łowcy"
+        },
+        "hunters_talisman": {
+            "name": "Talizman Łowcy"
+        },
+        "philosophers_medallion": {
+            "name": "Medalion Filozofa"
         }
     }
 }

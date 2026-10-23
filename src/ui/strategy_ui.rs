@@ -1306,10 +1306,10 @@ fn strip_mod_prefixes(id: &str) -> &str {
     }
 }
 
-// Readable name for a champion id: what the game calls it in `lang`; for a
-// champion the game's own text lacks (another mod's), the English its text was
-// merged with (three spellings tried); else the id prettified (`snake_case` ->
-// `Snake Case`).
+// Readable name for a champion id: what the game, or the mod that adds it,
+// calls it in `lang` ([`game_text`]); where neither has that language, the
+// English the game was given (three spellings tried); else the id prettified
+// (`snake_case` -> `Snake Case`).
 fn champion_display_name(ctx: &StableClient<'_>, lang: &str, id: &str) -> String {
     if let Some(name) = game_text::champion_name(lang, id) {
         return name.to_string();
