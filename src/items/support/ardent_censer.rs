@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, ticks, ItemMeta, SelfCastWatch};
+use crate::{apply_config, heal_shield_power, ticks, ItemMeta, SelfCastWatch};
 
 #[derive(Clone, Debug)]
 pub struct ArdentCenser {
@@ -10,11 +10,11 @@ pub struct ArdentCenser {
     // a per-carrier stack, and the two variants grant the same amount.
     sanctify_buff: &'static str,
     price: usize,
-    hp: i32,
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
     move_speed_mult: i32,
+    effect_heal_shield_power: f64,
     effect_attack_speed_mult: i32,
     effect_enemy_max_hp_damage: usize,
     effect_duration_seconds: f64,
@@ -27,16 +27,16 @@ impl ArdentCenser {
         Self {
             meta: ItemMeta::base(
                 "ardent_censer",
-                &["bandleglass_mirror"],
+                &["bandleglass_mirror", "forbidden_idol"],
                 &["radiant_ardent_censer"],
             ),
             sanctify_buff: "ardent_censer_sanctify",
             price: 700,
-            hp: 150,
             hp_regen: 1,
             magic_power: 25,
             skill_cooldown_mult: 10,
             move_speed_mult: 5,
+            effect_heal_shield_power: 10.0,
             effect_attack_speed_mult: 20,
             effect_enemy_max_hp_damage: 2,
             effect_duration_seconds: 6.0,
@@ -49,7 +49,6 @@ impl ArdentCenser {
         Self {
             meta: ItemMeta::radiant("radiant_ardent_censer", &["ardent_censer"]),
             price: 850,
-            hp: 200,
             hp_regen: 2,
             magic_power: 45,
             skill_cooldown_mult: 10,
@@ -72,11 +71,11 @@ impl ArdentCenser {
             cfg,
             [
                 price,
-                hp,
                 hp_regen,
                 magic_power,
                 skill_cooldown_mult,
                 move_speed_mult,
+                effect_heal_shield_power,
                 effect_attack_speed_mult,
                 effect_enemy_max_hp_damage,
                 effect_duration_seconds
@@ -138,7 +137,6 @@ impl StableItem for ArdentCenser {
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            hp: self.hp,
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -178,7 +176,8 @@ impl StableItem for ArdentCenser {
         self.sanctify(ctx, target);
     }
 
-    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, _player: usize) {
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        heal_shield_power::note(ctx, player, self.effect_heal_shield_power);
         for target in self.self_cast.poll(ctx) {
             self.sanctify(ctx, target);
         }
@@ -190,7 +189,6 @@ impl StableItem for ArdentCenser {
 
     fn tags(&self) -> Vec<ItemTagV1> {
         vec![
-            ItemTagV1::Hp,
             ItemTagV1::HpRegen,
             ItemTagV1::Ap,
             ItemTagV1::MoveSpeed,

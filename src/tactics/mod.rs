@@ -20,6 +20,7 @@ use std::sync::atomic::{AtomicBool, AtomicPtr, AtomicU64, AtomicU8, AtomicUsize,
 use std::sync::Mutex;
 
 pub mod driver;
+mod heal_shield;
 
 const TRACE_FILES: bool = false;
 
@@ -1249,6 +1250,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
         install_seed_ctor_hook();
         install_spawn_hook();
         install_route_hook();
+        heal_shield::install();
         // The player's team id, for team scoping.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
             // `player_team_id()` reads 0 or -1 at times, 0 throughout comp
@@ -1329,6 +1331,7 @@ fn tactics_on_server_start() {
     install_seed_ctor_hook();
     install_spawn_hook();
     install_route_hook();
+    heal_shield::install();
 }
 
 fn tactics_before_management_tick() {

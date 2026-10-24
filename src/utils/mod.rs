@@ -6,6 +6,7 @@ pub(crate) mod constants;
 pub(crate) mod elapsed;
 pub(crate) mod extra_stats;
 pub(crate) mod game_text;
+pub(crate) mod heal_shield_power;
 pub(crate) mod heal_watch;
 pub(crate) mod immobilize_watch;
 pub(crate) mod item_meta;

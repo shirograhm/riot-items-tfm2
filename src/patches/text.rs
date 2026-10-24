@@ -1145,20 +1145,30 @@ fn adjust_pool(buff: bool) -> Vec<&'static str> {
     }
 }
 
+// What a level range is, for a reason that names it: by its low end.
+const RANGE_LABELS: [(&str, Words); 4] = [
+    ("effect_min_bonus_damage", label::BONUS_DAMAGE),
+    ("effect_min_heal", label::HEALING),
+    ("effect_min_shield", label::SHIELDING),
+    ("effect_min_bonus_hp", label::BONUS_HEALTH),
+];
+
 // What a reason calls the number `change` moved: a flat stat by its tooltip
-// line and a passive's number by the passive's name, as a note's row is
-// ([`label_of`]), or for a number in a sentence with no name what its format
-// says it is ("Lethality"). Empty where none of them names it.
+// line ([`label_of`]); a passive's number as the passive's and what the number
+// is, "passive Movement Speed" (not by the passive's name), as its row's format,
+// its field's, its range's or its amount's words say, or "passive" where none
+// does; a number in a sentence with no name by those words alone ("Lethality").
+// Empty where none of them names it.
 fn short_label(texts: &Texts, lang: &str, change: &Change) -> String {
     let (name, _) = label_of(texts, lang, change);
-    if !name.is_empty() {
+    if super::fields::FLAT.contains(&change.field.as_str()) && !name.is_empty() {
         return name;
     }
     let slug = change
         .members
         .first()
         .map_or("", |first| crate::build_config::base_slug(&first.key));
-    ROW_FORMATS
+    let what = ROW_FORMATS
         .iter()
         .find(|format| format.item == slug && format.field == change.field)
         .and_then(|format| format.label)
@@ -1168,7 +1178,27 @@ fn short_label(texts: &Texts, lang: &str, change: &Change) -> String {
                 .find(|format| format.fields.contains(&change.field.as_str()))
                 .map(|format| format.label)
         })
-        .map_or_else(String::new, |(key, english)| texts.ui(lang, key, english))
+        .or_else(|| {
+            let (low, _) = super::fields::range_of(&change.field)?;
+            RANGE_LABELS
+                .iter()
+                .find(|(field, _)| *field == low)
+                .map(|(_, words)| *words)
+        })
+        .or_else(|| {
+            AMOUNT_FORMATS
+                .iter()
+                .find(|format| format.item == slug && format.fields.contains(&change.field.as_str()))
+                .map(|format| format.label)
+        })
+        .map_or_else(String::new, |(key, english)| texts.ui(lang, key, english));
+    match (name.is_empty(), what.is_empty()) {
+        (false, false) => texts
+            .ui(lang, "passive_stat", "passive {Stat}")
+            .replace("{Stat}", &what),
+        (false, true) => texts.ui(lang, "passive_alone", "passive"),
+        (true, _) => what,
+    }
 }
 
 // `names` as a sentence lists them: "Armor", "Armor and Health", "Armor,
@@ -1260,6 +1290,7 @@ mod label {
     pub(super) const FIRST_ATTACK_MULTIPLIER: Words = ("row_first_attack_multiplier", "First Attack Multiplier");
     pub(super) const HEALING: Words = ("row_healing", "Healing");
     pub(super) const HEALING_REDUCTION: Words = ("row_healing_reduction", "Healing Reduction");
+    pub(super) const HEAL_SHIELD_POWER: Words = ("row_heal_shield_power", "Heal and Shield Power");
     pub(super) const HEALTH_REGENERATION: Words = ("row_health_regeneration", "Health Regeneration");
     pub(super) const LETHALITY: Words = ("row_lethality", "Lethality");
     pub(super) const LETHALITY_DURATION: Words = ("row_lethality_duration", "Lethality Duration");
@@ -1348,10 +1379,15 @@ impl RowFormat {
     }
 }
 
-const FIELD_FORMATS: [FieldFormat; 5] = [
+const FIELD_FORMATS: [FieldFormat; 6] = [
     FieldFormat {
         fields: &["effect_lethality", "effect_bonus_lethality"],
         label: label::LETHALITY,
+        unit: None,
+    },
+    FieldFormat {
+        fields: &["effect_heal_shield_power"],
+        label: label::HEAL_SHIELD_POWER,
         unit: None,
     },
     FieldFormat {

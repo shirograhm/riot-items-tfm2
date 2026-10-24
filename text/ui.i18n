@@ -120,6 +120,7 @@
       "row_mr_reduction": "Magic Resistance Reduction",
       "row_attack_speed_reduction": "Attack Speed Reduction",
       "row_healing_reduction": "Healing Reduction",
+      "row_heal_shield_power": "Heal and Shield Power",
       "row_damage_taken_bonus": "Damage Taken Bonus",
       "row_slow": "Slow",
       "row_bonus_healing_received": "Bonus Healing Received",
@@ -242,7 +243,9 @@
       "why_adjust_nerf_2": "{Item} has been overperforming, so we're pulling back on its {Down} while compensating with a bit more {Up} to keep it a satisfying buy.",
       "why_adjust_nerf_3": "We're shifting some of {Item}'s power out of its {Down} and into its {Up}, which should bring its overall output down a notch.",
       "list_and": "{A} and {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "passive {Stat}",
+      "passive_alone": "passive"
     }
   },
   "ko": {
@@ -366,6 +369,7 @@
       "row_mr_reduction": "마법 저항력 감소",
       "row_attack_speed_reduction": "공격 속도 감소",
       "row_healing_reduction": "치유 감소",
+      "row_heal_shield_power": "체력 회복 및 보호막",
       "row_damage_taken_bonus": "받는 피해 증가",
       "row_slow": "둔화",
       "row_bonus_healing_received": "받는 치유 증가",
@@ -488,7 +492,9 @@
       "why_adjust_nerf_2": "{Item}의 성능이 기대 이상이었기에 {Down} 수치를 줄이는 대신, 여전히 만족스러운 구매가 되도록 {Up} 수치를 조금 올려 보상합니다.",
       "why_adjust_nerf_3": "{Item}의 힘 일부를 {Down}에서 {Up} 쪽으로 옮겨, 전체적인 성능을 한 단계 낮춥니다.",
       "list_and": "{A} 및 {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "패시브 {Stat}",
+      "passive_alone": "패시브"
     }
   },
   "zh-hans": {
@@ -612,6 +618,7 @@
       "row_mr_reduction": "魔法抗性削减",
       "row_attack_speed_reduction": "攻击速度削减",
       "row_healing_reduction": "治疗削减",
+      "row_heal_shield_power": "治疗和护盾强度",
       "row_damage_taken_bonus": "承受伤害加成",
       "row_slow": "减速",
       "row_bonus_healing_received": "受到治疗加成",
@@ -734,7 +741,9 @@
       "why_adjust_nerf_2": "{Item}一直表现过强，所以我们削减了它的{Down}，同时以少量{Up}作为补偿，让它依然值得购买。",
       "why_adjust_nerf_3": "我们把{Item}的一部分强度从{Down}转移到{Up}上，这应该会让它的整体输出稍降一档。",
       "list_and": "{A}和{B}",
-      "list_sep": "、"
+      "list_sep": "、",
+      "passive_stat": "被动{Stat}",
+      "passive_alone": "被动效果"
     }
   },
   "ja": {
@@ -858,6 +867,7 @@
       "row_mr_reduction": "魔法防御低下",
       "row_attack_speed_reduction": "攻撃速度低下",
       "row_healing_reduction": "回復量低下",
+      "row_heal_shield_power": "体力回復量とシールド量",
       "row_damage_taken_bonus": "被ダメージ増加",
       "row_slow": "スロウ",
       "row_bonus_healing_received": "受ける回復量増加",
@@ -980,7 +990,9 @@
       "why_adjust_nerf_2": "「{Item}」は期待以上の成績を収めていたため、「{Down}」を抑える一方、満足できる買い物であり続けるよう「{Up}」を少し上げて補います。",
       "why_adjust_nerf_3": "「{Item}」の力の一部を「{Down}」から「{Up}」へ移し、全体の性能を一段階引き下げます。",
       "list_and": "{A}と{B}",
-      "list_sep": "、"
+      "list_sep": "、",
+      "passive_stat": "パッシブの{Stat}",
+      "passive_alone": "パッシブ"
     }
   },
   "pt-BR": {
@@ -1104,6 +1116,7 @@
       "row_mr_reduction": "Redução de Resistência Mágica",
       "row_attack_speed_reduction": "Redução de Velocidade de Ataque",
       "row_healing_reduction": "Redução de Cura",
+      "row_heal_shield_power": "Cura e Resistência do Escudo",
       "row_damage_taken_bonus": "Bônus de Dano Recebido",
       "row_slow": "Lentidão",
       "row_bonus_healing_received": "Bônus de Cura Recebida",
@@ -1226,7 +1239,9 @@
       "why_adjust_nerf_2": "O item {Item} vem tendo um desempenho acima do esperado, então estamos reduzindo o valor de {Down} e compensando com um pouco mais de {Up} para que ele continue valendo a compra.",
       "why_adjust_nerf_3": "Estamos transferindo parte do poder do item {Item} de {Down} para {Up}, o que deve reduzir um pouco o desempenho geral dele.",
       "list_and": "{A} e {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} da Passiva",
+      "passive_alone": "Passiva"
     }
   },
   "ru": {
@@ -1350,6 +1365,7 @@
       "row_mr_reduction": "Снижение сопротивления магии",
       "row_attack_speed_reduction": "Снижение скорости атаки",
       "row_healing_reduction": "Снижение лечения",
+      "row_heal_shield_power": "Эффективность лечения и щитов",
       "row_damage_taken_bonus": "Увеличение получаемого урона",
       "row_slow": "Замедление",
       "row_bonus_healing_received": "Увеличение получаемого лечения",
@@ -1472,7 +1488,9 @@
       "why_adjust_nerf_2": "Предмет «{Item}» показывал слишком высокие результаты, поэтому мы снижаем показатель «{Down}», а в качестве компенсации немного повышаем «{Up}», чтобы его по-прежнему было приятно покупать.",
       "why_adjust_nerf_3": "Мы переносим часть силы предмета «{Item}» из показателя «{Down}» в «{Up}», что должно немного снизить его общую эффективность.",
       "list_and": "{A} и {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} пассивного эффекта",
+      "passive_alone": "пассивный эффект"
     }
   },
   "vi": {
@@ -1596,6 +1614,7 @@
       "row_mr_reduction": "Giảm Kháng Phép",
       "row_attack_speed_reduction": "Giảm Tốc Độ Đánh",
       "row_healing_reduction": "Giảm Hồi Máu",
+      "row_heal_shield_power": "Sức Mạnh Lá Chắn và Hồi Máu",
       "row_damage_taken_bonus": "Tăng Sát Thương Nhận Vào",
       "row_slow": "Làm Chậm",
       "row_bonus_healing_received": "Tăng Hồi Máu Nhận Được",
@@ -1718,7 +1737,9 @@
       "why_adjust_nerf_2": "{Item} đang hoạt động quá tốt, nên chúng tôi giảm {Down} của nó, đồng thời bù lại bằng một chút {Up} để nó vẫn đáng mua.",
       "why_adjust_nerf_3": "Chúng tôi chuyển một phần sức mạnh của {Item} từ {Down} sang {Up}, điều này sẽ làm sức mạnh tổng thể của nó giảm nhẹ.",
       "list_and": "{A} và {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} nội tại",
+      "passive_alone": "nội tại"
     }
   },
   "de": {
@@ -1842,6 +1863,7 @@
       "row_mr_reduction": "Magieresistenzreduktion",
       "row_attack_speed_reduction": "Angriffstempo-Reduktion",
       "row_healing_reduction": "Heilungsreduktion",
+      "row_heal_shield_power": "Heil- und Schildkraft",
       "row_damage_taken_bonus": "Erhöhter erlittener Schaden",
       "row_slow": "Verlangsamung",
       "row_bonus_healing_received": "Erhöhte erhaltene Heilung",
@@ -1964,7 +1986,9 @@
       "why_adjust_nerf_2": "{Item} war zu stark, also nehmen wir {Down} zurück und gleichen das mit etwas mehr {Up} aus, damit sich der Kauf weiterhin lohnt.",
       "why_adjust_nerf_3": "Wir verlagern einen Teil der Stärke von {Item} aus {Down} in {Up}, was die Gesamtleistung um eine Stufe senken sollte.",
       "list_and": "{A} und {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} des Passivs",
+      "passive_alone": "Passiv"
     }
   },
   "tr": {
@@ -2088,6 +2112,7 @@
       "row_mr_reduction": "Büyü Direnci Azaltma",
       "row_attack_speed_reduction": "Saldırı Hızı Azaltma",
       "row_healing_reduction": "İyileştirme Azaltma",
+      "row_heal_shield_power": "İyileştirme ve Kalkan Gücü",
       "row_damage_taken_bonus": "Alınan Hasar Artışı",
       "row_slow": "Yavaşlatma",
       "row_bonus_healing_received": "Alınan İyileştirme Artışı",
@@ -2210,7 +2235,9 @@
       "why_adjust_nerf_2": "{Item} fazla iyi performans gösteriyordu, bu yüzden {Down} değerini geri çekiyor, tatmin edici bir satın alma olarak kalması için biraz daha fazla {Up} ile telafi ediyoruz.",
       "why_adjust_nerf_3": "{Item} eşyasının gücünün bir kısmını {Down} değerinden {Up} değerine kaydırıyoruz; bu da genel çıktısını bir kademe düşürmeli.",
       "list_and": "{A} ve {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "pasif {Stat}",
+      "passive_alone": "pasif"
     }
   },
   "nl": {
@@ -2334,6 +2361,7 @@
       "row_mr_reduction": "Magieweerstandreductie",
       "row_attack_speed_reduction": "Aanvalssnelheidsreductie",
       "row_healing_reduction": "Genezingsvermindering",
+      "row_heal_shield_power": "Genezings- en schildkracht",
       "row_damage_taken_bonus": "Extra ontvangen schade",
       "row_slow": "Vertraging",
       "row_bonus_healing_received": "Extra ontvangen genezing",
@@ -2456,7 +2484,9 @@
       "why_adjust_nerf_2": "{Item} presteerde te goed, dus halen we {Down} terug en compenseren we met wat meer {Up}, zodat het een fijne aankoop blijft.",
       "why_adjust_nerf_3": "We verschuiven een deel van de kracht van {Item} van {Down} naar {Up}, wat de totale output een tikje omlaag zou moeten brengen.",
       "list_and": "{A} en {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "passieve {Stat}",
+      "passive_alone": "passief"
     }
   },
   "es-ES": {
@@ -2580,6 +2610,7 @@
       "row_mr_reduction": "Reducción de resistencia mágica",
       "row_attack_speed_reduction": "Reducción de velocidad de ataque",
       "row_healing_reduction": "Reducción de curación",
+      "row_heal_shield_power": "Poder de curaciones y escudos",
       "row_damage_taken_bonus": "Aumento del daño recibido",
       "row_slow": "Ralentización",
       "row_bonus_healing_received": "Aumento de la curación recibida",
@@ -2702,7 +2733,9 @@
       "why_adjust_nerf_2": "{Item} ha rendido por encima de lo esperado, así que reducimos su {Down} y lo compensamos con algo más de {Up} para que siga siendo una compra satisfactoria.",
       "why_adjust_nerf_3": "Trasladamos parte del poder de {Item} de su {Down} a su {Up}, lo que debería bajar un poco su rendimiento general.",
       "list_and": "{A} y {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} de la pasiva",
+      "passive_alone": "pasiva"
     }
   },
   "fr": {
@@ -2826,6 +2859,7 @@
       "row_mr_reduction": "Réduction de résistance magique",
       "row_attack_speed_reduction": "Réduction de vitesse d'attaque",
       "row_healing_reduction": "Réduction des soins",
+      "row_heal_shield_power": "Efficacité des soins et boucliers",
       "row_damage_taken_bonus": "Hausse des dégâts subis",
       "row_slow": "Ralentissement",
       "row_bonus_healing_received": "Hausse des soins reçus",
@@ -2948,7 +2982,9 @@
       "why_adjust_nerf_2": "{Item} était trop performant, alors nous réduisons sa valeur de {Down} tout en compensant avec un peu plus de {Up} pour qu'il reste un achat satisfaisant.",
       "why_adjust_nerf_3": "Nous déplaçons une partie de la puissance de {Item} de sa valeur de {Down} vers celle de {Up}, ce qui devrait réduire légèrement son efficacité globale.",
       "list_and": "{A} et {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} du passif",
+      "passive_alone": "passif"
     }
   },
   "it": {
@@ -3072,6 +3108,7 @@
       "row_mr_reduction": "Riduzione resistenza magica",
       "row_attack_speed_reduction": "Riduzione velocità d'attacco",
       "row_healing_reduction": "Riduzione delle cure",
+      "row_heal_shield_power": "Guarigione e potere scudo",
       "row_damage_taken_bonus": "Aumento dei danni subiti",
       "row_slow": "Rallentamento",
       "row_bonus_healing_received": "Aumento delle cure ricevute",
@@ -3194,7 +3231,9 @@
       "why_adjust_nerf_2": "{Item} rendeva troppo, quindi riduciamo il valore di {Down} compensando con un po' più di {Up}, perché resti un acquisto soddisfacente.",
       "why_adjust_nerf_3": "Spostiamo parte della potenza di {Item} dal valore di {Down} a quello di {Up}, il che dovrebbe abbassare di un gradino il suo rendimento complessivo.",
       "list_and": "{A} e {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} della passiva",
+      "passive_alone": "passiva"
     }
   },
   "zh-hant": {
@@ -3318,6 +3357,7 @@
       "row_mr_reduction": "魔法防禦削減",
       "row_attack_speed_reduction": "攻擊速度削減",
       "row_healing_reduction": "治療削減",
+      "row_heal_shield_power": "治療及護盾強度",
       "row_damage_taken_bonus": "承受傷害加成",
       "row_slow": "緩速",
       "row_bonus_healing_received": "受到治療加成",
@@ -3440,7 +3480,9 @@
       "why_adjust_nerf_2": "{Item}一直表現過強，所以我們削減了它的{Down}，同時以少量{Up}作為補償，讓它依然值得購買。",
       "why_adjust_nerf_3": "我們把{Item}的一部分強度從{Down}轉移到{Up}上，這應該會讓它的整體輸出稍降一檔。",
       "list_and": "{A}和{B}",
-      "list_sep": "、"
+      "list_sep": "、",
+      "passive_stat": "被動{Stat}",
+      "passive_alone": "被動效果"
     }
   },
   "pl": {
@@ -3564,6 +3606,7 @@
       "row_mr_reduction": "Redukcja odporności na magię",
       "row_attack_speed_reduction": "Redukcja prędkości ataku",
       "row_healing_reduction": "Osłabienie leczenia",
+      "row_heal_shield_power": "Siła leczenia i tarcz",
       "row_damage_taken_bonus": "Zwiększenie otrzymywanych obrażeń",
       "row_slow": "Spowolnienie",
       "row_bonus_healing_received": "Zwiększenie otrzymywanego leczenia",
@@ -3686,7 +3729,9 @@
       "why_adjust_nerf_2": "{Item} radzi sobie za dobrze, więc obniżamy wartość „{Down}”, rekompensując to nieco większą wartością „{Up}”, by nadal był satysfakcjonującym zakupem.",
       "why_adjust_nerf_3": "Przenosimy część siły przedmiotu {Item} z wartości „{Down}” na wartość „{Up}”, co powinno nieco obniżyć jego ogólną skuteczność.",
       "list_and": "{A} i {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} umiejętności biernej",
+      "passive_alone": "umiejętność bierna"
     }
   },
   "th": {
@@ -3810,6 +3855,7 @@
       "row_mr_reduction": "ลดต้านทานเวท",
       "row_attack_speed_reduction": "ลดความเร็วโจมตี",
       "row_healing_reduction": "ลดการฟื้นฟู",
+      "row_heal_shield_power": "ฮีลและพลังโล่ป้องกัน",
       "row_damage_taken_bonus": "ดาเมจที่ได้รับเพิ่มขึ้น",
       "row_slow": "สโลว์",
       "row_bonus_healing_received": "การฟื้นฟูที่ได้รับเพิ่มขึ้น",
@@ -3932,7 +3978,9 @@
       "why_adjust_nerf_2": "{Item} แรงเกินไป เราจึงลด {Down} ลง พร้อมชดเชยด้วย {Up} ที่เพิ่มขึ้นเล็กน้อย เพื่อให้ยังน่าซื้ออยู่",
       "why_adjust_nerf_3": "เราย้ายความแรงบางส่วนของ {Item} จาก {Down} ไปที่ {Up} ซึ่งน่าจะทำให้ประสิทธิภาพโดยรวมลดลงหนึ่งระดับ",
       "list_and": "{A} และ {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat}ของพาสซีฟ",
+      "passive_alone": "พาสซีฟ"
     }
   },
   "haw": {
@@ -4056,6 +4104,7 @@
       "row_mr_reduction": "Hoʻēmi Kūʻē Kilokilo",
       "row_attack_speed_reduction": "Hoʻēmi Māmā Hoʻouka",
       "row_healing_reduction": "Hoʻēmi Hoʻōla",
+      "row_heal_shield_power": "Mana Hoʻōla a me Pale Kaua",
       "row_damage_taken_bonus": "Pōʻino i Loaʻa Hou",
       "row_slow": "Hoʻolohi",
       "row_bonus_healing_received": "Hoʻōla i Loaʻa Hou",
@@ -4178,7 +4227,9 @@
       "why_adjust_nerf_2": "Ua ikaika loa ʻo {Item}, no laila ke hoʻihoʻi nei mākou i kona {Down} me ka hoʻopiha ʻana me kahi {Up} hou aku, i mau ai ia he kūʻai maikaʻi.",
       "why_adjust_nerf_3": "Ke hoʻoneʻe nei mākou i kekahi o ka ikaika o {Item} mai kona {Down} a i kona {Up}, a pēlā e emi iki ai kona hana holoʻokoʻa.",
       "list_and": "{A} a me {B}",
-      "list_sep": ", "
+      "list_sep": ", ",
+      "passive_stat": "{Stat} o ka passive",
+      "passive_alone": "passive"
     }
   }
 }
