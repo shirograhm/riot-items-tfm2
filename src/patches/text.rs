@@ -951,12 +951,15 @@ const ITEM_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18"
 // font they take it from (`text/news`, `patch.stat`).
 const ARROW: &str = "<f#asset/base/font/set/symbol>\u{2192}<f>";
 const BOLD: &str = "asset/base/font/set/bold";
-// The green of the game's "Buffs" mark (`ui/icons/up_patch`), a red for
-// "Nerfs", an amber for the "Adjustments" between the two, and the grey its
-// notes give a reason in (`patch_reason_row`).
-const BUFF_COLOR: &str = "#4ed5bdff";
-const NERF_COLOR: &str = "#ff6b6bff";
-const ADJUST_COLOR: &str = "#f0c05aff";
+// The marks a section heading opens with, as the game's own patch notes head
+// their columns (`patch_column_header`): its green up and red down triangles
+// (`ui/icons/up_patch`, `down_patch`, SVGs a label cannot inline) redrawn as a
+// sprite sheet of the mod's own, with a yellow dash for "Adjustments". Tags
+// `buff`, `nerf`, `adjust`.
+const MARK_SHEET: &str = "asset/riot_items_tfm2/ui/icons/patch_marks";
+// A heading's words, white as the game's own are.
+const HEADING_COLOR: &str = "#ffffffff";
+// The grey the game's notes give a reason in (`patch_reason_row`).
 const REASON_COLOR: &str = "#8b8d9aff";
 
 // One changed number of an entry: the stat icon a flat stat's row opens with (a
@@ -2210,10 +2213,10 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
             .replace("{Version}", &patch.version)
     };
     let entries = note_entries(patch, state, &lang);
-    for (stronger, weaker, heading, fallback, color) in [
-        (true, false, "buffed", "Buffs", BUFF_COLOR),
-        (true, true, "adjusted", "Adjustments", ADJUST_COLOR),
-        (false, true, "nerfed", "Nerfs", NERF_COLOR),
+    for (stronger, weaker, heading, fallback, mark) in [
+        (true, false, "buffed", "Buffs", "buff"),
+        (true, true, "adjusted", "Adjustments", "adjust"),
+        (false, true, "nerfed", "Nerfs", "nerf"),
     ] {
         let section: Vec<&NoteEntry> = entries
             .iter()
@@ -2223,7 +2226,7 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
             continue;
         }
         body.push_str(&format!(
-            "\n<s#24><f#{BOLD}><{color}>{}<><f><s>",
+            "\n<s#24><i#{MARK_SHEET}:{mark}> <f#{BOLD}><{HEADING_COLOR}>{}<><f><s>",
             texts.ui(&lang, heading, fallback)
         ));
         for entry in section {
