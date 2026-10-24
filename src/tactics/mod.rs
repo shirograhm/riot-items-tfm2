@@ -388,6 +388,32 @@ fn record_item_catalog(catalog: Vec<(String, Vec<String>)>) {
     *AUTO_CANDS.lock().unwrap_or_else(|e| e.into_inner()) = None;
 }
 
+// The registry as recorded, `MOD_REGISTRY`'s keys and `MOD_FINALS`, for
+// `crate::multiplayer` to send a guest; `None` until recorded.
+pub(crate) fn item_registry() -> Option<(Vec<String>, Vec<u64>)> {
+    if !MODITEMS_DONE.load(Ordering::Relaxed) {
+        return None;
+    }
+    let registry = MOD_REGISTRY
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .clone();
+    let finals = MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()).clone();
+    (!registry.is_empty()).then_some((registry, finals))
+}
+
+// The host's registry, where this game has recorded none: a guest runs no
+// item-build detour to record one from, and the automatic 5th and 6th items
+// are drawn from this list ([`auto_cands`]), so it has to be the host's.
+pub(crate) fn adopt_item_registry(registry: Vec<String>, finals: Vec<u64>) {
+    if registry.is_empty() || MODITEMS_DONE.swap(true, Ordering::Relaxed) {
+        return;
+    }
+    *MOD_REGISTRY.lock().unwrap_or_else(|e| e.into_inner()) = registry;
+    *MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner()) = finals;
+    *AUTO_CANDS.lock().unwrap_or_else(|e| e.into_inner()) = None;
+}
+
 // Every mod final item as (game id, key).
 fn mod_final_opts_all() -> Vec<(u64, String)> {
     let finals = MOD_FINALS.lock().unwrap_or_else(|e| e.into_inner());
@@ -479,6 +505,55 @@ unsafe fn is_my_athlete(athlete: usize) -> Option<bool> {
     // Athlete id 0 is a real player in some saves, so it must not be filtered
     // out here.
     Some((*p).contains(&aid))
+}
+// The player whose builds `athlete` takes: this one ([`is_my_athlete`]), or in
+// multiplayer another, by the team they sent it under
+// (`crate::multiplayer::owner_of`). Where both claim it, the lower team id,
+// which every machine agrees on. `None` for an athlete no player manages, and
+// while the roster is unknown.
+unsafe fn pin_owner(athlete: usize) -> Option<crate::build_config::PinOwner> {
+    use crate::build_config::PinOwner;
+    let mine = is_my_athlete(athlete) == Some(true);
+    if !crate::multiplayer::active() {
+        return mine.then_some(PinOwner::Own);
+    }
+    match crate::multiplayer::owner_of(safe_read_u64(athlete + O_ATHLETE_ID)?) {
+        Some(team) if !mine || team < PLAYER_TEAM_ID.load(Ordering::Relaxed) => {
+            Some(PinOwner::Player(team))
+        }
+        _ => mine.then_some(PinOwner::Own),
+    }
+}
+// [`pin_owner`], with the guard that has this thread's pin lookups read that
+// player's builds until it drops. Taken before any pin is looked up.
+unsafe fn take_pin_owner(
+    athlete: usize,
+) -> (
+    Option<crate::build_config::PinOwner>,
+    crate::build_config::PinOwnerScope,
+) {
+    let owner = pin_owner(athlete);
+    (
+        owner,
+        crate::build_config::pin_owner_scope(owner.unwrap_or_default()),
+    )
+}
+// The player's team id, once its athletes are published: what
+// `crate::multiplayer` sends the player's builds under.
+pub(crate) fn my_team_id() -> Option<u64> {
+    let team = PLAYER_TEAM_ID.load(Ordering::Relaxed);
+    (team < 10000 && MY_ATH_N.load(Ordering::Relaxed) > 0).then_some(team)
+}
+// The athletes the player's builds go to ([`is_my_athlete`]), sorted. Only from
+// the client thread, which publishes them, so the set is never freed under it.
+pub(crate) fn my_athletes() -> Vec<u64> {
+    let p = MY_ATHLETES.load(Ordering::Acquire);
+    if p.is_null() {
+        return Vec::new();
+    }
+    let mut ids: Vec<u64> = unsafe { (*p).iter().copied().collect() };
+    ids.sort_unstable();
+    ids
 }
 // `__rust_realloc` (rcx = ptr, rdx = old, r8 = align, r9 = new) -> rax. When no
 // signature pairs, find it by its body: `mov rdi,r9 / mov rsi,rcx / cmp
@@ -783,31 +858,33 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             safe_read_u64(provider as usize + O_PROVIDER_SEED).unwrap_or(0),
             champ,
         );
-        // Before any pin is looked up: the lane every lookup below resolves in.
+        // Before any pin is looked up: the lane every lookup below resolves in,
+        // and (3) whose builds they read, by athlete id in my roster (in
+        // multiplayer, or another player's): the sim has no team id, so
+        // membership is the only test.
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
+        let (owner, _owner_scope) = take_pin_owner(athlete);
         if !crate::build_config::has_pins(champ) {
             return;
         }
-        // (3) Whether it is my team, by athlete id in my roster: the sim has no
-        // team id, so membership is the only test.
-        let mine = is_my_athlete(athlete);
         crate::own_team_log::line(|| {
             format!(
-                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} mine={:?} roster_n={}",
+                "spawn: {} aid={:?} provider=0x{:x} seed=0x{:x} lane={:?} mine={:?} owner={:?} roster_n={}",
                 champ,
                 safe_read_u64(athlete + O_ATHLETE_ID),
                 provider,
                 safe_read_u64(provider as usize + O_PROVIDER_SEED).unwrap_or(0),
                 athlete_lane(athlete),
-                mine,
+                is_my_athlete(athlete),
+                owner,
                 MY_ATH_N.load(Ordering::Relaxed)
             )
         });
-        // `Some(false)` is another team's athlete and `None` is undecided; both
-        // are left alone, since putting the player's build on the enemy is
-        // worse than missing slot 0. The roster comes from every athlete's
-        // contract (`roster_scan_step`), so it is known from load.
-        if mine != Some(true) {
+        // An athlete no player manages, or one not known to be a player's, is
+        // left alone, since putting the player's build on the enemy is worse
+        // than missing slot 0. The roster comes from every athlete's contract
+        // (`roster_scan_step`), so it is known from load.
+        if owner.is_none() {
             return;
         }
         // (4) Write the build targets. The catalog is the `Vec` at
@@ -826,8 +903,11 @@ unsafe extern "C" fn cap_spawn(saved: *mut u64, _e: usize) -> u64 {
             let held = spawn_build_names(bptr, blen, cat_base, cat_len);
             // The stable hook gave this athlete the pin-free build both teams
             // get; swap in the pin-aware one it recorded before the pins are
-            // written.
-            spawn_paste_pinned_build(champ, bptr, blen, cat_base, cat_len);
+            // written. Not in multiplayer: only the host's server records
+            // those, and every machine has to plant the same pins.
+            if !crate::multiplayer::active() {
+                spawn_paste_pinned_build(champ, bptr, blen, cat_base, cat_len);
+            }
             crate::own_team_log::line(|| {
                 format!(
                     "spawn: {} held={:?} after_swap={:?} pin_row={:?}",
@@ -1246,6 +1326,11 @@ unsafe fn install_detour_r11(
 // Every client frame, from `driver::post_update`.
 fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
     {
+        // The buy detour as well: a multiplayer guest runs no server of its
+        // own, so `on_server_start` never installs it there, and the guest's
+        // copy of a match would never grow builds past four. One atomic load
+        // once in.
+        install_replace_4th();
         install_launcher_hook();
         install_seed_ctor_hook();
         install_spawn_hook();
@@ -2096,6 +2181,11 @@ unsafe fn network_pick(
     spoken: &[u64],
     allowed: &dyn Fn(&str) -> bool,
 ) -> Option<u64> {
+    // Never in multiplayer: the network is the host server's and keeps
+    // training, so a guest's game could not ask it the same question.
+    if crate::multiplayer::active() {
+        return None;
+    }
     // The network indexes a five-entry table with the lane and panics past it.
     let lane = (safe_read_u64(buyer.athlete + O_ATHLETE_POS)? & 0xffff_ffff) as usize;
     if lane >= 5 {
@@ -2381,10 +2471,12 @@ unsafe fn buy_inputs(
     if len as usize > BUY_MEMO_BUILD_MAX {
         return None;
     }
-    let mine = match is_my_athlete(athlete) {
+    // Whose builds the athlete takes; which other player's is in the pins'
+    // generation, which their builds coming in bumps.
+    let mine = match pin_owner(athlete) {
         None => 0,
-        Some(false) => 1,
-        Some(true) => 2,
+        Some(crate::build_config::PinOwner::Own) => 1,
+        Some(crate::build_config::PinOwner::Player(_)) => 2,
     };
     let flags = is_live as u64
         | (COMPTEST_MATCH.load(Ordering::Relaxed) as u64) << 1
@@ -2613,23 +2705,25 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         // Rule 18's route picker is not handed the match, so every buy notes
         // it for the athlete (`route_fixup`), and whether the editor's rows
         // reach the athlete for their component focus: everyone's under "Apply
-        // To All Players", else the player's (a test's both sides), as with
-        // `is_player` below. Asked only while some row has a focus.
+        // To All Players", else the player's (a test's both sides; in
+        // multiplayer each player's), as with `is_player` below. Asked only
+        // while some row has a focus.
         if ROUTE_CHOICE {
             let reached = crate::build_config::any_focus()
                 && (!crate::build_config::own_team_only_enabled()
                     || (COMPTEST_MATCH.load(Ordering::Relaxed) && is_live)
                     || crate::build_config::is_test_match(seed_r9)
-                    || matches!(is_my_athlete(athlete), Some(true)));
+                    || pin_owner(athlete).is_some());
             crate::route_choice::note_seat(athlete, seed_r9, reached);
         }
-        // Background buys exit here unless the athlete is mine, a test's, or
-        // still needs its build grown (`needs_build_extension`: two VEH reads,
-        // true at most once per athlete). The same decision runs in background
-        // and on-screen copies of a match, so they converge.
+        // Background buys exit here unless the athlete is a player's (mine, or
+        // in multiplayer another player's), a test's, or still needs its build
+        // grown (`needs_build_extension`: two VEH reads, true at most once per
+        // athlete). The same decision runs in background and on-screen copies
+        // of a match, so they converge.
         if !is_live
             && !crate::build_config::is_test_match(seed_r9)
-            && !matches!(is_my_athlete(athlete), Some(true))
+            && pin_owner(athlete).is_none()
             && !needs_build_extension(athlete)
         {
             return 0;
@@ -2669,8 +2763,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         }
         let champ_cow = String::from_utf8_lossy(&champ_bytes);
         let champ: &str = champ_cow.as_ref();
-        // Before any pin is looked up: the lane every lookup below resolves in.
+        // Before any pin is looked up: the lane every lookup below resolves in,
+        // and whose builds they read (in multiplayer, another player's athlete
+        // takes that player's).
         crate::build_config::set_athlete_lane(athlete_lane(athlete));
+        let (owner, _owner_scope) = take_pin_owner(athlete);
         // Both sides of a comp test are the player's, so it bypasses the team
         // gate, but only on screen: `COMPTEST_MATCH` is sticky, and background
         // sims after a comp test would otherwise give every athlete the
@@ -2684,7 +2781,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         let is_player = if is_comptest_live || is_training {
             true // a test: both sides are the player's
         } else {
-            matches!(is_my_athlete(athlete), Some(true))
+            owner.is_some()
         };
         if crate::own_team_log::ENABLED && crate::build_config::has_pins(champ) {
             let ctx = rd_u64(rsp_entry + 0x30) as usize;
@@ -2705,10 +2802,11 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
             crate::own_team_log::on_change(
                 &format!("buy {champ} aid={aid:?} provider=0x{provider_now:x}"),
                 format!(
-                    "owned={} is_player={} mine={:?} training={} live={} provider=0x{:x} seed=0x{:x} build={:?}",
+                    "owned={} is_player={} mine={:?} owner={:?} training={} live={} provider=0x{:x} seed=0x{:x} build={:?}",
                     owned,
                     is_player,
                     is_my_athlete(athlete),
+                    owner,
                     is_training,
                     is_live,
                     provider_now,
@@ -3734,6 +3832,8 @@ unsafe fn route_better(
     let champion = &name[..len];
     let lane = athlete_lane(athlete);
     let (seed, reached) = crate::route_choice::seat(athlete);
+    // Whose row the component focus is read from (`route_answer`).
+    let (_, _owner_scope) = take_pin_owner(athlete);
     let ask = RouteAsk {
         catalog_len,
         from,

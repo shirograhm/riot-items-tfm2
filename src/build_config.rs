@@ -461,8 +461,9 @@ pub fn champion_roster_len() -> usize {
 }
 
 // The buy detour's view of `item-builds.json`: the file's keys exactly as
-// written, plus an index that survives the detour not knowing the lane.
-struct PinSnapshot {
+// written, plus an index that survives the detour not knowing the lane. In
+// multiplayer, the other players' files too ([`pin_snapshot`]).
+pub(crate) struct PinSnapshot {
     // `champion` or `champion@role`, as the file has it.
     by_key: HashMap<String, Vec<Option<String>>>,
     // Champion -> its only key, for champions with exactly one build.
@@ -473,6 +474,46 @@ struct PinSnapshot {
     focus: HashMap<String, Focus>,
 }
 
+impl PinSnapshot {
+    fn of(config: &BuildConfig) -> PinSnapshot {
+        let by_key = config.by_champion.clone();
+
+        // Champions with exactly one build, by id alone; with two roles there
+        // is no single answer.
+        let sole_key = {
+            let mut counts: HashMap<&str, usize> = HashMap::new();
+            for key in by_key.keys() {
+                *counts
+                    .entry(key.split(ROLE_SEPARATOR).next().unwrap_or(key.as_str()))
+                    .or_insert(0) += 1;
+            }
+            by_key
+                .keys()
+                .filter_map(|key| {
+                    let champion = key.split(ROLE_SEPARATOR).next().unwrap_or(key.as_str());
+                    (counts.get(champion) == Some(&1)).then(|| (champion.to_string(), key.clone()))
+                })
+                .collect()
+        };
+
+        PinSnapshot {
+            by_key,
+            sole_key,
+            focus: config.focus.clone(),
+        }
+    }
+
+    // How many rows the builds have, for the multiplayer log.
+    pub(crate) fn rows(&self) -> usize {
+        self.by_key.len()
+    }
+
+    // Whether any row has a component focus.
+    pub(crate) fn any_focus(&self) -> bool {
+        !self.focus.is_empty()
+    }
+}
+
 // `item-builds.json` as the buy detour reads it: published when the file loads
 // ([`load_cached`]), since that detour runs per buy decision and must never
 // touch the disk.
@@ -481,35 +522,46 @@ static PINS: Mutex<Option<Arc<PinSnapshot>>> = Mutex::new(None);
 // Publishes the builds for the buy detour; an empty config publishes nothing,
 // so removed builds stop applying.
 fn publish_pins(config: &BuildConfig) {
-    let by_key = config.by_champion.clone();
-
-    // Champions with exactly one build, by id alone; with two roles there is no
-    // single answer.
-    let sole_key = {
-        let mut counts: HashMap<&str, usize> = HashMap::new();
-        for key in by_key.keys() {
-            *counts
-                .entry(key.split(ROLE_SEPARATOR).next().unwrap_or(key.as_str()))
-                .or_insert(0) += 1;
-        }
-        by_key
-            .keys()
-            .filter_map(|key| {
-                let champion = key.split(ROLE_SEPARATOR).next().unwrap_or(key.as_str());
-                (counts.get(champion) == Some(&1)).then(|| (champion.to_string(), key.clone()))
-            })
-            .collect()
-    };
-
-    let focus = config.focus.clone();
-    ANY_FOCUS.store(!focus.is_empty(), Ordering::Relaxed);
+    let snapshot = PinSnapshot::of(config);
+    ANY_FOCUS.store(snapshot.any_focus(), Ordering::Relaxed);
     if let Ok(mut pins) = PINS.lock() {
-        *pins = Some(Arc::new(PinSnapshot {
-            by_key,
-            sole_key,
-            focus,
-        }));
+        *pins = Some(Arc::new(snapshot));
     }
+    PINS_GENERATION.fetch_add(1, Ordering::Relaxed);
+}
+
+// Another player's builds, as `crate::multiplayer` hears them: their
+// `item-builds.json` ([`own_builds_json`]). `None` when it does not read.
+pub(crate) fn pin_snapshot(builds: &serde_json::Value) -> Option<Arc<PinSnapshot>> {
+    let config: BuildConfig = serde_json::from_value(builds.clone()).ok()?;
+    Some(Arc::new(PinSnapshot::of(&config)))
+}
+
+// This player's builds as `item-builds.json` has them, for `crate::multiplayer`
+// to send the other players. In key order, so the same builds always read the
+// same.
+pub(crate) fn own_builds_json() -> serde_json::Value {
+    let config = load_cached();
+    let mut keys: Vec<&String> = config.by_champion.keys().collect();
+    keys.sort();
+    let map = keys
+        .into_iter()
+        .map(|key| {
+            let slots = serde_json::json!(config.by_champion[key]);
+            // The slots alone unless the row has a focus ([`StoredBuild`]).
+            let entry = match config.focus.get(key).and_then(|focus| focus.stored()) {
+                Some(focus) => serde_json::json!({ "slots": slots, "focus": focus }),
+                None => slots,
+            };
+            (key.clone(), entry)
+        })
+        .collect();
+    serde_json::Value::Object(map)
+}
+
+// The pins changed without this player's file changing: another player's
+// builds came in or went. The memos keyed on [`pins_generation`] ask again.
+pub(crate) fn pins_changed() {
     PINS_GENERATION.fetch_add(1, Ordering::Relaxed);
 }
 
@@ -518,7 +570,7 @@ fn publish_pins(config: &BuildConfig) {
 static ANY_FOCUS: AtomicBool = AtomicBool::new(false);
 
 pub fn any_focus() -> bool {
-    ANY_FOCUS.load(Ordering::Relaxed)
+    ANY_FOCUS.load(Ordering::Relaxed) || crate::multiplayer::any_focus()
 }
 
 // The component focus of the row `champion` plays by in `role` (`Any` where the
@@ -545,8 +597,42 @@ pub fn pins_generation() -> u64 {
     PINS_GENERATION.load(Ordering::Relaxed)
 }
 
+// Whose builds a pin lookup reads: this player's `item-builds.json`, or in
+// multiplayer another player's, by the team they manage (`crate::multiplayer`).
+#[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
+pub enum PinOwner {
+    #[default]
+    Own,
+    Player(u64),
+}
+
+thread_local! {
+    // Whose builds this thread's pin lookups read ([`pin_owner_scope`]).
+    static PIN_OWNER: std::cell::Cell<PinOwner> = const { std::cell::Cell::new(PinOwner::Own) };
+}
+
+// Has this thread's pin lookups read `owner`'s builds until the guard drops,
+// for the athlete a detour is handling. Every other caller reads its own.
+pub fn pin_owner_scope(owner: PinOwner) -> PinOwnerScope {
+    let previous = PIN_OWNER
+        .try_with(|cell| cell.replace(owner))
+        .unwrap_or_default();
+    PinOwnerScope(previous)
+}
+
+pub struct PinOwnerScope(PinOwner);
+
+impl Drop for PinOwnerScope {
+    fn drop(&mut self) {
+        let _ = PIN_OWNER.try_with(|cell| cell.set(self.0));
+    }
+}
+
 fn pins() -> Option<Arc<PinSnapshot>> {
-    PINS.lock().ok()?.clone()
+    match PIN_OWNER.try_with(std::cell::Cell::get).unwrap_or_default() {
+        PinOwner::Own => PINS.lock().ok()?.clone(),
+        PinOwner::Player(team) => crate::multiplayer::pins_of(team),
+    }
 }
 
 // Whether this champion has any pin in the role it is played (from
@@ -835,8 +921,13 @@ pub fn remember_rule_boots(champion: &str, boots: &str) {
     }
 }
 
-// The pair of boots Smart Builds last picked for `champion`, when it has.
+// The pair of boots Smart Builds last picked for `champion`, when it has. Not in
+// multiplayer, where only the host's server picks them: every game then takes
+// the pair picked without the enemy lineup.
 pub fn rule_boots(champion: &str) -> Option<String> {
+    if crate::multiplayer::active() {
+        return None;
+    }
     let picked = RULE_BOOTS.lock().ok()?;
     picked
         .iter()
@@ -958,8 +1049,9 @@ pub fn sync_settings(ctx: &mut mod_api_stable::StableClient<'_>) {
         SETTINGS_LOADED.store(true, Ordering::Relaxed);
     }
     if SETTINGS_DIRTY.load(Ordering::Relaxed) {
-        let smart = smart_builds_enabled().to_string();
-        let own = own_team_only_enabled().to_string();
+        // This save's own toggles, not what multiplayer has in force.
+        let smart = own_smart_builds().to_string();
+        let own = OWN_TEAM_ONLY.load(Ordering::Relaxed).to_string();
         let written = ctx.save_set_string(SMART_BUILDS_KEY, &smart)
             & ctx.save_set_string(OWN_TEAM_ONLY_KEY, &own);
         if written {
@@ -969,8 +1061,15 @@ pub fn sync_settings(ctx: &mut mod_api_stable::StableClient<'_>) {
 }
 
 // Whether the Smart Builds pass is on for the loaded save (default on); see
-// [`crate::smart_builds`].
+// [`crate::smart_builds`]. A multiplayer guest plays by the host's
+// (`crate::multiplayer::host_smart_builds`).
 pub fn smart_builds_enabled() -> bool {
+    crate::multiplayer::host_smart_builds().unwrap_or_else(own_smart_builds)
+}
+
+// This game's own Smart Builds toggle, whatever multiplayer has in force: what
+// the host's server sends the other players.
+pub fn own_smart_builds() -> bool {
     SMART_BUILDS.load(Ordering::Relaxed)
 }
 
@@ -982,8 +1081,11 @@ pub fn smart_builds_enabled() -> bool {
 // athlete under the `tactics::is_my_athlete` gate: the spawn-time injector for
 // slot 0, the buy detour for the rest. The stable hook cannot gate itself,
 // since `ctx.team()` is only a 0/1 side index.
+//
+// Always on in multiplayer, where each player's builds go to their own team
+// (`crate::multiplayer`).
 pub fn own_team_only_enabled() -> bool {
-    OWN_TEAM_ONLY.load(Ordering::Relaxed)
+    OWN_TEAM_ONLY.load(Ordering::Relaxed) || crate::multiplayer::active()
 }
 
 // A configured build merged with the AI's, as item indices, with a record of

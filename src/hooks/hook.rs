@@ -486,7 +486,14 @@ fn apply_training_builds(
     team1: &[(Position, String)],
     team2: &[(Position, String)],
 ) {
-    let config = build_config::load_cached();
+    // No player's pins go in here in multiplayer: these routes do not say whose
+    // team is whose, and the native detours plant each player's on their own
+    // athletes.
+    let config = if crate::multiplayer::active() {
+        Default::default()
+    } else {
+        build_config::load_cached()
+    };
     // An empty config or Smart Builds being off is no reason to return: the
     // pass also covers the engine's own picks, and the tactics panel is told
     // every build.

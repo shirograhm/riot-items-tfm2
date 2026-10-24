@@ -1641,17 +1641,21 @@ fn clear_saved(ctx: &mut StableClient<'_>) {
 
 // Paints the build-scope toggle ([`build_config::own_team_only_enabled`]),
 // greyed out where it does nothing ([`scope_applies`]) with the saved setting
-// still marked.
+// still marked. In multiplayer "Apply To Your Players Only" is the only
+// choice, and "Apply To All Players" is greyed out alone.
 fn refresh_scope(ctx: &mut StableClient<'_>) {
     let (lit, dim) = if build_config::own_team_only_enabled() {
         (scope_own_path(), scope_all_path())
     } else {
         (scope_all_path(), scope_own_path())
     };
-    if scope_applies() {
-        paint_toggle(ctx, lit, dim);
-    } else {
+    if !scope_applies() {
         paint_toggle_off(ctx, lit, dim);
+    } else if crate::multiplayer::active() {
+        ctx.ui_set_properties(scope_own_path(), &toggle_style(true));
+        ctx.ui_set_properties(scope_all_path(), &toggle_off_style(false));
+    } else {
+        paint_toggle(ctx, lit, dim);
     }
 }
 
@@ -3539,8 +3543,13 @@ fn handle_event(ctx: &mut StableClient<'_>) {
 
     if path == scope_all_path() || path == scope_own_path() {
         // Greyed out on the tests (see `scope_applies`): a click there must
-        // not change a setting the screen says it has nothing to do with.
-        if scope_applies() && build_config::set_own_team_only(path == scope_own_path()) {
+        // not change a setting the screen says it has nothing to do with. Nor
+        // in multiplayer, where only "Your Players Only" is offered: the save's
+        // own choice is kept for single player.
+        if scope_applies()
+            && !crate::multiplayer::active()
+            && build_config::set_own_team_only(path == scope_own_path())
+        {
             refresh_scope(ctx);
         }
         return;
@@ -3751,6 +3760,11 @@ impl StableExtension for StrategyPicker {
         // every frame, everywhere.
         perf::time(Section::FrameTactics, || tactics::driver::post_update(ctx));
 
+        // Multiplayer: whether the session is, the other players' builds in and
+        // this player's out. After the line above, which publishes the athletes
+        // this player's builds go to.
+        crate::multiplayer::sync(ctx);
+
         // Unconditional too, since its screen is not this one; inert unless the
         // slot count is three.
         perf::time(Section::FrameSoloRank, || crate::solo_rank_ui::sync(ctx));
@@ -3916,6 +3930,12 @@ impl StableExtension for StrategyPicker {
             sync_filter(ctx);
             sync_list_search(ctx);
             sync_info_popup(ctx);
+            // A session turning multiplayer, or the host's settings coming in,
+            // with the tab up: the toggles say so at once.
+            if crate::multiplayer::take_repaint() {
+                refresh_unique(ctx);
+                refresh_scope(ctx);
+            }
         }
     }
 

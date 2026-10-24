@@ -8,6 +8,7 @@ mod item_catalog;
 mod item_stats;
 mod item_tiers;
 mod items;
+mod multiplayer;
 mod patches;
 mod route_choice;
 mod smart_builds;
@@ -336,7 +337,8 @@ impl StableServerExtension for NativeTapExtension {
     ) -> CommandResultV1 {
         // The client's word that an item balance patch has landed: its
         // state and its article, now and not at the next management tick.
-        if patches::handle_command(ctx, command) {
+        // Or a player's builds, for every player in a multiplayer session.
+        if patches::handle_command(ctx, command) || multiplayer::handle_command(ctx, command) {
             CommandResultV1::Handled
         } else {
             CommandResultV1::Pass
@@ -345,6 +347,9 @@ impl StableServerExtension for NativeTapExtension {
 
     fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
+        // The players whose builds the last save's server held are not this
+        // one's.
+        multiplayer::server_started();
         // The mod's numbers for the game's own thirty items, into this
         // server's item settings, before it creates a match.
         item_stats::server_started();
