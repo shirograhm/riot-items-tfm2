@@ -15,16 +15,84 @@ use std::time::Instant;
 // an item key (a pin) or `null` (a blank the AI fills with its next unpinned
 // pick). A bare id is the role-agnostic build, which a role-specific key beats
 // in that role; pinned keys resolve to their `radiant_` variant, then to the
-// game's key for renamed items.
+// game's key for renamed items. A row with a component focus is written as
+// `{ "slots": [...], "focus": "offense" }` instead ([`StoredBuild`]).
 #[derive(Deserialize, Default)]
-#[serde(transparent)]
+#[serde(from = "HashMap<String, StoredBuild>")]
 pub struct BuildConfig {
     pub by_champion: HashMap<String, Vec<Option<String>>>,
+    // Build key -> its row's component focus, for the rows that have one.
+    pub focus: HashMap<String, Focus>,
 }
 
 impl BuildConfig {
     pub fn is_empty(&self) -> bool {
         self.by_champion.is_empty()
+    }
+}
+
+// One entry of `item-builds.json`: the slots alone, as every row was written
+// before the component focus, or the slots with a focus. Only a row with a
+// focus takes the second shape, so a file without one stays readable by older
+// versions of the mod.
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum StoredBuild {
+    Slots(Vec<Option<String>>),
+    Row {
+        slots: Vec<Option<String>>,
+        #[serde(default)]
+        focus: Option<String>,
+    },
+}
+
+impl From<HashMap<String, StoredBuild>> for BuildConfig {
+    fn from(stored: HashMap<String, StoredBuild>) -> Self {
+        let mut config = BuildConfig::default();
+        for (key, build) in stored {
+            let slots = match build {
+                StoredBuild::Slots(slots) => slots,
+                StoredBuild::Row { slots, focus } => {
+                    let focus = focus.as_deref().map_or(Focus::Neither, Focus::from_stored);
+                    if focus != Focus::Neither {
+                        config.focus.insert(key.clone(), focus);
+                    }
+                    slots
+                }
+            };
+            config.by_champion.insert(key, slots);
+        }
+        config
+    }
+}
+
+// Which components a row's champion builds its items from where an item can be
+// built more than one way (Smart Builds rule 18, `route_choice`): the editor's
+// Offense and Defense cells. `Neither` leaves it to the champion's own stats.
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum Focus {
+    #[default]
+    Neither,
+    Offense,
+    Defense,
+}
+
+impl Focus {
+    // How `item-builds.json` names it; `Neither` is not written.
+    fn stored(self) -> Option<&'static str> {
+        match self {
+            Focus::Neither => None,
+            Focus::Offense => Some("offense"),
+            Focus::Defense => Some("defense"),
+        }
+    }
+
+    // The focus a stored name says; anything else is `Neither`.
+    fn from_stored(name: &str) -> Focus {
+        [Focus::Offense, Focus::Defense]
+            .into_iter()
+            .find(|focus| focus.stored() == Some(name))
+            .unwrap_or_default()
     }
 }
 
@@ -236,12 +304,16 @@ pub struct ChampionRow {
     // Defaults to [`Role::Any`].
     pub role: Role,
     pub slots: Vec<Option<String>>,
+    // Defaults to [`Focus::Neither`].
+    pub focus: Focus,
 }
 
 impl ChampionRow {
-    // Whether the row contributes a build: a champion and at least one pin.
+    // Whether the row contributes a build: a champion, and at least one pin or
+    // a component focus.
     pub fn is_complete(&self) -> bool {
-        self.champion.is_some() && self.slots.iter().any(Option::is_some)
+        self.champion.is_some()
+            && (self.slots.iter().any(Option::is_some) || self.focus != Focus::Neither)
     }
 }
 
@@ -262,6 +334,17 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
     map.into_iter()
         .map(|(key, value)| {
             let (champion, role) = split_build_key(&key);
+            // A row with a focus is an object ([`StoredBuild`]).
+            let (value, focus) = match value {
+                serde_json::Value::Object(mut row) => {
+                    let focus = row
+                        .get("focus")
+                        .and_then(serde_json::Value::as_str)
+                        .map_or(Focus::Neither, Focus::from_stored);
+                    (row.remove("slots").unwrap_or_default(), focus)
+                }
+                slots => (slots, Focus::Neither),
+            };
             let mut slots: Vec<Option<String>> = value
                 .as_array()
                 .map(|items| {
@@ -279,6 +362,7 @@ pub fn load_champion_rows() -> Vec<ChampionRow> {
                 champion: Some(champion.to_string()),
                 role,
                 slots,
+                focus,
             }
         })
         .collect()
@@ -298,18 +382,21 @@ pub fn save_champion_rows(rows: &[ChampionRow]) -> bool {
         let Some(champion) = &row.champion else {
             continue;
         };
-        let slots: Vec<serde_json::Value> = row
-            .slots
-            .iter()
-            .map(|slot| match slot {
-                Some(key) => serde_json::Value::String(key.clone()),
-                None => serde_json::Value::Null,
-            })
-            .collect();
-        map.insert(
-            build_key(champion, row.role),
-            serde_json::Value::Array(slots),
+        let slots = serde_json::Value::Array(
+            row.slots
+                .iter()
+                .map(|slot| match slot {
+                    Some(key) => serde_json::Value::String(key.clone()),
+                    None => serde_json::Value::Null,
+                })
+                .collect(),
         );
+        // The slots alone unless the row has a focus ([`StoredBuild`]).
+        let entry = match row.focus.stored() {
+            Some(focus) => serde_json::json!({ "slots": slots, "focus": focus }),
+            None => slots,
+        };
+        map.insert(build_key(champion, row.role), entry);
     }
 
     let written = serde_json::to_string_pretty(&map)
@@ -382,6 +469,8 @@ struct PinSnapshot {
     // Precomputed because the buy detour looks pins up hundreds of thousands of
     // times a match.
     sole_key: HashMap<String, String>,
+    // Key -> its row's component focus, for the rows that have one.
+    focus: HashMap<String, Focus>,
 }
 
 // `item-builds.json` as the buy detour reads it: published when the file loads
@@ -412,10 +501,39 @@ fn publish_pins(config: &BuildConfig) {
             .collect()
     };
 
+    let focus = config.focus.clone();
+    ANY_FOCUS.store(!focus.is_empty(), Ordering::Relaxed);
     if let Ok(mut pins) = PINS.lock() {
-        *pins = Some(Arc::new(PinSnapshot { by_key, sole_key }));
+        *pins = Some(Arc::new(PinSnapshot {
+            by_key,
+            sole_key,
+            focus,
+        }));
     }
     PINS_GENERATION.fetch_add(1, Ordering::Relaxed);
+}
+
+// Whether any row has a component focus, so the route picker can skip asking
+// while none does.
+static ANY_FOCUS: AtomicBool = AtomicBool::new(false);
+
+pub fn any_focus() -> bool {
+    ANY_FOCUS.load(Ordering::Relaxed)
+}
+
+// The component focus of the row `champion` plays by in `role` (`Any` where the
+// lane is not known), the row being found as its pins are ([`pin_key`]): a
+// role's own row decides it, focus and all, even with none set.
+pub fn focus_for(champion: &str, role: Role) -> Focus {
+    if !any_focus() {
+        return Focus::Neither;
+    }
+    pins()
+        .and_then(|pins| {
+            let key = pin_key(&pins, champion, role, role != Role::Any)?;
+            pins.focus.get(key).copied()
+        })
+        .unwrap_or_default()
 }
 
 // Counts publications of [`PINS`], so the buy detour's memo
@@ -462,18 +580,23 @@ fn pin_entry<'a>(
     role: Role,
     known: bool,
 ) -> Option<&'a Vec<Option<String>>> {
+    pins.by_key.get(pin_key(pins, champion, role, known)?)
+}
+
+// The key of the row [`pin_entry`] finds.
+fn pin_key<'a>(pins: &'a PinSnapshot, champion: &str, role: Role, known: bool) -> Option<&'a str> {
     if role != Role::Any {
-        if let Some(build) = pins.by_key.get(&build_key(champion, role)) {
-            return Some(build);
+        if let Some((key, _)) = pins.by_key.get_key_value(&build_key(champion, role)) {
+            return Some(key.as_str());
         }
     }
-    if let Some(build) = pins.by_key.get(champion) {
-        return Some(build);
+    if let Some((key, _)) = pins.by_key.get_key_value(champion) {
+        return Some(key.as_str());
     }
     if known {
         return None;
     }
-    pins.by_key.get(pins.sole_key.get(champion)?)
+    pins.sole_key.get(champion).map(String::as_str)
 }
 
 // -- lineup roles, for the half that only knows the champion -----------------

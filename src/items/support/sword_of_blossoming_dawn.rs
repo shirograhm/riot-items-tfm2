@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, sized_range, ItemMeta};
+use crate::{apply_config, heal_shield_power, percent_of, sized_range, ItemMeta};
 
 // The `view_projectiles` name in `view/effects.view_effects` that draws the
 // wisp flying from the carrier to the ally Peppermint heals
@@ -25,6 +25,7 @@ pub struct SwordOfBlossomingDawn {
     hp: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
+    effect_heal_shield_power: f64,
     effect_min_heal: usize,
     effect_max_heal: usize,
     effect_ad_percent_heal: f64,
@@ -41,11 +42,12 @@ impl SwordOfBlossomingDawn {
                 &["radiant_sword_of_blossoming_dawn"],
             ),
             wisp_hit: "riot_blossoming_dawn_wisp_hit",
-            price: 700,
+            price: 1150,
             attack_speed_mult: 20,
             hp: 200,
             magic_power: 15,
             skill_cooldown_mult: 10,
+            effect_heal_shield_power: 12.0,
             effect_min_heal: 15,
             effect_max_heal: 60,
             effect_ad_percent_heal: 7.0,
@@ -61,7 +63,7 @@ impl SwordOfBlossomingDawn {
                 &["sword_of_blossoming_dawn"],
             ),
             wisp_hit: "riot_radiant_blossoming_dawn_wisp_hit",
-            price: 850,
+            price: 900,
             attack_speed_mult: 35,
             hp: 200,
             magic_power: 45,
@@ -88,6 +90,7 @@ impl SwordOfBlossomingDawn {
                 hp,
                 magic_power,
                 skill_cooldown_mult,
+                effect_heal_shield_power,
                 effect_min_heal,
                 effect_max_heal,
                 effect_ad_percent_heal,
@@ -185,6 +188,11 @@ impl StableItem for SwordOfBlossomingDawn {
             skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
+    }
+
+    // Heal and shield power, reported every tick.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        heal_shield_power::note(ctx, player, self.effect_heal_shield_power);
     }
 
     // Basic attacks heal the most wounded ally in range, by lowest health

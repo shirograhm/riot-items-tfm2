@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, ticks, ItemMeta, SelfCastWatch};
+use crate::{apply_config, heal_shield_power, refresh_buff, ticks, ItemMeta, SelfCastWatch};
 
 #[derive(Clone, Debug)]
 pub struct StaffOfFlowingWater {
@@ -10,10 +10,10 @@ pub struct StaffOfFlowingWater {
     // two variants grant the same amount.
     rapids_buff: &'static str,
     price: usize,
-    hp: i32,
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
+    effect_heal_shield_power: f64,
     effect_magic_power: i32,
     effect_skill_cooldown_mult: i32,
     effect_duration_seconds: f64,
@@ -32,10 +32,10 @@ impl StaffOfFlowingWater {
             ),
             rapids_buff: "staff_of_flowing_water_rapids",
             price: 750,
-            hp: 200,
             hp_regen: 2,
             magic_power: 30,
             skill_cooldown_mult: 10,
+            effect_heal_shield_power: 10.0,
             effect_magic_power: 25,
             effect_skill_cooldown_mult: 10,
             effect_duration_seconds: 3.0,
@@ -52,7 +52,6 @@ impl StaffOfFlowingWater {
                 &["staff_of_flowing_water"],
             ),
             price: 750,
-            hp: 250,
             hp_regen: 2,
             magic_power: 50,
             skill_cooldown_mult: 15,
@@ -77,10 +76,10 @@ impl StaffOfFlowingWater {
             cfg,
             [
                 price,
-                hp,
                 hp_regen,
                 magic_power,
                 skill_cooldown_mult,
+                effect_heal_shield_power,
                 effect_magic_power,
                 effect_skill_cooldown_mult,
                 effect_duration_seconds
@@ -148,7 +147,6 @@ impl StableItem for StaffOfFlowingWater {
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            hp: self.hp,
             hp_regen: self.hp_regen,
             magic_power: self.magic_power,
             skill_cooldown_mult: self.skill_cooldown_mult,
@@ -190,6 +188,7 @@ impl StableItem for StaffOfFlowingWater {
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        heal_shield_power::note(ctx, player, self.effect_heal_shield_power);
         let healed = self.self_cast.poll(ctx);
         if healed.is_empty() {
             return;
@@ -208,12 +207,7 @@ impl StableItem for StaffOfFlowingWater {
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![
-            ItemTagV1::Hp,
-            ItemTagV1::HpRegen,
-            ItemTagV1::Ap,
-            ItemTagV1::CooltimeReduce,
-        ]
+        vec![ItemTagV1::HpRegen, ItemTagV1::Ap, ItemTagV1::CooltimeReduce]
     }
 
     fn category(&self) -> ItemCategoryV1 {

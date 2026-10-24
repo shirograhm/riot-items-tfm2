@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, sized_range, ticks, Elapsed, ItemMeta};
+use crate::{apply_config, heal_shield_power, percent_of, sized_range, ticks, Elapsed, ItemMeta};
 
 const PURIFY_POLL_TICKS: usize = 6;
 const PURIFY_EFFECT: &str = "riot_mikaels_purify";
@@ -14,6 +14,7 @@ pub struct MikaelsBlessing {
     hp_regen: i32,
     magic_power: i32,
     skill_cooldown_mult: i32,
+    effect_heal_shield_power: f64,
     effect_hp_percent_threshold: f64,
     effect_min_heal: usize,
     effect_max_heal: usize,
@@ -33,11 +34,12 @@ impl MikaelsBlessing {
                 &["forbidden_idol"],
                 &["radiant_mikaels_blessing"],
             ),
-            price: 750,
+            price: 900,
             hp: 250,
             hp_regen: 2,
             magic_power: 20,
             skill_cooldown_mult: 10,
+            effect_heal_shield_power: 12.0,
             effect_hp_percent_threshold: 50.0,
             effect_min_heal: 100,
             effect_max_heal: 265,
@@ -79,6 +81,7 @@ impl MikaelsBlessing {
                 hp_regen,
                 magic_power,
                 skill_cooldown_mult,
+                effect_heal_shield_power,
                 effect_hp_percent_threshold,
                 effect_min_heal,
                 effect_max_heal,
@@ -211,6 +214,7 @@ impl StableItem for MikaelsBlessing {
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        heal_shield_power::note(ctx, player, self.effect_heal_shield_power);
         // By the time gone by, not by one: no `update` runs for a dead carrier,
         // and the cooldown is to keep running through the death.
         let gone = self.clock.since_last(ctx);

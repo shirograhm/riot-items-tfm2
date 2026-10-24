@@ -20,6 +20,7 @@ use std::sync::atomic::{AtomicBool, AtomicPtr, AtomicU64, AtomicU8, AtomicUsize,
 use std::sync::Mutex;
 
 pub mod driver;
+mod heal_shield;
 
 const TRACE_FILES: bool = false;
 
@@ -1249,6 +1250,7 @@ fn tactics_post_update(client: &mut StableClient<'_>, in_game: bool) {
         install_seed_ctor_hook();
         install_spawn_hook();
         install_route_hook();
+        heal_shield::install();
         // The player's team id, for team scoping.
         if let (true, Some(pid)) = (in_game, client.player_team_id()) {
             // `player_team_id()` reads 0 or -1 at times, 0 throughout comp
@@ -1329,6 +1331,7 @@ fn tactics_on_server_start() {
     install_seed_ctor_hook();
     install_spawn_hook();
     install_route_hook();
+    heal_shield::install();
 }
 
 fn tactics_before_management_tick() {
@@ -2604,14 +2607,22 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
         } else {
             0
         };
-        // Rule 18's route picker is not handed the match, so every buy notes
-        // it for the athlete (`route_fixup`).
-        if ROUTE_CHOICE {
-            crate::route_choice::note_seat(athlete, seed_r9);
-        }
         let seed_match_r9 = lseed != 0 && seed_r9 == lseed;
         let rp = RENDER_PROVIDER.load(Ordering::Relaxed);
         let is_live = seed_match_r9 || (rp != 0 && provider_now != 0 && provider_now == rp);
+        // Rule 18's route picker is not handed the match, so every buy notes
+        // it for the athlete (`route_fixup`), and whether the editor's rows
+        // reach the athlete for their component focus: everyone's under "Apply
+        // To All Players", else the player's (a test's both sides), as with
+        // `is_player` below. Asked only while some row has a focus.
+        if ROUTE_CHOICE {
+            let reached = crate::build_config::any_focus()
+                && (!crate::build_config::own_team_only_enabled()
+                    || (COMPTEST_MATCH.load(Ordering::Relaxed) && is_live)
+                    || crate::build_config::is_test_match(seed_r9)
+                    || matches!(is_my_athlete(athlete), Some(true)));
+            crate::route_choice::note_seat(athlete, seed_r9, reached);
+        }
         // Background buys exit here unless the athlete is mine, a test's, or
         // still needs its build grown (`needs_build_extension`: two VEH reads,
         // true at most once per athlete). The same decision runs in background
@@ -3611,13 +3622,15 @@ unsafe fn install_post_hook(
 
 // The route picker's fixup ([`install_post_hook`]). Only a draw the game would
 // buy is looked at (rax 1); a better candidate replaces it, bought only if the
-// gold covers it, as the game would have checked its own.
+// gold covers it, as the game would have checked its own. Under "Allow Any
+// Builds" only for a row with a component focus ([`route_answer`]).
 unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller: u64) {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         if regs.is_null() || stack.is_null() || *regs.add(4) != 1 {
             return;
         }
-        if !crate::build_config::smart_builds_enabled() {
+        let smart = crate::build_config::smart_builds_enabled();
+        if !smart && !crate::build_config::any_focus() {
             return;
         }
         let athlete = *regs.add(1) as usize;
@@ -3631,6 +3644,7 @@ unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller:
             done,
             upgrading.then_some(slot),
             drawn,
+            smart,
         ) else {
             return;
         };
@@ -3647,7 +3661,11 @@ unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller:
 
 // One question to rule 18: the route from `from` (`u64::MAX` for a new item) to
 // `target` for one champion in one lane of one match. Asked again every tick
-// an athlete shops, so the answers are kept per thread.
+// an athlete shops, so the answers are kept per thread. The last three are
+// whether Smart Builds is on, whether the editor's rows reach the athlete
+// (`route_choice::note_seat`), and which save of the editor's is in force
+// (`build_config::pins_generation`), so a changed component focus is asked
+// anew.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 struct RouteAsk {
     catalog_len: u64,
@@ -3657,6 +3675,9 @@ struct RouteAsk {
     side: u64,
     lane: u8,
     champion: u64, // a hash of the key
+    smart: bool,
+    reached: bool,
+    builds: u64,
 }
 
 // What the picker could draw, and the best of it; `best` is empty where the
@@ -3679,7 +3700,8 @@ thread_local! {
 
 // The candidate to buy in place of `drawn`, or `None` to keep the draw: when
 // rule 18 has nothing better, or `drawn` is not among the candidates it found
-// (then it has misread the picker, and the game's draw is safer).
+// (then it has misread the picker, and the game's draw is safer). `smart`:
+// Smart Builds is on.
 unsafe fn route_better(
     athlete: usize,
     catalog: usize,
@@ -3687,6 +3709,7 @@ unsafe fn route_better(
     done: u64,
     upgrading: Option<u64>,
     drawn: u64,
+    smart: bool,
 ) -> Option<u64> {
     if athlete < 0x10000
         || catalog < 0x10000
@@ -3710,11 +3733,12 @@ unsafe fn route_better(
     let len = athlete_champion(athlete, &mut name)?;
     let champion = &name[..len];
     let lane = athlete_lane(athlete);
+    let (seed, reached) = crate::route_choice::seat(athlete);
     let ask = RouteAsk {
         catalog_len,
         from,
         target,
-        seed: crate::route_choice::seat_seed(athlete),
+        seed,
         side: safe_read_u64(athlete + O_ATHLETE_TEAM)?,
         lane: lane.map_or(u8::MAX, |lane| lane as u8),
         champion: {
@@ -3723,6 +3747,9 @@ unsafe fn route_better(
             champion.hash(&mut hasher);
             hasher.finish()
         },
+        smart,
+        reached,
+        builds: crate::build_config::pins_generation(),
     };
     let kept = ROUTE_ANSWERS
         .try_with(|answers| answers.borrow().get(&ask).cloned())
@@ -3782,7 +3809,9 @@ unsafe fn route_target(athlete: usize, catalog_len: u64, done: u64) -> Option<u6
 }
 
 // Rule 18's answer for `ask`, from the game's own graph; `None` when it cannot
-// be read.
+// be read. The champion's row in the Build Editor can lean it towards offensive
+// or defensive components (`build_config::Focus`), which counts under "Allow
+// Any Builds" too: there, a champion with no focus keeps the game's draw.
 unsafe fn route_answer(
     catalog: usize,
     catalog_len: u64,
@@ -3790,6 +3819,14 @@ unsafe fn route_answer(
     champion: &str,
     lane: Option<crate::build_config::Role>,
 ) -> Option<RouteAnswer> {
+    let focus = if ask.reached {
+        crate::build_config::focus_for(champion, lane.unwrap_or_default())
+    } else {
+        crate::build_config::Focus::Neither
+    };
+    if !ask.smart && focus == crate::build_config::Focus::Neither {
+        return Some(RouteAnswer::default());
+    }
     let graph = RouteGraph::of(catalog, catalog_len)?;
     let target = ask.target;
     // The picker's own two sets: tier-0 items that reach the target, or the
@@ -3833,7 +3870,7 @@ unsafe fn route_answer(
         }
     }
     let enemies = crate::route_choice::enemy_damage(ask.seed, ask.side, champion);
-    let weights = crate::route_choice::Weights::new(champion, lane, enemies);
+    let weights = crate::route_choice::Weights::new(champion, lane, enemies).focused(focus);
     let table = crate::route_choice::route_table();
     let mut scores = RouteScores::default();
     let scored: Vec<(u64, f64)> = candidates
@@ -3859,7 +3896,7 @@ unsafe fn route_answer(
     crate::match_builds::log("routes", || {
         let name = |i: u64| catalog_name_in(catalog, catalog_len, i).unwrap_or_else(|| i.to_string());
         format!(
-            "{champion} lane={lane:?} seed={:#x} side={} enemies(AD,AP)={enemies:?} {} -> {}: {} => {}",
+            "{champion} lane={lane:?} focus={focus:?} seed={:#x} side={} enemies(AD,AP)={enemies:?} {} -> {}: {} => {}",
             ask.seed,
             ask.side,
             if ask.from == u64::MAX {

@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, percent_of_i32, sized_range, ticks, ItemMeta, AURA_DURATION_TICKS,
-    AURA_REFRESH_TICKS,
+    apply_config, heal_shield_power, percent_of, percent_of_i32, sized_range, ticks, ItemMeta,
+    AURA_DURATION_TICKS, AURA_REFRESH_TICKS,
 };
 
 #[derive(Clone, Debug)]
@@ -167,8 +167,16 @@ impl LocketOfTheIronSolari {
         }
 
         let duration = ticks(self.effect_shield_seconds);
+        // The allies' shields take the carrier's heal and shield power: the
+        // API's shields pass by the engine's add-shield, where it is applied.
+        let power = heal_shield_power::of(ctx, caster);
         for id in targets {
-            ctx.entity_add_shield(id, shield, duration);
+            let amount = if id == caster {
+                shield
+            } else {
+                heal_shield_power::raised(shield, power)
+            };
+            ctx.entity_add_shield(id, amount, duration);
         }
         self.devotion_cooldown = ticks(self.effect_cooldown_seconds);
     }
