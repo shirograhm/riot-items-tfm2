@@ -155,7 +155,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | Item | Cost | Stats | Passive |
 | --- | --- | --- | --- |
 | **Abyssal Mask** | 700G | +250 HP<br>+50 MR<br>+10 Ability Haste | Unmake: Reduce the magic resistance of nearby enemy champions by 20%. |
-| **Ardent Censer** | 700G | +1 HP Regen<br>+25 AP<br>+10 Ability Haste<br>+5% MS | Gain 10% heal and shield power.<br>Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
+| **Ardent Censer** | 700G | +2 HP Regen<br>+25 AP<br>+10 Ability Haste<br>+5% MS | Gain 10% heal and shield power.<br>Sanctify: Healing, shielding or buffing an allied champion (excluding yourself) grants them 20% attack speed and bonus physical damage on-hit equal to 2% of the target's maximum health for 6 seconds. |
 | **Atma's Reckoning** | 750G | +500 HP<br>+20% Crit Chance | Big Hands: Gain 5% critical strike chance for every 1000 maximum health, up to 25%. |
 | **Axiom Arc** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Flux: Scoring a takedown on an enemy champion refunds 10% (+0.2% per 1 Lethality) of your ultimate ability's total cooldown. |
 | **Bandlepipes** | 500G | +150 HP<br>+20 Armor<br>+30 MR<br>+15 Ability Haste | Fanfare: Dealing damage to an enemy champion empowers you with Fanfare for 4 seconds, granting you 12% bonus movement speed. While empowered, you and nearby allied champions also gain 20% attack speed. |

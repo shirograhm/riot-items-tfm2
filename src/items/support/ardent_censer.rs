@@ -32,7 +32,7 @@ impl ArdentCenser {
             ),
             sanctify_buff: "ardent_censer_sanctify",
             price: 700,
-            hp_regen: 1,
+            hp_regen: 2,
             magic_power: 25,
             skill_cooldown_mult: 10,
             move_speed_mult: 5,

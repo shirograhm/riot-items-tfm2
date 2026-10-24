@@ -2704,7 +2704,7 @@
     "move_speed_mult": 5,
     "toughness": 0,
     "skill_damaged_reduce": 0,
-    "hp_regen": 1,
+    "hp_regen": 2,
     "skill_cooldown_mult": 10,
     "effect_attack_speed_mult": 20,
     "effect_enemy_max_hp_damage": 2,
