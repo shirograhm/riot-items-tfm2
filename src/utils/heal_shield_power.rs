@@ -9,10 +9,10 @@
 //! ([`raised`], [`of`]).
 //!
 //! Each holding item reports its share from its `update` ([`note`]), every
-//! tick: a carrier's total is the sum of one tick's reports, so an item upgraded
-//! into one without the stat stops counting at once. Totals are kept per thread
-//! and per match (the engine's game object): matches run on several threads,
-//! and their entity ids overlap.
+//! tick: a carrier's total is the sum of one tick's reports (two items of 12%
+//! make 24%), so an item upgraded into one without the stat stops counting a
+//! tick later. Totals are kept per thread and per match (the engine's game
+//! object): matches run on several threads, and their entity ids overlap.
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -32,8 +32,17 @@ const MAX_GAMES: usize = 8;
 struct Game {
     // The tick the match was last seen on.
     tick: usize,
-    // Champion entity -> (the tick its total is for, the total).
-    carriers: HashMap<usize, (usize, f64)>,
+    carriers: HashMap<usize, Total>,
+}
+
+// A champion's total: what its items have reported so far on `tick`, and all
+// they reported on the tick before. A heal can land between two items'
+// reports, so it reads the larger of the two rather than half a sum.
+#[derive(Default)]
+struct Total {
+    tick: usize,
+    running: f64,
+    last: f64,
 }
 
 #[derive(Default)]
@@ -93,11 +102,18 @@ pub(crate) fn note(ctx: &StableSim<'_>, player: usize, percent: f64) {
         all.current = game;
         let state = all.games.entry(game).or_default();
         state.tick = tick;
-        let total = state.carriers.entry(champion).or_insert((tick, 0.0));
-        if total.0 != tick {
-            *total = (tick, 0.0);
+        let total = state.carriers.entry(champion).or_default();
+        if total.tick != tick {
+            // The tick before's sum is whole only where it was the tick before.
+            total.last = if total.tick + 1 == tick {
+                total.running
+            } else {
+                0.0
+            };
+            total.running = 0.0;
+            total.tick = tick;
         }
-        total.1 += percent;
+        total.running += percent;
     });
 }
 
@@ -143,8 +159,9 @@ pub(crate) fn power(game: usize, champion: usize) -> f64 {
         .try_with(|cell| {
             let all = cell.try_borrow().ok()?;
             let state = all.games.get(&game)?;
-            let &(tick, total) = state.carriers.get(&champion)?;
-            (tick <= state.tick && state.tick - tick <= FRESH_TICKS).then_some(total)
+            let total = state.carriers.get(&champion)?;
+            (total.tick <= state.tick && state.tick - total.tick <= FRESH_TICKS)
+                .then_some(total.running.max(total.last))
         })
         .ok()
         .flatten()

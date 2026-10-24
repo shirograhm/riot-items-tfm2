@@ -2647,7 +2647,7 @@
     "effect_heal_shield_power": 8.0
   },
   "sword_of_blossoming_dawn": {
-    "price": 700,
+    "price": 1150,
     "attack": 0,
     "magic_power": 15,
     "attack_speed_mult": 20,
@@ -2669,7 +2669,7 @@
     "effect_heal_shield_power": 12.0
   },
   "radiant_sword_of_blossoming_dawn": {
-    "price": 850,
+    "price": 900,
     "attack": 0,
     "magic_power": 45,
     "attack_speed_mult": 35,
@@ -4608,7 +4608,7 @@
     "effect_max_heal": 40
   },
   "mikaels_blessing": {
-    "price": 750,
+    "price": 900,
     "attack": 0,
     "magic_power": 20,
     "attack_speed_mult": 0,

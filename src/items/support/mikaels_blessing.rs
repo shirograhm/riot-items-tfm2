@@ -34,7 +34,7 @@ impl MikaelsBlessing {
                 &["forbidden_idol"],
                 &["radiant_mikaels_blessing"],
             ),
-            price: 750,
+            price: 900,
             hp: 250,
             hp_regen: 2,
             magic_power: 20,
