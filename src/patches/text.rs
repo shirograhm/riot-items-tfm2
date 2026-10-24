@@ -1412,7 +1412,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 131] = [
+const ROW_FORMATS: [RowFormat; 133] = [
     row("deaths_dance", "effect_delayed_damage_percent", label::DAMAGE_REDUCTION),
     row("echoes_of_helia", "effect_damage_conversion", label::DAMAGE_STORED),
     row("heartsteel", "effect_bonus_hp_percent_of_damage", label::PERMANENT_HEALTH)
@@ -1518,6 +1518,8 @@ const ROW_FORMATS: [RowFormat; 131] = [
     row("bandlepipes", "effect_attack_speed_mult", label::ATTACK_SPEED),
     row("blackfire_torch", "effect_stack_magic_power", label::ABILITY_POWER).unit(unit::PER_STACK),
     row("cosmic_drive", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("dawncore", "effect_stack_heal_shield_power", label::HEAL_SHIELD_POWER),
+    row("dawncore", "effect_stack_magic_power", label::ABILITY_POWER),
     row("dead_mans_plate", "effect_move_speed_per_stack", label::MOVEMENT_SPEED)
         .unit(unit::PER_MOMENTUM_STACK),
     row("dream_maker", "effect_skill_damaged_reduce", label::SKILL_DAMAGE_REDUCTION),

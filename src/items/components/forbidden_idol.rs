@@ -58,6 +58,7 @@ impl StableItem for ForbiddenIdol {
             "ardent_censer".to_string(),
             "staff_of_flowing_water".to_string(),
             "mikaels_blessing".to_string(),
+            "dawncore".to_string(),
         ]
     }
 

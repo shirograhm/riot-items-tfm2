@@ -1,5 +1,5 @@
 Adds items from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the game's 30 items and adds 245 new ones (144 base + 101 Radiant).
+Reskins the game's 30 items and adds 247 new ones (145 base + 102 Radiant).
 
 ##### Instructions  
 If you only see vanilla items (Bloodthirster, Luden's, Sunfire), your save isn't loading the mod. To fix it:
@@ -50,7 +50,7 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 - After that, supports build only Tank and Support items, and favor support items.
 - Mage supports are the exception: they get one AP support item (Imperial Mandate, Mikael's Blessing or Chemtech Putrifier), then build AP items like any other mage.
 - Supports that immobilize (stun, root, knock-up, knockback, pull, taunt, fear, charm) build Imperial Mandate as their support item if they deal AP damage. Supports that don't immobilize never keep Mandate.
-- Supports that heal, shield or buff allies get Ardent Censer, Echoes of Helia, Moonstone Renewer or Staff of Flowing Water as their support item. Supports that don't, and mages, never keep these four.
+- Supports that heal, shield or buff allies get Ardent Censer, Dawncore, Echoes of Helia, Moonstone Renewer or Staff of Flowing Water as their support item. Supports that don't, and mages, never keep these five.
 - Pinning anything in a support's slot 1 skips the World Atlas item.
 
 **Junglers**
@@ -172,6 +172,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Cloak of Starry Night** | 750G | +300 HP<br>+50 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 25%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
 | **Collector** | 750G | +35 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Cosmic Drive** | 850G | +250 HP<br>+50 AP<br>+10 Ability Haste<br>+4% MS | Spelldance: Dealing magic damage or true damage to an enemy champion grants you 8% movement speed for 4 seconds. |
+| **Dawncore** | 850G | +3 HP Regen<br>+40 AP | Gain 16% heal and shield power.<br>First Light: Gain 2% heal and shield power and 15 Ability Power for every 10 Ability Haste. |
 | **Dead Man's Plate** | 750G | +250 HP<br>+30 Armor<br>+4% MS | Shipwrecker: Generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage on-hit, scaling with stacks consumed. |
 | **Deathblade** | 700G | +50 AD | Apex: Increase your total Attack Damage by 15%. |
 | **Death's Dance** | 750G | +30 AD<br>+30 Armor<br>+10 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 45 + 15% of your missing health. |
@@ -278,6 +279,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Radiant Cloak of Starry Night** | 1050G | +550 HP<br>+100 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 25%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
 | **Radiant Collector** | 1050G | +65 AD<br>+25% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Radiant Cosmic Drive** | 1000G | +350 HP<br>+75 AP<br>+15 Ability Haste<br>+4% MS | Spelldance: Dealing magic damage or true damage to an enemy champion grants you 8% movement speed for 4 seconds. |
+| **Radiant Dawncore** | 750G | +4 HP Regen<br>+60 AP | Gain 16% heal and shield power.<br>First Light: Gain 2% heal and shield power and 15 Ability Power for every 10 Ability Haste. |
 | **Radiant Dead Man's Plate** | 1050G | +450 HP<br>+35 Armor<br>+4% MS | Shipwrecker: Generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage on-hit, scaling with stacks consumed. |
 | **Radiant Deathblade** | 1000G | +80 AD | Apex: Increase your total Attack Damage by 25%. |
 | **Radiant Death's Dance** | 1050G | +45 AD<br>+45 Armor<br>+15 Ability Haste | Ignore Pain: 25% of the damage you take is dealt over time as true damage (up to 2.5% of your maximum health per second).<br>Defy: Scoring a takedown on an enemy champion cleanses the remaining stored damage and heals you for 75 + 25% of your missing health. |

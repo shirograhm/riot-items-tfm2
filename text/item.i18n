@@ -746,23 +746,23 @@
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
-            "option": "\nGain <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>."
+            "option": "\nGain <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Peppermint<>: Basic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Peppermint<>: Basic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Peppermint<>: Basic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Peppermint<>: Basic attacks <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal<> the most wounded and nearest ally champion for <#60e84dff>15<> - <#60e84dff>60<> (based on <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Ardent Censer",
-            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Sanctify<>: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> <#ffff99ff>on-hit<> equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Sanctify<>: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> <#ffff99ff>on-hit<> equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
         },
         "radiant_ardent_censer": {
             "name": "Radiant Ardent Censer",
-            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Sanctify<>: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> <#ffff99ff>on-hit<> equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
+            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Sanctify<>: Healing, shielding or buffing an allied champion (excluding yourself) grants them <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>attack speed<> and <#ff9028ff>bonus physical damage<> <#ffff99ff>on-hit<> equal to <#d94c49ff>2% of the target's maximum health<> for <#e8a800ff>6 seconds<>."
         },
         "grezs_spectral_lantern": {
             "name": "Grez's Spectral Lantern",
@@ -894,11 +894,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Staff of Flowing Water",
-            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
+            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Radiant Staff of Flowing Water",
-            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
+            "option": "\nGain <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Rapids<>: Healing, shielding or buffing an allied champion (excluding yourself) grants you and the target <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> and <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> for <#e8a800ff>3 seconds<>."
         },
         "immortal_shieldbow": {
             "name": "Immortal Shieldbow",
@@ -1118,11 +1118,11 @@
         },
         "mikaels_blessing": {
             "name": "Mikael's Blessing",
-            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Radiant Mikael's Blessing",
-            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> heal and shield power<>.\n\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
+            "option": "\nGain <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>Purify<>: If an allied champion <#d94c49ff>below 50% health<> is <#d94c49ff>crowd controlled<>, cleanse them and yourself of all crowd control effects and <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heal them<> for <#60e84dff>100<> - <#60e84dff>265<> (based on the target's <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#60e84dff>health<> (<#e8a800ff>120 second<> cooldown, allies within <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>)."
         },
         "force_of_nature": {
             "name": "Force of Nature",
@@ -1155,6 +1155,14 @@
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
             "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<> and <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>10% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>50 damage<> per second."
+        },
+        "dawncore": {
+            "name": "Dawncore",
+            "option": "\nGain <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>First Light<>: Gain <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<> and <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> for every <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<>."
+        },
+        "radiant_dawncore": {
+            "name": "Radiant Dawncore",
+            "option": "\nGain <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>First Light<>: Gain <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<> and <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> for every <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<>."
         }
     },
     "vi": {
@@ -1904,23 +1912,23 @@
         },
         "forbidden_idol": {
             "name": "Dị Vật Tai Ương",
-            "option": "\nNhận <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>."
+            "option": "\nNhận <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ",
-            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Kiếm Bình Minh Nở Rộ Ánh Sáng",
-            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
+            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Peppermint<>: Đòn đánh thường <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi<> cho tướng đồng minh bị thương nặng nhất và gần nhất <#60e84dff>15<> - <#60e84dff>60<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT)<>."
         },
         "ardent_censer": {
             "name": "Lư Hương Sôi Sục",
-            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Cầu Nguyện<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Cầu Nguyện<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
         },
         "radiant_ardent_censer": {
             "name": "Lư Hương Sôi Sục Ánh Sáng",
-            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Cầu Nguyện<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
+            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Cầu Nguyện<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp họ nhận <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>tốc độ đánh<> và gây thêm <#ff9028ff>sát thương vật lí<> <#ffff99ff>khi đánh trúng<> bằng <#d94c49ff>2% máu tối đa của mục tiêu<> trong <#e8a800ff>6 giây<>."
         },
         "grezs_spectral_lantern": {
             "name": "Lồng Đèn Ma Grez",
@@ -2052,11 +2060,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Trượng Lưu Thủy",
-            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
+            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Trượng Lưu Thủy Ánh Sáng",
-            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
+            "option": "\nNhận <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nước Sủi Bọt<>: Hồi máu, tạo lá chắn hoặc tăng cường cho một tướng đồng minh (không tính bản thân) giúp bạn và mục tiêu nhận <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> và <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> trong <#e8a800ff>3 giây<>."
         },
         "immortal_shieldbow": {
             "name": "Nỏ Tử Thủ",
@@ -2276,11 +2284,11 @@
         },
         "mikaels_blessing": {
             "name": "Chuông Bảo Hộ Mikael",
-            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Chuông Bảo Hộ Mikael Ánh Sáng",
-            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
+            "option": "\nNhận <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Thanh Tẩy<>: Nếu một tướng đồng minh <#d94c49ff>dưới 50% máu<> bị <#d94c49ff>khống chế<>, loại bỏ mọi hiệu ứng khống chế khỏi họ và bản thân bạn, đồng thời <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hồi cho họ<> <#60e84dff>100<> - <#60e84dff>265<> (dựa theo <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>cấp độ<> của mục tiêu) <#60e84dff>máu<> (<#e8a800ff>120 giây<> hồi chiêu, đồng minh trong phạm vi <#ff86c2ff>65<> <i#asset/base/ui/banpick/champion_stat_icon:range_0>)."
         },
         "force_of_nature": {
             "name": "Giáp Thiên Nhiên",
@@ -2313,6 +2321,14 @@
         "philosophers_medallion": {
             "name": "Mề Đay Hiền Triết",
             "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<> và <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>10% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>50 sát thương<> mỗi giây."
+        },
+        "dawncore": {
+            "name": "Lõi Bình Minh",
+            "option": "\nNhận <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nhất Quang<>: Nhận <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<> và <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> với mỗi <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<>."
+        },
+        "radiant_dawncore": {
+            "name": "Lõi Bình Minh Ánh Sáng",
+            "option": "\nNhận <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nhất Quang<>: Nhận <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<> và <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> với mỗi <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<>."
         }
     },
     "zh-hans": {
@@ -3062,23 +3078,23 @@
         },
         "forbidden_idol": {
             "name": "禁忌雕像",
-            "option": "\n获得 <#60e84dff>8%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。"
+            "option": "\n获得 <#60e84dff>8%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。"
         },
         "sword_of_blossoming_dawn": {
             "name": "花晓之剑",
-            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>Peppermint<>：普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>Peppermint<>：普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "光明版花晓之剑",
-            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>Peppermint<>：普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
+            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>Peppermint<>：普通攻击<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>治疗<>最近且伤势最重的友方英雄 <#60e84dff>15<> - <#60e84dff>60<>（基于<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#ff9028ff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力）<> <#a974ffff>（+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度）<>。"
         },
         "ardent_censer": {
             "name": "炽热香炉",
-            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>圣洁化<>：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且<#ffff99ff>攻击时<>造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
+            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>圣洁化<>：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且<#ffff99ff>攻击时<>造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
         },
         "radiant_ardent_censer": {
             "name": "光明版炽热香炉",
-            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>圣洁化<>：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且<#ffff99ff>攻击时<>造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
+            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>圣洁化<>：为友方英雄（自己除外）治疗、护盾或增益时，使其获得 <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻击速度<>，且<#ffff99ff>攻击时<>造成相当于<#d94c49ff>目标最大生命值 2%<>的<#ff9028ff>额外物理伤害<>，持续 <#e8a800ff>6秒<>。"
         },
         "grezs_spectral_lantern": {
             "name": "格雷兹之幽魂灯",
@@ -3210,11 +3226,11 @@
         },
         "staff_of_flowing_water": {
             "name": "流水法杖",
-            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
+            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
         },
         "radiant_staff_of_flowing_water": {
             "name": "光明版流水法杖",
-            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
+            "option": "\n获得 <#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>湍流<>：为友方英雄（自己除外）治疗、护盾或增益时，使你和目标获得 <#a974ffff>25 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>和 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>，持续 <#e8a800ff>3秒<>。"
         },
         "immortal_shieldbow": {
             "name": "不朽盾弓",
@@ -3434,11 +3450,11 @@
         },
         "mikaels_blessing": {
             "name": "米凯尔的祝福",
-            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
+            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
         },
         "radiant_mikaels_blessing": {
             "name": "光明版米凯尔的祝福",
-            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
+            "option": "\n获得 <#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>纯化<>：当一名<#d94c49ff>生命值低于50%<>的友方英雄<#d94c49ff>受到控制<>时，移除其和你身上的所有控制效果，并<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>为其回复<> <#60e84dff>100<> - <#60e84dff>265<>（基于目标的<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等级<>）<#60e84dff>生命值<>（冷却时间120秒，<#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军）。"
         },
         "force_of_nature": {
             "name": "自然之力",
@@ -3471,6 +3487,14 @@
         "philosophers_medallion": {
             "name": "贤者印章",
             "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#61d1bcff>5 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>和 <#60e84dff>15 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其10%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>50点伤害<>。"
+        },
+        "dawncore": {
+            "name": "黎明核心",
+            "option": "\n获得 <#60e84dff>16%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>最初之光<>：每 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>获得 <#60e84dff>2%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>和 <#a974ffff>15 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>。"
+        },
+        "radiant_dawncore": {
+            "name": "光明版黎明核心",
+            "option": "\n获得 <#60e84dff>16%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>最初之光<>：每 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>获得 <#60e84dff>2%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>和 <#a974ffff>15 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>。"
         }
     },
     "pt-BR": {
@@ -4220,23 +4244,23 @@
         },
         "forbidden_idol": {
             "name": "Ídolo Proibido",
-            "option": "\nGanha <#60e84dff>8% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>."
+            "option": "\nGanha <#60e84dff>8% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente",
-            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Peppermint<>: Ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Peppermint<>: Ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Espada da Alvorada Florescente Radiante",
-            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Peppermint<>: Ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
+            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Peppermint<>: Ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curam<> o campeão aliado mais ferido e mais próximo em <#60e84dff>15<> - <#60e84dff>60<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<>) <#ff9028ff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque)<> <#a974ffff>(+7% de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade)<>."
         },
         "ardent_censer": {
             "name": "Turíbulo Ardente",
-            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Santificar<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> <#ffff99ff>no acerto<> equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Santificar<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> <#ffff99ff>no acerto<> equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
         },
         "radiant_ardent_censer": {
             "name": "Turíbulo Ardente Radiante",
-            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Santificar<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> <#ffff99ff>no acerto<> equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
+            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Santificar<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a ele <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Velocidade de Ataque<> e <#ff9028ff>dano físico bônus<> <#ffff99ff>no acerto<> equivalente a <#d94c49ff>2% da Vida Máxima do alvo<> por <#e8a800ff>6 segundos<>."
         },
         "grezs_spectral_lantern": {
             "name": "Lanterna Espectral de Grez",
@@ -4368,11 +4392,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Cajado Aquafluxo",
-            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
+            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Cajado Aquafluxo Radiante",
-            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
+            "option": "\nGanha <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Corredeira<>: Curar, conceder escudo ou fortalecer um campeão aliado (exceto você) concede a você e ao alvo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> e <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> por <#e8a800ff>3 segundos<>."
         },
         "immortal_shieldbow": {
             "name": "Arco-escudo Imortal",
@@ -4592,11 +4616,11 @@
         },
         "mikaels_blessing": {
             "name": "Bênção de Mikael",
-            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Bênção de Mikael Radiante",
-            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+            "option": "\nGanha <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Purificar<>: Se um campeão aliado <#d94c49ff>abaixo de 50% de Vida<> sofrer <#d94c49ff>Controle de Grupo<>, remove todos os efeitos de Controle de Grupo dele e de você e <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura-o<> em <#60e84dff>100<> - <#60e84dff>265<> (com base no <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nível<> do alvo) de <#60e84dff>Vida<> (recarga de <#e8a800ff>120 segundos<>, aliados dentro de <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         },
         "force_of_nature": {
             "name": "Força da Natureza",
@@ -4629,6 +4653,14 @@
         "philosophers_medallion": {
             "name": "Medalhão Filosofal",
             "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#61d1bcff>5 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<> e <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>10% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>50 de dano<> por segundo."
+        },
+        "dawncore": {
+            "name": "Auronúcleo",
+            "option": "\nGanha <#60e84dff>16% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Primeira Luz<>: Ganha <#60e84dff>2% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<> e <#a974ffff>15 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> a cada <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<>."
+        },
+        "radiant_dawncore": {
+            "name": "Auronúcleo Radiante",
+            "option": "\nGanha <#60e84dff>16% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Primeira Luz<>: Ganha <#60e84dff>2% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<> e <#a974ffff>15 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> a cada <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<>."
         }
     },
     "ru": {
@@ -5378,23 +5410,23 @@
         },
         "forbidden_idol": {
             "name": "Запретный идол",
-            "option": "\nДаёт <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>."
+            "option": "\nДаёт <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Меч сияющего рассвета",
-            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Peppermint<>: Автоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Peppermint<>: Автоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Лучезарный Меч сияющего рассвета",
-            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Peppermint<>: Автоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
+            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Peppermint<>: Автоатаки <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливают<> ближайшему наиболее раненому союзному чемпиону <#60e84dff>15<> - <#60e84dff>60<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений)<>."
         },
         "ardent_censer": {
             "name": "Пылающая кадильница",
-            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Освящение<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> <#ffff99ff>при попадании<> в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Освящение<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> <#ffff99ff>при попадании<> в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
         },
         "radiant_ardent_censer": {
             "name": "Лучезарная Пылающая кадильница",
-            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Освящение<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> <#ffff99ff>при попадании<> в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
+            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Освящение<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт ему <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>скорости атаки<> и <#ff9028ff>дополнительный физический урон<> <#ffff99ff>при попадании<> в размере <#d94c49ff>2% максимального здоровья цели<> на <#e8a800ff>6 секунд<>."
         },
         "grezs_spectral_lantern": {
             "name": "Призрачный фонарь Греза",
@@ -5526,11 +5558,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Посох водного потока",
-            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
+            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Лучезарный Посох водного потока",
-            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
+            "option": "\nДаёт <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Стремнина<>: Лечение, щит или усиление союзного чемпиона (кроме вас) даёт вам и цели <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> и <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> на <#e8a800ff>3 секунды<>."
         },
         "immortal_shieldbow": {
             "name": "Арбалет бессмертия",
@@ -5750,11 +5782,11 @@
         },
         "mikaels_blessing": {
             "name": "Благословение Микаэля",
-            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Лучезарное Благословение Микаэля",
-            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
+            "option": "\nДаёт <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Очищение<>: Если союзный чемпион со <#d94c49ff>здоровьем ниже 50%<> попадает под <#d94c49ff>эффект контроля<>, вы снимаете все эффекты контроля с него и с себя и <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>восстанавливаете ему<> <#60e84dff>100<> - <#60e84dff>265<> (в зависимости от <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>уровня<> цели) <#60e84dff>здоровья<> (перезарядка 120 секунд, союзники в пределах <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>)."
         },
         "force_of_nature": {
             "name": "Сила природы",
@@ -5787,6 +5819,14 @@
         "philosophers_medallion": {
             "name": "Философский медальон",
             "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<> и <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>10% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>50 урона<> в секунду."
+        },
+        "dawncore": {
+            "name": "Ядро рассвета",
+            "option": "\nДаёт <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Первый луч<>: Даёт <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<> и <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> за каждые <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<>."
+        },
+        "radiant_dawncore": {
+            "name": "Лучезарное Ядро рассвета",
+            "option": "\nДаёт <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Первый луч<>: Даёт <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<> и <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> за каждые <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<>."
         }
     },
     "ko": {
@@ -6536,23 +6576,23 @@
         },
         "forbidden_idol": {
             "name": "금지된 우상",
-            "option": "\n<#60e84dff>8%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다."
+            "option": "\n<#60e84dff>8%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다."
         },
         "sword_of_blossoming_dawn": {
             "name": "꽃피는 새벽의 검",
-            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "찬란한 꽃피는 새벽의 검",
-            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
+            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>Peppermint<>: 기본 공격이 가장 가깝고 부상이 심한 아군 챔피언의 <#60e84dff>체력<>을 <#60e84dff>15<>~<#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 공격력)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> 주문력)<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>회복<>시킵니다."
         },
         "ardent_censer": {
             "name": "불타는 향로",
-            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>축성<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, <#ffff99ff>공격 시<> <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>축성<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, <#ffff99ff>공격 시<> <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "radiant_ardent_censer": {
             "name": "찬란한 불타는 향로",
-            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>축성<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, <#ffff99ff>공격 시<> <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
+            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>축성<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>6초<> 동안 대상의 <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>공격 속도<>가 <#ceff99ff>20%<> 상승하고, <#ffff99ff>공격 시<> <#d94c49ff>대상 최대 체력의 2%<>에 해당하는 <#ff9028ff>추가 물리 피해<>를 입힙니다."
         },
         "grezs_spectral_lantern": {
             "name": "그레즈의 유령 랜턴",
@@ -6684,11 +6724,11 @@
         },
         "staff_of_flowing_water": {
             "name": "흐르는 물의 지팡이",
-            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>10<> 증가합니다."
+            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>10<> 증가합니다."
         },
         "radiant_staff_of_flowing_water": {
             "name": "찬란한 흐르는 물의 지팡이",
-            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>10<> 증가합니다."
+            "option": "\n<#60e84dff>10%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>급류<>: 아군 챔피언(자신 제외)을 치유하거나 보호막을 씌우거나 강화하면 <#e8a800ff>3초<> 동안 자신과 대상의 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>25<>, <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>10<> 증가합니다."
         },
         "immortal_shieldbow": {
             "name": "불멸의 철갑궁",
@@ -6908,11 +6948,11 @@
         },
         "mikaels_blessing": {
             "name": "미카엘의 축복",
-            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
+            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
         },
         "radiant_mikaels_blessing": {
             "name": "찬란한 미카엘의 축복",
-            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
+            "option": "\n<#60e84dff>12%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>정화<>: <#d94c49ff>체력이 50% 아래인<> 아군 챔피언이 <#d94c49ff>군중 제어<> 효과에 걸리면 대상과 자신에게 걸린 모든 군중 제어 효과를 제거하고, 대상의 <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>레벨<>에 따라 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>체력을 100<>~<#60e84dff>265 회복<>시킵니다. 재사용 대기시간은 <#e8a800ff>120초<>이며, <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 65<> 안의 아군에게만 적용됩니다."
         },
         "force_of_nature": {
             "name": "대자연의 힘",
@@ -6945,6 +6985,14 @@
         "philosophers_medallion": {
             "name": "현자의 메달",
             "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<>이 <#61d1bcff>5<>, <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>15<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 10%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>50의 피해<>를 입힙니다."
+        },
+        "dawncore": {
+            "name": "새벽심장",
+            "option": "\n<#60e84dff>16%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>태초의 빛<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<> <#61d1bcff>10<>당 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> <#60e84dff>체력 회복 및 보호막<>이 <#60e84dff>2%<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>15<> 증가합니다."
+        },
+        "radiant_dawncore": {
+            "name": "찬란한 새벽심장",
+            "option": "\n<#60e84dff>16%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>태초의 빛<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<> <#61d1bcff>10<>당 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> <#60e84dff>체력 회복 및 보호막<>이 <#60e84dff>2%<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>15<> 증가합니다."
         }
     },
     "ja": {
@@ -7694,23 +7742,23 @@
         },
         "forbidden_idol": {
             "name": "フォビドゥン アイドル",
-            "option": "\n<#60e84dff>8%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。"
+            "option": "\n<#60e84dff>8%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。"
         },
         "sword_of_blossoming_dawn": {
             "name": "花咲く夜明けの剣",
-            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ペパーミント<>: 通常攻撃で、最も傷ついている最寄りの味方チャンピオンの体力を<#60e84dff>15<> - <#60e84dff>60<>(<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>。"
+            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ペパーミント<>: 通常攻撃で、最も傷ついている最寄りの味方チャンピオンの体力を<#60e84dff>15<> - <#60e84dff>60<>(<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>。"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "レディアント 花咲く夜明けの剣",
-            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ペパーミント<>: 通常攻撃で、最も傷ついている最寄りの味方チャンピオンの体力を<#60e84dff>15<> - <#60e84dff>60<>(<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>。"
+            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ペパーミント<>: 通常攻撃で、最も傷ついている最寄りの味方チャンピオンの体力を<#60e84dff>15<> - <#60e84dff>60<>(<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>。"
         },
         "ardent_censer": {
             "name": "アーデント センサー",
-            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>サンクティファイ<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>6秒間<>、対象は<#ceff99ff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻撃速度<>と、<#ffff99ff>通常攻撃時効果<>として<#d94c49ff>攻撃対象の最大体力の2%<>の<#ff9028ff>追加物理ダメージ<>を得る。"
+            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>サンクティファイ<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>6秒間<>、対象は<#ceff99ff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻撃速度<>と、<#ffff99ff>通常攻撃時効果<>として<#d94c49ff>攻撃対象の最大体力の2%<>の<#ff9028ff>追加物理ダメージ<>を得る。"
         },
         "radiant_ardent_censer": {
             "name": "レディアント アーデント センサー",
-            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>サンクティファイ<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>6秒間<>、対象は<#ceff99ff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻撃速度<>と、<#ffff99ff>通常攻撃時効果<>として<#d94c49ff>攻撃対象の最大体力の2%<>の<#ff9028ff>追加物理ダメージ<>を得る。"
+            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>サンクティファイ<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>6秒間<>、対象は<#ceff99ff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻撃速度<>と、<#ffff99ff>通常攻撃時効果<>として<#d94c49ff>攻撃対象の最大体力の2%<>の<#ff9028ff>追加物理ダメージ<>を得る。"
         },
         "grezs_spectral_lantern": {
             "name": "グレズの亡霊ランタン",
@@ -7842,11 +7890,11 @@
         },
         "staff_of_flowing_water": {
             "name": "フロー ウォーター スタッフ",
-            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>急流<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>3秒間<>、自身と対象は<#a974ffff>25の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>と<#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>を得る。"
+            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>急流<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>3秒間<>、自身と対象は<#a974ffff>25の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>と<#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>を得る。"
         },
         "radiant_staff_of_flowing_water": {
             "name": "レディアント フロー ウォーター スタッフ",
-            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>急流<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>3秒間<>、自身と対象は<#a974ffff>25の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>と<#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>を得る。"
+            "option": "\n<#60e84dff>10%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>急流<>: 味方チャンピオン(自身を除く)を回復、シールド付与、または強化すると、<#e8a800ff>3秒間<>、自身と対象は<#a974ffff>25の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>と<#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>を得る。"
         },
         "immortal_shieldbow": {
             "name": "イモータル シールドボウ",
@@ -8066,11 +8114,11 @@
         },
         "mikaels_blessing": {
             "name": "ミカエルの祝福",
-            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>浄化<>: <#d94c49ff>体力が50%未満<>の味方チャンピオンが<#d94c49ff>行動妨害効果<>を受けると、その味方と自身からすべての行動妨害効果を解除し、対象の<#60e84dff>体力<>を<#60e84dff>100<> - <#60e84dff>265<>(対象の<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる)<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>(クールダウン<#e8a800ff>120秒<>、<#ff86c2ff>65の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内の味方)。"
+            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>浄化<>: <#d94c49ff>体力が50%未満<>の味方チャンピオンが<#d94c49ff>行動妨害効果<>を受けると、その味方と自身からすべての行動妨害効果を解除し、対象の<#60e84dff>体力<>を<#60e84dff>100<> - <#60e84dff>265<>(対象の<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる)<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>(クールダウン<#e8a800ff>120秒<>、<#ff86c2ff>65の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内の味方)。"
         },
         "radiant_mikaels_blessing": {
             "name": "レディアント ミカエルの祝福",
-            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>浄化<>: <#d94c49ff>体力が50%未満<>の味方チャンピオンが<#d94c49ff>行動妨害効果<>を受けると、その味方と自身からすべての行動妨害効果を解除し、対象の<#60e84dff>体力<>を<#60e84dff>100<> - <#60e84dff>265<>(対象の<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる)<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>(クールダウン<#e8a800ff>120秒<>、<#ff86c2ff>65の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内の味方)。"
+            "option": "\n<#60e84dff>12%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>浄化<>: <#d94c49ff>体力が50%未満<>の味方チャンピオンが<#d94c49ff>行動妨害効果<>を受けると、その味方と自身からすべての行動妨害効果を解除し、対象の<#60e84dff>体力<>を<#60e84dff>100<> - <#60e84dff>265<>(対象の<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>レベル<>に応じる)<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復する<>(クールダウン<#e8a800ff>120秒<>、<#ff86c2ff>65の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内の味方)。"
         },
         "force_of_nature": {
             "name": "自然の力",
@@ -8103,6 +8151,14 @@
         "philosophers_medallion": {
             "name": "賢者のメダル",
             "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#61d1bcff>5の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>と<#60e84dff>15の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、自身にダメージを与えたモンスターは燃焼し、<#e8a800ff>3秒<>かけて<#d94c49ff>最大体力の10%<>の<#e3ab9dff>固定ダメージ<>を受ける(毎秒最大<#e3ab9dff>50ダメージ<>)。"
+        },
+        "dawncore": {
+            "name": "ドーンコア",
+            "option": "\n<#60e84dff>16%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ファーストライト<>: <#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>ごとに、<#60e84dff>2%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>と<#a974ffff>15の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>を得る。"
+        },
+        "radiant_dawncore": {
+            "name": "レディアント ドーンコア",
+            "option": "\n<#60e84dff>16%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ファーストライト<>: <#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>ごとに、<#60e84dff>2%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>と<#a974ffff>15の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>を得る。"
         }
     },
     "de": {
@@ -8852,23 +8908,23 @@
         },
         "forbidden_idol": {
             "name": "Verbotener Götze",
-            "option": "\nErhalte <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>."
+            "option": "\nErhalte <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Schwert des aufblühenden Morgens",
-            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Pfefferminze<>: Normalangriffe <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilen<> den am stärksten verwundeten und nächstgelegenen verbündeten Champion um <#60e84dff>15<> - <#60e84dff>60<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Pfefferminze<>: Normalangriffe <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilen<> den am stärksten verwundeten und nächstgelegenen verbündeten Champion um <#60e84dff>15<> - <#60e84dff>60<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Lichtversion von Schwert des aufblühenden Morgens",
-            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Pfefferminze<>: Normalangriffe <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilen<> den am stärksten verwundeten und nächstgelegenen verbündeten Champion um <#60e84dff>15<> - <#60e84dff>60<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Pfefferminze<>: Normalangriffe <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilen<> den am stärksten verwundeten und nächstgelegenen verbündeten Champion um <#60e84dff>15<> - <#60e84dff>60<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Thymiaterion",
-            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Segnen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhält er <#e8a800ff>6 Sekunden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Angriffstempo<> und <#ffff99ff>bei Treffern<> <#ff9028ff>zusätzlichen physischen Schaden<> in Höhe von <#d94c49ff>2% des maximalen Lebens des Ziels<>."
+            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Segnen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhält er <#e8a800ff>6 Sekunden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Angriffstempo<> und <#ffff99ff>bei Treffern<> <#ff9028ff>zusätzlichen physischen Schaden<> in Höhe von <#d94c49ff>2% des maximalen Lebens des Ziels<>."
         },
         "radiant_ardent_censer": {
             "name": "Lichtversion von Thymiaterion",
-            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Segnen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhält er <#e8a800ff>6 Sekunden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Angriffstempo<> und <#ffff99ff>bei Treffern<> <#ff9028ff>zusätzlichen physischen Schaden<> in Höhe von <#d94c49ff>2% des maximalen Lebens des Ziels<>."
+            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Segnen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhält er <#e8a800ff>6 Sekunden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>Angriffstempo<> und <#ffff99ff>bei Treffern<> <#ff9028ff>zusätzlichen physischen Schaden<> in Höhe von <#d94c49ff>2% des maximalen Lebens des Ziels<>."
         },
         "grezs_spectral_lantern": {
             "name": "Grez' Spektrallaterne",
@@ -9000,11 +9056,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Stab des fließenden Wassers",
-            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Stromschnellen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhalten du und das Ziel <#e8a800ff>3 Sekunden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> und <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
+            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Stromschnellen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhalten du und das Ziel <#e8a800ff>3 Sekunden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> und <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Lichtversion von Stab des fließenden Wassers",
-            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Stromschnellen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhalten du und das Ziel <#e8a800ff>3 Sekunden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> und <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
+            "option": "\nErhalte <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Stromschnellen<>: Wenn du einen verbündeten Champion (außer dir selbst) heilst, abschirmst oder verstärkst, erhalten du und das Ziel <#e8a800ff>3 Sekunden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> und <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
         },
         "immortal_shieldbow": {
             "name": "Schildbogen der Unsterblichkeit",
@@ -9224,11 +9280,11 @@
         },
         "mikaels_blessing": {
             "name": "Mikaels Segen",
-            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Läutern<>: Wird ein verbündeter Champion <#d94c49ff>unter 50% Leben<> von <#d94c49ff>Massenkontrolle<> getroffen, befreist du ihn und dich selbst von allen Massenkontrolleffekten und <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilst ihn<> um <#60e84dff>100<> - <#60e84dff>265<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<> des Ziels) <#60e84dff>Leben<> (<#e8a800ff>120 Sekunden<> Abklingzeit, Verbündete innerhalb von <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<>)."
+            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Läutern<>: Wird ein verbündeter Champion <#d94c49ff>unter 50% Leben<> von <#d94c49ff>Massenkontrolle<> getroffen, befreist du ihn und dich selbst von allen Massenkontrolleffekten und <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilst ihn<> um <#60e84dff>100<> - <#60e84dff>265<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<> des Ziels) <#60e84dff>Leben<> (<#e8a800ff>120 Sekunden<> Abklingzeit, Verbündete innerhalb von <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Lichtversion von Mikaels Segen",
-            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Läutern<>: Wird ein verbündeter Champion <#d94c49ff>unter 50% Leben<> von <#d94c49ff>Massenkontrolle<> getroffen, befreist du ihn und dich selbst von allen Massenkontrolleffekten und <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilst ihn<> um <#60e84dff>100<> - <#60e84dff>265<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<> des Ziels) <#60e84dff>Leben<> (<#e8a800ff>120 Sekunden<> Abklingzeit, Verbündete innerhalb von <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<>)."
+            "option": "\nErhalte <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Läutern<>: Wird ein verbündeter Champion <#d94c49ff>unter 50% Leben<> von <#d94c49ff>Massenkontrolle<> getroffen, befreist du ihn und dich selbst von allen Massenkontrolleffekten und <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>heilst ihn<> um <#60e84dff>100<> - <#60e84dff>265<> (abhängig vom <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>Level<> des Ziels) <#60e84dff>Leben<> (<#e8a800ff>120 Sekunden<> Abklingzeit, Verbündete innerhalb von <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<>)."
         },
         "force_of_nature": {
             "name": "Naturgewalt",
@@ -9261,6 +9317,14 @@
         "philosophers_medallion": {
             "name": "Medaillon des Weisen",
             "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<> und <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem brennen Monster, die dir Schaden zufügen, über <#e8a800ff>3 Sekunden<> für <#d94c49ff>10% ihres maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>50 Schaden<> pro Sekunde."
+        },
+        "dawncore": {
+            "name": "Dämmerkern",
+            "option": "\nErhalte <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Tagesanbruch<>: Erhalte <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<> und <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> pro <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
+        },
+        "radiant_dawncore": {
+            "name": "Lichtversion von Dämmerkern",
+            "option": "\nErhalte <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Tagesanbruch<>: Erhalte <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<> und <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> pro <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
         }
     },
     "tr": {
@@ -10010,23 +10074,23 @@
         },
         "forbidden_idol": {
             "name": "Yasak İdol",
-            "option": "\n<#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın."
+            "option": "\n<#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın."
         },
         "sword_of_blossoming_dawn": {
             "name": "Seher Kılıcı",
-            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Naneşekeri<>: Temel saldırılar en çok yaralı ve en yakın dost şampiyonu <#60e84dff>15<> - <#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyeye<> bağlı) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SG)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> YG)<> kadar <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirir<>."
+            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Naneşekeri<>: Temel saldırılar en çok yaralı ve en yakın dost şampiyonu <#60e84dff>15<> - <#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyeye<> bağlı) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SG)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> YG)<> kadar <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirir<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Işıltılı Seher Kılıcı",
-            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Naneşekeri<>: Temel saldırılar en çok yaralı ve en yakın dost şampiyonu <#60e84dff>15<> - <#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyeye<> bağlı) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SG)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> YG)<> kadar <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirir<>."
+            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Naneşekeri<>: Temel saldırılar en çok yaralı ve en yakın dost şampiyonu <#60e84dff>15<> - <#60e84dff>60<> (<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyeye<> bağlı) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SG)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> YG)<> kadar <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirir<>."
         },
         "ardent_censer": {
             "name": "Kızgın Buhurdanlık",
-            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Kutsa<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek ona <#e8a800ff>6 saniye<> boyunca <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>saldırı hızı<> ve <#ffff99ff>isabet halinde<> <#d94c49ff>hedefin azami canının 2%<> kadar <#ff9028ff>ilave fiziksel hasar<> kazandırır."
+            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Kutsa<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek ona <#e8a800ff>6 saniye<> boyunca <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>saldırı hızı<> ve <#ffff99ff>isabet halinde<> <#d94c49ff>hedefin azami canının 2%<> kadar <#ff9028ff>ilave fiziksel hasar<> kazandırır."
         },
         "radiant_ardent_censer": {
             "name": "Işıltılı Kızgın Buhurdanlık",
-            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Kutsa<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek ona <#e8a800ff>6 saniye<> boyunca <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>saldırı hızı<> ve <#ffff99ff>isabet halinde<> <#d94c49ff>hedefin azami canının 2%<> kadar <#ff9028ff>ilave fiziksel hasar<> kazandırır."
+            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Kutsa<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek ona <#e8a800ff>6 saniye<> boyunca <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>saldırı hızı<> ve <#ffff99ff>isabet halinde<> <#d94c49ff>hedefin azami canının 2%<> kadar <#ff9028ff>ilave fiziksel hasar<> kazandırır."
         },
         "grezs_spectral_lantern": {
             "name": "Grez'in Hayalet Feneri",
@@ -10158,11 +10222,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Akan Su Asası",
-            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Coşkun Akıntı<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek sana ve hedefe <#e8a800ff>3 saniye<> boyunca <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> ve <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> kazandırır."
+            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Coşkun Akıntı<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek sana ve hedefe <#e8a800ff>3 saniye<> boyunca <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> ve <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> kazandırır."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Işıltılı Akan Su Asası",
-            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Coşkun Akıntı<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek sana ve hedefe <#e8a800ff>3 saniye<> boyunca <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> ve <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> kazandırır."
+            "option": "\n<#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Coşkun Akıntı<>: Dost bir şampiyonu (kendin hariç) iyileştirmek, kalkanla korumak veya güçlendirmek sana ve hedefe <#e8a800ff>3 saniye<> boyunca <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> ve <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> kazandırır."
         },
         "immortal_shieldbow": {
             "name": "Ölümsüz Kalkanyay",
@@ -10382,11 +10446,11 @@
         },
         "mikaels_blessing": {
             "name": "Mikael'in Lütfu",
-            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Arınma<>: <#d94c49ff>Canı 50% altındaki<> dost bir şampiyon <#d94c49ff>kitle kontrolüne<> maruz kalırsa, onu ve kendini tüm kitle kontrolü etkilerinden arındırırsın ve onu <#60e84dff>100<> - <#60e84dff>265<> (hedefin <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyesine<> bağlı) <#60e84dff>can<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirirsin<> (bekleme süresi <#e8a800ff>120 saniye<>, <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzil<> içindeki dostlar)."
+            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Arınma<>: <#d94c49ff>Canı 50% altındaki<> dost bir şampiyon <#d94c49ff>kitle kontrolüne<> maruz kalırsa, onu ve kendini tüm kitle kontrolü etkilerinden arındırırsın ve onu <#60e84dff>100<> - <#60e84dff>265<> (hedefin <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyesine<> bağlı) <#60e84dff>can<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirirsin<> (bekleme süresi <#e8a800ff>120 saniye<>, <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzil<> içindeki dostlar)."
         },
         "radiant_mikaels_blessing": {
             "name": "Işıltılı Mikael'in Lütfu",
-            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Arınma<>: <#d94c49ff>Canı 50% altındaki<> dost bir şampiyon <#d94c49ff>kitle kontrolüne<> maruz kalırsa, onu ve kendini tüm kitle kontrolü etkilerinden arındırırsın ve onu <#60e84dff>100<> - <#60e84dff>265<> (hedefin <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyesine<> bağlı) <#60e84dff>can<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirirsin<> (bekleme süresi <#e8a800ff>120 saniye<>, <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzil<> içindeki dostlar)."
+            "option": "\n<#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>Arınma<>: <#d94c49ff>Canı 50% altındaki<> dost bir şampiyon <#d94c49ff>kitle kontrolüne<> maruz kalırsa, onu ve kendini tüm kitle kontrolü etkilerinden arındırırsın ve onu <#60e84dff>100<> - <#60e84dff>265<> (hedefin <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>seviyesine<> bağlı) <#60e84dff>can<> <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>iyileştirirsin<> (bekleme süresi <#e8a800ff>120 saniye<>, <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzil<> içindeki dostlar)."
         },
         "force_of_nature": {
             "name": "Doğanın Kudreti",
@@ -10419,6 +10483,14 @@
         "philosophers_medallion": {
             "name": "Felsefe Madalyonu",
             "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> ve <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca sana hasar veren canavarlar yanar ve <#e8a800ff>3 saniye<> içinde <#d94c49ff>azami canlarının 10%<> kadar <#e3ab9dff>sabit hasar<> alır; saniyede en fazla <#e3ab9dff>50 hasar<>."
+        },
+        "dawncore": {
+            "name": "Şafağın Özü",
+            "option": "\n<#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>İlk Işık<>: Her <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> başına <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> ve <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> kazanırsın."
+        },
+        "radiant_dawncore": {
+            "name": "Işıltılı Şafağın Özü",
+            "option": "\n<#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>İlk Işık<>: Her <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> başına <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> ve <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> kazanırsın."
         }
     },
     "es-ES": {
@@ -11168,23 +11240,23 @@
         },
         "forbidden_idol": {
             "name": "Ídolo prohibido",
-            "option": "\nObtienes <#60e84dff>8% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>."
+            "option": "\nObtienes <#60e84dff>8% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Espada del amanecer floreciente",
-            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Menta<>: Los ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curan<> al campeón aliado más herido y cercano <#60e84dff>15<> - <#60e84dff>60<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Menta<>: Los ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curan<> al campeón aliado más herido y cercano <#60e84dff>15<> - <#60e84dff>60<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Espada del amanecer floreciente radiante",
-            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Menta<>: Los ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curan<> al campeón aliado más herido y cercano <#60e84dff>15<> - <#60e84dff>60<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Menta<>: Los ataques básicos <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curan<> al campeón aliado más herido y cercano <#60e84dff>15<> - <#60e84dff>60<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Incensario ardiente",
-            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Santificar<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) le otorga un <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocidad de ataque<> y <#ffff99ff>al golpear<> <#ff9028ff>daño físico adicional<> equivalente al <#d94c49ff>2% de la salud máxima del objetivo<> durante <#e8a800ff>6 segundos<>."
+            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Santificar<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) le otorga un <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocidad de ataque<> y <#ffff99ff>al golpear<> <#ff9028ff>daño físico adicional<> equivalente al <#d94c49ff>2% de la salud máxima del objetivo<> durante <#e8a800ff>6 segundos<>."
         },
         "radiant_ardent_censer": {
             "name": "Incensario ardiente radiante",
-            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Santificar<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) le otorga un <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocidad de ataque<> y <#ffff99ff>al golpear<> <#ff9028ff>daño físico adicional<> equivalente al <#d94c49ff>2% de la salud máxima del objetivo<> durante <#e8a800ff>6 segundos<>."
+            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Santificar<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) le otorga un <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocidad de ataque<> y <#ffff99ff>al golpear<> <#ff9028ff>daño físico adicional<> equivalente al <#d94c49ff>2% de la salud máxima del objetivo<> durante <#e8a800ff>6 segundos<>."
         },
         "grezs_spectral_lantern": {
             "name": "Linterna Espectral de Grez",
@@ -11316,11 +11388,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Bastón de aguas fluidas",
-            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Rápidos<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) os otorga a ti y al objetivo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> y <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<> durante <#e8a800ff>3 segundos<>."
+            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Rápidos<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) os otorga a ti y al objetivo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> y <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<> durante <#e8a800ff>3 segundos<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Bastón de aguas fluidas radiante",
-            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Rápidos<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) os otorga a ti y al objetivo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> y <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<> durante <#e8a800ff>3 segundos<>."
+            "option": "\nObtienes <#60e84dff>10% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Rápidos<>: Curar, proteger o potenciar a un campeón aliado (excepto a ti) os otorga a ti y al objetivo <#a974ffff>25 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> y <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<> durante <#e8a800ff>3 segundos<>."
         },
         "immortal_shieldbow": {
             "name": "Arcoescudo inmortal",
@@ -11540,11 +11612,11 @@
         },
         "mikaels_blessing": {
             "name": "Bendición de Mikael",
-            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Purificar<>: Si un campeón aliado <#d94c49ff>por debajo del 50% de salud<> sufre un <#d94c49ff>efecto de control de masas<>, os limpia a él y a ti de todos los efectos de control de masas y lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#60e84dff>100<> - <#60e84dff>265<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<> del objetivo) de <#60e84dff>salud<> (<#e8a800ff>120 segundos<> de enfriamiento, aliados a <#ff86c2ff>65 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Purificar<>: Si un campeón aliado <#d94c49ff>por debajo del 50% de salud<> sufre un <#d94c49ff>efecto de control de masas<>, os limpia a él y a ti de todos los efectos de control de masas y lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#60e84dff>100<> - <#60e84dff>265<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<> del objetivo) de <#60e84dff>salud<> (<#e8a800ff>120 segundos<> de enfriamiento, aliados a <#ff86c2ff>65 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Bendición de Mikael radiante",
-            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Purificar<>: Si un campeón aliado <#d94c49ff>por debajo del 50% de salud<> sufre un <#d94c49ff>efecto de control de masas<>, os limpia a él y a ti de todos los efectos de control de masas y lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#60e84dff>100<> - <#60e84dff>265<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<> del objetivo) de <#60e84dff>salud<> (<#e8a800ff>120 segundos<> de enfriamiento, aliados a <#ff86c2ff>65 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
+            "option": "\nObtienes <#60e84dff>12% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Purificar<>: Si un campeón aliado <#d94c49ff>por debajo del 50% de salud<> sufre un <#d94c49ff>efecto de control de masas<>, os limpia a él y a ti de todos los efectos de control de masas y lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>cura<> <#60e84dff>100<> - <#60e84dff>265<> (según el <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>nivel<> del objetivo) de <#60e84dff>salud<> (<#e8a800ff>120 segundos<> de enfriamiento, aliados a <#ff86c2ff>65 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>)."
         },
         "force_of_nature": {
             "name": "Fuerza de la naturaleza",
@@ -11577,6 +11649,14 @@
         "philosophers_medallion": {
             "name": "Medallón filosofal",
             "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#61d1bcff>5 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<> y <#60e84dff>15 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, los monstruos que te dañan arden por un <#d94c49ff>10% de su salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>50 de daño<> por segundo."
+        },
+        "dawncore": {
+            "name": "Núcleo albar",
+            "option": "\nObtienes <#60e84dff>16% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Primera luz<>: Obtienes <#60e84dff>2% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<> y <#a974ffff>15 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> por cada <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<>."
+        },
+        "radiant_dawncore": {
+            "name": "Núcleo albar radiante",
+            "option": "\nObtienes <#60e84dff>16% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Primera luz<>: Obtienes <#60e84dff>2% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<> y <#a974ffff>15 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> por cada <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<>."
         }
     },
     "fr": {
@@ -12326,23 +12406,23 @@
         },
         "forbidden_idol": {
             "name": "Idole interdite",
-            "option": "\nVous gagnez <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>."
+            "option": "\nVous gagnez <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Épée de l'aube",
-            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Menthe poivrée<>: Les attaques de base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignent<> le champion allié le plus blessé et le plus proche de <#60e84dff>15<> - <#60e84dff>60<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Menthe poivrée<>: Les attaques de base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignent<> le champion allié le plus blessé et le plus proche de <#60e84dff>15<> - <#60e84dff>60<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Épée de l'aube de la lumière",
-            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Menthe poivrée<>: Les attaques de base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignent<> le champion allié le plus blessé et le plus proche de <#60e84dff>15<> - <#60e84dff>60<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Menthe poivrée<>: Les attaques de base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignent<> le champion allié le plus blessé et le plus proche de <#60e84dff>15<> - <#60e84dff>60<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Encensoir ardent",
-            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Sanctification<>: Soigner, protéger ou renforcer un champion allié (vous exclu) lui octroie <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>vitesse d'attaque<> et, <#ffff99ff>à l'impact<>, des <#ff9028ff>dégâts physiques bonus<> équivalents à <#d94c49ff>2% des PV max de la cible<> pendant <#e8a800ff>6 secondes<>."
+            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Sanctification<>: Soigner, protéger ou renforcer un champion allié (vous exclu) lui octroie <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>vitesse d'attaque<> et, <#ffff99ff>à l'impact<>, des <#ff9028ff>dégâts physiques bonus<> équivalents à <#d94c49ff>2% des PV max de la cible<> pendant <#e8a800ff>6 secondes<>."
         },
         "radiant_ardent_censer": {
             "name": "Encensoir ardent de la lumière",
-            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Sanctification<>: Soigner, protéger ou renforcer un champion allié (vous exclu) lui octroie <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>vitesse d'attaque<> et, <#ffff99ff>à l'impact<>, des <#ff9028ff>dégâts physiques bonus<> équivalents à <#d94c49ff>2% des PV max de la cible<> pendant <#e8a800ff>6 secondes<>."
+            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Sanctification<>: Soigner, protéger ou renforcer un champion allié (vous exclu) lui octroie <#ceff99ff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>vitesse d'attaque<> et, <#ffff99ff>à l'impact<>, des <#ff9028ff>dégâts physiques bonus<> équivalents à <#d94c49ff>2% des PV max de la cible<> pendant <#e8a800ff>6 secondes<>."
         },
         "grezs_spectral_lantern": {
             "name": "Lanterne spectrale de Grez",
@@ -12474,11 +12554,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Bâton des flots",
-            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Rapides<>: Soigner, protéger ou renforcer un champion allié (vous exclu) vous octroie, ainsi qu'à la cible, <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> et <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> accélération de compétence<> pendant <#e8a800ff>3 secondes<>."
+            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Rapides<>: Soigner, protéger ou renforcer un champion allié (vous exclu) vous octroie, ainsi qu'à la cible, <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> et <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> accélération de compétence<> pendant <#e8a800ff>3 secondes<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Bâton des flots de la lumière",
-            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Rapides<>: Soigner, protéger ou renforcer un champion allié (vous exclu) vous octroie, ainsi qu'à la cible, <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> et <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> accélération de compétence<> pendant <#e8a800ff>3 secondes<>."
+            "option": "\nVous gagnez <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Rapides<>: Soigner, protéger ou renforcer un champion allié (vous exclu) vous octroie, ainsi qu'à la cible, <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> et <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> accélération de compétence<> pendant <#e8a800ff>3 secondes<>."
         },
         "immortal_shieldbow": {
             "name": "Arc-bouclier immortel",
@@ -12698,11 +12778,11 @@
         },
         "mikaels_blessing": {
             "name": "Bénédiction de Mikael",
-            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Purification<>: Si un champion allié <#d94c49ff>sous 50% de ses PV<> subit un <#d94c49ff>effet de contrôle<>, vous le purgez, ainsi que vous-même, de tous les effets de contrôle et le <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignez<> de <#60e84dff>100<> - <#60e84dff>265<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<> de la cible) <#60e84dff>PV<> (délai de récupération : <#e8a800ff>120 secondes<>, alliés à <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>)."
+            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Purification<>: Si un champion allié <#d94c49ff>sous 50% de ses PV<> subit un <#d94c49ff>effet de contrôle<>, vous le purgez, ainsi que vous-même, de tous les effets de contrôle et le <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignez<> de <#60e84dff>100<> - <#60e84dff>265<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<> de la cible) <#60e84dff>PV<> (délai de récupération : <#e8a800ff>120 secondes<>, alliés à <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Bénédiction de Mikael de la lumière",
-            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Purification<>: Si un champion allié <#d94c49ff>sous 50% de ses PV<> subit un <#d94c49ff>effet de contrôle<>, vous le purgez, ainsi que vous-même, de tous les effets de contrôle et le <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignez<> de <#60e84dff>100<> - <#60e84dff>265<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<> de la cible) <#60e84dff>PV<> (délai de récupération : <#e8a800ff>120 secondes<>, alliés à <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>)."
+            "option": "\nVous gagnez <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Purification<>: Si un champion allié <#d94c49ff>sous 50% de ses PV<> subit un <#d94c49ff>effet de contrôle<>, vous le purgez, ainsi que vous-même, de tous les effets de contrôle et le <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>soignez<> de <#60e84dff>100<> - <#60e84dff>265<> (selon le <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>niveau<> de la cible) <#60e84dff>PV<> (délai de récupération : <#e8a800ff>120 secondes<>, alliés à <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>)."
         },
         "force_of_nature": {
             "name": "Force de la nature",
@@ -12735,6 +12815,14 @@
         "philosophers_medallion": {
             "name": "Médaillon du philosophe",
             "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> accélération de compétence<> et <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, les monstres qui vous infligent des dégâts brûlent et subissent <#d94c49ff>10% de leurs PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>50 pts de dégâts<> par seconde."
+        },
+        "dawncore": {
+            "name": "Cœur de l'aube",
+            "option": "\nVous gagnez <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Première lumière<>: Vous gagnez <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<> et <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> par tranche de <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> d'accélération de compétence<>."
+        },
+        "radiant_dawncore": {
+            "name": "Cœur de l'aube de la lumière",
+            "option": "\nVous gagnez <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Première lumière<>: Vous gagnez <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<> et <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> par tranche de <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> d'accélération de compétence<>."
         }
     },
     "it": {
@@ -13484,23 +13572,23 @@
         },
         "forbidden_idol": {
             "name": "Idolo proibito",
-            "option": "\nOttieni <#60e84dff>8% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>."
+            "option": "\nOttieni <#60e84dff>8% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Spada dell'Alba fiorente",
-            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Menta<>: Gli attacchi base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curano<> il campione alleato più ferito e più vicino di <#60e84dff>15<> - <#60e84dff>60<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Menta<>: Gli attacchi base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curano<> il campione alleato più ferito e più vicino di <#60e84dff>15<> - <#60e84dff>60<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Spada dell'Alba fiorente Radiosa",
-            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Menta<>: Gli attacchi base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curano<> il campione alleato più ferito e più vicino di <#60e84dff>15<> - <#60e84dff>60<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Menta<>: Gli attacchi base <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curano<> il campione alleato più ferito e più vicino di <#60e84dff>15<> - <#60e84dff>60<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Incensiere ardente",
-            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Santificare<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) gli conferisce il <#ceff99ff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocità d'attacco<> e, <#ffff99ff>sul colpo<>, <#ff9028ff>danni fisici bonus<> pari al <#d94c49ff>2% della salute massima del bersaglio<> per <#e8a800ff>6 secondi<>."
+            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Santificare<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) gli conferisce il <#ceff99ff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocità d'attacco<> e, <#ffff99ff>sul colpo<>, <#ff9028ff>danni fisici bonus<> pari al <#d94c49ff>2% della salute massima del bersaglio<> per <#e8a800ff>6 secondi<>."
         },
         "radiant_ardent_censer": {
             "name": "Incensiere ardente Radioso",
-            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Santificare<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) gli conferisce il <#ceff99ff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocità d'attacco<> e, <#ffff99ff>sul colpo<>, <#ff9028ff>danni fisici bonus<> pari al <#d94c49ff>2% della salute massima del bersaglio<> per <#e8a800ff>6 secondi<>."
+            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Santificare<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) gli conferisce il <#ceff99ff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>velocità d'attacco<> e, <#ffff99ff>sul colpo<>, <#ff9028ff>danni fisici bonus<> pari al <#d94c49ff>2% della salute massima del bersaglio<> per <#e8a800ff>6 secondi<>."
         },
         "grezs_spectral_lantern": {
             "name": "Lanterna spettrale di Grez",
@@ -13632,11 +13720,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Staffa delle correnti",
-            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Rapide<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) conferisce a te e al bersaglio <#a974ffff>25 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> e <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<> per <#e8a800ff>3 secondi<>."
+            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Rapide<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) conferisce a te e al bersaglio <#a974ffff>25 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> e <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<> per <#e8a800ff>3 secondi<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Staffa delle correnti Radiosa",
-            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Rapide<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) conferisce a te e al bersaglio <#a974ffff>25 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> e <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<> per <#e8a800ff>3 secondi<>."
+            "option": "\nOttieni <#60e84dff>10% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Rapide<>: Curare, schermare o potenziare un campione alleato (escluso te stesso) conferisce a te e al bersaglio <#a974ffff>25 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> e <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<> per <#e8a800ff>3 secondi<>."
         },
         "immortal_shieldbow": {
             "name": "Arcoscudo immortale",
@@ -13856,11 +13944,11 @@
         },
         "mikaels_blessing": {
             "name": "Benedizione di Mikael",
-            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Purificazione<>: Se un campione alleato <#d94c49ff>sotto il 50% di salute<> subisce un <#d94c49ff>effetto di controllo<>, purifichi lui e te stesso da tutti gli effetti di controllo e lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curi<> di <#60e84dff>100<> - <#60e84dff>265<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<> del bersaglio) <#60e84dff>salute<> (ricarica di <#e8a800ff>120 secondi<>, alleati entro <#ff86c2ff>65 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<>)."
+            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Purificazione<>: Se un campione alleato <#d94c49ff>sotto il 50% di salute<> subisce un <#d94c49ff>effetto di controllo<>, purifichi lui e te stesso da tutti gli effetti di controllo e lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curi<> di <#60e84dff>100<> - <#60e84dff>265<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<> del bersaglio) <#60e84dff>salute<> (ricarica di <#e8a800ff>120 secondi<>, alleati entro <#ff86c2ff>65 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Benedizione di Mikael Radiosa",
-            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Purificazione<>: Se un campione alleato <#d94c49ff>sotto il 50% di salute<> subisce un <#d94c49ff>effetto di controllo<>, purifichi lui e te stesso da tutti gli effetti di controllo e lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curi<> di <#60e84dff>100<> - <#60e84dff>265<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<> del bersaglio) <#60e84dff>salute<> (ricarica di <#e8a800ff>120 secondi<>, alleati entro <#ff86c2ff>65 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<>)."
+            "option": "\nOttieni <#60e84dff>12% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Purificazione<>: Se un campione alleato <#d94c49ff>sotto il 50% di salute<> subisce un <#d94c49ff>effetto di controllo<>, purifichi lui e te stesso da tutti gli effetti di controllo e lo <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>curi<> di <#60e84dff>100<> - <#60e84dff>265<> (in base al <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>livello<> del bersaglio) <#60e84dff>salute<> (ricarica di <#e8a800ff>120 secondi<>, alleati entro <#ff86c2ff>65 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<>)."
         },
         "force_of_nature": {
             "name": "Forza della natura",
@@ -13893,6 +13981,14 @@
         "philosophers_medallion": {
             "name": "Medaglione filosofale",
             "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#61d1bcff>5 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<> e <#60e84dff>15 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, i mostri che ti danneggiano bruciano per il <#d94c49ff>10% della loro salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>50 danni<> al secondo."
+        },
+        "dawncore": {
+            "name": "Nucleo dell'alba",
+            "option": "\nOttieni <#60e84dff>16% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Prima Luce<>: Ottieni <#60e84dff>2% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<> e <#a974ffff>15 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> per ogni <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<>."
+        },
+        "radiant_dawncore": {
+            "name": "Nucleo dell'alba Radioso",
+            "option": "\nOttieni <#60e84dff>16% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Prima Luce<>: Ottieni <#60e84dff>2% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<> e <#a974ffff>15 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> per ogni <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<>."
         }
     },
     "zh-hant": {
@@ -14642,23 +14738,23 @@
         },
         "forbidden_idol": {
             "name": "禁忌之像",
-            "option": "\n獲得<#60e84dff>8%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。"
+            "option": "\n獲得<#60e84dff>8%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。"
         },
         "sword_of_blossoming_dawn": {
             "name": "破曉綻放之劍",
-            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>薄荷<>：普通攻擊會為傷勢最重且最近的友方英雄<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>15<> - <#60e84dff>60<>（依<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#ff9028ff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>生命值。"
+            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>薄荷<>：普通攻擊會為傷勢最重且最近的友方英雄<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>15<> - <#60e84dff>60<>（依<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#ff9028ff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>生命值。"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "聖光破曉綻放之劍",
-            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>薄荷<>：普通攻擊會為傷勢最重且最近的友方英雄<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>15<> - <#60e84dff>60<>（依<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#ff9028ff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>生命值。"
+            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>薄荷<>：普通攻擊會為傷勢最重且最近的友方英雄<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>15<> - <#60e84dff>60<>（依<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#ff9028ff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7%<i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>生命值。"
         },
         "ardent_censer": {
             "name": "熾灼魔器",
-            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>聖化<>：治療、護盾或增益友方英雄（自身除外）時，使其獲得<#ceff99ff>20%<><i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻擊速度<>，且普通攻擊附帶<#ffff99ff>命中效果<>，造成等同<#d94c49ff>目標最大生命值2%<>的<#ff9028ff>額外物理傷害<>，持續<#e8a800ff>6秒<>。"
+            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>聖化<>：治療、護盾或增益友方英雄（自身除外）時，使其獲得<#ceff99ff>20%<><i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻擊速度<>，且普通攻擊附帶<#ffff99ff>命中效果<>，造成等同<#d94c49ff>目標最大生命值2%<>的<#ff9028ff>額外物理傷害<>，持續<#e8a800ff>6秒<>。"
         },
         "radiant_ardent_censer": {
             "name": "聖光熾灼魔器",
-            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>聖化<>：治療、護盾或增益友方英雄（自身除外）時，使其獲得<#ceff99ff>20%<><i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻擊速度<>，且普通攻擊附帶<#ffff99ff>命中效果<>，造成等同<#d94c49ff>目標最大生命值2%<>的<#ff9028ff>額外物理傷害<>，持續<#e8a800ff>6秒<>。"
+            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>聖化<>：治療、護盾或增益友方英雄（自身除外）時，使其獲得<#ceff99ff>20%<><i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>攻擊速度<>，且普通攻擊附帶<#ffff99ff>命中效果<>，造成等同<#d94c49ff>目標最大生命值2%<>的<#ff9028ff>額外物理傷害<>，持續<#e8a800ff>6秒<>。"
         },
         "grezs_spectral_lantern": {
             "name": "格雷提燈",
@@ -14790,11 +14886,11 @@
         },
         "staff_of_flowing_water": {
             "name": "流水之杖",
-            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>激流<>：治療、護盾或增益友方英雄（自身除外）時，你與目標獲得<#a974ffff>25<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>與<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，持續<#e8a800ff>3秒<>。"
+            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>激流<>：治療、護盾或增益友方英雄（自身除外）時，你與目標獲得<#a974ffff>25<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>與<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，持續<#e8a800ff>3秒<>。"
         },
         "radiant_staff_of_flowing_water": {
             "name": "聖光流水之杖",
-            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>激流<>：治療、護盾或增益友方英雄（自身除外）時，你與目標獲得<#a974ffff>25<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>與<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，持續<#e8a800ff>3秒<>。"
+            "option": "\n獲得<#60e84dff>10%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>激流<>：治療、護盾或增益友方英雄（自身除外）時，你與目標獲得<#a974ffff>25<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>與<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，持續<#e8a800ff>3秒<>。"
         },
         "immortal_shieldbow": {
             "name": "不朽盾弓",
@@ -15014,11 +15110,11 @@
         },
         "mikaels_blessing": {
             "name": "米凱的祝福",
-            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>淨化<>：若<#d94c49ff>生命值低於50%<>的友方英雄受到<#d94c49ff>控場效果<>，為其與自身解除所有控場效果，並為其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>100<> - <#60e84dff>265<>（依目標<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#60e84dff>生命值<>（冷卻時間<#e8a800ff>120秒<>，限<#ff86c2ff>65<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>內的友軍）。"
+            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>淨化<>：若<#d94c49ff>生命值低於50%<>的友方英雄受到<#d94c49ff>控場效果<>，為其與自身解除所有控場效果，並為其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>100<> - <#60e84dff>265<>（依目標<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#60e84dff>生命值<>（冷卻時間<#e8a800ff>120秒<>，限<#ff86c2ff>65<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>內的友軍）。"
         },
         "radiant_mikaels_blessing": {
             "name": "聖光米凱的祝福",
-            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 治療及護盾強度<>。\n\n<#ff7a3eff>淨化<>：若<#d94c49ff>生命值低於50%<>的友方英雄受到<#d94c49ff>控場效果<>，為其與自身解除所有控場效果，並為其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>100<> - <#60e84dff>265<>（依目標<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#60e84dff>生命值<>（冷卻時間<#e8a800ff>120秒<>，限<#ff86c2ff>65<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>內的友軍）。"
+            "option": "\n獲得<#60e84dff>12%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>淨化<>：若<#d94c49ff>生命值低於50%<>的友方英雄受到<#d94c49ff>控場效果<>，為其與自身解除所有控場效果，並為其<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>回復<><#60e84dff>100<> - <#60e84dff>265<>（依目標<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>等級<>）<#60e84dff>生命值<>（冷卻時間<#e8a800ff>120秒<>，限<#ff86c2ff>65<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>內的友軍）。"
         },
         "force_of_nature": {
             "name": "自然之力",
@@ -15051,6 +15147,14 @@
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
             "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#61d1bcff>5<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>與<#60e84dff>15<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對你造成傷害的野怪會燃燒，在<#e8a800ff>3秒<>內受到等同<#d94c49ff>其最大生命值10%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>50傷害<>。"
+        },
+        "dawncore": {
+            "name": "破曉之核",
+            "option": "\n獲得<#60e84dff>16%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>曙光<>：每有<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，便會獲得<#60e84dff>2%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>與<#a974ffff>15<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>。"
+        },
+        "radiant_dawncore": {
+            "name": "聖光破曉之核",
+            "option": "\n獲得<#60e84dff>16%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>曙光<>：每有<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，便會獲得<#60e84dff>2%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>與<#a974ffff>15<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>。"
         }
     },
     "pl": {
@@ -15800,23 +15904,23 @@
         },
         "forbidden_idol": {
             "name": "Bluźnierczy Bożek",
-            "option": "\nZyskujesz <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>."
+            "option": "\nZyskujesz <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Miecz Kwitnącego Świtu",
-            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Miętówka<>: Podstawowe ataki <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczą<> najbardziej rannego i najbliższego sojuszniczego bohatera o <#60e84dff>15<> - <#60e84dff>60<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Miętówka<>: Podstawowe ataki <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczą<> najbardziej rannego i najbliższego sojuszniczego bohatera o <#60e84dff>15<> - <#60e84dff>60<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Świetlisty Miecz Kwitnącego Świtu",
-            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Miętówka<>: Podstawowe ataki <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczą<> najbardziej rannego i najbliższego sojuszniczego bohatera o <#60e84dff>15<> - <#60e84dff>60<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Miętówka<>: Podstawowe ataki <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczą<> najbardziej rannego i najbliższego sojuszniczego bohatera o <#60e84dff>15<> - <#60e84dff>60<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Ognisty Trybularz",
-            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Uświęcenie<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia mu na <#e8a800ff>6 sek.<> <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>prędkości ataku<> oraz <#ffff99ff>przy trafieniu<> <#ff9028ff>dodatkowe obrażenia fizyczne<> równe <#d94c49ff>2% maksymalnego zdrowia celu<>."
+            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Uświęcenie<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia mu na <#e8a800ff>6 sek.<> <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>prędkości ataku<> oraz <#ffff99ff>przy trafieniu<> <#ff9028ff>dodatkowe obrażenia fizyczne<> równe <#d94c49ff>2% maksymalnego zdrowia celu<>."
         },
         "radiant_ardent_censer": {
             "name": "Świetlisty Ognisty Trybularz",
-            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Uświęcenie<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia mu na <#e8a800ff>6 sek.<> <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>prędkości ataku<> oraz <#ffff99ff>przy trafieniu<> <#ff9028ff>dodatkowe obrażenia fizyczne<> równe <#d94c49ff>2% maksymalnego zdrowia celu<>."
+            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Uświęcenie<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia mu na <#e8a800ff>6 sek.<> <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>prędkości ataku<> oraz <#ffff99ff>przy trafieniu<> <#ff9028ff>dodatkowe obrażenia fizyczne<> równe <#d94c49ff>2% maksymalnego zdrowia celu<>."
         },
         "grezs_spectral_lantern": {
             "name": "Widmowa Latarnia Greza",
@@ -15948,11 +16052,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Kostur Płynącej Wody",
-            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Fale<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia tobie i celowi <#a974ffff>25 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> i <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<> na <#e8a800ff>3 sek.<>"
+            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Fale<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia tobie i celowi <#a974ffff>25 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> i <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<> na <#e8a800ff>3 sek.<>"
         },
         "radiant_staff_of_flowing_water": {
             "name": "Świetlisty Kostur Płynącej Wody",
-            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Fale<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia tobie i celowi <#a974ffff>25 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> i <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<> na <#e8a800ff>3 sek.<>"
+            "option": "\nZyskujesz <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Fale<>: Leczenie, osłonięcie tarczą lub wzmocnienie sojuszniczego bohatera (poza tobą) zapewnia tobie i celowi <#a974ffff>25 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> i <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<> na <#e8a800ff>3 sek.<>"
         },
         "immortal_shieldbow": {
             "name": "Nieśmiertelny Łuklerz",
@@ -16172,11 +16276,11 @@
         },
         "mikaels_blessing": {
             "name": "Błogosławieństwo Mikaela",
-            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Oczyszczenie<>: Jeśli sojuszniczy bohater <#d94c49ff>poniżej 50% zdrowia<> zostanie objęty <#d94c49ff>efektem kontroli tłumu<>, oczyszczasz jego i siebie ze wszystkich efektów kontroli tłumu i <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczysz go<> o <#60e84dff>100<> - <#60e84dff>265<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<> celu) pkt <#60e84dff>zdrowia<> (czas odnowienia: <#e8a800ff>120 sek.<>, sojusznicy w <#ff86c2ff>zasięgu 65 <i#asset/base/ui/banpick/champion_stat_icon:range_0><>)."
+            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Oczyszczenie<>: Jeśli sojuszniczy bohater <#d94c49ff>poniżej 50% zdrowia<> zostanie objęty <#d94c49ff>efektem kontroli tłumu<>, oczyszczasz jego i siebie ze wszystkich efektów kontroli tłumu i <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczysz go<> o <#60e84dff>100<> - <#60e84dff>265<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<> celu) pkt <#60e84dff>zdrowia<> (czas odnowienia: <#e8a800ff>120 sek.<>, sojusznicy w <#ff86c2ff>zasięgu 65 <i#asset/base/ui/banpick/champion_stat_icon:range_0><>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Świetliste Błogosławieństwo Mikaela",
-            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Oczyszczenie<>: Jeśli sojuszniczy bohater <#d94c49ff>poniżej 50% zdrowia<> zostanie objęty <#d94c49ff>efektem kontroli tłumu<>, oczyszczasz jego i siebie ze wszystkich efektów kontroli tłumu i <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczysz go<> o <#60e84dff>100<> - <#60e84dff>265<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<> celu) pkt <#60e84dff>zdrowia<> (czas odnowienia: <#e8a800ff>120 sek.<>, sojusznicy w <#ff86c2ff>zasięgu 65 <i#asset/base/ui/banpick/champion_stat_icon:range_0><>)."
+            "option": "\nZyskujesz <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Oczyszczenie<>: Jeśli sojuszniczy bohater <#d94c49ff>poniżej 50% zdrowia<> zostanie objęty <#d94c49ff>efektem kontroli tłumu<>, oczyszczasz jego i siebie ze wszystkich efektów kontroli tłumu i <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>leczysz go<> o <#60e84dff>100<> - <#60e84dff>265<> (zależnie od <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>poziomu<> celu) pkt <#60e84dff>zdrowia<> (czas odnowienia: <#e8a800ff>120 sek.<>, sojusznicy w <#ff86c2ff>zasięgu 65 <i#asset/base/ui/banpick/champion_stat_icon:range_0><>)."
         },
         "force_of_nature": {
             "name": "Siła Natury",
@@ -16209,6 +16313,14 @@
         "philosophers_medallion": {
             "name": "Medalion Filozofa",
             "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#61d1bcff>5 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<> i <#60e84dff>15 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo potwory, które zadają ci obrażenia, płoną, otrzymując <#d94c49ff>10% swojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>50 pkt obrażeń<> na sekundę."
+        },
+        "dawncore": {
+            "name": "Rdzeń Świtu",
+            "option": "\nZyskujesz <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Pierwsze Światło<>: Zyskujesz <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<> oraz <#a974ffff>15 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> za każde <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<>."
+        },
+        "radiant_dawncore": {
+            "name": "Świetlisty Rdzeń Świtu",
+            "option": "\nZyskujesz <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Pierwsze Światło<>: Zyskujesz <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<> oraz <#a974ffff>15 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> za każde <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<>."
         }
     },
     "th": {
@@ -16958,23 +17070,23 @@
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 8%<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 8%<>"
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Peppermint<>: การโจมตีปกติจะ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีล<>แชมเปี้ยนฝ่ายเดียวกันที่บาดเจ็บมากที่สุดและอยู่ใกล้ที่สุด <#60e84dff>15<> - <#60e84dff>60<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Peppermint<>: การโจมตีปกติจะ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีล<>แชมเปี้ยนฝ่ายเดียวกันที่บาดเจ็บมากที่สุดและอยู่ใกล้ที่สุด <#60e84dff>15<> - <#60e84dff>60<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>"
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Peppermint<>: การโจมตีปกติจะ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีล<>แชมเปี้ยนฝ่ายเดียวกันที่บาดเจ็บมากที่สุดและอยู่ใกล้ที่สุด <#60e84dff>15<> - <#60e84dff>60<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Peppermint<>: การโจมตีปกติจะ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีล<>แชมเปี้ยนฝ่ายเดียวกันที่บาดเจ็บมากที่สุดและอยู่ใกล้ที่สุด <#60e84dff>15<> - <#60e84dff>60<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>"
         },
         "ardent_censer": {
             "name": "Ardent Censer",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Sanctify<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>ความเร็วโจมตี<> <#ceff99ff>20%<> และ<#ff9028ff>โบนัสดาเมจกายภาพ<> <#ffff99ff>On-Hit<> เท่ากับ <#d94c49ff>2% ของพลังชีวิตสูงสุดของเป้าหมาย<> ให้เป้าหมาย เป็นเวลา <#e8a800ff>6 วินาที<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Sanctify<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>ความเร็วโจมตี<> <#ceff99ff>20%<> และ<#ff9028ff>โบนัสดาเมจกายภาพ<> <#ffff99ff>On-Hit<> เท่ากับ <#d94c49ff>2% ของพลังชีวิตสูงสุดของเป้าหมาย<> ให้เป้าหมาย เป็นเวลา <#e8a800ff>6 วินาที<>"
         },
         "radiant_ardent_censer": {
             "name": "Radiant Ardent Censer",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Sanctify<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>ความเร็วโจมตี<> <#ceff99ff>20%<> และ<#ff9028ff>โบนัสดาเมจกายภาพ<> <#ffff99ff>On-Hit<> เท่ากับ <#d94c49ff>2% ของพลังชีวิตสูงสุดของเป้าหมาย<> ให้เป้าหมาย เป็นเวลา <#e8a800ff>6 วินาที<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Sanctify<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>ความเร็วโจมตี<> <#ceff99ff>20%<> และ<#ff9028ff>โบนัสดาเมจกายภาพ<> <#ffff99ff>On-Hit<> เท่ากับ <#d94c49ff>2% ของพลังชีวิตสูงสุดของเป้าหมาย<> ให้เป้าหมาย เป็นเวลา <#e8a800ff>6 วินาที<>"
         },
         "grezs_spectral_lantern": {
             "name": "Grez's Spectral Lantern",
@@ -17106,11 +17218,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Staff of Flowing Water",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Rapids<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 25<> และ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<> ให้คุณและเป้าหมาย เป็นเวลา <#e8a800ff>3 วินาที<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Rapids<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 25<> และ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<> ให้คุณและเป้าหมาย เป็นเวลา <#e8a800ff>3 วินาที<>"
         },
         "radiant_staff_of_flowing_water": {
             "name": "Radiant Staff of Flowing Water",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Rapids<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 25<> และ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<> ให้คุณและเป้าหมาย เป็นเวลา <#e8a800ff>3 วินาที<>"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 10%<>\n\n<#ff7a3eff>Rapids<>: การฮีล ให้โล่ หรือบัฟแชมเปี้ยนฝ่ายเดียวกัน (ยกเว้นตัวคุณเอง) จะมอบ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 25<> และ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<> ให้คุณและเป้าหมาย เป็นเวลา <#e8a800ff>3 วินาที<>"
         },
         "immortal_shieldbow": {
             "name": "Immortal Shieldbow",
@@ -17330,11 +17442,11 @@
         },
         "mikaels_blessing": {
             "name": "Mikael's Blessing",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Purify<>: หากแชมเปี้ยนฝ่ายเดียวกันที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50%<> ติด<#d94c49ff>เอฟเฟกต์ควบคุม<> จะล้างเอฟเฟกต์ควบคุมทั้งหมดออกจากเป้าหมายและตัวคุณ และ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีลเป้าหมาย<> <#60e84dff>100<> - <#60e84dff>265<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>ของเป้าหมาย) <#60e84dff>พลังชีวิต<> (คูลดาวน์ <#e8a800ff>120 วินาที<> พันธมิตรในระยะ <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>)"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Purify<>: หากแชมเปี้ยนฝ่ายเดียวกันที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50%<> ติด<#d94c49ff>เอฟเฟกต์ควบคุม<> จะล้างเอฟเฟกต์ควบคุมทั้งหมดออกจากเป้าหมายและตัวคุณ และ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีลเป้าหมาย<> <#60e84dff>100<> - <#60e84dff>265<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>ของเป้าหมาย) <#60e84dff>พลังชีวิต<> (คูลดาวน์ <#e8a800ff>120 วินาที<> พันธมิตรในระยะ <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>)"
         },
         "radiant_mikaels_blessing": {
             "name": "Radiant Mikael's Blessing",
-            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Purify<>: หากแชมเปี้ยนฝ่ายเดียวกันที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50%<> ติด<#d94c49ff>เอฟเฟกต์ควบคุม<> จะล้างเอฟเฟกต์ควบคุมทั้งหมดออกจากเป้าหมายและตัวคุณ และ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีลเป้าหมาย<> <#60e84dff>100<> - <#60e84dff>265<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>ของเป้าหมาย) <#60e84dff>พลังชีวิต<> (คูลดาวน์ <#e8a800ff>120 วินาที<> พันธมิตรในระยะ <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>)"
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 12%<>\n\n<#ff7a3eff>Purify<>: หากแชมเปี้ยนฝ่ายเดียวกันที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50%<> ติด<#d94c49ff>เอฟเฟกต์ควบคุม<> จะล้างเอฟเฟกต์ควบคุมทั้งหมดออกจากเป้าหมายและตัวคุณ และ<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>ฮีลเป้าหมาย<> <#60e84dff>100<> - <#60e84dff>265<> (ตาม<i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>เลเวล<>ของเป้าหมาย) <#60e84dff>พลังชีวิต<> (คูลดาวน์ <#e8a800ff>120 วินาที<> พันธมิตรในระยะ <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>)"
         },
         "force_of_nature": {
             "name": "Force of Nature",
@@ -17367,6 +17479,14 @@
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
             "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 5<> และ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 15<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ มอนสเตอร์ที่สร้างดาเมจใส่คุณจะถูกเผาไหม้ ได้รับ<#d94c49ff>10% ของพลังชีวิตสูงสุดของมัน<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>50 ดาเมจ<>ต่อวินาที"
+        },
+        "dawncore": {
+            "name": "Dawncore",
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 16%<>\n\n<#ff7a3eff>First Light<>: ได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 2%<> และ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 15<> ต่อ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<>"
+        },
+        "radiant_dawncore": {
+            "name": "Radiant Dawncore",
+            "option": "\nได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 16%<>\n\n<#ff7a3eff>First Light<>: ได้รับ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 2%<> และ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 15<> ต่อ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<>"
         }
     },
     "nl": {
@@ -18116,23 +18236,23 @@
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
-            "option": "\nKrijg <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>."
+            "option": "\nKrijg <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Peppermint<>: Basisaanvallen <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>genezen<> de meest gewonde en dichtstbijzijnde bevriende kampioen met <#60e84dff>15<> - <#60e84dff>60<> (afhankelijk van <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Peppermint<>: Basisaanvallen <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>genezen<> de meest gewonde en dichtstbijzijnde bevriende kampioen met <#60e84dff>15<> - <#60e84dff>60<> (afhankelijk van <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Peppermint<>: Basisaanvallen <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>genezen<> de meest gewonde en dichtstbijzijnde bevriende kampioen met <#60e84dff>15<> - <#60e84dff>60<> (afhankelijk van <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Peppermint<>: Basisaanvallen <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>genezen<> de meest gewonde en dichtstbijzijnde bevriende kampioen met <#60e84dff>15<> - <#60e84dff>60<> (afhankelijk van <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Ardent Censer",
-            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Sanctify<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft hem <#e8a800ff>6 seconden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>aanvalssnelheid<> en <#ffff99ff>bij treffer<> <#ff9028ff>extra fysieke schade<> gelijk aan <#d94c49ff>2% van de maximale gezondheid van het doelwit<>."
+            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Sanctify<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft hem <#e8a800ff>6 seconden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>aanvalssnelheid<> en <#ffff99ff>bij treffer<> <#ff9028ff>extra fysieke schade<> gelijk aan <#d94c49ff>2% van de maximale gezondheid van het doelwit<>."
         },
         "radiant_ardent_censer": {
             "name": "Radiant Ardent Censer",
-            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Sanctify<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft hem <#e8a800ff>6 seconden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>aanvalssnelheid<> en <#ffff99ff>bij treffer<> <#ff9028ff>extra fysieke schade<> gelijk aan <#d94c49ff>2% van de maximale gezondheid van het doelwit<>."
+            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Sanctify<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft hem <#e8a800ff>6 seconden<> lang <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>aanvalssnelheid<> en <#ffff99ff>bij treffer<> <#ff9028ff>extra fysieke schade<> gelijk aan <#d94c49ff>2% van de maximale gezondheid van het doelwit<>."
         },
         "grezs_spectral_lantern": {
             "name": "Grez's Spectral Lantern",
@@ -18264,11 +18384,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Staff of Flowing Water",
-            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Rapids<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft jou en het doelwit <#e8a800ff>3 seconden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> en <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
+            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Rapids<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft jou en het doelwit <#e8a800ff>3 seconden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> en <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Radiant Staff of Flowing Water",
-            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Rapids<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft jou en het doelwit <#e8a800ff>3 seconden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> en <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
+            "option": "\nKrijg <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Rapids<>: Een bevriende kampioen (behalve jezelf) genezen, een schild geven of versterken geeft jou en het doelwit <#e8a800ff>3 seconden<> lang <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> en <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
         },
         "immortal_shieldbow": {
             "name": "Immortal Shieldbow",
@@ -18488,11 +18608,11 @@
         },
         "mikaels_blessing": {
             "name": "Mikael's Blessing",
-            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Purify<>: Als een bevriende kampioen <#d94c49ff>onder 50% gezondheid<> door <#d94c49ff>crowd control<> wordt getroffen, reinig je hem en jezelf van alle crowd control-effecten en <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>geneest<> je hem met <#60e84dff>100<> - <#60e84dff>265<> (afhankelijk van het <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> van het doelwit) <#60e84dff>gezondheid<> (<#e8a800ff>120 seconden<> afkoeltijd, bondgenoten binnen <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<>)."
+            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Purify<>: Als een bevriende kampioen <#d94c49ff>onder 50% gezondheid<> door <#d94c49ff>crowd control<> wordt getroffen, reinig je hem en jezelf van alle crowd control-effecten en <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>geneest<> je hem met <#60e84dff>100<> - <#60e84dff>265<> (afhankelijk van het <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> van het doelwit) <#60e84dff>gezondheid<> (<#e8a800ff>120 seconden<> afkoeltijd, bondgenoten binnen <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Radiant Mikael's Blessing",
-            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Purify<>: Als een bevriende kampioen <#d94c49ff>onder 50% gezondheid<> door <#d94c49ff>crowd control<> wordt getroffen, reinig je hem en jezelf van alle crowd control-effecten en <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>geneest<> je hem met <#60e84dff>100<> - <#60e84dff>265<> (afhankelijk van het <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> van het doelwit) <#60e84dff>gezondheid<> (<#e8a800ff>120 seconden<> afkoeltijd, bondgenoten binnen <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<>)."
+            "option": "\nKrijg <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>Purify<>: Als een bevriende kampioen <#d94c49ff>onder 50% gezondheid<> door <#d94c49ff>crowd control<> wordt getroffen, reinig je hem en jezelf van alle crowd control-effecten en <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>geneest<> je hem met <#60e84dff>100<> - <#60e84dff>265<> (afhankelijk van het <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>level<> van het doelwit) <#60e84dff>gezondheid<> (<#e8a800ff>120 seconden<> afkoeltijd, bondgenoten binnen <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<>)."
         },
         "force_of_nature": {
             "name": "Force of Nature",
@@ -18525,6 +18645,14 @@
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
             "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<> en <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast branden monsters die jou schade toebrengen voor <#d94c49ff>10% van hun maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>50 schade<> per seconde."
+        },
+        "dawncore": {
+            "name": "Dawncore",
+            "option": "\nKrijg <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>First Light<>: Krijg <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<> en <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> per <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
+        },
+        "radiant_dawncore": {
+            "name": "Radiant Dawncore",
+            "option": "\nKrijg <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>First Light<>: Krijg <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<> en <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> per <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
         }
     },
     "haw": {
@@ -19274,23 +19402,23 @@
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>8% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>."
         },
         "sword_of_blossoming_dawn": {
             "name": "Sword of Blossoming Dawn",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Peppermint<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hoʻōla<> nā hoʻouka kumu i ke koa hoa hui i ʻeha nui loa a kokoke loa i <#60e84dff>15<> - <#60e84dff>60<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Peppermint<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hoʻōla<> nā hoʻouka kumu i ke koa hoa hui i ʻeha nui loa a kokoke loa i <#60e84dff>15<> - <#60e84dff>60<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "radiant_sword_of_blossoming_dawn": {
             "name": "Radiant Sword of Blossoming Dawn",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Peppermint<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hoʻōla<> nā hoʻouka kumu i ke koa hoa hui i ʻeha nui loa a kokoke loa i <#60e84dff>15<> - <#60e84dff>60<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Peppermint<>: <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>Hoʻōla<> nā hoʻouka kumu i ke koa hoa hui i ʻeha nui loa a kokoke loa i <#60e84dff>15<> - <#60e84dff>60<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<>) <#ff9028ff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD)<> <#a974ffff>(+7% <i#asset/base/ui/banpick/champion_stat_icon:ap_0> AP)<>."
         },
         "ardent_censer": {
             "name": "Ardent Censer",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Sanctify<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ia he <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>māmā hoʻouka<> a me ka <#ff9028ff>pōʻino kino hou<> <#ffff99ff>ke pā<> e like me <#d94c49ff>2% o ke ola kiʻekiʻe o ka pahuhopu<> no <#e8a800ff>6 kekona<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Sanctify<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ia he <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>māmā hoʻouka<> a me ka <#ff9028ff>pōʻino kino hou<> <#ffff99ff>ke pā<> e like me <#d94c49ff>2% o ke ola kiʻekiʻe o ka pahuhopu<> no <#e8a800ff>6 kekona<>."
         },
         "radiant_ardent_censer": {
             "name": "Radiant Ardent Censer",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Sanctify<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ia he <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>māmā hoʻouka<> a me ka <#ff9028ff>pōʻino kino hou<> <#ffff99ff>ke pā<> e like me <#d94c49ff>2% o ke ola kiʻekiʻe o ka pahuhopu<> no <#e8a800ff>6 kekona<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Sanctify<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ia he <#ceff99ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:attack_speed_0> <#ceff99ff>māmā hoʻouka<> a me ka <#ff9028ff>pōʻino kino hou<> <#ffff99ff>ke pā<> e like me <#d94c49ff>2% o ke ola kiʻekiʻe o ka pahuhopu<> no <#e8a800ff>6 kekona<>."
         },
         "grezs_spectral_lantern": {
             "name": "Grez's Spectral Lantern",
@@ -19422,11 +19550,11 @@
         },
         "staff_of_flowing_water": {
             "name": "Staff of Flowing Water",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Rapids<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ʻoe a me ka pahuhopu he <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> a me <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<> no <#e8a800ff>3 kekona<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Rapids<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ʻoe a me ka pahuhopu he <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> a me <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<> no <#e8a800ff>3 kekona<>."
         },
         "radiant_staff_of_flowing_water": {
             "name": "Radiant Staff of Flowing Water",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Rapids<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ʻoe a me ka pahuhopu he <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> a me <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<> no <#e8a800ff>3 kekona<>."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>10% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Rapids<>: Ke hoʻōla, pale, a hoʻoikaika paha ʻoe i kekahi koa hoa hui (ʻaʻole ʻoe iho), loaʻa iā ʻoe a me ka pahuhopu he <#a974ffff>25 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> a me <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<> no <#e8a800ff>3 kekona<>."
         },
         "immortal_shieldbow": {
             "name": "Immortal Shieldbow",
@@ -19646,11 +19774,11 @@
         },
         "mikaels_blessing": {
             "name": "Mikael's Blessing",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Purify<>: Inā <#d94c49ff>ma lalo o 50% ke ola<> o kekahi koa hoa hui a loaʻa ʻo ia i ka <#d94c49ff>hoʻopaʻa ʻana<>, hoʻomaʻemaʻe iā ia a iā ʻoe iho i nā hoʻopaʻa ʻana a pau a <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hoʻōla iā ia<> i <#60e84dff>100<> - <#60e84dff>265<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<> o ka pahuhopu) <#60e84dff>ola<> (manawa kali hou <#e8a800ff>120 kekona<>, nā hoa hui ma loko o <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>)."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Purify<>: Inā <#d94c49ff>ma lalo o 50% ke ola<> o kekahi koa hoa hui a loaʻa ʻo ia i ka <#d94c49ff>hoʻopaʻa ʻana<>, hoʻomaʻemaʻe iā ia a iā ʻoe iho i nā hoʻopaʻa ʻana a pau a <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hoʻōla iā ia<> i <#60e84dff>100<> - <#60e84dff>265<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<> o ka pahuhopu) <#60e84dff>ola<> (manawa kali hou <#e8a800ff>120 kekona<>, nā hoa hui ma loko o <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>)."
         },
         "radiant_mikaels_blessing": {
             "name": "Radiant Mikael's Blessing",
-            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Purify<>: Inā <#d94c49ff>ma lalo o 50% ke ola<> o kekahi koa hoa hui a loaʻa ʻo ia i ka <#d94c49ff>hoʻopaʻa ʻana<>, hoʻomaʻemaʻe iā ia a iā ʻoe iho i nā hoʻopaʻa ʻana a pau a <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hoʻōla iā ia<> i <#60e84dff>100<> - <#60e84dff>265<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<> o ka pahuhopu) <#60e84dff>ola<> (manawa kali hou <#e8a800ff>120 kekona<>, nā hoa hui ma loko o <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>)."
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>12% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>Purify<>: Inā <#d94c49ff>ma lalo o 50% ke ola<> o kekahi koa hoa hui a loaʻa ʻo ia i ka <#d94c49ff>hoʻopaʻa ʻana<>, hoʻomaʻemaʻe iā ia a iā ʻoe iho i nā hoʻopaʻa ʻana a pau a <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>hoʻōla iā ia<> i <#60e84dff>100<> - <#60e84dff>265<> (e like me ka <i#asset/base/ui/banpick/champion_stat_icon:level_0> <#d8c9b3ff>pae<> o ka pahuhopu) <#60e84dff>ola<> (manawa kali hou <#e8a800ff>120 kekona<>, nā hoa hui ma loko o <#ff86c2ff>65 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>)."
         },
         "force_of_nature": {
             "name": "Force of Nature",
@@ -19683,6 +19811,14 @@
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
             "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#61d1bcff>5 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<> a me <#60e84dff>15 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ʻā i ke ahi nā moʻo e hana ana i ka pōʻino iā ʻoe no <#d94c49ff>10% o ko lākou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>50 pōʻino<> i kēlā me kēia kekona."
+        },
+        "dawncore": {
+            "name": "Dawncore",
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>First Light<>: Loaʻa iā ʻoe he <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<> a me <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> no kēlā me kēia <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<>."
+        },
+        "radiant_dawncore": {
+            "name": "Radiant Dawncore",
+            "option": "\nLoaʻa iā ʻoe he <#60e84dff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>First Light<>: Loaʻa iā ʻoe he <#60e84dff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<> a me <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> no kēlā me kēia <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<>."
         }
     }
 }

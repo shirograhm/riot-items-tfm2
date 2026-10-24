@@ -6,6 +6,7 @@ items! {
     bloodsong,
     celestial_opposition,
     chemtech_putrifier,
+    dawncore,
     dream_maker,
     echoes_of_helia,
     imperial_mandate,

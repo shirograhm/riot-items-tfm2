@@ -606,6 +606,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("cosmic_drive" => CosmicDrive));
+    reg.add_item(configured!("dawncore" => Dawncore));
     reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
@@ -711,6 +712,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured_radiant!("radiant_collector" => Collector));
     reg.add_item(configured_radiant!("radiant_cosmic_drive" => CosmicDrive));
+    reg.add_item(configured_radiant!("radiant_dawncore" => Dawncore));
     reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));
