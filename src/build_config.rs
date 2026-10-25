@@ -826,16 +826,15 @@ pub fn is_test_match(seed: u64) -> bool {
             .any(|slot| slot.load(Ordering::Relaxed) == seed)
 }
 
-// Records a lineup's champion -> role from a position-ordered roster; entries
-// past five are ignored.
-pub fn record_lineup_roles(champions: &[String]) {
+// Records a lineup's champion -> role, as the route hook reads each one's
+// position (`hook::lineup_roles`); a champion of no known role is left out.
+pub fn record_lineup_roles(champions: &[(String, Role)]) {
     let mut roles: HashMap<String, Role> = match lineup_roles() {
         Some(existing) => (*existing).clone(),
         None => HashMap::new(),
     };
     let mut changed = false;
-    for (index, champion) in champions.iter().enumerate() {
-        let role = Role::from_lane_code(index);
+    for &(ref champion, role) in champions {
         if role == Role::Any {
             continue;
         }
