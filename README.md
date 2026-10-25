@@ -1,6 +1,6 @@
 # Riot Games Item Expansion Pack - Teamfight Manager 2
 
-![TFM2](https://img.shields.io/badge/TFM2-v0.6.5-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) ![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen) ![Author](https://img.shields.io/badge/Author-shirograhm-crimson)
+![TFM2](https://img.shields.io/badge/TFM2-v0.6.5-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) [![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen)](https://github.com/shirograhm/riot-items-tfm2/releases/latest) [![Author](https://img.shields.io/badge/Author-shirograhm-crimson)](https://github.com/shirograhm)
 
 An expansion pack that adds items from Riot Games (LoL, TFT, Arena, etc.) to Teamfight Manager 2.  
 
