@@ -103,9 +103,16 @@ fn log(key: &str, text: impl FnOnce() -> String) {
 static FRAME: AtomicU32 = AtomicU32::new(0);
 static ABSENT: AtomicU32 = AtomicU32::new(0);
 
-// The side the save now loaded is on.
+// The side the save now loaded is on. A multiplayer guest plays by the host's
+// (`crate::multiplayer::host_item_rules`).
 pub(crate) fn rule() -> Rule {
-    Rule::from_code(RULE.load(Ordering::Relaxed))
+    Rule::from_code(crate::multiplayer::host_item_rules().unwrap_or_else(own_rule_code))
+}
+
+// This game's own side as [`Rule::code`], whatever multiplayer has in force:
+// what the host's server sends the other players.
+pub(crate) fn own_rule_code() -> u8 {
+    RULE.load(Ordering::Relaxed)
 }
 
 // The player's click on the Options row. It rules from this moment, and

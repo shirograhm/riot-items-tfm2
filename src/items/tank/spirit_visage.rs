@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ItemMeta};
+use crate::{apply_config, heal_shield_power, percent_of, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct SpiritVisage {
@@ -106,7 +106,8 @@ impl StableItem for SpiritVisage {
             return;
         };
         let bonus_heal = percent_of(heal, self.effect_heal_mult);
-        ctx.heal(entity, entity, bonus_heal);
+        // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+        heal_shield_power::unraised(|| ctx.heal(entity, entity, bonus_heal));
     }
 
     fn tags(&self) -> Vec<ItemTagV1> {

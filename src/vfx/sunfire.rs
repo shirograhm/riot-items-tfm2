@@ -129,11 +129,13 @@ pub(crate) struct MatchHooks {
 
 impl StableMatchHook for MatchHooks {
     fn on_match_start(&self, sim: &mut StableSim<'_>) {
+        crate::heal_shield_power::on_match_start(sim);
         crate::item_stats::sim::EndOfMatchItems.on_match_start(sim);
     }
 
     fn on_match_tick(&self, sim: &mut StableSim<'_>, rng_seed: u64) {
         use crate::perf::{self, Section};
+        crate::heal_shield_power::on_match_tick(sim);
         crate::match_builds::on_match_tick(sim);
         crate::item_spend::on_match_tick(sim);
         crate::item_counts::on_match_tick(sim);

@@ -429,14 +429,8 @@ unsafe fn detour(
     // editor; the stable hook only sees one match's ten.
     build_config::record_champion_roster(champion_ids);
 
-    // `team1` is position-ordered (Top = 0), so it gives each champion's role
-    // for the buy detour's pin lookup.
-    build_config::record_lineup_roles(
-        &team1
-            .iter()
-            .map(|(_, champion)| champion.clone())
-            .collect::<Vec<_>>(),
-    );
+    // Each champion's role, for the buy detour's pin lookup.
+    build_config::record_lineup_roles(&lineup_roles(team1));
 
     // League routes come back untouched; training (`mode`) routes are rewritten
     // below. Timed separately because the game's build decision includes this
@@ -499,7 +493,14 @@ fn apply_training_builds(
     team1: &[(Position, String)],
     team2: &[(Position, String)],
 ) {
-    let config = build_config::load_cached();
+    // No player's pins go in here in multiplayer: these routes do not say whose
+    // team is whose, and the native detours plant each player's on their own
+    // athletes.
+    let config = if crate::multiplayer::active() {
+        Default::default()
+    } else {
+        build_config::load_cached()
+    };
     // An empty config or Smart Builds being off is no reason to return: the
     // pass also covers the engine's own picks, and the tactics panel is told
     // every build.
@@ -516,12 +517,10 @@ fn apply_training_builds(
         .iter()
         .map(|(_, champion)| champion.as_str())
         .collect();
+    let roles = lineup_roles(team1);
 
-    for (position, route) in routes.iter_mut().enumerate() {
-        let Some((_, champion)) = team1.get(position) else {
-            break;
-        };
-        let role = build_config::Role::from_lane_code(position);
+    for (route, (champion, role)) in routes.iter_mut().zip(&roles) {
+        let role = *role;
         let mut pinned = Vec::new();
         let mut reserved = Vec::new();
         if let Some(build) = (!config.is_empty())
@@ -544,16 +543,45 @@ fn apply_training_builds(
         }
 
         // Noted for the tactics panel, as the stable hook does for league
-        // matches. A route's index is its lane only in a five-a-side lineup.
+        // matches, with the lane the champion plays.
         let keys = route
             .iter()
             .map(|&index| items.get(index).map(|item| item.key().to_string()))
             .collect::<Option<Vec<String>>>();
         if let Some(keys) = keys {
-            let lane = (team1.len() == 5).then_some(position);
+            let lane = build_config::Role::LANES
+                .iter()
+                .position(|lane| *lane == role);
             crate::match_builds::note_decision(champion, lane, &allies, &enemies, keys, None);
         }
     }
+}
+
+// The role each champion of `team` plays, in its order. From its `Position`,
+// by name, so the variants' order is not relied on; failing that, from its
+// index in a five-a-side lineup, which comes position-ordered (Top = 0). A lane
+// test's lineup is only that lane's champions, so there the index says nothing:
+// a bottom lane test's support is second, and was taken for the jungler.
+fn lineup_roles(team: &[(Position, String)]) -> Vec<(String, build_config::Role)> {
+    use crate::build_config::Role;
+    team.iter()
+        .enumerate()
+        .map(|(index, (position, champion))| {
+            let named = match format!("{position:?}").as_str() {
+                "Top" => Role::Top,
+                "Jungle" => Role::Jungle,
+                "Mid" | "Middle" => Role::Mid,
+                "Bottom" | "Bot" => Role::Bottom,
+                "Support" => Role::Support,
+                _ => Role::Any,
+            };
+            let role = match named {
+                Role::Any if team.len() == Role::LANES.len() => Role::from_lane_code(index),
+                role => role,
+            };
+            (champion.clone(), role)
+        })
+        .collect()
 }
 
 // Training-screen twin of `item_build_hook::enforce_smart_build`, over the

@@ -2,7 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, is_monster, item_counts, percent_of, upgrade_carry, ItemMeta, ProcQueue,
+    apply_config, heal_shield_power, is_monster, item_counts, percent_of, upgrade_carry, ItemMeta,
+    ProcQueue,
 };
 
 // The upgrade line the drained power is noted under (`crate::upgrade_carry`),
@@ -244,7 +245,8 @@ impl StableItem for GrezsSpectralLantern {
         // The heal is taken off the whole hit and lands with it; only the
         // bonus damage waits, so it reads as its own number on the monster.
         self.procs.push_magic(ctx, target, bonus);
-        ctx.heal(caster, caster, heal);
+        // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+        heal_shield_power::unraised(|| ctx.heal(caster, caster, heal));
     }
 
     // Lands the Butcher bonus whose delay has run out.

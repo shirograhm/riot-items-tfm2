@@ -48,7 +48,7 @@ impl PhilosophersStone {
         Self {
             meta: ItemMeta::base(
                 BASE_KEY,
-                &["bamis_cinder", "philosophers_medallion"],
+                &["philosophers_medallion"],
                 &["radiant_philosophers_stone"],
             ),
             price: 750,
@@ -254,7 +254,8 @@ impl StableItem for PhilosophersStone {
         _is_crit: bool,
     ) {
         let numbers = self.transmutation_numbers();
-        self.transmutation.on_damaged(ctx, attacker, damage, &numbers);
+        self.transmutation
+            .on_damaged(ctx, attacker, damage, &numbers);
     }
 
     fn on_kill(

@@ -80,7 +80,6 @@ impl StableItem for BamisCinder {
         vec![
             "hourglass_of_eternity".to_string(),
             "hollow_radiance".to_string(),
-            "philosophers_stone".to_string(),
         ]
     }
 
@@ -120,8 +119,8 @@ impl StableItem for BamisCinder {
         };
 
         mark_immolate(ctx, caster);
-        let damage =
-            self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage);
+        let damage = self.effect_bonus_flat_damage
+            + percent_of(max_hp, self.effect_caster_hp_percent_damage);
         let minion_damage = damage + percent_of(damage, self.effect_minion_bonus_percent);
         immolate_burn(
             ctx,
