@@ -176,7 +176,7 @@
   },
   "collector": {
     "price": 750,
-    "attack": 35,
+    "attack": 40,
     "magic_power": 0,
     "attack_speed_mult": 0,
     "crit_chance": 20,
@@ -2361,7 +2361,7 @@
     "magic_power": 0,
     "attack_speed_mult": 0,
     "crit_chance": 0,
-    "hp": 250,
+    "hp": 300,
     "defence": 0,
     "magic_resistance": 0,
     "defence_penetration": 0,
@@ -4608,12 +4608,12 @@
     "effect_max_heal": 40
   },
   "mikaels_blessing": {
-    "price": 900,
+    "price": 950,
     "attack": 0,
     "magic_power": 20,
     "attack_speed_mult": 0,
     "crit_chance": 0,
-    "hp": 250,
+    "hp": 200,
     "defence": 0,
     "magic_resistance": 0,
     "defence_penetration": 0,

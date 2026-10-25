@@ -149,7 +149,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Steel Sigil** | 500G | +20 AD<br>+20 Armor | — |
 | **Tiamat** | 400G | +25 AD | Cleave: Basic attacks deal 20% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Verdant Barrier** | 400G | +35 AP<br>+25 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
-| **Winged Moonplate** | 400G | +250 HP<br>+4% MS | — |
+| **Winged Moonplate** | 400G | +300 HP<br>+4% MS | — |
 
 #### Tier 4
 | Item | Cost | Stats | Passive |
@@ -170,7 +170,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Chempunk Chainsword** | 650G | +20 AD<br>+300 HP<br>+10 Ability Haste | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Chemtech Putrifier** | 700G | +150 HP<br>+2 HP Regen<br>+25 AP<br>+15 Ability Haste | Grievous Wounds: Dealing damage to an enemy champion reduces their healing by 40% for 2 seconds. |
 | **Cloak of Starry Night** | 750G | +300 HP<br>+50 MR<br>+25% Total MR | Limitless as the Stars: Increase your total magic resistance by 25%. Additionally, gain 5% (+1% per 25 magic resistance) skill damage reduction, up to a maximum of 25%. |
-| **Collector** | 750G | +35 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
+| **Collector** | 750G | +40 AD<br>+20% Crit Chance | Gain 10 Lethality.<br>Death: Dealing damage to enemy champions below 6% maximum health executes them.<br>Taxes: Killing a champion grants you an additional 25 gold. |
 | **Cosmic Drive** | 850G | +250 HP<br>+50 AP<br>+10 Ability Haste<br>+4% MS | Spelldance: Dealing magic damage or true damage to an enemy champion grants you 8% movement speed for 4 seconds. |
 | **Dawncore** | 850G | +3 HP Regen<br>+40 AP | Gain 16% heal and shield power.<br>First Light: Gain 2% heal and shield power and 15 Ability Power for every 10 Ability Haste. |
 | **Dead Man's Plate** | 750G | +250 HP<br>+30 Armor<br>+4% MS | Shipwrecker: Generate 7 stacks of Momentum every second, up to 100. Each stack grants 0.25% bonus movement speed. Basic attacks consume all remaining Momentum to deal 0 - 200 bonus physical damage on-hit, scaling with stacks consumed. |
@@ -210,7 +210,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Locket of the Iron Solari** | 550G | +150 HP<br>+20 Armor<br>+30 MR<br>+10 Ability Haste | Devotion: Falling below 50% health grants you and all nearby allied champions a shield that absorbs damage equal to 170 - 225 (based on level) health over 2.5 seconds (90 second cooldown).<br>Legion: Grant 6 armor, 12 magic resistance, and 3 health regeneration to all allies within 100 range. Minions gain 150% of this value. |
 | **Lord Dominik's Regards** | 750G | +25 AD<br>+20% Crit Chance<br>+25% Armor Pen | Giant Slayer: Deal 3% bonus damage for every 1000 maximum health the target has, up to 15%. |
 | **Malignance** | 650G | +60 AP<br>+12 Ability Haste | Scorn: Gain 12 Ultimate Ability Haste. |
-| **Mikael's Blessing** | 900G | +250 HP<br>+2 HP Regen<br>+20 AP<br>+10 Ability Haste | Gain 12% heal and shield power.<br>Purify: If an allied champion below 50% health is crowd controlled, cleanse them and yourself of all crowd control effects and heal them for 100 - 265 (based on the target's level) health (120 second cooldown, allies within 65 range). |
+| **Mikael's Blessing** | 950G | +200 HP<br>+2 HP Regen<br>+20 AP<br>+10 Ability Haste | Gain 12% heal and shield power.<br>Purify: If an allied champion below 50% health is crowd controlled, cleanse them and yourself of all crowd control effects and heal them for 100 - 265 (based on the target's level) health (120 second cooldown, allies within 65 range). |
 | **Mirage Blade** | 750G | +35% AS<br>+10% MS | Illusion: Gain 30 Adaptive Force. Each Adaptive Force grants 0.6 Attack Damage or 1 Ability Power, depending on which is higher.<br>Blur: On kill, gain 20% movement speed for 2 seconds. |
 | **Moonstone Renewer** | 750G | +150 HP<br>+2 HP Regen<br>+20 AP<br>+15 Ability Haste | Starlit Grace: Healing an allied champion (excluding yourself) chains the effect to another allied champion within 100 range of them, healing 35% of the original amount. |
 | **Morellonomicon** | 650G | +200 HP<br>+60 AP<br>+10 Ability Haste | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 40% for 2 seconds. |
