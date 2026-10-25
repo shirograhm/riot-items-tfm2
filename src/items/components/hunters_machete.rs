@@ -1,5 +1,5 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ProcQueue};
+use crate::{apply_config, heal_shield_power, is_monster, percent_of, ProcQueue};
 use mod_api_stable::*;
 
 // Hunter's Machete: a jungle starter, Feral Flare's through Madred's Razors.
@@ -108,7 +108,8 @@ impl StableItem for HuntersMachete {
         }
         let heal = percent_of(*damage, self.effect_vamp.max(0) as f64);
         if heal > 0 {
-            ctx.heal(caster, caster, heal);
+            // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+            heal_shield_power::unraised(|| ctx.heal(caster, caster, heal));
         }
     }
 

@@ -3,7 +3,7 @@ use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
 
 use crate::config::ItemConfig;
-use crate::{add_stack, apply_config, ticks, ItemMeta};
+use crate::{add_stack, apply_config, heal_shield_power, ticks, ItemMeta};
 
 // Wrath and Ruin: Using an Ability grants 5% critical strike chance for 5
 // seconds (max 5 stacks).
@@ -192,11 +192,13 @@ impl StableItem for RiteOfRuin {
         let roll: f64 = rng.random::<f64>();
 
         if roll < (crit_chance as f64 / 100.0) {
-            ctx.entity_add_shield(
-                caster,
+            // The carrier's own shield takes its Heal and Shield Power: the
+            // API's shields pass by the engine's add-shield, where it is applied.
+            let shield = heal_shield_power::raised(
                 self.shield_amount(level),
-                ticks(self.effect_shield_seconds),
+                heal_shield_power::of(ctx, caster),
             );
+            ctx.entity_add_shield(caster, shield, ticks(self.effect_shield_seconds));
         }
 
         let duration = ticks(self.effect_duration_seconds);

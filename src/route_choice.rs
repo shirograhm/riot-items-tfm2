@@ -4,7 +4,7 @@ use std::cell::Cell;
 use std::collections::{HashMap, VecDeque};
 use std::sync::{Arc, Mutex};
 
-use crate::build_config::Role;
+use crate::build_config::{Focus, Role};
 use crate::champion_traits::{self, Class, Scaling};
 
 const STATS: [(&str, f64); 16] = [
@@ -184,7 +184,38 @@ impl Weights {
         weights[SKILL_REDUCTION] = tanking;
         Self(weights)
     }
+
+    // These weights with the Build Editor's component focus laid over them:
+    // the side it names counts [`FOCUS_FAVOURED`] times as much, the other
+    // [`FOCUS_OTHER`] times, and haste, movement speed and omnivamp neither.
+    // A stat the champion does not use stays at nothing, so Offense never
+    // turns an AP champion towards attack damage.
+    pub(crate) fn focused(mut self, focus: Focus) -> Self {
+        let (favoured, other) = match focus {
+            Focus::Neither => return self,
+            Focus::Offense => (&OFFENSE, &DEFENSE),
+            Focus::Defense => (&DEFENSE, &OFFENSE),
+        };
+        for &stat in favoured {
+            self.0[stat] *= FOCUS_FAVOURED;
+        }
+        for &stat in other {
+            self.0[stat] *= FOCUS_OTHER;
+        }
+        self
+    }
 }
+
+// The two sides of a component focus ([`Weights::focused`]), as positions in
+// [`STATS`].
+const OFFENSE: [usize; 6] = [ATTACK, MAGIC_POWER, ATTACK_SPEED, CRIT, ARMOR_PEN, MAGIC_PEN];
+const DEFENSE: [usize; 6] = [HEALTH, ARMOR, MAGIC_RESIST, TENACITY, SKILL_REDUCTION, HEALTH_REGEN];
+
+// How far a focus moves the weights: enough that the named side wins wherever
+// a route offers it, while the other side still orders what is left (armor
+// against magic resist, say).
+const FOCUS_FAVOURED: f64 = 2.0;
+const FOCUS_OTHER: f64 = 0.25;
 
 // What `key`'s stats are worth to a champion with these weights; 0 for an item
 // nothing describes.
@@ -291,54 +322,57 @@ pub(crate) fn enemy_damage(seed: u64, side: u64, champion: &str) -> Option<(u32,
 
 // The route picker is not handed the match, so the buy detour, which is, notes
 // each athlete's seed on its thread (every copy of a match plays on one thread
-// from start to finish, and buys before it upgrades or checks a price).
+// from start to finish, and buys before it upgrades or checks a price), and
+// whether the player's build rows reach the athlete, for their component focus.
 const SEATS: usize = 16;
 
 struct Seats {
-    slots: [Cell<(usize, u64)>; SEATS],
+    slots: [Cell<(usize, u64, bool)>; SEATS],
     next: Cell<usize>,
 }
 
 thread_local! {
     static THREAD_SEATS: Seats = const {
         Seats {
-            slots: [const { Cell::new((0, 0)) }; SEATS],
+            slots: [const { Cell::new((0, 0, false)) }; SEATS],
             next: Cell::new(0),
         }
     };
 }
 
-// Notes that `athlete` plays in the match of `seed`, from the buy detour.
-pub(crate) fn note_seat(athlete: usize, seed: u64) {
+// Notes that `athlete` plays in the match of `seed`, and whether the player's
+// rows reach it (`reached`), from the buy detour.
+pub(crate) fn note_seat(athlete: usize, seed: u64, reached: bool) {
     if athlete == 0 || seed == 0 {
         return;
     }
     let _ = THREAD_SEATS.try_with(|seats| {
         for slot in &seats.slots {
-            let (held, was) = slot.get();
+            let (held, was, reach) = slot.get();
             if held == athlete {
-                if was != seed {
-                    slot.set((athlete, seed));
+                if (was, reach) != (seed, reached) {
+                    slot.set((athlete, seed, reached));
                 }
                 return;
             }
         }
         let next = seats.next.get();
-        seats.slots[next % SEATS].set((athlete, seed));
+        seats.slots[next % SEATS].set((athlete, seed, reached));
         seats.next.set(next.wrapping_add(1));
     });
 }
 
-// The seed [`note_seat`] last noted for `athlete` on this thread, 0 if none.
-pub(crate) fn seat_seed(athlete: usize) -> u64 {
+// The seed and reach [`note_seat`] last noted for `athlete` on this thread;
+// (0, false) if none.
+pub(crate) fn seat(athlete: usize) -> (u64, bool) {
     THREAD_SEATS
         .try_with(|seats| {
             seats
                 .slots
                 .iter()
                 .map(Cell::get)
-                .find(|&(held, _)| held == athlete)
-                .map_or(0, |(_, seed)| seed)
+                .find(|&(held, _, _)| held == athlete)
+                .map_or((0, false), |(_, seed, reached)| (seed, reached))
         })
-        .unwrap_or(0)
+        .unwrap_or((0, false))
 }

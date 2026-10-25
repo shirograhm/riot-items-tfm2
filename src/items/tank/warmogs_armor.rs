@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
+    apply_config, heal_shield_power, percent_of, ticks, ItemMeta, BUFF_REFRESH_DURATION_TICKS,
     BUFF_REFRESH_PERIOD_TICKS, TICKS_PER_SECOND,
 };
 
@@ -112,7 +112,8 @@ impl WarmogsArmor {
                 self.effect_caster_hp_percent_heal * REGEN_PERIOD_TICKS as f64 / TICKS_PER_SECOND;
             let heal = percent_of(max_hp, share);
             if heal > 0 {
-                ctx.heal(entity, entity, heal);
+                // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+                heal_shield_power::unraised(|| ctx.heal(entity, entity, heal));
             }
             // The pulse lands on the tick the countdown reaches 0.
             self.regen_cooldown = REGEN_PERIOD_TICKS - 1;

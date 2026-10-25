@@ -2,8 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, ItemMeta, ProcQueue, BUFF_REFRESH_DURATION_TICKS, BUFF_REFRESH_PERIOD_TICKS,
-    DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
+    apply_config, item_counts, ItemMeta, ProcQueue, BUFF_REFRESH_DURATION_TICKS,
+    BUFF_REFRESH_PERIOD_TICKS, DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
 const PROC_LOCKOUT_TICKS: usize = BUFF_REFRESH_DURATION_TICKS;
@@ -258,6 +258,10 @@ impl StableItem for DeadMansPlate {
         // Ahead of the momentum lockout below, which returns early for a full
         // second after a proc: the queued damage must not wait that out.
         self.procs.update(ctx, player);
+        // The Momentum stacks, for the number on the item's icon. Ahead of the
+        // lockout too, so a spent bar drops to nothing at once; a death ends
+        // them, as it does the stacks themselves.
+        item_counts::note_in_combat(ctx, player, self.meta.key, || self.momentum as u64);
 
         if self.proc_cooldown > 0 {
             self.proc_cooldown -= 1;

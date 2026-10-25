@@ -1,20 +1,20 @@
-use crate::apply_config;
 use crate::config::ItemConfig;
+use crate::{apply_config, heal_shield_power};
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
 pub struct ForbiddenIdol {
     price: usize,
-    hp: i32,
     hp_regen: i32,
+    effect_heal_shield_power: f64,
 }
 
 impl Default for ForbiddenIdol {
     fn default() -> Self {
         Self {
             price: 150,
-            hp: 200,
             hp_regen: 2,
+            effect_heal_shield_power: 8.0,
         }
     }
 }
@@ -22,7 +22,7 @@ impl Default for ForbiddenIdol {
 impl ForbiddenIdol {
     pub fn with_config(cfg: &ItemConfig) -> Self {
         let mut item = Self::default();
-        apply_config!(item, cfg, [price, hp, hp_regen]);
+        apply_config!(item, cfg, [price, hp_regen, effect_heal_shield_power]);
         item
     }
 }
@@ -55,22 +55,27 @@ impl StableItem for ForbiddenIdol {
     fn next_tier(&self) -> Vec<String> {
         vec![
             "sword_of_blossoming_dawn".to_string(),
-            "echoes_of_helia".to_string(),
+            "ardent_censer".to_string(),
             "staff_of_flowing_water".to_string(),
             "mikaels_blessing".to_string(),
+            "dawncore".to_string(),
         ]
     }
 
     fn stat(&self) -> BuffV1 {
         BuffV1 {
-            hp: self.hp,
             hp_regen: self.hp_regen,
             ..Default::default()
         }
     }
 
+    // Heal and shield power, reported every tick.
+    fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
+        heal_shield_power::note(ctx, player, self.effect_heal_shield_power);
+    }
+
     fn tags(&self) -> Vec<ItemTagV1> {
-        vec![ItemTagV1::Hp, ItemTagV1::HpRegen]
+        vec![ItemTagV1::HpRegen]
     }
 
     fn category(&self) -> ItemCategoryV1 {

@@ -8,6 +8,7 @@ pub(crate) mod draft_watch;
 pub(crate) mod item_counts;
 pub(crate) mod item_spend;
 pub(crate) mod match_builds;
+mod name_search;
 mod options_dialog;
 pub(crate) mod options_row;
 pub(crate) mod patch_settings;

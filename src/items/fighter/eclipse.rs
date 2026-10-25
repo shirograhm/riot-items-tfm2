@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta};
+use crate::{apply_config, has_buff, heal_shield_power, percent_of, ticks, ItemMeta};
 
 #[derive(Clone, Debug)]
 pub struct Eclipse {
@@ -190,6 +190,9 @@ impl StableItem for Eclipse {
 
         let shield = self.effect_bonus_flat_shield
             + percent_of(caster_attack, self.effect_ad_percent_shield);
+        // The carrier's own shield takes its Heal and Shield Power: the API's
+        // shields pass by the engine's add-shield, where it is applied.
+        let shield = heal_shield_power::raised(shield, heal_shield_power::of(ctx, caster));
         ctx.entity_add_shield(caster, shield, ticks(self.effect_shield_seconds));
 
         // The cooldown rides the target, not the carrier: Ever Rising Moon is

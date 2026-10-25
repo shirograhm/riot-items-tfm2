@@ -8,6 +8,7 @@ mod item_catalog;
 mod item_stats;
 mod item_tiers;
 mod items;
+mod multiplayer;
 mod patches;
 mod route_choice;
 mod smart_builds;
@@ -29,7 +30,9 @@ pub(crate) use utils::shared_riches::SharedRiches;
 // and `crate::strategy_ui::ICON_SHEET` keep working from every module.
 pub(crate) use hooks::{hook, item_build_hook};
 pub(crate) use ui::{item_counts, item_spend, match_builds, options_row, solo_rank_ui, strategy_ui};
-pub(crate) use utils::{config, own_team_log, perf, upgrade_carry};
+pub(crate) use utils::{
+    config, extra_stats, game_text, heal_shield_power, own_team_log, perf, upgrade_carry,
+};
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
     add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
@@ -334,7 +337,8 @@ impl StableServerExtension for NativeTapExtension {
     ) -> CommandResultV1 {
         // The client's word that an item balance patch has landed: its
         // state and its article, now and not at the next management tick.
-        if patches::handle_command(ctx, command) {
+        // Or a player's builds, for every player in a multiplayer session.
+        if patches::handle_command(ctx, command) || multiplayer::handle_command(ctx, command) {
             CommandResultV1::Handled
         } else {
             CommandResultV1::Pass
@@ -343,6 +347,9 @@ impl StableServerExtension for NativeTapExtension {
 
     fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {
         tactics::driver::on_server_start();
+        // The players whose builds the last save's server held are not this
+        // one's.
+        multiplayer::server_started();
         // The mod's numbers for the game's own thirty items, into this
         // server's item settings, before it creates a match.
         item_stats::server_started();
@@ -426,9 +433,10 @@ fn init(host: &StableHost) -> StableMod {
     // boots in the editor beside the radiants, and `shared_riches` pays World
     // Atlas gold from the match hook.
     //
-    // Every item is wrapped in `perf::Timed`, which times its hooks and is
-    // where an item balance patch reaches it; the constructor handed over with
-    // it is for that.
+    // Every item is wrapped in `extra_stats::WithStats`, which adds the base
+    // stats its `config.json` entry gives that the item does not read itself,
+    // then in `perf::Timed`, which times its hooks and is where an item balance
+    // patch reaches it; the constructor handed over with it is for that.
     macro_rules! configured {
         ($key:literal => $T:ty, shared_riches) => {{
             let item = configured!($key => $T);
@@ -462,13 +470,22 @@ fn init(host: &StableHost) -> StableMod {
             item
         }};
         ($key:literal => $T:ty) => {{
-            let item = configs.get($key).map(<$T>::with_config).unwrap_or_default();
+            extra_stats::learn($key, <$T>::with_config);
+            let build: fn(&config::ItemConfig) -> extra_stats::WithStats<$T> = |config| {
+                extra_stats::WithStats::new($key, <$T>::with_config(config), Some(config))
+            };
+            let config = configs.get($key);
+            let item = extra_stats::WithStats::new(
+                $key,
+                config.map(<$T>::with_config).unwrap_or_default(),
+                config,
+            );
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             route_choice::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
-            patches::note_mod_item($key, &item, <$T>::with_config);
-            perf::timed($key, item, <$T>::with_config)
+            patches::note_mod_item($key, &item, build);
+            perf::timed($key, item, build)
         }};
     }
     macro_rules! configured_radiant {
@@ -499,17 +516,25 @@ fn init(host: &StableHost) -> StableMod {
             item
         }};
         ($key:literal => $T:ty) => {{
-            let item = configs
-                .get($key)
-                .map(<$T>::radiant_with_config)
-                .unwrap_or_else(<$T>::radiant);
+            extra_stats::learn($key, <$T>::radiant_with_config);
+            let build: fn(&config::ItemConfig) -> extra_stats::WithStats<$T> = |config| {
+                extra_stats::WithStats::new($key, <$T>::radiant_with_config(config), Some(config))
+            };
+            let config = configs.get($key);
+            let item = extra_stats::WithStats::new(
+                $key,
+                config
+                    .map(<$T>::radiant_with_config)
+                    .unwrap_or_else(<$T>::radiant),
+                config,
+            );
             item_stats::note_registered($key, StableItem::tier(&item));
             smart_builds::note_mod_item($key, &item);
             route_choice::note_mod_item($key, &item);
             match_builds::note_mod_item($key, &item);
             strategy_ui::note_final_item($key);
-            patches::note_mod_item($key, &item, <$T>::radiant_with_config);
-            perf::timed($key, item, <$T>::radiant_with_config)
+            patches::note_mod_item($key, &item, build);
+            perf::timed($key, item, build)
         }};
     }
 
@@ -581,6 +606,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured!("collector" => Collector));
     reg.add_item(configured!("cosmic_drive" => CosmicDrive));
+    reg.add_item(configured!("dawncore" => Dawncore));
     reg.add_item(configured!("dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured!("deathblade" => DeathBlade));
     reg.add_item(configured!("deaths_dance" => DeathsDance));
@@ -686,6 +712,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_cloak_of_starry_night" => CloakOfStarryNight));
     reg.add_item(configured_radiant!("radiant_collector" => Collector));
     reg.add_item(configured_radiant!("radiant_cosmic_drive" => CosmicDrive));
+    reg.add_item(configured_radiant!("radiant_dawncore" => Dawncore));
     reg.add_item(configured_radiant!("radiant_dead_mans_plate" => DeadMansPlate));
     reg.add_item(configured_radiant!("radiant_deathblade" => DeathBlade));
     reg.add_item(configured_radiant!("radiant_deaths_dance" => DeathsDance));

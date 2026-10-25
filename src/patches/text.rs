@@ -384,6 +384,9 @@ pub(crate) struct Texts {
     // Language -> the mod's own patch-note strings (`text/ui.i18n`,
     // `item_patch`).
     ui: HashMap<String, HashMap<String, String>>,
+    // Language -> the Build Editor's strings (`text/ui.i18n`, `builds`), for
+    // the ones it writes into a label along with other text.
+    builds: HashMap<String, HashMap<String, String>>,
 }
 
 fn read_json(path: &Path) -> Option<Value> {
@@ -423,6 +426,7 @@ impl Texts {
             name_keys: HashMap::new(),
             shown: HashMap::new(),
             ui: HashMap::new(),
+            builds: HashMap::new(),
         };
 
         if let Some(Value::Object(langs)) = read_json(&dir.join("text").join("item.i18n")) {
@@ -498,6 +502,9 @@ impl Texts {
             for (lang, entries) in &langs {
                 if let Some(strings) = entries.get("item_patch") {
                     texts.ui.insert(lang.clone(), lines_of(strings));
+                }
+                if let Some(strings) = entries.get("builds") {
+                    texts.builds.insert(lang.clone(), lines_of(strings));
                 }
             }
         }
@@ -944,12 +951,15 @@ const ITEM_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18"
 // font they take it from (`text/news`, `patch.stat`).
 const ARROW: &str = "<f#asset/base/font/set/symbol>\u{2192}<f>";
 const BOLD: &str = "asset/base/font/set/bold";
-// The green of the game's "Buffs" mark (`ui/icons/up_patch`), a red for
-// "Nerfs", an amber for the "Adjustments" between the two, and the grey its
-// notes give a reason in (`patch_reason_row`).
-const BUFF_COLOR: &str = "#4ed5bdff";
-const NERF_COLOR: &str = "#ff6b6bff";
-const ADJUST_COLOR: &str = "#f0c05aff";
+// The marks a section heading opens with, as the game's own patch notes head
+// their columns (`patch_column_header`): its green up and red down triangles
+// (`ui/icons/up_patch`, `down_patch`, SVGs a label cannot inline) redrawn as a
+// sprite sheet of the mod's own, with a yellow dash for "Adjustments". Tags
+// `buff`, `nerf`, `adjust`.
+const MARK_SHEET: &str = "asset/riot_items_tfm2/ui/icons/patch_marks";
+// A heading's words, white as the game's own are.
+const HEADING_COLOR: &str = "#ffffffff";
+// The grey the game's notes give a reason in (`patch_reason_row`).
 const REASON_COLOR: &str = "#8b8d9aff";
 
 // One changed number of an entry: the stat icon a flat stat's row opens with (a
@@ -981,6 +991,16 @@ struct NoteEntry {
     // has both.
     stronger: bool,
     weaker: bool,
+    // The change the entry was made for, whose kind picks the reason.
+    why: Change,
+    // Which way the patch meant to move the item, buff or not, from the
+    // first change it was judged on: none for one only brought level or set
+    // by hand. What an adjustment's reason says ([`adjust_pool`]).
+    intent: Option<bool>,
+    // What the numbers that got stronger, and those that got weaker, are
+    // called ([`short_label`]), for an adjustment's reason to name.
+    ups: Vec<String>,
+    downs: Vec<String>,
 }
 
 impl NoteEntry {
@@ -1111,6 +1131,89 @@ fn reason_pool(
     pool
 }
 
+// The reasons for an adjustment, an item whose numbers went both ways: a step
+// that went too far, made up for by another number moved back
+// (`balance::plan_for`). `buff` is which way the patch meant to move it. Each
+// names what moved, in the way of League's notes ("so we're toning down its
+// {Down} ..."): `{Up}` and `{Down}` the numbers that got stronger and weaker,
+// `{Item}` the item.
+fn adjust_pool(buff: bool) -> Vec<&'static str> {
+    if buff {
+        vec!["why_adjust_buff_1", "why_adjust_buff_2", "why_adjust_buff_3"]
+    } else {
+        vec!["why_adjust_nerf_1", "why_adjust_nerf_2", "why_adjust_nerf_3"]
+    }
+}
+
+// What a level range is, for a reason that names it: by its low end.
+const RANGE_LABELS: [(&str, Words); 4] = [
+    ("effect_min_bonus_damage", label::BONUS_DAMAGE),
+    ("effect_min_heal", label::HEALING),
+    ("effect_min_shield", label::SHIELDING),
+    ("effect_min_bonus_hp", label::BONUS_HEALTH),
+];
+
+// What a reason calls the number `change` moved: a flat stat by its tooltip
+// line ([`label_of`]); a passive's number as the passive's and what the number
+// is, "passive Movement Speed" (not by the passive's name), as its row's format,
+// its field's, its range's or its amount's words say, or "passive" where none
+// does; a number in a sentence with no name by those words alone ("Lethality").
+// Empty where none of them names it.
+fn short_label(texts: &Texts, lang: &str, change: &Change) -> String {
+    let (name, _) = label_of(texts, lang, change);
+    if super::fields::FLAT.contains(&change.field.as_str()) && !name.is_empty() {
+        return name;
+    }
+    let slug = change
+        .members
+        .first()
+        .map_or("", |first| crate::build_config::base_slug(&first.key));
+    let what = ROW_FORMATS
+        .iter()
+        .find(|format| format.item == slug && format.field == change.field)
+        .and_then(|format| format.label)
+        .or_else(|| {
+            FIELD_FORMATS
+                .iter()
+                .find(|format| format.fields.contains(&change.field.as_str()))
+                .map(|format| format.label)
+        })
+        .or_else(|| {
+            let (low, _) = super::fields::range_of(&change.field)?;
+            RANGE_LABELS
+                .iter()
+                .find(|(field, _)| *field == low)
+                .map(|(_, words)| *words)
+        })
+        .or_else(|| {
+            AMOUNT_FORMATS
+                .iter()
+                .find(|format| format.item == slug && format.fields.contains(&change.field.as_str()))
+                .map(|format| format.label)
+        })
+        .map_or_else(String::new, |(key, english)| texts.ui(lang, key, english));
+    match (name.is_empty(), what.is_empty()) {
+        (false, false) => texts
+            .ui(lang, "passive_stat", "passive {Stat}")
+            .replace("{Stat}", &what),
+        (false, true) => texts.ui(lang, "passive_alone", "passive"),
+        (true, _) => what,
+    }
+}
+
+// `names` as a sentence lists them: "Armor", "Armor and Health", "Armor,
+// Health and Magic Resist".
+fn listed(texts: &Texts, lang: &str, names: &[String]) -> String {
+    match names {
+        [] => String::new(),
+        [only] => only.clone(),
+        [rest @ .., last] => texts
+            .ui(lang, "list_and", "{A} and {B}")
+            .replace("{A}", &rest.join(texts.ui(lang, "list_sep", ", ").as_str()))
+            .replace("{B}", last),
+    }
+}
+
 // A number from a patch and an item, to start a pick at.
 fn seed_of(number: u32, text: &str) -> usize {
     let mut hash = 0xcbf2_9ce4_8422_2325u64 ^ u64::from(number);
@@ -1187,6 +1290,7 @@ mod label {
     pub(super) const FIRST_ATTACK_MULTIPLIER: Words = ("row_first_attack_multiplier", "First Attack Multiplier");
     pub(super) const HEALING: Words = ("row_healing", "Healing");
     pub(super) const HEALING_REDUCTION: Words = ("row_healing_reduction", "Healing Reduction");
+    pub(super) const HEAL_SHIELD_POWER: Words = ("row_heal_shield_power", "Heal and Shield Power");
     pub(super) const HEALTH_REGENERATION: Words = ("row_health_regeneration", "Health Regeneration");
     pub(super) const LETHALITY: Words = ("row_lethality", "Lethality");
     pub(super) const LETHALITY_DURATION: Words = ("row_lethality_duration", "Lethality Duration");
@@ -1275,10 +1379,15 @@ impl RowFormat {
     }
 }
 
-const FIELD_FORMATS: [FieldFormat; 5] = [
+const FIELD_FORMATS: [FieldFormat; 6] = [
     FieldFormat {
         fields: &["effect_lethality", "effect_bonus_lethality"],
         label: label::LETHALITY,
+        unit: None,
+    },
+    FieldFormat {
+        fields: &["effect_heal_shield_power"],
+        label: label::HEAL_SHIELD_POWER,
         unit: None,
     },
     FieldFormat {
@@ -1303,7 +1412,7 @@ const FIELD_FORMATS: [FieldFormat; 5] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 131] = [
+const ROW_FORMATS: [RowFormat; 133] = [
     row("deaths_dance", "effect_delayed_damage_percent", label::DAMAGE_REDUCTION),
     row("echoes_of_helia", "effect_damage_conversion", label::DAMAGE_STORED),
     row("heartsteel", "effect_bonus_hp_percent_of_damage", label::PERMANENT_HEALTH)
@@ -1409,6 +1518,8 @@ const ROW_FORMATS: [RowFormat; 131] = [
     row("bandlepipes", "effect_attack_speed_mult", label::ATTACK_SPEED),
     row("blackfire_torch", "effect_stack_magic_power", label::ABILITY_POWER).unit(unit::PER_STACK),
     row("cosmic_drive", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row("dawncore", "effect_stack_heal_shield_power", label::HEAL_SHIELD_POWER),
+    row("dawncore", "effect_stack_magic_power", label::ABILITY_POWER),
     row("dead_mans_plate", "effect_move_speed_per_stack", label::MOVEMENT_SPEED)
         .unit(unit::PER_MOMENTUM_STACK),
     row("dream_maker", "effect_skill_damaged_reduce", label::SKILL_DAMAGE_REDUCTION),
@@ -1795,57 +1906,33 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
     // number: another of their numbers that comes up is in the row the first
     // one made.
     let mut ranged: Vec<(&str, &str)> = Vec::new();
-    // Reasons given so far, so that no two items share one while another
-    // fits.
-    let mut used: Vec<&'static str> = Vec::new();
     // Where the entry of the item `key` is among `entries`, made where it
     // has none yet. `change` is one of the patch's changes to the item, or
     // to another tier of it: what it was touched for is the same.
-    let mut entry_of = |entries: &mut Vec<NoteEntry>, key: &str, change: &Change| -> usize {
-        if let Some(at) = entries.iter().position(|entry| entry.key == key) {
-            return at;
-        }
-        // One of the sentences that fit the item, a different one for
-        // every item of the article as far as the pool goes, and the same
-        // one whenever this patch's notes are written.
-        let family = base.families.get(&change.family);
-        let chosen = family.map_or(true, |family| family.chosen);
-        let component = family.is_some_and(|family| family.component);
-        // An item moved only to keep an upgrade no weaker than its part
-        // was not judged, and says so. One the player set by hand gives no
-        // reason at all: the article says whose patch it is.
-        let pool = if change.manual {
-            Vec::new()
-        } else if change.follows {
-            vec!["why_follow_1", "why_follow_2"]
-        } else {
-            reason_pool(
-                change.buff,
-                chosen,
-                component,
-                base.tempo(key),
-                change,
-                patch.matches,
-            )
+    let entry_of = |entries: &mut Vec<NoteEntry>, key: &str, change: &Change| -> usize {
+        let at = match entries.iter().position(|entry| entry.key == key) {
+            Some(at) => at,
+            None => {
+                entries.push(NoteEntry {
+                    key: key.to_string(),
+                    reason: String::new(),
+                    rows: Vec::new(),
+                    followers: Vec::new(),
+                    stronger: false,
+                    weaker: false,
+                    why: change.clone(),
+                    intent: None,
+                    ups: Vec::new(),
+                    downs: Vec::new(),
+                });
+                entries.len() - 1
+            }
         };
-        let from = seed_of(patch.number, key) % pool.len().max(1);
-        let picked = (0..pool.len())
-            .map(|step| pool[(from + step) % pool.len()])
-            .find(|reason| !used.contains(reason))
-            .or_else(|| pool.get(from).copied());
-        let reason = picked.map_or_else(String::new, |reason| {
-            used.push(reason);
-            texts.ui(lang, reason, "")
-        });
-        entries.push(NoteEntry {
-            key: key.to_string(),
-            reason,
-            rows: Vec::new(),
-            followers: Vec::new(),
-            stronger: false,
-            weaker: false,
-        });
-        entries.len() - 1
+        let entry = &mut entries[at];
+        if entry.intent.is_none() && !change.follows && !change.manual {
+            entry.intent = Some(change.buff);
+        }
+        at
     };
     let buffs = patch.changes.iter().filter(|change| change.buff);
     let nerfs = patch.changes.iter().filter(|change| !change.buff);
@@ -1858,6 +1945,7 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
         // own entry.
         let lower = super::fields::rule_for(&first.key, &change.field)
             .is_some_and(|rule| rule.lower_is_stronger);
+        let name = short_label(texts, lang, change);
         for moved in &change.members {
             // A number brought level with the other tier's went that tier's
             // way, and is told in that tier's entry.
@@ -1865,10 +1953,16 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
                 continue;
             }
             let at = entry_of(&mut entries, &moved.key, change);
-            if (moved.after.abs() > moved.before.abs()) != lower {
-                entries[at].stronger = true;
+            let entry = &mut entries[at];
+            let names = if (moved.after.abs() > moved.before.abs()) != lower {
+                entry.stronger = true;
+                &mut entry.ups
             } else {
-                entries[at].weaker = true;
+                entry.weaker = true;
+                &mut entry.downs
+            };
+            if !name.is_empty() && !names.contains(&name) {
+                names.push(name.clone());
             }
         }
         if let Some((low, high)) = super::fields::range_of(&change.field) {
@@ -1995,6 +2089,53 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
             rows.sort_by_key(|row| row.rank);
         }
     }
+    // Each entry's reason, once its numbers are all in and so which way they
+    // went: one of the sentences that fit the item, a different one for every
+    // item of the article as far as the pool goes, and the same one whenever
+    // this patch's notes are written.
+    let mut used: Vec<&'static str> = Vec::new();
+    for entry in &mut entries {
+        let why = &entry.why;
+        let family = base.families.get(&why.family);
+        let chosen = family.map_or(true, |family| family.chosen);
+        let component = family.is_some_and(|family| family.component);
+        // An item whose numbers went both ways is an adjustment, and says
+        // what moved; where a number has no name to say, it reads as the buff
+        // or nerf it was meant as. One moved only to keep an upgrade no weaker
+        // than its part was not judged, and says so. One the player set by
+        // hand gives no reason at all: the article says whose patch it is.
+        let adjusted = entry.intent.filter(|_| entry.stronger && entry.weaker);
+        let named = !entry.ups.is_empty() && !entry.downs.is_empty();
+        let pool = if why.manual {
+            Vec::new()
+        } else if let Some(buff) = adjusted.filter(|_| named) {
+            adjust_pool(buff)
+        } else if why.follows {
+            vec!["why_follow_1", "why_follow_2"]
+        } else {
+            reason_pool(
+                adjusted.unwrap_or(why.buff),
+                chosen,
+                component,
+                base.tempo(&entry.key),
+                why,
+                patch.matches,
+            )
+        };
+        let from = seed_of(patch.number, &entry.key) % pool.len().max(1);
+        let picked = (0..pool.len())
+            .map(|step| pool[(from + step) % pool.len()])
+            .find(|reason| !used.contains(reason))
+            .or_else(|| pool.get(from).copied());
+        entry.reason = picked.map_or_else(String::new, |reason| {
+            used.push(reason);
+            texts
+                .ui(lang, reason, "")
+                .replace("{Item}", &texts.name(lang, &entry.key))
+                .replace("{Up}", &listed(texts, lang, &entry.ups))
+                .replace("{Down}", &listed(texts, lang, &entry.downs))
+        });
+    }
     entries
 }
 
@@ -2110,10 +2251,10 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
             .replace("{Version}", &patch.version)
     };
     let entries = note_entries(patch, state, &lang);
-    for (stronger, weaker, heading, fallback, color) in [
-        (true, false, "buffed", "Buffs", BUFF_COLOR),
-        (true, true, "adjusted", "Adjustments", ADJUST_COLOR),
-        (false, true, "nerfed", "Nerfs", NERF_COLOR),
+    for (stronger, weaker, heading, fallback, mark) in [
+        (true, false, "buffed", "Buffs", "buff"),
+        (true, true, "adjusted", "Adjustments", "adjust"),
+        (false, true, "nerfed", "Nerfs", "nerf"),
     ] {
         let section: Vec<&NoteEntry> = entries
             .iter()
@@ -2123,7 +2264,7 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
             continue;
         }
         body.push_str(&format!(
-            "\n<s#24><f#{BOLD}><{color}>{}<><f><s>",
+            "\n<s#24><i#{MARK_SHEET}:{mark}> <f#{BOLD}><{HEADING_COLOR}>{}<><f><s>",
             texts.ui(&lang, heading, fallback)
         ));
         for entry in section {
@@ -2195,6 +2336,22 @@ pub(crate) fn item_frame(key: &str) -> String {
 // English given.
 pub(crate) fn ui_string(key: &str, english: &str) -> String {
     texts().ui(&game_language(), key, english)
+}
+
+// One of the Build Editor's strings in `lang`, in the mod's English where that
+// language has none, or the English given.
+pub(crate) fn builds_string(lang: &str, key: &str, english: &str) -> String {
+    [lang, "en"]
+        .iter()
+        .find_map(|lang| texts().builds.get(*lang)?.get(key))
+        .cloned()
+        .unwrap_or_else(|| english.to_string())
+}
+
+// An item's name in `lang` as the mod's text file has it, if that language
+// has one: the mod's items, and the game's own items it renames.
+pub(crate) fn item_name_in(lang: &str, key: &str) -> Option<&'static str> {
+    texts().names.get(lang)?.get(key).map(String::as_str)
 }
 
 // What the window calls `key`'s `field`, and whether it is a percentage, as a

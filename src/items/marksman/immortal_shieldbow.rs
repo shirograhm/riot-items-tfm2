@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, ticks, ItemMeta, Lifeline};
+use crate::{apply_config, heal_shield_power, percent_of, ticks, ItemMeta, Lifeline};
 
 // Lifeline: Falling below 30% health grants a shield for 3 seconds that absorbs
 // 330 - 605 (based on level) damage (90 second cooldown).
@@ -185,6 +185,9 @@ impl StableItem for ImmortalShieldbow {
         }
 
         let duration = ticks(self.effect_shield_seconds);
+        // The carrier's own shield takes its Heal and Shield Power: the API's
+        // shields pass by the engine's add-shield, where it is applied.
+        let shield = heal_shield_power::raised(shield, heal_shield_power::of(ctx, entity));
         ctx.entity_add_shield(entity, shield, duration);
         self.lifeline.raise(ctx, entity, duration);
         self.lifeline_cooldown = ticks(self.effect_cooldown_seconds);

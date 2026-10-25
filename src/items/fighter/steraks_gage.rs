@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, has_buff, percent_of, ticks, ItemMeta, Lifeline};
+use crate::{apply_config, has_buff, heal_shield_power, percent_of, ticks, ItemMeta, Lifeline};
 
 // Lifeline: If you would take damage below 30% of your maximum health, you
 // first gain a shield that absorbs damage equal to 45% of your maximum health
@@ -171,6 +171,9 @@ impl StableItem for SteraksGage {
         }
 
         let duration = ticks(self.effect_shield_seconds);
+        // The carrier's own shield takes its Heal and Shield Power: the API's
+        // shields pass by the engine's add-shield, where it is applied.
+        let shield = heal_shield_power::raised(shield, heal_shield_power::of(ctx, entity));
         ctx.entity_add_shield(entity, shield, duration);
         self.lifeline.raise(ctx, entity, duration);
         ctx.add_buff(
