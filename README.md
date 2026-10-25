@@ -1,5 +1,8 @@
-Adds items from Riot Games (LoL, TFT) to Teamfight Manager 2.  
-Reskins the game's 30 items and adds 247 new ones (145 base + 102 Radiant).
+# Riot Games Item Expansion Pack - Teamfight Manager 2
+
+![TFM2](https://img.shields.io/badge/TFM2-v0.6.5-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) ![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen) ![Author](https://img.shields.io/badge/Author-shirograhm-crimson)
+
+An expansion pack that adds items from Riot Games (LoL, TFT, Arena, etc.) to Teamfight Manager 2.  
 
 ##### Instructions  
 If you only see vanilla items (Bloodthirster, Luden's, Sunfire), your save isn't loading the mod. To fix it:
