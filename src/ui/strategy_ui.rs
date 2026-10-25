@@ -1200,8 +1200,32 @@ fn collect_items(
         if !is_final {
             continue;
         }
-        out.extend(make_choice(ctx, lang, key));
+        out.extend(make_choice(ctx, lang, key).or_else(|| other_mod_choice(ctx, lang, key, object)));
     }
+}
+
+// Another mod's final item, when that mod classes it in its own
+// `text/item_classes.json` ([`item_catalog::other_mod_class`]). Tier 0 is left
+// out: nothing upgrades into it, so it has no recipe, and the game panics
+// building an item without one. No icon: every item mod overrides the game's
+// one icon sheet, this one included, so another mod's frames are not in the
+// sheet the game shows; a pinned slot names it instead ([`short_label`]).
+fn other_mod_choice(
+    ctx: &StableClient<'_>,
+    lang: &str,
+    key: &str,
+    object: &serde_json::Map<String, serde_json::Value>,
+) -> Option<ItemChoice> {
+    let category = item_catalog::other_mod_class(key)?;
+    if object.get("tier").and_then(serde_json::Value::as_u64).unwrap_or(0) == 0 {
+        return None;
+    }
+    Some(ItemChoice {
+        frame: None,
+        category,
+        name: sanitize(&item_display_name(ctx, lang, key, build_config::base_slug(key))),
+        key: sanitize(key),
+    })
 }
 
 // The item list in the game's language, loading it when there is none in that
@@ -1416,6 +1440,28 @@ fn edit_row(row: usize, edit: impl FnOnce(&mut ChampionRow)) -> bool {
 const ICON_PAD: &str = "          ";
 const PLAIN_PAD: &str = "  ";
 
+// What a pinned slot shows for an item with no icon: the initials of its name's
+// words, or the start of a one-word name. Three letters at most, two where they
+// are wide, because that is the room left of the clear button and button text
+// is not clipped.
+fn short_label(name: &str) -> String {
+    let words: Vec<&str> = name
+        .split(|c: char| c.is_whitespace() || c == '_')
+        .filter(|word| !word.is_empty())
+        .collect();
+    let letters: Vec<char> = match words.as_slice() {
+        [word] => word.chars().collect(),
+        words => words.iter().filter_map(|word| word.chars().next()).collect(),
+    };
+    let room = if letters.first().is_some_and(char::is_ascii) {
+        3
+    } else {
+        2
+    };
+    let label: String = letters.into_iter().take(room).collect();
+    format!(" {}", label.to_uppercase())
+}
+
 // The pinned key for one slot, or `None` when the AI owns it.
 fn pinned_key(rows: &[ChampionRow], row: usize, slot: usize) -> Option<String> {
     rows.get(row)
@@ -1435,12 +1481,19 @@ fn refresh_combo(
     slot: usize,
 ) {
     let pinned = pinned_key(rows, row, slot);
+    let choice = pinned.as_deref().and_then(|key| choice_of(entries, key));
+    let frame = choice.and_then(|item| item.frame.as_deref());
     // A pinned slot is its icon alone: button text is not clipped and would
     // spill over the swap button on a narrow host, which is also why the empty
-    // slot is a dash.
-    let (label, color) = match &pinned {
-        Some(_) => (String::new(), "#e8e8e8ff"),
-        None => (EMPTY_SLOT_LABEL.to_string(), "#a5a5abff"),
+    // slot is a dash. An item with no icon (another mod's) is a few letters of
+    // its name.
+    let (label, color) = match (&pinned, frame) {
+        (Some(_), Some(_)) => (String::new(), "#e8e8e8ff"),
+        (Some(key), None) => {
+            let name = choice.map_or(key.as_str(), |item| item.name.as_str());
+            (short_label(name), "#e8e8e8ff")
+        }
+        (None, _) => (EMPTY_SLOT_LABEL.to_string(), "#a5a5abff"),
     };
     ctx.ui_set_properties(
         &combo_path(row, slot),
@@ -1450,10 +1503,6 @@ fn refresh_combo(
         ),
     );
 
-    let frame = pinned
-        .as_deref()
-        .and_then(|key| choice_of(entries, key))
-        .and_then(|item| item.frame.as_deref());
     let icon = match frame {
         Some(frame) => format!("visible: true; rect_tag: \"{frame}\";"),
         None => "visible: false;".to_string(),

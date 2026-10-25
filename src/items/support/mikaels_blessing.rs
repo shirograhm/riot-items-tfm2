@@ -55,7 +55,7 @@ impl MikaelsBlessing {
         Self {
             meta: ItemMeta::radiant("radiant_mikaels_blessing", &["mikaels_blessing"]),
             price: 750,
-            hp: 300,
+            hp: 350,
             hp_regen: 3,
             magic_power: 30,
             skill_cooldown_mult: 15,

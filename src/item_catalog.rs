@@ -1,3 +1,7 @@
+use std::collections::HashMap;
+use std::path::Path;
+use std::sync::OnceLock;
+
 // The six legendary classes in picker order. The picker's `Boots` group sorts
 // after them ([`category_rank`]) but has no Item Stats filter row.
 pub const CATEGORY_ORDER: [&str; 6] =
@@ -64,6 +68,60 @@ pub fn category_of(slug: &str) -> Option<&'static str> {
         .binary_search_by_key(&slug, |(key, _)| key)
         .ok()
         .map(|index| CATEGORY_OF[index].1)
+}
+
+// The class another enabled mod gives one of its own items, in a
+// `text/item_classes.json` shaped like ours: `key` as written, else its
+// `radiant_`-less slug. Only the Build Editor asks, so that mod's finals can be
+// picked there; Smart Builds and the Item Stats filters keep to
+// [`category_of`]. Never consulted for an item [`category_of`] knows.
+pub fn other_mod_class(key: &str) -> Option<&'static str> {
+    let classes = other_mod_classes();
+    classes
+        .get(key)
+        .or_else(|| classes.get(crate::build_config::base_slug(key)))
+        .copied()
+}
+
+// Every other enabled mod's `text/item_classes.json`, read once, a later mod's
+// class winning as its text does ([`crate::game_text::other_mod_folders`]). A
+// class that is not Boots or one of [`CATEGORY_ORDER`] is skipped, matched
+// without regard to case; so is a file that is not a JSON object.
+fn other_mod_classes() -> &'static HashMap<String, &'static str> {
+    static CLASSES: OnceLock<HashMap<String, &'static str>> = OnceLock::new();
+    CLASSES.get_or_init(|| {
+        let mut classes = HashMap::new();
+        let exe_dir = std::env::current_exe()
+            .ok()
+            .and_then(|exe| exe.parent().map(Path::to_path_buf));
+        let folders = exe_dir
+            .as_deref()
+            .map(crate::game_text::other_mod_folders)
+            .unwrap_or_default();
+        for folder in folders {
+            let Ok(text) = std::fs::read_to_string(folder.join("text").join("item_classes.json"))
+            else {
+                continue;
+            };
+            let Ok(serde_json::Value::Object(map)) =
+                serde_json::from_str::<serde_json::Value>(text.trim_start_matches('\u{feff}'))
+            else {
+                continue;
+            };
+            for (key, class) in map {
+                let known = class.as_str().and_then(|class| {
+                    CATEGORY_ORDER
+                        .into_iter()
+                        .chain(["Boots"])
+                        .find(|name| name.eq_ignore_ascii_case(class))
+                });
+                if let Some(class) = known {
+                    classes.insert(key, class);
+                }
+            }
+        }
+        classes
+    })
 }
 
 pub fn category_rank(category: &str) -> usize {

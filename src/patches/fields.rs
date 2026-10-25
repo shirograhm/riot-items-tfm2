@@ -117,12 +117,14 @@ const FROZEN: &[&str] = &[
 const LOWER_IS_STRONGER: &[&str] = &["effect_cooldown_seconds", "effect_out_of_combat_seconds"];
 
 // Numbers that go the other way from their field, as (base item, field):
-// Warmog's Armor's out-of-combat wait and Liandry's Torment's burn time are
-// stronger shorter, Haunting Guise's stack time stronger longer.
+// Warmog's Armor's out-of-combat wait and the burn times of Liandry's Torment
+// and Hunter's Talisman are stronger shorter, Haunting Guise's stack time
+// stronger longer.
 const REVERSED: &[(&str, &str)] = &[
     ("warmogs_armor", "effect_duration_seconds"),
     ("haunting_guise", "effect_out_of_combat_seconds"),
     ("liandrys_torment", "effect_duration_seconds"),
+    ("hunters_talisman", "effect_duration_seconds"),
 ];
 
 // The two ends of a range that grows with level. They move together, or a
