@@ -2,7 +2,8 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, is_monster, item_counts, percent_of, upgrade_carry, ItemMeta, ProcQueue,
+    apply_config, heal_shield_power, is_monster, item_counts, percent_of, upgrade_carry, ItemMeta,
+    ProcQueue,
 };
 
 // The upgrade line the stacks are noted under (`crate::upgrade_carry`), so
@@ -202,7 +203,8 @@ impl StableItem for FeralFlare {
         // bar as of the hit; the heal stays on the attack, landing on the
         // carrier.
         self.procs.push_magic(ctx, target, damage);
-        ctx.heal(caster, caster, heal);
+        // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+        heal_shield_power::unraised(|| ctx.heal(caster, caster, heal));
     }
 
     // Lands the on-hit damage whose delay has run out.

@@ -1,11 +1,14 @@
-//! Heal and Shield Power: a carrier's heals and shields on other units, raised
-//! by a percentage its items add up, as Lethality adds up across items.
+//! Heal and Shield Power: every heal and shield a carrier casts, on allies and
+//! on itself, raised by a percentage its items add up, as Lethality adds up
+//! across items. As in League, regeneration and lifesteal are not raised: the
+//! engine's HP regen and omnivamp, and the mod's heals of that kind
+//! ([`unraised`]).
 //!
 //! The stable API cannot change a heal or a shield as it lands, so the raise
 //! is made inside the engine, by detours on its one heal function and its one
 //! add-shield function (`crate::tactics::heal_shield`). They ask [`power`]
 //! what the healer or the shield's caster has. The mod's own shields bypass
-//! the engine's add-shield, so an item that shields allies raises those itself
+//! the engine's add-shield, so an item that shields raises its shields itself
 //! ([`raised`], [`of`]).
 //!
 //! Each holding item reports its share from its `update` ([`note`]), every
@@ -14,7 +17,7 @@
 //! tick later. Totals are kept per thread and per match (the engine's game
 //! object): matches run on several threads, and their entity ids overlap.
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::mem::size_of;
 
@@ -183,6 +186,28 @@ pub(crate) fn current_game() -> Option<usize> {
 // What `champion` has in the match `ctx` is running.
 pub(crate) fn of(ctx: &StableSim<'_>, champion: usize) -> f64 {
     power(game_of(ctx), champion)
+}
+
+thread_local! {
+    // A heal of the mod's is under way that is not raised ([`unraised`]).
+    static UNRAISED: Cell<bool> = const { Cell::new(false) };
+}
+
+// Runs `heal`, a heal of the mod's that Heal and Shield Power leaves alone, as
+// it does the engine's regen and lifesteal: regeneration (Warmog's Heart), a
+// share of damage dealt or a restore on hit (the jungle items' sustain), or a
+// heal received made bigger (Spirit Visage). The heal detour reads the mark
+// ([`is_unraised`]); a heal's call runs on the thread that makes it.
+pub(crate) fn unraised<R>(heal: impl FnOnce() -> R) -> R {
+    let was = UNRAISED.try_with(|flag| flag.replace(true)).unwrap_or(false);
+    let out = heal();
+    let _ = UNRAISED.try_with(|flag| flag.set(was));
+    out
+}
+
+// Whether the heal under way is one of [`unraised`]'s.
+pub(crate) fn is_unraised() -> bool {
+    UNRAISED.try_with(Cell::get).unwrap_or(false)
 }
 
 // `amount` raised by `percent`.

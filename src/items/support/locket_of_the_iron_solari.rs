@@ -167,15 +167,11 @@ impl LocketOfTheIronSolari {
         }
 
         let duration = ticks(self.effect_shield_seconds);
-        // The allies' shields take the carrier's heal and shield power: the
-        // API's shields pass by the engine's add-shield, where it is applied.
-        let power = heal_shield_power::of(ctx, caster);
+        // Every shield, the carrier's own included, takes the carrier's heal
+        // and shield power: the API's shields pass by the engine's add-shield,
+        // where it is applied.
+        let amount = heal_shield_power::raised(shield, heal_shield_power::of(ctx, caster));
         for id in targets {
-            let amount = if id == caster {
-                shield
-            } else {
-                heal_shield_power::raised(shield, power)
-            };
             ctx.entity_add_shield(id, amount, duration);
         }
         self.devotion_cooldown = ticks(self.effect_cooldown_seconds);

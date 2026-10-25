@@ -1,6 +1,8 @@
 //! Heal and Shield Power inside the engine ([`crate::heal_shield_power`]): its
-//! one heal function and its one add-shield function, detoured so what a
-//! carrier gives another unit is raised by the carrier's total before it lands.
+//! one heal function and its one add-shield function, detoured so a heal or
+//! shield a carrier casts, on another unit or on itself, is raised by the
+//! carrier's total before it lands. Regeneration and lifesteal are left alone
+//! ([`cap_heal`]).
 //!
 //! Pinned to the game build like the rest of this half. Both were found through
 //! the host's `SimVtableV1` (RVA 0x3d2ddf8 in 0.6.5): its `heal` slot (39) calls
@@ -40,16 +42,23 @@ const SHIELD_PROLOGUE: [u8; 13] = [
 const SAVED_RCX: usize = 0;
 const SAVED_RDX: usize = 1;
 const SAVED_R9: usize = 3;
-const SAVED_ARG5: usize = 15;
+const SAVED_RETURN: usize = 10;
 const SAVED_ARG6: usize = 16;
+const SAVED_ARG7: usize = 17;
+
+// What the heal's callers tell apart (0.6.5). The byte argument is 1 on the
+// engine's regeneration: a unit's HP regen and the in-base heal (both in its
+// unit update, `entity.rs`) and the once-a-second heal-over-time effect, each a
+// unit healing itself; it is 0 on every cast heal, the host's included.
+// Lifesteal and omnivamp are the damage function's one heal, the attacker on
+// itself for its vamp share of the damage dealt; this is where it returns to.
+const REGEN_FLAG: u8 = 1;
+const VAMP_RETURN_RVA: usize = 0x130d61a;
 
 // The game object (0.6.5).
 // Units, `ENTITY_SIZE` bytes each, and their count.
 const O_GAME_ENTITIES: usize = 0x730;
 const O_GAME_ENTITY_COUNT: usize = 0x738;
-// Unit id -> index into the units, a u32 each, `u32::MAX` for none.
-const O_GAME_ENTITY_SLOTS: usize = 0x748;
-const O_GAME_ENTITY_SLOT_COUNT: usize = 0x750;
 const ENTITY_SIZE: usize = 0x6b8;
 // The players, a pointer each, and beside them what a shield names its caster
 // by, one per player (`Option` at the record's start, from the world's 0x160
@@ -66,17 +75,23 @@ const O_SHIELD_HAS_OWNER: usize = 0x0;
 const O_SHIELD_OWNER: usize = 0x8;
 const O_SHIELD_AMOUNT: usize = 0x28;
 
-// A heal from a carrier to another unit, raised. `game` is the heal's own
-// first argument, so the healer's total is the right match's.
+// A heal a carrier casts, on another unit or on itself, raised. Not the
+// engine's regeneration ([`REGEN_FLAG`]), lifesteal or omnivamp
+// ([`VAMP_RETURN_RVA`]), nor a heal of the mod's of that kind
+// (`heal_shield_power::unraised`). `game` is the heal's own first argument, so
+// the healer's total is the right match's.
 unsafe extern "C" fn cap_heal(saved: *mut u64, _e: usize) -> u64 {
     if saved.is_null() {
         return 0;
     }
     let game = *saved.add(SAVED_RCX) as usize;
     let healer = *saved.add(SAVED_R9) as usize;
-    let target = *saved.add(SAVED_ARG5) as usize;
     let amount = saved.add(SAVED_ARG6);
-    if healer == target || *amount == 0 {
+    if *amount == 0
+        || *saved.add(SAVED_ARG7) as u8 == REGEN_FLAG
+        || (*saved.add(SAVED_RETURN) as usize).wrapping_sub(super::exe_base_addr()) == VAMP_RETURN_RVA
+        || heal_shield_power::is_unraised()
+    {
         return 0;
     }
     let percent = heal_shield_power::power(game, healer);
@@ -86,7 +101,7 @@ unsafe extern "C" fn cap_heal(saved: *mut u64, _e: usize) -> u64 {
     0
 }
 
-// A shield from a carrier on another unit, raised.
+// A shield a carrier casts, on another unit or on itself, raised.
 unsafe extern "C" fn cap_shield(saved: *mut u64, _e: usize) -> u64 {
     if saved.is_null() {
         return 0;
@@ -111,10 +126,6 @@ unsafe fn raise_shield(game: usize, unit: usize, record: usize) -> Option<()> {
         return None;
     }
     let caster = caster_champion(game, read(record + O_SHIELD_OWNER)?)?;
-    // A shield of the caster's own is not raised.
-    if unit_at(game, caster)? == unit {
-        return None;
-    }
     let percent = heal_shield_power::power(game, caster);
     if percent <= 0.0 {
         return None;
@@ -143,19 +154,6 @@ unsafe fn caster_champion(game: usize, owner: usize) -> Option<usize> {
         return read(player + O_PLAYER_CHAMPION);
     }
     None
-}
-
-// The address of the unit with id `id`.
-unsafe fn unit_at(game: usize, id: usize) -> Option<usize> {
-    if id >= read(game + O_GAME_ENTITY_SLOT_COUNT)? {
-        return None;
-    }
-    let slots = read(game + O_GAME_ENTITY_SLOTS)?;
-    let index = read(slots + id * 4)? as u32 as usize;
-    if index == u32::MAX as usize || index >= read(game + O_GAME_ENTITY_COUNT)? {
-        return None;
-    }
-    Some(read(game + O_GAME_ENTITIES)? + index * ENTITY_SIZE)
 }
 
 unsafe fn read(addr: usize) -> Option<usize> {

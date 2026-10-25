@@ -1,5 +1,5 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ticks, DOT_TICK_RATE};
+use crate::{apply_config, heal_shield_power, is_monster, percent_of, ticks, DOT_TICK_RATE};
 use mod_api_stable::*;
 
 // Hunter's Talisman: a jungle starter, Grez's Spectral Lantern's through
@@ -155,7 +155,8 @@ impl StableItem for HuntersTalisman {
         }
         let heal = percent_of(*damage, self.effect_vamp.max(0) as f64);
         if heal > 0 {
-            ctx.heal(caster, caster, heal);
+            // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+            heal_shield_power::unraised(|| ctx.heal(caster, caster, heal));
         }
         if attack_type != AttackTypeV1::Item {
             self.apply_burn(target);

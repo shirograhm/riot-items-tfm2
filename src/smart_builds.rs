@@ -760,9 +760,8 @@ fn is_mandate(key: &str) -> bool {
 
 // Rule 13: items whose passive only answers to healing, shielding or buffing an
 // ally, by base slug. Dream Maker is one too, handed out by rule 12.
-const ALLY_AID_ITEMS: [&str; 5] = [
+const ALLY_AID_ITEMS: [&str; 4] = [
     "ardent_censer",          // Sanctify, on healing, shielding or buffing an ally
-    "dawncore",               // its Heal and Shield Power only raises heals and shields on allies
     "echoes_of_helia",        // Soul Siphon spends its charges on the same
     "moonstone_renewer",      // Starlit Grace chains a heal given to an ally
     "staff_of_flowing_water", // Rapids, on healing, shielding or buffing an ally

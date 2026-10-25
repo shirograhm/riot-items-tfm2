@@ -50,7 +50,7 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 - After that, supports build only Tank and Support items, and favor support items.
 - Mage supports are the exception: they get one AP support item (Imperial Mandate, Mikael's Blessing or Chemtech Putrifier), then build AP items like any other mage.
 - Supports that immobilize (stun, root, knock-up, knockback, pull, taunt, fear, charm) build Imperial Mandate as their support item if they deal AP damage. Supports that don't immobilize never keep Mandate.
-- Supports that heal, shield or buff allies get Ardent Censer, Dawncore, Echoes of Helia, Moonstone Renewer or Staff of Flowing Water as their support item. Supports that don't, and mages, never keep these five.
+- Supports that heal, shield or buff allies get Ardent Censer, Echoes of Helia, Moonstone Renewer or Staff of Flowing Water as their support item. Supports that don't, and mages, never keep these four.
 - Pinning anything in a support's slot 1 skips the World Atlas item.
 
 **Junglers**

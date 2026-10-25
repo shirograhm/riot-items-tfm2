@@ -1,7 +1,7 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, percent_of, ProcQueue};
+use crate::{apply_config, heal_shield_power, is_monster, percent_of, ProcQueue};
 
 #[derive(Clone, Debug)]
 pub struct SpiritStone {
@@ -117,7 +117,8 @@ impl StableItem for SpiritStone {
         // The heal lands with the hit; only the bonus damage waits, so it
         // reads as its own number on the monster.
         self.procs.push_magic(ctx, target, bonus);
-        ctx.heal(caster, caster, heal);
+        // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+        heal_shield_power::unraised(|| ctx.heal(caster, caster, heal));
     }
 
     // Lands the Butcher bonus whose delay has run out.

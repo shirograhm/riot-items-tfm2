@@ -1,5 +1,5 @@
 use crate::config::ItemConfig;
-use crate::{apply_config, is_monster, ProcQueue};
+use crate::{apply_config, heal_shield_power, is_monster, ProcQueue};
 use mod_api_stable::*;
 
 #[derive(Clone, Debug)]
@@ -113,7 +113,8 @@ impl StableItem for MadredsRazors {
             is_crit,
             self.effect_bonus_magic_damage,
         );
-        ctx.heal(caster, caster, self.effect_bonus_flat_heal.max(0) as usize);
+        // Sustain, not a cast heal: Heal and Shield Power leaves it alone.
+        heal_shield_power::unraised(|| ctx.heal(caster, caster, self.effect_bonus_flat_heal.max(0) as usize));
     }
 
     fn update(&mut self, ctx: &mut StableSim<'_>, _rng_seed: u64, player: usize) {
