@@ -5,7 +5,7 @@
 //! ([`cap_heal`]).
 //!
 //! Pinned to the game build like the rest of this half. Both were found through
-//! the host's `SimVtableV1` (RVA 0x3d2ddf8 in 0.6.5): its `heal` slot (39) calls
+//! the host's `SimVtableV1` (RVA 0x4263380 in 0.7.0-beta2): its `heal` slot (39) calls
 //! the heal function, which also serves every skill heal; the add-shield
 //! function is the one the engine's Shield effect calls (the host's own
 //! `entity_add_shield` pushes the layer itself, past it).
@@ -20,7 +20,7 @@ const ENABLED: bool = true;
 
 // The heal: (game, world, counted, healer, target, amount, ..). It applies the
 // target's healing reduction to `amount`, caps it at missing health and adds it.
-const HEAL_RVA: usize = 0x175d4f0; // 0.6.5
+const HEAL_RVA: usize = 0x1c3ab70; // 0.7.0-beta2
 const HEAL_ORIG_LEN: usize = 12;
 // push rbp, r15, r14, r13, r12, rsi, rdi, rbx
 const HEAL_PROLOGUE: [u8; 12] = [
@@ -28,8 +28,9 @@ const HEAL_PROLOGUE: [u8; 12] = [
 ];
 
 // The add-shield: (unit, &shield). It drops a zero shield or one on a unit
-// with `shield_gain_blocked`, else pushes the record onto the unit's layers.
-const SHIELD_RVA: usize = 0x175c2b0; // 0.6.5
+// with `shield_gain_blocked` or `gladiator_duel`, else pushes the record onto
+// the unit's layers.
+const SHIELD_RVA: usize = 0x1c39100; // 0.7.0-beta2
 const SHIELD_ORIG_LEN: usize = 13;
 // push rbp, rsi, rdi, rbx; sub rsp,0x48; lea rbp,[rsp+0x40]
 const SHIELD_PROLOGUE: [u8; 13] = [
@@ -46,16 +47,19 @@ const SAVED_RETURN: usize = 10;
 const SAVED_ARG6: usize = 16;
 const SAVED_ARG7: usize = 17;
 
-// What the heal's callers tell apart (0.6.5). The byte argument is 1 on the
-// engine's regeneration: a unit's HP regen and the in-base heal (both in its
-// unit update, `entity.rs`) and the once-a-second heal-over-time effect, each a
-// unit healing itself; it is 0 on every cast heal, the host's included.
+// What the heal's callers tell apart (0.7.0-beta2). The byte argument is 1 on
+// the engine's regeneration: a unit's HP regen and the in-base heal (both in
+// its unit update, `entity.rs`) and the once-a-second heal-over-time effect,
+// each a unit healing itself; it is 0 on every cast heal, the host's included.
+// Giant's Horn Shard's once-a-second regen (`giants_horn_shard.rs`) is the one
+// regeneration that passes 0, so it is told apart by where it returns to.
 // Lifesteal and omnivamp are the damage function's one heal, the attacker on
-// itself for its vamp share of the damage dealt; this is where it returns to.
+// itself for its vamp share of the damage dealt; likewise by return address.
 const REGEN_FLAG: u8 = 1;
-const VAMP_RETURN_RVA: usize = 0x130d61a;
+const REGEN_RETURN_RVAS: [usize; 1] = [0x17e4209];
+const VAMP_RETURN_RVA: usize = 0x16b73a5;
 
-// The game object (0.6.5).
+// The game object (0.7.0-beta2).
 // Units, `ENTITY_SIZE` bytes each, and their count.
 const O_GAME_ENTITIES: usize = 0x730;
 const O_GAME_ENTITY_COUNT: usize = 0x738;
@@ -76,8 +80,8 @@ const O_SHIELD_OWNER: usize = 0x8;
 const O_SHIELD_AMOUNT: usize = 0x28;
 
 // A heal a carrier casts, on another unit or on itself, raised. Not the
-// engine's regeneration ([`REGEN_FLAG`]), lifesteal or omnivamp
-// ([`VAMP_RETURN_RVA`]), nor a heal of the mod's of that kind
+// engine's regeneration ([`REGEN_FLAG`], [`REGEN_RETURN_RVAS`]), lifesteal or
+// omnivamp ([`VAMP_RETURN_RVA`]), nor a heal of the mod's of that kind
 // (`heal_shield_power::unraised`). `game` is the heal's own first argument, so
 // the healer's total is the right match's.
 unsafe extern "C" fn cap_heal(saved: *mut u64, _e: usize) -> u64 {
@@ -87,9 +91,11 @@ unsafe extern "C" fn cap_heal(saved: *mut u64, _e: usize) -> u64 {
     let game = *saved.add(SAVED_RCX) as usize;
     let healer = *saved.add(SAVED_R9) as usize;
     let amount = saved.add(SAVED_ARG6);
+    let returns_to = (*saved.add(SAVED_RETURN) as usize).wrapping_sub(super::exe_base_addr());
     if *amount == 0
         || *saved.add(SAVED_ARG7) as u8 == REGEN_FLAG
-        || (*saved.add(SAVED_RETURN) as usize).wrapping_sub(super::exe_base_addr()) == VAMP_RETURN_RVA
+        || REGEN_RETURN_RVAS.contains(&returns_to)
+        || returns_to == VAMP_RETURN_RVA
         || heal_shield_power::is_unraised()
     {
         return 0;
