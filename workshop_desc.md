@@ -5,9 +5,7 @@ Champions start each match with 250 gold instead of 500.
 [b]Supports custom item values, custom item builds, and Smart Builds for the AI. See below![/b]  
 
 [h1] Important [/h1]
-This mod currently supports English, Vietnamese, Portuguese (BR), Russian, Chinese (Simplified), and Korean locales. You can use it with other languages, but the names and descriptions of the items will be broken.  
-
-If you would like to provide translations, feel free to shoot me a message on Discord @shirograhm.  
+This mod currently supports all locales. If you spot any issues with the translated text, feel free to shoot me a message on Discord @shirograhm.  
 
 Saves played with this mod enabled will be corrupted if you play the save with this mod disabled. I have had players buy ghost items when this happens.  
 
@@ -35,8 +33,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 
 [h1] Known Issues [/h1]
 - Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
-- The build editor only shows item and champion names in English.  
-- Largely untested in multiplayer. It may work, but custom item builds only follow the host's choices.  
+- Largely experimental in multiplayer.  
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box! However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
