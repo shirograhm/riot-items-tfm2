@@ -25,6 +25,7 @@ items! {
     oblivion_orb,
     phage,
     philosophers_medallion,
+    rejuvenation_bead,
     runic_compass,
     scouts_slingshot,
     seekers_armguard,

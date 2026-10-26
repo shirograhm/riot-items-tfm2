@@ -1163,6 +1163,10 @@
         "radiant_dawncore": {
             "name": "Radiant Dawncore",
             "option": "\nGain <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<>.\n\n<#ff7a3eff>First Light<>: Gain <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> heal and shield power<> and <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Ability Power<> for every <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Ability Haste<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Rejuvenation Bead",
+            "option": ""
         }
     },
     "vi": {
@@ -2329,6 +2333,10 @@
         "radiant_dawncore": {
             "name": "Lõi Bình Minh Ánh Sáng",
             "option": "\nNhận <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<>.\n\n<#ff7a3eff>Nhất Quang<>: Nhận <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Sức Mạnh Lá Chắn và Hồi Máu<> và <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> SMPT<> với mỗi <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Điểm Hồi Kỹ Năng<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Ngọc Lục Bảo",
+            "option": ""
         }
     },
     "zh-hans": {
@@ -3495,6 +3503,10 @@
         "radiant_dawncore": {
             "name": "光明版黎明核心",
             "option": "\n获得 <#92dc7bff>16%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>。\n\n<#ff7a3eff>最初之光<>：每 <#61d1bcff>10 点<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能急速<>获得 <#92dc7bff>2%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治疗和护盾强度<>和 <#a974ffff>15 点<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 法术强度<>。"
+        },
+        "rejuvenation_bead": {
+            "name": "治疗宝珠",
+            "option": ""
         }
     },
     "pt-BR": {
@@ -4661,6 +4673,10 @@
         "radiant_dawncore": {
             "name": "Auronúcleo Radiante",
             "option": "\nGanha <#92dc7bff>16% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<>.\n\n<#ff7a3eff>Primeira Luz<>: Ganha <#92dc7bff>2% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Cura e Resistência do Escudo<> e <#a974ffff>15 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Poder de Habilidade<> a cada <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Aceleração de Habilidade<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Pérola do Rejuvenescimento",
+            "option": ""
         }
     },
     "ru": {
@@ -5827,6 +5843,10 @@
         "radiant_dawncore": {
             "name": "Лучезарное Ядро рассвета",
             "option": "\nДаёт <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<>.\n\n<#ff7a3eff>Первый луч<>: Даёт <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> эффективности лечения и щитов<> и <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> силы умений<> за каждые <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> ускорения умений<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Заживляющая бусина",
+            "option": ""
         }
     },
     "ko": {
@@ -6993,6 +7013,10 @@
         "radiant_dawncore": {
             "name": "찬란한 새벽심장",
             "option": "\n<#92dc7bff>16%의 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 체력 회복 및 보호막<>을 획득합니다.\n\n<#ff7a3eff>태초의 빛<>: <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> <#61d1bcff>스킬 가속<> <#61d1bcff>10<>당 <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> <#92dc7bff>체력 회복 및 보호막<>이 <#92dc7bff>2%<>, <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>15<> 증가합니다."
+        },
+        "rejuvenation_bead": {
+            "name": "원기 회복의 구슬",
+            "option": ""
         }
     },
     "ja": {
@@ -8159,6 +8183,10 @@
         "radiant_dawncore": {
             "name": "レディアント ドーンコア",
             "option": "\n<#92dc7bff>16%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>を得る。\n\n<#ff7a3eff>ファーストライト<>: <#61d1bcff>10の<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> スキルヘイスト<>ごとに、<#92dc7bff>2%の<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 体力回復量とシールド量<>と<#a974ffff>15の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法力<>を得る。"
+        },
+        "rejuvenation_bead": {
+            "name": "再生の珠",
+            "option": ""
         }
     },
     "de": {
@@ -9325,6 +9353,10 @@
         "radiant_dawncore": {
             "name": "Lichtversion von Dämmerkern",
             "option": "\nErhalte <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<>.\n\n<#ff7a3eff>Tagesanbruch<>: Erhalte <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> Heil- und Schildkraft<> und <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> Zauberkraft<> pro <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> Fähigkeitstempo<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Perle der Verjüngung",
+            "option": ""
         }
     },
     "tr": {
@@ -10491,6 +10523,10 @@
         "radiant_dawncore": {
             "name": "Işıltılı Şafağın Özü",
             "option": "\n<#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> kazanırsın.\n\n<#ff7a3eff>İlk Işık<>: Her <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> yetenek hızı<> başına <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> İyileştirme ve Kalkan Gücü<> ve <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> yetenek gücü<> kazanırsın."
+        },
+        "rejuvenation_bead": {
+            "name": "Yenilenme Boncuğu",
+            "option": ""
         }
     },
     "es-ES": {
@@ -11657,6 +11693,10 @@
         "radiant_dawncore": {
             "name": "Núcleo albar radiante",
             "option": "\nObtienes <#92dc7bff>16% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<>.\n\n<#ff7a3eff>Primera luz<>: Obtienes <#92dc7bff>2% de <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> poder de curaciones y escudos<> y <#a974ffff>15 de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> poder de habilidad<> por cada <#61d1bcff>10 de <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocidad de habilidades<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Perla de rejuvenecimiento",
+            "option": ""
         }
     },
     "fr": {
@@ -12823,6 +12863,10 @@
         "radiant_dawncore": {
             "name": "Cœur de l'aube de la lumière",
             "option": "\nVous gagnez <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<>.\n\n<#ff7a3eff>Première lumière<>: Vous gagnez <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> d'efficacité des soins et boucliers<> et <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> puissance<> par tranche de <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> d'accélération de compétence<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Collier rafraîchissant",
+            "option": ""
         }
     },
     "it": {
@@ -13989,6 +14033,10 @@
         "radiant_dawncore": {
             "name": "Nucleo dell'alba Radioso",
             "option": "\nOttieni <#92dc7bff>16% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<>.\n\n<#ff7a3eff>Prima Luce<>: Ottieni <#92dc7bff>2% di <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> guarigione e potere scudo<> e <#a974ffff>15 di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> potere magico<> per ogni <#61d1bcff>10 di <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> velocità abilità<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Perla del rinvigorimento",
+            "option": ""
         }
     },
     "zh-hant": {
@@ -15155,6 +15203,10 @@
         "radiant_dawncore": {
             "name": "聖光破曉之核",
             "option": "\n獲得<#92dc7bff>16%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>。\n\n<#ff7a3eff>曙光<>：每有<#61d1bcff>10<i#asset/base/ui/banpick/champion_stat_icon:cdr_0> 技能疾速<>，便會獲得<#92dc7bff>2%<i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> 治療及護盾強度<>與<#a974ffff>15<i#asset/base/ui/banpick/champion_stat_icon:ap_0> 魔法攻擊<>。"
+        },
+        "rejuvenation_bead": {
+            "name": "治療寶珠",
+            "option": ""
         }
     },
     "pl": {
@@ -16321,6 +16373,10 @@
         "radiant_dawncore": {
             "name": "Świetlisty Rdzeń Świtu",
             "option": "\nZyskujesz <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<>.\n\n<#ff7a3eff>Pierwsze Światło<>: Zyskujesz <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> siły leczenia i tarcz<> oraz <#a974ffff>15 pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mocy umiejętności<> za każde <#61d1bcff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> przyspieszenia umiejętności<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Koralik Odrodzenia",
+            "option": ""
         }
     },
     "th": {
@@ -17487,6 +17543,10 @@
         "radiant_dawncore": {
             "name": "Radiant Dawncore",
             "option": "\nได้รับ<#92dc7bff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 16%<>\n\n<#ff7a3eff>First Light<>: ได้รับ<#92dc7bff><i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> ฮีลและพลังโล่ป้องกัน 2%<> และ<#a974ffff><i#asset/base/ui/banpick/champion_stat_icon:ap_0> พลังเวท 15<> ต่อ<#61d1bcff><i#asset/base/ui/banpick/champion_stat_icon:cdr_0> เร่งสกิล 10<>"
+        },
+        "rejuvenation_bead": {
+            "name": "Rejuvenation Bead",
+            "option": ""
         }
     },
     "nl": {
@@ -18653,6 +18713,10 @@
         "radiant_dawncore": {
             "name": "Radiant Dawncore",
             "option": "\nKrijg <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<>.\n\n<#ff7a3eff>First Light<>: Krijg <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> genezings- en schildkracht<> en <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> vaardigheidskracht<> per <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> vaardigheidshaast<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Rejuvenation Bead",
+            "option": ""
         }
     },
     "haw": {
@@ -19819,6 +19883,10 @@
         "radiant_dawncore": {
             "name": "Radiant Dawncore",
             "option": "\nLoaʻa iā ʻoe he <#92dc7bff>16% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<>.\n\n<#ff7a3eff>First Light<>: Loaʻa iā ʻoe he <#92dc7bff>2% <i#asset/base/ui/banpick/champion_stat_icon:heal_shield_power_0> mana hoʻōla a me pale kaua<> a me <#a974ffff>15 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> mana kilokilo<> no kēlā me kēia <#61d1bcff>10 <i#asset/base/ui/banpick/champion_stat_icon:cdr_0> hoʻowikiwiki mākau<>."
+        },
+        "rejuvenation_bead": {
+            "name": "Rejuvenation Bead",
+            "option": ""
         }
     }
 }

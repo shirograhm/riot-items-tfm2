@@ -2630,7 +2630,7 @@
     "effect_ult_cooldown_per_lethality": 0.2
   },
   "forbidden_idol": {
-    "price": 150,
+    "price": 500,
     "attack": 0,
     "magic_power": 0,
     "attack_speed_mult": 0,
@@ -3721,9 +3721,9 @@
     "magic_power": 0,
     "attack_speed_mult": 0,
     "crit_chance": 0,
-    "hp": 450,
+    "hp": 500,
     "defence": 0,
-    "magic_resistance": 70,
+    "magic_resistance": 75,
     "defence_penetration": 0,
     "magic_resistance_penetration": 0,
     "move_speed_mult": 0,
@@ -4839,5 +4839,21 @@
     "effect_stack_heal_shield_power": 2.0,
     "effect_stack_magic_power": 15,
     "effect_haste_per_stack": 10
+  },
+  "rejuvenation_bead": {
+    "price": 150,
+    "attack": 0,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 0,
+    "defence": 0,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 0,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "hp_regen": 2
   }
 }

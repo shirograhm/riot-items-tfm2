@@ -106,6 +106,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Glowing Mote** | 250G | +10 Ability Haste | — |
 | **Hunter's Machete** | 250G | — | Gain 7% Omnivamp against monsters.<br>Nail: Basic attacks against monsters deal 15 bonus physical damage on-hit. |
 | **Hunter's Talisman** | 250G | — | Gain 7% Omnivamp against monsters.<br>Tooth: Dealing damage to a monster burns it for 5% of its maximum health as magic damage over 5 seconds. |
+| **Rejuvenation Bead** | 150G | +2 HP Regen | — |
 | **World Atlas** | 250G | +3 HP Regen | Shared Riches: Gain 2 gold every 5 seconds. |
 
 #### Tier 2
@@ -127,7 +128,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Catalyst of Aeons** | 650G | +200 HP<br>+30 AP<br>+5 Ability Haste | Eternity: Heal for 15 - 40 (based on level) health per Ability cast. |
 | **Caulfield's Warhammer** | 500G | +25 AD<br>+10 Ability Haste | — |
 | **Executioner's Calling** | 650G | +25 Attack Damage | Grievous Wounds: Dealing physical damage to an enemy champion reduces their healing by 25% for 2 seconds. |
-| **Forbidden Idol** | 150G | +2 HP Regen | Gain 8% heal and shield power. |
+| **Forbidden Idol** | 500G | +2 HP Regen | Gain 8% heal and shield power. |
 | **Glacial Buckler** | 400G | +25 Armor<br>+5 Ability Haste | — |
 | **Gluttonous Greaves** | 650G | +8% Omnivamp<br>+10% MS | — |
 | **Haunting Guise** | 500G | +200 HP<br>+30 AP | Madness: For each second in combat with enemy champions, deal 2% bonus damage, stacking up to 3 times for a total of 6%. Stacks are lost after 3 seconds out of combat. |
@@ -306,7 +307,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 2 seconds and applying a 7% slow. |
 | **Radiant Heartsteel** | 1050G | +1000 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage on-hit equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target).<br>Goliath: Gain 3% increased size for every 1000 maximum health, up to 30%. |
 | **Radiant Hextech Gunblade** | 1050G | +45 AD<br>+75 AP<br>+15% Omnivamp | — |
-| **Radiant Hollow Radiance** | 1050G | +450 HP<br>+70 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 150% more damage to minions and monsters.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
+| **Radiant Hollow Radiance** | 1050G | +500 HP<br>+75 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 150% more damage to minions and monsters.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
 | **Radiant Hullbreaker** | 1000G | +35 AD<br>+400 HP<br>+4% MS | Skipper: Every fifth basic attack against champions and monsters deals 80% AD (+5% max HP) as bonus physical damage on-hit, increased to 200% AD (+10% max HP) against turrets. Attacks from further than 35 range apply this effect at 70% strength.<br>Boarding Party: Allied minions within 100 range gain 10 armor and 20 magic resistance. |
 | **Radiant Iceborn Gauntlet** | 1000G | +350 HP<br>+25 Armor<br>+20% AS<br>+15 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 30 - 85 (based on level) bonus physical damage on-hit and creates a frost zone under the target for 2 seconds (1.5 second cooldown, starting after using the empowered attack). Enemies within the zone are slowed by 20%. |
