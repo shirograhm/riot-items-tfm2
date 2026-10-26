@@ -28,7 +28,7 @@ impl Collector {
                 &["radiant_collector"],
             ),
             price: 750,
-            attack: 35,
+            attack: 40,
             crit_chance: 20,
             effect_lethality: 10,
             effect_hp_percent_threshold: 6.0,

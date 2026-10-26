@@ -139,11 +139,41 @@ fn lay_over(names: &mut Names, over: Names) {
     }
 }
 
-// The files enabled mods merge into the two documents, as (document, file),
-// from the game's `mods` folder and the Workshop's alike. In the order the
-// game lists the mods as enabled, so that a later mod's names win as its merge
-// would; every installed mod is taken when that list cannot be read.
+// The files enabled mods merge into the two documents, as (document, file), in
+// the order of [`other_mod_folders`], so that a later mod's names win as its
+// merge would.
 fn mod_text_files(exe_dir: &Path) -> Vec<(&'static str, PathBuf)> {
+    let mut found = Vec::new();
+    for folder in other_mod_folders(exe_dir) {
+        let Some(overrides) = read_json(&folder.join("mod.override_info")) else {
+            continue;
+        };
+        for doc in [CHAMPION_DOC, ITEM_DOC] {
+            let Some(remapping) = overrides
+                .get(doc)
+                .filter(|entry| entry.get("type").and_then(Value::as_str) == Some("merge"))
+                .and_then(|entry| entry.get("remapping")?.as_str())
+            else {
+                continue;
+            };
+            // `asset/<mod>/text/champion` is `text/champion.i18n` in the
+            // mod's folder.
+            let Some((_, file)) = remapping
+                .strip_prefix("asset/")
+                .and_then(|rest| rest.split_once('/'))
+            else {
+                continue;
+            };
+            found.push((doc, folder.join(format!("{file}.i18n"))));
+        }
+    }
+    found
+}
+
+// The folder of every enabled mod but this one, from the game's `mods` folder
+// and the Workshop's alike, in the order the game lists the mods as enabled;
+// every installed mod is taken when that list cannot be read.
+pub(crate) fn other_mod_folders(exe_dir: &Path) -> Vec<PathBuf> {
     let enabled: Option<Vec<String>> =
         read_json(&exe_dir.join("config").join("game").join("mods.json")).and_then(|mods| {
             let ids = mods.get("enabled_mods")?.as_array()?;
@@ -185,34 +215,11 @@ fn mod_text_files(exe_dir: &Path) -> Vec<(&'static str, PathBuf)> {
                 },
                 None => 0,
             };
-            let Some(overrides) = read_json(&folder.join("mod.override_info")) else {
-                continue;
-            };
-            for doc in [CHAMPION_DOC, ITEM_DOC] {
-                let Some(remapping) = overrides
-                    .get(doc)
-                    .filter(|entry| entry.get("type").and_then(Value::as_str) == Some("merge"))
-                    .and_then(|entry| entry.get("remapping")?.as_str())
-                else {
-                    continue;
-                };
-                // `asset/<mod>/text/champion` is `text/champion.i18n` in the
-                // mod's folder.
-                let Some((_, file)) = remapping
-                    .strip_prefix("asset/")
-                    .and_then(|rest| rest.split_once('/'))
-                else {
-                    continue;
-                };
-                found.push((rank, doc, folder.join(format!("{file}.i18n"))));
-            }
+            found.push((rank, folder));
         }
     }
-    found.sort_by_key(|(rank, _, _)| *rank);
-    found
-        .into_iter()
-        .map(|(_, doc, file)| (doc, file))
-        .collect()
+    found.sort_by_key(|(rank, _)| *rank);
+    found.into_iter().map(|(_, folder)| folder).collect()
 }
 
 fn read_json(path: &Path) -> Option<Value> {

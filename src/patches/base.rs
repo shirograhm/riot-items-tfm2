@@ -2,8 +2,8 @@
 //! and their values before any patch.
 //!
 //! An item is a family (legendary and radiant), each tier planned by itself
-//! (`balance`), and every item from the third tier up may be touched
-//! ([`PATCHED_FROM_TIER`]), boots and third-tier components included. A
+//! (`balance`), and every item of every tier may be touched, starters, boots
+//! and components included. A
 //! component's own record says little, so it is patched for the finished items
 //! it builds into ([`Family::built_into`]) when they all go one way.
 //!
@@ -61,9 +61,6 @@ pub(crate) fn note_refresh(key: &'static str, refresh: Refresh) {
     }
 }
 
-// The lowest tier a patch touches, counted from 0 as an item's own `tier`
-// is: the third.
-const PATCHED_FROM_TIER: usize = 2;
 // The tier an item is finished at, from which builds choose it.
 const FINISHED_TIER: usize = 3;
 
@@ -295,9 +292,6 @@ impl Base {
         let mut config_fields: HashMap<String, bool> = HashMap::new();
 
         for (key, item) in &items {
-            if item.tier < PATCHED_FROM_TIER {
-                continue;
-            }
             let Some(numbers) = config.get(*key) else {
                 continue;
             };
@@ -367,8 +361,8 @@ impl Base {
                 .push(member);
         }
 
-        // The game's own items of the same tiers: each line's last two, drawn
-        // as legendary and radiant, and the tier before. A patch is the
+        // The game's own items too: each line's last two, drawn as legendary
+        // and radiant, and every tier before them. A patch is the
         // difference from the settings file, which holds only where the native
         // half can write the server's numbers
         // (`item_stats::sync_server_items`); otherwise these are left out.
@@ -433,7 +427,7 @@ impl Base {
                 let Some(object) = object.as_object() else {
                     continue;
                 };
-                if tier_of(object) == Some(PATCHED_FROM_TIER as u64) {
+                if tier_of(object).is_some_and(|tier| tier < FINISHED_TIER as u64) {
                     let member = member_of(key_of(name, object), object);
                     if !member.values.is_empty() {
                         let next = object.get("next_tier").and_then(Value::as_array);
