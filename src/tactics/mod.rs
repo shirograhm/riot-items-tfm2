@@ -2226,7 +2226,7 @@ unsafe fn network_pick(
     let last = build.len() - 1;
 
     let forward: ItemNetFn = core::mem::transmute(exe_base_addr() + ITEMNET_FORWARD_RVA);
-    let mut best: Option<(f32, u64, String)> = None;
+    let mut scored: Vec<(f32, u64, String)> = Vec::new();
     // From a start spread by champion, like every other walk of this list: a
     // network with nothing to say yet scores every build the same, and would
     // otherwise hand the whole league the first final in it.
@@ -2253,11 +2253,26 @@ unsafe fn network_pick(
             build.len() as u64,
             0,
         );
-        // What the save's item balance patches have made of the item, as in
-        // the stable hook's `score_item`: nothing while no patch has moved it.
-        let score = score + crate::patches::leaning(&key) * crate::patches::LEAN_SCORE;
+        if score.is_finite() {
+            scored.push((score, index, key));
+        }
+    }
+    // What the save's item balance patches have made of each item, as a share
+    // of how far apart the network puts these candidates
+    // ([`crate::patches::LEAN_SPREAD`]): a nudge between items it rates alike,
+    // and nothing while it rates them all the same. Only among the candidates
+    // the rules allowed above.
+    let (low, high) = scored
+        .iter()
+        .fold((f32::INFINITY, f32::NEG_INFINITY), |(low, high), (score, _, _)| {
+            (low.min(*score), high.max(*score))
+        });
+    let spread = (high - low).max(0.0);
+    let mut best: Option<(f32, u64, String)> = None;
+    for (score, index, key) in scored {
+        let score = score + crate::patches::leaning(&key) * crate::patches::LEAN_SPREAD * spread;
         // The first of equals wins, so a tie falls the same way every time.
-        if !score.is_nan() && best.as_ref().is_none_or(|(top, _, _)| score > *top) {
+        if best.as_ref().is_none_or(|(top, _, _)| score > *top) {
             best = Some((score, index, key));
         }
     }

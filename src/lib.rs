@@ -543,6 +543,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("glowing_mote" => GlowingMote));
     reg.add_item(configured!("hunters_machete" => HuntersMachete));
     reg.add_item(configured!("hunters_talisman" => HuntersTalisman));
+    reg.add_item(configured!("rejuvenation_bead" => RejuvenationBead));
     reg.add_item(configured!("world_atlas" => WorldAtlas, shared_riches));
 
     // Tier 2

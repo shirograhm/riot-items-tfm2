@@ -70,8 +70,8 @@ impl HollowRadiance {
         Self {
             meta: ItemMeta::radiant("radiant_hollow_radiance", &["hollow_radiance"]),
             price: 1050,
-            hp: 450,
-            magic_resistance: 70,
+            hp: 500,
+            magic_resistance: 75,
             skill_damaged_reduce: 6,
             effect_bonus_flat_damage: 10,
             effect_caster_hp_percent_damage: 1.0,

@@ -73,6 +73,14 @@ const ALERT_FRAMES: u32 = 120;
 // the scale of `item_build_hook`'s bonuses (a mod final gets 0.5).
 pub(crate) const LEAN_SCORE: f32 = 0.2;
 
+// What the 5th and 6th items' network pick (`tactics::network_pick`) adds at
+// full lean, as a share of how far apart the game's item network puts that
+// pick's candidates. The network's scores have no fixed scale, and a flat
+// [`LEAN_SCORE`] outweighed it: wherever it rated the candidates alike, every
+// champion took the patch's buffed items. At this share, a buff lifts only an
+// item the network already rates near the top.
+pub(crate) const LEAN_SPREAD: f32 = 0.25;
+
 // The command the client sends its server extension to post a patch's article
 // at once. Otherwise it waits for a management tick, which an idle management
 // screen never has.

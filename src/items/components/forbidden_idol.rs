@@ -12,7 +12,7 @@ pub struct ForbiddenIdol {
 impl Default for ForbiddenIdol {
     fn default() -> Self {
         Self {
-            price: 150,
+            price: 500,
             hp_regen: 2,
             effect_heal_shield_power: 8.0,
         }
@@ -49,7 +49,7 @@ impl StableItem for ForbiddenIdol {
     }
 
     fn previous_tier(&self) -> Vec<String> {
-        vec!["hardened_heart".to_string()]
+        vec!["rejuvenation_bead".to_string()]
     }
 
     fn next_tier(&self) -> Vec<String> {
