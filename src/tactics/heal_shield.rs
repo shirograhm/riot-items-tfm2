@@ -5,7 +5,7 @@
 //! ([`cap_heal`]).
 //!
 //! Pinned to the game build like the rest of this half. Both were found through
-//! the host's `SimVtableV1` (RVA 0x4263380 in 0.7.0-beta2): its `heal` slot (39) calls
+//! the host's `SimVtableV1` (RVA 0x4262988 in 0.7.0): its `heal` slot (39) calls
 //! the heal function, which also serves every skill heal; the add-shield
 //! function is the one the engine's Shield effect calls (the host's own
 //! `entity_add_shield` pushes the layer itself, past it).
@@ -20,7 +20,7 @@ const ENABLED: bool = true;
 
 // The heal: (game, world, counted, healer, target, amount, ..). It applies the
 // target's healing reduction to `amount`, caps it at missing health and adds it.
-const HEAL_RVA: usize = 0x1c3ab70; // 0.7.0-beta2
+const HEAL_RVA: usize = 0x166b290; // 0.7.0 (0.7.0-beta2: 0x1c3ab70)
 const HEAL_ORIG_LEN: usize = 12;
 // push rbp, r15, r14, r13, r12, rsi, rdi, rbx
 const HEAL_PROLOGUE: [u8; 12] = [
@@ -30,7 +30,7 @@ const HEAL_PROLOGUE: [u8; 12] = [
 // The add-shield: (unit, &shield). It drops a zero shield or one on a unit
 // with `shield_gain_blocked` or `gladiator_duel`, else pushes the record onto
 // the unit's layers.
-const SHIELD_RVA: usize = 0x1c39100; // 0.7.0-beta2
+const SHIELD_RVA: usize = 0x1669b30; // 0.7.0 (0.7.0-beta2: 0x1c39100)
 const SHIELD_ORIG_LEN: usize = 13;
 // push rbp, rsi, rdi, rbx; sub rsp,0x48; lea rbp,[rsp+0x40]
 const SHIELD_PROLOGUE: [u8; 13] = [
@@ -47,7 +47,7 @@ const SAVED_RETURN: usize = 10;
 const SAVED_ARG6: usize = 16;
 const SAVED_ARG7: usize = 17;
 
-// What the heal's callers tell apart (0.7.0-beta2). The byte argument is 1 on
+// What the heal's callers tell apart (0.7.0). The byte argument is 1 on
 // the engine's regeneration: a unit's HP regen and the in-base heal (both in
 // its unit update, `entity.rs`) and the once-a-second heal-over-time effect,
 // each a unit healing itself; it is 0 on every cast heal, the host's included.
@@ -56,10 +56,10 @@ const SAVED_ARG7: usize = 17;
 // Lifesteal and omnivamp are the damage function's one heal, the attacker on
 // itself for its vamp share of the damage dealt; likewise by return address.
 const REGEN_FLAG: u8 = 1;
-const REGEN_RETURN_RVAS: [usize; 1] = [0x17e4209];
-const VAMP_RETURN_RVA: usize = 0x16b73a5;
+const REGEN_RETURN_RVAS: [usize; 1] = [0x1559ad9];
+const VAMP_RETURN_RVA: usize = 0x18c1615;
 
-// The game object (0.7.0-beta2).
+// The game object (0.7.0-beta2 and 0.7.0).
 // Units, `ENTITY_SIZE` bytes each, and their count.
 const O_GAME_ENTITIES: usize = 0x730;
 const O_GAME_ENTITY_COUNT: usize = 0x738;
