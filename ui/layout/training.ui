@@ -1022,9 +1022,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 29px;
-          y: 18px;
+          y: 16px;
           width: 148px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?athlete";
@@ -1039,9 +1039,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 105.5px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/athlete?stat.position";
@@ -1056,9 +1056,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 108px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?statistics.game";
@@ -1073,9 +1073,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 88px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?statistics.avr_kill";
@@ -1090,9 +1090,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 88px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?statistics.avr_death";
@@ -1107,9 +1107,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 88px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?statistics.avr_assist";
@@ -1124,9 +1124,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 88px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "KDA";
@@ -1141,9 +1141,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 95px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?training.stress";
@@ -1158,9 +1158,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 95px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?statistics.avr_rating";
@@ -1175,9 +1175,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 123px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?standing.etc.header";
@@ -1252,9 +1252,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 29px;
-          y: 18px;
+          y: 16px;
           width: 230px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?athlete";
@@ -1269,9 +1269,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 180px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?training.streaming_table.streaming_time";
@@ -1286,9 +1286,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 160px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?training.streaming_table.fan_count";
@@ -1303,9 +1303,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 180px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?training.streaming_table.revenue";
@@ -1320,9 +1320,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 140px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?training.streaming_table.status";
@@ -1337,9 +1337,9 @@ training:training_ui {
         #text:label {
           @"asset/base/style/main#label";
           x: 21px;
-          y: 18px;
+          y: 16px;
           width: 160px;
-          height: 20px;
+          height: 24px;
           align_y: Center;
 
           text: "#asset/base/text/ui?training.streaming_table.viewers";
@@ -2372,6 +2372,51 @@ training:training_ui {
         text: { rect: { x: 14; y: 0; w: 292; h: 40; } text: "#asset/base/text/ui?training.delegate_to_head_coach"; font: "asset/base/font/set/bold"; size: 14; align_x: Center; align_y: Center; }
       }
 
+      #mode_tabs:color {
+        visible: false;
+        x: 24px;
+        y: 134px;
+        width: 372px;
+        height: 40px;
+
+        padding: {
+          left: 4px;
+          right: 4px;
+          top: 4px;
+          bottom: 4px;
+        }
+
+        color: #4a4c56ff;
+        stroke: 1;
+        back_color: #00000000;
+
+        rounding: Uniform {
+          rounding: 8;
+        }
+
+        child_type: LeftToRight {
+          spacing: 0px;
+        }
+
+        #team:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 182px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?training.comp_test.tactics_strategy";
+        }
+
+        #personal:color_selectable {
+          @"asset/base/style/main#strategy_option";
+          width: 182px;
+          height: 32px;
+          label: { size: 16; }
+          selected_label: { size: 16; }
+          text: "#asset/base/text/ui?training.comp_test.tactics_builds";
+        }
+      }
+
       #strategy_header:label { @"asset/base/style/main#bold_label"; x: 24px; y: 130px; width: 220px; height: 24px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.tactics_strategy"; size: 15; color: #c2c6ceff; }
       #blue_strategy_label:label { @"asset/base/style/main#bold_label"; x: 266px; y: 130px; width: 390px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 14; color: #37d5b3ff; }
       #red_strategy_label:label { @"asset/base/style/main#bold_label"; x: 804px; y: 130px; width: 390px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 14; color: #eb3d4dff; }
@@ -2423,6 +2468,12 @@ training:training_ui {
 
         #blue_group:color { x: 0px; y: 0px; width: 608.5px; height: 280px; color: #20212bff; rounding: Uniform { rounding: 6; } ignore_event: true; }
         #red_group:color { x: 623.5px; y: 0px; width: 608.5px; height: 280px; color: #20212bff; rounding: Uniform { rounding: 6; } ignore_event: true; }
+        #col_item0:label { visible: false; @"asset/base/style/main#label"; x: 316px; y: 0px; width: 222px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/strategy?personal.header_item1"; size: 16; color: #c2c6ceff; }
+        #col_item1:label { visible: false; @"asset/base/style/main#label"; x: 546px; y: 0px; width: 222px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/strategy?personal.header_item2"; size: 16; color: #c2c6ceff; }
+        #col_item2:label { visible: false; @"asset/base/style/main#label"; x: 776px; y: 0px; width: 222px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/strategy?personal.header_item3"; size: 16; color: #c2c6ceff; }
+        #col_item3:label { visible: false; @"asset/base/style/main#label"; x: 1006px; y: 0px; width: 222px; height: 24px; align_x: Center; align_y: Center; text: "#asset/base/text/strategy?personal.header_item4"; size: 16; color: #c2c6ceff; }
+        #blue_header:label { visible: false; @"asset/base/style/main#bold_label"; x: 0px; y: 32px; width: 300px; height: 24px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.blue"; size: 16; color: #37d5b3ff; }
+        #red_header:label { visible: false; @"asset/base/style/main#bold_label"; x: 0px; y: 32px; width: 300px; height: 24px; align_y: Center; text: "#asset/base/text/ui?training.comp_test.red"; size: 16; color: #eb3d4dff; }
 
         #blue0:color { x: 0px; y: 0px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/top"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 262px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 378px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } #item3:dropdown { @"asset/base/style/main#dropdown"; x: 494px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } }
         #blue1:color { x: 0px; y: 64px; width: 608.5px; height: 56px; color: #00000000; rounding: Uniform { rounding: 6; } #position_icon:image { x: 14px; y: 19px; width: 18px; height: 18px; source: "asset/base/ui/icons/jungle"; ignore_event: true; } #champion_icon:image { x: 42px; y: 13px; width: 30px; height: 30px; ignore_event: true; } #name:label { @"asset/base/style/main#bold_label"; x: 78px; y: 0px; width: 60px; height: 56px; align_y: Center; text: ""; size: 12; fit_width: true; } #build:dropdown { visible: false; @"asset/base/style/main#dropdown"; x: 270px; y: 10px; width: 266px; height: 36px; text: { size: 14; } item_text: { size: 14; } text_layout: { x: 12px; y: 5px; width: 236px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 262px; height: 36px; } item_text_layout: { x: 12px; y: 5px; width: 238px; height: 26px; } max_items_height: 252; } #item0:dropdown { @"asset/base/style/main#dropdown"; x: 146px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } #item1:dropdown { @"asset/base/style/main#dropdown"; x: 262px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } #item2:dropdown { @"asset/base/style/main#dropdown"; x: 378px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } #item3:dropdown { @"asset/base/style/main#dropdown"; x: 494px; y: 10px; width: 108px; height: 36px; text: { size: 13; } item_text: { size: 13; } text_layout: { x: 8px; y: 5px; width: 66px; height: 26px; } item_layout: { x: 2px; y: 0px; width: 256px; height: 36px; } item_text_layout: { x: 8px; y: 5px; width: 218px; height: 26px; } max_items_height: 252; } }
@@ -2555,9 +2606,9 @@ training:training_ui {
         #win_tag:label {
           @"asset/base/style/main#bold_label";
           x: 24px;
-          y: 110px;
+          y: 109px;
           width: 1232px;
-          height: 22px;
+          height: 24px;
           align_x: Center;
           align_y: Center;
           text: "";
@@ -2891,10 +2942,10 @@ training:training_ui {
       #price:label {
         @"asset/base/style/main#label";
         width: 92px;
-        height: 17px;
+        height: 24px;
         size: 16;
         x: 62px;
-        y: 21px;
+        y: 17.5px;
         text: "1200";
         color: #fde99fff;
         align_y: Center;

@@ -105,7 +105,8 @@ impl Template {
             match part {
                 Part::Text(plain) => text.push_str(plain),
                 Part::Slot(terms) => {
-                    let wanted = terms.len() == 1 && terms[0].item == item && terms[0].field == field;
+                    let wanted =
+                        terms.len() == 1 && terms[0].item == item && terms[0].field == field;
                     if wanted && found.is_none() {
                         let percent = matches!(
                             self.parts.get(index + 1),
@@ -147,7 +148,8 @@ impl Template {
         'parts: for part in &self.parts {
             let text = match part {
                 Part::Slot(terms) => {
-                    let wanted = terms.len() == 1 && terms[0].item == item && terms[0].field == field;
+                    let wanted =
+                        terms.len() == 1 && terms[0].item == item && terms[0].field == field;
                     if wanted && slot.is_none() {
                         slot = Some((order, colours.last().cloned()));
                     }
@@ -207,7 +209,8 @@ impl Template {
         let Some((at, Some(colour))) = slot else {
             return Tint::default();
         };
-        let same = |icon: &&(usize, &str, Option<String>)| icon.2.as_deref() == Some(colour.as_str());
+        let same =
+            |icon: &&(usize, &str, Option<String>)| icon.2.as_deref() == Some(colour.as_str());
         let icon = icons
             .iter()
             .filter(same)
@@ -264,7 +267,9 @@ impl Template {
                         }
                     });
                 match bracket {
-                    Some(bracket) if after.starts_with(char::is_whitespace) => format!(" {bracket}"),
+                    Some(bracket) if after.starts_with(char::is_whitespace) => {
+                        format!(" {bracket}")
+                    }
                     Some(bracket) => bracket,
                     None => String::new(),
                 }
@@ -528,9 +533,11 @@ impl Texts {
 
     // Whether a tooltip has a stat line for `field`.
     pub(crate) fn has_line(&self, field: &str) -> bool {
-        self.spec
-            .iter()
-            .any(|(_, lines)| lines.get(field).is_some_and(|line| line.contains("{Value}")))
+        self.spec.iter().any(|(_, lines)| {
+            lines
+                .get(field)
+                .is_some_and(|line| line.contains("{Value}"))
+        })
     }
 
     // Items whose effect text in some language differs from what its template
@@ -590,7 +597,11 @@ impl Texts {
             .strip_prefix("#asset/base/text/item?")
             .and_then(|path| path.strip_suffix(".name"))
         {
-            return self.name_keys.values().find(|known| known.as_str() == key).map(String::as_str);
+            return self
+                .name_keys
+                .values()
+                .find(|known| known.as_str() == key)
+                .map(String::as_str);
         }
         self.name_keys.get(label.trim()).map(String::as_str)
     }
@@ -663,7 +674,10 @@ impl Texts {
             .and_then(|templates| templates.get(key))
             .map_or_else(Tint::default, |template| template.tint_of(key, field));
         let slug = crate::build_config::base_slug(key);
-        if NO_ICON.iter().any(|&(item, other)| item == slug && other == field) {
+        if NO_ICON
+            .iter()
+            .any(|&(item, other)| item == slug && other == field)
+        {
             tint.icon = None;
         }
         tint
@@ -697,7 +711,10 @@ pub(crate) fn game_language() -> String {
     }
     let lang = std::env::current_exe()
         .ok()
-        .and_then(|exe| exe.parent().map(|dir| dir.join("config").join("game").join("base.json")))
+        .and_then(|exe| {
+            exe.parent()
+                .map(|dir| dir.join("config").join("game").join("base.json"))
+        })
         .and_then(|path| read_json(&path))
         .and_then(|file| file.get("lang").and_then(Value::as_str).map(str::to_string))
         .filter(|lang| !lang.is_empty())
@@ -1102,7 +1119,11 @@ fn reason_pool(
         // needs `tuning`'s `min_games` to be judged); the sentences are kept
         // for the day one does.
         if change.games == 0 {
-            pool.extend(["why_buff_unbuilt_1", "why_buff_unbuilt_2", "why_buff_unbuilt_3"]);
+            pool.extend([
+                "why_buff_unbuilt_1",
+                "why_buff_unbuilt_2",
+                "why_buff_unbuilt_3",
+            ]);
         }
         match tempo {
             Tempo::Early => pool.extend(["why_buff_early_1", "why_buff_early_2"]),
@@ -1139,9 +1160,17 @@ fn reason_pool(
 // `{Item}` the item.
 fn adjust_pool(buff: bool) -> Vec<&'static str> {
     if buff {
-        vec!["why_adjust_buff_1", "why_adjust_buff_2", "why_adjust_buff_3"]
+        vec![
+            "why_adjust_buff_1",
+            "why_adjust_buff_2",
+            "why_adjust_buff_3",
+        ]
     } else {
-        vec!["why_adjust_nerf_1", "why_adjust_nerf_2", "why_adjust_nerf_3"]
+        vec![
+            "why_adjust_nerf_1",
+            "why_adjust_nerf_2",
+            "why_adjust_nerf_3",
+        ]
     }
 }
 
@@ -1188,7 +1217,9 @@ fn short_label(texts: &Texts, lang: &str, change: &Change) -> String {
         .or_else(|| {
             AMOUNT_FORMATS
                 .iter()
-                .find(|format| format.item == slug && format.fields.contains(&change.field.as_str()))
+                .find(|format| {
+                    format.item == slug && format.fields.contains(&change.field.as_str())
+                })
                 .map(|format| format.label)
         })
         .map_or_else(String::new, |(key, english)| texts.ui(lang, key, english));
@@ -1263,14 +1294,19 @@ mod label {
     pub(super) const ARMOR_REDUCTION: Words = ("row_armor_reduction", "Armor Reduction");
     pub(super) const ATTACK_DAMAGE: Words = ("row_attack_damage", "Attack Damage");
     pub(super) const ATTACK_SPEED: Words = ("row_attack_speed", "Attack Speed");
-    pub(super) const ATTACK_SPEED_REDUCTION: Words = ("row_attack_speed_reduction", "Attack Speed Reduction");
+    pub(super) const ATTACK_SPEED_REDUCTION: Words =
+        ("row_attack_speed_reduction", "Attack Speed Reduction");
     pub(super) const BASE_AD_KILL_BONUS: Words = ("row_base_ad_kill_bonus", "Base AD Kill Bonus");
-    pub(super) const BASE_SKILL_DAMAGE_REDUCTION: Words = ("row_base_skill_damage_reduction", "Base Skill Damage Reduction");
+    pub(super) const BASE_SKILL_DAMAGE_REDUCTION: Words = (
+        "row_base_skill_damage_reduction",
+        "Base Skill Damage Reduction",
+    );
     pub(super) const BLEED_CRIT_RATIO: Words = ("row_bleed_crit_ratio", "Bleed Crit Ratio");
     pub(super) const BONUS_CRIT_DAMAGE: Words = ("row_bonus_crit_damage", "Bonus Crit Damage");
     pub(super) const BONUS_DAMAGE: Words = ("row_bonus_damage", "Bonus Damage");
     pub(super) const BONUS_DAMAGE_CAP: Words = ("row_bonus_damage_cap", "Bonus Damage Cap");
-    pub(super) const BONUS_HEALING_RECEIVED: Words = ("row_bonus_healing_received", "Bonus Healing Received");
+    pub(super) const BONUS_HEALING_RECEIVED: Words =
+        ("row_bonus_healing_received", "Bonus Healing Received");
     pub(super) const BONUS_HEALTH: Words = ("row_bonus_health", "Bonus Health");
     pub(super) const BONUS_MAGIC_DAMAGE: Words = ("row_bonus_magic_damage", "Bonus Magic Damage");
     pub(super) const BURN_DAMAGE: Words = ("row_burn_damage", "Burn Damage");
@@ -1282,38 +1318,46 @@ mod label {
     pub(super) const CRIT_HEALING: Words = ("row_crit_healing", "Critical Strike Healing");
     pub(super) const DAMAGE: Words = ("row_damage", "Damage");
     pub(super) const DAMAGE_REDUCTION: Words = ("row_damage_reduction", "Damage Reduction");
-    pub(super) const DAMAGE_REDUCTION_DURATION: Words = ("row_damage_reduction_duration", "Damage Reduction Duration");
+    pub(super) const DAMAGE_REDUCTION_DURATION: Words =
+        ("row_damage_reduction_duration", "Damage Reduction Duration");
     pub(super) const DAMAGE_STORED: Words = ("row_damage_stored", "Damage Stored");
     pub(super) const DAMAGE_TAKEN_BONUS: Words = ("row_damage_taken_bonus", "Damage Taken Bonus");
     pub(super) const DELAYED_DAMAGE_CAP: Words = ("row_delayed_damage_cap", "Delayed Damage Cap");
     pub(super) const EFFECT_DURATION: Words = ("row_effect_duration", "Effect Duration");
-    pub(super) const FIRST_ATTACK_MULTIPLIER: Words = ("row_first_attack_multiplier", "First Attack Multiplier");
+    pub(super) const FIRST_ATTACK_MULTIPLIER: Words =
+        ("row_first_attack_multiplier", "First Attack Multiplier");
     pub(super) const HEALING: Words = ("row_healing", "Healing");
     pub(super) const HEALING_REDUCTION: Words = ("row_healing_reduction", "Healing Reduction");
     pub(super) const HEAL_SHIELD_POWER: Words = ("row_heal_shield_power", "Heal and Shield Power");
-    pub(super) const HEALTH_REGENERATION: Words = ("row_health_regeneration", "Health Regeneration");
+    pub(super) const HEALTH_REGENERATION: Words =
+        ("row_health_regeneration", "Health Regeneration");
     pub(super) const LETHALITY: Words = ("row_lethality", "Lethality");
     pub(super) const LETHALITY_DURATION: Words = ("row_lethality_duration", "Lethality Duration");
     pub(super) const MAGIC_RESISTANCE: Words = ("row_magic_resistance", "Magic Resistance");
     pub(super) const MARK_DURATION: Words = ("row_mark_duration", "Mark Duration");
     pub(super) const MAX_HEALTH: Words = ("row_max_health", "Max Health");
-    pub(super) const MISSING_HEALTH_SCALING: Words = ("row_missing_health_scaling", "Missing Health Scaling");
+    pub(super) const MISSING_HEALTH_SCALING: Words =
+        ("row_missing_health_scaling", "Missing Health Scaling");
     pub(super) const MOVEMENT_SPEED: Words = ("row_movement_speed", "Movement Speed");
     pub(super) const MR_PENETRATION: Words = ("row_mr_penetration", "Magic Resistance Penetration");
     pub(super) const MR_REDUCTION: Words = ("row_mr_reduction", "Magic Resistance Reduction");
     pub(super) const OMNIVAMP: Words = ("row_omnivamp", "Omnivamp");
     pub(super) const ON_HIT_AD_RATIO: Words = ("row_on_hit_ad_ratio", "On-Hit Damage AD Ratio");
-    pub(super) const ON_HIT_CRIT_RATIO: Words = ("row_on_hit_crit_ratio", "On-Hit Damage Crit Ratio");
+    pub(super) const ON_HIT_CRIT_RATIO: Words =
+        ("row_on_hit_crit_ratio", "On-Hit Damage Crit Ratio");
     pub(super) const ON_HIT_DAMAGE: Words = ("row_on_hit_damage", "On-Hit Damage");
     pub(super) const ON_HIT_DAMAGE_CAP: Words = ("row_on_hit_damage_cap", "On-Hit Damage Cap");
-    pub(super) const OUT_OF_COMBAT_HEALING: Words = ("row_out_of_combat_healing", "Out of Combat Healing");
-    pub(super) const OUT_OF_COMBAT_TIMER: Words = ("row_out_of_combat_timer", "Out of Combat Timer");
+    pub(super) const OUT_OF_COMBAT_HEALING: Words =
+        ("row_out_of_combat_healing", "Out of Combat Healing");
+    pub(super) const OUT_OF_COMBAT_TIMER: Words =
+        ("row_out_of_combat_timer", "Out of Combat Timer");
     pub(super) const PERMANENT_HEALTH: Words = ("row_permanent_health", "Permanent Health");
     pub(super) const RESURRECT_HEALTH: Words = ("row_resurrect_health", "Resurrect Health");
     pub(super) const SCALING: Words = ("row_scaling", "Scaling");
     pub(super) const SHIELDING: Words = ("row_shielding", "Shielding");
     pub(super) const SHIELD_DURATION: Words = ("row_shield_duration", "Shield Duration");
-    pub(super) const SKILL_DAMAGE_REDUCTION: Words = ("row_skill_damage_reduction", "Skill Damage Reduction");
+    pub(super) const SKILL_DAMAGE_REDUCTION: Words =
+        ("row_skill_damage_reduction", "Skill Damage Reduction");
     pub(super) const SLOW: Words = ("row_slow", "Slow");
     pub(super) const SLOW_DURATION: Words = ("row_slow_duration", "Slow Duration");
     pub(super) const STACK_DURATION: Words = ("row_stack_duration", "Stack Duration");
@@ -1331,9 +1375,14 @@ mod unit {
     pub(super) const MAX_HP: Words = ("unit_max_hp", " max HP");
     pub(super) const MAX_HP_PER_SECOND: Words = ("unit_max_hp_per_second", " max HP per second");
     pub(super) const OF_DAMAGE_DEALT: Words = ("unit_of_damage_dealt", " of the damage dealt");
-    pub(super) const OF_ORIGINAL_AMOUNT: Words = ("unit_of_original_amount", " of the original amount");
-    pub(super) const OF_YOUR_DAMAGE_DEALT: Words = ("unit_of_your_damage_dealt", " of your damage dealt");
-    pub(super) const PER_MOMENTUM_STACK: Words = ("unit_per_momentum_stack", " per <#92dc7bff>Momentum<> stack");
+    pub(super) const OF_ORIGINAL_AMOUNT: Words =
+        ("unit_of_original_amount", " of the original amount");
+    pub(super) const OF_YOUR_DAMAGE_DEALT: Words =
+        ("unit_of_your_damage_dealt", " of your damage dealt");
+    pub(super) const PER_MOMENTUM_STACK: Words = (
+        "unit_per_momentum_stack",
+        " per <#92dc7bff>Momentum<> stack",
+    );
     pub(super) const PER_SECOND: Words = ("unit_per_second", " per second");
     pub(super) const PER_STACK: Words = ("unit_per_stack", " per stack");
     pub(super) const SECONDS: Words = ("unit_seconds", " seconds");
@@ -1413,175 +1462,667 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
 ];
 
 const ROW_FORMATS: [RowFormat; 138] = [
-    row("deaths_dance", "effect_delayed_damage_percent", label::DAMAGE_REDUCTION),
-    row("echoes_of_helia", "effect_damage_conversion", label::DAMAGE_STORED),
-    row("heartsteel", "effect_bonus_hp_percent_of_damage", label::PERMANENT_HEALTH)
-        .unit(unit::OF_DAMAGE_DEALT),
-    row("randuins_omen", "effect_crit_damage_percent_heal", label::CRIT_HEALING),
+    row(
+        "deaths_dance",
+        "effect_delayed_damage_percent",
+        label::DAMAGE_REDUCTION,
+    ),
+    row(
+        "echoes_of_helia",
+        "effect_damage_conversion",
+        label::DAMAGE_STORED,
+    ),
+    row(
+        "heartsteel",
+        "effect_bonus_hp_percent_of_damage",
+        label::PERMANENT_HEALTH,
+    )
+    .unit(unit::OF_DAMAGE_DEALT),
+    row(
+        "randuins_omen",
+        "effect_crit_damage_percent_heal",
+        label::CRIT_HEALING,
+    ),
     row("hubris", "effect_stack_attack", label::SCALING).unit(unit::PER_STACK),
-    row("zhonyas_hourglass", "effect_duration_seconds", label::STASIS_DURATION).unit(unit::SECONDS),
-    row("hubris", "effect_bonus_flat_attack", label::BASE_AD_KILL_BONUS),
-    row("cloak_of_starry_night", "effect_skill_damaged_reduce", label::BASE_SKILL_DAMAGE_REDUCTION),
-    row("black_cleaver", "effect_percent_armor_shred", label::ARMOR_REDUCTION)
-        .unit(unit::PER_STACK),
-    row("bloodletters_curse", "effect_percent_mr_shred", label::MR_REDUCTION).unit(unit::PER_STACK),
-    row("abyssal_mask", "effect_percent_mr_shred", label::MR_REDUCTION),
-    row("frozen_heart", "effect_attack_speed_reduce", label::ATTACK_SPEED_REDUCTION),
-    row("executioners_calling", "effect_heal_reduce", label::HEALING_REDUCTION),
-    row("mortal_reminder", "effect_heal_reduce", label::HEALING_REDUCTION),
-    row("chempunk_chainsword", "effect_heal_reduce", label::HEALING_REDUCTION),
-    row("chemtech_putrifier", "effect_heal_reduce", label::HEALING_REDUCTION),
-    row("morellonomicon", "effect_heal_reduce", label::HEALING_REDUCTION),
-    row("oblivion_orb", "effect_heal_reduce", label::HEALING_REDUCTION),
-    row("bloodsong", "effect_damaged_amplify", label::DAMAGE_TAKEN_BONUS),
-    row("imperial_mandate", "effect_damaged_amplify", label::DAMAGE_TAKEN_BONUS),
-    row("celestial_opposition", "effect_damaged_reduce", label::DAMAGE_REDUCTION),
-    row("spirit_visage", "effect_heal_mult", label::BONUS_HEALING_RECEIVED),
-    row("lord_dominiks_regards", "effect_max_percent_bonus", label::BONUS_DAMAGE_CAP),
+    row(
+        "zhonyas_hourglass",
+        "effect_duration_seconds",
+        label::STASIS_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "hubris",
+        "effect_bonus_flat_attack",
+        label::BASE_AD_KILL_BONUS,
+    ),
+    row(
+        "cloak_of_starry_night",
+        "effect_skill_damaged_reduce",
+        label::BASE_SKILL_DAMAGE_REDUCTION,
+    ),
+    row(
+        "black_cleaver",
+        "effect_percent_armor_shred",
+        label::ARMOR_REDUCTION,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "bloodletters_curse",
+        "effect_percent_mr_shred",
+        label::MR_REDUCTION,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "abyssal_mask",
+        "effect_percent_mr_shred",
+        label::MR_REDUCTION,
+    ),
+    row(
+        "frozen_heart",
+        "effect_attack_speed_reduce",
+        label::ATTACK_SPEED_REDUCTION,
+    ),
+    row(
+        "executioners_calling",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "mortal_reminder",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "chempunk_chainsword",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "chemtech_putrifier",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "morellonomicon",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "oblivion_orb",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "bloodsong",
+        "effect_damaged_amplify",
+        label::DAMAGE_TAKEN_BONUS,
+    ),
+    row(
+        "imperial_mandate",
+        "effect_damaged_amplify",
+        label::DAMAGE_TAKEN_BONUS,
+    ),
+    row(
+        "celestial_opposition",
+        "effect_damaged_reduce",
+        label::DAMAGE_REDUCTION,
+    ),
+    row(
+        "spirit_visage",
+        "effect_heal_mult",
+        label::BONUS_HEALING_RECEIVED,
+    ),
+    row(
+        "lord_dominiks_regards",
+        "effect_max_percent_bonus",
+        label::BONUS_DAMAGE_CAP,
+    ),
     row("eclipse", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
     row("heartsteel", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
-    row("night_harvester", "effect_cooldown_seconds", label::COOLDOWN)
-        .unit(unit::SECONDS_PER_TARGET),
+    row(
+        "night_harvester",
+        "effect_cooldown_seconds",
+        label::COOLDOWN,
+    )
+    .unit(unit::SECONDS_PER_TARGET),
     row("stormsurge", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
     row("sundered_sky", "effect_cooldown_seconds", label::COOLDOWN).unit(unit::SECONDS_PER_TARGET),
-    row("celestial_opposition", "effect_duration_seconds", label::DAMAGE_REDUCTION_DURATION)
-        .unit(unit::SECONDS),
-    row("celestial_opposition", "effect_slow_seconds", label::SLOW_DURATION).unit(unit::SECONDS),
+    row(
+        "celestial_opposition",
+        "effect_duration_seconds",
+        label::DAMAGE_REDUCTION_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "celestial_opposition",
+        "effect_slow_seconds",
+        label::SLOW_DURATION,
+    )
+    .unit(unit::SECONDS),
     row("eclipse", "effect_duration_seconds", label::MARK_DURATION).unit(unit::SECONDS),
     row("eclipse", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
-    row("opportunity", "effect_out_of_combat_seconds", label::OUT_OF_COMBAT_TIMER)
-        .unit(unit::SECONDS),
-    row("opportunity", "effect_duration_seconds", label::LETHALITY_DURATION).unit(unit::SECONDS),
-    row("rite_of_ruin", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
-    row("rite_of_ruin", "effect_duration_seconds", label::STACK_DURATION).unit(unit::SECONDS),
-    row("haunting_guise", "effect_out_of_combat_seconds", label::OUT_OF_COMBAT_TIMER)
-        .unit(unit::SECONDS),
-    row("warmogs_armor", "effect_duration_seconds", label::OUT_OF_COMBAT_TIMER).unit(unit::SECONDS),
+    row(
+        "opportunity",
+        "effect_out_of_combat_seconds",
+        label::OUT_OF_COMBAT_TIMER,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "opportunity",
+        "effect_duration_seconds",
+        label::LETHALITY_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "rite_of_ruin",
+        "effect_shield_seconds",
+        label::SHIELD_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "rite_of_ruin",
+        "effect_duration_seconds",
+        label::STACK_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "haunting_guise",
+        "effect_out_of_combat_seconds",
+        label::OUT_OF_COMBAT_TIMER,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "warmogs_armor",
+        "effect_duration_seconds",
+        label::OUT_OF_COMBAT_TIMER,
+    )
+    .unit(unit::SECONDS),
     row("stormsurge", "effect_duration_seconds", label::BURST_WINDOW).unit(unit::SECONDS),
-    row("grezs_spectral_lantern", "effect_percent_bonus_damage", label::BONUS_MAGIC_DAMAGE),
-    row("spirit_stone", "effect_percent_bonus_damage", label::BONUS_MAGIC_DAMAGE),
-    row("diamond_tipped_spear", "effect_max_percent_bonus", label::BONUS_DAMAGE).lead(lead::UP_TO),
-    row("fiendhunter_bolts", "effect_percent_bonus_damage", label::BONUS_DAMAGE),
-    row("haunting_guise", "effect_stack_percent_damage", label::BONUS_DAMAGE).unit(unit::PER_STACK),
-    row("infinity_edge", "effect_crit_damage_bonus", label::BONUS_CRIT_DAMAGE),
-    row("kraken_slayer", "effect_max_percent_bonus", label::MISSING_HEALTH_SCALING)
-        .lead(lead::UP_TO),
-    row("lord_dominiks_regards", "effect_percent_bonus_damage", label::BONUS_DAMAGE)
-        .unit(unit::PER_STACK),
-    row("sundered_sky", "effect_percent_bonus_damage", label::FIRST_ATTACK_MULTIPLIER),
-    row("grezs_spectral_lantern", "effect_bonus_hp_percent_of_damage", label::HEALING)
-        .unit(unit::OF_YOUR_DAMAGE_DEALT),
-    row("spirit_stone", "effect_bonus_hp_percent_of_damage", label::HEALING)
-        .unit(unit::OF_YOUR_DAMAGE_DEALT),
+    row(
+        "grezs_spectral_lantern",
+        "effect_percent_bonus_damage",
+        label::BONUS_MAGIC_DAMAGE,
+    ),
+    row(
+        "spirit_stone",
+        "effect_percent_bonus_damage",
+        label::BONUS_MAGIC_DAMAGE,
+    ),
+    row(
+        "diamond_tipped_spear",
+        "effect_max_percent_bonus",
+        label::BONUS_DAMAGE,
+    )
+    .lead(lead::UP_TO),
+    row(
+        "fiendhunter_bolts",
+        "effect_percent_bonus_damage",
+        label::BONUS_DAMAGE,
+    ),
+    row(
+        "haunting_guise",
+        "effect_stack_percent_damage",
+        label::BONUS_DAMAGE,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "infinity_edge",
+        "effect_crit_damage_bonus",
+        label::BONUS_CRIT_DAMAGE,
+    ),
+    row(
+        "kraken_slayer",
+        "effect_max_percent_bonus",
+        label::MISSING_HEALTH_SCALING,
+    )
+    .lead(lead::UP_TO),
+    row(
+        "lord_dominiks_regards",
+        "effect_percent_bonus_damage",
+        label::BONUS_DAMAGE,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "sundered_sky",
+        "effect_percent_bonus_damage",
+        label::FIRST_ATTACK_MULTIPLIER,
+    ),
+    row(
+        "grezs_spectral_lantern",
+        "effect_bonus_hp_percent_of_damage",
+        label::HEALING,
+    )
+    .unit(unit::OF_YOUR_DAMAGE_DEALT),
+    row(
+        "spirit_stone",
+        "effect_bonus_hp_percent_of_damage",
+        label::HEALING,
+    )
+    .unit(unit::OF_YOUR_DAMAGE_DEALT),
     row("feral_flare", "effect_bonus_flat_heal", label::HEALING).unit(unit::HEALTH),
     row("madreds_razors", "effect_bonus_flat_heal", label::HEALING).unit(unit::HEALTH),
-    row("hunters_machete", "effect_bonus_flat_damage", label::ON_HIT_DAMAGE),
+    row(
+        "hunters_machete",
+        "effect_bonus_flat_damage",
+        label::ON_HIT_DAMAGE,
+    ),
     row("hunters_machete", "effect_vamp", label::OMNIVAMP),
-    row("hunters_talisman", "effect_hp_percent_damage", label::BURN_DAMAGE)
-        .unit(unit::TARGET_MAX_HP),
-    row("hunters_talisman", "effect_duration_seconds", label::EFFECT_DURATION)
-        .unit(unit::SECONDS),
+    row(
+        "hunters_talisman",
+        "effect_hp_percent_damage",
+        label::BURN_DAMAGE,
+    )
+    .unit(unit::TARGET_MAX_HP),
+    row(
+        "hunters_talisman",
+        "effect_duration_seconds",
+        label::EFFECT_DURATION,
+    )
+    .unit(unit::SECONDS),
     row("hunters_talisman", "effect_vamp", label::OMNIVAMP),
-    row("guardian_angel", "effect_caster_hp_percent_heal", label::RESURRECT_HEALTH)
-        .unit(unit::MAX_HP),
-    row("moonstone_renewer", "effect_heal_chain_percent", label::CHAINED_HEALING)
-        .unit(unit::OF_ORIGINAL_AMOUNT),
-    row("steraks_gage", "effect_caster_hp_percent_shield", label::SHIELDING).unit(unit::MAX_HP),
-    row("warmogs_armor", "effect_caster_hp_percent_heal", label::OUT_OF_COMBAT_HEALING)
-        .unit(unit::MAX_HP_PER_SECOND),
-    row("guinsoos_rageblade", "effect_bonus_magic_damage", label::ON_HIT_DAMAGE),
-    row("wits_end", "effect_bonus_magic_damage", label::ON_HIT_DAMAGE),
-    row("ravenous_hydra", "effect_ad_percent_damage", label::ON_HIT_DAMAGE).unit(unit::AD),
+    row(
+        "guardian_angel",
+        "effect_caster_hp_percent_heal",
+        label::RESURRECT_HEALTH,
+    )
+    .unit(unit::MAX_HP),
+    row(
+        "moonstone_renewer",
+        "effect_heal_chain_percent",
+        label::CHAINED_HEALING,
+    )
+    .unit(unit::OF_ORIGINAL_AMOUNT),
+    row(
+        "steraks_gage",
+        "effect_caster_hp_percent_shield",
+        label::SHIELDING,
+    )
+    .unit(unit::MAX_HP),
+    row(
+        "warmogs_armor",
+        "effect_caster_hp_percent_heal",
+        label::OUT_OF_COMBAT_HEALING,
+    )
+    .unit(unit::MAX_HP_PER_SECOND),
+    row(
+        "guinsoos_rageblade",
+        "effect_bonus_magic_damage",
+        label::ON_HIT_DAMAGE,
+    ),
+    row(
+        "wits_end",
+        "effect_bonus_magic_damage",
+        label::ON_HIT_DAMAGE,
+    ),
+    row(
+        "ravenous_hydra",
+        "effect_ad_percent_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::AD),
     row("tiamat", "effect_ad_percent_damage", label::ON_HIT_DAMAGE).unit(unit::AD),
-    row("hextech_alternator", "effect_bonus_flat_damage", label::BONUS_DAMAGE),
-    row("scouts_slingshot", "effect_bonus_flat_damage", label::BONUS_DAMAGE),
-    row("ardent_censer", "effect_attack_speed_mult", label::ATTACK_SPEED),
-    row("ardent_censer", "effect_enemy_max_hp_damage", label::ON_HIT_DAMAGE)
-        .unit(unit::TARGET_MAX_HP),
-    row("blade_of_the_ruined_king", "effect_hp_percent_damage", label::ON_HIT_DAMAGE)
-        .unit(unit::TARGET_CURRENT_HP),
-    row("dead_mans_plate", "effect_max_bonus_damage", label::ON_HIT_DAMAGE_CAP),
-    row("deaths_dance", "effect_burn_hp_percent_cap", label::DELAYED_DAMAGE_CAP)
-        .unit(unit::MAX_HP_PER_SECOND),
+    row(
+        "hextech_alternator",
+        "effect_bonus_flat_damage",
+        label::BONUS_DAMAGE,
+    ),
+    row(
+        "scouts_slingshot",
+        "effect_bonus_flat_damage",
+        label::BONUS_DAMAGE,
+    ),
+    row(
+        "ardent_censer",
+        "effect_attack_speed_mult",
+        label::ATTACK_SPEED,
+    ),
+    row(
+        "ardent_censer",
+        "effect_enemy_max_hp_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::TARGET_MAX_HP),
+    row(
+        "blade_of_the_ruined_king",
+        "effect_hp_percent_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::TARGET_CURRENT_HP),
+    row(
+        "dead_mans_plate",
+        "effect_max_bonus_damage",
+        label::ON_HIT_DAMAGE_CAP,
+    ),
+    row(
+        "deaths_dance",
+        "effect_burn_hp_percent_cap",
+        label::DELAYED_DAMAGE_CAP,
+    )
+    .unit(unit::MAX_HP_PER_SECOND),
     row("eclipse", "effect_hp_percent_damage", label::DAMAGE).unit(unit::TARGET_MAX_HP),
-    row("essence_reaver", "effect_ad_percent_damage", label::ON_HIT_AD_RATIO),
-    row("essence_reaver", "effect_crit_percent_damage", label::ON_HIT_CRIT_RATIO),
-    row("fiendhunter_bolts", "effect_damage_conversion", label::TRUE_DAMAGE_RATIO),
-    row("hamstringer", "effect_crit_percent_damage", label::BLEED_CRIT_RATIO),
-    row("kraken_slayer", "effect_bonus_flat_damage", label::ON_HIT_DAMAGE),
-    row("liandrys_torment", "effect_hp_percent_damage", label::BURN_DAMAGE)
-        .unit(unit::TARGET_MAX_HP),
-    row("night_harvester", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("stormrazor", "effect_bonus_flat_damage", label::ON_HIT_DAMAGE),
-    row("stormrazor", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("titanic_hydra", "effect_caster_hp_percent_damage", label::ON_HIT_DAMAGE)
-        .unit(unit::MAX_HP),
-    row("titanic_hydra", "effect_splash_caster_hp_percent", label::AOE_DAMAGE).unit(unit::MAX_HP),
-    row("voltaic_cyclosword", "effect_hp_percent_damage", label::ON_HIT_DAMAGE)
-        .unit(unit::TARGET_CURRENT_HP),
-    row("zekes_herald", "effect_bonus_magic_damage", label::STORM_DAMAGE).unit(unit::PER_SECOND),
-    row("atmas_reckoning", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
-    row("bandlepipes", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("bandlepipes", "effect_attack_speed_mult", label::ATTACK_SPEED),
-    row("blackfire_torch", "effect_stack_magic_power", label::ABILITY_POWER).unit(unit::PER_STACK),
-    row("cosmic_drive", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("dawncore", "effect_stack_heal_shield_power", label::HEAL_SHIELD_POWER),
+    row(
+        "essence_reaver",
+        "effect_ad_percent_damage",
+        label::ON_HIT_AD_RATIO,
+    ),
+    row(
+        "essence_reaver",
+        "effect_crit_percent_damage",
+        label::ON_HIT_CRIT_RATIO,
+    ),
+    row(
+        "fiendhunter_bolts",
+        "effect_damage_conversion",
+        label::TRUE_DAMAGE_RATIO,
+    ),
+    row(
+        "hamstringer",
+        "effect_crit_percent_damage",
+        label::BLEED_CRIT_RATIO,
+    ),
+    row(
+        "kraken_slayer",
+        "effect_bonus_flat_damage",
+        label::ON_HIT_DAMAGE,
+    ),
+    row(
+        "liandrys_torment",
+        "effect_hp_percent_damage",
+        label::BURN_DAMAGE,
+    )
+    .unit(unit::TARGET_MAX_HP),
+    row(
+        "night_harvester",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "stormrazor",
+        "effect_bonus_flat_damage",
+        label::ON_HIT_DAMAGE,
+    ),
+    row(
+        "stormrazor",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "titanic_hydra",
+        "effect_caster_hp_percent_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::MAX_HP),
+    row(
+        "titanic_hydra",
+        "effect_splash_caster_hp_percent",
+        label::AOE_DAMAGE,
+    )
+    .unit(unit::MAX_HP),
+    row(
+        "voltaic_cyclosword",
+        "effect_hp_percent_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::TARGET_CURRENT_HP),
+    row(
+        "zekes_herald",
+        "effect_bonus_magic_damage",
+        label::STORM_DAMAGE,
+    )
+    .unit(unit::PER_SECOND),
+    row(
+        "atmas_reckoning",
+        "effect_stack_crit_chance",
+        label::CRIT_CHANCE,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "bandlepipes",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "bandlepipes",
+        "effect_attack_speed_mult",
+        label::ATTACK_SPEED,
+    ),
+    row(
+        "blackfire_torch",
+        "effect_stack_magic_power",
+        label::ABILITY_POWER,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "cosmic_drive",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "dawncore",
+        "effect_stack_heal_shield_power",
+        label::HEAL_SHIELD_POWER,
+    ),
     row("dawncore", "effect_stack_magic_power", label::ABILITY_POWER),
-    row("dead_mans_plate", "effect_move_speed_per_stack", label::MOVEMENT_SPEED)
-        .unit(unit::PER_MOMENTUM_STACK),
-    row("dream_maker", "effect_skill_damaged_reduce", label::SKILL_DAMAGE_REDUCTION),
+    row(
+        "dead_mans_plate",
+        "effect_move_speed_per_stack",
+        label::MOVEMENT_SPEED,
+    )
+    .unit(unit::PER_MOMENTUM_STACK),
+    row(
+        "dream_maker",
+        "effect_skill_damaged_reduce",
+        label::SKILL_DAMAGE_REDUCTION,
+    ),
     row("endless_hunger", "effect_vamp", label::OMNIVAMP),
-    row("experimental_hexplate", "effect_attack_speed_mult", label::ATTACK_SPEED),
-    row("experimental_hexplate", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("fiendhunter_bolts", "effect_attack_speed_mult", label::ATTACK_SPEED),
-    row("force_of_nature", "effect_bonus_magic_resistance", label::MAGIC_RESISTANCE),
-    row("force_of_nature", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("grezs_spectral_lantern", "effect_stack_magic_power", label::ABILITY_POWER)
-        .unit(unit::PER_STACK),
-    row("guinsoos_rageblade", "effect_stack_attack_speed_mult", label::ATTACK_SPEED)
-        .unit(unit::PER_STACK),
+    row(
+        "experimental_hexplate",
+        "effect_attack_speed_mult",
+        label::ATTACK_SPEED,
+    ),
+    row(
+        "experimental_hexplate",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "fiendhunter_bolts",
+        "effect_attack_speed_mult",
+        label::ATTACK_SPEED,
+    ),
+    row(
+        "force_of_nature",
+        "effect_bonus_magic_resistance",
+        label::MAGIC_RESISTANCE,
+    ),
+    row(
+        "force_of_nature",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "grezs_spectral_lantern",
+        "effect_stack_magic_power",
+        label::ABILITY_POWER,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "guinsoos_rageblade",
+        "effect_stack_attack_speed_mult",
+        label::ATTACK_SPEED,
+    )
+    .unit(unit::PER_STACK),
     row("hullbreaker", "effect_bonus_defence", label::ARMOR),
-    row("hullbreaker", "effect_bonus_magic_resistance", label::MAGIC_RESISTANCE),
-    row("jaksho_the_protean", "effect_stack_defence_mult", label::ARMOR).unit(unit::PER_STACK),
-    row("jaksho_the_protean", "effect_stack_magic_resistance_mult", label::MAGIC_RESISTANCE)
-        .unit(unit::PER_STACK),
-    row("locket_of_the_iron_solari", "effect_bonus_defence", label::ARMOR),
-    row("locket_of_the_iron_solari", "effect_bonus_magic_resistance", label::MAGIC_RESISTANCE),
-    row("locket_of_the_iron_solari", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
-    row("mirage_blade", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("overlords_bloodmail", "effect_caster_hp_percent_attack", label::ATTACK_DAMAGE)
-        .unit(unit::MAX_HP),
+    row(
+        "hullbreaker",
+        "effect_bonus_magic_resistance",
+        label::MAGIC_RESISTANCE,
+    ),
+    row(
+        "jaksho_the_protean",
+        "effect_stack_defence_mult",
+        label::ARMOR,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "jaksho_the_protean",
+        "effect_stack_magic_resistance_mult",
+        label::MAGIC_RESISTANCE,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "locket_of_the_iron_solari",
+        "effect_bonus_defence",
+        label::ARMOR,
+    ),
+    row(
+        "locket_of_the_iron_solari",
+        "effect_bonus_magic_resistance",
+        label::MAGIC_RESISTANCE,
+    ),
+    row(
+        "locket_of_the_iron_solari",
+        "effect_bonus_hp_regen",
+        label::HEALTH_REGENERATION,
+    ),
+    row(
+        "mirage_blade",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "overlords_bloodmail",
+        "effect_caster_hp_percent_attack",
+        label::ATTACK_DAMAGE,
+    )
+    .unit(unit::MAX_HP),
     row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("philosophers_medallion", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
-    row("philosophers_medallion", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
-    row("philosophers_medallion", "effect_duration_seconds", label::EFFECT_DURATION)
-        .unit(unit::SECONDS),
-    row("philosophers_medallion", "effect_hp_percent_damage", label::BURN_DAMAGE)
-        .unit(unit::TARGET_MAX_HP),
-    row("philosophers_stone", "effect_stack_hp_mult", label::BONUS_HEALTH).unit(unit::PER_STACK),
-    row("philosophers_stone", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
-    row("philosophers_stone", "effect_bonus_hp_regen", label::HEALTH_REGENERATION),
-    row("philosophers_stone", "effect_duration_seconds", label::EFFECT_DURATION)
-        .unit(unit::SECONDS),
-    row("philosophers_stone", "effect_hp_percent_damage", label::BURN_DAMAGE)
-        .unit(unit::TARGET_MAX_HP),
+    row(
+        "philosophers_medallion",
+        "effect_skill_cooldown_mult",
+        label::ABILITY_HASTE,
+    ),
+    row(
+        "philosophers_medallion",
+        "effect_bonus_hp_regen",
+        label::HEALTH_REGENERATION,
+    ),
+    row(
+        "philosophers_medallion",
+        "effect_duration_seconds",
+        label::EFFECT_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "philosophers_medallion",
+        "effect_hp_percent_damage",
+        label::BURN_DAMAGE,
+    )
+    .unit(unit::TARGET_MAX_HP),
+    row(
+        "philosophers_stone",
+        "effect_stack_hp_mult",
+        label::BONUS_HEALTH,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "philosophers_stone",
+        "effect_skill_cooldown_mult",
+        label::ABILITY_HASTE,
+    ),
+    row(
+        "philosophers_stone",
+        "effect_bonus_hp_regen",
+        label::HEALTH_REGENERATION,
+    ),
+    row(
+        "philosophers_stone",
+        "effect_duration_seconds",
+        label::EFFECT_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "philosophers_stone",
+        "effect_hp_percent_damage",
+        label::BURN_DAMAGE,
+    )
+    .unit(unit::TARGET_MAX_HP),
     row("riftmaker", "effect_vamp", label::OMNIVAMP).unit(unit::PER_STACK),
-    row("riftmaker", "effect_caster_hp_percent_power", label::ABILITY_POWER).unit(unit::MAX_HP),
-    row("rite_of_ruin", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
+    row(
+        "riftmaker",
+        "effect_caster_hp_percent_power",
+        label::ABILITY_POWER,
+    )
+    .unit(unit::MAX_HP),
+    row(
+        "rite_of_ruin",
+        "effect_stack_crit_chance",
+        label::CRIT_CHANCE,
+    )
+    .unit(unit::PER_STACK),
     row("rod_of_ages", "effect_growth_hp", label::MAX_HEALTH).unit(unit::PER_STACK),
-    row("rod_of_ages", "effect_growth_magic_power", label::ABILITY_POWER).unit(unit::PER_STACK),
-    row("rod_of_ages", "effect_growth_skill_cooldown_mult", label::ABILITY_HASTE)
-        .unit(unit::PER_STACK),
+    row(
+        "rod_of_ages",
+        "effect_growth_magic_power",
+        label::ABILITY_POWER,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "rod_of_ages",
+        "effect_growth_skill_cooldown_mult",
+        label::ABILITY_HASTE,
+    )
+    .unit(unit::PER_STACK),
     row("seekers_armguard", "effect_stack_defence", label::ARMOR).unit(unit::PER_STACK),
-    row("solstice_sleigh", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("spear_of_shojin", "effect_stack_attack_mult", label::ATTACK_DAMAGE).unit(unit::PER_STACK),
-    row("staff_of_flowing_water", "effect_magic_power", label::ABILITY_POWER),
-    row("staff_of_flowing_water", "effect_skill_cooldown_mult", label::ABILITY_HASTE),
-    row("terminus", "effect_armor_pen_per_stack", label::ARMOR_PENETRATION).unit(unit::PER_STACK),
-    row("terminus", "effect_magic_pen_per_stack", label::MR_PENETRATION).unit(unit::PER_STACK),
-    row("warmogs_armor", "effect_move_speed_mult", label::MOVEMENT_SPEED),
-    row("yun_tal_wildarrows", "effect_flurry_attack_speed_mult", label::ATTACK_SPEED),
-    row("yun_tal_wildarrows", "effect_stack_crit_chance", label::CRIT_CHANCE).unit(unit::PER_STACK),
+    row(
+        "solstice_sleigh",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "spear_of_shojin",
+        "effect_stack_attack_mult",
+        label::ATTACK_DAMAGE,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "staff_of_flowing_water",
+        "effect_magic_power",
+        label::ABILITY_POWER,
+    ),
+    row(
+        "staff_of_flowing_water",
+        "effect_skill_cooldown_mult",
+        label::ABILITY_HASTE,
+    ),
+    row(
+        "terminus",
+        "effect_armor_pen_per_stack",
+        label::ARMOR_PENETRATION,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "terminus",
+        "effect_magic_pen_per_stack",
+        label::MR_PENETRATION,
+    )
+    .unit(unit::PER_STACK),
+    row(
+        "warmogs_armor",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "yun_tal_wildarrows",
+        "effect_flurry_attack_speed_mult",
+        label::ATTACK_SPEED,
+    ),
+    row(
+        "yun_tal_wildarrows",
+        "effect_stack_crit_chance",
+        label::CRIT_CHANCE,
+    )
+    .unit(unit::PER_STACK),
 ];
 
 // A row of a passive's numbers that make one amount, a flat part and its shares
@@ -1874,13 +2415,20 @@ fn range_rows(
     let (between, tail) = texts.range_words(lang, &lead.key, low, high);
     let (low_tint, high_tint) = (texts.tint(&lead.key, low), texts.tint(&lead.key, high));
     let again = low_tint.icon != high_tint.icon;
-    amount_rows(state, patch, change, &[low, high], &label, &|ends: &[f64]| {
-        format!(
-            "{}{between}{}{tail}",
-            low_tint.draw(&note_number(ends[0], percent), true),
-            high_tint.draw(&note_number(ends[1], percent), again)
-        )
-    })
+    amount_rows(
+        state,
+        patch,
+        change,
+        &[low, high],
+        &label,
+        &|ends: &[f64]| {
+            format!(
+                "{}{between}{}{tail}",
+                low_tint.draw(&note_number(ends[0], percent), true),
+                high_tint.draw(&note_number(ends[1], percent), again)
+            )
+        },
+    )
 }
 
 // The number whose row `key`'s `field` is written in: a range's low end, an
@@ -2011,7 +2559,8 @@ fn note_entries(patch: &Patch, state: &State, lang: &str) -> Vec<NoteEntry> {
                 .map(|field| texts.tint(&first.key, field))
                 .collect();
             let write = |numbers: &[f64]| {
-                let numbers: Vec<String> = numbers.iter().map(|number| number_text(*number)).collect();
+                let numbers: Vec<String> =
+                    numbers.iter().map(|number| number_text(*number)).collect();
                 amount_text(&pattern, &numbers, &tints)
             };
             if let Some(rows) = amount_rows(state, patch, change, format.fields, &label, &write) {
@@ -2253,7 +2802,11 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
         texts.ui(&lang, "intro_manual", "These items were adjusted by hand.")
     } else {
         texts
-            .ui(&lang, "intro", "Items were rebalanced after {Matches} matches on v{Version}.")
+            .ui(
+                &lang,
+                "intro",
+                "Items were rebalanced after {Matches} matches on v{Version}.",
+            )
             .replace("{Matches}", &patch.matches.to_string())
             .replace("{Version}", &patch.version)
     };
@@ -2281,17 +2834,17 @@ pub(crate) fn news(patch: &Patch, state: &State) -> (String, String, String) {
                 name = texts.name(&lang, &entry.key),
             ));
             if !entry.reason.is_empty() {
-                body.push_str(&format!(
-                    "\n<s#15><{REASON_COLOR}>{}<><s>",
-                    entry.reason
-                ));
+                body.push_str(&format!("\n<s#15><{REASON_COLOR}>{}<><s>", entry.reason));
             }
             let row_line = |row: &NoteRow, indent: &str| {
                 let mark = match &row.icon {
                     Some((sheet, tag)) => format!("<i#{sheet}:{tag}> "),
                     None => String::new(),
                 };
-                format!("\n{}", sized(&format!("{indent}{mark}{}", row.text), ROW_SIZE))
+                format!(
+                    "\n{}",
+                    sized(&format!("{indent}{mark}{}", row.text), ROW_SIZE)
+                )
             };
             for row in &entry.rows {
                 body.push_str(&row_line(row, ROW_INDENT));
@@ -2587,7 +3140,9 @@ fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
                 .flatten()
                 .flatten()
                 .map(|text| length_of(text.as_str()))
-                .fold(None, |most: Option<f32>, length| Some(most.map_or(length, |most| most.max(length))));
+                .fold(None, |most: Option<f32>, length| {
+                    Some(most.map_or(length, |most| most.max(length)))
+                });
             let from = format!("rows {rows:?} (clicked {clicked:?})");
             match longest {
                 Some(length) => (Some(length), from),
@@ -2599,7 +3154,10 @@ fn scroll_for(ctx: &StableClient<'_>) -> Option<f32> {
                 None => (None, from),
             }
         }
-        None => (None, "nothing: the article's time cannot be read".to_string()),
+        None => (
+            None,
+            "nothing: the article's time cannot be read".to_string(),
+        ),
     };
     super::log("patch.scroll.for", || {
         format!("time {time:?}: {length:?}px, from {from}")

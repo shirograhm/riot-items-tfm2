@@ -32,9 +32,10 @@ const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-// Signature for game 0.6.5 (the same 48 bytes as 0.6.4), where the target is
-// `0x23c1610` (2709 bytes); 47 bytes already match 2 functions, so do not
-// shorten it.
+// Signature for game 0.7.0, where the target is `0x267e2f0` (2709 bytes; the
+// beam search's only caller, frame 0x238): the same 48 bytes as 0.6.2, 0.6.4,
+// 0.6.5 and 0.7.0-beta. 0.7.0-beta2's was `0x2dcbef0` (frame 0x218). The first
+// 47 bytes match 2 functions, so do not shorten it.
 //
 // When it is stale, league builds still work but training-screen builds and the
 // tactics half stop. Re-run `tools/find_item_build_hook.py` and paste the
@@ -175,7 +176,10 @@ unsafe fn section(base: *mut u8, want: &[u8]) -> Result<(*mut u8, usize), String
             return Ok((base.add(virtual_address), virtual_size));
         }
     }
-    Err(format!("section {} not found", String::from_utf8_lossy(want)))
+    Err(format!(
+        "section {} not found",
+        String::from_utf8_lossy(want)
+    ))
 }
 
 // Every function's `(start_rva, end_rva)` from the PE exception table, sorted
@@ -277,7 +281,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.6.5 and this build differs — \
+            "{error}; the built-in signature is for game 0.7.0 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
@@ -450,14 +454,23 @@ unsafe fn detour(
     // sides then get the 5th and 6th slots.
     build_config::record_route_call(
         mode,
-        team1.iter().chain(team2.iter()).map(|(_, champion)| champion.as_str()),
+        team1
+            .iter()
+            .chain(team2.iter())
+            .map(|(_, champion)| champion.as_str()),
     );
     crate::own_team_log::line(|| {
         format!(
             "route call: training={} team1={:?} team2={:?}",
             mode,
-            team1.iter().map(|(_, champion)| champion.as_str()).collect::<Vec<_>>(),
-            team2.iter().map(|(_, champion)| champion.as_str()).collect::<Vec<_>>()
+            team1
+                .iter()
+                .map(|(_, champion)| champion.as_str())
+                .collect::<Vec<_>>(),
+            team2
+                .iter()
+                .map(|(_, champion)| champion.as_str())
+                .collect::<Vec<_>>()
         )
     });
     if mode {
@@ -496,8 +509,14 @@ fn apply_training_builds(
     // An owned key per comparison is fine: this runs only a few hundred times
     // per training match.
     let index_of = |key: &str| items.iter().position(|item| item.key().to_string() == key);
-    let enemies: Vec<&str> = team2.iter().map(|(_, champion)| champion.as_str()).collect();
-    let allies: Vec<&str> = team1.iter().map(|(_, champion)| champion.as_str()).collect();
+    let enemies: Vec<&str> = team2
+        .iter()
+        .map(|(_, champion)| champion.as_str())
+        .collect();
+    let allies: Vec<&str> = team1
+        .iter()
+        .map(|(_, champion)| champion.as_str())
+        .collect();
     let roles = lineup_roles(team1);
 
     for (route, (champion, role)) in routes.iter_mut().zip(&roles) {
@@ -530,7 +549,9 @@ fn apply_training_builds(
             .map(|&index| items.get(index).map(|item| item.key().to_string()))
             .collect::<Option<Vec<String>>>();
         if let Some(keys) = keys {
-            let lane = build_config::Role::LANES.iter().position(|lane| *lane == role);
+            let lane = build_config::Role::LANES
+                .iter()
+                .position(|lane| *lane == role);
             crate::match_builds::note_decision(champion, lane, &allies, &enemies, keys, None);
         }
     }

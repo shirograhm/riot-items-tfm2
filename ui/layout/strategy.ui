@@ -1037,7 +1037,7 @@ main:strategy_ui {
             @"asset/base/style/main#label";
             size: 16;
             width: 150px;
-            height: 20px;
+            height: 24px;
             x: 6px;
             y: 1px;
 
@@ -1405,7 +1405,7 @@ main:strategy_ui {
             @"asset/base/style/main#label";
             size: 16;
             width: 150px;
-            height: 20px;
+            height: 24px;
             x: 6px;
             y: 1px;
 
@@ -1529,7 +1529,7 @@ main:strategy_ui {
             @"asset/base/style/main#label";
             size: 16;
             width: 150px;
-            height: 20px;
+            height: 24px;
             x: 6px;
             y: 1px;
 

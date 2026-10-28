@@ -4,13 +4,13 @@
   "mod_id": "riot_items_tfm2",
   "mod_type": "native",
   "contains_code": true,
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Adds items from Riot Games (LoL/TFT/Arena) to Teamfight Manager 2.",
-  "last_updated": "2026-10-26",
+  "last_updated": "2026-10-28",
   "dependencies": [
     {
       "mod_id": "base",
-      "version": "=0.6.5"
+      "version": "=0.7.0"
     }
   ]
 }
