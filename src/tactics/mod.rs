@@ -1985,7 +1985,7 @@ unsafe fn extra_slot_boots(
     taken: &[u64],
     designate: bool,
 ) -> Option<u64> {
-    if !crate::build_config::smart_builds_enabled()
+    if !crate::build_config::smart_boots_enabled()
         || taken.iter().any(|&index| buy_is_boots(ctx, index))
     {
         return None;
@@ -2083,29 +2083,26 @@ unsafe fn auto_extra_pick(
     // behalf (as in `item_build_hook::score_item`).
     let fit = crate::smart_builds::fit(champ, crate::build_config::role_for_champion(champ));
     let suits = crate::smart_builds::Budget::empty(fit);
-    // The build-wide rules too while the toggle is on (`None` when off); a
-    // pinned first slot rules out the jungle and World Atlas items (rules 9 and
-    // 12).
+    // The build-wide rules too; a pinned first slot rules out the jungle and
+    // World Atlas items (rules 9 and 12).
     let rule_fit = if first_pinned {
         fit.starter_slot_pinned()
     } else {
         fit
     };
-    let budget =
-        crate::build_config::smart_builds_enabled().then(|| spent_budget(ctx, rule_fit, &spoken));
+    let budget = spent_budget(ctx, rule_fit, &spoken);
     // Rule 6 too: these slots are past the first two, where an early item
     // goes (supports are exempt).
     let allowed = |candidate: &str| {
         suits.rejects(candidate).is_none()
-            && budget.as_ref().is_none_or(|budget| {
-                budget.rejects(candidate).is_none() && fit.fits_slot(candidate, si)
-            })
+            && budget.rejects(candidate).is_none()
+            && fit.fits_slot(candidate, si)
     };
     // Rule 17: a support that looks to the heal, shield and buff items first
     // takes these slots from them while one is left, by the network among those
-    // alone. Only with the toggle on, as a preference.
+    // alone, as a preference.
     let aid_first = |candidate: &str| fit.is_preferred_aid_item(candidate) && allowed(candidate);
-    let preferred = if budget.is_some() && fit.prefers_aid_items() {
+    let preferred = if fit.prefers_aid_items() {
         network_pick(ctx, buyer, champ, si, taken, &spoken, &aid_first)
             .inspect(|_| picked_by("network, heal/shield/buff items first"))
             .or_else(|| {
@@ -2124,12 +2121,11 @@ unsafe fn auto_extra_pick(
             pick_candidate(ctx, u64::MAX, &spoken, champ, &allowed)
                 .inspect(|_| picked_by("first the rules allow"))
         })
-        // Last resort: any final, but while the toggle is on never a jungle
-        // item off the jungle or a starter item behind a pinned first slot.
+        // Last resort: any final, but never a jungle item off the jungle or a
+        // starter item behind a pinned first slot.
         .or_else(|| {
             pick_candidate(ctx, u64::MAX, &spoken, champ, |candidate| {
-                budget.is_none()
-                    || !(fit.off_role_jungle_item(candidate) || rule_fit.skips_starter(candidate))
+                !(fit.off_role_jungle_item(candidate) || rule_fit.skips_starter(candidate))
             })
             .inspect(|_| picked_by("last resort, no rule held"))
         })
@@ -2500,7 +2496,7 @@ unsafe fn buy_inputs(
         | (crate::build_config::is_test_match(seed) as u64) << 2
         | mine << 3
         | (crate::build_config::own_team_only_enabled() as u64) << 5
-        | (crate::build_config::smart_builds_enabled() as u64) << 6
+        | (crate::build_config::smart_boots_enabled() as u64) << 6
         | (crate::item_tiers::rule().code() as u64) << 7;
     let fixed: [u64; BUY_INPUT_FIXED] = [
         seed,
@@ -2988,7 +2984,6 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                 // to whoever plays the champion, on both teams; with it on,
                 // only my athletes get theirs.
                 let designate = !own_team_only || is_player;
-                let smart = crate::build_config::smart_builds_enabled();
                 // The whole build as it will stand. A started slot Item Rules
                 // holds at legendary is read as its radiant, so later pins and
                 // picks still see it.
@@ -3039,7 +3034,7 @@ unsafe extern "C" fn buy_replace_ctx(saved: *mut u64, rsp_entry: usize) -> u64 {
                     if slots.len() as u64 > build_len {
                         let old_len = build_len as usize;
                         // Not over a Control pick, which stays where it was put.
-                        if smart && picked == 0 {
+                        if picked == 0 {
                             reorder_unbought(ctx, champ, &mut slots, owned, designate);
                         }
                         build_len = grow_build(athlete, ptr, cap_now, build_len, &slots);
@@ -3730,15 +3725,10 @@ unsafe fn install_post_hook(
 
 // The route picker's fixup ([`install_post_hook`]). Only a draw the game would
 // buy is looked at (rax 1); a better candidate replaces it, bought only if the
-// gold covers it, as the game would have checked its own. Under "Allow Any
-// Builds" only for a row with a component focus ([`route_answer`]).
+// gold covers it, as the game would have checked its own.
 unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller: u64) {
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
         if regs.is_null() || stack.is_null() || *regs.add(4) != 1 {
-            return;
-        }
-        let smart = crate::build_config::smart_builds_enabled();
-        if !smart && !crate::build_config::any_focus() {
             return;
         }
         let athlete = *regs.add(1) as usize;
@@ -3752,7 +3742,6 @@ unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller:
             done,
             upgrading.then_some(slot),
             drawn,
-            smart,
         ) else {
             return;
         };
@@ -3769,11 +3758,10 @@ unsafe extern "win64" fn route_fixup(regs: *mut u64, stack: *const u64, _caller:
 
 // One question to rule 18: the route from `from` (`u64::MAX` for a new item) to
 // `target` for one champion in one lane of one match. Asked again every tick
-// an athlete shops, so the answers are kept per thread. The last three are
-// whether Smart Builds is on, whether the editor's rows reach the athlete
-// (`route_choice::note_seat`), and which save of the editor's is in force
-// (`build_config::pins_generation`), so a changed component focus is asked
-// anew.
+// an athlete shops, so the answers are kept per thread. The last two are
+// whether the editor's rows reach the athlete (`route_choice::note_seat`) and
+// which save of the editor's is in force (`build_config::pins_generation`), so
+// a changed component focus is asked anew.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 struct RouteAsk {
     catalog_len: u64,
@@ -3783,7 +3771,6 @@ struct RouteAsk {
     side: u64,
     lane: u8,
     champion: u64, // a hash of the key
-    smart: bool,
     reached: bool,
     builds: u64,
 }
@@ -3808,8 +3795,7 @@ thread_local! {
 
 // The candidate to buy in place of `drawn`, or `None` to keep the draw: when
 // rule 18 has nothing better, or `drawn` is not among the candidates it found
-// (then it has misread the picker, and the game's draw is safer). `smart`:
-// Smart Builds is on.
+// (then it has misread the picker, and the game's draw is safer).
 unsafe fn route_better(
     athlete: usize,
     catalog: usize,
@@ -3817,7 +3803,6 @@ unsafe fn route_better(
     done: u64,
     upgrading: Option<u64>,
     drawn: u64,
-    smart: bool,
 ) -> Option<u64> {
     if athlete < 0x10000
         || catalog < 0x10000
@@ -3857,7 +3842,6 @@ unsafe fn route_better(
             champion.hash(&mut hasher);
             hasher.finish()
         },
-        smart,
         reached,
         builds: crate::build_config::pins_generation(),
     };
@@ -3920,8 +3904,7 @@ unsafe fn route_target(athlete: usize, catalog_len: u64, done: u64) -> Option<u6
 
 // Rule 18's answer for `ask`, from the game's own graph; `None` when it cannot
 // be read. The champion's row in the Build Editor can lean it towards offensive
-// or defensive components (`build_config::Focus`), which counts under "Allow
-// Any Builds" too: there, a champion with no focus keeps the game's draw.
+// or defensive components (`build_config::Focus`).
 unsafe fn route_answer(
     catalog: usize,
     catalog_len: u64,
@@ -3934,9 +3917,6 @@ unsafe fn route_answer(
     } else {
         crate::build_config::Focus::Neither
     };
-    if !ask.smart && focus == crate::build_config::Focus::Neither {
-        return Some(RouteAnswer::default());
-    }
     let graph = RouteGraph::of(catalog, catalog_len)?;
     let target = ask.target;
     // The picker's own two sets: tier-0 items that reach the target, or the

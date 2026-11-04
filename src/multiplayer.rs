@@ -7,15 +7,15 @@
 //! know every player's builds and athletes, not only its own. Each client sends
 //! its builds and its team's athletes to the server ([`COMMAND`]); the server,
 //! which runs in the host's game, sends everyone's back to every client
-//! ([`EVENT`]) with the host's Smart Builds and Item Rules and its mod-item
+//! ([`EVENT`]) with the host's Smart Builds boots and Item Rules and its mod-item
 //! registry. A detour then reads an athlete's pins from the player who has it
 //! ([`owner_of`], [`pins_of`]).
 //!
 //! While a session is multiplayer:
 //! - Builds go to their owner's athletes only, as under "Apply To Your Players
 //!   Only"; the editor greys out "Apply To All Players".
-//! - A guest plays by the host's Smart Builds and Item Rules
-//!   ([`host_smart_builds`], [`host_item_rules`]).
+//! - A guest plays by the host's Smart Builds boots and Item Rules
+//!   ([`host_smart_boots`], [`host_item_rules`]).
 //! - The automatic 5th and 6th items come from the rules alone: the game's item
 //!   network is the host server's and keeps training, so a guest's game could
 //!   not ask it the same question.
@@ -62,10 +62,10 @@ static SERVES: AtomicBool = AtomicBool::new(false);
 // The editor's toggles are owed a repaint ([`take_repaint`]).
 static REPAINT: AtomicBool = AtomicBool::new(false);
 
-// The host's Smart Builds (0 off, 1 on) and Item Rules (`Rule::code`) as last
+// The host's Smart Builds boots (0 without, 1 with) and Item Rules (`Rule::code`) as last
 // heard; [`UNKNOWN`] before.
 const UNKNOWN: u8 = u8::MAX;
-static HOST_SMART_BUILDS: AtomicU8 = AtomicU8::new(UNKNOWN);
+static HOST_SMART_BOOTS: AtomicU8 = AtomicU8::new(UNKNOWN);
 static HOST_ITEM_RULES: AtomicU8 = AtomicU8::new(UNKNOWN);
 
 // Whether any other player's row has a component focus.
@@ -103,7 +103,10 @@ struct Sent {
 #[derive(Serialize, Deserialize, Clone, Default, PartialEq)]
 struct Shared {
     generation: u64,
-    smart_builds: bool,
+    // Named for the old Smart Builds toggle, so a host on an older version
+    // still reads: on was with boots.
+    #[serde(rename = "smart_builds")]
+    smart_boots: bool,
     item_rules: u8,
     registry: Vec<String>,
     finals: Vec<u64>,
@@ -175,13 +178,13 @@ pub(crate) fn active() -> bool {
     ACTIVE.load(Ordering::Relaxed)
 }
 
-// The host's Smart Builds toggle, in force on a guest's game; `None` where this
+// The host's Smart Builds boots toggle, in force on a guest's game; `None` where this
 // game's own is (single player, the host, or nothing heard yet).
-pub(crate) fn host_smart_builds() -> Option<bool> {
+pub(crate) fn host_smart_boots() -> Option<bool> {
     if !active() || SERVES.load(Ordering::Relaxed) {
         return None;
     }
-    match HOST_SMART_BUILDS.load(Ordering::Relaxed) {
+    match HOST_SMART_BOOTS.load(Ordering::Relaxed) {
         UNKNOWN => None,
         on => Some(on == 1),
     }
@@ -260,7 +263,7 @@ fn set_active(why: &str) {
 // next one's server is sent the builds at once.
 fn leave() {
     SERVES.store(false, Ordering::Relaxed);
-    HOST_SMART_BUILDS.store(UNKNOWN, Ordering::Relaxed);
+    HOST_SMART_BOOTS.store(UNKNOWN, Ordering::Relaxed);
     HOST_ITEM_RULES.store(UNKNOWN, Ordering::Relaxed);
     *CLIENT.lock().unwrap_or_else(|e| e.into_inner()) = None;
     if !ACTIVE.swap(false, Ordering::Relaxed) {
@@ -334,10 +337,10 @@ fn hear(payload: &[u8]) {
             crate::build_config::pins_changed();
         }
     }
-    let smart = shared.smart_builds as u8;
-    let smart_was = HOST_SMART_BUILDS.swap(smart, Ordering::Relaxed);
+    let boots = shared.smart_boots as u8;
+    let boots_was = HOST_SMART_BOOTS.swap(boots, Ordering::Relaxed);
     let rules_was = HOST_ITEM_RULES.swap(shared.item_rules, Ordering::Relaxed);
-    if (smart_was, rules_was) != (smart, shared.item_rules) {
+    if (boots_was, rules_was) != (boots, shared.item_rules) {
         REPAINT.store(true, Ordering::Relaxed);
     }
     crate::tactics::adopt_item_registry(shared.registry, shared.finals);
@@ -406,7 +409,7 @@ fn fingerprint(team: u64, athletes: &[u64]) -> u64 {
     team.hash(&mut hasher);
     athletes.hash(&mut hasher);
     crate::build_config::pins_generation().hash(&mut hasher);
-    crate::build_config::own_smart_builds().hash(&mut hasher);
+    crate::build_config::own_smart_boots().hash(&mut hasher);
     crate::item_tiers::own_rule_code().hash(&mut hasher);
     hasher.finish()
 }
@@ -439,7 +442,7 @@ pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableComm
         let (registry, finals) = crate::tactics::item_registry().unwrap_or_default();
         let mut shared = Shared {
             generation: server.shared.generation,
-            smart_builds: crate::build_config::own_smart_builds(),
+            smart_boots: crate::build_config::own_smart_boots(),
             item_rules: crate::item_tiers::own_rule_code(),
             registry,
             finals,

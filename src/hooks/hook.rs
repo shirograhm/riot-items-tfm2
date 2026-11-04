@@ -501,10 +501,9 @@ fn apply_training_builds(
     } else {
         build_config::load_cached()
     };
-    // An empty config or Smart Builds being off is no reason to return: the
-    // pass also covers the engine's own picks, and the tactics panel is told
-    // every build.
-    let smart = build_config::smart_builds_enabled();
+    // An empty config is no reason to return: the pass also covers the
+    // engine's own picks, and the tactics panel is told every build.
+    let with_boots = build_config::smart_boots_enabled();
 
     // An owned key per comparison is fine: this runs only a few hundred times
     // per training match.
@@ -533,14 +532,17 @@ fn apply_training_builds(
             pinned = build.pinned;
             reserved = build.reserved;
         }
-        if smart {
-            let fit = crate::smart_builds::fit(champion, role);
-            let boots_key = crate::smart_builds::boots_for(champion, role, &enemies);
-            build_config::remember_rule_boots(champion, boots_key);
-            let boots = index_of(boots_key);
-            let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
-            enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
-        }
+        let fit = crate::smart_builds::fit(champion, role);
+        // No boots (rule 7) while the toggle is on "without boots".
+        let boots = with_boots
+            .then(|| {
+                let boots_key = crate::smart_builds::boots_for(champion, role, &enemies);
+                build_config::remember_rule_boots(champion, boots_key);
+                index_of(boots_key)
+            })
+            .flatten();
+        let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
+        enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
 
         // Noted for the tactics panel, as the stable hook does for league
         // matches, with the lane the champion plays.

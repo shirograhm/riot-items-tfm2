@@ -124,10 +124,10 @@ fn config_path() -> Result<PathBuf, String> {
 
 static CONFIG_CACHE: RwLock<Option<Arc<BuildConfig>>> = RwLock::new(None);
 
-// The build editor's two toggles, Smart Builds and own team only, kept in the
-// save ([`sync_settings`]) and held in atomics because the buy detour reads one
-// on every worker. Both default to on.
-static SMART_BUILDS: AtomicBool = AtomicBool::new(true);
+// The build editor's two toggles, Smart Builds' boots and own team only, kept
+// in the save ([`sync_settings`]) and held in atomics because the buy detour
+// reads one on every worker. Both default to on.
+static SMART_BOOTS: AtomicBool = AtomicBool::new(true);
 static OWN_TEAM_ONLY: AtomicBool = AtomicBool::new(true);
 // The loaded save's toggles have been read.
 static SETTINGS_LOADED: AtomicBool = AtomicBool::new(false);
@@ -135,8 +135,12 @@ static SETTINGS_LOADED: AtomicBool = AtomicBool::new(false);
 static SETTINGS_DIRTY: AtomicBool = AtomicBool::new(false);
 
 // The keys the toggles are kept under, in the mod's namespace of the save.
-const SMART_BUILDS_KEY: &str = "smart_builds";
+const SMART_BOOTS_KEY: &str = "smart_boots";
 const OWN_TEAM_ONLY_KEY: &str = "own_team_only";
+// The old Smart Builds on/off toggle, read when a save has no boots toggle yet:
+// on was Smart Builds with boots, and off ("Allow Any Builds") is closest to
+// Smart Builds without them.
+const LEGACY_SMART_BUILDS_KEY: &str = "smart_builds";
 
 // Drops the cached builds so the next read reloads the file. Only the editor
 // calls this, after it writes; never call it while a match could be running.
@@ -1004,10 +1008,10 @@ pub fn pinned_key(champion: &str, slot: usize) -> Option<String> {
     Some(alias_key(radiant_key(&raw).as_ref()).to_string())
 }
 
-// Sets the Smart Builds toggle, for the save that is loaded: in force at
+// Sets the Smart Builds boots toggle, for the save that is loaded: in force at
 // once, and written to the save on the next client frame ([`sync_settings`]).
-pub fn set_smart_builds(enabled: bool) -> bool {
-    SMART_BUILDS.store(enabled, Ordering::Relaxed);
+pub fn set_smart_boots(enabled: bool) -> bool {
+    SMART_BOOTS.store(enabled, Ordering::Relaxed);
     SETTINGS_DIRTY.store(true, Ordering::Relaxed);
     true
 }
@@ -1026,7 +1030,7 @@ pub fn set_own_team_only(enabled: bool) -> bool {
 pub fn sync_settings(ctx: &mut mod_api_stable::StableClient<'_>) {
     if !ctx.save_can_write() {
         if SETTINGS_LOADED.swap(false, Ordering::Relaxed) {
-            SMART_BUILDS.store(true, Ordering::Relaxed);
+            SMART_BOOTS.store(true, Ordering::Relaxed);
             OWN_TEAM_ONLY.store(true, Ordering::Relaxed);
             SETTINGS_DIRTY.store(false, Ordering::Relaxed);
         }
@@ -1042,16 +1046,17 @@ pub fn sync_settings(ctx: &mut mod_api_stable::StableClient<'_>) {
             ctx.save_get_string(key)
                 .and_then(|text| text.trim().parse::<bool>().ok())
         };
-        let (smart, own) = (saved(SMART_BUILDS_KEY), saved(OWN_TEAM_ONLY_KEY));
-        SMART_BUILDS.store(smart.unwrap_or(true), Ordering::Relaxed);
+        let boots = saved(SMART_BOOTS_KEY).or_else(|| saved(LEGACY_SMART_BUILDS_KEY));
+        let own = saved(OWN_TEAM_ONLY_KEY);
+        SMART_BOOTS.store(boots.unwrap_or(true), Ordering::Relaxed);
         OWN_TEAM_ONLY.store(own.unwrap_or(true), Ordering::Relaxed);
         SETTINGS_LOADED.store(true, Ordering::Relaxed);
     }
     if SETTINGS_DIRTY.load(Ordering::Relaxed) {
         // This save's own toggles, not what multiplayer has in force.
-        let smart = own_smart_builds().to_string();
+        let boots = own_smart_boots().to_string();
         let own = OWN_TEAM_ONLY.load(Ordering::Relaxed).to_string();
-        let written = ctx.save_set_string(SMART_BUILDS_KEY, &smart)
+        let written = ctx.save_set_string(SMART_BOOTS_KEY, &boots)
             & ctx.save_set_string(OWN_TEAM_ONLY_KEY, &own);
         if written {
             SETTINGS_DIRTY.store(false, Ordering::Relaxed);
@@ -1059,17 +1064,17 @@ pub fn sync_settings(ctx: &mut mod_api_stable::StableClient<'_>) {
     }
 }
 
-// Whether the Smart Builds pass is on for the loaded save (default on); see
-// [`crate::smart_builds`]. A multiplayer guest plays by the host's
-// (`crate::multiplayer::host_smart_builds`).
-pub fn smart_builds_enabled() -> bool {
-    crate::multiplayer::host_smart_builds().unwrap_or_else(own_smart_builds)
+// Whether Smart Builds gives AI builds boots (rule 7) for the loaded save
+// (default on); the rest of [`crate::smart_builds`] always applies. A
+// multiplayer guest plays by the host's (`crate::multiplayer::host_smart_boots`).
+pub fn smart_boots_enabled() -> bool {
+    crate::multiplayer::host_smart_boots().unwrap_or_else(own_smart_boots)
 }
 
-// This game's own Smart Builds toggle, whatever multiplayer has in force: what
-// the host's server sends the other players.
-pub fn own_smart_builds() -> bool {
-    SMART_BUILDS.load(Ordering::Relaxed)
+// This game's own boots toggle, whatever multiplayer has in force: what the
+// host's server sends the other players.
+pub fn own_smart_boots() -> bool {
+    SMART_BOOTS.load(Ordering::Relaxed)
 }
 
 // Whether builds apply only to the player's own team, for the loaded save

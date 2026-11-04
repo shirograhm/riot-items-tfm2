@@ -88,21 +88,17 @@ impl StableItemBuildHook for ConfiguredBuilds {
         // from `build`.
         let mut own = None;
 
-        if build_config::smart_builds_enabled() {
-            // Under `own_team_only` this build reaches both teams, so it
-            // ignores pins; the pin-aware build goes to the spawn injector
-            // instead (see `remember_pinned_build`).
-            let later_open = !own_team_only
-                && build_config::later_slot_open(&build_config::pin_row(
-                    ctx.champion_key(),
-                    champion_role(ctx),
-                ));
-            enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved, later_open);
-            if own_team_only {
-                own = remember_pinned_build(ctx, &build);
-            }
-        } else if own_team_only {
-            own = pins_over(ctx, &build);
+        // Under `own_team_only` this build reaches both teams, so it ignores
+        // pins; the pin-aware build goes to the spawn injector instead (see
+        // `remember_pinned_build`).
+        let later_open = !own_team_only
+            && build_config::later_slot_open(&build_config::pin_row(
+                ctx.champion_key(),
+                champion_role(ctx),
+            ));
+        enforce_smart_build(ctx, &mut build, &merged.pinned, &merged.reserved, later_open);
+        if own_team_only {
+            own = remember_pinned_build(ctx, &build);
         }
         note_for_match_panel(ctx, &build, own.as_deref());
 
@@ -201,27 +197,6 @@ fn remember_pinned_build(
     Some(pinned)
 }
 
-// The player's build under `own_team_only` with Smart Builds off: each pin laid
-// over its slot. `None` when no pin applies.
-fn pins_over(ctx: &StableItemBuildContext<'_>, build: &[usize]) -> Option<Vec<usize>> {
-    // Publishes the pin snapshot `pin_row` reads.
-    build_config::load_cached();
-    let row = build_config::pin_row(ctx.champion_key(), champion_role(ctx));
-    let mut own = build.to_vec();
-    let mut pinned = false;
-    for (slot, item) in own.iter_mut().enumerate() {
-        let pin = row
-            .get(slot)
-            .and_then(Option::as_ref)
-            .and_then(|key| ctx.item_index(key));
-        if let Some(index) = pin {
-            *item = index;
-            pinned = true;
-        }
-    }
-    pinned.then_some(own)
-}
-
 // Notes every build for the in-match tactics panel, which finds its match by
 // lineup; `own` is the player's athlete's build when `own_team_only` makes it
 // differ.
@@ -246,7 +221,8 @@ fn note_for_match_panel(ctx: &StableItemBuildContext<'_>, build: &[usize], own: 
 }
 
 // The Smart Builds pass over a build from the host; the rules live in
-// `smart_builds`, which the training-screen detour in `hook` also drives.
+// `smart_builds`, which the training-screen detour in `hook` also drives. No
+// boots (rule 7) while the toggle is on "without boots".
 fn enforce_smart_build(
     ctx: &StableItemBuildContext<'_>,
     build: &mut [usize],
@@ -255,9 +231,12 @@ fn enforce_smart_build(
     later_open: bool,
 ) {
     // Only this path sees the enemy lineup, which picks a tank's boots.
-    let enemies = ctx.enemy_champions();
-    let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
-    build_config::remember_rule_boots(ctx.champion_key(), boots);
+    let boots = build_config::smart_boots_enabled().then(|| {
+        let enemies = ctx.enemy_champions();
+        let boots = smart_builds::boots_for(ctx.champion_key(), champion_role(ctx), &enemies);
+        build_config::remember_rule_boots(ctx.champion_key(), boots);
+        boots
+    });
     smart_builds::enforce(
         ctx.item_count(),
         build,
@@ -265,7 +244,7 @@ fn enforce_smart_build(
         reserved,
         later_open,
         champion_fit(ctx),
-        ctx.item_index(boots),
+        boots.and_then(|boots| ctx.item_index(boots)),
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),
         |index| is_selectable_final(ctx, index),

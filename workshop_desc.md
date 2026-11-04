@@ -33,7 +33,6 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Known Issues [/h1]
-- Some AI champions prefer the wrong stats when picking their own items. Keep [b]Enforce Smart Builds[/b] on to prevent this.  
 - Largely experimental in multiplayer.  
 
 [h1] Custom Item Values [/h1]
@@ -63,14 +62,14 @@ Whenever the game patches its champions, this mod patches its items too: strong 
 To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. Re-run the game after editing it. Without a rename, your numbers could be overwritten on update.  
 
 [h1] Smart Builds [/h1]
-[b]Enforce Smart Builds[/b] cleans up the AI's picks using the following rules:
+Smart Builds cleans up the AI's picks using the following rules:
 1. No duplicate items  
 2. One Grievous Wounds item  
 3. Crit capped at 100%, incl. passives  
 4. Support items only on supports  
 5. Items match the champion's scaling (AD/AP/hybrid)  
 6. Stacking items only in the first two slots, scaling items only from the third on (supports exempt)  
-7. One pair of boots  
+7. One pair of boots (only with [b]Smart Build (w/ boots)[/b])  
 8. One jungle item, junglers only  
 9. Role items bought first, a jungler's jungle item in slot 1 (none if you pin slot 1)  
 10. Imperial Mandate on supports that immobilize  
@@ -83,7 +82,7 @@ To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b
 17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
 18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
 
-Items you pin are never overridden, and the AI works around them. Switch to [b]Allow Any Builds[/b] to let the AI roam free.  
+Items you pin are never overridden, and the AI works around them. Switch the Build Editor's toggle to [b]Smart Build (w/o boots)[/b] to keep boots out of AI builds.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  

@@ -104,8 +104,8 @@ impl Default for Strings {
             col_focus: "COMPONENTS".into(),
             focus_offense: "Offense".into(),
             focus_defense: "Defense".into(),
-            unique_on: "Enforce Smart Builds".into(),
-            unique_off: "Allow Any Builds".into(),
+            unique_on: "Smart Build (w/ boots)".into(),
+            unique_off: "Smart Build (w/o boots)".into(),
             scope_all: "Apply To All Players".into(),
             scope_own: "Apply To Your Players Only".into(),
             side_blue: "Blue Team".into(),
@@ -1672,9 +1672,9 @@ fn toggle_cell_style(
     )
 }
 
-// Paints which half of the unique-items toggle is the live setting.
+// Paints which half of the Smart Builds boots toggle is the live setting.
 fn refresh_unique(ctx: &mut StableClient<'_>) {
-    if build_config::smart_builds_enabled() {
+    if build_config::smart_boots_enabled() {
         paint_toggle(ctx, unique_on_path(), unique_off_path());
     } else {
         paint_toggle(ctx, unique_off_path(), unique_on_path());
@@ -3584,7 +3584,7 @@ fn handle_event(ctx: &mut StableClient<'_>) {
     // A segmented control's cells assert a value, so clicking the lit one is a
     // no-op. Only the setting is written; the saved builds are untouched.
     if path == unique_on_path() || path == unique_off_path() {
-        if build_config::set_smart_builds(path == unique_on_path()) {
+        if build_config::set_smart_boots(path == unique_on_path()) {
             refresh_unique(ctx);
         }
         return;
