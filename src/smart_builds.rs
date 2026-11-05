@@ -1,5 +1,6 @@
-//! The Smart Builds rules, which the editor's footer toggle
-//! ([`crate::build_config::smart_builds_enabled`]) enforces on a build:
+//! The Smart Builds rules, which every AI build is held to; the editor's
+//! footer toggle ([`crate::build_config::smart_boots_enabled`]) only says
+//! whether rule 7 gives it boots:
 //!
 //! 1. **Unique items**: no item twice.
 //! 2. **One Grievous Wounds item.**

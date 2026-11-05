@@ -266,7 +266,7 @@ build_editor:empty {
             align_x: Center;
           }
 
-          text: "Enforce Smart Builds";
+          text: "Smart Builds (Boots)";
         }
 
         #off:color_selectable {
@@ -284,7 +284,7 @@ build_editor:empty {
             align_x: Center;
           }
 
-          text: "Allow Any Builds";
+          text: "Smart Builds (No Boots)";
         }
       }
 

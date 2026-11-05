@@ -1,6 +1,6 @@
 # Riot Games Item Expansion Pack - Teamfight Manager 2
 
-![TFM2](https://img.shields.io/badge/TFM2-v0.7.0-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) [![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen)](https://github.com/shirograhm/riot-items-tfm2/releases/latest) [![Author](https://img.shields.io/badge/Author-shirograhm-crimson)](https://github.com/shirograhm)
+![TFM2](https://img.shields.io/badge/TFM2-v0.7.1-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) [![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen)](https://github.com/shirograhm/riot-items-tfm2/releases/latest) [![Author](https://img.shields.io/badge/Author-shirograhm-crimson)](https://github.com/shirograhm)
 
 An expansion pack that adds items from Riot Games (LoL, TFT, Arena, etc.) to Teamfight Manager 2.  
 
@@ -30,7 +30,7 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 
 
 ##### Smart Builds
-**Enforce Smart Builds** (a toggle in the Build Editor footer, on by default) fixes bad AI item picks. Switch it to **Allow Any Builds** to turn it off. Items you pin are never changed: the AI builds around them.
+Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Editor footer sets whether AI builds get boots: **Smart Builds (Boots)** (the default) or **Smart Builds (No Boots)**. Items you pin are never changed: the AI builds around them.
 
 **Removed picks.** The AI replaces these with a similar finished item:
 - duplicate items
@@ -61,7 +61,7 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 - Feral Flare is built from Hunter's Machete, and Grez's Spectral Lantern and Philosopher's Stone from Hunter's Talisman.
 - Pinning anything in a jungler's slot 1 skips the jungle item.
 
-**Boots.** Every AI build gets boots as its 2nd item (3rd if an early item takes slot 2), unless you pinned boots:
+**Boots.** Under **Smart Builds (Boots)**, every AI build gets boots as its 2nd item (3rd if an early item takes slot 2), unless you pinned boots:
 - **Berserker's Greaves**: marksmen
 - **Sorcerer's Shoes**: mages
 - **Plated Steelcaps** or **Mercury's Treads**: tanks, including tank supports (whichever counters the enemy's main damage type)
@@ -79,7 +79,7 @@ Boots also have their own **Boots** group in the Build Editor.
 
 **Components.** Many items can be built from different components (Jak'Sho starts from Cloth Armor or Null-Magic Mantle), and the game picks them at random. Smart Builds picks the ones that fit: armor or magic resist based on the enemy team's damage, the damage stats the champion uses (attack speed and crit first for marksmen), and more health and resists for tankier champions. This applies to pinned items too.
 
-**Offense / Defense.** Each row in the Build Editor has **Offense** and **Defense** cells. Pick one to make that champion take the offensive (damage, attack speed, crit, penetration) or defensive (health, armor, magic resist, tenacity) components wherever an item can be built more than one way. Click the lit cell again to go back to neither. It works under Allow Any Builds too, and follows Apply To Your Players Only like pins do.
+**Offense / Defense.** Each row in the Build Editor has **Offense** and **Defense** cells. Pick one to make that champion take the offensive (damage, attack speed, crit, penetration) or defensive (health, armor, magic resist, tenacity) components wherever an item can be built more than one way. Click the lit cell again to go back to neither. It follows Apply To Your Players Only like pins do.
 
 ##### Item Rules
 **Options > Competition > Item Rules** sets how far items upgrade. It applies to both teams, pinned items included:

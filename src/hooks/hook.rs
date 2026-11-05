@@ -32,19 +32,20 @@ const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-// Signature for game 0.7.0, where the target is `0x267e2f0` (2709 bytes; the
-// beam search's only caller, frame 0x238): the same 48 bytes as 0.6.2, 0.6.4,
-// 0.6.5 and 0.7.0-beta. 0.7.0-beta2's was `0x2dcbef0` (frame 0x218). The first
-// 47 bytes match 2 functions, so do not shorten it.
+// Signature for game 0.7.1, where the target is `0x305a6b0` (2628 bytes; the
+// beam search's only caller, frame 0x218): the same 48 bytes as 0.7.0-beta2
+// (`0x2dcbef0`). 0.7.0's was `0x267e2f0` (frame 0x238), the shape of 0.6.2,
+// 0.6.4, 0.6.5 and 0.7.0-beta. The first 44 bytes match 5 functions; 47 are
+// unique, so do not shorten it.
 //
 // When it is stale, league builds still work but training-screen builds and the
 // tactics half stop. Re-run `tools/find_item_build_hook.py` and paste the
 // result here, or ship a `hook-target.json`, which takes precedence and needs
 // no rebuild.
 const FALLBACK_SIGNATURE: [u8; 48] = [
-    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x38,
-    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0xA0, 0x01,
-    0x00, 0x00, 0x48, 0xC7, 0x85, 0x98, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4D, 0x89, 0xCE,
+    0x55, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55, 0x41, 0x54, 0x56, 0x57, 0x53, 0x48, 0x81, 0xEC, 0x18,
+    0x02, 0x00, 0x00, 0x48, 0x8D, 0xAC, 0x24, 0x80, 0x00, 0x00, 0x00, 0x0F, 0x29, 0xB5, 0x80, 0x01,
+    0x00, 0x00, 0x48, 0xC7, 0x85, 0x78, 0x01, 0x00, 0x00, 0xFE, 0xFF, 0xFF, 0xFF, 0x4C, 0x89, 0xCB,
 ];
 
 // Size range for the diagnostic candidate list only; never used to pick the
@@ -281,7 +282,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.7.0 and this build differs — \
+            "{error}; the built-in signature is for game 0.7.1 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
@@ -501,10 +502,9 @@ fn apply_training_builds(
     } else {
         build_config::load_cached()
     };
-    // An empty config or Smart Builds being off is no reason to return: the
-    // pass also covers the engine's own picks, and the tactics panel is told
-    // every build.
-    let smart = build_config::smart_builds_enabled();
+    // An empty config is no reason to return: the pass also covers the
+    // engine's own picks, and the tactics panel is told every build.
+    let with_boots = build_config::smart_boots_enabled();
 
     // An owned key per comparison is fine: this runs only a few hundred times
     // per training match.
@@ -533,14 +533,17 @@ fn apply_training_builds(
             pinned = build.pinned;
             reserved = build.reserved;
         }
-        if smart {
-            let fit = crate::smart_builds::fit(champion, role);
-            let boots_key = crate::smart_builds::boots_for(champion, role, &enemies);
-            build_config::remember_rule_boots(champion, boots_key);
-            let boots = index_of(boots_key);
-            let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
-            enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
-        }
+        let fit = crate::smart_builds::fit(champion, role);
+        // No boots (rule 7) while the toggle is on "without boots".
+        let boots = with_boots
+            .then(|| {
+                let boots_key = crate::smart_builds::boots_for(champion, role, &enemies);
+                build_config::remember_rule_boots(champion, boots_key);
+                index_of(boots_key)
+            })
+            .flatten();
+        let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
+        enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
 
         // Noted for the tactics panel, as the stable hook does for league
         // matches, with the lane the champion plays.

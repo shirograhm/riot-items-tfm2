@@ -71,6 +71,9 @@ const CAMERA_HOSTS: [&str; 2] = [
     "ingame.wide_data.camera_buttons",
 ];
 const CAMERA_HALVES: [&str; 2] = ["blue_player", "red_player"];
+// A camera button's text as the layout ships it, until the game writes a
+// player in: what a view's buttons can still say while the other view is up.
+const CAMERA_PLACEHOLDER: &str = "Lv.5 abc";
 
 // This module's table, spawned into the panel, and its tooltip.
 const BOARD: &str = "riot_builds";
@@ -389,12 +392,13 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
             found.push((key.to_string(), card));
         },
     );
-    // Mods' items are in the document from registration, the game's own only
-    // around a match, so it is read for good once one of the game's is there
-    // (see `item_stats::prime_item_traits`).
-    let games = found
-        .iter()
-        .any(|(key, _)| key == crate::item_stats::A_GAME_ITEM);
+    // Read for good once the document has one of the game's items and the
+    // mods' list, which is where another mod's items are described (see
+    // `item_stats::prime_item_traits`).
+    let games = crate::item_stats::has_mod_items(&root)
+        && found
+            .iter()
+            .any(|(key, _)| key == crate::item_stats::A_GAME_ITEM);
     if let Ok(mut cards) = CARDS.lock() {
         let cards = cards.get_or_insert_with(HashMap::new);
         for (key, card) in found {
@@ -890,6 +894,7 @@ fn camera_seats(ctx: &StableClient<'_>) -> Athletes {
             for (side, half) in CAMERA_HALVES.iter().enumerate() {
                 let name = ctx
                     .ui_text(&format!("{host}.{child}.{half}.text"))
+                    .filter(|text| text.trim() != CAMERA_PLACEHOLDER)
                     .and_then(|text| athlete_of(&text));
                 if let (Some(lane), Some(name)) = (lane, name) {
                     seats[side][lane].get_or_insert(name);
@@ -1133,13 +1138,13 @@ struct Match {
 }
 
 // A champion's name as a label shows it: the game's own, as a reference the
-// label resolves in the game's language, or the key with its underscores
-// out for a champion the game's text does not name.
+// label resolves in the game's language, or nothing for a champion the game's
+// text does not name.
 fn champion_label(ctx: &StableClient<'_>, champion: &str) -> String {
     let reference = format!("#asset/base/text/champion?description.{champion}.name");
     match ctx.i18n(&reference) {
         Some(name) if !name.is_empty() && !name.starts_with('#') => reference,
-        _ => champion.replace('_', " "),
+        _ => String::new(),
     }
 }
 
@@ -1260,33 +1265,14 @@ fn resolve(ctx: &StableClient<'_>) -> Option<Match> {
         return None;
     }
 
-    // A cell is labelled with its athlete: the camera buttons name both
-    // sides', the vanilla rows the panel team's, and failing both the
-    // champion's own name stands in.
-    let panel: Vec<String> = (0..LANES)
-        .map(|lane| {
-            ctx.ui_text(&format!("{ROWS_PATH}.row{lane}.name"))
-                .map(|name| name.trim().to_string())
-                .unwrap_or_default()
-        })
-        .collect();
-    let mut side = 0;
+    // A cell is labelled with its champion's name.
     let seats = raw.map(|lanes| {
-        let here = side;
-        side += 1;
         lanes
             .into_iter()
-            .enumerate()
-            .map(|(lane, seat)| {
+            .map(|seat| {
                 let (champion, decided, own) = seat?;
-                let athlete = cameras[here][lane].clone().or_else(|| {
-                    panel
-                        .get(lane)
-                        .filter(|name| player_side == Some(here) && !name.is_empty())
-                        .cloned()
-                });
                 Some(Seat {
-                    name: athlete.unwrap_or_else(|| champion_label(ctx, &champion)),
+                    name: champion_label(ctx, &champion),
                     champion,
                     decided,
                     own,
