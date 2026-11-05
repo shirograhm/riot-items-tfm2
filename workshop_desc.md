@@ -15,12 +15,6 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 Currently updated for game version 0.7.1. Older game versions need an older build of the mod:  
 Mod v1.0.8 - 0.7.1  
 Mod v1.0.7 - 0.7.0  
-Mod v1.0.4-1.0.6 - 0.6.5  
-Mod v1.0.1-1.0.3 - 0.6.4  
-Mod v0.11.11-1.0.0 - 0.6.3  
-Mod v0.11.3-0.11.10 - 0.6.2  
-Mod v0.10.1-0.11.2 - 0.6.1  
-Mod v0.9.11-0.10.0 - 0.6.0  
 
 Manual releases (includes beta releases): https://github.com/shirograhm/riot-items-tfm2/releases
 
@@ -70,7 +64,7 @@ Smart Builds cleans up the AI's picks using the following rules:
 4. Support items only on supports  
 5. Items match the champion's scaling (AD/AP/hybrid)  
 6. Stacking items only in the first two slots, scaling items only from the third on (supports exempt)  
-7. One pair of boots (only with [b]Smart Builds (Boots)[/b])  
+7. One pair of boots (if toggled)  
 8. One jungle item, junglers only  
 9. Role items bought first, a jungler's jungle item in slot 1 (none if you pin slot 1)  
 10. Imperial Mandate on supports that immobilize  
