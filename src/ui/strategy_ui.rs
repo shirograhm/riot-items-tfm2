@@ -662,9 +662,12 @@ struct EditorState {
     search_fit: Option<(u32, bool)>,
     // The item list, headers included, and the language its names are in.
     // Cached until that is not the game's language: the item pool cannot
-    // change without a restart.
+    // change without a restart. Unless `entries_settled` is set, the list was
+    // read before the settings document had the mods' items (another mod's
+    // finals missing) and is read again at the next opening.
     entries: Vec<ListEntry>,
     entries_lang: String,
+    entries_settled: bool,
     // The champion list, cached the same way.
     champions: Vec<ChampionChoice>,
     champions_lang: String,
@@ -1068,13 +1071,19 @@ fn sanitize(text: &str) -> String {
 
 // Every final item the game knows, grouped into [`item_catalog`]'s categories
 // and sorted by name in `lang`, read from the item settings document so new
-// items need no wiring.
-fn load_entries(ctx: &StableClient<'_>, lang: &str) -> Vec<ListEntry> {
+// items need no wiring. Also whether the document had the mods' items: its
+// `mod_items` is an empty list on the first frames and in a new save.
+fn load_entries(ctx: &StableClient<'_>, lang: &str) -> (Vec<ListEntry>, bool) {
     let mut choices = Vec::new();
+    let mut settled = false;
     if let Some(json) = ctx.setting_get_json(SettingTargetV1::ItemSetting, "") {
         if let Ok(serde_json::Value::Object(root)) =
             serde_json::from_str::<serde_json::Value>(&json)
         {
+            settled = root
+                .get("mod_items")
+                .and_then(serde_json::Value::as_array)
+                .is_some_and(|listed| !listed.is_empty());
             collect_items(ctx, lang, &root, 0, &mut choices);
         }
     }
@@ -1100,7 +1109,7 @@ fn load_entries(ctx: &StableClient<'_>, lang: &str) -> Vec<ListEntry> {
         }
         entries.push(ListEntry::Item(choice));
     }
-    entries
+    (entries, settled)
 }
 
 // One [`ItemChoice`] from an item key, named in `lang`; `None` for an item
@@ -1163,9 +1172,18 @@ fn merge_mod_finals(ctx: &StableClient<'_>, lang: &str, choices: &mut Vec<ItemCh
 }
 
 // An object is an item when it has any field every item has; the settings
-// document mixes items with group objects such as `mod_items`.
+// document mixes items with group objects.
 fn is_item(value: &serde_json::Value) -> bool {
     value.get("next_tier").is_some() || value.get("tier").is_some() || value.get("price").is_some()
+}
+
+// `next_tier` empty: nothing upgrades from this item. The hook cannot test
+// this (`next_tier` does not cross the stable boundary), but the JSON can.
+fn is_final(value: &serde_json::Value) -> bool {
+    value
+        .get("next_tier")
+        .and_then(|next| next.as_array())
+        .is_none_or(|next| next.is_empty())
 }
 
 // Walks the settings document collecting final items, descending into group
@@ -1179,28 +1197,50 @@ fn collect_items(
     out: &mut Vec<ItemChoice>,
 ) {
     for (key, value) in map {
+        if let Some(listed) = value.as_array() {
+            collect_listed(ctx, lang, listed, out);
+            continue;
+        }
         let Some(object) = value.as_object() else {
             continue;
         };
         if !is_item(value) {
-            // Two levels, not one: mod items sit under a per-mod bucket
-            // (`mod_items.riot_items_tfm2.collector`).
             if depth < 2 {
                 collect_items(ctx, lang, object, depth + 1, out);
             }
             continue;
         }
-        // `next_tier` empty: nothing upgrades from this item. The hook cannot
-        // test this (`next_tier` does not cross the stable boundary), but the
-        // JSON can.
-        let is_final = value
-            .get("next_tier")
-            .and_then(|next| next.as_array())
-            .is_none_or(|next| next.is_empty());
-        if !is_final {
+        if !is_final(value) {
             continue;
         }
         out.extend(make_choice(ctx, lang, key).or_else(|| other_mod_choice(ctx, lang, key, object)));
+    }
+}
+
+// `mod_items`: every mod's items as one list, each named by its own `key`
+// field, not a map. Only other mods' finals are taken from it; this mod's come
+// from [`merge_mod_finals`] as before, which picks out the pool items.
+fn collect_listed(
+    ctx: &StableClient<'_>,
+    lang: &str,
+    listed: &[serde_json::Value],
+    out: &mut Vec<ItemChoice>,
+) {
+    for value in listed {
+        let (Some(object), Some(key)) = (
+            value.as_object(),
+            value.get("key").and_then(serde_json::Value::as_str),
+        ) else {
+            continue;
+        };
+        if !is_item(value)
+            || !is_final(value)
+            || item_catalog::category_of(build_config::base_slug(key)).is_some()
+            || out.iter().any(|choice| choice.key == key)
+        {
+            continue;
+        }
+        out.extend(other_mod_choice(ctx, lang, key, object));
     }
 }
 
@@ -1231,11 +1271,12 @@ fn other_mod_choice(
 // The item list in the game's language, loading it when there is none in that
 // language yet. Empty is a valid (if useless) answer — it means the client
 // cannot read the item settings document — and is not cached, so a later frame
-// can retry.
+// can retry. A list read before the document had the mods' items is cached but
+// read again on the next call ([`EditorState::entries_settled`]).
 fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
     let lang = game_language();
     let cached = with_state(|state| {
-        (state.entries_lang == lang)
+        (state.entries_lang == lang && state.entries_settled)
             .then(|| state.entries.clone())
             .unwrap_or_default()
     })
@@ -1244,7 +1285,7 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
         return cached;
     }
 
-    let loaded = load_entries(ctx, &lang);
+    let (loaded, settled) = load_entries(ctx, &lang);
     let items = loaded
         .iter()
         .filter(|entry| matches!(entry, ListEntry::Item(_)))
@@ -1256,6 +1297,7 @@ fn cached_entries(ctx: &StableClient<'_>) -> Vec<ListEntry> {
         let _ = with_state(|state| {
             state.entries = loaded.clone();
             state.entries_lang = lang;
+            state.entries_settled = settled;
         });
     }
     loaded
