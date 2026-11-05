@@ -12,7 +12,8 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.7.0. Older game versions need an older build of the mod:  
+Currently updated for game version 0.7.1. Older game versions need an older build of the mod:  
+Mod v1.0.8 - 0.7.1  
 Mod v1.0.7 - 0.7.0  
 Mod v1.0.4-1.0.6 - 0.6.5  
 Mod v1.0.1-1.0.3 - 0.6.4  
