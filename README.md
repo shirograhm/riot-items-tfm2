@@ -28,6 +28,23 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 ##### Pregame Item Builds Editor
 <img width="2049" height="1183" alt="item build editor" src="https://github.com/user-attachments/assets/27bfd055-4eea-49c2-8736-484c56c3afe6" />
 
+##### Other Mods' Items in the Build Editor
+Items added by another mod can be picked and pinned in the Build Editor when that mod opts in. For an item to show up:
+
+1. **The mod is enabled**, installed in the game's `mods` folder or from the Workshop.
+2. **The mod ships `text/item_classes.json`** in its own folder, giving each item a class:
+   ```json
+   {
+       "my_item_key": "Fighter"
+   }
+   ```
+   The key is the item's `key()`. The class is one of `Assassin`, `Fighter`, `Marksman`, `Mage`, `Tank`, `Support` or `Boots`, in any case; anything else leaves the item out. It only decides which group the item is listed under.
+3. **The item is a final item**: its `next_tier()` is empty.
+4. **The item is not tier 0**: its `tier()` is 1 or higher, so it has a recipe.
+5. **A save is loaded.** A brand-new save only lists other mods' items after it has been saved and loaded again.
+
+The item is listed under its name from the mod's item text. It has no icon in the editor, and a slot pinned with it shows its initials instead.
+
 
 ##### Smart Builds
 Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Editor footer sets whether AI builds get boots: **Smart Builds (Boots)** (the default) or **Smart Builds (No Boots)**. Items you pin are never changed: the AI builds around them.
