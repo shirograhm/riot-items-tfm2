@@ -30,7 +30,7 @@ https://claude.ai/artifact/Sqb2fwDxZ8EYtipyXsGrYt
 
 
 ##### Smart Builds
-Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Editor footer sets whether AI builds get boots: **Smart Build (w/ boots)** (the default) or **Smart Build (w/o boots)**. Items you pin are never changed: the AI builds around them.
+Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Editor footer sets whether AI builds get boots: **Boots** (the default) or **No Boots**. Items you pin are never changed: the AI builds around them.
 
 **Removed picks.** The AI replaces these with a similar finished item:
 - duplicate items
@@ -61,7 +61,7 @@ Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Ed
 - Feral Flare is built from Hunter's Machete, and Grez's Spectral Lantern and Philosopher's Stone from Hunter's Talisman.
 - Pinning anything in a jungler's slot 1 skips the jungle item.
 
-**Boots.** Under **Smart Build (w/ boots)**, every AI build gets boots as its 2nd item (3rd if an early item takes slot 2), unless you pinned boots:
+**Boots.** Under **Boots**, every AI build gets boots as its 2nd item (3rd if an early item takes slot 2), unless you pinned boots:
 - **Berserker's Greaves**: marksmen
 - **Sorcerer's Shoes**: mages
 - **Plated Steelcaps** or **Mercury's Treads**: tanks, including tank supports (whichever counters the enemy's main damage type)

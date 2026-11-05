@@ -70,7 +70,7 @@ Smart Builds cleans up the AI's picks using the following rules:
 4. Support items only on supports  
 5. Items match the champion's scaling (AD/AP/hybrid)  
 6. Stacking items only in the first two slots, scaling items only from the third on (supports exempt)  
-7. One pair of boots (only with [b]Smart Build (w/ boots)[/b])  
+7. One pair of boots (only with [b]Boots[/b])  
 8. One jungle item, junglers only  
 9. Role items bought first, a jungler's jungle item in slot 1 (none if you pin slot 1)  
 10. Imperial Mandate on supports that immobilize  
@@ -83,7 +83,7 @@ Smart Builds cleans up the AI's picks using the following rules:
 17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
 18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
 
-Items you pin are never overridden, and the AI works around them. Switch the Build Editor's toggle to [b]Smart Build (w/o boots)[/b] to keep boots out of AI builds.  
+Items you pin are never overridden, and the AI works around them. Switch the Build Editor's toggle to [b]No Boots[/b] to keep boots out of AI builds.  
 
 [h1] Item Stats [/h1]
 The Statistics screen's [b]Item Stats[/b] tab shows each item's games, wins, losses, win rate, pick rate and first-item rate for your save. Sort by any column, and filter by class, tier or lane.  
