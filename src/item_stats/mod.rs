@@ -715,8 +715,9 @@ pub(crate) fn prime_item_traits(ctx: &StableClient<'_>) {
     });
     // Settle only once the document has real numbers for the game's items:
     // until then it holds all thirty with zeroed stats, so key presence or a
-    // time limit would record blanks.
-    if games {
+    // time limit would record blanks. And only once it has the mods' items,
+    // which describe other mods' (a new save never does, so it keeps reading).
+    if games && has_mod_items(&root) {
         PRIMED.store(true, Ordering::Relaxed);
     }
 }
@@ -1077,6 +1078,18 @@ pub(crate) fn merged_item<'a>(
     }
 }
 
+// Whether the settings document has the mods' items yet: its `mod_items` is an
+// empty list on the first frames and in a new save.
+pub(crate) fn has_mod_items(root: &serde_json::Map<String, Value>) -> bool {
+    root.get("mod_items")
+        .and_then(Value::as_array)
+        .is_some_and(|listed| !listed.is_empty())
+}
+
+fn is_item_object(object: &serde_json::Map<String, Value>) -> bool {
+    object.contains_key("next_tier") || object.contains_key("tier") || object.contains_key("price")
+}
+
 // Calls `visit` with the key and the settings object of every item under
 // `map`, the root of the settings document at `depth` 0.
 pub(crate) fn each_item(
@@ -1085,15 +1098,21 @@ pub(crate) fn each_item(
     visit: &mut dyn FnMut(&str, &serde_json::Map<String, Value>),
 ) {
     for (key, value) in map {
+        // `mod_items`: every mod's items as one list, each named by its own
+        // `key` field.
+        if let Some(listed) = value.as_array() {
+            for object in listed.iter().filter_map(Value::as_object) {
+                let key = object.get("key").and_then(Value::as_str).filter(|key| !key.is_empty());
+                if let (Some(key), true) = (key, is_item_object(object)) {
+                    visit(key, object);
+                }
+            }
+            continue;
+        }
         let Some(object) = value.as_object() else {
             continue;
         };
-        let is_item = object.contains_key("next_tier")
-            || object.contains_key("tier")
-            || object.contains_key("price");
-        if !is_item {
-            // Two levels, not one: mod items sit under a per-mod bucket
-            // (`mod_items.riot_items_tfm2.collector`).
+        if !is_item_object(object) {
             if depth < 2 {
                 each_item(object, depth + 1, visit);
             }

@@ -389,12 +389,13 @@ fn prime_engine_cards(ctx: &StableClient<'_>) {
             found.push((key.to_string(), card));
         },
     );
-    // Mods' items are in the document from registration, the game's own only
-    // around a match, so it is read for good once one of the game's is there
-    // (see `item_stats::prime_item_traits`).
-    let games = found
-        .iter()
-        .any(|(key, _)| key == crate::item_stats::A_GAME_ITEM);
+    // Read for good once the document has one of the game's items and the
+    // mods' list, which is where another mod's items are described (see
+    // `item_stats::prime_item_traits`).
+    let games = crate::item_stats::has_mod_items(&root)
+        && found
+            .iter()
+            .any(|(key, _)| key == crate::item_stats::A_GAME_ITEM);
     if let Ok(mut cards) = CARDS.lock() {
         let cards = cards.get_or_insert_with(HashMap::new);
         for (key, card) in found {
