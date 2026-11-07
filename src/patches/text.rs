@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 138] = [
+const ROW_FORMATS: [RowFormat; 136] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
