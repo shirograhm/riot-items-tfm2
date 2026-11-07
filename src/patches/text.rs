@@ -1999,11 +1999,6 @@ const ROW_FORMATS: [RowFormat; 138] = [
     row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
     row(
         "philosophers_medallion",
-        "effect_skill_cooldown_mult",
-        label::ABILITY_HASTE,
-    ),
-    row(
-        "philosophers_medallion",
         "effect_bonus_hp_regen",
         label::HEALTH_REGENERATION,
     ),
@@ -2025,11 +2020,6 @@ const ROW_FORMATS: [RowFormat; 138] = [
         label::BONUS_HEALTH,
     )
     .unit(unit::PER_STACK),
-    row(
-        "philosophers_stone",
-        "effect_skill_cooldown_mult",
-        label::ABILITY_HASTE,
-    ),
     row(
         "philosophers_stone",
         "effect_bonus_hp_regen",

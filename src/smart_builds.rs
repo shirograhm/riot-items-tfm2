@@ -861,9 +861,11 @@ const MELEE_ITEMS: [&str; 9] = [
 ];
 
 // Rule 11: items whose passive wants the carrier at range, by base slug.
-const RANGED_ITEMS: [&str; 2] = [
+const RANGED_ITEMS: [&str; 4] = [
     "runaans_hurricane", // bolts at the enemies around the carrier; ranged only in League
     "diamond_tipped_spear", // Sweet Spot grows with the distance to the target, up to 100 range
+    "rapid_firecannon",  // Sharpshooter's reach is for one charged attack from range
+    "hexoptics_c44",     // Magnification grows with the distance to the target, up to 55 range
 ];
 
 fn is_melee_item(key: &str) -> bool {

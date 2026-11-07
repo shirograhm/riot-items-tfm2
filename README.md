@@ -43,7 +43,13 @@ Items added by another mod can be picked and pinned in the Build Editor when tha
 4. **The item is not tier 0**: its `tier()` is 1 or higher, so it has a recipe.
 5. **A save is loaded.** A brand-new save only lists other mods' items after it has been saved and loaded again.
 
-The item is listed under its name from the mod's item text. It has no icon in the editor, and a slot pinned with it shows its initials instead.
+The item is listed under its name from the mod's item text. Its icon comes from the mod's own item icon sheet, either way it ships one:
+- **With an override:** the sheet its `mod.override_info` puts in place of `asset/base/aseprite_resources/ingame/item_icons_18x18`.
+- **As a plain file:** `aseprite_resources/ingame/item_icons_18x18#sheet.png` and `#data.sprite_sheet` in its folder, with no override at all.
+
+The item's `icon()` must be a frame name in that sheet's data file. Without one, the item has no icon in the editor, and a slot pinned with it shows its initials instead.
+
+This covers the Build Editor and the Check Tactics panel. The game's own screens (shop, Item Info, in-match items) read a single shared sheet that only one mod's override can replace, so a mod that ships its sheet as a plain file shows a missing texture there.
 
 
 ##### Smart Builds
@@ -55,7 +61,7 @@ Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Ed
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count
 - crit items past 100% crit chance
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) on non-junglers
-- melee items on ranged champions (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), and ranged items on melee champions (Runaan's Hurricane, Diamond Tipped Spear). Melee means an attack range of 35 or less
+- melee items on ranged champions (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), and ranged items on melee champions (Runaan's Hurricane, Diamond Tipped Spear, Rapid Firecannon, Hexoptics C44). Melee means an attack range of 35 or less
 - support items (except Protoplasm Harness) on non-supports
 - items that don't fit the champion's damage type: attack damage, attack speed or crit on AP champions, and ability power on AD champions. Hextech Gunblade is for hybrid champions only. Magic Knight counts as AP, and Dusk and Dawn, Lich Bane, Nashor's Tooth and Rite of Ruin count as AP items
 - Guinsoo's Rageblade, Statikk Shiv and Sword of Blossoming Dawn on non-marksmen
@@ -159,7 +165,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Noonquiver** | 400G | +25 AD<br>+10% Crit Chance | — |
 | **Oblivion Orb** | 650G | +45 Ability Power | Grievous Wounds: Dealing magic damage to an enemy champion reduces their healing by 25% for 2 seconds. |
 | **Phage** | 500G | +200 HP<br>+20 AD | Rage: Basic attacks against enemy champions grant 5% movement speed for 2 seconds. |
-| **Philosopher's Medallion** | 650G | +200 HP<br>+10 Armor<br>+10 MR | Transmutation: Killing monsters grants 5 Ability Haste and 15 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 10% of their maximum health as true damage over 3 seconds, capped at 50 damage per second. |
+| **Philosopher's Medallion** | 650G | +200 HP<br>+10 Armor<br>+10 MR | Transmutation: Killing monsters grants 20 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 15% of their maximum health as true damage over 3 seconds, capped at 50 damage per second. |
 | **Plated Steelcaps** | 650G | +15 Armor<br>+10% MS | Plating: Reduce damage taken from basic attacks by 5%. |
 | **Scout's Slingshot** | 400G | +25% AS | Bullseye: Damaging an enemy champion deals 40 bonus magic damage (20 second cooldown). |
 | **Seeker's Armguard** | 500G | +30 AP<br>+20 Armor | Witch's Path: Killing a unit grants 0.5 armor, up to a maximum of 15. |
@@ -216,6 +222,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Guinsoo's Rageblade** | 700G | +15 AD<br>+15 AP<br>+25% AS | Wrath: Basic attacks deal 30 bonus magic damage on-hit.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Hamstringer** | 750G | +25 AD<br>+25% AS<br>+20% Crit Chance | Scour: Your critical strikes bleed the target, dealing 55 - 110 (based on level) (+100% Crit Chance) physical damage over 2 seconds and applying a 7% slow. |
 | **Heartsteel** | 750G | +600 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage on-hit equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target).<br>Goliath: Gain 3% increased size for every 1000 maximum health, up to 30%. |
+| **Hexoptics C44** | 700G | +50 AD<br>+20% Crit Chance | Magnification: Basic attacks deal up to 10% bonus damage based on distance (maximum effect at 55 range).<br>Arcane Aim: Champion takedowns grant 10 bonus attack range for 8 seconds. |
 | **Hextech Gunblade** | 750G | +25 AD<br>+50 AP<br>+10% Omnivamp | — |
 | **Hollow Radiance** | 750G | +300 HP<br>+50 MR<br>+4% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 150% more damage to minions and monsters.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 30 + 2% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Hubris** | 650G | +35 AD<br>+10 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
@@ -241,11 +248,12 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Night Harvester** | 700G | +250 HP<br>+50 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 100 + 20% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Opportunity** | 650G | +45 AD | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Overlord's Bloodmail** | 700G | +15 AD<br>+550 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
-| **Philosopher's Stone** | 750G | +350 HP<br>+15 Armor<br>+25 MR | Transmutation: Killing monsters grants 5 Ability Haste and 30 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 10% of their maximum health as true damage over 3 seconds, capped at 150 damage per second.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 15%. |
+| **Philosopher's Stone** | 750G | +350 HP<br>+15 Armor<br>+25 MR<br>+5 Ability Haste | Transmutation: Killing monsters grants 30 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 15% of their maximum health as true damage over 3 seconds, capped at 150 damage per second.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 15%. |
 | **Protector's Vow** | 650G | +300 HP<br>+25 Armor<br>+5 Ability Haste | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Protoplasm Harness** | 600G | +300 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 300 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Rabadon's Deathcap** | 750G | +80 AP | Opus: Increase your total Ability Power by 20%. |
 | **Randuin's Omen** | 750G | +300 HP<br>+35 Armor | Resilience: You heal for 30% of the damage taken from critical strikes. |
+| **Rapid Firecannon** | 700G | +35% AS<br>+20% Crit Chance<br>+4% MS | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Sharpshooter: While fully Energized, you gain 15 bonus attack range, and your next basic attack deals 40 bonus magic damage on-hit. |
 | **Ravenous Hydra** | 700G | +30 AD<br>+10% Omnivamp<br>+10 Ability Haste | Cleave: Basic attacks deal 30% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Riftmaker** | 650G | +300 HP<br>+30 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Rite of Ruin** | 700G | +55 AP<br>+10 Ability Haste<br>+20% Crit Chance | Wrath and Ruin: Using an Ability grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Using an Ability has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 35 - 90 (based on level) damage. |
@@ -323,6 +331,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Radiant Guinsoo's Rageblade** | 950G | +25 AD<br>+25 AP<br>+45% AS | Wrath: Basic attacks deal 30 bonus magic damage on-hit.<br>Seething Strike: Basic attacks grant 8% attack speed for 4 seconds (max 4 stacks). |
 | **Radiant Hamstringer** | 1100G | +40 AD<br>+45% AS<br>+25% Crit Chance | Scour: Your critical strikes bleed the target, dealing 70 - 180 (based on level) (+100% Crit Chance) physical damage over 2 seconds and applying a 7% slow. |
 | **Radiant Heartsteel** | 1050G | +1000 HP | Ironheart: If an enemy champion stays within 50 range of you for 1.5 seconds, your next basic attack against them deals bonus physical damage on-hit equal to 70 + 6% of your maximum health, granting 10% of that damage as permanent bonus health (30 second cooldown per target).<br>Goliath: Gain 3% increased size for every 1000 maximum health, up to 30%. |
+| **Radiant Hexoptics C44** | 1000G | +85 AD<br>+25% Crit Chance | Magnification: Basic attacks deal up to 15% bonus damage based on distance (maximum effect at 55 range).<br>Arcane Aim: Champion takedowns grant 15 bonus attack range for 8 seconds. |
 | **Radiant Hextech Gunblade** | 1050G | +45 AD<br>+75 AP<br>+15% Omnivamp | — |
 | **Radiant Hollow Radiance** | 1050G | +500 HP<br>+75 MR<br>+6% Skill DMG Reduction | Immolate: Deal 10 + 1% of your maximum health as magic damage to all enemies within 30 range. This effect deals 150% more damage to minions and monsters.<br>Desolate: Killing a unit causes an eruption around their death location, dealing 60 + 4% of your maximum health as magic damage to all enemies nearby. This effect is 50% as effective against minions and monsters. |
 | **Radiant Hubris** | 1000G | +60 AD<br>+15 Ability Haste | Gain 18 Lethality.<br>Eminence: Scoring a takedown on an enemy champion generates a permanent stack and grants 12 (+3 per stack) bonus Attack Damage for 90 seconds. |
@@ -348,11 +357,12 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Radiant Night Harvester** | 1000G | +350 HP<br>+80 AP<br>+10 Ability Haste | Soulrend: Landing an Ability on an enemy champion deals bonus magic damage equal to 150 + 30% Ability Power and grants 40% movement speed for 2 seconds (45 second cooldown per target). |
 | **Radiant Opportunity** | 1000G | +65 AD<br>+5% MS | Gain 18 Lethality.<br>Preparation: After being out of combat with enemy champions for 7 seconds, gain 7 Lethality. This bonus remains for 3.5 seconds after dealing damage to an enemy champion. |
 | **Radiant Overlord's Bloodmail** | 1000G | +20 AD<br>+700 HP | Tyranny: Gain bonus Attack Damage equal to 2.5% of your maximum health. |
-| **Radiant Philosopher's Stone** | 1050G | +450 HP<br>+30 Armor<br>+45 MR | Transmutation: Killing monsters grants 5 Ability Haste and 30 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 10% of their maximum health as true damage over 3 seconds, capped at 150 damage per second.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 25%. |
+| **Radiant Philosopher's Stone** | 1050G | +450 HP<br>+30 Armor<br>+45 MR<br>+5 Ability Haste | Transmutation: Killing monsters grants 30 bonus health regeneration for 5 seconds. Additionally, monsters that damage you burn for 15% of their maximum health as true damage over 3 seconds, capped at 150 damage per second.<br>Cinderhulk: Gain 1% maximum health for each champion takedown and monster killed, up to 25%. |
 | **Radiant Protector's Vow** | 900G | +400 HP<br>+40 Armor<br>+15 Ability Haste | Awe: Gain maximum health equal to 50 + 80% of your armor. |
 | **Radiant Protoplasm Harness** | 850G | +550 HP<br>+10 Ability Haste<br>+5% MS | Fortification: Falling below 40% health grants 600 + 25% of your maximum health as bonus health for 6 seconds and heals you for half that amount over 1.5 seconds (30 second cooldown). |
 | **Radiant Rabadon's Deathcap** | 1150G | +130 AP | Opus: Increase your total Ability Power by 35%. |
 | **Radiant Randuin's Omen** | 1000G | +400 HP<br>+45 Armor | Resilience: You heal for 30% of the damage taken from critical strikes. |
+| **Radiant Rapid Firecannon** | 950G | +65% AS<br>+25% Crit Chance<br>+4% MS | Energized: Moving and basic attacking generates Energize stacks, up to 100.<br>Sharpshooter: While fully Energized, you gain 20 bonus attack range, and your next basic attack deals 60 bonus magic damage on-hit. |
 | **Radiant Ravenous Hydra** | 950G | +45 AD<br>+15% Omnivamp<br>+15 Ability Haste | Cleave: Basic attacks deal 40% of your Attack Damage as physical damage to nearby enemies. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Radiant Riftmaker** | 950G | +400 HP<br>+60 AP | Corruption: Landing an Ability on an enemy champion grants 2% Omnivamp for 3 seconds (max 3 stacks).<br>Infusion: Gain bonus Ability Power equal to 2% of your maximum health. |
 | **Radiant Rite of Ruin** | 1000G | +95 AP<br>+15 Ability Haste<br>+25% Crit Chance | Wrath and Ruin: Using an Ability grants 5% critical strike chance for 5 seconds (max 5 stacks).<br>Salvage the Wreckage: Using an Ability has a chance, equal to your critical strike chance, to grant you a shield for 3 seconds that absorbs 65 - 175 (based on level) damage. |

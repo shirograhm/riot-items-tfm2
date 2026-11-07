@@ -76,10 +76,44 @@ pub fn category_of(slug: &str) -> Option<&'static str> {
 // picked there; Smart Builds and the Item Stats filters keep to
 // [`category_of`]. Never consulted for an item [`category_of`] knows.
 pub fn other_mod_class(key: &str) -> Option<&'static str> {
-    let classes = other_mod_classes();
-    classes
+    other_mod_item(key).map(|item| item.class)
+}
+
+// The sheet another mod's item is drawn from in this mod's own panels: that
+// mod's item icon sheet, when it has `frame` in it. `None` means the shared
+// sheet every item mod overrides, of which only one mod's copy is shown.
+pub fn other_mod_sheet(key: &str, frame: &str) -> Option<&'static str> {
+    let item = other_mod_item(key)?;
+    let sheet = &other_mods().sheets[item.sheet?];
+    sheet.frames.contains(frame).then_some(sheet.address)
+}
+
+// One of another mod's items as its `text/item_classes.json` names it: its
+// class, and the item icon sheet of that mod, which is taken to own it.
+#[derive(Clone, Copy)]
+struct OtherModItem {
+    class: &'static str,
+    sheet: Option<usize>,
+}
+
+struct OtherModSheet {
+    // Asset address, as an image `source` takes it.
+    address: &'static str,
+    // The frame names in its `#data` file.
+    frames: std::collections::HashSet<String>,
+}
+
+#[derive(Default)]
+struct OtherMods {
+    items: HashMap<String, OtherModItem>,
+    sheets: Vec<OtherModSheet>,
+}
+
+fn other_mod_item(key: &str) -> Option<OtherModItem> {
+    let items = &other_mods().items;
+    items
         .get(key)
-        .or_else(|| classes.get(crate::build_config::base_slug(key)))
+        .or_else(|| items.get(crate::build_config::base_slug(key)))
         .copied()
 }
 
@@ -87,10 +121,10 @@ pub fn other_mod_class(key: &str) -> Option<&'static str> {
 // class winning as its text does ([`crate::game_text::other_mod_folders`]). A
 // class that is not Boots or one of [`CATEGORY_ORDER`] is skipped, matched
 // without regard to case; so is a file that is not a JSON object.
-fn other_mod_classes() -> &'static HashMap<String, &'static str> {
-    static CLASSES: OnceLock<HashMap<String, &'static str>> = OnceLock::new();
-    CLASSES.get_or_init(|| {
-        let mut classes = HashMap::new();
+fn other_mods() -> &'static OtherMods {
+    static MODS: OnceLock<OtherMods> = OnceLock::new();
+    MODS.get_or_init(|| {
+        let mut mods = OtherMods::default();
         let exe_dir = std::env::current_exe()
             .ok()
             .and_then(|exe| exe.parent().map(Path::to_path_buf));
@@ -99,15 +133,15 @@ fn other_mod_classes() -> &'static HashMap<String, &'static str> {
             .map(crate::game_text::other_mod_folders)
             .unwrap_or_default();
         for folder in folders {
-            let Ok(text) = std::fs::read_to_string(folder.join("text").join("item_classes.json"))
+            let Some(serde_json::Value::Object(map)) =
+                read_json(&folder.join("text").join("item_classes.json"))
             else {
                 continue;
             };
-            let Ok(serde_json::Value::Object(map)) =
-                serde_json::from_str::<serde_json::Value>(text.trim_start_matches('\u{feff}'))
-            else {
-                continue;
-            };
+            let sheet = item_sheet_of(&folder).map(|sheet| {
+                mods.sheets.push(sheet);
+                mods.sheets.len() - 1
+            });
             for (key, class) in map {
                 let known = class.as_str().and_then(|class| {
                     CATEGORY_ORDER
@@ -116,12 +150,50 @@ fn other_mod_classes() -> &'static HashMap<String, &'static str> {
                         .find(|name| name.eq_ignore_ascii_case(class))
                 });
                 if let Some(class) = known {
-                    classes.insert(key, class);
+                    mods.items.insert(key, OtherModItem { class, sheet });
                 }
             }
         }
-        classes
+        mods
     })
+}
+
+// The base game's item icon sheet, which item mods override.
+const BASE_ITEM_SHEET: &str = "asset/base/aseprite_resources/ingame/item_icons_18x18";
+
+// A mod's own item icon sheet: where its `mod.override_info` points the base
+// sheet, or else an `aseprite_resources/ingame/item_icons_18x18` it ships
+// without overriding anything. Either way only a file in the mod's own folder.
+fn item_sheet_of(folder: &Path) -> Option<OtherModSheet> {
+    let info = read_json(&folder.join("mod.mod_info"))?;
+    let mod_id = info.get("mod_id").or_else(|| info.get("id"))?.as_str()?;
+    let own = format!("asset/{mod_id}/");
+    let remapped = read_json(&folder.join("mod.override_info")).and_then(|overrides| {
+        let remapping = overrides
+            .get(format!("{BASE_ITEM_SHEET}#data"))?
+            .get("remapping")?
+            .as_str()?;
+        let address = remapping.strip_suffix("#data")?;
+        address.starts_with(&own).then(|| address.to_string())
+    });
+    let address =
+        remapped.unwrap_or_else(|| format!("{own}aseprite_resources/ingame/item_icons_18x18"));
+    let data = folder.join(format!("{}#data.sprite_sheet", &address[own.len()..]));
+    let frames = read_json(&data)?
+        .get("images")?
+        .as_object()?
+        .keys()
+        .cloned()
+        .collect();
+    Some(OtherModSheet {
+        address: Box::leak(address.into_boxed_str()),
+        frames,
+    })
+}
+
+fn read_json(path: &Path) -> Option<serde_json::Value> {
+    let text = std::fs::read_to_string(path).ok()?;
+    serde_json::from_str(text.trim_start_matches('\u{feff}')).ok()
 }
 
 pub fn category_rank(category: &str) -> usize {

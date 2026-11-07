@@ -2,6 +2,7 @@ mod annul;
 mod energized;
 mod eternity;
 mod lifeline;
+pub(crate) mod reach_ring;
 mod spellblade;
 pub(crate) mod sunfire;
 mod transmutation;

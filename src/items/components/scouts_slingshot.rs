@@ -81,6 +81,7 @@ impl StableItem for ScoutsSlingshot {
             "runaans_hurricane".to_string(),
             "statikk_shiv".to_string(),
             "navori_flickerblade".to_string(),
+            "rapid_firecannon".to_string(),
         ]
     }
 

@@ -3,7 +3,7 @@ use mod_api_stable::*;
 use crate::{is_monster, percent_of, refresh_buff, ticks, DOT_TICK_RATE, TICKS_PER_SECOND};
 
 // Transmutation, Philosopher's Medallion's and Philosopher's Stone's: killing a
-// monster grants Ability Haste and bonus health regeneration for a while, and a
+// monster grants bonus health regeneration for a while, and a
 // monster that damages the carrier burns for a share of its maximum health as
 // true damage over a few seconds, capped per second. One buff name for every
 // tier, so the Stone's takes over from the Medallion's instead of adding up.
@@ -12,7 +12,6 @@ const TRANSMUTATION_BUFF: &str = "philosophers_transmutation";
 // The numbers, from the item that holds it.
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct TransmutationNumbers {
-    pub(crate) haste: i32,
     pub(crate) hp_regen: i32,
     pub(crate) seconds: f64,
     pub(crate) burn_percent: f64,
@@ -47,7 +46,6 @@ impl Transmutation {
             entity,
             TRANSMUTATION_BUFF,
             &BuffV1 {
-                skill_cooldown_mult: numbers.haste,
                 hp_regen: numbers.hp_regen,
                 ..BuffV1::timed(TRANSMUTATION_BUFF, ticks(numbers.seconds))
             },

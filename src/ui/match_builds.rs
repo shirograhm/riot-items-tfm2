@@ -1781,6 +1781,12 @@ fn frame_of(key: &str) -> String {
     card(key).map_or_else(|| key.to_string(), |card| card.frame)
 }
 
+// The sheet `frame` is drawn from: [`ICON_SHEET`], or for another mod's item
+// that mod's own, which has its art ([`crate::item_catalog::other_mod_sheet`]).
+fn sheet_of(key: &str, frame: &str) -> &'static str {
+    crate::item_catalog::other_mod_sheet(key, frame).unwrap_or(ICON_SHEET)
+}
+
 // The whole board: a heading per side, then a line per lane with a known build,
 // its lane icon and two cells. Respawned whole when a build changes, once per
 // build as the detour grows it.
@@ -1925,7 +1931,9 @@ fn cell_source(side: usize, cell: &Cell) -> String {
         } else {
             (PICKED_LINE, PICKED_STROKE, SLOT_FILL)
         };
-        let frame = escape(&frame_of(key));
+        let frame = frame_of(key);
+        let sheet = sheet_of(key, &frame);
+        let frame = escape(&frame);
         source.push_str(&format!(
             "#s{index}:color_icon_button {{\n\
              x: {x}px;\n\
@@ -1957,7 +1965,7 @@ fn cell_source(side: usize, cell: &Cell) -> String {
              pivot_y: 0.5;\n\
              width: {ICON}px;\n\
              height: {ICON}px;\n\
-             source: \"{ICON_SHEET}\";\n\
+             source: \"{sheet}\";\n\
              rect_tag: \"{frame}\";\n\
              }}\n\
              }}\n"
@@ -2300,7 +2308,8 @@ fn fill_tip(ctx: &mut StableClient<'_>, key: &str, cost: Option<usize>) -> TipBo
     ctx.ui_set_properties(
         &format!("{TIP}.slot.icon"),
         &format!(
-            "source: \"{ICON_SHEET}\"; rect_tag: \"{}\";",
+            "source: \"{}\"; rect_tag: \"{}\";",
+            sheet_of(key, &frame),
             escape(&frame)
         ),
     );
