@@ -1034,11 +1034,11 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>15% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, damaging monsters burns them for <#60e84dff>10% of your maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>15% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, damaging monsters burns them for <#60e84dff>10% of your maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>150 damage<> per second.\n\n<#ff7a3eff>Cinderhulk<>: Gain <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximum health<> for each champion takedown and monster killed, up to <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Iceborn Gauntlet",
@@ -1154,7 +1154,7 @@
         },
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
-            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, monsters that damage you burn for <#d94c49ff>15% of their maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>50 damage<> per second."
+            "option": "\n<#ff7a3eff>Transmutation<>: Killing monsters grants <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> bonus health regeneration<> for <#e8a800ff>5 seconds<>. Additionally, damaging monsters burns them for <#60e84dff>10% of your maximum health<> as <#e3ab9dff>true damage<> over <#e8a800ff>3 seconds<>, capped at <#e3ab9dff>100 damage<> per second."
         },
         "dawncore": {
             "name": "Dawncore",
@@ -2220,11 +2220,11 @@
         },
         "philosophers_stone": {
             "name": "Đá Hiền Triết",
-            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>15% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, gây sát thương lên quái sẽ thiêu đốt chúng, gây <#60e84dff>10% máu tối đa của bạn<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Đá Hiền Triết Ánh Sáng",
-            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>15% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, gây sát thương lên quái sẽ thiêu đốt chúng, gây <#60e84dff>10% máu tối đa của bạn<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>150 sát thương<> mỗi giây.\n\n<#ff7a3eff>Quỷ Lửa<>: Nhận <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>máu tối đa<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Găng Tay Băng Giá",
@@ -2340,7 +2340,7 @@
         },
         "philosophers_medallion": {
             "name": "Mề Đay Hiền Triết",
-            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, quái gây sát thương lên bạn sẽ bị thiêu đốt, chịu <#d94c49ff>15% máu tối đa của chúng<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>50 sát thương<> mỗi giây."
+            "option": "\n<#ff7a3eff>Chuyển Hóa<>: Hạ gục quái giúp nhận <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hồi máu mỗi giây<> cộng thêm trong <#e8a800ff>5 giây<>. Ngoài ra, gây sát thương lên quái sẽ thiêu đốt chúng, gây <#60e84dff>10% máu tối đa của bạn<> dưới dạng <#e3ab9dff>sát thương chuẩn<> trong <#e8a800ff>3 giây<>, tối đa <#e3ab9dff>100 sát thương<> mỗi giây."
         },
         "dawncore": {
             "name": "Lõi Bình Minh",
@@ -3406,11 +3406,11 @@
         },
         "philosophers_stone": {
             "name": "贤者之石",
-            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#60e84dff>30 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其15%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
+            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#60e84dff>30 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对野怪造成伤害会将其灼烧，在 <#e8a800ff>3秒<>内造成相当于<#60e84dff>你10%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>15%<>。"
         },
         "radiant_philosophers_stone": {
             "name": "光明版贤者之石",
-            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#60e84dff>30 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其15%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>25%<>。"
+            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#60e84dff>30 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对野怪造成伤害会将其灼烧，在 <#e8a800ff>3秒<>内造成相当于<#60e84dff>你10%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>150点伤害<>。\n\n<#ff7a3eff>熔渣巨人<>：每次参与击杀敌方英雄或击杀野怪获得 <#60e84dff>1%<> 的<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多 <#60e84dff>25%<>。"
         },
         "iceborn_gauntlet": {
             "name": "冰脉护手",
@@ -3526,7 +3526,7 @@
         },
         "philosophers_medallion": {
             "name": "贤者印章",
-            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#60e84dff>20 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对你造成伤害的野怪会被灼烧，在 <#e8a800ff>3秒<>内受到相当于<#d94c49ff>其15%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>50点伤害<>。"
+            "option": "\n<#ff7a3eff>嬗变<>：击杀野怪时获得 <#60e84dff>20 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 额外生命回复<>，持续 <#e8a800ff>5秒<>。此外，对野怪造成伤害会将其灼烧，在 <#e8a800ff>3秒<>内造成相当于<#60e84dff>你10%最大生命值<>的<#e3ab9dff>真实伤害<>，每秒最多 <#e3ab9dff>100点伤害<>。"
         },
         "dawncore": {
             "name": "黎明核心",
@@ -4592,11 +4592,11 @@
         },
         "philosophers_stone": {
             "name": "Pedra Filosofal",
-            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>15% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, causar dano a monstros os queima, causando <#60e84dff>10% da sua Vida Máxima<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Pedra Filosofal Radiante",
-            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>15% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, causar dano a monstros os queima, causando <#60e84dff>10% da sua Vida Máxima<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>150 de dano<> por segundo.\n\n<#ff7a3eff>Titã Ardente<>: Ganha <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>Vida Máxima<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Manopla dos Glacinatas",
@@ -4712,7 +4712,7 @@
         },
         "philosophers_medallion": {
             "name": "Medalhão Filosofal",
-            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#60e84dff>20 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, monstros que causam dano a você queimam, sofrendo <#d94c49ff>15% da Vida Máxima deles<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>50 de dano<> por segundo."
+            "option": "\n<#ff7a3eff>Transmutação<>: Abater monstros concede <#60e84dff>20 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Regeneração de Vida<> bônus por <#e8a800ff>5 segundos<>. Além disso, causar dano a monstros os queima, causando <#60e84dff>10% da sua Vida Máxima<> como <#e3ab9dff>dano verdadeiro<> ao longo de <#e8a800ff>3 segundos<>, até <#e3ab9dff>100 de dano<> por segundo."
         },
         "dawncore": {
             "name": "Auronúcleo",
@@ -5778,11 +5778,11 @@
         },
         "philosophers_stone": {
             "name": "Философский камень",
-            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>15% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, нанесение урона монстрам поджигает их, нанося <#60e84dff>10% вашего максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Лучезарный Философский камень",
-            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>15% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, нанесение урона монстрам поджигает их, нанося <#60e84dff>10% вашего максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>150 урона<> в секунду.\n\n<#ff7a3eff>Испепелитель<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>максимального здоровья<>, до <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Хладорожденная рукавица",
@@ -5898,7 +5898,7 @@
         },
         "philosophers_medallion": {
             "name": "Философский медальон",
-            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, монстры, наносящие вам урон, поджигаются и получают <#d94c49ff>15% их максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>50 урона<> в секунду."
+            "option": "\n<#ff7a3eff>Трансмутация<>: Убийство монстров даёт <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> дополнительного восстановления здоровья<> на <#e8a800ff>5 секунд<>. Кроме того, нанесение урона монстрам поджигает их, нанося <#60e84dff>10% вашего максимального здоровья<> в виде <#e3ab9dff>чистого урона<> в течение <#e8a800ff>3 секунд<>, но не более <#e3ab9dff>100 урона<> в секунду."
         },
         "dawncore": {
             "name": "Ядро рассвета",
@@ -6964,11 +6964,11 @@
         },
         "philosophers_stone": {
             "name": "현자의 돌",
-            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>30<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 15%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>30<> 증가합니다. 또한 몬스터에게 피해를 입히면 대상이 불타 <#e8a800ff>3초<>에 걸쳐 <#60e84dff>자신의 최대 체력의 10%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>15%<>까지 쌓입니다."
         },
         "radiant_philosophers_stone": {
             "name": "찬란한 현자의 돌",
-            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>30<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 15%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>25%<>까지 쌓입니다."
+            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>30<> 증가합니다. 또한 몬스터에게 피해를 입히면 대상이 불타 <#e8a800ff>3초<>에 걸쳐 <#60e84dff>자신의 최대 체력의 10%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>150의 피해<>를 입힙니다.\n\n<#ff7a3eff>잿불거인<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>최대 체력<>이 <#60e84dff>1%<> 증가하며, 최대 <#60e84dff>25%<>까지 쌓입니다."
         },
         "iceborn_gauntlet": {
             "name": "얼어붙은 건틀릿",
@@ -7084,7 +7084,7 @@
         },
         "philosophers_medallion": {
             "name": "현자의 메달",
-            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>20<> 증가합니다. 또한 자신에게 피해를 입힌 몬스터는 불타 <#e8a800ff>3초<>에 걸쳐 대상 <#d94c49ff>최대 체력의 15%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>50의 피해<>를 입힙니다."
+            "option": "\n<#ff7a3eff>연성<>: 몬스터를 처치하면 <#e8a800ff>5초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> <#60e84dff>추가 체력 재생<>이 <#60e84dff>20<> 증가합니다. 또한 몬스터에게 피해를 입히면 대상이 불타 <#e8a800ff>3초<>에 걸쳐 <#60e84dff>자신의 최대 체력의 10%<>만큼 <#e3ab9dff>고정 피해<>를 입습니다. 초당 최대 <#e3ab9dff>100의 피해<>를 입힙니다."
         },
         "dawncore": {
             "name": "새벽심장",
@@ -8150,11 +8150,11 @@
         },
         "philosophers_stone": {
             "name": "賢者の石",
-            "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#60e84dff>30の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、自身にダメージを与えたモンスターは燃焼し、<#e8a800ff>3秒<>かけて<#d94c49ff>最大体力の15%<>の<#e3ab9dff>固定ダメージ<>を受ける(毎秒最大<#e3ab9dff>150ダメージ<>)。\n\n<#ff7a3eff>シンダーハルク<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#60e84dff>1%<>の<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大体力<>を得る(最大<#60e84dff>15%<>)。"
+            "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#60e84dff>30の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、モンスターにダメージを与えると燃焼させ、<#e8a800ff>3秒<>かけて<#60e84dff>自身の最大体力の10%<>の<#e3ab9dff>固定ダメージ<>を与える(毎秒最大<#e3ab9dff>150ダメージ<>)。\n\n<#ff7a3eff>シンダーハルク<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#60e84dff>1%<>の<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大体力<>を得る(最大<#60e84dff>15%<>)。"
         },
         "radiant_philosophers_stone": {
             "name": "レディアント 賢者の石",
-            "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#60e84dff>30の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、自身にダメージを与えたモンスターは燃焼し、<#e8a800ff>3秒<>かけて<#d94c49ff>最大体力の15%<>の<#e3ab9dff>固定ダメージ<>を受ける(毎秒最大<#e3ab9dff>150ダメージ<>)。\n\n<#ff7a3eff>シンダーハルク<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#60e84dff>1%<>の<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大体力<>を得る(最大<#60e84dff>25%<>)。"
+            "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#60e84dff>30の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、モンスターにダメージを与えると燃焼させ、<#e8a800ff>3秒<>かけて<#60e84dff>自身の最大体力の10%<>の<#e3ab9dff>固定ダメージ<>を与える(毎秒最大<#e3ab9dff>150ダメージ<>)。\n\n<#ff7a3eff>シンダーハルク<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#60e84dff>1%<>の<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大体力<>を得る(最大<#60e84dff>25%<>)。"
         },
         "iceborn_gauntlet": {
             "name": "アイスボーン ガントレット",
@@ -8270,7 +8270,7 @@
         },
         "philosophers_medallion": {
             "name": "賢者のメダル",
-            "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#60e84dff>20の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、自身にダメージを与えたモンスターは燃焼し、<#e8a800ff>3秒<>かけて<#d94c49ff>最大体力の15%<>の<#e3ab9dff>固定ダメージ<>を受ける(毎秒最大<#e3ab9dff>50ダメージ<>)。"
+            "option": "\n<#ff7a3eff>変成<>: モンスターをキルすると、<#e8a800ff>5秒間<><#60e84dff>20の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 増加体力再生<>を得る。さらに、モンスターにダメージを与えると燃焼させ、<#e8a800ff>3秒<>かけて<#60e84dff>自身の最大体力の10%<>の<#e3ab9dff>固定ダメージ<>を与える(毎秒最大<#e3ab9dff>100ダメージ<>)。"
         },
         "dawncore": {
             "name": "ドーンコア",
@@ -9336,11 +9336,11 @@
         },
         "philosophers_stone": {
             "name": "Stein des Weisen",
-            "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem brennen Monster, die dir Schaden zufügen, über <#e8a800ff>3 Sekunden<> für <#d94c49ff>15% ihres maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>150 Schaden<> pro Sekunde.\n\n<#ff7a3eff>Aschenhülle<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximales Leben<>, bis zu <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem setzt du Monster, denen du Schaden zufügst, in Brand: Sie erleiden über <#e8a800ff>3 Sekunden<> <#60e84dff>10% deines maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>150 Schaden<> pro Sekunde.\n\n<#ff7a3eff>Aschenhülle<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximales Leben<>, bis zu <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Lichtversion von Stein des Weisen",
-            "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem brennen Monster, die dir Schaden zufügen, über <#e8a800ff>3 Sekunden<> für <#d94c49ff>15% ihres maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>150 Schaden<> pro Sekunde.\n\n<#ff7a3eff>Aschenhülle<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximales Leben<>, bis zu <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem setzt du Monster, denen du Schaden zufügst, in Brand: Sie erleiden über <#e8a800ff>3 Sekunden<> <#60e84dff>10% deines maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>150 Schaden<> pro Sekunde.\n\n<#ff7a3eff>Aschenhülle<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximales Leben<>, bis zu <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Eisgeborenen-Handschuh",
@@ -9456,7 +9456,7 @@
         },
         "philosophers_medallion": {
             "name": "Medaillon des Weisen",
-            "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem brennen Monster, die dir Schaden zufügen, über <#e8a800ff>3 Sekunden<> für <#d94c49ff>15% ihres maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>50 Schaden<> pro Sekunde."
+            "option": "\n<#ff7a3eff>Transmutation<>: Wenn du Monster tötest, erhältst du <#e8a800ff>5 Sekunden<> lang <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zusätzliche Lebensregeneration<>. Außerdem setzt du Monster, denen du Schaden zufügst, in Brand: Sie erleiden über <#e8a800ff>3 Sekunden<> <#60e84dff>10% deines maximalen Lebens<> als <#e3ab9dff>festen Schaden<>, begrenzt auf <#e3ab9dff>100 Schaden<> pro Sekunde."
         },
         "dawncore": {
             "name": "Dämmerkern",
@@ -10522,11 +10522,11 @@
         },
         "philosophers_stone": {
             "name": "Felsefe Taşı",
-            "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca sana hasar veren canavarlar yanar ve <#e8a800ff>3 saniye<> içinde <#d94c49ff>azami canlarının 15%<> kadar <#e3ab9dff>sabit hasar<> alır; saniyede en fazla <#e3ab9dff>150 hasar<>.\n\n<#ff7a3eff>Kül Devi<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>azami can<> kazanırsın; en fazla <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca canavarlara hasar vermek onları yakar ve <#e8a800ff>3 saniye<> içinde <#60e84dff>azami canının 10%<> kadar <#e3ab9dff>sabit hasar<> verir; saniyede en fazla <#e3ab9dff>150 hasar<>.\n\n<#ff7a3eff>Kül Devi<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>azami can<> kazanırsın; en fazla <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Işıltılı Felsefe Taşı",
-            "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca sana hasar veren canavarlar yanar ve <#e8a800ff>3 saniye<> içinde <#d94c49ff>azami canlarının 15%<> kadar <#e3ab9dff>sabit hasar<> alır; saniyede en fazla <#e3ab9dff>150 hasar<>.\n\n<#ff7a3eff>Kül Devi<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>azami can<> kazanırsın; en fazla <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca canavarlara hasar vermek onları yakar ve <#e8a800ff>3 saniye<> içinde <#60e84dff>azami canının 10%<> kadar <#e3ab9dff>sabit hasar<> verir; saniyede en fazla <#e3ab9dff>150 hasar<>.\n\n<#ff7a3eff>Kül Devi<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>azami can<> kazanırsın; en fazla <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Buzdoğan Eldiven",
@@ -10642,7 +10642,7 @@
         },
         "philosophers_medallion": {
             "name": "Felsefe Madalyonu",
-            "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca sana hasar veren canavarlar yanar ve <#e8a800ff>3 saniye<> içinde <#d94c49ff>azami canlarının 15%<> kadar <#e3ab9dff>sabit hasar<> alır; saniyede en fazla <#e3ab9dff>50 hasar<>."
+            "option": "\n<#ff7a3eff>Dönüşüm<>: Canavar öldürmek <#e8a800ff>5 saniye<> boyunca <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ilave can yenilenmesi<> kazandırır. Ayrıca canavarlara hasar vermek onları yakar ve <#e8a800ff>3 saniye<> içinde <#60e84dff>azami canının 10%<> kadar <#e3ab9dff>sabit hasar<> verir; saniyede en fazla <#e3ab9dff>100 hasar<>."
         },
         "dawncore": {
             "name": "Şafağın Özü",
@@ -11708,11 +11708,11 @@
         },
         "philosophers_stone": {
             "name": "Piedra filosofal",
-            "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, los monstruos que te dañan arden por un <#d94c49ff>15% de su salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>150 de daño<> por segundo.\n\n<#ff7a3eff>Coloso de ceniza<>: Obtienes un <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salud máxima<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta un <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, infligir daño a monstruos los quema por un <#60e84dff>10% de tu salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>150 de daño<> por segundo.\n\n<#ff7a3eff>Coloso de ceniza<>: Obtienes un <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salud máxima<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta un <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Piedra filosofal radiante",
-            "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, los monstruos que te dañan arden por un <#d94c49ff>15% de su salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>150 de daño<> por segundo.\n\n<#ff7a3eff>Coloso de ceniza<>: Obtienes un <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salud máxima<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta un <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#60e84dff>30 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, infligir daño a monstruos los quema por un <#60e84dff>10% de tu salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>150 de daño<> por segundo.\n\n<#ff7a3eff>Coloso de ceniza<>: Obtienes un <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salud máxima<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta un <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Guantelete de hielo",
@@ -11828,7 +11828,7 @@
         },
         "philosophers_medallion": {
             "name": "Medallón filosofal",
-            "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#60e84dff>20 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, los monstruos que te dañan arden por un <#d94c49ff>15% de su salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>50 de daño<> por segundo."
+            "option": "\n<#ff7a3eff>Transmutación<>: Matar monstruos otorga <#60e84dff>20 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> regeneración de salud adicional<> durante <#e8a800ff>5 segundos<>. Además, infligir daño a monstruos los quema por un <#60e84dff>10% de tu salud máxima<> como <#e3ab9dff>daño fijo<> a lo largo de <#e8a800ff>3 segundos<>, con un límite de <#e3ab9dff>100 de daño<> por segundo."
         },
         "dawncore": {
             "name": "Núcleo albar",
@@ -12894,11 +12894,11 @@
         },
         "philosophers_stone": {
             "name": "Pierre philosophale",
-            "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, les monstres qui vous infligent des dégâts brûlent et subissent <#d94c49ff>15% de leurs PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>150 pts de dégâts<> par seconde.\n\n<#ff7a3eff>Carapace de cendres<>: Vous gagnez <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>PV max<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, infliger des dégâts aux monstres les brûle et leur inflige <#60e84dff>10% de vos PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>150 pts de dégâts<> par seconde.\n\n<#ff7a3eff>Carapace de cendres<>: Vous gagnez <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>PV max<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Pierre philosophale de la lumière",
-            "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, les monstres qui vous infligent des dégâts brûlent et subissent <#d94c49ff>15% de leurs PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>150 pts de dégâts<> par seconde.\n\n<#ff7a3eff>Carapace de cendres<>: Vous gagnez <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>PV max<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, infliger des dégâts aux monstres les brûle et leur inflige <#60e84dff>10% de vos PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>150 pts de dégâts<> par seconde.\n\n<#ff7a3eff>Carapace de cendres<>: Vous gagnez <#60e84dff>1%<> de <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>PV max<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Gantelet givrant",
@@ -13014,7 +13014,7 @@
         },
         "philosophers_medallion": {
             "name": "Médaillon du philosophe",
-            "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, les monstres qui vous infligent des dégâts brûlent et subissent <#d94c49ff>15% de leurs PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>50 pts de dégâts<> par seconde."
+            "option": "\n<#ff7a3eff>Transmutation<>: Tuer des monstres octroie <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> régénération de PV bonus<> pendant <#e8a800ff>5 secondes<>. De plus, infliger des dégâts aux monstres les brûle et leur inflige <#60e84dff>10% de vos PV max<> sous forme de <#e3ab9dff>dégâts fixes<> en <#e8a800ff>3 secondes<>, avec un plafond de <#e3ab9dff>100 pts de dégâts<> par seconde."
         },
         "dawncore": {
             "name": "Cœur de l'aube",
@@ -14080,11 +14080,11 @@
         },
         "philosophers_stone": {
             "name": "Pietra filosofale",
-            "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#60e84dff>30 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, i mostri che ti danneggiano bruciano per il <#d94c49ff>15% della loro salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>150 danni<> al secondo.\n\n<#ff7a3eff>Colosso di cenere<>: Ottieni il <#60e84dff>1%<> di <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salute massima<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino al <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#60e84dff>30 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, danneggiare i mostri li brucia per il <#60e84dff>10% della tua salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>150 danni<> al secondo.\n\n<#ff7a3eff>Colosso di cenere<>: Ottieni il <#60e84dff>1%<> di <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salute massima<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino al <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Pietra filosofale Radiosa",
-            "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#60e84dff>30 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, i mostri che ti danneggiano bruciano per il <#d94c49ff>15% della loro salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>150 danni<> al secondo.\n\n<#ff7a3eff>Colosso di cenere<>: Ottieni il <#60e84dff>1%<> di <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salute massima<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino al <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#60e84dff>30 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, danneggiare i mostri li brucia per il <#60e84dff>10% della tua salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>150 danni<> al secondo.\n\n<#ff7a3eff>Colosso di cenere<>: Ottieni il <#60e84dff>1%<> di <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>salute massima<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino al <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Guanto del gelo",
@@ -14200,7 +14200,7 @@
         },
         "philosophers_medallion": {
             "name": "Medaglione filosofale",
-            "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#60e84dff>20 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, i mostri che ti danneggiano bruciano per il <#d94c49ff>15% della loro salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>50 danni<> al secondo."
+            "option": "\n<#ff7a3eff>Trasmutazione<>: Uccidere mostri conferisce <#60e84dff>20 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> rigenerazione salute bonus<> per <#e8a800ff>5 secondi<>. Inoltre, danneggiare i mostri li brucia per il <#60e84dff>10% della tua salute massima<> come <#e3ab9dff>danni puri<> nell'arco di <#e8a800ff>3 secondi<>, con un limite di <#e3ab9dff>100 danni<> al secondo."
         },
         "dawncore": {
             "name": "Nucleo dell'alba",
@@ -15266,11 +15266,11 @@
         },
         "philosophers_stone": {
             "name": "賢者之石",
-            "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#60e84dff>30<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對你造成傷害的野怪會燃燒，在<#e8a800ff>3秒<>內受到等同<#d94c49ff>其最大生命值15%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>150傷害<>。\n\n<#ff7a3eff>燼岩巨像<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得<#60e84dff>1%<><i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多<#60e84dff>15%<>。"
+            "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#60e84dff>30<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對野怪造成傷害會使其燃燒，在<#e8a800ff>3秒<>內造成等同<#60e84dff>你最大生命值10%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>150傷害<>。\n\n<#ff7a3eff>燼岩巨像<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得<#60e84dff>1%<><i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多<#60e84dff>15%<>。"
         },
         "radiant_philosophers_stone": {
             "name": "聖光賢者之石",
-            "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#60e84dff>30<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對你造成傷害的野怪會燃燒，在<#e8a800ff>3秒<>內受到等同<#d94c49ff>其最大生命值15%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>150傷害<>。\n\n<#ff7a3eff>燼岩巨像<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得<#60e84dff>1%<><i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多<#60e84dff>25%<>。"
+            "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#60e84dff>30<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對野怪造成傷害會使其燃燒，在<#e8a800ff>3秒<>內造成等同<#60e84dff>你最大生命值10%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>150傷害<>。\n\n<#ff7a3eff>燼岩巨像<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得<#60e84dff>1%<><i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>最大生命值<>，最多<#60e84dff>25%<>。"
         },
         "iceborn_gauntlet": {
             "name": "寒冰霸拳",
@@ -15386,7 +15386,7 @@
         },
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
-            "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#60e84dff>20<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對你造成傷害的野怪會燃燒，在<#e8a800ff>3秒<>內受到等同<#d94c49ff>其最大生命值15%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>50傷害<>。"
+            "option": "\n<#ff7a3eff>煉成<>：擊殺野怪時獲得<#60e84dff>20<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 額外生命回復<>，持續<#e8a800ff>5秒<>。此外，對野怪造成傷害會使其燃燒，在<#e8a800ff>3秒<>內造成等同<#60e84dff>你最大生命值10%<>的<#e3ab9dff>真實傷害<>，每秒最多<#e3ab9dff>100傷害<>。"
         },
         "dawncore": {
             "name": "破曉之核",
@@ -16452,11 +16452,11 @@
         },
         "philosophers_stone": {
             "name": "Kamień Filozoficzny",
-            "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#60e84dff>30 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo potwory, które zadają ci obrażenia, płoną, otrzymując <#d94c49ff>15% swojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>150 pkt obrażeń<> na sekundę.\n\n<#ff7a3eff>Żarowy Kolos<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maksymalnego zdrowia<>, do <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#60e84dff>30 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo zadawanie obrażeń potworom podpala je, zadając <#60e84dff>10% twojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>150 pkt obrażeń<> na sekundę.\n\n<#ff7a3eff>Żarowy Kolos<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maksymalnego zdrowia<>, do <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Świetlisty Kamień Filozoficzny",
-            "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#60e84dff>30 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo potwory, które zadają ci obrażenia, płoną, otrzymując <#d94c49ff>15% swojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>150 pkt obrażeń<> na sekundę.\n\n<#ff7a3eff>Żarowy Kolos<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maksymalnego zdrowia<>, do <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#60e84dff>30 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo zadawanie obrażeń potworom podpala je, zadając <#60e84dff>10% twojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>150 pkt obrażeń<> na sekundę.\n\n<#ff7a3eff>Żarowy Kolos<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maksymalnego zdrowia<>, do <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Lodowa Rękawica",
@@ -16572,7 +16572,7 @@
         },
         "philosophers_medallion": {
             "name": "Medalion Filozofa",
-            "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#60e84dff>20 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo potwory, które zadają ci obrażenia, płoną, otrzymując <#d94c49ff>15% swojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>50 pkt obrażeń<> na sekundę."
+            "option": "\n<#ff7a3eff>Transmutacja<>: Zabijanie potworów zapewnia <#60e84dff>20 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> dodatkowej regeneracji zdrowia<> na <#e8a800ff>5 sek.<> Dodatkowo zadawanie obrażeń potworom podpala je, zadając <#60e84dff>10% twojego maksymalnego zdrowia<> jako <#e3ab9dff>obrażenia nieuchronne<> w ciągu <#e8a800ff>3 sek.<>, maksymalnie <#e3ab9dff>100 pkt obrażeń<> na sekundę."
         },
         "dawncore": {
             "name": "Rdzeń Świtu",
@@ -17638,11 +17638,11 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 30<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ มอนสเตอร์ที่สร้างดาเมจใส่คุณจะถูกเผาไหม้ ได้รับ<#d94c49ff>15% ของพลังชีวิตสูงสุดของมัน<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>150 ดาเมจ<>ต่อวินาที\n\n<#ff7a3eff>Cinderhulk<>: ได้รับ<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>พลังชีวิตสูงสุด<> <#60e84dff>1%<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#60e84dff>15%<>"
+            "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 30<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ การสร้างดาเมจใส่มอนสเตอร์จะเผาไหม้มัน สร้าง<#60e84dff>10% ของพลังชีวิตสูงสุดของคุณ<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>150 ดาเมจ<>ต่อวินาที\n\n<#ff7a3eff>Cinderhulk<>: ได้รับ<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>พลังชีวิตสูงสุด<> <#60e84dff>1%<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#60e84dff>15%<>"
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 30<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ มอนสเตอร์ที่สร้างดาเมจใส่คุณจะถูกเผาไหม้ ได้รับ<#d94c49ff>15% ของพลังชีวิตสูงสุดของมัน<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>150 ดาเมจ<>ต่อวินาที\n\n<#ff7a3eff>Cinderhulk<>: ได้รับ<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>พลังชีวิตสูงสุด<> <#60e84dff>1%<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#60e84dff>25%<>"
+            "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 30<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ การสร้างดาเมจใส่มอนสเตอร์จะเผาไหม้มัน สร้าง<#60e84dff>10% ของพลังชีวิตสูงสุดของคุณ<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>150 ดาเมจ<>ต่อวินาที\n\n<#ff7a3eff>Cinderhulk<>: ได้รับ<i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>พลังชีวิตสูงสุด<> <#60e84dff>1%<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#60e84dff>25%<>"
         },
         "iceborn_gauntlet": {
             "name": "Iceborn Gauntlet",
@@ -17758,7 +17758,7 @@
         },
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
-            "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 20<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ มอนสเตอร์ที่สร้างดาเมจใส่คุณจะถูกเผาไหม้ ได้รับ<#d94c49ff>15% ของพลังชีวิตสูงสุดของมัน<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>50 ดาเมจ<>ต่อวินาที"
+            "option": "\n<#ff7a3eff>Transmutation<>: การสังหารมอนสเตอร์จะมอบ<#60e84dff><i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> โบนัสฟื้นฟูพลังชีวิต 20<> เป็นเวลา <#e8a800ff>5 วินาที<> นอกจากนี้ การสร้างดาเมจใส่มอนสเตอร์จะเผาไหม้มัน สร้าง<#60e84dff>10% ของพลังชีวิตสูงสุดของคุณ<>เป็น<#e3ab9dff>ดาเมจจริง<>ภายใน <#e8a800ff>3 วินาที<> สูงสุด <#e3ab9dff>100 ดาเมจ<>ต่อวินาที"
         },
         "dawncore": {
             "name": "Dawncore",
@@ -18824,11 +18824,11 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast branden monsters die jou schade toebrengen voor <#d94c49ff>15% van hun maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>150 schade<> per seconde.\n\n<#ff7a3eff>Cinderhulk<>: Krijg <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximale gezondheid<> voor elke kill of assist op een kampioen en elk gedood monster, tot <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast verbrandt schade aan monsters ze voor <#60e84dff>10% van jouw maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>150 schade<> per seconde.\n\n<#ff7a3eff>Cinderhulk<>: Krijg <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximale gezondheid<> voor elke kill of assist op een kampioen en elk gedood monster, tot <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast branden monsters die jou schade toebrengen voor <#d94c49ff>15% van hun maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>150 schade<> per seconde.\n\n<#ff7a3eff>Cinderhulk<>: Krijg <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximale gezondheid<> voor elke kill of assist op een kampioen en elk gedood monster, tot <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast verbrandt schade aan monsters ze voor <#60e84dff>10% van jouw maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>150 schade<> per seconde.\n\n<#ff7a3eff>Cinderhulk<>: Krijg <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>maximale gezondheid<> voor elke kill of assist op een kampioen en elk gedood monster, tot <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Iceborn Gauntlet",
@@ -18944,7 +18944,7 @@
         },
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
-            "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast branden monsters die jou schade toebrengen voor <#d94c49ff>15% van hun maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>50 schade<> per seconde."
+            "option": "\n<#ff7a3eff>Transmutation<>: Monsters doden geeft <#e8a800ff>5 seconden<> lang <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> extra gezondheidsregeneratie<>. Daarnaast verbrandt schade aan monsters ze voor <#60e84dff>10% van jouw maximale gezondheid<> als <#e3ab9dff>vaste schade<> over <#e8a800ff>3 seconden<>, met een maximum van <#e3ab9dff>100 schade<> per seconde."
         },
         "dawncore": {
             "name": "Dawncore",
@@ -20010,11 +20010,11 @@
         },
         "philosophers_stone": {
             "name": "Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ʻā i ke ahi nā moʻo e hana ana i ka pōʻino iā ʻoe no <#d94c49ff>15% o ko lākou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>150 pōʻino<> i kēlā me kēia kekona.\n\n<#ff7a3eff>Cinderhulk<>: Loaʻa iā ʻoe he <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>ola kiʻekiʻe<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#60e84dff>15%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ke hana ʻoe i ka pōʻino i nā moʻo, ʻā lākou i ke ahi no <#60e84dff>10% o kou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>150 pōʻino<> i kēlā me kēia kekona.\n\n<#ff7a3eff>Cinderhulk<>: Loaʻa iā ʻoe he <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>ola kiʻekiʻe<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#60e84dff>15%<>."
         },
         "radiant_philosophers_stone": {
             "name": "Radiant Philosopher's Stone",
-            "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ʻā i ke ahi nā moʻo e hana ana i ka pōʻino iā ʻoe no <#d94c49ff>15% o ko lākou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>150 pōʻino<> i kēlā me kēia kekona.\n\n<#ff7a3eff>Cinderhulk<>: Loaʻa iā ʻoe he <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>ola kiʻekiʻe<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#60e84dff>25%<>."
+            "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#60e84dff>30 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ke hana ʻoe i ka pōʻino i nā moʻo, ʻā lākou i ke ahi no <#60e84dff>10% o kou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>150 pōʻino<> i kēlā me kēia kekona.\n\n<#ff7a3eff>Cinderhulk<>: Loaʻa iā ʻoe he <#60e84dff>1%<> <i#asset/base/ui/banpick/champion_stat_icon:hp_0> <#60e84dff>ola kiʻekiʻe<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#60e84dff>25%<>."
         },
         "iceborn_gauntlet": {
             "name": "Iceborn Gauntlet",
@@ -20130,7 +20130,7 @@
         },
         "philosophers_medallion": {
             "name": "Philosopher's Medallion",
-            "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ʻā i ke ahi nā moʻo e hana ana i ka pōʻino iā ʻoe no <#d94c49ff>15% o ko lākou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>50 pōʻino<> i kēlā me kēia kekona."
+            "option": "\n<#ff7a3eff>Transmutation<>: Ke pepehi ʻoe i nā moʻo, loaʻa iā ʻoe he <#60e84dff>20 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> hoʻōla ola hou<> no <#e8a800ff>5 kekona<>. Eia hou, ke hana ʻoe i ka pōʻino i nā moʻo, ʻā lākou i ke ahi no <#60e84dff>10% o kou ola kiʻekiʻe<> ma ke ʻano he <#e3ab9dff>pōʻino ʻoiaʻiʻo<> i loko o <#e8a800ff>3 kekona<>, ʻaʻole ʻoi aku ma mua o <#e3ab9dff>100 pōʻino<> i kēlā me kēia kekona."
         },
         "dawncore": {
             "name": "Dawncore",

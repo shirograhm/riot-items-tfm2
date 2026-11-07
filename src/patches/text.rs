@@ -2013,7 +2013,7 @@ const ROW_FORMATS: [RowFormat; 136] = [
         "effect_hp_percent_damage",
         label::BURN_DAMAGE,
     )
-    .unit(unit::TARGET_MAX_HP),
+    .unit(unit::MAX_HP),
     row(
         "philosophers_stone",
         "effect_stack_hp_mult",
@@ -2036,7 +2036,7 @@ const ROW_FORMATS: [RowFormat; 136] = [
         "effect_hp_percent_damage",
         label::BURN_DAMAGE,
     )
-    .unit(unit::TARGET_MAX_HP),
+    .unit(unit::MAX_HP),
     row("riftmaker", "effect_vamp", label::OMNIVAMP).unit(unit::PER_STACK),
     row(
         "riftmaker",

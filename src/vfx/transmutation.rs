@@ -4,8 +4,8 @@ use crate::{is_monster, percent_of, refresh_buff, ticks, DOT_TICK_RATE, TICKS_PE
 
 // Transmutation, Philosopher's Medallion's and Philosopher's Stone's: killing a
 // monster grants bonus health regeneration for a while, and a
-// monster that damages the carrier burns for a share of its maximum health as
-// true damage over a few seconds, capped per second. One buff name for every
+// monster the carrier damages burns for a share of the carrier's maximum
+// health as true damage over a few seconds, capped per second. One buff name for every
 // tier, so the Stone's takes over from the Medallion's instead of adding up.
 const TRANSMUTATION_BUFF: &str = "philosophers_transmutation";
 
@@ -52,24 +52,29 @@ impl Transmutation {
         );
     }
 
-    // The burn, on a monster that damaged the carrier: started, or started
-    // over. A tick is an even share of the whole burn, held to the cap's share
-    // of a second.
-    pub(crate) fn on_damaged(
+    // The burn, on a monster the carrier damaged: started, or started over. It
+    // is a share of the CARRIER's maximum health. A tick is an even share of
+    // the whole burn, held to the cap's share of a second. Item damage (the
+    // burn's own ticks among it) never relights it.
+    pub(crate) fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        attacker: usize,
+        caster: usize,
+        target: usize,
         damage: usize,
+        attack_type: AttackTypeV1,
         numbers: &TransmutationNumbers,
     ) {
-        if damage == 0 {
+        if damage == 0 || attack_type == AttackTypeV1::Item {
             return;
         }
-        let Some(max_hp) = ctx
-            .get_entity(attacker)
-            .filter(|attacker_ref| attacker_ref.is_alive() && is_monster(attacker_ref))
-            .map(|attacker_ref| attacker_ref.hp().1)
-        else {
+        if !ctx
+            .get_entity(target)
+            .is_some_and(|target_ref| target_ref.is_alive() && is_monster(&target_ref))
+        {
+            return;
+        }
+        let Some(max_hp) = ctx.get_entity(caster).map(|caster_ref| caster_ref.hp().1) else {
             return;
         };
         let duration = ticks(numbers.burn_seconds).max(DOT_TICK_RATE);
@@ -77,12 +82,12 @@ impl Transmutation {
         let share = percent_of(max_hp, numbers.burn_percent) as f64 / instances as f64;
         let cap = numbers.burn_cap_per_second * DOT_TICK_RATE / TICKS_PER_SECOND as usize;
         let per_tick = (share.round() as usize).min(cap);
-        match self.burns.iter_mut().find(|burn| burn.0 == attacker) {
+        match self.burns.iter_mut().find(|burn| burn.0 == target) {
             Some(burn) => {
                 burn.1 = duration;
                 burn.3 = per_tick;
             }
-            None => self.burns.push((attacker, duration, DOT_TICK_RATE, per_tick)),
+            None => self.burns.push((target, duration, DOT_TICK_RATE, per_tick)),
         }
     }
 

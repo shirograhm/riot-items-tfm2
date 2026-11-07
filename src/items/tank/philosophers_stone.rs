@@ -7,8 +7,8 @@ use crate::{
 };
 
 // Transmutation: Killing monsters grants 30 bonus health regeneration for 5
-// seconds. Additionally, monsters that damage you burn for
-// 15% of their maximum health as true damage over 3 seconds, capped at 150
+// seconds. Additionally, damaging monsters burns them for 10% of your
+// maximum health as true damage over 3 seconds, capped at 150
 // damage per second. (Philosopher's Medallion has it too: `crate::Transmutation`.)
 //
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
@@ -58,7 +58,7 @@ impl PhilosophersStone {
             skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 30,
             effect_duration_seconds: 5.0,
-            effect_hp_percent_damage: 15.0,
+            effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
             effect_burn_damage_cap: 150,
             effect_stack_hp_mult: 1,
@@ -80,7 +80,7 @@ impl PhilosophersStone {
             skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 30,
             effect_duration_seconds: 5.0,
-            effect_hp_percent_damage: 15.0,
+            effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
             effect_burn_damage_cap: 150,
             effect_stack_hp_mult: 1,
@@ -242,20 +242,19 @@ impl StableItem for PhilosophersStone {
         self.transmutation.update(ctx, player);
     }
 
-    fn on_damaged(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
-        _entity: usize,
-        attacker: usize,
-        damage: usize,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let numbers = self.transmutation_numbers();
         self.transmutation
-            .on_damaged(ctx, attacker, damage, &numbers);
+            .on_attack(ctx, caster, target, *damage, attack_type, &numbers);
     }
 
     fn on_kill(

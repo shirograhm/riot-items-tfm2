@@ -28,9 +28,9 @@ impl Default for PhilosophersMedallion {
             magic_resistance: 10,
             effect_bonus_hp_regen: 20,
             effect_duration_seconds: 5.0,
-            effect_hp_percent_damage: 15.0,
+            effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
-            effect_burn_damage_cap: 50,
+            effect_burn_damage_cap: 100,
             // Non-vital stats (internals)
             transmutation: Transmutation::default(),
         }
@@ -115,19 +115,19 @@ impl StableItem for PhilosophersMedallion {
         self.transmutation.update(ctx, player);
     }
 
-    fn on_damaged(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
-        _entity: usize,
-        attacker: usize,
-        damage: usize,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let numbers = self.transmutation_numbers();
-        self.transmutation.on_damaged(ctx, attacker, damage, &numbers);
+        self.transmutation
+            .on_attack(ctx, caster, target, *damage, attack_type, &numbers);
     }
 
     fn on_kill(
