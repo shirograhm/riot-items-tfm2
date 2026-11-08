@@ -2264,9 +2264,17 @@ unsafe fn network_pick(
             (low.min(*score), high.max(*score))
         });
     let spread = (high - low).max(0.0);
+    // How this champion has done with each item, likewise
+    // ([`crate::item_stats::win_rates`]); the seat memo above keeps a match's
+    // two runs on one answer.
+    let results = crate::item_stats::win_rates::current();
     let mut best: Option<(f32, u64, String)> = None;
     for (score, index, key) in scored {
-        let score = score + crate::patches::leaning(&key) * crate::patches::LEAN_SPREAD * spread;
+        let score = score
+            + crate::patches::leaning(&key) * crate::patches::LEAN_SPREAD * spread
+            + crate::item_stats::win_rates::lean(results.as_deref(), champ, &key)
+                * crate::item_stats::win_rates::LEAN_SPREAD
+                * spread;
         // The first of equals wins, so a tie falls the same way every time.
         if best.as_ref().is_none_or(|(top, _, _)| score > *top) {
             best = Some((score, index, key));

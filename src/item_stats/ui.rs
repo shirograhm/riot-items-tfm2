@@ -336,6 +336,7 @@ pub fn sync(ctx: &mut StableClient<'_>) {
     if item_stats::pump(ctx) {
         let _ = with_state(|state| state.dirty = true);
     }
+    item_stats::publish_if_due();
     // Repaint for matches folded by `item_stats::sync` earlier in the frame.
     let folds = item_stats::folds();
     let _ = with_state(|state| {

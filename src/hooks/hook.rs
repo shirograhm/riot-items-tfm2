@@ -518,6 +518,7 @@ fn apply_training_builds(
         .map(|(_, champion)| champion.as_str())
         .collect();
     let roles = lineup_roles(team1);
+    let table = crate::item_stats::win_rates::for_lineup(&allies, &enemies);
 
     for (route, (champion, role)) in routes.iter_mut().zip(&roles) {
         let role = *role;
@@ -543,7 +544,10 @@ fn apply_training_builds(
             })
             .flatten();
         let later_open = build_config::later_slot_open(&build_config::pin_row(champion, role));
-        enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots);
+        let lean = |key: &str| {
+            crate::item_stats::win_rates::lean(table.as_deref(), champion, key)
+        };
+        enforce_smart_build(items, route, &pinned, &reserved, later_open, fit, boots, &lean);
 
         // Noted for the tactics panel, as the stable hook does for league
         // matches, with the lane the champion plays.
@@ -592,7 +596,8 @@ fn lineup_roles(team: &[(Position, String)]) -> Vec<(String, build_config::Role)
 //
 // Only `key` and `next_tier` are safe to call (see `detour`), so the category
 // comes from `item_catalog::category_of` and an item is final when its
-// `next_tier()` is empty.
+// `next_tier()` is empty. `lean` is the champion's win-rate lean by item key.
+#[allow(clippy::too_many_arguments)]
 fn enforce_smart_build(
     items: &[Box<dyn ItemInfo>],
     build: &mut [usize],
@@ -601,6 +606,7 @@ fn enforce_smart_build(
     later_open: bool,
     fit: crate::smart_builds::Fit,
     boots: Option<usize>,
+    lean: &dyn Fn(&str) -> f32,
 ) {
     crate::smart_builds::enforce(
         items.len(),
@@ -610,6 +616,7 @@ fn enforce_smart_build(
         later_open,
         fit,
         boots,
+        |index| items.get(index).map_or(0.0, |item| lean(&item.key().to_string())),
         |index| items.get(index).map(|item| item.key().to_string()),
         |index| {
             // Bound to a local because `base_slug` borrows the key.

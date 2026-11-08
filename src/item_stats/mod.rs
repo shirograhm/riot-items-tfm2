@@ -11,6 +11,7 @@
 pub(crate) mod sim;
 pub(crate) mod toolbox_tab;
 pub(crate) mod ui;
+pub(crate) mod win_rates;
 
 use std::borrow::Cow;
 use std::collections::{BTreeMap, HashMap, HashSet};
@@ -81,6 +82,11 @@ struct Aggregate {
     // Patch -> (lane, item) -> champion -> times that champion was holding it.
     // Feeds the "purchased on" column, which is the top few of these by count.
     champions: BTreeMap<String, BTreeMap<(Option<usize>, String), BTreeMap<String, u32>>>,
+    // Patch -> (lane, item) -> champion -> games and wins with that champion
+    // holding it (`firsts` unused). Feeds Smart Builds' win-rate lean
+    // ([`win_rates`]). Counted since 1.0.9: `champions` holds older games
+    // without their outcome.
+    results: BTreeMap<String, BTreeMap<(Option<usize>, String), BTreeMap<String, Totals>>>,
     // Patch -> captured matches.
     matches: BTreeMap<String, u32>,
 }
@@ -303,7 +309,52 @@ fn fold(patch: &str, players: &[crate::item_stats::sim::CapturedPlayer]) {
                     .or_default() += 1;
             }
         }
+
+        let per_result = agg.results.entry(patch.to_string()).or_default();
+        for player in players {
+            if player.champion.is_empty() {
+                continue;
+            }
+            for key in &player.items {
+                let entry = per_result
+                    .entry((player.lane, key.clone()))
+                    .or_default()
+                    .entry(player.champion.clone())
+                    .or_default();
+                entry.games += 1;
+                entry.wins += u32::from(player.won);
+            }
+        }
     });
+    PUBLISH_DUE.store(true, Ordering::Relaxed);
+}
+
+// A fold since the last [`publish`]. A backfill folds many matches in one
+// sync, and the table is rebuilt once after them.
+static PUBLISH_DUE: AtomicBool = AtomicBool::new(false);
+
+// [`publish`] after the folds of a [`pump`] or a whole sync.
+pub(crate) fn publish_if_due() {
+    if PUBLISH_DUE.swap(false, Ordering::Relaxed) {
+        let _ = with_agg(|agg| publish(agg));
+    }
+}
+
+// Hands Smart Builds the champion-and-item results over every patch and lane
+// ([`win_rates`]).
+fn publish(agg: &Aggregate) {
+    let mut table = win_rates::Table::new();
+    for per_item in agg.results.values() {
+        for ((_, item), per_champion) in per_item {
+            for (champion, totals) in per_champion {
+                table
+                    .entry(champion.clone())
+                    .or_default()
+                    .add(item, totals.games, totals.wins);
+            }
+        }
+    }
+    win_rates::publish(table);
 }
 
 // Matches folded since the game started.
@@ -1206,6 +1257,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
         if with_agg(|agg| agg.loaded).unwrap_or(false) {
             let _ = with_agg(|agg| *agg = Aggregate::default());
             crate::item_stats::sim::forget();
+            win_rates::forget();
         }
         if let Ok(mut waited) = WAITED.lock() {
             *waited = 0;
@@ -1228,6 +1280,7 @@ pub(crate) fn sync(ctx: &mut StableClient<'_>) {
     }
     // Continue any pass in flight; with none this reads nothing.
     while pump(ctx) {}
+    publish_if_due();
 
     flush(ctx);
 }
@@ -1240,6 +1293,7 @@ fn load_from_save(ctx: &StableClient<'_>) -> bool {
             let _ = with_agg(|agg| {
                 agg.loaded = true;
                 load_into(agg, &text);
+                publish(agg);
             });
             return true;
         }
@@ -1285,8 +1339,8 @@ pub(crate) fn flush(ctx: &mut StableClient<'_>) {
 
 // `{"v": 1, "t": {"<patch>": {"m": matches, "i": [entry, ...]}}}`, an entry
 // being `{"n": lane, "k": item, "g": games, "w": wins, "f": firsts, "c":
-// {champion: count}}`. `n` is omitted when the lane is unknown and `c` when no
-// champion was named.
+// {champion: count}, "r": {champion: [games, wins]}}`. `n` is omitted when
+// the lane is unknown, and `c` and `r` when no champion was named.
 fn serialise(agg: &mut Aggregate) -> String {
     let mut out = format!("{{\"v\":{FORMAT},\"t\":{{");
     for (slot, (patch, per_item)) in agg.counts.iter().enumerate() {
@@ -1296,6 +1350,7 @@ fn serialise(agg: &mut Aggregate) -> String {
         let matches = agg.matches.get(patch).copied().unwrap_or(0);
         out.push_str(&format!("{}:{{\"m\":{matches},\"i\":[", quote(patch)));
         let per_champion = agg.champions.get(patch);
+        let per_result = agg.results.get(patch);
         for (slot, ((lane, item), totals)) in per_item.iter().enumerate() {
             if slot > 0 {
                 out.push(',');
@@ -1319,6 +1374,22 @@ fn serialise(agg: &mut Aggregate) -> String {
                         out.push(',');
                     }
                     out.push_str(&format!("{}:{count}", quote(champion)));
+                }
+                out.push('}');
+            }
+            let results = per_result.and_then(|per| per.get(&(*lane, item.clone())));
+            if let Some(results) = results.filter(|results| !results.is_empty()) {
+                out.push_str(",\"r\":{");
+                for (slot, (champion, totals)) in results.iter().enumerate() {
+                    if slot > 0 {
+                        out.push(',');
+                    }
+                    out.push_str(&format!(
+                        "{}:[{},{}]",
+                        quote(champion),
+                        totals.games,
+                        totals.wins
+                    ));
                 }
                 out.push('}');
             }
@@ -1356,6 +1427,8 @@ fn load_into(agg: &mut Aggregate, text: &str) {
         let per_item = agg.counts.entry(patch.clone()).or_default();
         let mut champions: BTreeMap<(Option<usize>, String), BTreeMap<String, u32>> =
             BTreeMap::new();
+        let mut results: BTreeMap<(Option<usize>, String), BTreeMap<String, Totals>> =
+            BTreeMap::new();
         for entry in entries {
             let Some(fields) = entry.as_object() else {
                 continue;
@@ -1377,6 +1450,25 @@ fn load_into(agg: &mut Aggregate, text: &str) {
                     firsts: read("f"),
                 },
             );
+            if let Some(Value::Object(tally)) = fields.get("r") {
+                let per_result = results.entry(key.clone()).or_default();
+                for (champion, pair) in tally {
+                    let pair = pair.as_array();
+                    let at = |slot: usize| {
+                        pair.and_then(|pair| pair.get(slot))
+                            .and_then(Value::as_u64)
+                            .unwrap_or(0) as u32
+                    };
+                    per_result.insert(
+                        champion.clone(),
+                        Totals {
+                            games: at(0),
+                            wins: at(1),
+                            firsts: 0,
+                        },
+                    );
+                }
+            }
             if let Some(Value::Object(tally)) = fields.get("c") {
                 let per_champion = champions.entry(key).or_default();
                 for (champion, count) in tally {
@@ -1390,6 +1482,9 @@ fn load_into(agg: &mut Aggregate, text: &str) {
         agg.matches.insert(patch.clone(), matches);
         if !champions.is_empty() {
             agg.champions.insert(patch.clone(), champions);
+        }
+        if !results.is_empty() {
+            agg.results.insert(patch.clone(), results);
         }
     }
 }

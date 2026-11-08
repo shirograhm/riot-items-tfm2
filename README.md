@@ -102,6 +102,8 @@ Boots also have their own **Boots** group in the Build Editor.
 
 **Components.** Many items can be built from different components (Jak'Sho starts from Cloth Armor or Null-Magic Mantle), and the game picks them at random. Smart Builds picks the ones that fit: armor or magic resist based on the enemy team's damage, the damage stats the champion uses (attack speed and crit first for marksmen), and more health and resists for tankier champions. This applies to pinned items too.
 
+**Win rates.** Smart Builds learns from the matches played in your save, in every league. When it chooses between items, it leans toward the ones that champion has won more with. A champion needs 10 games with an item before that item counts, and small samples are pulled toward the champion's usual win rate. This only nudges choices between items that already fit the champion. It never overrides the other rules or your pins. It is off in multiplayer.
+
 **Offense / Defense.** Each row in the Build Editor has **Offense** and **Defense** cells. Pick one to make that champion take the offensive (damage, attack speed, crit, penetration) or defensive (health, armor, magic resist, tenacity) components wherever an item can be built more than one way. Click the lit cell again to go back to neither. It follows Apply To Your Players Only like pins do.
 
 ##### Item Rules

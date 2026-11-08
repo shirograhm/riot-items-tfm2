@@ -1,5 +1,6 @@
 use mod_api_stable::{StableDraftDecision, StableItemBuildContext, StableItemBuildHook};
 
+use crate::item_stats::win_rates;
 use crate::{build_config, smart_builds};
 
 const MOD_ITEM_SCORE_BONUS: f32 = 0.5;
@@ -35,8 +36,10 @@ impl StableItemBuildHook for ConfiguredBuilds {
             return StableDraftDecision::Pass;
         };
         // Nudge by the item's balance patches, so how often it is built follows
-        // its nerfs and buffs.
-        let lean = crate::patches::leaning(key) * crate::patches::LEAN_SCORE;
+        // its nerfs and buffs, and by how this champion has done with it.
+        let lean = crate::patches::leaning(key) * crate::patches::LEAN_SCORE
+            + win_rates::lean(lineup_table(ctx).as_deref(), ctx.champion_key(), key)
+                * win_rates::LEAN_SCORE;
         // Items the engine already wants keep its ranking, plus the patch lean.
         if base_score > 0.0 {
             return if lean == 0.0 {
@@ -155,6 +158,12 @@ fn champion_fit(ctx: &StableItemBuildContext<'_>) -> smart_builds::Fit {
     smart_builds::fit(ctx.champion_key(), champion_role(ctx))
 }
 
+// The win-rate table this match's builds are decided with (see
+// `win_rates::for_lineup`).
+fn lineup_table(ctx: &StableItemBuildContext<'_>) -> Option<std::sync::Arc<win_rates::Table>> {
+    win_rates::for_lineup(&ctx.ally_champions(), &ctx.enemy_champions())
+}
+
 // Under `own_team_only`, records the pin-aware build (pins merged into the
 // engine's build, then the Smart Builds pass) for
 // `tactics::spawn_paste_pinned_build` to give only the player's athletes.
@@ -237,6 +246,7 @@ fn enforce_smart_build(
         build_config::remember_rule_boots(ctx.champion_key(), boots);
         boots
     });
+    let table = lineup_table(ctx);
     smart_builds::enforce(
         ctx.item_count(),
         build,
@@ -245,6 +255,10 @@ fn enforce_smart_build(
         later_open,
         champion_fit(ctx),
         boots.and_then(|boots| ctx.item_index(boots)),
+        |index| {
+            ctx.item_key(index)
+                .map_or(0.0, |key| win_rates::lean(table.as_deref(), ctx.champion_key(), key))
+        },
         |index| ctx.item_key(index).map(str::to_string),
         |index| ctx.item_category(index),
         |index| is_selectable_final(ctx, index),
