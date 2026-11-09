@@ -495,6 +495,27 @@
             "anim": "asset/riot_items_tfm2/effects/solstice_sleigh_aura",
             "tag": "aura",
             "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_transmutation_burn",
+            "anim": "asset/riot_items_tfm2/effects/transmutation_burn",
+            "tag": "burn",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_transmutation_burn_serpen",
+            "anim": "asset/riot_items_tfm2/effects/transmutation_burn_serpen",
+            "tag": "burn",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_transmutation_burn_epic",
+            "anim": "asset/riot_items_tfm2/effects/transmutation_burn_epic",
+            "tag": "burn",
+            "z": -1
         }
     ]
 }

@@ -8,6 +8,17 @@ use crate::{is_monster, percent_of, refresh_buff, ticks, DOT_TICK_RATE, TICKS_PE
 // health as true damage over a few seconds, capped per second. One buff name for every
 // tier, so the Stone's takes over from the Medallion's instead of adding up.
 const TRANSMUTATION_BUFF: &str = "philosophers_transmutation";
+// Statless marker on a burning monster: the `view_buffs` binding of the same
+// name draws a small red-and-blue ring of fire on the ground at its feet,
+// behind it (z -1). One per size, since monsters stand 23 to 106 px wide with
+// their feet 18 (jungle camps), 37 (Serpen) or 55 (epic) px under the unit.
+const BURN_RING: &str = "riot_transmutation_burn";
+const SERPEN_BURN_RING: &str = "riot_transmutation_burn_serpen";
+const EPIC_BURN_RING: &str = "riot_transmutation_burn_epic";
+// How much longer than the burn the ring is put up for, and how long it is
+// left before being put up again (every hit restarts the burn; replacing the
+// buff that often is wasted work). Liandry's flames do the same.
+const RING_SLACK_TICKS: usize = DOT_TICK_RATE;
 
 // The numbers, from the item that holds it.
 #[derive(Clone, Copy, Debug)]
@@ -19,11 +30,35 @@ pub(crate) struct TransmutationNumbers {
     pub(crate) burn_cap_per_second: usize,
 }
 
+// One monster burning now.
+#[derive(Clone, Copy, Debug)]
+struct Burn {
+    target: usize,
+    // Ticks the burn has left.
+    remaining: usize,
+    // Ticks until its next damage tick.
+    until_next: usize,
+    // Damage a tick.
+    damage: usize,
+    // Ticks the ring's marker has left. Never less than `remaining`.
+    marker: usize,
+    // Which ring, by the monster's size. Kept here because the monster may
+    // be gone by the time its ring is to come down.
+    ring: &'static str,
+}
+
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Transmutation {
-    // Monsters burning now, as `(entity, ticks left, ticks until the next tick,
-    // damage a tick)`.
-    burns: Vec<(usize, usize, usize, usize)>,
+    burns: Vec<Burn>,
+}
+
+// The ring that fits this monster.
+fn ring_for(monster: &StableEntity<'_, '_>) -> &'static str {
+    match monster.kind() {
+        Some(EntityKindV1::Epic) => EPIC_BURN_RING,
+        Some(EntityKindV1::Serpen) => SERPEN_BURN_RING,
+        _ => BURN_RING,
+    }
 }
 
 impl Transmutation {
@@ -68,12 +103,13 @@ impl Transmutation {
         if damage == 0 || attack_type == AttackTypeV1::Item {
             return;
         }
-        if !ctx
+        let Some(ring) = ctx
             .get_entity(target)
-            .is_some_and(|target_ref| target_ref.is_alive() && is_monster(&target_ref))
-        {
+            .filter(|target_ref| target_ref.is_alive() && is_monster(target_ref))
+            .map(|target_ref| ring_for(&target_ref))
+        else {
             return;
-        }
+        };
         let Some(max_hp) = ctx.get_entity(caster).map(|caster_ref| caster_ref.hp().1) else {
             return;
         };
@@ -82,12 +118,29 @@ impl Transmutation {
         let share = percent_of(max_hp, numbers.burn_percent) as f64 / instances as f64;
         let cap = numbers.burn_cap_per_second * DOT_TICK_RATE / TICKS_PER_SECOND as usize;
         let per_tick = (share.round() as usize).min(cap);
-        match self.burns.iter_mut().find(|burn| burn.0 == target) {
-            Some(burn) => {
-                burn.1 = duration;
-                burn.3 = per_tick;
+        let index = match self.burns.iter().position(|burn| burn.target == target) {
+            Some(index) => index,
+            None => {
+                self.burns.push(Burn {
+                    target,
+                    remaining: 0,
+                    until_next: DOT_TICK_RATE,
+                    damage: 0,
+                    marker: 0,
+                    ring,
+                });
+                self.burns.len() - 1
             }
-            None => self.burns.push((target, duration, DOT_TICK_RATE, per_tick)),
+        };
+        let burn = &mut self.burns[index];
+        burn.remaining = duration;
+        burn.damage = per_tick;
+        // Put up for the whole burn in one call, and again only once the burn
+        // would outlast it.
+        if burn.marker < duration {
+            burn.marker = duration + RING_SLACK_TICKS;
+            let marker = burn.marker;
+            refresh_buff(ctx, target, ring, &BuffV1::timed(ring, marker));
         }
     }
 
@@ -108,30 +161,34 @@ impl Transmutation {
             return;
         };
         let mut kept = Vec::with_capacity(self.burns.len());
-        for (id, remaining, until_next, damage) in std::mem::take(&mut self.burns) {
-            let remaining = remaining.saturating_sub(1);
-            let mut until_next = until_next.saturating_sub(1);
-            if until_next == 0 {
+        for mut burn in std::mem::take(&mut self.burns) {
+            burn.remaining = burn.remaining.saturating_sub(1);
+            burn.until_next = burn.until_next.saturating_sub(1);
+            burn.marker = burn.marker.saturating_sub(1);
+            if burn.until_next == 0 {
                 // Re-read every tick, since entity ids are recycled.
                 if !ctx
-                    .get_entity(id)
+                    .get_entity(burn.target)
                     .is_some_and(|monster| monster.is_alive() && is_monster(&monster))
                 {
+                    // Dead or gone, and its ring goes with the burn rather
+                    // than sitting on the body or whatever takes its slot.
+                    ctx.entity_remove_buff(burn.target, burn.ring);
                     continue;
                 }
-                if damage > 0 {
+                if burn.damage > 0 {
                     ctx.deal_damage_typed(
                         caster,
-                        id,
-                        damage,
+                        burn.target,
+                        burn.damage,
                         DamageTypeV1::Fixed,
                         AttackTypeV1::Item,
                     );
                 }
-                until_next = DOT_TICK_RATE;
+                burn.until_next = DOT_TICK_RATE;
             }
-            if remaining > 0 {
-                kept.push((id, remaining, until_next, damage));
+            if burn.remaining > 0 {
+                kept.push(burn);
             }
         }
         self.burns = kept;
