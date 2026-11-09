@@ -77,6 +77,8 @@ Smart Builds cleans up the AI's picks using the following rules:
 17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
 18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
 
+Within those rules, the AI also leans toward items a champion has won with in your save and away from ones it has lost with (from the same results as [b]Item Stats[/b]). An item needs at least 10 games on a champion before it counts. In multiplayer, the host's save decides.  
+
 Items you pin are never overridden, and the AI works around them. Switch the Build Editor's toggle to [b]Smart Builds (No Boots)[/b] to keep boots out of AI builds.  
 
 [h1] Item Stats [/h1]

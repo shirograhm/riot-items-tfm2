@@ -13,10 +13,18 @@
 //! a fold between the two must not change the build. So a lineup keeps the
 //! table it was first asked with ([`for_lineup`]) until the save changes.
 //!
-//! Off in multiplayer: each player's save holds its own numbers.
+//! In multiplayer the host's numbers decide. Builds are made where a server
+//! runs, which is the host's game, so they come from the host's table already.
+//! The host also sends its table out with everyone's builds
+//! (`crate::multiplayer`, [`wire`]), and a guest's game uses that in place of
+//! its own ([`adopt_host`]). That way a guest that did make a build itself
+//! would make the host's. (The 5th/6th items' network pick stays off in
+//! multiplayer for its own reasons.)
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
+
+use serde::{Deserialize, Serialize};
 
 // Kill switch for the whole lean.
 const ENABLED: bool = true;
@@ -73,6 +81,26 @@ static PUBLISHED: Mutex<Option<Arc<Table>>> = Mutex::new(None);
 // Canonical lineup -> the table it was first asked with.
 static FROZEN: Mutex<Option<HashMap<String, Arc<Table>>>> = Mutex::new(None);
 
+// On a guest's game in a multiplayer session, from the first word of the host:
+// the host's table, used in place of [`PUBLISHED`]. `HostTable(None)` is a host
+// with no table, so no lean.
+struct HostTable(Option<Arc<Table>>);
+static HOST: Mutex<Option<HostTable>> = Mutex::new(None);
+
+// One champion's results as the host sends them: its games and wins over all
+// its items, and only the items with [`MIN_GAMES`] or more (the rest lean 0).
+// Sorted by champion and item, so an unchanged table compares equal and the
+// server does not send it out again.
+#[derive(Serialize, Deserialize, Clone, Debug, Default, PartialEq)]
+pub(crate) struct WireChampion {
+    champion: String,
+    games: u32,
+    wins: u32,
+    items: Vec<(String, u32, u32)>,
+}
+
+pub(crate) type Wire = Vec<WireChampion>;
+
 // Replaces the table; from the folds and the save's load.
 pub(crate) fn publish(table: Table) {
     let mut guard = PUBLISHED.lock().unwrap_or_else(|e| e.into_inner());
@@ -86,7 +114,12 @@ pub(crate) fn forget() {
     *FROZEN.lock().unwrap_or_else(|e| e.into_inner()) = None;
 }
 
+// The table in force: the host's on a guest that has heard it, else this
+// game's own.
 fn published() -> Option<Arc<Table>> {
+    if let Some(HostTable(host)) = &*HOST.lock().unwrap_or_else(|e| e.into_inner()) {
+        return host.clone();
+    }
     PUBLISHED
         .lock()
         .unwrap_or_else(|e| e.into_inner())
@@ -94,7 +127,81 @@ fn published() -> Option<Arc<Table>> {
 }
 
 fn active() -> bool {
-    ENABLED && !crate::multiplayer::active()
+    ENABLED
+}
+
+// This game's own table for the wire; on the host's server, for every guest.
+pub(crate) fn wire() -> Option<Wire> {
+    if !ENABLED {
+        return None;
+    }
+    let own = PUBLISHED
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .clone()?;
+    let mut wire: Wire = own
+        .iter()
+        .map(|(champion, results)| {
+            let mut items: Vec<(String, u32, u32)> = results
+                .items
+                .iter()
+                .filter(|(_, counts)| counts.0 >= MIN_GAMES)
+                .map(|(item, &(games, wins))| (item.clone(), games, wins))
+                .collect();
+            items.sort();
+            WireChampion {
+                champion: champion.clone(),
+                games: results.games,
+                wins: results.wins,
+                items,
+            }
+        })
+        .collect();
+    wire.sort_by(|a, b| a.champion.cmp(&b.champion));
+    Some(wire)
+}
+
+// The host's table, heard on a guest's game; `None` for a host that sent none.
+// The first word drops every lineup frozen on this game's own numbers; after
+// that, a lineup keeps the host table it was first asked with, as with
+// [`publish`].
+pub(crate) fn adopt_host(wire: Option<Wire>) {
+    let table = wire.map(|wire| {
+        let mut table = Table::new();
+        for champion in wire {
+            table.insert(
+                champion.champion,
+                ChampionResults {
+                    items: champion
+                        .items
+                        .into_iter()
+                        .map(|(item, games, wins)| (item, (games, wins)))
+                        .collect(),
+                    games: champion.games,
+                    wins: champion.wins,
+                },
+            );
+        }
+        Arc::new(table)
+    });
+    let first = {
+        let mut host = HOST.lock().unwrap_or_else(|e| e.into_inner());
+        let first = host.is_none();
+        *host = Some(HostTable(table));
+        first
+    };
+    if first {
+        *FROZEN.lock().unwrap_or_else(|e| e.into_inner()) = None;
+    }
+}
+
+// The session is over: back to this game's own numbers, and no lineup keeps a
+// host table.
+pub(crate) fn drop_host() {
+    let had = HOST.lock().unwrap_or_else(|e| e.into_inner()).take().is_some();
+    if had {
+        *FROZEN.lock().unwrap_or_else(|e| e.into_inner()) = None;
+    }
 }
 
 // The table for the match `side` and `other` play, frozen at its first ask.
