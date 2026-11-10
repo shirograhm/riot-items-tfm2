@@ -133,9 +133,12 @@
     "toughness": 0,
     "skill_damaged_reduce": 0,
     "skill_cooldown_mult": 15,
-    "effect_stack_magic_power": 5,
-    "effect_max_stacks": 4,
-    "effect_duration_seconds": 4
+    "effect_bonus_flat_damage": 60,
+    "effect_ap_percent_damage": 6.0,
+    "effect_bonus_magic_damage": 60,
+    "effect_burn_duration_seconds": 3,
+    "effect_stack_magic_power_mult": 4
+
   },
   "blade_of_the_ruined_king": {
     "price": 750,
@@ -775,9 +778,12 @@
     "toughness": 0,
     "skill_damaged_reduce": 0,
     "skill_cooldown_mult": 25,
-    "effect_stack_magic_power": 10,
-    "effect_max_stacks": 4,
-    "effect_duration_seconds": 4
+    "effect_bonus_flat_damage": 90,
+    "effect_ap_percent_damage": 9.0,
+    "effect_bonus_magic_damage": 90,
+    "effect_burn_duration_seconds": 3,
+    "effect_stack_magic_power_mult": 6
+
   },
   "radiant_blade_of_the_ruined_king": {
     "price": 1050,

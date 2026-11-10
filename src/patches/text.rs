@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 136] = [
+const ROW_FORMATS: [RowFormat; 137] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1888,10 +1888,14 @@ const ROW_FORMATS: [RowFormat; 136] = [
     ),
     row(
         "blackfire_torch",
-        "effect_stack_magic_power",
+        "effect_stack_magic_power_mult",
         label::ABILITY_POWER,
-    )
-    .unit(unit::PER_STACK),
+    ),
+    row(
+        "blackfire_torch",
+        "effect_bonus_magic_damage",
+        label::BONUS_MAGIC_DAMAGE,
+    ),
     row(
         "cosmic_drive",
         "effect_move_speed_mult",
@@ -2130,7 +2134,7 @@ struct AmountFormat {
 // The placeholders of an amount's numbers, in the order of its fields.
 const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
 
-const AMOUNT_FORMATS: [AmountFormat; 25] = [
+const AMOUNT_FORMATS: [AmountFormat; 26] = [
     AmountFormat {
         item: "deaths_dance",
         fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
@@ -2160,6 +2164,12 @@ const AMOUNT_FORMATS: [AmountFormat; 25] = [
         fields: &["effect_bonus_flat_heal", "effect_caster_hp_percent_heal"],
         label: label::HEALING,
         amount: ("amount_flat_max_hp", "[{A}] + [{B}% max HP]"),
+    },
+    AmountFormat {
+        item: "blackfire_torch",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: label::BURN_DAMAGE,
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
         item: "bamis_cinder",
