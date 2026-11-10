@@ -13,7 +13,7 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 
 [h1] Versioning [/h1]
 Currently updated for game version 0.7.1. Older game versions need an older build of the mod:  
-Mod v1.0.8 - 0.7.1  
+Mod v1.0.8+ - 0.7.1  
 Mod v1.0.7 - 0.7.0  
 
 Manual releases (includes beta releases): https://github.com/shirograhm/riot-items-tfm2/releases
