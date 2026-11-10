@@ -7,6 +7,9 @@ mod spellblade;
 pub(crate) mod sunfire;
 mod transmutation;
 
+use std::cell::Cell;
+use std::sync::Mutex;
+
 use mod_api_stable::*;
 
 pub(crate) use annul::Annul;
@@ -31,6 +34,58 @@ pub(crate) fn mark_immolate(ctx: &mut StableSim<'_>, entity: usize) {
         IMMOLATE_BUFF,
         &BuffV1::timed(IMMOLATE_BUFF, IMMOLATE_MARKER_TICKS),
     );
+}
+
+// Immolate does not stack: a champion holding more than one Immolate item
+// burns with the one that deals the most to champions, and the rest sit out.
+// Each item's (flat damage, % of maximum health), by the key the game holds
+// it under; noted as the items register, and again on every balance patch.
+static IMMOLATE_BURNS: Mutex<Vec<(&'static str, usize, f64)>> = Mutex::new(Vec::new());
+
+thread_local! {
+    // The (tick, player) whose burn has already landed, so a second copy of
+    // the winning item does not burn again on the same tick.
+    static IMMOLATE_CLAIMED: Cell<Option<(usize, usize)>> = const { Cell::new(None) };
+}
+
+pub(crate) fn note_immolate(key: &'static str, flat: usize, hp_percent: f64) {
+    if let Ok(mut burns) = IMMOLATE_BURNS.lock() {
+        burns.retain(|&(noted, _, _)| noted != key);
+        burns.push((key, flat, hp_percent));
+    }
+}
+
+// Whether `key`'s Immolate is the one a champion of maximum health `max_hp`
+// holding `keys` burns with: the strongest of the Immolate items held. Ties go
+// to Radiant Sunfire Cape, whose burn the game deals itself and which cannot
+// be held back, then to the earliest slot.
+fn immolate_strongest(keys: &[String], key: &str, max_hp: usize) -> bool {
+    let Ok(burns) = IMMOLATE_BURNS.lock() else {
+        return true;
+    };
+    let mut best: Option<(&str, usize)> = None;
+    for held in keys {
+        let Some(&(_, flat, hp_percent)) = burns.iter().find(|(noted, _, _)| *noted == held) else {
+            continue;
+        };
+        let damage = flat + crate::percent_of(max_hp, hp_percent);
+        let wins = best.is_none_or(|(_, top)| {
+            damage > top || (damage == top && held == sunfire::RADIANT_SUNFIRE_KEY)
+        });
+        if wins {
+            best = Some((held.as_str(), damage));
+        }
+    }
+    best.is_none_or(|(winner, _)| winner == key)
+}
+
+// [`immolate_strongest`] for an item's own once-a-second burn, which also
+// claims the tick for `player`.
+pub(crate) fn immolate_wins(ctx: &StableSim<'_>, player: usize, key: &str, max_hp: usize) -> bool {
+    let keys = ctx.get_player(player).map(|p| p.item_keys()).unwrap_or_default();
+    let burn = (ctx.tick(), player);
+    immolate_strongest(&keys, key, max_hp)
+        && IMMOLATE_CLAIMED.with(|claimed| claimed.replace(Some(burn)) != Some(burn))
 }
 
 pub(crate) fn size_percent(ctx: &StableSim<'_>, entity: usize) -> u64 {

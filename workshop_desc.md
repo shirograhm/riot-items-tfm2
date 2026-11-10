@@ -76,6 +76,7 @@ Smart Builds cleans up the AI's picks using the following rules:
 16. Supports build only Tank/Support items (mages only when tank-tagged or on Dream Maker)  
 17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
 18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
+19. One Immolate item (only the strongest burn lands)  
 
 Within those rules, the AI also leans toward items a champion has won with in your save and away from ones it has lost with (from the same results as [b]Item Stats[/b]). An item needs at least 10 games on a champion before it counts. In multiplayer, the host's save decides.  
 

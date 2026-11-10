@@ -59,6 +59,7 @@ Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Ed
 - duplicate items
 - a second Grievous Wounds item
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count
+- a second Immolate item (Sunfire Cape, Hollow Radiance). Bami's Cinder doesn't count. In a match, a champion holding more than one Immolate item only burns with the strongest
 - crit items past 100% crit chance
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) on non-junglers
 - melee items on ranged champions (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), and ranged items on melee champions (Runaan's Hurricane, Diamond Tipped Spear, Rapid Firecannon, Hexoptics C44). Melee means an attack range of 35 or less
