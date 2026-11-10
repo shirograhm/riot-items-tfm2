@@ -302,6 +302,118 @@
         },
         {
             "type": "Animated",
+            "name": "riot_sharpshooter_40",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_40",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_50",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_50",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_60",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_60",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_70",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_70",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_80",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_80",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_90",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_90",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_100",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_100",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_sharpshooter_110",
+            "anim": "asset/riot_items_tfm2/effects/sharpshooter_ring_110",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_40",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_40",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_50",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_50",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_60",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_60",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_70",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_70",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_80",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_80",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_90",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_90",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_100",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_100",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_arcane_aim_110",
+            "anim": "asset/riot_items_tfm2/effects/arcane_aim_ring_110",
+            "tag": "ring",
+            "z": -1
+        },
+        {
+            "type": "Animated",
             "name": "riot_energized",
             "anim": "asset/riot_items_tfm2/effects/energized_charge",
             "tag": "charge",
@@ -382,6 +494,27 @@
             "name": "solstice_sleigh_sledding",
             "anim": "asset/riot_items_tfm2/effects/solstice_sleigh_aura",
             "tag": "aura",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_transmutation_burn",
+            "anim": "asset/riot_items_tfm2/effects/transmutation_burn",
+            "tag": "burn",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_transmutation_burn_serpen",
+            "anim": "asset/riot_items_tfm2/effects/transmutation_burn_serpen",
+            "tag": "burn",
+            "z": -1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_transmutation_burn_epic",
+            "anim": "asset/riot_items_tfm2/effects/transmutation_burn_epic",
+            "tag": "burn",
             "z": -1
         }
     ]

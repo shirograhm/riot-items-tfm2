@@ -10,7 +10,6 @@ pub struct PhilosophersMedallion {
     hp: i32,
     defence: i32,
     magic_resistance: i32,
-    effect_skill_cooldown_mult: i32,
     effect_bonus_hp_regen: i32,
     effect_duration_seconds: f64,
     effect_hp_percent_damage: f64,
@@ -27,12 +26,11 @@ impl Default for PhilosophersMedallion {
             hp: 200,
             defence: 10,
             magic_resistance: 10,
-            effect_skill_cooldown_mult: 5,
-            effect_bonus_hp_regen: 15,
+            effect_bonus_hp_regen: 20,
             effect_duration_seconds: 5.0,
             effect_hp_percent_damage: 10.0,
             effect_burn_duration_seconds: 3.0,
-            effect_burn_damage_cap: 50,
+            effect_burn_damage_cap: 100,
             // Non-vital stats (internals)
             transmutation: Transmutation::default(),
         }
@@ -50,7 +48,6 @@ impl PhilosophersMedallion {
                 hp,
                 defence,
                 magic_resistance,
-                effect_skill_cooldown_mult,
                 effect_bonus_hp_regen,
                 effect_duration_seconds,
                 effect_hp_percent_damage,
@@ -63,7 +60,6 @@ impl PhilosophersMedallion {
 
     fn transmutation_numbers(&self) -> TransmutationNumbers {
         TransmutationNumbers {
-            haste: self.effect_skill_cooldown_mult,
             hp_regen: self.effect_bonus_hp_regen,
             seconds: self.effect_duration_seconds,
             burn_percent: self.effect_hp_percent_damage,
@@ -119,19 +115,19 @@ impl StableItem for PhilosophersMedallion {
         self.transmutation.update(ctx, player);
     }
 
-    fn on_damaged(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
-        _entity: usize,
-        attacker: usize,
-        damage: usize,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let numbers = self.transmutation_numbers();
-        self.transmutation.on_damaged(ctx, attacker, damage, &numbers);
+        self.transmutation
+            .on_attack(ctx, caster, target, *damage, attack_type, &numbers);
     }
 
     fn on_kill(
@@ -151,7 +147,6 @@ impl StableItem for PhilosophersMedallion {
             ItemTagV1::Hp,
             ItemTagV1::Defense,
             ItemTagV1::MagicResistance,
-            ItemTagV1::CooltimeReduce,
             ItemTagV1::HpRegen,
         ]
     }

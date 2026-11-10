@@ -6,9 +6,9 @@ use crate::{
     TransmutationNumbers,
 };
 
-// Transmutation: Killing monsters grants 5 Ability Haste and 30 bonus health
-// regeneration for 5 seconds. Additionally, monsters that damage you burn for
-// 10% of their maximum health as true damage over 3 seconds, capped at 150
+// Transmutation: Killing monsters grants 30 bonus health regeneration for 5
+// seconds. Additionally, damaging monsters burns them for 10% of your
+// maximum health as true damage over 3 seconds, capped at 150
 // damage per second. (Philosopher's Medallion has it too: `crate::Transmutation`.)
 //
 // Cinderhulk: Gain 1% maximum health for each champion takedown and monster
@@ -28,7 +28,7 @@ pub struct PhilosophersStone {
     hp: i32,
     defence: i32,
     magic_resistance: i32,
-    effect_skill_cooldown_mult: i32,
+    skill_cooldown_mult: i32,
     effect_bonus_hp_regen: i32,
     effect_duration_seconds: f64,
     effect_hp_percent_damage: f64,
@@ -55,7 +55,7 @@ impl PhilosophersStone {
             hp: 350,
             defence: 15,
             magic_resistance: 25,
-            effect_skill_cooldown_mult: 5,
+            skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 30,
             effect_duration_seconds: 5.0,
             effect_hp_percent_damage: 10.0,
@@ -77,7 +77,7 @@ impl PhilosophersStone {
             hp: 450,
             defence: 30,
             magic_resistance: 45,
-            effect_skill_cooldown_mult: 5,
+            skill_cooldown_mult: 5,
             effect_bonus_hp_regen: 30,
             effect_duration_seconds: 5.0,
             effect_hp_percent_damage: 10.0,
@@ -106,7 +106,7 @@ impl PhilosophersStone {
                 hp,
                 defence,
                 magic_resistance,
-                effect_skill_cooldown_mult,
+                skill_cooldown_mult,
                 effect_bonus_hp_regen,
                 effect_duration_seconds,
                 effect_hp_percent_damage,
@@ -121,7 +121,6 @@ impl PhilosophersStone {
 
     fn transmutation_numbers(&self) -> TransmutationNumbers {
         TransmutationNumbers {
-            haste: self.effect_skill_cooldown_mult,
             hp_regen: self.effect_bonus_hp_regen,
             seconds: self.effect_duration_seconds,
             burn_percent: self.effect_hp_percent_damage,
@@ -202,6 +201,7 @@ impl StableItem for PhilosophersStone {
             hp: self.hp,
             defence: self.defence,
             magic_resistance: self.magic_resistance,
+            skill_cooldown_mult: self.skill_cooldown_mult,
             ..Default::default()
         }
     }
@@ -242,20 +242,19 @@ impl StableItem for PhilosophersStone {
         self.transmutation.update(ctx, player);
     }
 
-    fn on_damaged(
+    fn on_attack(
         &mut self,
         ctx: &mut StableSim<'_>,
-        _player: usize,
-        _entity: usize,
-        attacker: usize,
-        damage: usize,
+        caster: usize,
+        target: usize,
+        damage: &mut usize,
         _damage_type: DamageTypeV1,
-        _attack_type: AttackTypeV1,
+        attack_type: AttackTypeV1,
         _is_crit: bool,
     ) {
         let numbers = self.transmutation_numbers();
         self.transmutation
-            .on_damaged(ctx, attacker, damage, &numbers);
+            .on_attack(ctx, caster, target, *damage, attack_type, &numbers);
     }
 
     fn on_kill(

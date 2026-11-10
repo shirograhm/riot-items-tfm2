@@ -630,6 +630,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured!("hamstringer" => Hamstringer));
     reg.add_item(configured!("heartsteel" => Heartsteel));
+    reg.add_item(configured!("hexoptics_c44" => HexopticsC44));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
     reg.add_item(configured!("hollow_radiance" => HollowRadiance));
     reg.add_item(configured!("hubris" => Hubris));
@@ -660,6 +661,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured!("randuins_omen" => RanduinsOmen));
+    reg.add_item(configured!("rapid_firecannon" => RapidFirecannon));
     reg.add_item(configured!("ravenous_hydra" => RavenousHydra));
     reg.add_item(configured!("riftmaker" => Riftmaker));
     reg.add_item(configured!("rite_of_ruin" => RiteOfRuin, passive_crit));
@@ -736,6 +738,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_guinsoos_rageblade" => GuinsoosRageblade));
     reg.add_item(configured_radiant!("radiant_hamstringer" => Hamstringer));
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
+    reg.add_item(configured_radiant!("radiant_hexoptics_c44" => HexopticsC44));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
     reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
@@ -766,6 +769,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
     reg.add_item(configured_radiant!("radiant_randuins_omen" => RanduinsOmen));
+    reg.add_item(configured_radiant!("radiant_rapid_firecannon" => RapidFirecannon));
     reg.add_item(configured_radiant!("radiant_ravenous_hydra" => RavenousHydra));
     reg.add_item(configured_radiant!("radiant_riftmaker" => Riftmaker));
     reg.add_item(configured_radiant!("radiant_rite_of_ruin" => RiteOfRuin, passive_crit));

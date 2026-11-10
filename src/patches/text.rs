@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 138] = [
+const ROW_FORMATS: [RowFormat; 136] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1999,11 +1999,6 @@ const ROW_FORMATS: [RowFormat; 138] = [
     row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
     row(
         "philosophers_medallion",
-        "effect_skill_cooldown_mult",
-        label::ABILITY_HASTE,
-    ),
-    row(
-        "philosophers_medallion",
         "effect_bonus_hp_regen",
         label::HEALTH_REGENERATION,
     ),
@@ -2018,7 +2013,7 @@ const ROW_FORMATS: [RowFormat; 138] = [
         "effect_hp_percent_damage",
         label::BURN_DAMAGE,
     )
-    .unit(unit::TARGET_MAX_HP),
+    .unit(unit::MAX_HP),
     row(
         "philosophers_stone",
         "effect_stack_hp_mult",
@@ -2027,11 +2022,6 @@ const ROW_FORMATS: [RowFormat; 138] = [
     .unit(unit::PER_STACK),
     row(
         "philosophers_stone",
-        "effect_skill_cooldown_mult",
-        label::ABILITY_HASTE,
-    ),
-    row(
-        "philosophers_stone",
         "effect_bonus_hp_regen",
         label::HEALTH_REGENERATION,
     ),
@@ -2046,7 +2036,7 @@ const ROW_FORMATS: [RowFormat; 138] = [
         "effect_hp_percent_damage",
         label::BURN_DAMAGE,
     )
-    .unit(unit::TARGET_MAX_HP),
+    .unit(unit::MAX_HP),
     row("riftmaker", "effect_vamp", label::OMNIVAMP).unit(unit::PER_STACK),
     row(
         "riftmaker",

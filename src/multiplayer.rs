@@ -21,6 +21,9 @@
 //!   not ask it the same question.
 //! - Pins are planted where they stand on every machine: the pin-aware builds
 //!   the stable hook records for the spawn hook exist on the host's only.
+//! - Smart Builds' win-rate lean uses the host's save: the server sends its
+//!   table with the builds, and a guest's game uses it in place of its own
+//!   (`item_stats::win_rates::adopt_host`).
 //!
 //! A session is multiplayer from the room screen (`Room` or `Lobby`), or from
 //! the first word of another player's builds, until the title screen is back.
@@ -111,6 +114,11 @@ struct Shared {
     registry: Vec<String>,
     finals: Vec<u64>,
     players: Vec<Player>,
+    // The host's Smart Builds win-rate table (`item_stats::win_rates::wire`),
+    // which a guest's game uses in place of its own. Absent from an older
+    // host, which is then taken to have none.
+    #[serde(default)]
+    win_rates: Option<crate::item_stats::win_rates::Wire>,
 }
 
 // Another player's builds, as this client last heard them.
@@ -266,6 +274,7 @@ fn leave() {
     HOST_SMART_BOOTS.store(UNKNOWN, Ordering::Relaxed);
     HOST_ITEM_RULES.store(UNKNOWN, Ordering::Relaxed);
     *CLIENT.lock().unwrap_or_else(|e| e.into_inner()) = None;
+    crate::item_stats::win_rates::drop_host();
     if !ACTIVE.swap(false, Ordering::Relaxed) {
         return;
     }
@@ -344,6 +353,11 @@ fn hear(payload: &[u8]) {
         REPAINT.store(true, Ordering::Relaxed);
     }
     crate::tactics::adopt_item_registry(shared.registry, shared.finals);
+    // A guest plays by the host's win rates. The host's own game already has
+    // them: hearing anything means its server handled a command, so `SERVES`.
+    if !SERVES.load(Ordering::Relaxed) {
+        crate::item_stats::win_rates::adopt_host(shared.win_rates);
+    }
     if REMOTES.read().is_ok_and(|remotes| !remotes.is_empty()) {
         set_active("another player's builds");
     }
@@ -447,6 +461,7 @@ pub(crate) fn handle_command(ctx: &mut StableServerCtx<'_>, command: &StableComm
             registry,
             finals,
             players: server.players.clone(),
+            win_rates: crate::item_stats::win_rates::wire(),
         };
         let target = if shared != server.shared {
             shared.generation = NEXT_GENERATION.fetch_add(1, Ordering::Relaxed);

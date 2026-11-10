@@ -61,6 +61,7 @@ impl StableItem for Noonquiver {
             "lord_dominiks_regards".to_string(),
             "immortal_shieldbow".to_string(),
             "essence_reaver".to_string(),
+            "hexoptics_c44".to_string(),
         ]
     }
 

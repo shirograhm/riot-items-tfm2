@@ -588,6 +588,8 @@ struct ItemChoice {
     name: String,
     // Sprite-sheet frame, or `None` for an item with no art in the sheet.
     frame: Option<String>,
+    // The sheet `frame` is in: [`ICON_SHEET`], or another mod's own.
+    sheet: &'static str,
     category: &'static str,
 }
 
@@ -1118,6 +1120,7 @@ fn make_choice(ctx: &StableClient<'_>, lang: &str, key: &str) -> Option<ItemChoi
     let slug = build_config::base_slug(key);
     Some(ItemChoice {
         frame: item_catalog::icon_frame(slug, is_mod_item(key)).map(sanitize),
+        sheet: ICON_SHEET,
         category: item_catalog::category_of(slug)?,
         name: sanitize(&item_display_name(ctx, lang, key, slug)),
         key: sanitize(key),
@@ -1247,9 +1250,10 @@ fn collect_listed(
 // Another mod's final item, when that mod classes it in its own
 // `text/item_classes.json` ([`item_catalog::other_mod_class`]). Tier 0 is left
 // out: nothing upgrades into it, so it has no recipe, and the game panics
-// building an item without one. No icon: every item mod overrides the game's
-// one icon sheet, this one included, so another mod's frames are not in the
-// sheet the game shows; a pinned slot names it instead ([`short_label`]).
+// building an item without one. Its icon is drawn from that mod's own sheet
+// ([`item_catalog::other_mod_sheet`]): every item mod overrides the game's one
+// icon sheet, this one included, so another mod's frames are not in the sheet
+// the game shows. With none, a pinned slot names it instead ([`short_label`]).
 fn other_mod_choice(
     ctx: &StableClient<'_>,
     lang: &str,
@@ -1260,8 +1264,15 @@ fn other_mod_choice(
     if object.get("tier").and_then(serde_json::Value::as_u64).unwrap_or(0) == 0 {
         return None;
     }
+    let icon = object
+        .get("icon")
+        .and_then(serde_json::Value::as_str)
+        .filter(|icon| !icon.is_empty())
+        .unwrap_or(key);
+    let sheet = item_catalog::other_mod_sheet(key, icon);
     Some(ItemChoice {
-        frame: None,
+        frame: sheet.map(|_| sanitize(icon)),
+        sheet: sheet.unwrap_or(ICON_SHEET),
         category,
         name: sanitize(&item_display_name(ctx, lang, key, build_config::base_slug(key))),
         key: sanitize(key),
@@ -1524,7 +1535,7 @@ fn refresh_combo(
 ) {
     let pinned = pinned_key(rows, row, slot);
     let choice = pinned.as_deref().and_then(|key| choice_of(entries, key));
-    let frame = choice.and_then(|item| item.frame.as_deref());
+    let frame = choice.and_then(|item| Some((item.sheet, item.frame.as_deref()?)));
     // A pinned slot is its icon alone: button text is not clipped and would
     // spill over the swap button on a narrow host, which is also why the empty
     // slot is a dash. An item with no icon (another mod's) is a few letters of
@@ -1546,7 +1557,9 @@ fn refresh_combo(
     );
 
     let icon = match frame {
-        Some(frame) => format!("visible: true; rect_tag: \"{frame}\";"),
+        Some((sheet, frame)) => {
+            format!("visible: true; source: \"{sheet}\"; rect_tag: \"{frame}\";")
+        }
         None => "visible: false;".to_string(),
     };
     ctx.ui_set_properties(&combo_icon_path(row, slot), &icon);
@@ -2294,9 +2307,10 @@ fn entry_source(index: usize, entry: &ListEntry) -> String {
                      pivot_y: 0.5;\n\
                      width: 22px;\n\
                      height: 22px;\n\
-                     source: \"{ICON_SHEET}\";\n\
+                     source: \"{}\";\n\
                      rect_tag: \"{frame}\";\n\
-                     }}\n"
+                     }}\n",
+                    item.sheet
                 ),
                 None => String::new(),
             };

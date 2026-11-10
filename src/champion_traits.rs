@@ -91,6 +91,8 @@ pub(crate) struct ChampionTraits {
     // Whether its basic attack reaches past [`MELEE_ATTACK_RANGE`]. `None`
     // when nothing says, which the rules leave alone.
     pub ranged: Option<bool>,
+    // Its basic attack's reach in world units, where a source states it.
+    pub attack_range: Option<usize>,
 }
 
 impl ChampionTraits {
@@ -113,6 +115,7 @@ impl ChampionTraits {
             cc: flags & CC != 0,
             immobilize,
             ranged: ranged_of(attack_range, flags & RANGE != 0, flags & MELEE != 0, class),
+            attack_range,
         }
     }
 
@@ -810,6 +813,7 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                         let (range, melee) = (ChampionTagV1::Range, ChampionTagV1::Melee);
                         ranged_of(None, has(range), has(melee), class)
                     }),
+                    attack_range: fallback(&key).and_then(|known| known.attack_range),
                 };
                 answered.push((key, traits));
             }

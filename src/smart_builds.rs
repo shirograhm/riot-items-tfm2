@@ -56,6 +56,11 @@
 //! The rules only replace AI picks: a pinned slot is kept and counts toward the
 //! budgets like any other item, and an earlier slot wins over a later one.
 //!
+//! Where a rule has several stand-ins to choose from, the first it finds goes
+//! in unless another's win-rate lean for this champion
+//! ([`crate::item_stats::win_rates`]) beats it by [`STAND_IN_MARGIN`]. A
+//! tie-breaker only: it never changes which items a rule allows.
+//!
 //! The champion side comes in as a [`Fit`] (facts from
 //! [`crate::champion_traits`]). Item facts are keyed by item key, never read
 //! off an item (see the warning above `hook::detour`).
@@ -861,9 +866,11 @@ const MELEE_ITEMS: [&str; 9] = [
 ];
 
 // Rule 11: items whose passive wants the carrier at range, by base slug.
-const RANGED_ITEMS: [&str; 2] = [
+const RANGED_ITEMS: [&str; 4] = [
     "runaans_hurricane", // bolts at the enemies around the carrier; ranged only in League
     "diamond_tipped_spear", // Sweet Spot grows with the distance to the target, up to 100 range
+    "rapid_firecannon",  // Sharpshooter's reach is for one charged attack from range
+    "hexoptics_c44",     // Magnification grows with the distance to the target, up to 55 range
 ];
 
 fn is_melee_item(key: &str) -> bool {
@@ -1013,6 +1020,37 @@ impl Budget {
     }
 }
 
+// Win-rate lean ([`crate::item_stats::win_rates::lean`], -1 to 1) a stand-in
+// needs over the first one a search finds to be taken instead. At 0.25 that is
+// 2.5 points of the champion's drawn-in win rate.
+const STAND_IN_MARGIN: f32 = 0.25;
+
+// Of `candidates` (in the search's order) that pass `ok`, the first, unless
+// another's `lean` beats it by [`STAND_IN_MARGIN`]: then the best, the first of
+// equals. Without `leaning` (no item has a lean) the plain first, with no scan
+// past it.
+fn first_or_better(
+    candidates: impl Iterator<Item = usize>,
+    ok: impl Fn(usize) -> bool,
+    leaning: bool,
+    lean: &impl Fn(usize) -> f32,
+) -> Option<usize> {
+    let mut candidates = candidates.filter(|&candidate| ok(candidate));
+    let first = candidates.next()?;
+    if !leaning {
+        return Some(first);
+    }
+    let floor = lean(first) + STAND_IN_MARGIN;
+    let mut best: Option<(usize, f32)> = None;
+    for candidate in candidates {
+        let score = lean(candidate);
+        if score >= floor && best.is_none_or(|(_, top)| score > top) {
+            best = Some((candidate, score));
+        }
+    }
+    Some(best.map_or(first, |(candidate, _)| candidate))
+}
+
 // Rewrites `build` in place so it breaks none of the rules, as far as the
 // catalog allows. An offending AI slot is swapped for the next unused final
 // that fixes it, wrapping from its index, from its own category or, for
@@ -1023,11 +1061,14 @@ impl Budget {
 // that clashes with a pin is the one that goes. `key`, `category` and
 // `is_final` describe a `count`-item catalog, `boots` is [`boots_for`]'s pair,
 // and `later_open` says a 5th or 6th slot is free for it
-// ([`crate::build_config::later_slot_open`]).
+// ([`crate::build_config::later_slot_open`]). `lean` is the champion's win-rate
+// lean per catalog index, which breaks ties among stand-ins
+// ([`first_or_better`]).
 //
 // After the walk come rules 12, 9, 10 and 13 (each swapping one AI pick), then
 // rule 6's order, rule 7's boots and rule 6's slot line.
-pub(crate) fn enforce<C, K, G, F>(
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn enforce<C, L, K, G, F>(
     count: usize,
     build: &mut [usize],
     pinned: &[bool],
@@ -1035,11 +1076,13 @@ pub(crate) fn enforce<C, K, G, F>(
     later_open: bool,
     fit: Fit,
     boots: Option<usize>,
+    lean: L,
     key: K,
     category: G,
     is_final: F,
 ) where
     C: PartialEq,
+    L: Fn(usize) -> f32,
     K: Fn(usize) -> Option<String>,
     G: Fn(usize) -> Option<C>,
     F: Fn(usize) -> bool,
@@ -1047,6 +1090,8 @@ pub(crate) fn enforce<C, K, G, F>(
     if count == 0 {
         return;
     }
+    // Once per build, so a save with no results scans no further than before.
+    let leaning = (0..count).any(|index| lean(index) != 0.0);
     let is_pinned = |slot: usize| pinned.get(slot).copied().unwrap_or(false);
     // A jungler's jungle item and a support's World Atlas item go in the
     // first slot or not at all (rules 9 and 12).
@@ -1105,9 +1150,9 @@ pub(crate) fn enforce<C, K, G, F>(
             Some(reason) => {
                 let offender = *slot;
                 let search = |matches: &dyn Fn(usize) -> bool| {
-                    (1..count)
-                        .map(|step| (offender + step) % count)
-                        .find(|&candidate| {
+                    first_or_better(
+                        (1..count).map(|step| (offender + step) % count),
+                        |candidate| {
                             !seen.contains(&candidate)
                                 && matches(candidate)
                                 && is_final(candidate)
@@ -1115,7 +1160,10 @@ pub(crate) fn enforce<C, K, G, F>(
                                     !is_boots(&candidate)
                                         && budget.accepts_instead(&candidate, reason)
                                 })
-                        })
+                        },
+                        leaning,
+                        &lean,
+                    )
                 };
                 // Rule 17: a heal, shield and buff support's stand-in is a
                 // preferred aid item, unless the offender is a wrong World
@@ -1270,9 +1318,9 @@ pub(crate) fn enforce<C, K, G, F>(
         if let Some(slot) = last_pick {
             let offender = build[slot];
             let rest = budget_without(build, slot);
-            let role_item = (1..count)
-                .map(|step| (offender + step) % count)
-                .find(|&candidate| {
+            let role_item = first_or_better(
+                (1..count).map(|step| (offender + step) % count),
+                |candidate| {
                     !seen.contains(&candidate)
                         && !build.contains(&candidate)
                         && is_final(candidate)
@@ -1281,7 +1329,10 @@ pub(crate) fn enforce<C, K, G, F>(
                                 && !is_boots(&candidate)
                                 && rest.rejects(&candidate).is_none()
                         })
-                });
+                },
+                leaning,
+                &lean,
+            );
             if let Some(role_item) = role_item {
                 build[slot] = role_item;
             }
@@ -1337,16 +1388,19 @@ pub(crate) fn enforce<C, K, G, F>(
         if let Some(slot) = spare {
             let offender = build[slot];
             let rest = budget_without(build, slot);
-            let aid_item = (1..count)
-                .map(|step| (offender + step) % count)
-                .find(|&candidate| {
+            let aid_item = first_or_better(
+                (1..count).map(|step| (offender + step) % count),
+                |candidate| {
                     is_final(candidate)
                         && !build.contains(&candidate)
                         && !reserved.contains(&candidate)
                         && key(candidate).is_some_and(|candidate| {
                             is_ally_aid_item(&candidate) && rest.rejects(&candidate).is_none()
                         })
-                });
+                },
+                leaning,
+                &lean,
+            );
             if let Some(aid_item) = aid_item {
                 build[slot] = aid_item;
             }
@@ -1425,9 +1479,9 @@ pub(crate) fn enforce<C, K, G, F>(
         }
         let rest = budget_without(build, slot);
         let search = |matches: &dyn Fn(usize) -> bool| {
-            (1..count)
-                .map(|step| (offender + step) % count)
-                .find(|&candidate| {
+            first_or_better(
+                (1..count).map(|step| (offender + step) % count),
+                |candidate| {
                     is_final(candidate)
                         && !build.contains(&candidate)
                         && !reserved.contains(&candidate)
@@ -1437,7 +1491,10 @@ pub(crate) fn enforce<C, K, G, F>(
                                 && !is_boots(&candidate)
                                 && rest.rejects(&candidate).is_none()
                         })
-                })
+                },
+                leaning,
+                &lean,
+            )
         };
         let in_category =
             |wanted: &C| search(&|candidate| category(candidate).as_ref() == Some(wanted));
