@@ -32,9 +32,9 @@ const STOLEN_LEN: usize = PROLOGUE_PUSHES.len();
 
 const ABSOLUTE_JUMP_LEN: usize = 12;
 
-// Signature for game 0.7.1, where the target is `0x305a6b0` (2628 bytes; the
-// beam search's only caller, frame 0x218): the same 48 bytes as 0.7.0-beta2
-// (`0x2dcbef0`). 0.7.0's was `0x267e2f0` (frame 0x238), the shape of 0.6.2,
+// Signature for game 0.7.1 and 0.7.2, where the target is `0x305a6b0` /
+// `0x25bdbd0` (2628 bytes; the beam search's only caller, frame 0x218): the
+// same 48 bytes as 0.7.0-beta2 (`0x2dcbef0`). 0.7.0's was `0x267e2f0` (frame 0x238), the shape of 0.6.2,
 // 0.6.4, 0.6.5 and 0.7.0-beta. The first 44 bytes match 5 functions; 47 are
 // unique, so do not shorten it.
 //
@@ -282,7 +282,7 @@ unsafe fn locate_target(base: *mut u8, functions: &[(u32, u32)]) -> Result<*mut 
 
     let target = find_signature(base, &FALLBACK_SIGNATURE).map_err(|error| {
         format!(
-            "{error}; the built-in signature is for game 0.7.1 and this build differs — \
+            "{error}; the built-in signature is for game 0.7.2 and this build differs — \
              re-run tools/find_item_build_hook.py and ship the hook-target.json it writes"
         )
     })?;
