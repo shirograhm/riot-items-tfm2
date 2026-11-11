@@ -466,13 +466,18 @@ const O_ATHLETE_BUILD_PTR: usize = 0x378; // 0.7.0-beta2 (0.7.0-beta, 0.6.3: 0x3
 const O_ATHLETE_BUILD_LEN: usize = 0x380; // 0.7.0-beta2 (0.7.0-beta, 0.6.3: 0x360)
 const ATHLETE_COPY_SIZE: usize = 0x8b8; // 0.7.0-beta2 (0.7.0-beta, 0.6.3: 0x898)
 const O_GAME_PROVIDER: usize = 0x1b40; // 0.7.1, 0.7.2 (0.6.3..0.7.0: 0x1ba0, 0.6.2: 0x1dc0)
-// 0.7.2 moved this field +0xc570 (spawn's `lea rcx,[r14+0xe3f8]` and run_tick's
-// reads were +0x1e88). NOTE: in 0.7.0..0.7.2 the object there is a hash table
-// (control bytes at +0, bucket mask at +8), read through the object spawn's
-// `[Game+0x1b50]` call returns, so these two read its mask and growth-left,
-// not a catalog `Vec`, and the scan below is most likely skipped.
-const O_GAME_CATALOG_PTR: usize = 0xe400; // 0.7.2 (0.7.1: 0x1e90, 0.6.3..0.7.0: 0x1da0, 0.6.2: 0x1fd0)
-const O_GAME_CATALOG_LEN: usize = 0xe408; // 0.7.2 (0.7.1: 0x1e98, 0.6.3..0.7.0: 0x1da8, 0.6.2: 0x1fd8)
+// The catalog `Vec` (`{cap, ptr, len}`, 16-byte entries) the buy context's +0x30
+// points at. The tick driver builds that context on its stack and stores `lea
+// rcx,[Game+0x1d38]` at +0x30 (0.7.2: 0x145aa60 +0x113b; 0.7.1: 0x1474070), and
+// the catalog builder takes the same `lea rdx,[rdi+0x1d38]` at +0x287. To
+// re-derive, follow the `[Game+0x1b58]` vtable's +0x20 call (run_tick) back to
+// its `lea r9,[rbp+ctx]` and read what lands at ctx+0x30.
+//
+// 0.7.1 had pinned 0x1e90/0x1e98 instead, the hash table at +0x1e88 of the
+// object `[Game+0x1b50]` returns (spawn's `lea rcx,[r14+..]`), so these read its
+// bucket mask and growth-left and spawn's catalog scan was skipped.
+const O_GAME_CATALOG_PTR: usize = 0x1d40; // 0.7.1 and 0.7.2 (0.7.1 shipped 0x1e90 by mistake; 0.6.3..0.7.0: 0x1da0, 0.6.2: 0x1fd0)
+const O_GAME_CATALOG_LEN: usize = 0x1d48; // 0.7.1 and 0.7.2 (0.7.1 shipped 0x1e98 by mistake; 0.6.3..0.7.0: 0x1da8, 0.6.2: 0x1fd8)
 static MY_ATHLETES: AtomicPtr<std::collections::HashSet<u64>> =
     AtomicPtr::new(core::ptr::null_mut());
 static MY_ATH_PREV: AtomicPtr<std::collections::HashSet<u64>> =
