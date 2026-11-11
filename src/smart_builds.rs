@@ -52,6 +52,8 @@
 //!     of the game's random one, and a jungler starts its jungle item on its
 //!     jungle starter (Hunter's Machete or Talisman). Native half only; it
 //!     changes how an item is built, never which.
+//! 19. **One Immolate item** of [`IMMOLATE_ITEMS`]: only the strongest burn
+//!     held lands, so a second would be wasted.
 //!
 //! The rules only replace AI picks: a pinned slot is kept and counts toward the
 //! budgets like any other item, and an earlier slot wins over a later one.
@@ -291,6 +293,8 @@ pub(crate) enum Reason {
     SecondAtlas,
     // A Spellblade item in a build that already holds one (rule 15).
     SecondSpellblade,
+    // An Immolate item in a build that already holds one (rule 19).
+    SecondImmolate,
     MandateWithoutCc,
     // An item that answers to healing, shielding or buffing an ally, on a
     // support whose kit does none of that.
@@ -896,6 +900,20 @@ fn is_spellblade_item(key: &str) -> bool {
     SPELLBLADE_ITEMS.contains(&crate::build_config::base_slug(key))
 }
 
+// Rule 19: the finished Immolate items, by base slug (Bami's Cinder, their
+// component, is not one). Only the strongest burn of those held lands
+// (`crate::immolate_wins`), so a second is wasted.
+const IMMOLATE_ITEMS: [&str; 3] = [
+    "hollow_radiance",
+    "sunfire_cape", // the radiant cape's slug
+    // The vanilla Sunfire Cape's own key, which `base_slug` does not alias.
+    "hourglass_of_eternity",
+];
+
+fn is_immolate_item(key: &str) -> bool {
+    IMMOLATE_ITEMS.contains(&crate::build_config::base_slug(key))
+}
+
 // What a build's items have spent of the rules' budgets, plus its [`Fit`].
 // Holds the trait table so a catalog scan is hash lookups, not lock
 // acquisitions.
@@ -909,6 +927,8 @@ pub(crate) struct Budget {
     atlas_item: bool,
     // Rule 15: whether the build already holds a Spellblade item.
     spellblade_item: bool,
+    // Rule 19: whether the build already holds an Immolate item.
+    immolate_item: bool,
     fit: Fit,
 }
 
@@ -921,6 +941,7 @@ impl Budget {
             jungle_item: false,
             atlas_item: false,
             spellblade_item: false,
+            immolate_item: false,
             fit,
         }
     }
@@ -975,6 +996,9 @@ impl Budget {
             // Rule 15. A support's Bloodsong is rule 12's, so it is never the
             // one turned away, and a build still due one counts as holding it.
             Some(Reason::SecondSpellblade)
+        } else if self.immolate_item && is_immolate_item(key) {
+            // Rule 19
+            Some(Reason::SecondImmolate)
         } else if self.cuts_healing && traits.cuts_healing {
             Some(Reason::Grievous)
         } else if self.crit_chance + traits.crit_chance > CRIT_CAP {
@@ -1017,6 +1041,7 @@ impl Budget {
         self.jungle_item |= is_jungle_item(key);
         self.atlas_item |= is_atlas_item(key);
         self.spellblade_item |= is_spellblade_item(key);
+        self.immolate_item |= is_immolate_item(key);
     }
 }
 

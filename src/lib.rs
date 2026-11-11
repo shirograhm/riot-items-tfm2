@@ -35,7 +35,7 @@ pub(crate) use utils::{
 };
 pub(crate) use vfx::sunfire;
 pub(crate) use vfx::{
-    add_stack, immolate_burn, mark_immolate, refresh_buff, size_percent, sized_range, Annul,
+    add_stack, immolate_burn, immolate_wins, mark_immolate, note_immolate, refresh_buff, size_percent, sized_range, Annul,
     Energized, Eternity, Lifeline, Spellblade, SpellbladeBonus, Transmutation,
     TransmutationNumbers,
 };
@@ -469,6 +469,16 @@ fn init(host: &StableHost) -> StableMod {
             });
             item
         }};
+        ($key:literal => $T:ty, immolate) => {{
+            let item = configured!($key => $T);
+            let (flat, hp_percent) = item.immolate_numbers();
+            note_immolate($key, flat, hp_percent);
+            patches::note_refresh($key, |config| {
+                let (flat, hp_percent) = <$T>::with_config(config).immolate_numbers();
+                note_immolate($key, flat, hp_percent)
+            });
+            item
+        }};
         ($key:literal => $T:ty) => {{
             extra_stats::learn($key, <$T>::with_config);
             let build: fn(&config::ItemConfig) -> extra_stats::WithStats<$T> = |config| {
@@ -515,6 +525,16 @@ fn init(host: &StableHost) -> StableMod {
             });
             item
         }};
+        ($key:literal => $T:ty, immolate) => {{
+            let item = configured_radiant!($key => $T);
+            let (flat, hp_percent) = item.immolate_numbers();
+            note_immolate($key, flat, hp_percent);
+            patches::note_refresh($key, |config| {
+                let (flat, hp_percent) = <$T>::radiant_with_config(config).immolate_numbers();
+                note_immolate($key, flat, hp_percent)
+            });
+            item
+        }};
         ($key:literal => $T:ty) => {{
             extra_stats::learn($key, <$T>::radiant_with_config);
             let build: fn(&config::ItemConfig) -> extra_stats::WithStats<$T> = |config| {
@@ -555,7 +575,7 @@ fn init(host: &StableHost) -> StableMod {
 
     // Tier 3
     reg.add_item(configured!("aegis_of_the_legion" => AegisOfTheLegion));
-    reg.add_item(configured!("bamis_cinder" => BamisCinder));
+    reg.add_item(configured!("bamis_cinder" => BamisCinder, immolate));
     reg.add_item(configured!("bandleglass_mirror" => BandleglassMirror));
     reg.add_item(configured!("berserkers_greaves" => BerserkersGreaves, boots));
     reg.add_item(configured!("bf_sword" => BFSword));
@@ -632,7 +652,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("heartsteel" => Heartsteel));
     reg.add_item(configured!("hexoptics_c44" => HexopticsC44));
     reg.add_item(configured!("hextech_gunblade" => HextechGunblade));
-    reg.add_item(configured!("hollow_radiance" => HollowRadiance));
+    reg.add_item(configured!("hollow_radiance" => HollowRadiance, immolate));
     reg.add_item(configured!("hubris" => Hubris));
     reg.add_item(configured!("hullbreaker" => Hullbreaker));
     reg.add_item(configured!("iceborn_gauntlet" => IcebornGauntlet, spellblade));
@@ -740,7 +760,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_heartsteel" => Heartsteel));
     reg.add_item(configured_radiant!("radiant_hexoptics_c44" => HexopticsC44));
     reg.add_item(configured_radiant!("radiant_hextech_gunblade" => HextechGunblade));
-    reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance));
+    reg.add_item(configured_radiant!("radiant_hollow_radiance" => HollowRadiance, immolate));
     reg.add_item(configured_radiant!("radiant_hubris" => Hubris));
     reg.add_item(configured_radiant!("radiant_hullbreaker" => Hullbreaker));
     reg.add_item(configured_radiant!("radiant_iceborn_gauntlet" => IcebornGauntlet, spellblade));
@@ -860,15 +880,20 @@ fn init(host: &StableHost) -> StableMod {
     // The match hook: end-of-match item capture, Immolate for the vanilla
     // Sunfire Cape (and Radiant Sunfire Cape's minion bonus), and Shared
     // Riches, which an item's own `update` cannot pay to a dead carrier.
+    let immolate = configs
+        .get("sunfire_cape")
+        .map(sunfire::Immolate::with_config)
+        .unwrap_or_default();
+    let radiant_immolate = configs
+        .get("radiant_sunfire_cape")
+        .map(sunfire::Immolate::with_config)
+        .unwrap_or_default();
+    // Both capes' burns, for the strongest-Immolate-wins check.
+    immolate.note_as(sunfire::SUNFIRE_KEY);
+    radiant_immolate.note_as(sunfire::RADIANT_SUNFIRE_KEY);
     reg.set_match_hook(sunfire::MatchHooks {
-        immolate: configs
-            .get("sunfire_cape")
-            .map(sunfire::Immolate::with_config)
-            .unwrap_or_default(),
-        radiant_immolate: configs
-            .get("radiant_sunfire_cape")
-            .map(sunfire::Immolate::with_config)
-            .unwrap_or_default(),
+        immolate,
+        radiant_immolate,
         riches,
     });
     reg.set_server_extension(NativeTapExtension);

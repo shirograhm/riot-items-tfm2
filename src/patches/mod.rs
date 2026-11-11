@@ -1,15 +1,17 @@
-//! Item balance patches: whenever the game patches its champions, the items are
-//! rebalanced from how they did on the version that just ended (`item_stats`
-//! counts per version). Winners held too much are nerfed, items that neither
+//! Item balance patches: on a calendar of their own, set per save by the Item
+//! Patcher Settings window's Patch Frequency ([`state::Period`], the game's own
+//! three choices), the items are rebalanced from how they did since the last
+//! one ([`since_last`]). Winners held too much are nerfed, items that neither
 //! won nor were held are buffed ([`balance`]), and a news article lists what
-//! moved ([`text::news`]).
+//! moved ([`text::news`]), announced as the in-game year and its patch of that
+//! year (`25.3`, [`next_release`]).
 //!
-//! The game's patch is noticed in the player's inbox, where its patch notes
-//! arrive ([`watch_news`]); only notes the game signed count, so another mod's
-//! patches (toxicsnek's Auto Balance Patcher hotfixes) bring none of the items'
-//! ([`by_the_game`]). Where the inbox cannot be read, the first match on a newer
-//! version stands in. The item patch lands at once so its notes come with the
-//! game's ([`ALERT_FRAMES`]). A number is only patched where the match ([`live`]), the
+//! The game's own version is still followed, from the player's inbox, where
+//! its patch notes arrive ([`watch_news`]); only notes the game signed count
+//! ([`by_the_game`]). Where the inbox cannot be read, the first match on a
+//! newer version stands in. It no longer brings an item patch: it is what a
+//! hotfix is of before the first automatic patch. A patch lands on the first
+//! look after it comes due ([`ALERT_FRAMES`]). A number is only patched where the match ([`live`]), the
 //! tooltips ([`text`]) and the builds can follow it: build choices lean with an
 //! item's patches ([`leaning`]), or a nerfed popular item would stay just as
 //! popular.
@@ -21,12 +23,12 @@
 //!
 //! A hotfix is the player's own patch: numbers set in the Item Patcher Settings
 //! window (`crate::ui::patch_settings`) wait in the save ([`State::staged`])
-//! until Queue Manual Patch queues one ([`balance::manual`]). It lands when the
-//! calendar next moves ([`server_tick`], or [`watch_news`] for a guest) as
+//! until Queue Manual Patch queues one ([`balance::manual`]). It lands at once,
+//! on the next look from a screen a patch can land on ([`can_land`]), as
 //! "Item Patch Notes v… - Hotfix N", signed with the player's Steam name; with
 //! nothing staged there is no hotfix.
 //!
-//! The game's own patch leaves a queued hotfix to land right behind it, and
+//! A queued hotfix goes ahead of an automatic patch due at the same look, and
 //! with `automatic` off ([`tuning`]) hotfixes are the only patches. Hand-set
 //! numbers read exactly as typed (`State::exact`), and the window also holds
 //! the automatic patches' limits ([`State::limits`]); with `match_builds::LOG`
@@ -160,6 +162,11 @@ impl Session {
                 exact: std::collections::BTreeMap::new(),
                 staged: std::collections::BTreeMap::new(),
                 limits: std::collections::BTreeMap::new(),
+                period: state::Period::Normal,
+                since: None,
+                tally_at: std::collections::BTreeMap::new(),
+                matches_at: 0,
+                release: None,
             },
             dirty: false,
             edited: 0,
@@ -202,15 +209,8 @@ static HOTFIX_QUEUED: AtomicBool = AtomicBool::new(false);
 // A click has changed the queue and the save has not been told yet.
 static QUEUE_CHANGED: AtomicBool = AtomicBool::new(false);
 // Server management ticks run ([`server_tick`]), which happen only while the
-// calendar moves. The client watches closely after each, and a queued hotfix is
-// due at the next.
+// calendar moves. The client watches closely after each.
 static CALENDAR_TICKS: AtomicU32 = AtomicU32::new(0);
-static QUEUED_AT_TICK: AtomicU32 = AtomicU32::new(0);
-// Times the inbox has been seen to take new articles ([`watch_news`]), and
-// what that count was when the hotfix was queued: what sets a hotfix off
-// where no server of this client's ticks.
-static NEWS_CYCLES: AtomicU32 = AtomicU32::new(0);
-static QUEUED_AT_CYCLE: AtomicU32 = AtomicU32::new(0);
 
 // Whether the loaded save has hand-set numbers waiting ([`State::staged`]),
 // without which no hotfix can be queued; an atomic like the queue.
@@ -236,15 +236,13 @@ pub(crate) fn hotfix_ready() -> bool {
     STAGED_ANY.load(Ordering::Relaxed)
 }
 
-// Queues a hotfix for the calendar's next move, from the window's queue button;
-// [`sync`] writes it to the save. A queued one stays as it is, and nothing is
-// queued with nothing to release.
+// Queues a hotfix from the window's queue button, to land on the next look
+// ([`consider`]); [`sync`] writes it to the save. A queued one stays as it
+// is, and nothing is queued with nothing to release.
 pub(crate) fn queue_hotfix() {
     if HOTFIX_QUEUED.load(Ordering::Relaxed) || !hotfix_ready() {
         return;
     }
-    QUEUED_AT_CYCLE.store(NEWS_CYCLES.load(Ordering::Relaxed), Ordering::Relaxed);
-    QUEUED_AT_TICK.store(CALENDAR_TICKS.load(Ordering::Relaxed), Ordering::Relaxed);
     HOTFIX_QUEUED.store(true, Ordering::Relaxed);
     QUEUE_CHANGED.store(true, Ordering::Relaxed);
     // Numbered: the test log leaves out a line that says what the last one
@@ -286,14 +284,10 @@ pub(crate) fn edit_settings(edit: impl FnOnce(&mut State)) -> bool {
     true
 }
 
-// The queue as `state` has it, for a save just read or left. A queued
-// hotfix waits for the calendar to move from here on: what came before is
-// not counted.
+// The queue as `state` has it, for a save just read or left.
 fn take_queue(state: &State) {
     note_staged(state);
-    QUEUED_AT_TICK.store(CALENDAR_TICKS.load(Ordering::Relaxed), Ordering::Relaxed);
     HOTFIX_QUEUED.store(state.queued, Ordering::Relaxed);
-    QUEUED_AT_CYCLE.store(NEWS_CYCLES.load(Ordering::Relaxed), Ordering::Relaxed);
     QUEUE_CHANGED.store(false, Ordering::Relaxed);
 }
 
@@ -357,8 +351,8 @@ const GAME_AUTHOR_KEY: &str = "#asset/base/text/news?patch_note.author";
 
 // Whether a patch note is the game's own, by its author. Another mod's patch
 // notes announce no patch of the game's (toxicsnek's Auto Balance Patcher,
-// `sanity_protection`, signs the hotfixes it deploys "toxicsnek"), and the items
-// patch only with the game. A note with no author is taken as the game's.
+// `sanity_protection`, signs the hotfixes it deploys "toxicsnek"), and only the
+// game's version is followed. A note with no author is taken as the game's.
 fn by_the_game(author: &str, game_author: Option<&str>) -> bool {
     author.is_empty() || Some(author) == game_author || GAME_PATCH_AUTHORS.contains(&author)
 }
@@ -396,8 +390,7 @@ impl Watch {
 // and every frame for a while after the calendar moves.
 //
 // A look reads only the article after the last one seen; when one has come, or
-// every [`WATCH_REREAD`]th look, the list is read whole. Each reading with news
-// counts toward [`NEWS_CYCLES`], and a queued hotfix goes out with the next.
+// every [`WATCH_REREAD`]th look, the list is read whole.
 fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
     use serde_json::Value;
 
@@ -476,31 +469,19 @@ fn watch_news(ctx: &StableClient<'_>, watch: &mut Watch, counted: bool) {
         let part = |name: &str| article.get(name).map(Value::to_string).unwrap_or_default();
         format!("{} {}", part("date"), part("title"))
     });
-    // News has come in since the last reading: the list is longer, or it is
-    // as long and ends on another article, as a list kept to a length would.
-    let grown = articles.len() > watch.seen
-        || (articles.len() == watch.seen && tail != watch.tail);
-    if !first && grown {
-        NEWS_CYCLES.fetch_add(1, Ordering::Relaxed);
-    }
     watch.team = Some(team);
     watch.seen = articles.len();
     watch.tail = tail;
     watch.newest = newest;
 }
 
-// How every item did between two of the game's patches: the matches of each
-// version counted from `judged`, the one the items were settled on, up to
-// `announced`, the new one; and how many matches that is. Usually one version.
-// A mod that moves the game's version between the game's own patches splits
-// that time into several, and it is judged whole.
-fn window_tallies(judged: &str, announced: &str) -> (HashMap<String, balance::Tally>, u32) {
+// Every item's counted games and wins, and the matches counted, over the game
+// versions `keep` takes.
+fn counted(keep: impl Fn(&str) -> bool) -> (HashMap<String, balance::Tally>, u32) {
     let mut tallies: HashMap<String, balance::Tally> = HashMap::new();
     let mut matches = 0;
     for version in crate::item_stats::patches() {
-        if version_order(&version, judged) == Order::Less
-            || version_order(&version, announced) != Order::Less
-        {
+        if !keep(&version) {
             continue;
         }
         let window = crate::item_stats::snapshot(Some(version.as_str()), None);
@@ -512,6 +493,50 @@ fn window_tallies(judged: &str, announced: &str) -> (HashMap<String, balance::Ta
         }
     }
     (tallies, matches)
+}
+
+// How every item did since the automatic patches' clock was last started
+// ([`State::tally_at`]): what has been counted since, whatever the game's
+// version.
+fn since_last(state: &State) -> (HashMap<String, balance::Tally>, u32) {
+    let (mut tallies, matches) = counted(|_| true);
+    for (key, tally) in &mut tallies {
+        if let Some(&(games, wins)) = state.tally_at.get(key) {
+            tally.games = tally.games.saturating_sub(games);
+            tally.wins = tally.wins.saturating_sub(wins);
+        }
+    }
+    tallies.retain(|_, tally| tally.games > 0);
+    (tallies, matches.saturating_sub(state.matches_at))
+}
+
+// Starts the automatic patches' clock on `today`, with what has been counted
+// so far as the next patch's starting point. Matches of `from` (the game
+// version an older save's items were settled on) and later are left to it.
+fn start_clock(state: &mut State, today: i64, from: Option<&str>) {
+    let (tallies, matches) =
+        counted(|version| from.is_none_or(|from| version_order(version, from) == Order::Less));
+    state.tally_at = tallies
+        .into_iter()
+        .map(|(key, tally)| (key, (tally.games, tally.wins)))
+        .collect();
+    state.matches_at = matches;
+    state.since = Some(today);
+}
+
+// The version an automatic patch landing in `year` is announced as: the
+// year's last two digits and its patch of that year, as League numbers its
+// own (`25.3`).
+fn next_release(state: &State, year: i32) -> String {
+    let season = year.rem_euclid(100);
+    let prefix = format!("{season}.");
+    let last = state
+        .release
+        .as_deref()
+        .and_then(|release| release.strip_prefix(&prefix))
+        .and_then(|patch| patch.parse::<u32>().ok())
+        .unwrap_or(0);
+    format!("{prefix}{}", last + 1)
 }
 
 // The screens a patch lands on: the management ones and the pre-match lineup,
@@ -533,16 +558,14 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
     if (slow_look || alert) && can_land(scene) {
         watch_news(ctx, &mut session.watch, slow_look);
     }
-    // A queued hotfix is due once the calendar has moved since it was
-    // queued, or news has come in.
-    let hotfix_due = HOTFIX_QUEUED.load(Ordering::Relaxed)
-        && (CALENDAR_TICKS.load(Ordering::Relaxed) != QUEUED_AT_TICK.load(Ordering::Relaxed)
-            || NEWS_CYCLES.load(Ordering::Relaxed) != QUEUED_AT_CYCLE.load(Ordering::Relaxed));
-    // The version the game is on: the newest its own patch notes announce.
-    // The items patch only when the game releases a patch, so a version that
-    // only matches carry (another mod can move it between the game's patches)
-    // starts no patch. A match's version stands in where the inbox could not be
-    // read, and for the version this save starts on before any patch note.
+    // A queued hotfix is due at once: it lands on the first look from a
+    // screen it can land on ([`can_land`]), the next day at the latest.
+    let hotfix_due = HOTFIX_QUEUED.load(Ordering::Relaxed);
+    // The version the game is on: the newest its own patch notes announce,
+    // so a version that only matches carry (another mod can move it between
+    // the game's patches) is not taken for one. A match's version stands in
+    // where the inbox could not be read, and for the version this save starts
+    // on before any patch note.
     let played = || {
         crate::item_stats::patches()
             .into_iter()
@@ -557,38 +580,69 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
     } else {
         played()
     };
-    let Some(current) = current else {
-        // No match has been counted in this save yet, and no patch note read.
+    // The in-game date, which the automatic patches keep their clock by.
+    let date = ctx.game_date();
+    let today = date.map(|(year, month, day)| state::day_number(year, month, day));
+    let Some(settled) = session.state.version.clone() else {
+        let Some(current) = current else {
+            // No match has been counted in this save yet, and no patch note
+            // read.
+            return;
+        };
+        // The first version this save is seen on: nothing came before it to
+        // judge, and the clock starts now.
+        session.state.version = Some(current);
+        if let Some(today) = today {
+            start_clock(&mut session.state, today, None);
+        }
+        session.dirty = true;
         return;
     };
+    if session.state.since.is_none() {
+        // A save from before the patches kept their own clock: it starts now,
+        // and the matches since the game's version the items were last
+        // settled on still count towards the first patch.
+        if let Some(today) = today {
+            start_clock(&mut session.state, today, Some(settled.as_str()));
+            session.dirty = true;
+        }
+    }
+    if let Some(current) =
+        current.filter(|current| version_order(current, &settled) == Order::Greater)
+    {
+        // The game has patched its champions. The items keep their own
+        // calendar, so that brings no patch of theirs; it is only noted, and
+        // before the first automatic patch a hotfix is one of this version.
+        session.state.version = Some(current);
+        if session.state.release.is_none() {
+            session.state.hotfixes = 0;
+        }
+        session.dirty = true;
+    }
+    // An automatic patch is due a period after the clock was started.
+    let scheduled = tuning::tuning().automatic
+        && matches!(
+            (today, session.state.since),
+            (Some(today), Some(since)) if today - since >= session.state.period.days()
+        );
     // The version whose matches are judged, the version the patch is
     // announced as, and whether it is a hotfix.
-    let (judged, announced, hotfix) = match session.state.version.clone() {
-        // The first version this save is seen on: nothing came before it to
-        // judge.
-        None => {
-            session.state.version = Some(current);
-            session.dirty = true;
-            return;
-        }
-        // The game has patched its champions since the items were settled:
-        // the version that ended is judged, and the patch is the new one's.
-        Some(settled) if version_order(&current, &settled) == Order::Greater => {
-            if !tuning::tuning().automatic {
-                // The game's patches bring none of the items' (`automatic`
-                // is off). The new version is still the one the items are
-                // on, for a queued hotfix to be a hotfix of.
-                session.state.version = Some(current);
-                session.state.hotfixes = 0;
-                session.dirty = true;
-                return;
-            }
-            (settled, current, false)
-        }
-        // Queued by the player, and the calendar has moved: a hotfix of the
-        // version the game is on. It judges no version's matches.
-        Some(settled) if hotfix_due => (settled.clone(), settled, true),
-        Some(_) => return,
+    let on = session
+        .state
+        .release
+        .clone()
+        .or_else(|| session.state.version.clone())
+        .unwrap_or_default();
+    let (judged, announced, hotfix) = if hotfix_due {
+        // Queued by the player: a hotfix of the last automatic patch. It
+        // judges no matches, and goes ahead of an automatic patch due at the
+        // same look, which lands on the next.
+        (on.clone(), on, true)
+    } else if scheduled {
+        let year = date.map_or(0, |(year, _, _)| year);
+        (on, next_release(&session.state, year), false)
+    } else {
+        return;
     };
 
     // A patch lands at once rather than waiting for the simulations to go
@@ -597,13 +651,8 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
     if !can_land(scene) {
         return;
     }
-    // The game's own patch does not release what a queued hotfix is there
-    // to release: that hotfix stays queued, and lands right behind this
-    // patch. A hotfix itself empties the queue, whatever comes of it.
-    let still_queued = !hotfix
-        && HOTFIX_QUEUED.load(Ordering::Relaxed)
-        && !session.state.staged.is_empty();
-    if !still_queued {
+    // A hotfix empties the queue, whatever comes of it.
+    if hotfix {
         session.state.queued = false;
         take_queue(&session.state);
     }
@@ -625,7 +674,7 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
         note_staged(&session.state);
         patch
     } else {
-        let (tallies, matches) = window_tallies(&judged, &announced);
+        let (tallies, matches) = since_last(&session.state);
         // Whether there is enough to judge an item on is asked item by item
         // (`tuning`'s `min_games`). A version of few matches has few such
         // items, or none, and then no patch.
@@ -659,16 +708,24 @@ fn consider(ctx: &mut StableClient<'_>, session: &mut Session, alert: bool) {
         )
     });
 
-    if !hotfix {
-        // The game's version has moved on, and its hotfixes are counted
-        // from one again.
-        session.state.version = Some(announced.clone());
-        session.state.hotfixes = 0;
-    }
     session.dirty = true;
-    // A version that changed nothing is not a patch: no number, no article.
+    if !hotfix {
+        // The clock starts again either way, or a patch with nothing to
+        // change would be tried on every look.
+        session.state.since = today;
+    }
+    // A patch that changed nothing is not a patch: no number, no article.
+    // An automatic one keeps its matches for the next.
     if patch.changes.is_empty() {
         return;
+    }
+    if !hotfix {
+        // What it judged is spent, and its hotfixes are counted from one.
+        if let Some(today) = today {
+            start_clock(&mut session.state, today, None);
+        }
+        session.state.release = Some(announced.clone());
+        session.state.hotfixes = 0;
     }
     if hotfix {
         session.state.hotfixes += 1;

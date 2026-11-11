@@ -1,6 +1,6 @@
 # Riot Games Item Expansion Pack - Teamfight Manager 2
 
-![TFM2](https://img.shields.io/badge/TFM2-v0.7.1-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) [![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen)](https://github.com/shirograhm/riot-items-tfm2/releases/latest) [![Author](https://img.shields.io/badge/Author-shirograhm-crimson)](https://github.com/shirograhm)
+![TFM2](https://img.shields.io/badge/TFM2-v0.7.2-orange) ![Mod Type](https://img.shields.io/badge/Mod%20Type-Native%20Rust%20%2B%20Data-blue) [![Version](https://img.shields.io/github/v/tag/shirograhm/riot-items-tfm2?sort=semver&filter=!*b&label=Version&color=brightgreen)](https://github.com/shirograhm/riot-items-tfm2/releases/latest) [![Author](https://img.shields.io/badge/Author-shirograhm-crimson)](https://github.com/shirograhm)
 
 An expansion pack that adds items from Riot Games (LoL, TFT, Arena, etc.) to Teamfight Manager 2.  
 
@@ -59,6 +59,7 @@ Smart Builds fixes bad AI item picks, and is always on. A toggle in the Build Ed
 - duplicate items
 - a second Grievous Wounds item
 - a second Spellblade item (Trinity Force, Dusk and Dawn, Lich Bane, Essence Reaver, Iceborn Gauntlet, Bloodsong). Sheen doesn't count
+- a second Immolate item (Sunfire Cape, Hollow Radiance). Bami's Cinder doesn't count. In a match, a champion holding more than one Immolate item only burns with the strongest
 - crit items past 100% crit chance
 - jungle items (Feral Flare, Grez's Spectral Lantern, Philosopher's Stone) on non-junglers
 - melee items on ranged champions (Ravenous Hydra, Titanic Hydra, Hullbreaker, Heartsteel, Abyssal Mask, Sunfire Cape, Hollow Radiance, Philosopher's Stone), and ranged items on melee champions (Runaan's Hurricane, Diamond Tipped Spear, Rapid Firecannon, Hexoptics C44). Melee means an attack range of 35 or less
@@ -191,7 +192,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Banshee's Veil** | 700G | +60 AP<br>+40 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Bastionbreaker** | 650G | +35 AD<br>+15 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 150 + 15% of your Attack Damage as bonus true damage. |
 | **Black Cleaver** | 750G | +25 AD<br>+250 HP<br>+5 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
-| **Blackfire Torch** | 650G | +65 AP<br>+15 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 5 Ability Power for 4 seconds (max 4 stacks). |
+| **Blackfire Torch** | 650G | +65 AP<br>+15 Ability Haste | Baleful Blaze: Dealing Ability damage burns enemies for 60 + 6% Ability Power as magic damage over 3 seconds. Monsters take 60 bonus magic damage over the burn.<br>Blackfire: Gain 4% Ability Power for each enemy champion and monster burning from Baleful Blaze. |
 | **Blade of the Ruined King** | 750G | +25 AD<br>+20% AS<br>+5% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage on-hit equal to 5% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Bloodletter's Curse** | 750G | +250 HP<br>+55 AP<br>+5 Ability Haste | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Bloodsong** | 550G | +200 HP<br>+4 HP Regen | Shared Riches: Gain 4 gold every 5 seconds.<br>Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 70 - 125 (based on level) bonus magic damage on-hit (1.5 second cooldown, starting after using the empowered attack). If the target is a champion, increase their damage taken by 7% for 4 seconds. |
@@ -300,7 +301,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Radiant Banshee's Veil** | 950G | +100 AP<br>+60 MR | Annul: Grants a spell shield that blocks the next enemy Ability (40 second cooldown). |
 | **Radiant Bastionbreaker** | 1000G | +55 AD<br>+20 Ability Haste | Gain 22 Lethality.<br>Sabotage: Scoring a takedown on an enemy champion grants Sabotage for 90 seconds, empowering your next basic attack against a turret to deal 200 + 20% of your Attack Damage as bonus true damage. |
 | **Radiant Black Cleaver** | 1100G | +35 AD<br>+350 HP<br>+10 Ability Haste | Carve: Dealing physical damage to enemy champions reduces their armor by 6% for 6 seconds (max 5 stacks). |
-| **Radiant Blackfire Torch** | 950G | +90 AP<br>+25 Ability Haste | Maleficent: Landing an Ability on an enemy champion grants 10 Ability Power for 4 seconds (max 4 stacks). |
+| **Radiant Blackfire Torch** | 950G | +90 AP<br>+25 Ability Haste | Baleful Blaze: Dealing Ability damage burns enemies for 90 + 9% Ability Power as magic damage over 3 seconds. Monsters take 90 bonus magic damage over the burn.<br>Blackfire: Gain 6% Ability Power for each enemy champion and monster burning from Baleful Blaze. |
 | **Radiant Blade of the Ruined King** | 1050G | +30 AD<br>+45% AS<br>+10% Omnivamp | Mist's Edge: Basic attacks deal bonus physical damage on-hit equal to 8% of the target's current health. Deals a maximum of 50 physical damage against minions and monsters. |
 | **Radiant Bloodletter's Curse** | 1100G | +350 HP<br>+90 AP<br>+10 Ability Haste | Decay: Dealing magic damage to enemy champions reduces their magic resistance by 6% for 6 seconds (max 5 stacks). |
 | **Radiant Bloodsong** | 550G | +300 HP<br>+5 HP Regen | Shared Riches: Gain 4 gold every 5 seconds.<br>Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 70 - 125 (based on level) bonus magic damage on-hit (1.5 second cooldown, starting after using the empowered attack). If the target is a champion, increase their damage taken by 7% for 4 seconds. |

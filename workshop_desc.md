@@ -12,8 +12,9 @@ Saves played with this mod enabled will be corrupted if you play the save with t
 [h3][i] THIS MOD WILL CHANGE THE BALANCE OF YOUR GAME. USE WITH CAUTION. [/i][/h3]
 
 [h1] Versioning [/h1]
-Currently updated for game version 0.7.1. Older game versions need an older build of the mod:  
-Mod v1.0.8+ - 0.7.1  
+Currently updated for game version 0.7.2. Older game versions need an older build of the mod:  
+Mod v1.0.10+ - 0.7.2  
+Mod v1.0.8 - v1.0.9 - 0.7.1  
 Mod v1.0.7 - 0.7.0  
 
 Manual releases (includes beta releases): https://github.com/shirograhm/riot-items-tfm2/releases
@@ -52,7 +53,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 During a match, you can see both sides' planned builds using the [b]Check Tactics[/b] tab. Pinned items will render with a teal border.  
 
 [h1] Item Patches [/h1]
-Whenever the game patches its champions, this mod patches its items too: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
+This mod patches its items on its own schedule: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. Set how often with [b]Patch Frequency[/b] in [b]Item Patcher Settings[/b] (Rare, Moderate or Frequent, like the game's own setting; per save). To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
 
 To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. Re-run the game after editing it. Without a rename, your numbers could be overwritten on update.  
 
@@ -76,6 +77,7 @@ Smart Builds cleans up the AI's picks using the following rules:
 16. Supports build only Tank/Support items (mages only when tank-tagged or on Dream Maker)  
 17. Heal/shield/buff supports prioritize Ardent/Helia/Staff  
 18. Components chosen for the champion and the enemy team's damage types (e.g. MR into Jak'Sho against AP)  
+19. One Immolate item (only the strongest burn lands)  
 
 Within those rules, the AI also leans toward items a champion has won with in your save and away from ones it has lost with (from the same results as [b]Item Stats[/b]). An item needs at least 10 games on a champion before it counts. In multiplayer, the host's save decides.  
 

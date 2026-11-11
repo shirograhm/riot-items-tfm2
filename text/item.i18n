@@ -314,11 +314,11 @@
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: Landing an Ability on an enemy champion grants <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: Dealing Ability damage burns enemies for <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Monsters take <#a974ffff>60 bonus magic damage<> over the burn.\n\n<#ff7a3eff>Blackfire<>: Gain <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each enemy champion and monster burning from Baleful Blaze."
         },
         "radiant_blackfire_torch": {
             "name": "Radiant Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: Landing an Ability on an enemy champion grants <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for <#e8a800ff>4 seconds<> (max 4 stacks)."
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: Dealing Ability damage burns enemies for <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<> over <#e8a800ff>3 seconds<>. Monsters take <#a974ffff>90 bonus magic damage<> over the burn.\n\n<#ff7a3eff>Blackfire<>: Gain <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> for each enemy champion and monster burning from Baleful Blaze."
         },
         "executioners_calling": {
             "name": "Executioner's Calling",
@@ -1500,11 +1500,11 @@
         },
         "blackfire_torch": {
             "name": "Đuốc Lửa Đen",
-            "option": "\n<#ff7a3eff>Tội ác<>: Kĩ năng trúng sẽ tăng <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+            "option": "\n<#ff7a3eff>Ngọn Lửa Xui Rủi<>: Gây sát thương kĩ năng sẽ thiêu đốt kẻ địch, gây <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Quái chịu thêm <#a974ffff>60 sát thương phép<> trong thời gian thiêu đốt.\n\n<#ff7a3eff>Lửa Đen<>: Với mỗi tướng địch và quái đang bị Ngọn Lửa Xui Rủi thiêu đốt, nhận <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "radiant_blackfire_torch": {
             "name": "Đuốc Lửa Đen Ánh Sáng",
-            "option": "\n<#ff7a3eff>Tội ác<>: Kĩ năng trúng sẽ tăng <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> trong <#e8a800ff>4 giây<> (tối đa 4 cộng dồn)."
+            "option": "\n<#ff7a3eff>Ngọn Lửa Xui Rủi<>: Gây sát thương kĩ năng sẽ thiêu đốt kẻ địch, gây <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> trong <#e8a800ff>3 giây<>. Quái chịu thêm <#a974ffff>90 sát thương phép<> trong thời gian thiêu đốt.\n\n<#ff7a3eff>Lửa Đen<>: Với mỗi tướng địch và quái đang bị Ngọn Lửa Xui Rủi thiêu đốt, nhận <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<>."
         },
         "executioners_calling": {
             "name": "Gươm Đồ Tể",
@@ -2686,11 +2686,11 @@
         },
         "blackfire_torch": {
             "name": "黯炎火炬",
-            "option": "\n<#ff7a3eff>邪焰<>：技能命中时获得 <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，持续 <#e8a800ff>4秒<>（最多叠加4层）。"
+            "option": "\n<#ff7a3eff>邪焰<>：造成技能伤害时点燃敌人，在 <#e8a800ff>3秒<>内造成 <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。野怪在燃烧期间额外受到 <#a974ffff>60点魔法伤害<>。\n\n<#ff7a3eff>黯炎<>：每有一个敌方英雄或野怪受到邪焰燃烧，你获得 <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。"
         },
         "radiant_blackfire_torch": {
             "name": "光明版黯炎火炬",
-            "option": "\n<#ff7a3eff>邪焰<>：技能命中时获得 <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>，持续 <#e8a800ff>4秒<>（最多叠加4层）。"
+            "option": "\n<#ff7a3eff>邪焰<>：造成技能伤害时点燃敌人，在 <#e8a800ff>3秒<>内造成 <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>。野怪在燃烧期间额外受到 <#a974ffff>90点魔法伤害<>。\n\n<#ff7a3eff>黯炎<>：每有一个敌方英雄或野怪受到邪焰燃烧，你获得 <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<>。"
         },
         "executioners_calling": {
             "name": "死刑宣告",
@@ -3872,11 +3872,11 @@
         },
         "blackfire_torch": {
             "name": "Tocha de Chamas Negras",
-            "option": "\n<#ff7a3eff>Nefastidão<>: Suas mágias te dão <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+            "option": "\n<#ff7a3eff>Labareda Nefasta<>: Causar dano de Habilidade queima os inimigos, causando <#a974ffff>60<> + <#a974ffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Monstros sofrem <#a974ffff>60 de dano mágico<> adicional durante a queimadura.\n\n<#ff7a3eff>Chamas Negras<>: Para cada Campeão inimigo ou monstro queimando pela sua Labareda Nefasta, recebe <#a974ffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>."
         },
         "radiant_blackfire_torch": {
             "name": "Tocha de Chamas Negras Radiante",
-            "option": "\n<#ff7a3eff>Nefastidão<>: Suas mágias te dão <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> de <#a974ffff>Poder de Habilidade<> por <#e8a800ff>4 segundos<> (acumula 4x)."
+            "option": "\n<#ff7a3eff>Labareda Nefasta<>: Causar dano de Habilidade queima os inimigos, causando <#a974ffff>90<> + <#a974ffff>9%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<> ao longo de <#e8a800ff>3 segundos<>. Monstros sofrem <#a974ffff>90 de dano mágico<> adicional durante a queimadura.\n\n<#ff7a3eff>Chamas Negras<>: Para cada Campeão inimigo ou monstro queimando pela sua Labareda Nefasta, recebe <#a974ffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<>."
         },
         "executioners_calling": {
             "name": "Chamado do Carrasco",
@@ -5058,11 +5058,11 @@
         },
         "blackfire_torch": {
             "name": "Факел Тёмного Огня",
-            "option": "\n<#ff7a3eff>Злодейский<>: Попадания умениями дают <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+            "option": "\n<#ff7a3eff>Зловещая вспышка<>: Нанесение урона умением поджигает противников, нанося <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 сек.<> Монстры получают дополнительно <#a974ffff>60 магического урона<> за время горения.\n\n<#ff7a3eff>Темный огонь<>: За каждого вражеского чемпиона и монстра, горящего от Зловещей вспышки, вы получаете <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
         },
         "radiant_blackfire_torch": {
             "name": "Лучезарный Факел Тёмного Огня",
-            "option": "\n<#ff7a3eff>Злодейский<>: Попадания умениями дают <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> на <#e8a800ff>4 секунды<> (макс. 4 стака)."
+            "option": "\n<#ff7a3eff>Зловещая вспышка<>: Нанесение урона умением поджигает противников, нанося <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> в виде <#a974ffff>магического урона<> в течение <#e8a800ff>3 сек.<> Монстры получают дополнительно <#a974ffff>90 магического урона<> за время горения.\n\n<#ff7a3eff>Темный огонь<>: За каждого вражеского чемпиона и монстра, горящего от Зловещей вспышки, вы получаете <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<>."
         },
         "executioners_calling": {
             "name": "Призвание Палача",
@@ -6244,11 +6244,11 @@
         },
         "blackfire_torch": {
             "name": "어둠불꽃 횃불",
-            "option": "\n<#ff7a3eff>악의<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>5<> 얻습니다. 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>악의의 불길<>: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>3초<> 동안 <#a974ffff>60<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>6%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 몬스터는 불타는 동안 <#a974ffff>60의 추가 마법 피해<>를 입습니다.\n\n<#ff7a3eff>어둠불꽃<>: 악의의 불길로 불타는 적 챔피언과 몬스터 하나당 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>4%<> 증가합니다."
         },
         "radiant_blackfire_torch": {
             "name": "찬란한 어둠불꽃 횃불",
-            "option": "\n<#ff7a3eff>악의<>: 적 챔피언에게 스킬을 적중시키면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>을 <#a974ffff>10<> 얻습니다. 최대 4회 중첩됩니다."
+            "option": "\n<#ff7a3eff>악의의 불길<>: 스킬 피해를 입히면 적을 불태워 <#e8a800ff>3초<> 동안 <#a974ffff>90<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>9%<>만큼 <#a974ffff>마법 피해<>를 입힙니다. 몬스터는 불타는 동안 <#a974ffff>90의 추가 마법 피해<>를 입습니다.\n\n<#ff7a3eff>어둠불꽃<>: 악의의 불길로 불타는 적 챔피언과 몬스터 하나당 <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>이 <#a974ffff>6%<> 증가합니다."
         },
         "executioners_calling": {
             "name": "처형인의 대검",
@@ -7430,11 +7430,11 @@
         },
         "blackfire_torch": {
             "name": "黒炎のトーチ",
-            "option": "\n<#ff7a3eff>悪意<>: 敵チャンピオンにスキルを命中させると、<#e8a800ff>4秒間<><#a974ffff>5<>の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>を得る(最大4回までスタック)。"
+            "option": "\n<#ff7a3eff>悪意の炎<>: スキルでダメージを与えると敵を燃焼させ、<#e8a800ff>3秒<>かけて<#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>の<#a974ffff>魔法ダメージ<>を与える。モンスターには燃焼中にさらに<#a974ffff>60の魔法ダメージ<>を与える。\n\n<#ff7a3eff>黒炎<>: 悪意の炎で燃焼している敵チャンピオンとモンスター1体ごとに、<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>が<#a974ffff>4%<>増加する。"
         },
         "radiant_blackfire_torch": {
             "name": "レディアント 黒炎のトーチ",
-            "option": "\n<#ff7a3eff>悪意<>: 敵チャンピオンにスキルを命中させると、<#e8a800ff>4秒間<><#a974ffff>10<>の<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>を得る(最大4回までスタック)。"
+            "option": "\n<#ff7a3eff>悪意の炎<>: スキルでダメージを与えると敵を燃焼させ、<#e8a800ff>3秒<>かけて<#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>の<#a974ffff>魔法ダメージ<>を与える。モンスターには燃焼中にさらに<#a974ffff>90の魔法ダメージ<>を与える。\n\n<#ff7a3eff>黒炎<>: 悪意の炎で燃焼している敵チャンピオンとモンスター1体ごとに、<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>が<#a974ffff>6%<>増加する。"
         },
         "executioners_calling": {
             "name": "エクスキューショナー コーリング",
@@ -8616,11 +8616,11 @@
         },
         "blackfire_torch": {
             "name": "Schwarzfeuer-Fackel",
-            "option": "\n<#ff7a3eff>Bösartig<>: Wenn du einen gegnerischen Champion mit einer Fähigkeit triffst, erhältst du <#e8a800ff>4 Sekunden<> lang <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> (max. 4 Steigerungen)."
+            "option": "\n<#ff7a3eff>Unheilvolle Glut<>: Schaden durch Fähigkeiten verbrennt Gegner und fügt ihnen über <#e8a800ff>3 Sekunden<> <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> als <#a974ffff>magischen Schaden<> zu. Monster erleiden während des Brennens zusätzlich <#a974ffff>60 magischen Schaden<>.\n\n<#ff7a3eff>Schwarzfeuer<>: Für jeden gegnerischen Champion und jedes Monster, das durch Unheilvolle Glut brennt, erhältst du <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<>."
         },
         "radiant_blackfire_torch": {
             "name": "Lichtversion von Schwarzfeuer-Fackel",
-            "option": "\n<#ff7a3eff>Bösartig<>: Wenn du einen gegnerischen Champion mit einer Fähigkeit triffst, erhältst du <#e8a800ff>4 Sekunden<> lang <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> (max. 4 Steigerungen)."
+            "option": "\n<#ff7a3eff>Unheilvolle Glut<>: Schaden durch Fähigkeiten verbrennt Gegner und fügt ihnen über <#e8a800ff>3 Sekunden<> <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> als <#a974ffff>magischen Schaden<> zu. Monster erleiden während des Brennens zusätzlich <#a974ffff>90 magischen Schaden<>.\n\n<#ff7a3eff>Schwarzfeuer<>: Für jeden gegnerischen Champion und jedes Monster, das durch Unheilvolle Glut brennt, erhältst du <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<>."
         },
         "executioners_calling": {
             "name": "Ruf des Henkers",
@@ -9802,11 +9802,11 @@
         },
         "blackfire_torch": {
             "name": "Siyahateş Meşalesi",
-            "option": "\n<#ff7a3eff>Kötücül<>: Bir rakip şampiyonu bir yetenekle vurmak <#e8a800ff>4 saniye<> boyunca <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kazandırır (en fazla 4 yük)."
+            "option": "\n<#ff7a3eff>Melun Alev<>: Yeteneklerle hasar vermek düşmanları yakar ve <#e8a800ff>3 saniye<> içinde <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kadar <#a974ffff>büyü hasarı<> verir. Canavarlar yanma süresince ilave <#a974ffff>60 büyü hasarı<> alır.\n\n<#ff7a3eff>Siyahateş<>: Melun Alev etkisiyle yanan her rakip şampiyon ve canavar başına <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kazanırsın."
         },
         "radiant_blackfire_torch": {
             "name": "Işıltılı Siyahateş Meşalesi",
-            "option": "\n<#ff7a3eff>Kötücül<>: Bir rakip şampiyonu bir yetenekle vurmak <#e8a800ff>4 saniye<> boyunca <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kazandırır (en fazla 4 yük)."
+            "option": "\n<#ff7a3eff>Melun Alev<>: Yeteneklerle hasar vermek düşmanları yakar ve <#e8a800ff>3 saniye<> içinde <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kadar <#a974ffff>büyü hasarı<> verir. Canavarlar yanma süresince ilave <#a974ffff>90 büyü hasarı<> alır.\n\n<#ff7a3eff>Siyahateş<>: Melun Alev etkisiyle yanan her rakip şampiyon ve canavar başına <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kazanırsın."
         },
         "executioners_calling": {
             "name": "Celladın Çağrısı",
@@ -10988,11 +10988,11 @@
         },
         "blackfire_torch": {
             "name": "Antorcha de fuego negro",
-            "option": "\n<#ff7a3eff>Maléfico<>: Acertar una habilidad a un campeón enemigo otorga <#a974ffff>5<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> durante <#e8a800ff>4 segundos<> (máx. 4 acumulaciones)."
+            "option": "\n<#ff7a3eff>Llamarada maligna<>: Infligir daño con habilidades quema a los enemigos, infligiendo <#a974ffff>60<> + <#a974ffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> como <#a974ffff>daño mágico<> a lo largo de <#e8a800ff>3 segundos<>. Los monstruos reciben <#a974ffff>60 de daño mágico<> adicional durante la quemadura.\n\n<#ff7a3eff>Fuego negro<>: Por cada campeón enemigo o monstruo que arda por tu Llamarada maligna, obtienes un <#a974ffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<>."
         },
         "radiant_blackfire_torch": {
             "name": "Antorcha de fuego negro radiante",
-            "option": "\n<#ff7a3eff>Maléfico<>: Acertar una habilidad a un campeón enemigo otorga <#a974ffff>10<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> durante <#e8a800ff>4 segundos<> (máx. 4 acumulaciones)."
+            "option": "\n<#ff7a3eff>Llamarada maligna<>: Infligir daño con habilidades quema a los enemigos, infligiendo <#a974ffff>90<> + <#a974ffff>9%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> como <#a974ffff>daño mágico<> a lo largo de <#e8a800ff>3 segundos<>. Los monstruos reciben <#a974ffff>90 de daño mágico<> adicional durante la quemadura.\n\n<#ff7a3eff>Fuego negro<>: Por cada campeón enemigo o monstruo que arda por tu Llamarada maligna, obtienes un <#a974ffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<>."
         },
         "executioners_calling": {
             "name": "Llamada del verdugo",
@@ -12174,11 +12174,11 @@
         },
         "blackfire_torch": {
             "name": "Torche noire",
-            "option": "\n<#ff7a3eff>Maléfique<>: Toucher un champion ennemi avec une compétence octroie <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> pendant <#e8a800ff>4 secondes<> (4 cumuls max)."
+            "option": "\n<#ff7a3eff>Flamme funèbre<>: Infliger des dégâts avec une compétence brûle les ennemis, leur infligeant <#a974ffff>60<> + <#a974ffff>6%<> de la <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> sous forme de <#a974ffff>dégâts magiques<> en <#e8a800ff>3 secondes<>. Les monstres subissent <#a974ffff>60 pts de dégâts magiques<> supplémentaires pendant la brûlure.\n\n<#ff7a3eff>Feu noir<>: Vous gagnez <#a974ffff>4%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> par champion ennemi ou monstre brûlé par votre Flamme funèbre."
         },
         "radiant_blackfire_torch": {
             "name": "Torche noire de la lumière",
-            "option": "\n<#ff7a3eff>Maléfique<>: Toucher un champion ennemi avec une compétence octroie <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> pendant <#e8a800ff>4 secondes<> (4 cumuls max)."
+            "option": "\n<#ff7a3eff>Flamme funèbre<>: Infliger des dégâts avec une compétence brûle les ennemis, leur infligeant <#a974ffff>90<> + <#a974ffff>9%<> de la <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> sous forme de <#a974ffff>dégâts magiques<> en <#e8a800ff>3 secondes<>. Les monstres subissent <#a974ffff>90 pts de dégâts magiques<> supplémentaires pendant la brûlure.\n\n<#ff7a3eff>Feu noir<>: Vous gagnez <#a974ffff>6%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> par champion ennemi ou monstre brûlé par votre Flamme funèbre."
         },
         "executioners_calling": {
             "name": "Marque du bourreau",
@@ -13360,11 +13360,11 @@
         },
         "blackfire_torch": {
             "name": "Torcia del fuoco tetro",
-            "option": "\n<#ff7a3eff>Malefico<>: Colpire un campione nemico con un'abilità conferisce <#a974ffff>5<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> per <#e8a800ff>4 secondi<> (max 4 cariche)."
+            "option": "\n<#ff7a3eff>Fiammata funesta<>: Infliggere danni con le abilità brucia i nemici, infliggendo <#a974ffff>60<> + <#a974ffff>6%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> come <#a974ffff>danni magici<> nell'arco di <#e8a800ff>3 secondi<>. I mostri subiscono <#a974ffff>60 danni magici<> aggiuntivi durante l'ustione.\n\n<#ff7a3eff>Fuoco tetro<>: Per ogni campione nemico o mostro che brucia per la tua Fiammata funesta, ottieni il <#a974ffff>4%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<>."
         },
         "radiant_blackfire_torch": {
             "name": "Torcia del fuoco tetro Radiosa",
-            "option": "\n<#ff7a3eff>Malefico<>: Colpire un campione nemico con un'abilità conferisce <#a974ffff>10<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> per <#e8a800ff>4 secondi<> (max 4 cariche)."
+            "option": "\n<#ff7a3eff>Fiammata funesta<>: Infliggere danni con le abilità brucia i nemici, infliggendo <#a974ffff>90<> + <#a974ffff>9%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> come <#a974ffff>danni magici<> nell'arco di <#e8a800ff>3 secondi<>. I mostri subiscono <#a974ffff>90 danni magici<> aggiuntivi durante l'ustione.\n\n<#ff7a3eff>Fuoco tetro<>: Per ogni campione nemico o mostro che brucia per la tua Fiammata funesta, ottieni il <#a974ffff>6%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<>."
         },
         "executioners_calling": {
             "name": "Chiamata del carnefice",
@@ -14546,11 +14546,11 @@
         },
         "blackfire_torch": {
             "name": "黑焰火炬",
-            "option": "\n<#ff7a3eff>惡毒<>：以技能命中敵方英雄時，獲得<#a974ffff>5<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>，持續<#e8a800ff>4秒<>（最多疊加4層）。"
+            "option": "\n<#ff7a3eff>厄夜灼炎<>：以技能造成傷害時灼燒敵人，在<#e8a800ff>3秒<>內造成<#a974ffff>60<> + <#a974ffff>6%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>的<#a974ffff>魔法傷害<>。野怪在灼燒期間額外受到<#a974ffff>60魔法傷害<>。\n\n<#ff7a3eff>黑焰<>：每有一位敵方英雄或野怪遭受厄夜灼炎燃燒，你便獲得<#a974ffff>4%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>。"
         },
         "radiant_blackfire_torch": {
             "name": "聖光黑焰火炬",
-            "option": "\n<#ff7a3eff>惡毒<>：以技能命中敵方英雄時，獲得<#a974ffff>10<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>，持續<#e8a800ff>4秒<>（最多疊加4層）。"
+            "option": "\n<#ff7a3eff>厄夜灼炎<>：以技能造成傷害時灼燒敵人，在<#e8a800ff>3秒<>內造成<#a974ffff>90<> + <#a974ffff>9%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>的<#a974ffff>魔法傷害<>。野怪在灼燒期間額外受到<#a974ffff>90魔法傷害<>。\n\n<#ff7a3eff>黑焰<>：每有一位敵方英雄或野怪遭受厄夜灼炎燃燒，你便獲得<#a974ffff>6%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>。"
         },
         "executioners_calling": {
             "name": "死刑宣告",
@@ -15732,11 +15732,11 @@
         },
         "blackfire_torch": {
             "name": "Pochodnia Mrocznego Ognia",
-            "option": "\n<#ff7a3eff>Złowieszczość<>: Trafienie wrogiego bohatera umiejętnością zapewnia <#a974ffff>5<> pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> na <#e8a800ff>4 sek.<> (maks. liczba ładunków: 4)."
+            "option": "\n<#ff7a3eff>Złowrogi Płomień<>: Zadawanie obrażeń umiejętnościami podpala wrogów, zadając <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> jako <#a974ffff>obrażenia magiczne<> w ciągu <#e8a800ff>3 sek.<> Potwory otrzymują dodatkowo <#a974ffff>60 pkt obrażeń magicznych<> w trakcie podpalenia.\n\n<#ff7a3eff>Mroczny Ogień<>: Za każdego wrogiego bohatera lub potwora płonącego od twojego Złowrogiego Płomienia zyskujesz <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<>."
         },
         "radiant_blackfire_torch": {
             "name": "Świetlista Pochodnia Mrocznego Ognia",
-            "option": "\n<#ff7a3eff>Złowieszczość<>: Trafienie wrogiego bohatera umiejętnością zapewnia <#a974ffff>10<> pkt <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> na <#e8a800ff>4 sek.<> (maks. liczba ładunków: 4)."
+            "option": "\n<#ff7a3eff>Złowrogi Płomień<>: Zadawanie obrażeń umiejętnościami podpala wrogów, zadając <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> jako <#a974ffff>obrażenia magiczne<> w ciągu <#e8a800ff>3 sek.<> Potwory otrzymują dodatkowo <#a974ffff>90 pkt obrażeń magicznych<> w trakcie podpalenia.\n\n<#ff7a3eff>Mroczny Ogień<>: Za każdego wrogiego bohatera lub potwora płonącego od twojego Złowrogiego Płomienia zyskujesz <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<>."
         },
         "executioners_calling": {
             "name": "Wezwanie Kata",
@@ -16918,11 +16918,11 @@
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: การใช้สกิลโดนแชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> <#a974ffff>5<> เป็นเวลา <#e8a800ff>4 วินาที<> (สแตคได้สูงสุด 4 ครั้ง)"
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: การสร้างดาเมจจากสกิลจะเผาไหม้ศัตรู สร้าง<#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<>เป็น<#a974ffff>ดาเมจเวท<>ภายใน <#e8a800ff>3 วินาที<> มอนสเตอร์จะได้รับ<#a974ffff>ดาเมจเวทเพิ่มเติม 60<>ระหว่างการเผาไหม้\n\n<#ff7a3eff>Blackfire<>: ได้รับ<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> <#a974ffff>4%<> ต่อแชมเปี้ยนศัตรูหรือมอนสเตอร์แต่ละตัวที่กำลังเผาไหม้จาก Baleful Blaze"
         },
         "radiant_blackfire_torch": {
             "name": "Radiant Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: การใช้สกิลโดนแชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> <#a974ffff>10<> เป็นเวลา <#e8a800ff>4 วินาที<> (สแตคได้สูงสุด 4 ครั้ง)"
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: การสร้างดาเมจจากสกิลจะเผาไหม้ศัตรู สร้าง<#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<>เป็น<#a974ffff>ดาเมจเวท<>ภายใน <#e8a800ff>3 วินาที<> มอนสเตอร์จะได้รับ<#a974ffff>ดาเมจเวทเพิ่มเติม 90<>ระหว่างการเผาไหม้\n\n<#ff7a3eff>Blackfire<>: ได้รับ<i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> <#a974ffff>6%<> ต่อแชมเปี้ยนศัตรูหรือมอนสเตอร์แต่ละตัวที่กำลังเผาไหม้จาก Baleful Blaze"
         },
         "executioners_calling": {
             "name": "Executioner's Calling",
@@ -18104,11 +18104,11 @@
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: Een vijandelijke kampioen raken met een vaardigheid geeft <#e8a800ff>4 seconden<> lang <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> (max. 4 stapels)."
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: Vaardigheidsschade toebrengen verbrandt vijanden voor <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> als <#a974ffff>magische schade<> over <#e8a800ff>3 seconden<>. Monsters lopen tijdens het branden <#a974ffff>60 extra magische schade<> op.\n\n<#ff7a3eff>Blackfire<>: Krijg <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> voor elke vijandelijke kampioen en elk monster dat brandt door Baleful Blaze."
         },
         "radiant_blackfire_torch": {
             "name": "Radiant Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: Een vijandelijke kampioen raken met een vaardigheid geeft <#e8a800ff>4 seconden<> lang <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> (max. 4 stapels)."
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: Vaardigheidsschade toebrengen verbrandt vijanden voor <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> als <#a974ffff>magische schade<> over <#e8a800ff>3 seconden<>. Monsters lopen tijdens het branden <#a974ffff>90 extra magische schade<> op.\n\n<#ff7a3eff>Blackfire<>: Krijg <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> voor elke vijandelijke kampioen en elk monster dat brandt door Baleful Blaze."
         },
         "executioners_calling": {
             "name": "Executioner's Calling",
@@ -19290,11 +19290,11 @@
         },
         "blackfire_torch": {
             "name": "Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: Ke pā kāu mākau i kekahi koa ʻenemi, loaʻa iā ʻoe he <#a974ffff>5<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> no <#e8a800ff>4 kekona<> (a hiki i 4 papa)."
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: Ke hana kāu mākau i ka pōʻino, puhi ʻia nā ʻenemi i ke ahi no <#a974ffff>60<> + <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> ma ke ʻano he <#a974ffff>pōʻino kilokilo<> i loko o <#e8a800ff>3 kekona<>. Loaʻa i nā moʻo he <#a974ffff>60 pōʻino kilokilo hou<> i ka wā e ʻā ana.\n\n<#ff7a3eff>Blackfire<>: Loaʻa iā ʻoe he <#a974ffff>4%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> no kēlā me kēia koa ʻenemi a me kēlā me kēia moʻo e ʻā ana i ka Baleful Blaze."
         },
         "radiant_blackfire_torch": {
             "name": "Radiant Blackfire Torch",
-            "option": "\n<#ff7a3eff>Maleficent<>: Ke pā kāu mākau i kekahi koa ʻenemi, loaʻa iā ʻoe he <#a974ffff>10<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> no <#e8a800ff>4 kekona<> (a hiki i 4 papa)."
+            "option": "\n<#ff7a3eff>Baleful Blaze<>: Ke hana kāu mākau i ka pōʻino, puhi ʻia nā ʻenemi i ke ahi no <#a974ffff>90<> + <#a974ffff>9%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> ma ke ʻano he <#a974ffff>pōʻino kilokilo<> i loko o <#e8a800ff>3 kekona<>. Loaʻa i nā moʻo he <#a974ffff>90 pōʻino kilokilo hou<> i ka wā e ʻā ana.\n\n<#ff7a3eff>Blackfire<>: Loaʻa iā ʻoe he <#a974ffff>6%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> no kēlā me kēia koa ʻenemi a me kēlā me kēia moʻo e ʻā ana i ka Baleful Blaze."
         },
         "executioners_calling": {
             "name": "Executioner's Calling",

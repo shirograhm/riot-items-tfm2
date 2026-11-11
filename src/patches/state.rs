@@ -57,6 +57,74 @@ pub(crate) struct State {
     // Item -> field -> what the player allows a patch to do with the number.
     #[serde(rename = "l", skip_serializing_if = "BTreeMap::is_empty")]
     pub limits: BTreeMap<String, BTreeMap<String, Limit>>,
+    // How often the automatic patches come, set in the Item Patcher Settings
+    // window. They keep their own calendar, not the game's.
+    #[serde(rename = "pf")]
+    pub period: Period,
+    // The in-game day ([`day_number`]) the automatic patches' clock was last
+    // started on: the last automatic patch, or the day this save's patches
+    // were first seen on a build that has the setting. The next is due a
+    // [`Period::days`] after it.
+    #[serde(rename = "pd", skip_serializing_if = "Option::is_none")]
+    pub since: Option<i64>,
+    // Every item's (games, wins), and the matches counted, all game versions
+    // together, when the items were last judged: the next automatic patch
+    // judges what has been counted since.
+    #[serde(rename = "pt", skip_serializing_if = "BTreeMap::is_empty")]
+    pub tally_at: BTreeMap<String, (u32, u32)>,
+    #[serde(rename = "pm")]
+    pub matches_at: u32,
+    // The version the last automatic patch was announced as (`25.3`: the
+    // in-game year, and the patch of that year). A hotfix is a hotfix of it;
+    // before the first, of the game's version.
+    #[serde(rename = "rel", skip_serializing_if = "Option::is_none")]
+    pub release: Option<String>,
+}
+
+// How often the automatic item patches come: the game's own three choices
+// for its champion patches (`new_game.patch_period`), as many times a year.
+#[derive(Serialize, Deserialize, Clone, Copy, Default, PartialEq, Debug)]
+pub(crate) enum Period {
+    // 4-5 a year.
+    Rare,
+    // 9-10 a year.
+    #[default]
+    Normal,
+    // 15-16 a year.
+    Frequent,
+}
+
+impl Period {
+    // In-game days from one automatic patch to the next: a year over the
+    // middle of the choice's count.
+    pub(crate) fn days(self) -> i64 {
+        match self {
+            Period::Rare => 81,
+            Period::Normal => 38,
+            Period::Frequent => 24,
+        }
+    }
+
+    // The next choice, round again after the last: the window's button.
+    pub(crate) fn next(self) -> Self {
+        match self {
+            Period::Rare => Period::Normal,
+            Period::Normal => Period::Frequent,
+            Period::Frequent => Period::Rare,
+        }
+    }
+}
+
+// Days from 1970-01-01 to an in-game date, so two dates subtract.
+pub(crate) fn day_number(year: i32, month: u32, day: u32) -> i64 {
+    // Howard Hinnant's days_from_civil.
+    let year = i64::from(year) - i64::from(month <= 2);
+    let era = year.div_euclid(400);
+    let of_era = year - era * 400;
+    let month = i64::from(month);
+    let of_year = (153 * (month + if month > 2 { -3 } else { 9 }) + 2) / 5 + i64::from(day) - 1;
+    let of_era_days = of_era * 365 + of_era / 4 - of_era / 100 + of_year;
+    era * 146_097 + of_era_days - 719_468
 }
 
 // What the player allows the automatic patches to do with one number of one
@@ -88,7 +156,8 @@ impl Limit {
 pub(crate) struct Patch {
     #[serde(rename = "n")]
     pub number: u32,
-    // The game version whose matches were judged.
+    // The version the items were on while the matches judged were played:
+    // the last automatic patch's, or before the first, the game's.
     #[serde(rename = "ver")]
     pub version: String,
     // Matches counted on that version.

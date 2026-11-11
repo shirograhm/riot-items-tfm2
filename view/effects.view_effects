@@ -442,6 +442,41 @@
         },
         {
             "type": "Animated",
+            "name": "riot_blackfire_burn",
+            "anim": "asset/riot_items_tfm2/effects/blackfire_burn",
+            "tag": "burn",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_blackfire_burn_minion",
+            "anim": "asset/riot_items_tfm2/effects/blackfire_burn_minion",
+            "tag": "burn",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_blackfire_burn_monster",
+            "anim": "asset/riot_items_tfm2/effects/blackfire_burn_monster",
+            "tag": "burn",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_blackfire_burn_serpen",
+            "anim": "asset/riot_items_tfm2/effects/blackfire_burn_serpen",
+            "tag": "burn",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_blackfire_burn_epic",
+            "anim": "asset/riot_items_tfm2/effects/blackfire_burn_epic",
+            "tag": "burn",
+            "z": 1
+        },
+        {
+            "type": "Animated",
             "name": "riot_liandrys_burn",
             "anim": "asset/riot_items_tfm2/effects/liandrys_burn",
             "tag": "burn",

@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{clean, said, settable, ERROR_COLOR, WAITING_COLOR};
 use crate::patches::base::{self, Member};
-use crate::patches::state::{Limit, State};
+use crate::patches::state::{Limit, Period, State};
 use crate::patches::{balance, fields, text};
 
 // The shape of the file this build writes, and the newest it reads.
@@ -35,6 +35,10 @@ const FILE: &str = "item-patch-settings.json";
 #[serde(default)]
 struct Settings {
     format: u32,
+    // How often the automatic patches come; a file from before this was
+    // kept leaves the save's as it is.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    patch_frequency: Option<Period>,
     // Item, one tier by its key -> config field -> what is set for it.
     items: BTreeMap<String, BTreeMap<String, Setting>>,
 }
@@ -491,6 +495,7 @@ fn snapshot() -> Settings {
         }
         Settings {
             format: FORMAT,
+            patch_frequency: Some(state.period),
             items,
         }
     })
@@ -502,7 +507,10 @@ fn snapshot() -> Settings {
 fn export_to(file: &Path) -> String {
     let settings = snapshot();
     let count = settings.items.values().map(BTreeMap::len).sum();
-    if count == 0 {
+    let own_frequency = settings
+        .patch_frequency
+        .is_some_and(|period| period != Period::default());
+    if count == 0 && !own_frequency {
         return said_with(
             "settings_export_empty",
             "Nothing to export: no number has a setting in this save.",
@@ -578,6 +586,9 @@ fn import_from(file: &Path) -> Option<String> {
         }
         state.staged = staged;
         state.limits = limits;
+        if let Some(period) = settings.patch_frequency {
+            state.period = period;
+        }
     });
     if !edited {
         return None;

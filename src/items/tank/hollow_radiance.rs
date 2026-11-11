@@ -2,7 +2,7 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, enemies_near, immolate_burn, mark_immolate, percent_of, ItemMeta,
+    apply_config, enemies_near, immolate_burn, immolate_wins, mark_immolate, percent_of, ItemMeta,
     TICKS_PER_SECOND,
 };
 
@@ -114,6 +114,12 @@ impl HollowRadiance {
         );
         self
     }
+
+    // Immolate's (flat damage, % of maximum health), for the
+    // strongest-Immolate-wins check.
+    pub(crate) fn immolate_numbers(&self) -> (usize, f64) {
+        (self.effect_bonus_flat_damage, self.effect_caster_hp_percent_damage)
+    }
 }
 
 impl Default for HollowRadiance {
@@ -215,7 +221,8 @@ impl StableItem for HollowRadiance {
             return;
         }
         self.until_next_burn = TICKS_PER_SECOND as usize;
-        if !alive {
+        // Another Immolate item held that burns harder burns instead.
+        if !alive || !immolate_wins(ctx, player, self.meta.key, max_hp) {
             return;
         }
         mark_immolate(ctx, caster);

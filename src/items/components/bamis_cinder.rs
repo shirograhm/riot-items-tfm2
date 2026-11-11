@@ -1,7 +1,9 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, immolate_burn, mark_immolate, percent_of, TICKS_PER_SECOND};
+use crate::{
+    apply_config, immolate_burn, immolate_wins, mark_immolate, percent_of, TICKS_PER_SECOND,
+};
 
 #[derive(Clone, Debug)]
 pub struct BamisCinder {
@@ -47,6 +49,12 @@ impl BamisCinder {
             ]
         );
         item
+    }
+
+    // Immolate's (flat damage, % of maximum health), for the
+    // strongest-Immolate-wins check.
+    pub(crate) fn immolate_numbers(&self) -> (usize, f64) {
+        (self.effect_bonus_flat_damage, self.effect_caster_hp_percent_damage)
     }
 }
 
@@ -117,6 +125,10 @@ impl StableItem for BamisCinder {
         else {
             return;
         };
+        // Another Immolate item held that burns harder burns instead.
+        if !immolate_wins(ctx, player, "bamis_cinder", max_hp) {
+            return;
+        }
 
         mark_immolate(ctx, caster);
         let damage = self.effect_bonus_flat_damage

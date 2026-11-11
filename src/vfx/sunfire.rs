@@ -2,14 +2,14 @@ use mod_api_stable::*;
 
 use crate::config::ItemConfig;
 use crate::{
-    apply_config, immolate_burn, mark_immolate, percent_of, sized_range, DISTANCE_UNITS_PER_RANGE,
-    TICKS_PER_SECOND,
+    apply_config, immolate_burn, mark_immolate, note_immolate, percent_of, sized_range,
+    DISTANCE_UNITS_PER_RANGE, TICKS_PER_SECOND,
 };
 
-use super::immolate_burn_between;
+use super::{immolate_burn_between, immolate_strongest};
 
-const SUNFIRE_KEY: &str = "hourglass_of_eternity";
-const RADIANT_SUNFIRE_KEY: &str = "giants_horn_shard";
+pub(crate) const SUNFIRE_KEY: &str = "hourglass_of_eternity";
+pub(crate) const RADIANT_SUNFIRE_KEY: &str = "giants_horn_shard";
 
 #[derive(Clone, Debug)]
 pub(crate) struct Immolate {
@@ -46,6 +46,16 @@ impl Immolate {
         immolate
     }
 
+    // Notes this Immolate's numbers under `key`, the game's key for the cape,
+    // for the strongest-burn-wins check.
+    pub(crate) fn note_as(&self, key: &'static str) {
+        note_immolate(
+            key,
+            self.effect_bonus_flat_damage,
+            self.effect_caster_hp_percent_damage,
+        );
+    }
+
     fn damage(&self, max_hp: usize) -> usize {
         self.effect_bonus_flat_damage + percent_of(max_hp, self.effect_caster_hp_percent_damage)
     }
@@ -69,9 +79,9 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
             continue;
         };
         let keys = player.item_keys();
-        let sunfire_here = keys.iter().any(|key| key == SUNFIRE_KEY);
-        let radiant_here = keys.iter().any(|key| key == RADIANT_SUNFIRE_KEY);
-        if !sunfire_here && !radiant_here {
+        let sunfire_held = keys.iter().any(|key| key == SUNFIRE_KEY);
+        let radiant_held = keys.iter().any(|key| key == RADIANT_SUNFIRE_KEY);
+        if !sunfire_held && !radiant_held {
             continue;
         }
         let Some(champion) = player.champion() else {
@@ -81,6 +91,12 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
             continue;
         }
         let (id, team, max_hp) = (champion.id(), champion.team(), champion.hp().1);
+        // Only the strongest Immolate held burns; another item's may be it.
+        let sunfire_here = sunfire_held && immolate_strongest(&keys, SUNFIRE_KEY, max_hp);
+        let radiant_here = radiant_held && immolate_strongest(&keys, RADIANT_SUNFIRE_KEY, max_hp);
+        if !sunfire_here && !radiant_here {
+            continue;
+        }
         flames.push(id);
         if sunfire_here {
             let damage = sunfire.damage(max_hp);
