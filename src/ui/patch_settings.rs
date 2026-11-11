@@ -25,7 +25,7 @@ use mod_api_stable::{StableClient, UiEventKindV1};
 
 use super::options_dialog;
 use crate::patches::base::{self, Member};
-use crate::patches::state::Limit;
+use crate::patches::state::{Limit, Period};
 use crate::patches::{balance, fields, text, tuning};
 
 mod transfer;
@@ -259,6 +259,59 @@ const WINDOW_SOURCE: &str = r##"%NODE%:empty {
       }
 
       hint: "%EXPORT_HINT%";
+    }
+
+    #frequency_fill:color {
+      anchor_x: 1;
+      pivot_x: 1;
+      x: -418px;
+      y: 18px;
+      width: 320px;
+      height: 40px;
+      color: #3a3d4aff;
+      rounding: Uniform { rounding: 9; }
+    }
+
+    #frequency:color_selectable {
+      anchor_x: 1;
+      pivot_x: 1;
+      x: -418px;
+      y: 18px;
+      width: 320px;
+      height: 40px;
+
+      hover_sound: "asset/base/sound/sfx/UI_mouse_hover";
+      click_sound: "asset/base/sound/sfx/UI_mouse_click";
+
+      image: {
+        color: #00000000;
+        rounding: Uniform { rounding: 9; }
+        hover: { color: #ffffff22; }
+      }
+
+      selected_image: {
+        color: #00000000;
+        rounding: Uniform { rounding: 9; }
+        hover: { color: #ffffff22; }
+      }
+
+      text: "";
+    }
+
+    #frequency_text:label {
+      @"asset/base/style/main#bold_label";
+      anchor_x: 1;
+      pivot_x: 1;
+      x: -418px;
+      y: 18px;
+      width: 320px;
+      height: 40px;
+      size: 15;
+      color: #c2c6ceff;
+      align_x: Center;
+      align_y: Center;
+      ignore_event: true;
+      text: "%FREQUENCY%";
     }
 
     #sidebar:empty {
@@ -923,6 +976,32 @@ fn said_of(key: &str, english: &str, count: &str) -> String {
     clean(&text::ui_string(key, english).replace("{N}", count))
 }
 
+// The header's Patch Frequency button as `period` has it ("Patch Frequency:
+// Moderate"), in the words the game gives its own setting.
+fn frequency_words(period: Period) -> String {
+    let choice = match period {
+        Period::Rare => said("settings_frequency_rare", "Rare"),
+        Period::Normal => said("settings_frequency_normal", "Moderate"),
+        Period::Frequent => said("settings_frequency_frequent", "Frequent"),
+    };
+    format!("{}: {choice}", said("settings_frequency", "Patch Frequency"))
+}
+
+// What `period` means, for the footer once it is picked.
+fn frequency_meaning(period: Period) -> String {
+    match period {
+        Period::Rare => said("settings_frequency_rare_desc", "Performs patches 4-5 times a year."),
+        Period::Normal => said(
+            "settings_frequency_normal_desc",
+            "Performs patches 9-10 times a year.",
+        ),
+        Period::Frequent => said(
+            "settings_frequency_frequent_desc",
+            "Performs patches 15-16 times a year.",
+        ),
+    }
+}
+
 // -- the window's state ---------------------------------------------------------
 
 // A text box, and what it held when it was last read.
@@ -1494,7 +1573,7 @@ fn show_page(ctx: &mut StableClient<'_>, window: &mut Window, index: usize, fram
 // Opens the window over the dialog at `dialog`. Nothing where it cannot be
 // spawned, or no save's patch state is there to show.
 fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> {
-    crate::patches::settings(|_| ())?;
+    let period = crate::patches::settings(|state| state.period)?;
     // Under the layout root the dialog is in, and failing that beside the
     // dialog, under the root of its own layout: the window centres itself
     // on whichever it is given.
@@ -1536,6 +1615,7 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
                 )
                 .as_str(),
             ),
+            ("%FREQUENCY%", frequency_words(period).as_str()),
             ("%EXPORT%", said("settings_export", "Export").as_str()),
             (
                 "%EXPORT_HINT%",
@@ -1606,6 +1686,7 @@ fn open(ctx: &mut StableClient<'_>, dialog: &str, frame: u32) -> Option<Window> 
         ".popup.close",
         ".popup.import",
         ".popup.export",
+        ".popup.frequency",
         ".popup.footer.back",
         ".popup.footer.only",
         ".popup.footer.queue",
@@ -1819,6 +1900,25 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
         window.notice = None;
     }
 
+    // The header's Patch Frequency: each click is the next of the game's
+    // three choices, and the footer says what it means.
+    let frequency = window.under(".popup.frequency");
+    if settled && clicks.iter().any(|path| *path == frequency) {
+        let mut now = None;
+        crate::patches::edit_settings(|state| {
+            state.period = state.period.next();
+            now = Some(state.period);
+        });
+        if let Some(period) = now {
+            ctx.ui_set_text(
+                &window.under(".popup.frequency_text"),
+                &frequency_words(period),
+            );
+            window.notice = Some(frequency_meaning(period));
+            changed = true;
+        }
+    }
+
     // Import and Export each open a file dialog; once a file is chosen it is
     // written or read (`transfer::finished`), and the page is rebuilt from the
     // save after an import.
@@ -1840,6 +1940,13 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
         if done.imported {
             if let Some(index) = window.picked {
                 show_page(ctx, window, index, frame);
+            }
+            // A file can bring a Patch Frequency.
+            if let Some(period) = crate::patches::settings(|state| state.period) {
+                ctx.ui_set_text(
+                    &window.under(".popup.frequency_text"),
+                    &frequency_words(period),
+                );
             }
         }
         window.notice = done.notice;
@@ -1865,8 +1972,19 @@ fn sync_window(ctx: &mut StableClient<'_>, dialog: Option<&str>, frame: u32) {
     }
     // As the queue stands now: it empties under an open window when its
     // patch goes out, and what can be queued follows what has been typed.
+    let was_queued = window.queue_look == QUEUE_QUEUED;
     if paint_queue(ctx, window, frame) || changed {
         write_status(ctx, window);
+    }
+    // The hotfix has gone out while the window is up: the page's boxes are
+    // emptied and its Current column reads the patched numbers.
+    if was_queued && window.queue_look != QUEUE_QUEUED {
+        if let Some(index) = window.picked {
+            show_page(ctx, window, index, frame);
+        }
+        if window.only {
+            lay_list(ctx, window);
+        }
     }
 }
 

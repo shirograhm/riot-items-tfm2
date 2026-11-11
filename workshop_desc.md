@@ -52,7 +52,7 @@ Use the [b]filter by champion[/b] box to find champions in a long list (separate
 During a match, you can see both sides' planned builds using the [b]Check Tactics[/b] tab. Pinned items will render with a teal border.  
 
 [h1] Item Patches [/h1]
-Whenever the game patches its champions, this mod patches its items too: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
+This mod patches its items on its own schedule: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. Set how often with [b]Patch Frequency[/b] in [b]Item Patcher Settings[/b] (Rare, Moderate or Frequent, like the game's own setting; per save). To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
 
 To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. Re-run the game after editing it. Without a rename, your numbers could be overwritten on update.  
 
