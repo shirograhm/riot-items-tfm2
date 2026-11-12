@@ -1,13 +1,32 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta};
+use crate::{apply_config, percent_of, refresh_buff, ticks, ItemMeta, DISTANCE_UNITS_PER_RANGE};
 
 // Lightning Bolt's slow, shared by both tiers.
 const SLOW_BUFF: &str = "hextech_gunblade_slow";
-// The crackle drawn on the shocked champion: Statikk Shiv's shock
-// (`effects/statikk_shock`, 0.4 s, following the unit).
-const SHOCK_EFFECT: &str = "riot_statikk_shock";
+// The burst on the shocked champion (`effects/gunblade_impact`, a
+// `view_effects` Animation, 0.4 s, following the unit).
+const IMPACT_EFFECT: &str = "riot_gunblade_impact";
+// The beam from the carrier to the target, after League's: segments of
+// `effects/gunblade_beam` laid end to end along the line, each a near-still
+// projectile (projectiles are the only pictures that turn to face a
+// direction). Three `view_projectiles` bind the sheet's three crackle
+// variants, taken in turn so a long beam does not repeat.
+const BEAM_PROJECTILES: [&str; 3] = [
+    "riot_gunblade_beam_a",
+    "riot_gunblade_beam_b",
+    "riot_gunblade_beam_c",
+];
+// A segment's length in the art, in range (1 range = 1 px). Segments are
+// spaced at most this far apart, so they meet or overlap a little.
+const BEAM_SEGMENT: usize = 24;
+// At most this many segments: 12 x 24 px is far past any attack range.
+const BEAM_MAX_SEGMENTS: usize = 12;
+// How long a segment lives, matching its art's 6 x 0.05 s, and how far it
+// creeps along the beam meanwhile (100 x 18 = 1.8 px, Titanic Hydra's wave).
+const BEAM_TICKS: u64 = 18;
+const BEAM_DRIFT: u64 = 100;
 
 #[derive(Clone, Debug)]
 pub struct HextechGunblade {
@@ -190,8 +209,9 @@ impl StableItem for HextechGunblade {
                 ..BuffV1::timed(SLOW_BUFF, ticks(self.effect_slow_seconds))
             },
         );
+        draw_beam(ctx, caster, target);
         ctx.play_view_effect(
-            SHOCK_EFFECT,
+            IMPACT_EFFECT,
             caster,
             &InputTargetV1::target(target),
             0,
@@ -210,5 +230,76 @@ impl StableItem for HextechGunblade {
 
     fn category(&self) -> ItemCategoryV1 {
         ItemCategoryV1::Magic
+    }
+}
+
+// Lays Lightning Bolt's beam from the edge of the carrier's body to the
+// target: as few segments as cover the gap, spaced evenly, each centred on
+// its share of the line and creeping a hair along it so it is drawn facing
+// the target. Nothing is drawn where the target stands inside the carrier.
+fn draw_beam(ctx: &mut StableSim<'_>, caster: usize, target: usize) {
+    let Some((team, (cx, cy), body)) = ctx
+        .get_entity(caster)
+        .map(|c| (c.team(), c.pos(), c.radius() as f64))
+    else {
+        return;
+    };
+    let Some((tx, ty)) = ctx.get_entity(target).map(|t| t.pos()) else {
+        return;
+    };
+    let (dx, dy) = (tx as f64 - cx as f64, ty as f64 - cy as f64);
+    let distance = dx.hypot(dy);
+    let length = distance - body;
+    if length <= 0.0 {
+        return;
+    }
+    let (ux, uy) = (dx / distance, dy / distance);
+    let segment = (BEAM_SEGMENT * DISTANCE_UNITS_PER_RANGE) as f64;
+    let count = ((length / segment).ceil() as usize).clamp(1, BEAM_MAX_SEGMENTS);
+    let spacing = length / count as f64;
+    let drift = (BEAM_DRIFT * BEAM_TICKS) as f64;
+    for i in 0..count {
+        let along = body + spacing * (i as f64 + 0.5);
+        let (x, y) = (cx as f64 + ux * along, cy as f64 + uy * along);
+        let spec = ProjectileSpawnV1 {
+            caster_id: caster,
+            team,
+            x: x.max(0.0) as u64,
+            y: y.max(0.0) as u64,
+            radius: 1_000,
+            speed: BEAM_DRIFT,
+            move_kind: ProjectileMoveKindV1::Linear.code(),
+            target_x: (x + ux * drift).max(0.0) as u64,
+            target_y: (y + uy * drift).max(0.0) as u64,
+            penetrate: true,
+            attack_type: AttackTypeV1::Item.code(),
+            ..ProjectileSpawnV1::default()
+        };
+        ctx.spawn_projectile(
+            BEAM_PROJECTILES[i % BEAM_PROJECTILES.len()],
+            GunbladeBeam::HIT,
+            &spec,
+        );
+    }
+}
+
+// What a beam segment does to whatever it passes through: nothing. The beam
+// is only the picture (the bolt's damage has landed already);
+// `spawn_projectile` still needs an effect for it to carry.
+#[derive(Clone, Debug)]
+pub struct GunbladeBeam;
+
+impl GunbladeBeam {
+    pub const HIT: &'static str = "riot_gunblade_beam_hit";
+}
+
+impl StableEffectType for GunbladeBeam {
+    fn apply(
+        &self,
+        _sim: &mut StableSim<'_>,
+        _rng_seed: u64,
+        _caster_id: usize,
+        _input: InputTargetV1,
+    ) {
     }
 }

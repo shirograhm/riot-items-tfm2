@@ -859,6 +859,8 @@ fn init(host: &StableHost) -> StableMod {
     // Moonstone Renewer's wisp is only a picture too: the chained heal has
     // landed by the time it flies.
     reg.add_native_effect(MoonstoneRenewer::WISP_HIT, MoonstoneWisp);
+    // Hextech Gunblade's Lightning Bolt beam is only a picture as well.
+    reg.add_native_effect(GunbladeBeam::HIT, GunbladeBeam);
     // Sword of Blossoming Dawn's wisp carries Peppermint's heal to the ally,
     // each tier with its own numbers.
     for sword in [

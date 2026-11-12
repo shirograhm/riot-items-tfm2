@@ -66,6 +66,14 @@
         },
         {
             "type": "Animation",
+            "name": "riot_gunblade_impact",
+            "anim": "asset/riot_items_tfm2/effects/gunblade_impact",
+            "tag": "impact",
+            "z": 1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
             "name": "riot_spellblade_proc",
             "anim": "asset/riot_items_tfm2/effects/spellblade_proc",
             "tag": "proc",
@@ -198,6 +206,27 @@
             "name": "riot_statikk_spark",
             "anim": "asset/riot_items_tfm2/effects/statikk_spark",
             "tag": "spark",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_gunblade_beam_a",
+            "anim": "asset/riot_items_tfm2/effects/gunblade_beam",
+            "tag": "a",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_gunblade_beam_b",
+            "anim": "asset/riot_items_tfm2/effects/gunblade_beam",
+            "tag": "b",
+            "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "riot_gunblade_beam_c",
+            "anim": "asset/riot_items_tfm2/effects/gunblade_beam",
+            "tag": "c",
             "z": 1
         },
         {
