@@ -21,7 +21,7 @@ pub struct Stormrazor {
 impl Stormrazor {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("stormrazor", &["noonquiver"], &["radiant_stormrazor"]),
+            meta: ItemMeta::base("stormrazor", &["noonquiver", "bf_sword"], &["radiant_stormrazor"]),
             price: 800,
             attack: 35,
             attack_speed_mult: 20,

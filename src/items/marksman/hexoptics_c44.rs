@@ -41,7 +41,7 @@ pub struct HexopticsC44 {
 impl HexopticsC44 {
     pub fn base() -> Self {
         Self {
-            meta: ItemMeta::base("hexoptics_c44", &["noonquiver"], &["radiant_hexoptics_c44"]),
+            meta: ItemMeta::base("hexoptics_c44", &["noonquiver", "bf_sword"], &["radiant_hexoptics_c44"]),
             price: 700,
             attack: 50,
             crit_chance: 20,

@@ -478,11 +478,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Damaging an enemy champion <#d94c49ff>below 50% maximum health<> shocks them for <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<> and <#d94c49ff>slows<> them by <#d94c49ff>25%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>40 second<> cooldown)."
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Damaging an enemy champion <#d94c49ff>below 50% maximum health<> shocks them for <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<> and <#d94c49ff>slows<> them by <#d94c49ff>25%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>40 second<> cooldown)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -1664,11 +1664,11 @@
         },
         "hextech_gunblade": {
             "name": "Súng Kiếm Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Cầu Sét<>: Khi gây sát thương lên tướng địch <#d94c49ff>dưới 50% máu tối đa<>, giật sét gây <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và <#d94c49ff>làm chậm<> mục tiêu đi <#d94c49ff>25%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>40 giây<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Súng Kiếm Hextech Ánh Sáng",
-            "option": ""
+            "option": "\n<#ff7a3eff>Cầu Sét<>: Khi gây sát thương lên tướng địch <#d94c49ff>dưới 50% máu tối đa<>, giật sét gây <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và <#d94c49ff>làm chậm<> mục tiêu đi <#d94c49ff>25%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>40 giây<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai",
@@ -2850,11 +2850,11 @@
         },
         "hextech_gunblade": {
             "name": "海克斯科技枪刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>闪电弹<>：对<#d94c49ff>生命值低于最大生命值50%<>的敌方英雄造成伤害时，震击目标，造成 <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>，并使其<#d94c49ff>减速<> <#d94c49ff>25%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>40秒<>）。"
         },
         "radiant_hextech_gunblade": {
             "name": "光明版海克斯科技枪刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>闪电弹<>：对<#d94c49ff>生命值低于最大生命值50%<>的敌方英雄造成伤害时，震击目标，造成 <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>，并使其<#d94c49ff>减速<> <#d94c49ff>25%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>40秒<>）。"
         },
         "rylais_crystal_scepter": {
             "name": "兰蒂尔的冰晶节杖",
@@ -4036,11 +4036,11 @@
         },
         "hextech_gunblade": {
             "name": "Lâmina Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Disparo Elétrico<>: Causar dano a um campeão inimigo <#d94c49ff>abaixo de 50% da Vida Máxima<> dá um choque nele, causando <#a974ffff>120<> + <#a974ffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<> e aplicando <#d94c49ff>lentidão<> de <#d94c49ff>25%<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>40 segundos<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Lâmina Hextech Radiante",
-            "option": ""
+            "option": "\n<#ff7a3eff>Disparo Elétrico<>: Causar dano a um campeão inimigo <#d94c49ff>abaixo de 50% da Vida Máxima<> dá um choque nele, causando <#a974ffff>180<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<> e aplicando <#d94c49ff>lentidão<> de <#d94c49ff>25%<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>40 segundos<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai",
@@ -5222,11 +5222,11 @@
         },
         "hextech_gunblade": {
             "name": "Хекстековый пистолет-клинок",
-            "option": ""
+            "option": "\n<#ff7a3eff>Электрический заряд<>: Нанесение урона вражескому чемпиону, чьё <#d94c49ff>здоровье ниже 50% от максимального<>, поражает его, нанося <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>, и <#d94c49ff>замедляет<> его на <#d94c49ff>25%<> на <#e8a800ff>1.5 сек.<> (перезарядка <#e8a800ff>40 секунд<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Лучезарный Хекстековый пистолет-клинок",
-            "option": ""
+            "option": "\n<#ff7a3eff>Электрический заряд<>: Нанесение урона вражескому чемпиону, чьё <#d94c49ff>здоровье ниже 50% от максимального<>, поражает его, нанося <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>, и <#d94c49ff>замедляет<> его на <#d94c49ff>25%<> на <#e8a800ff>1.5 сек.<> (перезарядка <#e8a800ff>40 секунд<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Кристальный Скипетр Райлая",
@@ -6408,11 +6408,11 @@
         },
         "hextech_gunblade": {
             "name": "마법공학 총검",
-            "option": ""
+            "option": "\n<#ff7a3eff>번개 화살<>: <#d94c49ff>체력이 최대 체력의 50% 아래인<> 적 챔피언에게 피해를 입히면 충격을 줘 <#a974ffff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>20%<>만큼 <#a974ffff>마법 피해<>를 입히고 <#e8a800ff>1.5초<> 동안 <#d94c49ff>25% 둔화<>시킵니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
         },
         "radiant_hextech_gunblade": {
             "name": "찬란한 마법공학 총검",
-            "option": ""
+            "option": "\n<#ff7a3eff>번개 화살<>: <#d94c49ff>체력이 최대 체력의 50% 아래인<> 적 챔피언에게 피해를 입히면 충격을 줘 <#a974ffff>180<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>30%<>만큼 <#a974ffff>마법 피해<>를 입히고 <#e8a800ff>1.5초<> 동안 <#d94c49ff>25% 둔화<>시킵니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
         },
         "rylais_crystal_scepter": {
             "name": "라일라이의 수정홀",
@@ -7594,11 +7594,11 @@
         },
         "hextech_gunblade": {
             "name": "ヘクステック ガンブレード",
-            "option": ""
+            "option": "\n<#ff7a3eff>ライトニングボルト<>: <#d94c49ff>最大体力の50%未満<>の敵チャンピオンにダメージを与えると、電撃を浴びせて<#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>の<#a974ffff>魔法ダメージ<>を与え、<#e8a800ff>1.5秒間<><#d94c49ff>25%<>の<#d94c49ff>スロウ効果<>を付与する(クールダウン<#e8a800ff>40秒<>)。"
         },
         "radiant_hextech_gunblade": {
             "name": "レディアント ヘクステック ガンブレード",
-            "option": ""
+            "option": "\n<#ff7a3eff>ライトニングボルト<>: <#d94c49ff>最大体力の50%未満<>の敵チャンピオンにダメージを与えると、電撃を浴びせて<#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>の<#a974ffff>魔法ダメージ<>を与え、<#e8a800ff>1.5秒間<><#d94c49ff>25%<>の<#d94c49ff>スロウ効果<>を付与する(クールダウン<#e8a800ff>40秒<>)。"
         },
         "rylais_crystal_scepter": {
             "name": "リーライ クリスタル セプター",
@@ -8780,11 +8780,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech-Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Blitzschlag<>: Wenn du einem gegnerischen Champion <#d94c49ff>unter 50% seines maximalen Lebens<> Schaden zufügst, versetzt du ihm einen Schlag, der <#a974ffff>magischen Schaden<> in Höhe von <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> verursacht und ihn <#e8a800ff>1.5 Sekunden<> lang um <#d94c49ff>25%<> <#d94c49ff>verlangsamt<> (<#e8a800ff>40 Sekunden<> Abklingzeit)."
         },
         "radiant_hextech_gunblade": {
             "name": "Lichtversion von Hextech-Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Blitzschlag<>: Wenn du einem gegnerischen Champion <#d94c49ff>unter 50% seines maximalen Lebens<> Schaden zufügst, versetzt du ihm einen Schlag, der <#a974ffff>magischen Schaden<> in Höhe von <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> verursacht und ihn <#e8a800ff>1.5 Sekunden<> lang um <#d94c49ff>25%<> <#d94c49ff>verlangsamt<> (<#e8a800ff>40 Sekunden<> Abklingzeit)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylais Kristallzepter",
@@ -9966,11 +9966,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Silahkılıç",
-            "option": ""
+            "option": "\n<#ff7a3eff>Yıldırım Oku<>: <#d94c49ff>Azami canının 50% altındaki<> bir rakip şampiyona hasar vermek ona yıldırım göndererek <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kadar <#a974ffff>büyü hasarı<> verir ve onu <#e8a800ff>1.5 saniye<> boyunca <#d94c49ff>25%<> <#d94c49ff>yavaşlatır<> (bekleme süresi <#e8a800ff>40 saniye<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Işıltılı Hextech Silahkılıç",
-            "option": ""
+            "option": "\n<#ff7a3eff>Yıldırım Oku<>: <#d94c49ff>Azami canının 50% altındaki<> bir rakip şampiyona hasar vermek ona yıldırım göndererek <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kadar <#a974ffff>büyü hasarı<> verir ve onu <#e8a800ff>1.5 saniye<> boyunca <#d94c49ff>25%<> <#d94c49ff>yavaşlatır<> (bekleme süresi <#e8a800ff>40 saniye<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai'nin Kristal Asası",
@@ -11152,11 +11152,11 @@
         },
         "hextech_gunblade": {
             "name": "Sable-pistola hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Relámpago<>: Dañar a un campeón enemigo <#d94c49ff>por debajo del 50% de su salud máxima<> lo electrocuta, le inflige <#a974ffff>120<> + <#a974ffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> como <#a974ffff>daño mágico<> y lo <#d94c49ff>ralentiza<> un <#d94c49ff>25%<> durante <#e8a800ff>1.5 segundos<> (<#e8a800ff>40 segundos<> de enfriamiento)."
         },
         "radiant_hextech_gunblade": {
             "name": "Sable-pistola hextech radiante",
-            "option": ""
+            "option": "\n<#ff7a3eff>Relámpago<>: Dañar a un campeón enemigo <#d94c49ff>por debajo del 50% de su salud máxima<> lo electrocuta, le inflige <#a974ffff>180<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> como <#a974ffff>daño mágico<> y lo <#d94c49ff>ralentiza<> un <#d94c49ff>25%<> durante <#e8a800ff>1.5 segundos<> (<#e8a800ff>40 segundos<> de enfriamiento)."
         },
         "rylais_crystal_scepter": {
             "name": "Cetro de cristal de Rylai",
@@ -12338,11 +12338,11 @@
         },
         "hextech_gunblade": {
             "name": "Pistolame Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Orbe de foudre<>: Infliger des dégâts à un champion ennemi <#d94c49ff>sous 50% de ses PV max<> lui envoie une décharge qui inflige <#a974ffff>120<> + <#a974ffff>20%<> de la <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> en <#a974ffff>dégâts magiques<> et le <#d94c49ff>ralentit<> de <#d94c49ff>25%<> pendant <#e8a800ff>1.5 secondes<> (délai de récupération : <#e8a800ff>40 secondes<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Pistolame Hextech de la lumière",
-            "option": ""
+            "option": "\n<#ff7a3eff>Orbe de foudre<>: Infliger des dégâts à un champion ennemi <#d94c49ff>sous 50% de ses PV max<> lui envoie une décharge qui inflige <#a974ffff>180<> + <#a974ffff>30%<> de la <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> en <#a974ffff>dégâts magiques<> et le <#d94c49ff>ralentit<> de <#d94c49ff>25%<> pendant <#e8a800ff>1.5 secondes<> (délai de récupération : <#e8a800ff>40 secondes<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Sceptre de Rylai",
@@ -13524,11 +13524,11 @@
         },
         "hextech_gunblade": {
             "name": "Pistola a lame hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Fulmine folgorante<>: Danneggiare un campione nemico <#d94c49ff>sotto il 50% della salute massima<> lo folgora, infliggendo <#a974ffff>120<> + <#a974ffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> come <#a974ffff>danni magici<> e <#d94c49ff>rallentandolo<> del <#d94c49ff>25%<> per <#e8a800ff>1.5 secondi<> (ricarica di <#e8a800ff>40 secondi<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Pistola a lame hextech Radiosa",
-            "option": ""
+            "option": "\n<#ff7a3eff>Fulmine folgorante<>: Danneggiare un campione nemico <#d94c49ff>sotto il 50% della salute massima<> lo folgora, infliggendo <#a974ffff>180<> + <#a974ffff>30%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> come <#a974ffff>danni magici<> e <#d94c49ff>rallentandolo<> del <#d94c49ff>25%<> per <#e8a800ff>1.5 secondi<> (ricarica di <#e8a800ff>40 secondi<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Scettro di cristallo di Rylai",
@@ -14710,11 +14710,11 @@
         },
         "hextech_gunblade": {
             "name": "海克斯科技槍刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>閃電霹靂<>：對<#d94c49ff>生命值低於最大生命值50%<>的敵方英雄造成傷害時，電擊目標，造成<#a974ffff>120<> + <#a974ffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>的<#a974ffff>魔法傷害<>，並使其<#d94c49ff>緩速<><#d94c49ff>25%<>，持續<#e8a800ff>1.5秒<>（冷卻時間<#e8a800ff>40秒<>）。"
         },
         "radiant_hextech_gunblade": {
             "name": "聖光海克斯科技槍刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>閃電霹靂<>：對<#d94c49ff>生命值低於最大生命值50%<>的敵方英雄造成傷害時，電擊目標，造成<#a974ffff>180<> + <#a974ffff>30%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>的<#a974ffff>魔法傷害<>，並使其<#d94c49ff>緩速<><#d94c49ff>25%<>，持續<#e8a800ff>1.5秒<>（冷卻時間<#e8a800ff>40秒<>）。"
         },
         "rylais_crystal_scepter": {
             "name": "瑞萊的冰晶節杖",
@@ -15896,11 +15896,11 @@
         },
         "hextech_gunblade": {
             "name": "Miecz-Pistolet Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Piorun<>: Zadanie obrażeń wrogiemu bohaterowi <#d94c49ff>poniżej 50% maksymalnego zdrowia<> razi go, zadając <#a974ffff>obrażenia magiczne<> równe <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> i <#d94c49ff>spowalniając<> go o <#d94c49ff>25%<> na <#e8a800ff>1.5 sek.<> (czas odnowienia: <#e8a800ff>40 sek.<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Świetlisty Miecz-Pistolet Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Piorun<>: Zadanie obrażeń wrogiemu bohaterowi <#d94c49ff>poniżej 50% maksymalnego zdrowia<> razi go, zadając <#a974ffff>obrażenia magiczne<> równe <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> i <#d94c49ff>spowalniając<> go o <#d94c49ff>25%<> na <#e8a800ff>1.5 sek.<> (czas odnowienia: <#e8a800ff>40 sek.<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Kryształowy Kostur Rylai",
@@ -17082,11 +17082,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50% ของพลังชีวิตสูงสุด<> จะช็อตเป้าหมาย สร้าง<#a974ffff>ดาเมจเวท<>เท่ากับ <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> และ<#d94c49ff>สโลว์<>เป้าหมาย <#d94c49ff>25%<> เป็นเวลา <#e8a800ff>1.5 วินาที<> (คูลดาวน์ <#e8a800ff>40 วินาที<>)"
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50% ของพลังชีวิตสูงสุด<> จะช็อตเป้าหมาย สร้าง<#a974ffff>ดาเมจเวท<>เท่ากับ <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> และ<#d94c49ff>สโลว์<>เป้าหมาย <#d94c49ff>25%<> เป็นเวลา <#e8a800ff>1.5 วินาที<> (คูลดาวน์ <#e8a800ff>40 วินาที<>)"
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -18268,11 +18268,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Schade toebrengen aan een vijandelijke kampioen <#d94c49ff>onder 50% van zijn maximale gezondheid<> geeft hem een schok die <#a974ffff>magische schade<> toebrengt gelijk aan <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> en hem <#e8a800ff>1.5 seconden<> lang met <#d94c49ff>25%<> <#d94c49ff>vertraagt<> (<#e8a800ff>40 seconden<> afkoeltijd)."
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Schade toebrengen aan een vijandelijke kampioen <#d94c49ff>onder 50% van zijn maximale gezondheid<> geeft hem een schok die <#a974ffff>magische schade<> toebrengt gelijk aan <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> en hem <#e8a800ff>1.5 seconden<> lang met <#d94c49ff>25%<> <#d94c49ff>vertraagt<> (<#e8a800ff>40 seconden<> afkoeltijd)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -19454,11 +19454,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi <#d94c49ff>ma lalo o 50% o kona ola kiʻekiʻe<>, hōʻeha ka uila iā ia me ka <#a974ffff>pōʻino kilokilo<> e like me <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> a <#d94c49ff>hoʻolohi<> iā ia ma <#d94c49ff>25%<> no <#e8a800ff>1.5 kekona<> (manawa kali hou <#e8a800ff>40 kekona<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi <#d94c49ff>ma lalo o 50% o kona ola kiʻekiʻe<>, hōʻeha ka uila iā ia me ka <#a974ffff>pōʻino kilokilo<> e like me <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> a <#d94c49ff>hoʻolohi<> iā ia ma <#d94c49ff>25%<> no <#e8a800ff>1.5 kekona<> (manawa kali hou <#e8a800ff>40 kekona<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",

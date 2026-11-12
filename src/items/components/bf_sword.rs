@@ -56,6 +56,9 @@ impl StableItem for BFSword {
             "deathblade".to_string(),
             "guardian_angel".to_string(),
             "endless_hunger".to_string(),
+            "hexoptics_c44".to_string(),
+            "stormrazor".to_string(),
+            "yun_tal_wildarrows".to_string(),
         ]
     }
 

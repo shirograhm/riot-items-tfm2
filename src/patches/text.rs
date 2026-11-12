@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 137] = [
+const ROW_FORMATS: [RowFormat; 138] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1595,6 +1595,12 @@ const ROW_FORMATS: [RowFormat; 137] = [
     .unit(unit::SECONDS),
     row(
         "celestial_opposition",
+        "effect_slow_seconds",
+        label::SLOW_DURATION,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "hextech_gunblade",
         "effect_slow_seconds",
         label::SLOW_DURATION,
     )
@@ -2134,7 +2140,7 @@ struct AmountFormat {
 // The placeholders of an amount's numbers, in the order of its fields.
 const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
 
-const AMOUNT_FORMATS: [AmountFormat; 26] = [
+const AMOUNT_FORMATS: [AmountFormat; 27] = [
     AmountFormat {
         item: "deaths_dance",
         fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
@@ -2233,6 +2239,12 @@ const AMOUNT_FORMATS: [AmountFormat; 26] = [
     },
     AmountFormat {
         item: "night_harvester",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: label::DAMAGE,
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
+        item: "hextech_gunblade",
         fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
         label: label::DAMAGE,
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),

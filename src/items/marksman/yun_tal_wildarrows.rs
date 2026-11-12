@@ -38,7 +38,7 @@ impl YunTalWildarrows {
         Self {
             meta: ItemMeta::base(
                 BASE_KEY,
-                &["noonquiver"],
+                &["noonquiver", "bf_sword"],
                 &["radiant_yun_tal_wildarrows"],
             ),
             yun_tal_practice_buff: "yun_tal_practice",
