@@ -59,6 +59,7 @@ pub struct ItemConfig {
     pub effect_damaged_amplify: Option<usize>,
     pub effect_lethality: Option<usize>,
     pub effect_bonus_lethality: Option<usize>,
+    pub effect_bonus_move_speed_mult: Option<i32>,
     pub effect_heal_shield_power: Option<f64>,
     pub effect_stack_heal_shield_power: Option<f64>,
     pub effect_haste_per_stack: Option<usize>,

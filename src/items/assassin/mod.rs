@@ -10,4 +10,5 @@ items! {
     serpents_fang,
     seryldas_grudge,
     voltaic_cyclosword,
+    youmuus_ghostblade,
 }

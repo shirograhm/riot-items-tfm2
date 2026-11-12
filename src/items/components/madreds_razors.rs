@@ -19,7 +19,7 @@ impl Default for MadredsRazors {
             price: 650,
             attack: 20,
             attack_speed_mult: 10,
-            effect_bonus_magic_damage: 25,
+            effect_bonus_magic_damage: 15,
             effect_bonus_flat_heal: 5,
             // Non-vital stats (internals)
             procs: ProcQueue::new(),

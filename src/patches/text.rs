@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 138] = [
+const ROW_FORMATS: [RowFormat; 141] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1609,6 +1609,12 @@ const ROW_FORMATS: [RowFormat; 138] = [
     row("eclipse", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
     row(
         "opportunity",
+        "effect_out_of_combat_seconds",
+        label::OUT_OF_COMBAT_TIMER,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "youmuus_ghostblade",
         "effect_out_of_combat_seconds",
         label::OUT_OF_COMBAT_TIMER,
     )
@@ -2007,6 +2013,16 @@ const ROW_FORMATS: [RowFormat; 138] = [
     )
     .unit(unit::MAX_HP),
     row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
+    row(
+        "youmuus_ghostblade",
+        "effect_bonus_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "youmuus_ghostblade",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
     row(
         "philosophers_medallion",
         "effect_bonus_hp_regen",

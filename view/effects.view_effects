@@ -450,6 +450,13 @@
         },
         {
             "type": "Animated",
+            "name": "youmuus_ghostblade_wraith_step",
+            "anim": "asset/riot_items_tfm2/effects/youmuu_wraith",
+            "tag": "wraith",
+            "z": 1
+        },
+        {
+            "type": "Animated",
             "name": "celestial_opposition_blessed",
             "anim": "asset/riot_items_tfm2/effects/celestial_shield",
             "tag": "shield",

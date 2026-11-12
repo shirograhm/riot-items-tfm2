@@ -709,6 +709,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
+    reg.add_item(configured!("youmuus_ghostblade" => YoumuusGhostblade));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured!("zazzaks_realmspike" => ZazzaksRealmspike, shared_riches));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
@@ -817,6 +818,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
+    reg.add_item(configured_radiant!("radiant_youmuus_ghostblade" => YoumuusGhostblade));
     reg.add_item(
         configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit),
     );
