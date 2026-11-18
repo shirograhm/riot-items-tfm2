@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 146] = [
+const ROW_FORMATS: [RowFormat; 147] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1879,6 +1879,11 @@ const ROW_FORMATS: [RowFormat; 146] = [
     ),
     row(
         "stormrazor",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "shurelyas_battlesong",
         "effect_move_speed_mult",
         label::MOVEMENT_SPEED,
     ),
