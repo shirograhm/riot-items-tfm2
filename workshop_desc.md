@@ -30,7 +30,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Known Issues [/h1]
-- Largely experimental in multiplayer.  
+- Somewhat untested in multiplayer.  
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box! However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
