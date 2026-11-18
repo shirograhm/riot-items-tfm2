@@ -186,6 +186,14 @@
         },
         {
             "type": "Animation",
+            "name": "riot_stridebreaker_shockwave",
+            "anim": "asset/riot_items_tfm2/effects/stridebreaker_shockwave",
+            "tag": "shockwave",
+            "z": -1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
             "name": "riot_mikaels_purify",
             "anim": "asset/riot_items_tfm2/effects/mikaels_purify",
             "tag": "purify",

@@ -136,6 +136,7 @@ pub struct ItemConfig {
     pub effect_explosion_flat_damage: Option<usize>,
     pub effect_explosion_caster_hp_percent: Option<f64>,
     pub effect_explosion_distance: Option<usize>,
+    pub effect_shockwave_ad_percent_damage: Option<f64>,
     pub effect_ad_percent_haste: Option<f64>,
     pub effect_max_targets: Option<usize>,
     pub effect_splash_caster_hp_percent: Option<f64>,

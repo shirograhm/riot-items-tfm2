@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 142] = [
+const ROW_FORMATS: [RowFormat; 146] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1610,6 +1610,7 @@ const ROW_FORMATS: [RowFormat; 142] = [
         label::SLOW_DURATION,
     )
     .unit(unit::SECONDS),
+    row("stridebreaker", "effect_slow_seconds", label::SLOW_DURATION).unit(unit::SECONDS),
     row("eclipse", "effect_duration_seconds", label::MARK_DURATION).unit(unit::SECONDS),
     row("eclipse", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
     row(
@@ -1778,6 +1779,24 @@ const ROW_FORMATS: [RowFormat; 142] = [
     )
     .unit(unit::AD),
     row("tiamat", "effect_ad_percent_damage", label::ON_HIT_DAMAGE).unit(unit::AD),
+    row(
+        "profane_hydra",
+        "effect_ad_percent_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::AD),
+    row(
+        "stridebreaker",
+        "effect_ad_percent_damage",
+        label::ON_HIT_DAMAGE,
+    )
+    .unit(unit::AD),
+    row(
+        "stridebreaker",
+        "effect_shockwave_ad_percent_damage",
+        label::DAMAGE,
+    )
+    .unit(unit::AD),
     row(
         "hextech_alternator",
         "effect_bonus_flat_damage",
