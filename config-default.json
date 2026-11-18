@@ -5089,11 +5089,10 @@
     "effect_max_distance": 35,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 50.0,
-    "effect_hp_percent_threshold": 50.0,
     "effect_shockwave_ad_percent_damage": 80.0,
     "effect_slow_amount": 35,
     "effect_slow_seconds": 3,
-    "effect_cooldown_seconds": 15
+    "effect_cooldown_seconds": 20
   },
   "radiant_stridebreaker": {
     "price": 1000,
@@ -5113,11 +5112,10 @@
     "effect_max_distance": 35,
     "effect_melee_distance": 35,
     "effect_ranged_percent": 50.0,
-    "effect_hp_percent_threshold": 50.0,
     "effect_shockwave_ad_percent_damage": 120.0,
     "effect_slow_amount": 35,
     "effect_slow_seconds": 3,
-    "effect_cooldown_seconds": 15
+    "effect_cooldown_seconds": 20
   },
   "shurelyas_battlesong": {
     "price": 750,
@@ -5135,10 +5133,11 @@
     "skill_damaged_reduce": 0,
     "hp_regen": 1,
     "skill_cooldown_mult": 15,
+    "effect_hp_percent_threshold": 50.0,
     "effect_move_speed_mult": 20,
     "effect_duration_seconds": 4,
     "effect_max_distance": 100,
-    "effect_cooldown_seconds": 75
+    "effect_cooldown_seconds": 55
   },
   "radiant_shurelyas_battlesong": {
     "price": 750,
@@ -5156,9 +5155,10 @@
     "skill_damaged_reduce": 0,
     "hp_regen": 2,
     "skill_cooldown_mult": 20,
+    "effect_hp_percent_threshold": 50.0,
     "effect_move_speed_mult": 30,
     "effect_duration_seconds": 4,
     "effect_max_distance": 100,
-    "effect_cooldown_seconds": 75
+    "effect_cooldown_seconds": 55
   }
 }

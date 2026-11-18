@@ -17,8 +17,7 @@ const SHOCKWAVE_EFFECT: &str = "riot_stridebreaker_shockwave";
 const SHOCKWAVE_RANGE: usize = 35;
 
 // Stridebreaker: Tiamat's Cleave, and Breaking Shockwave made a passive (no
-// League active): damaging an enemy champion at or under the health threshold
-// sends a shockwave out around them that deals % AD physical damage and slows
+// League active): damaging an enemy champion sends a shockwave out around them that deals % AD physical damage and slows
 // every enemy within [`SHOCKWAVE_RANGE`] of them, on a cooldown.
 #[derive(Clone, Debug)]
 pub struct Stridebreaker {
@@ -32,7 +31,6 @@ pub struct Stridebreaker {
     effect_max_distance: usize,
     effect_melee_distance: usize,
     effect_ranged_percent: f64,
-    effect_hp_percent_threshold: f64,
     effect_shockwave_ad_percent_damage: f64,
     effect_slow_amount: i32,
     effect_slow_seconds: f64,
@@ -57,11 +55,10 @@ impl Stridebreaker {
             effect_max_distance: 35,
             effect_melee_distance: 35,
             effect_ranged_percent: 50.0,
-            effect_hp_percent_threshold: 50.0,
             effect_shockwave_ad_percent_damage: 80.0,
             effect_slow_amount: 35,
             effect_slow_seconds: 3.0,
-            effect_cooldown_seconds: 15.0,
+            effect_cooldown_seconds: 20.0,
             cooldown: 0,
         }
     }
@@ -100,7 +97,6 @@ impl Stridebreaker {
                 effect_max_distance,
                 effect_melee_distance,
                 effect_ranged_percent,
-                effect_hp_percent_threshold,
                 effect_shockwave_ad_percent_damage,
                 effect_slow_amount,
                 effect_slow_seconds,
@@ -140,7 +136,7 @@ impl Stridebreaker {
     }
 
     // Breaking Shockwave around `target`, an enemy champion the carrier just
-    // damaged, when it is at or under the threshold and the cooldown is up.
+    // damaged, when the cooldown is up.
     fn shockwave(&mut self, ctx: &mut StableSim<'_>, caster: usize, target: usize) {
         if self.cooldown > 0 {
             return;
@@ -149,10 +145,6 @@ impl Stridebreaker {
             return;
         };
         if !target_ref.is_champion() || !target_ref.is_alive() {
-            return;
-        }
-        let (current_hp, max_hp) = target_ref.hp();
-        if current_hp == 0 || current_hp > percent_of(max_hp, self.effect_hp_percent_threshold) {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {

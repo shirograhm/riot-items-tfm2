@@ -1,16 +1,19 @@
 use mod_api_stable::*;
 
 use crate::config::ItemConfig;
-use crate::{apply_config, refresh_buff, sized_range, ticks, ItemMeta};
+use crate::{apply_config, percent_of, refresh_buff, sized_range, ticks, ItemMeta};
 
 // Inspire's speed: shared by both tiers, so two carriers refresh it rather
 // than stacking it. Also the `view_buffs` binding of the pale gold swirl at
 // the feet (docs/vfx/make_shurelyas_inspire.py); rename both together.
 const INSPIRE_BUFF: &str = "shurelyas_battlesong_inspire";
+// The ring that sweeps out from the carrier to the passive's 100 range as it
+// goes off, drawn under the units (docs/vfx/make_shurelyas_speech.py).
+const SPEECH_EFFECT: &str = "riot_shurelyas_speech";
 
 // Shurelya's Battlesong: League's Inspire made a passive (no active):
-// damaging an enemy champion speeds up the carrier and every allied champion
-// near them, on a cooldown.
+// damaging an enemy champion at or under the health threshold speeds up the
+// carrier and every allied champion near them, on a cooldown.
 #[derive(Clone, Debug)]
 pub struct ShurelyasBattlesong {
     meta: ItemMeta,
@@ -19,6 +22,7 @@ pub struct ShurelyasBattlesong {
     magic_power: i32,
     move_speed_mult: i32,
     skill_cooldown_mult: i32,
+    effect_hp_percent_threshold: f64,
     effect_move_speed_mult: i32,
     effect_duration_seconds: f64,
     effect_max_distance: usize,
@@ -40,10 +44,11 @@ impl ShurelyasBattlesong {
             magic_power: 30,
             move_speed_mult: 4,
             skill_cooldown_mult: 15,
+            effect_hp_percent_threshold: 50.0,
             effect_move_speed_mult: 20,
             effect_duration_seconds: 4.0,
             effect_max_distance: 100,
-            effect_cooldown_seconds: 75.0,
+            effect_cooldown_seconds: 55.0,
             // Non-vital stats (internals)
             cooldown: 0,
         }
@@ -80,6 +85,7 @@ impl ShurelyasBattlesong {
                 magic_power,
                 move_speed_mult,
                 skill_cooldown_mult,
+                effect_hp_percent_threshold,
                 effect_move_speed_mult,
                 effect_duration_seconds,
                 effect_max_distance,
@@ -121,6 +127,14 @@ impl ShurelyasBattlesong {
             move_speed_mult: self.effect_move_speed_mult,
             ..BuffV1::timed(INSPIRE_BUFF, ticks(self.effect_duration_seconds))
         };
+        ctx.play_view_effect(
+            SPEECH_EFFECT,
+            caster,
+            &InputTargetV1::target(caster),
+            0,
+            0,
+            0,
+        );
         for id in targets {
             refresh_buff(ctx, id, INSPIRE_BUFF, &speed);
         }
@@ -206,6 +220,10 @@ impl StableItem for ShurelyasBattlesong {
             return;
         };
         if !target_ref.is_champion() || !target_ref.is_alive() {
+            return;
+        }
+        let (current_hp, max_hp) = target_ref.hp();
+        if current_hp > percent_of(max_hp, self.effect_hp_percent_threshold) {
             return;
         }
         let Some(caster_ref) = ctx.get_entity(caster) else {
