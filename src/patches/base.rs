@@ -392,7 +392,7 @@ impl Base {
                     let flat = fields::rule(field).is_some_and(|rule| rule.flat);
                     // A stat the tooltip has a line for, and that the item's
                     // own text does not also spell out (Plating's number is
-                    // written into Thornmail's effect text by the generator).
+                    // written into Shield of Molten Stone's effect text by the generator).
                     if !flat || !texts.has_line(field) || texts.quotes(&member.key, field) {
                         continue;
                     }

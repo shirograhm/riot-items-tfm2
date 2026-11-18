@@ -109,12 +109,12 @@
             "option": "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>8%<>."
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Reduce damage taken from basic attacks by <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Reduce damage taken from basic attacks by <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -1191,6 +1191,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
             "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>45 second<> cooldown)."
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>15<> + <#ffdd8eff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker. If the attacker is a champion, also apply <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>reducing their healing by 40%<> for <#e8a800ff>3 seconds<>."
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>25<> + <#ffdd8eff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker. If the attacker is a champion, also apply <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>reducing their healing by 40%<> for <#e8a800ff>3 seconds<>."
         }
     },
     "vi": {
@@ -1303,12 +1311,12 @@
             "option": "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>5%<> sát thương nhận vào từ đòn đánh thường."
         },
         "eternal_iron_plate": {
-            "name": "Giáp Gai",
-            "option": "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
+            "name": "Lá Chắn Đá Dung Nham",
+            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
         },
         "impregnable_fortress": {
-            "name": "Giáp Gai Ánh Sáng",
-            "option": "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
+            "name": "Lá Chắn Đá Dung Nham Ánh Sáng",
+            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
         },
         "mystic_cloak": {
             "name": "Áo Vải",
@@ -2385,6 +2393,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Kiếm Ma Youmuu Ánh Sáng",
             "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
+        },
+        "thornmail": {
+            "name": "Giáp Gai",
+            "option": "\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>15<> + <#ffdd8eff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công. Nếu kẻ tấn công là tướng, đồng thời gây <#ff7a3eff>Vết thương chí mạng<>, <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>3 giây<>."
+        },
+        "radiant_thornmail": {
+            "name": "Giáp Gai Ánh Sáng",
+            "option": "\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>25<> + <#ffdd8eff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công. Nếu kẻ tấn công là tướng, đồng thời gây <#ff7a3eff>Vết thương chí mạng<>, <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>3 giây<>."
         }
     },
     "zh-hans": {
@@ -2497,12 +2513,12 @@
             "option": "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>5%<>。"
         },
         "eternal_iron_plate": {
-            "name": "荆棘之甲",
-            "option": "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
+            "name": "熔石之盾",
+            "option": "<#ff7a3eff>岿然如大地<>：受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
-            "name": "光明版荆棘之甲",
-            "option": "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
+            "name": "光明版熔石之盾",
+            "option": "<#ff7a3eff>岿然如大地<>：受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -3579,6 +3595,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "光明版幽梦之灵",
             "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>45秒<>）。"
+        },
+        "thornmail": {
+            "name": "荆棘之甲",
+            "option": "\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>10%<> 的<#a974ffff>魔法伤害<>。若攻击者为英雄，还会施加<#ff7a3eff>重伤<>，使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>3秒<>。"
+        },
+        "radiant_thornmail": {
+            "name": "光明版荆棘之甲",
+            "option": "\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>25<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>15%<> 的<#a974ffff>魔法伤害<>。若攻击者为英雄，还会施加<#ff7a3eff>重伤<>，使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>3秒<>。"
         }
     },
     "pt-BR": {
@@ -3691,12 +3715,12 @@
             "option": "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Armadura de Espinhos",
-            "option": "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
+            "name": "Escudo de Rocha Fundida",
+            "option": "<#ff7a3eff>Inabalável como a Terra<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Armadura de Espinhos Radiante",
-            "option": "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
+            "name": "Escudo de Rocha Fundida Radiante",
+            "option": "<#ff7a3eff>Inabalável como a Terra<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
         },
         "mystic_cloak": {
             "name": "Manto Anula-Magia",
@@ -4773,6 +4797,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Lâmina Fantasma de Youmuu Radiante",
             "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
+        },
+        "thornmail": {
+            "name": "Armadura de Espinhos",
+            "option": "\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>15<> + <#ffdd8eff>10%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante. Se o atacante for um campeão, também aplica <#ff7a3eff>Ferimentos Graves<>, <#d94c49ff>reduzindo a cura dele em 40%<> por <#e8a800ff>3 segundos<>."
+        },
+        "radiant_thornmail": {
+            "name": "Armadura de Espinhos Radiante",
+            "option": "\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>25<> + <#ffdd8eff>15%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante. Se o atacante for um campeão, também aplica <#ff7a3eff>Ferimentos Graves<>, <#d94c49ff>reduzindo a cura dele em 40%<> por <#e8a800ff>3 segundos<>."
         }
     },
     "ru": {
@@ -4885,12 +4917,12 @@
             "option": "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Шипованный Доспех",
-            "option": "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
+            "name": "Щит из расплавленного камня",
+            "option": "<#ff7a3eff>Непоколебимость земли<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Лучезарный Шипованный Доспех",
-            "option": "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
+            "name": "Лучезарный щит из расплавленного камня",
+            "option": "<#ff7a3eff>Непоколебимость земли<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
         },
         "mystic_cloak": {
             "name": "Антимагическая Мантия",
@@ -5967,6 +5999,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Лучезарный Призрачный клинок Йомуу",
             "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
+        },
+        "thornmail": {
+            "name": "Шипованный Доспех",
+            "option": "\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>15<> + <#ffdd8eff>10%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>. Если атакующий — чемпион, также накладывает <#ff7a3eff>Тяжёлые раны<>, <#d94c49ff>снижая его лечение на 40%<> на <#e8a800ff>3 секунды<>."
+        },
+        "radiant_thornmail": {
+            "name": "Лучезарный Шипованный Доспех",
+            "option": "\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>25<> + <#ffdd8eff>15%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>. Если атакующий — чемпион, также накладывает <#ff7a3eff>Тяжёлые раны<>, <#d94c49ff>снижая его лечение на 40%<> на <#e8a800ff>3 секунды<>."
         }
     },
     "ko": {
@@ -6079,12 +6119,12 @@
             "option": "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>5%<> 감소합니다."
         },
         "eternal_iron_plate": {
-            "name": "가시 갑옷",
-            "option": "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
+            "name": "용암의 방패",
+            "option": "<#ff7a3eff>대지 같은 굳건함<>: 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
         },
         "impregnable_fortress": {
-            "name": "찬란한 가시 갑옷",
-            "option": "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+            "name": "찬란한 용암의 방패",
+            "option": "<#ff7a3eff>대지 같은 굳건함<>: 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
         },
         "mystic_cloak": {
             "name": "마법무효화의 망토",
@@ -7161,6 +7201,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "찬란한 요우무의 유령검",
             "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>15%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+        },
+        "thornmail": {
+            "name": "가시 갑옷",
+            "option": "\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>15<> + <#ffdd8eff>10%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다. 공격자가 챔피언이면 <#ff7a3eff>고통스러운 상처<>를 적용해 <#e8a800ff>3초<> 동안 <#d94c49ff>회복량을 40% 감소<>시킵니다."
+        },
+        "radiant_thornmail": {
+            "name": "찬란한 가시 갑옷",
+            "option": "\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>25<> + <#ffdd8eff>15%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다. 공격자가 챔피언이면 <#ff7a3eff>고통스러운 상처<>를 적용해 <#e8a800ff>3초<> 동안 <#d94c49ff>회복량을 40% 감소<>시킵니다."
         }
     },
     "ja": {
@@ -7273,12 +7321,12 @@
             "option": "<#ff7a3eff>プレート<>: 通常攻撃から受けるダメージを<#e8a800ff>5%<>軽減する。"
         },
         "eternal_iron_plate": {
-            "name": "ソーンメイル",
-            "option": "<#ff7a3eff>プレート<>: 通常攻撃から受けるダメージを<#e8a800ff>8%<>軽減する。"
+            "name": "モルテンストーン シールド",
+            "option": "<#ff7a3eff>不動なること山の如し<>: 通常攻撃から受けるダメージを<#e8a800ff>8%<>軽減する。"
         },
         "impregnable_fortress": {
-            "name": "レディアント ソーンメイル",
-            "option": "<#ff7a3eff>プレート<>: 通常攻撃から受けるダメージを<#e8a800ff>12%<>軽減する。\n\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>{Flat}<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>{Ratio}%<>の<#a974ffff>魔法ダメージ<>を与える。"
+            "name": "レディアント モルテンストーン シールド",
+            "option": "<#ff7a3eff>不動なること山の如し<>: 通常攻撃から受けるダメージを<#e8a800ff>12%<>軽減する。\n\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>{Flat}<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>{Ratio}%<>の<#a974ffff>魔法ダメージ<>を与える。"
         },
         "mystic_cloak": {
             "name": "ヌルマジック マント",
@@ -8355,6 +8403,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "レディアント 妖夢の霊剣",
             "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>15%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>4秒間<><#ffffffff>30%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
+        },
+        "thornmail": {
+            "name": "ソーンメイル",
+            "option": "\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>15<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>10%<>の<#a974ffff>魔法ダメージ<>を与える。攻撃者がチャンピオンの場合、<#ff7a3eff>重傷<>を付与し、<#e8a800ff>3秒間<><#d94c49ff>回復量を40%低下させる<>。"
+        },
+        "radiant_thornmail": {
+            "name": "レディアント ソーンメイル",
+            "option": "\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>25<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>15%<>の<#a974ffff>魔法ダメージ<>を与える。攻撃者がチャンピオンの場合、<#ff7a3eff>重傷<>を付与し、<#e8a800ff>3秒間<><#d94c49ff>回復量を40%低下させる<>。"
         }
     },
     "de": {
@@ -8467,12 +8523,12 @@
             "option": "<#ff7a3eff>Panzerung<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Dornenpanzer",
-            "option": "<#ff7a3eff>Panzerung<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>8%<>."
+            "name": "Schild aus Vulkangestein",
+            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Lichtversion von Dornenpanzer",
-            "option": "<#ff7a3eff>Panzerung<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>12%<>.\n\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu."
+            "name": "Lichtversion von Schild aus Vulkangestein",
+            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>12%<>.\n\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu."
         },
         "mystic_cloak": {
             "name": "Nullmagie-Mantel",
@@ -9549,6 +9605,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Lichtversion von Youmus Geistklinge",
             "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>4 Sekunden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
+        },
+        "thornmail": {
+            "name": "Dornenpanzer",
+            "option": "\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>15<> + <#ffdd8eff>10%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu. Ist der Angreifer ein Champion, erleidet er außerdem <#ff7a3eff>Klaffende Wunden<>: Seine Heilung wird <#e8a800ff>3 Sekunden<> lang <#d94c49ff>um 40% verringert<>."
+        },
+        "radiant_thornmail": {
+            "name": "Lichtversion von Dornenpanzer",
+            "option": "\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>25<> + <#ffdd8eff>15%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu. Ist der Angreifer ein Champion, erleidet er außerdem <#ff7a3eff>Klaffende Wunden<>: Seine Heilung wird <#e8a800ff>3 Sekunden<> lang <#d94c49ff>um 40% verringert<>."
         }
     },
     "tr": {
@@ -9661,12 +9725,12 @@
             "option": "<#ff7a3eff>Kaplama<>: Temel saldırılardan alınan hasarı <#e8a800ff>5%<> azaltır."
         },
         "eternal_iron_plate": {
-            "name": "Çivili Zırh",
-            "option": "<#ff7a3eff>Kaplama<>: Temel saldırılardan alınan hasarı <#e8a800ff>8%<> azaltır."
+            "name": "Magma Kalkanı",
+            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Temel saldırılardan alınan hasarı <#e8a800ff>8%<> azaltır."
         },
         "impregnable_fortress": {
-            "name": "Işıltılı Çivili Zırh",
-            "option": "<#ff7a3eff>Kaplama<>: Temel saldırılardan alınan hasarı <#e8a800ff>12%<> azaltır.\n\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>{Flat}<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>{Ratio}%<> kadar <#a974ffff>büyü hasarı<> verirsin."
+            "name": "Işıltılı Magma Kalkanı",
+            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Temel saldırılardan alınan hasarı <#e8a800ff>12%<> azaltır.\n\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>{Flat}<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>{Ratio}%<> kadar <#a974ffff>büyü hasarı<> verirsin."
         },
         "mystic_cloak": {
             "name": "Büyüsavar Pelerin",
@@ -10743,6 +10807,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Işıltılı Youmuu'nun Hayaletkılıcı",
             "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>4 saniye<> boyunca <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
+        },
+        "thornmail": {
+            "name": "Çivili Zırh",
+            "option": "\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>10%<> kadar <#a974ffff>büyü hasarı<> verirsin. Saldıran bir şampiyonsa ona ayrıca <#ff7a3eff>Ağır Yara<> uygulayarak <#e8a800ff>3 saniye<> boyunca <#d94c49ff>iyileşmesini 40% azaltırsın<>."
+        },
+        "radiant_thornmail": {
+            "name": "Işıltılı Çivili Zırh",
+            "option": "\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>25<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>15%<> kadar <#a974ffff>büyü hasarı<> verirsin. Saldıran bir şampiyonsa ona ayrıca <#ff7a3eff>Ağır Yara<> uygulayarak <#e8a800ff>3 saniye<> boyunca <#d94c49ff>iyileşmesini 40% azaltırsın<>."
         }
     },
     "es-ES": {
@@ -10855,12 +10927,12 @@
             "option": "<#ff7a3eff>Placas<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Malla de espinas",
-            "option": "<#ff7a3eff>Placas<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>8%<>."
+            "name": "Escudo de roca fundida",
+            "option": "<#ff7a3eff>Inamovible como la tierra<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Malla de espinas radiante",
-            "option": "<#ff7a3eff>Placas<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>."
+            "name": "Escudo de roca fundida radiante",
+            "option": "<#ff7a3eff>Inamovible como la tierra<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>."
         },
         "mystic_cloak": {
             "name": "Manto de anulación de magia",
@@ -11937,6 +12009,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Filo fantasmal de Youmuu radiante",
             "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
+        },
+        "thornmail": {
+            "name": "Malla de espinas",
+            "option": "\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>15<> + <#ffdd8eff>10%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>. Si el atacante es un campeón, también aplica <#ff7a3eff>Heridas graves<>, que <#d94c49ff>reducen su curación un 40%<> durante <#e8a800ff>3 segundos<>."
+        },
+        "radiant_thornmail": {
+            "name": "Malla de espinas radiante",
+            "option": "\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>25<> + <#ffdd8eff>15%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>. Si el atacante es un campeón, también aplica <#ff7a3eff>Heridas graves<>, que <#d94c49ff>reducen su curación un 40%<> durante <#e8a800ff>3 segundos<>."
         }
     },
     "fr": {
@@ -12049,12 +12129,12 @@
             "option": "<#ff7a3eff>Placage<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Cotte épineuse",
-            "option": "<#ff7a3eff>Placage<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>8%<>."
+            "name": "Bouclier de roche en fusion",
+            "option": "<#ff7a3eff>Inamovible<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Cotte épineuse de la lumière",
-            "option": "<#ff7a3eff>Placage<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>12%<>.\n\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>."
+            "name": "Bouclier de roche en fusion de la lumière",
+            "option": "<#ff7a3eff>Inamovible<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>12%<>.\n\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>."
         },
         "mystic_cloak": {
             "name": "Cape de néant",
@@ -13131,6 +13211,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Lame spectre de Youmuu de la lumière",
             "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
+        },
+        "thornmail": {
+            "name": "Cotte épineuse",
+            "option": "\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>15<> + <#ffdd8eff>10%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>. Si l'attaquant est un champion, il subit aussi <#ff7a3eff>Hémorragie<>, qui <#d94c49ff>réduit ses soins de 40%<> pendant <#e8a800ff>3 secondes<>."
+        },
+        "radiant_thornmail": {
+            "name": "Cotte épineuse de la lumière",
+            "option": "\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>25<> + <#ffdd8eff>15%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>. Si l'attaquant est un champion, il subit aussi <#ff7a3eff>Hémorragie<>, qui <#d94c49ff>réduit ses soins de 40%<> pendant <#e8a800ff>3 secondes<>."
         }
     },
     "it": {
@@ -13243,12 +13331,12 @@
             "option": "<#ff7a3eff>Corazza<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Corazza spinata",
-            "option": "<#ff7a3eff>Corazza<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>8%<>."
+            "name": "Scudo di roccia fusa",
+            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Corazza spinata Radiosa",
-            "option": "<#ff7a3eff>Corazza<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>12%<>.\n\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>."
+            "name": "Scudo di roccia fusa Radioso",
+            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>12%<>.\n\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>."
         },
         "mystic_cloak": {
             "name": "Cappa anti-magia",
@@ -14325,6 +14413,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Lama di Youmuu Radiosa",
             "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>15%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>30%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
+        },
+        "thornmail": {
+            "name": "Corazza spinata",
+            "option": "\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>15<> + <#ffdd8eff>10%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>. Se l'attaccante è un campione, applica anche <#ff7a3eff>Ferita grave<>, che <#d94c49ff>ne riduce le cure del 40%<> per <#e8a800ff>3 secondi<>."
+        },
+        "radiant_thornmail": {
+            "name": "Corazza spinata Radiosa",
+            "option": "\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>25<> + <#ffdd8eff>15%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>. Se l'attaccante è un campione, applica anche <#ff7a3eff>Ferita grave<>, che <#d94c49ff>ne riduce le cure del 40%<> per <#e8a800ff>3 secondi<>."
         }
     },
     "zh-hant": {
@@ -14437,12 +14533,12 @@
             "option": "<#ff7a3eff>護甲<>：受到普通攻擊的傷害降低<#e8a800ff>5%<>。"
         },
         "eternal_iron_plate": {
-            "name": "荊棘之甲",
-            "option": "<#ff7a3eff>護甲<>：受到普通攻擊的傷害降低<#e8a800ff>8%<>。"
+            "name": "熔岩護盾",
+            "option": "<#ff7a3eff>不動如山<>：受到普通攻擊的傷害降低<#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
-            "name": "聖光荊棘之甲",
-            "option": "<#ff7a3eff>護甲<>：受到普通攻擊的傷害降低<#e8a800ff>12%<>。\n\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>{Flat}<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>{Ratio}%<>的<#a974ffff>魔法傷害<>。"
+            "name": "聖光熔岩護盾",
+            "option": "<#ff7a3eff>不動如山<>：受到普通攻擊的傷害降低<#e8a800ff>12%<>。\n\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>{Flat}<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>{Ratio}%<>的<#a974ffff>魔法傷害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -15519,6 +15615,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "聖光妖夢鬼刀",
             "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>15%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>30%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>45秒<>）。"
+        },
+        "thornmail": {
+            "name": "荊棘之甲",
+            "option": "\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>15<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>10%<>的<#a974ffff>魔法傷害<>。若攻擊者為英雄，還會施加<#ff7a3eff>重創效果<>，<#d94c49ff>使其受到的治療效果降低40%<>，持續<#e8a800ff>3秒<>。"
+        },
+        "radiant_thornmail": {
+            "name": "聖光荊棘之甲",
+            "option": "\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>25<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>15%<>的<#a974ffff>魔法傷害<>。若攻擊者為英雄，還會施加<#ff7a3eff>重創效果<>，<#d94c49ff>使其受到的治療效果降低40%<>，持續<#e8a800ff>3秒<>。"
         }
     },
     "pl": {
@@ -15631,12 +15735,12 @@
             "option": "<#ff7a3eff>Opancerzenie<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Kolczasta Kolczuga",
-            "option": "<#ff7a3eff>Opancerzenie<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>8%<>."
+            "name": "Tarcza Płynnego Kamienia",
+            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Świetlista Kolczasta Kolczuga",
-            "option": "<#ff7a3eff>Opancerzenie<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>12%<>.\n\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>."
+            "name": "Świetlista Tarcza Płynnego Kamienia",
+            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>12%<>.\n\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>."
         },
         "mystic_cloak": {
             "name": "Opończa Antymagiczna",
@@ -16713,6 +16817,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Świetliste Widmowe Ostrze Youmuu",
             "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
+        },
+        "thornmail": {
+            "name": "Kolczasta Kolczuga",
+            "option": "\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>15<> + <#ffdd8eff>10%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>. Jeśli atakujący jest bohaterem, nakładasz też <#ff7a3eff>Głębokie Rany<>, które <#d94c49ff>zmniejszają jego leczenie o 40%<> na <#e8a800ff>3 sek.<>"
+        },
+        "radiant_thornmail": {
+            "name": "Świetlista Kolczasta Kolczuga",
+            "option": "\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>25<> + <#ffdd8eff>15%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>. Jeśli atakujący jest bohaterem, nakładasz też <#ff7a3eff>Głębokie Rany<>, które <#d94c49ff>zmniejszają jego leczenie o 40%<> na <#e8a800ff>3 sek.<>"
         }
     },
     "th": {
@@ -16825,12 +16937,12 @@
             "option": "<#ff7a3eff>Plating<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>5%<>"
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>8%<>"
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>8%<>"
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>12%<>\n\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี"
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>12%<>\n\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี"
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -17907,6 +18019,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
             "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>15%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>30%<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>15<> + <#ffdd8eff>10%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี หากผู้โจมตีเป็นแชมเปี้ยน จะติด <#ff7a3eff>Grievous Wounds<> <#d94c49ff>ลดการฟื้นฟูของเป้าหมายลง 40%<> เป็นเวลา <#e8a800ff>3 วินาที<>"
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>25<> + <#ffdd8eff>15%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี หากผู้โจมตีเป็นแชมเปี้ยน จะติด <#ff7a3eff>Grievous Wounds<> <#d94c49ff>ลดการฟื้นฟูของเป้าหมายลง 40%<> เป็นเวลา <#e8a800ff>3 วินาที<>"
         }
     },
     "nl": {
@@ -18019,12 +18139,12 @@
             "option": "<#ff7a3eff>Plating<>: Vermindert de schade van basisaanvallen met <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Vermindert de schade van basisaanvallen met <#e8a800ff>8%<>."
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Vermindert de schade van basisaanvallen met <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Vermindert de schade van basisaanvallen met <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>."
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Vermindert de schade van basisaanvallen met <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -19101,6 +19221,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
             "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>4 seconden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>15<> + <#ffdd8eff>10%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>. Is de aanvaller een kampioen, dan krijgt die ook <#ff7a3eff>Grievous Wounds<>, wat <#d94c49ff>diens genezing met 40% vermindert<> gedurende <#e8a800ff>3 seconden<>."
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>25<> + <#ffdd8eff>15%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>. Is de aanvaller een kampioen, dan krijgt die ook <#ff7a3eff>Grievous Wounds<>, wat <#d94c49ff>diens genezing met 40% vermindert<> gedurende <#e8a800ff>3 seconden<>."
         }
     },
     "haw": {
@@ -19213,12 +19341,12 @@
             "option": "<#ff7a3eff>Plating<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>8%<>."
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka."
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -20295,6 +20423,14 @@
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
             "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>15<> + <#ffdd8eff>10%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka. Inā he koa ka mea hoʻouka, hoʻopili pū i ka <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>e hoʻēmi ana i kona hoʻōla ʻia ma 40%<> no <#e8a800ff>3 kekona<>."
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>25<> + <#ffdd8eff>15%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka. Inā he koa ka mea hoʻouka, hoʻopili pū i ka <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>e hoʻēmi ana i kona hoʻōla ʻia ma 40%<> no <#e8a800ff>3 kekona<>."
         }
     }
 }

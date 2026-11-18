@@ -277,6 +277,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Sundered Sky** | 700G | +300 HP<br>+20 AD<br>+10 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 6% of your missing health (20 second cooldown per target). |
 | **Sword of Blossoming Dawn** | 1150G | +200 HP<br>+15 AP<br>+20% AS<br>+10 Ability Haste | Gain 12% heal and shield power.<br>Peppermint: Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Terminus** | 700G | +15 AD<br>+30% AS<br>+20% Crit Chance | Shadow: Basic attacks deal 30 (+5% AD) (+10% AP) magic damage on-hit.<br>Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
+| **Thornmail** | 700G | +150 HP<br>+50 Armor | Thorns: When struck by a basic attack, retaliate 15 + 10% of your armor as magic damage to the attacker. If the attacker is a champion, also apply Grievous Wounds, reducing their healing by 40% for 3 seconds. |
 | **Titanic Hydra** | 750G | +300 HP<br>+25 AD | Cleave: Basic attacks deal 1% of your maximum health as bonus physical damage on-hit to the target and 3% as physical damage to enemies behind the target. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Trinity Force** | 750G | +200 HP<br>+20 AD<br>+15% AS<br>+10 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 33 + 33% of your Attack Damage as bonus physical damage on-hit (1.5 second cooldown, starting after using the empowered attack). |
 | **Unending Despair** | 750G | +400 HP<br>+15 Armor | Anguish: Using an Ability heals you for 15 + 1.5% of your maximum health. |
@@ -387,6 +388,7 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | **Radiant Sundered Sky** | 1000G | +400 HP<br>+35 AD<br>+20 Ability Haste | Lightshield Strike: Your next basic attack against an enemy champion critically strikes for 60% bonus damage and heals you for 60 + 10% of your missing health (20 second cooldown per target). |
 | **Radiant Sword of Blossoming Dawn** | 900G | +200 HP<br>+45 AP<br>+35% AS<br>+15 Ability Haste | Gain 12% heal and shield power.<br>Peppermint: Basic attacks heal the most wounded and nearest ally champion for 15 - 60 (based on level) (+7% AD) (+7% AP). |
 | **Radiant Terminus** | 1000G | +25 AD<br>+55% AS<br>+25% Crit Chance | Shadow: Basic attacks deal 30 (+5% AD) (+10% AP) magic damage on-hit.<br>Juxtaposition: Basic attacks grant either 4% armor penetration or 4% magic resistance penetration for 4 seconds, alternating (max 4 stacks each). |
+| **Radiant Thornmail** | 1000G | +250 HP<br>+70 Armor | Thorns: When struck by a basic attack, retaliate 25 + 15% of your armor as magic damage to the attacker. If the attacker is a champion, also apply Grievous Wounds, reducing their healing by 40% for 3 seconds. |
 | **Radiant Titanic Hydra** | 1000G | +400 HP<br>+40 AD | Cleave: Basic attacks deal 1.5% of your maximum health as bonus physical damage on-hit to the target and 4% as physical damage to enemies behind the target. Attacks from further than 35 range apply this effect at 50% strength. |
 | **Radiant Trinity Force** | 1333G | +333 HP<br>+33 AD<br>+20% AS<br>+15 Ability Haste | Spellblade: Using an Ability causes your next basic attack within 10 seconds to deal 33 + 33% of your Attack Damage as bonus physical damage on-hit (1.5 second cooldown, starting after using the empowered attack). |
 | **Radiant Unending Despair** | 1050G | +650 HP<br>+25 Armor | Anguish: Using an Ability heals you for 20 + 2.5% of your maximum health. |
@@ -417,8 +419,8 @@ Ability Haste works like in League: cooldown = base × 100 / (100 + Ability Hast
 | Steel Armor | Cloth Armor |
 | Gatekeeper's Armor | Chain Vest |
 | Black Knight's Heavy Plate | Bramble Vest |
-| Eternal Iron Plate | Thornmail |
-| Impregnable Fortress | Radiant Thornmail |
+| Eternal Iron Plate | Shield of Molten Stone |
+| Impregnable Fortress | Radiant Shield of Molten Stone |
 | Mystic Cloak | Null-Magic Mantle |
 | Night Hood | Negatron Cloak |
 | Dusk Raven | Spectre's Cowl |

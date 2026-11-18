@@ -783,8 +783,8 @@ const GAME_PASSIVE_FIELDS: [(&str, &str, &str, i64); 8] = [
     ("radiant_sunfire_cape", "effect_bonus_flat_damage", "flat_aoe_damage", 1),
     ("radiant_sunfire_cape", "effect_caster_hp_percent_damage", "max_hp_aoe_ratio", 1),
     ("radiant_sunfire_cape", "effect_max_distance", "aoe_range", 1000),
-    ("radiant_thornmail", "effect_bonus_flat_damage", "flat_damage", 1),
-    ("radiant_thornmail", "effect_caster_defence_percent_damage", "defence_ratio", 1),
+    ("radiant_shield_of_molten_stone", "effect_bonus_flat_damage", "flat_damage", 1),
+    ("radiant_shield_of_molten_stone", "effect_caster_defence_percent_damage", "defence_ratio", 1),
 ];
 
 // Config fields of those items that are the DLL's to read, not the settings

@@ -3068,15 +3068,17 @@
     "defence": 35,
     "base_attack_damaged_reduce": 5
   },
-  "thornmail": {
+  "shield_of_molten_stone": {
     "price": 700,
-    "defence": 50,
+    "defence": 45,
+    "defence_mult": 10,
     "hp": 150,
     "base_attack_damaged_reduce": 8
   },
-  "radiant_thornmail": {
+  "radiant_shield_of_molten_stone": {
     "price": 1000,
-    "defence": 70,
+    "defence": 65,
+    "defence_mult": 15,
     "hp": 250,
     "base_attack_damaged_reduce": 12,
     "effect_bonus_flat_damage": 10,
@@ -4988,5 +4990,43 @@
     "effect_move_speed_mult": 30,
     "effect_duration_seconds": 4,
     "effect_cooldown_seconds": 45
+  },
+  "thornmail": {
+    "price": 700,
+    "attack": 0,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 150,
+    "defence": 50,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 0,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "effect_bonus_flat_damage": 15,
+    "effect_caster_defence_percent_damage": 10.0,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 3
+  },
+  "radiant_thornmail": {
+    "price": 1000,
+    "attack": 0,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 250,
+    "defence": 70,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 0,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "effect_bonus_flat_damage": 25,
+    "effect_caster_defence_percent_damage": 15.0,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 3
   }
 }

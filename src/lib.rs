@@ -702,6 +702,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("thornmail" => Thornmail));
     reg.add_item(configured!("titanic_hydra" => TitanicHydra));
     reg.add_item(configured!("trinity_force" => TrinityForce, spellblade));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
@@ -811,6 +812,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
+    reg.add_item(configured_radiant!("radiant_thornmail" => Thornmail));
     reg.add_item(configured_radiant!("radiant_titanic_hydra" => TitanicHydra));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce, spellblade));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));

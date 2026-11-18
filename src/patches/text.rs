@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 141] = [
+const ROW_FORMATS: [RowFormat; 142] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1549,6 +1549,11 @@ const ROW_FORMATS: [RowFormat; 141] = [
     ),
     row(
         "oblivion_orb",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
+        "thornmail",
         "effect_heal_reduce",
         label::HEALING_REDUCTION,
     ),
@@ -2156,7 +2161,7 @@ struct AmountFormat {
 // The placeholders of an amount's numbers, in the order of its fields.
 const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
 
-const AMOUNT_FORMATS: [AmountFormat; 27] = [
+const AMOUNT_FORMATS: [AmountFormat; 28] = [
     AmountFormat {
         item: "deaths_dance",
         fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
@@ -2311,6 +2316,12 @@ const AMOUNT_FORMATS: [AmountFormat; 27] = [
         item: "protectors_vow",
         fields: &["effect_bonus_flat_hp", "effect_caster_defence_percent_hp"],
         label: label::BONUS_HEALTH,
+        amount: ("amount_flat_armor", "[{A}] + [{B}% Armor]"),
+    },
+    AmountFormat {
+        item: "thornmail",
+        fields: &["effect_bonus_flat_damage", "effect_caster_defence_percent_damage"],
+        label: label::DAMAGE,
         amount: ("amount_flat_armor", "[{A}] + [{B}% Armor]"),
     },
     AmountFormat {
