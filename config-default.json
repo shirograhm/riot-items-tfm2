@@ -5091,7 +5091,6 @@
     "effect_ranged_percent": 50.0,
     "effect_hp_percent_threshold": 50.0,
     "effect_shockwave_ad_percent_damage": 80.0,
-    "effect_explosion_distance": 35,
     "effect_slow_amount": 35,
     "effect_slow_seconds": 3,
     "effect_cooldown_seconds": 15
@@ -5116,7 +5115,6 @@
     "effect_ranged_percent": 50.0,
     "effect_hp_percent_threshold": 50.0,
     "effect_shockwave_ad_percent_damage": 120.0,
-    "effect_explosion_distance": 35,
     "effect_slow_amount": 35,
     "effect_slow_seconds": 3,
     "effect_cooldown_seconds": 15

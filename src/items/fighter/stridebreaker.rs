@@ -12,11 +12,14 @@ const SLOW_BUFF: &str = "stridebreaker_slow";
 // A circular slash round the champion the shockwave centres on, out to its
 // 35 range, drawn under it (docs/vfx/make_stridebreaker_shockwave.py).
 const SHOCKWAVE_EFFECT: &str = "riot_stridebreaker_shockwave";
+// The shockwave's reach round the champion, in range units. Fixed, not in the
+// config: the effect is drawn at exactly this size.
+const SHOCKWAVE_RANGE: usize = 35;
 
 // Stridebreaker: Tiamat's Cleave, and Breaking Shockwave made a passive (no
 // League active): damaging an enemy champion at or under the health threshold
 // sends a shockwave out around them that deals % AD physical damage and slows
-// every enemy it hits, on a cooldown.
+// every enemy within [`SHOCKWAVE_RANGE`] of them, on a cooldown.
 #[derive(Clone, Debug)]
 pub struct Stridebreaker {
     meta: ItemMeta,
@@ -31,7 +34,6 @@ pub struct Stridebreaker {
     effect_ranged_percent: f64,
     effect_hp_percent_threshold: f64,
     effect_shockwave_ad_percent_damage: f64,
-    effect_explosion_distance: usize,
     effect_slow_amount: i32,
     effect_slow_seconds: f64,
     effect_cooldown_seconds: f64,
@@ -57,7 +59,6 @@ impl Stridebreaker {
             effect_ranged_percent: 50.0,
             effect_hp_percent_threshold: 50.0,
             effect_shockwave_ad_percent_damage: 80.0,
-            effect_explosion_distance: 35,
             effect_slow_amount: 35,
             effect_slow_seconds: 3.0,
             effect_cooldown_seconds: 15.0,
@@ -101,7 +102,6 @@ impl Stridebreaker {
                 effect_ranged_percent,
                 effect_hp_percent_threshold,
                 effect_shockwave_ad_percent_damage,
-                effect_explosion_distance,
                 effect_slow_amount,
                 effect_slow_seconds,
                 effect_cooldown_seconds
@@ -170,7 +170,7 @@ impl Stridebreaker {
             ctx,
             caster_team,
             target,
-            self.effect_explosion_distance,
+            SHOCKWAVE_RANGE,
         ));
         ctx.play_view_effect(
             SHOCKWAVE_EFFECT,
