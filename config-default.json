@@ -342,7 +342,13 @@
     "move_speed_mult": 0,
     "toughness": 0,
     "skill_damaged_reduce": 0,
-    "vamp": 10
+    "vamp": 10,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_bonus_flat_damage": 120,
+    "effect_ap_percent_damage": 20.0,
+    "effect_slow_amount": 25,
+    "effect_slow_seconds": 1.5,
+    "effect_cooldown_seconds": 40
   },
   "infinity_edge": {
     "price": 750,
@@ -896,7 +902,13 @@
     "move_speed_mult": 0,
     "toughness": 0,
     "skill_damaged_reduce": 0,
-    "vamp": 15
+    "vamp": 15,
+    "effect_hp_percent_threshold": 50.0,
+    "effect_bonus_flat_damage": 180,
+    "effect_ap_percent_damage": 30.0,
+    "effect_slow_amount": 25,
+    "effect_slow_seconds": 1.5,
+    "effect_cooldown_seconds": 40
   },
   "radiant_deathblade": {
     "price": 1000,
@@ -2556,7 +2568,7 @@
     "move_speed_mult": 0,
     "toughness": 0,
     "skill_damaged_reduce": 0,
-    "effect_bonus_magic_damage": 25,
+    "effect_bonus_magic_damage": 15,
     "effect_stack_magic_damage": 1,
     "effect_bonus_flat_heal": 10,
     "effect_max_stacks": 30,
@@ -2576,7 +2588,7 @@
     "move_speed_mult": 0,
     "toughness": 0,
     "skill_damaged_reduce": 0,
-    "effect_bonus_magic_damage": 25,
+    "effect_bonus_magic_damage": 15,
     "effect_stack_magic_damage": 1,
     "effect_bonus_flat_heal": 10,
     "effect_max_stacks": 50,
@@ -3056,17 +3068,19 @@
     "defence": 35,
     "base_attack_damaged_reduce": 5
   },
-  "thornmail": {
+  "shield_of_molten_stone": {
     "price": 700,
-    "defence": 50,
+    "defence": 45,
     "hp": 150,
-    "base_attack_damaged_reduce": 8
+    "base_attack_damaged_reduce": 8,
+    "effect_defence_mult": 20
   },
-  "radiant_thornmail": {
+  "radiant_shield_of_molten_stone": {
     "price": 1000,
-    "defence": 70,
+    "defence": 65,
     "hp": 250,
     "base_attack_damaged_reduce": 12,
+    "effect_defence_mult": 20,
     "effect_bonus_flat_damage": 10,
     "effect_caster_defence_percent_damage": 2
   },
@@ -4747,7 +4761,7 @@
     "move_speed_mult": 0,
     "toughness": 0,
     "skill_damaged_reduce": 0,
-    "effect_bonus_magic_damage": 25,
+    "effect_bonus_magic_damage": 15,
     "effect_bonus_flat_heal": 5
   },
   "hunters_machete": {
@@ -4934,5 +4948,85 @@
     "effect_max_distance": 55,
     "effect_bonus_range": 15,
     "effect_duration_seconds": 8
+  },
+  "youmuus_ghostblade": {
+    "price": 650,
+    "attack": 40,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 0,
+    "defence": 0,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 5,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "effect_lethality": 18,
+    "effect_bonus_move_speed_mult": 10,
+    "effect_out_of_combat_seconds": 5.0,
+    "effect_move_speed_mult": 20,
+    "effect_duration_seconds": 4,
+    "effect_cooldown_seconds": 45
+  },
+  "radiant_youmuus_ghostblade": {
+    "price": 1000,
+    "attack": 60,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 0,
+    "defence": 0,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 8,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "effect_lethality": 18,
+    "effect_bonus_move_speed_mult": 15,
+    "effect_out_of_combat_seconds": 5.0,
+    "effect_move_speed_mult": 30,
+    "effect_duration_seconds": 4,
+    "effect_cooldown_seconds": 45
+  },
+  "thornmail": {
+    "price": 700,
+    "attack": 0,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 150,
+    "defence": 50,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 0,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "effect_bonus_flat_damage": 15,
+    "effect_caster_defence_percent_damage": 10.0,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 3
+  },
+  "radiant_thornmail": {
+    "price": 1000,
+    "attack": 0,
+    "magic_power": 0,
+    "attack_speed_mult": 0,
+    "crit_chance": 0,
+    "hp": 250,
+    "defence": 70,
+    "magic_resistance": 0,
+    "defence_penetration": 0,
+    "magic_resistance_penetration": 0,
+    "move_speed_mult": 0,
+    "toughness": 0,
+    "skill_damaged_reduce": 0,
+    "effect_bonus_flat_damage": 25,
+    "effect_caster_defence_percent_damage": 15.0,
+    "effect_heal_reduce": 40,
+    "effect_duration_seconds": 3
   }
 }

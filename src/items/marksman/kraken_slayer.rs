@@ -54,7 +54,7 @@ impl KrakenSlayer {
         Self {
             meta: ItemMeta::base(
                 "kraken_slayer",
-                &["scouts_slingshot"],
+                &["scouts_slingshot", "hearthbound_axe"],
                 &["radiant_kraken_slayer"],
             ),
             price: 700,

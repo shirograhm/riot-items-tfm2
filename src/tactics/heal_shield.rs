@@ -20,7 +20,7 @@ const ENABLED: bool = true;
 
 // The heal: (game, world, counted, healer, target, amount, ..). It applies the
 // target's healing reduction to `amount`, caps it at missing health and adds it.
-const HEAL_RVA: usize = 0x185a750; // 0.7.2 (0.7.1: 0x148cbb0, 0.7.0: 0x166b290)
+const HEAL_RVA: usize = 0x1e901a0; // 0.7.3 (0.7.2: 0x185a750, 0.7.1: 0x148cbb0)
 const HEAL_ORIG_LEN: usize = 12;
 // push rbp, r15, r14, r13, r12, rsi, rdi, rbx
 const HEAL_PROLOGUE: [u8; 12] = [
@@ -30,7 +30,7 @@ const HEAL_PROLOGUE: [u8; 12] = [
 // The add-shield: (unit, &shield). It drops a zero shield or one on a unit
 // with `shield_gain_blocked` or `gladiator_duel`, else pushes the record onto
 // the unit's layers.
-const SHIELD_RVA: usize = 0x1858e60; // 0.7.2 (0.7.1: 0x148b9a0, 0.7.0: 0x1669b30)
+const SHIELD_RVA: usize = 0x1e8e8b0; // 0.7.3 (0.7.2: 0x1858e60, 0.7.1: 0x148b9a0)
 const SHIELD_ORIG_LEN: usize = 13;
 // push rbp, rsi, rdi, rbx; sub rsp,0x48; lea rbp,[rsp+0x40]
 const SHIELD_PROLOGUE: [u8; 13] = [
@@ -47,7 +47,7 @@ const SAVED_RETURN: usize = 10;
 const SAVED_ARG6: usize = 16;
 const SAVED_ARG7: usize = 17;
 
-// What the heal's callers tell apart (0.7.0 through 0.7.2). The byte argument is 1 on
+// What the heal's callers tell apart (0.7.0 through 0.7.3). The byte argument is 1 on
 // the engine's regeneration: a unit's HP regen and the in-base heal (both in
 // its unit update, `entity.rs`) and the once-a-second heal-over-time effect,
 // each a unit healing itself; it is 0 on every cast heal, the host's included.
@@ -56,10 +56,10 @@ const SAVED_ARG7: usize = 17;
 // Lifesteal and omnivamp are the damage function's one heal, the attacker on
 // itself for its vamp share of the damage dealt; likewise by return address.
 const REGEN_FLAG: u8 = 1;
-const REGEN_RETURN_RVAS: [usize; 1] = [0x1ce2229]; // 0.7.2 (0.7.1: 0x1436659, 0.7.0: 0x1559ad9)
-const VAMP_RETURN_RVA: usize = 0x14a0fa7; // 0.7.2 (0.7.1: 0x14a5bb5, 0.7.0: 0x18c1615)
+const REGEN_RETURN_RVAS: [usize; 1] = [0x15c2389]; // 0.7.3 (0.7.2: 0x1ce2229, 0.7.1: 0x1436659)
+const VAMP_RETURN_RVA: usize = 0x167cb67; // 0.7.3 (0.7.2: 0x14a0fa7, 0.7.1: 0x14a5bb5)
 
-// The game object (0.7.0-beta2 through 0.7.2).
+// The game object (0.7.0-beta2 through 0.7.3).
 // Units, `ENTITY_SIZE` bytes each, and their count.
 const O_GAME_ENTITIES: usize = 0x730;
 const O_GAME_ENTITY_COUNT: usize = 0x738;

@@ -702,6 +702,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
+    reg.add_item(configured!("thornmail" => Thornmail));
     reg.add_item(configured!("titanic_hydra" => TitanicHydra));
     reg.add_item(configured!("trinity_force" => TrinityForce, spellblade));
     reg.add_item(configured!("unending_despair" => UnendingDespair));
@@ -709,6 +710,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured!("warmogs_armor" => WarmogsArmor));
     reg.add_item(configured!("wits_end" => WitsEnd));
+    reg.add_item(configured!("youmuus_ghostblade" => YoumuusGhostblade));
     reg.add_item(configured!("yun_tal_wildarrows" => YunTalWildarrows, passive_crit));
     reg.add_item(configured!("zazzaks_realmspike" => ZazzaksRealmspike, shared_riches));
     reg.add_item(configured!("zekes_herald" => ZekesHerald));
@@ -810,6 +812,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));
+    reg.add_item(configured_radiant!("radiant_thornmail" => Thornmail));
     reg.add_item(configured_radiant!("radiant_titanic_hydra" => TitanicHydra));
     reg.add_item(configured_radiant!("radiant_trinity_force" => TrinityForce, spellblade));
     reg.add_item(configured_radiant!("radiant_unending_despair" => UnendingDespair));
@@ -817,6 +820,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_voltaic_cyclosword" => VoltaicCyclosword));
     reg.add_item(configured_radiant!("radiant_warmogs_armor" => WarmogsArmor));
     reg.add_item(configured_radiant!("radiant_wits_end" => WitsEnd));
+    reg.add_item(configured_radiant!("radiant_youmuus_ghostblade" => YoumuusGhostblade));
     reg.add_item(
         configured_radiant!("radiant_yun_tal_wildarrows" => YunTalWildarrows, passive_crit),
     );
@@ -859,6 +863,8 @@ fn init(host: &StableHost) -> StableMod {
     // Moonstone Renewer's wisp is only a picture too: the chained heal has
     // landed by the time it flies.
     reg.add_native_effect(MoonstoneRenewer::WISP_HIT, MoonstoneWisp);
+    // Hextech Gunblade's Lightning Bolt beam is only a picture as well.
+    reg.add_native_effect(GunbladeBeam::HIT, GunbladeBeam);
     // Sword of Blossoming Dawn's wisp carries Peppermint's heal to the ally,
     // each tier with its own numbers.
     for sword in [
@@ -891,9 +897,21 @@ fn init(host: &StableHost) -> StableMod {
     // Both capes' burns, for the strongest-Immolate-wins check.
     immolate.note_as(sunfire::SUNFIRE_KEY);
     radiant_immolate.note_as(sunfire::RADIANT_SUNFIRE_KEY);
+    // Shield of Molten Stone's Immovable as the Earth % armor, a buff on every
+    // holder (the game's item cannot run code).
+    let immovable = configs
+        .get("shield_of_molten_stone")
+        .map(utils::molten_stone::Immovable::with_config)
+        .unwrap_or_default();
+    let radiant_immovable = configs
+        .get("radiant_shield_of_molten_stone")
+        .map(utils::molten_stone::Immovable::with_config)
+        .unwrap_or_default();
     reg.set_match_hook(sunfire::MatchHooks {
         immolate,
         radiant_immolate,
+        immovable,
+        radiant_immovable,
         riches,
     });
     reg.set_server_extension(NativeTapExtension);

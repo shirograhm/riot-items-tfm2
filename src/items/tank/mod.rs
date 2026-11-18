@@ -15,6 +15,7 @@ items! {
     protectors_vow,
     randuins_omen,
     spirit_visage,
+    thornmail,
     unending_despair,
     warmogs_armor,
 }

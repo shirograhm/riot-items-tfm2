@@ -63,6 +63,7 @@ impl StableItem for SerratedDirk {
             "opportunity".to_string(),
             "voltaic_cyclosword".to_string(),
             "edge_of_night".to_string(),
+            "youmuus_ghostblade".to_string(),
         ]
     }
 

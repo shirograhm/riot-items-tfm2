@@ -109,12 +109,12 @@
             "option": "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>8%<>."
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by <#ffdd8eff>20%<>. Additionally, reduce damage taken from basic attacks by <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Reduce damage taken from basic attacks by <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by <#ffdd8eff>20%<>. Additionally, reduce damage taken from basic attacks by <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -478,11 +478,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Damaging an enemy champion <#d94c49ff>below 50% maximum health<> shocks them for <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<> and <#d94c49ff>slows<> them by <#d94c49ff>25%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>40 second<> cooldown)."
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Damaging an enemy champion <#d94c49ff>below 50% maximum health<> shocks them for <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Ability Power<> as <#a974ffff>magic damage<> and <#d94c49ff>slows<> them by <#d94c49ff>25%<> for <#e8a800ff>1.5 seconds<> (<#e8a800ff>40 second<> cooldown)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -738,11 +738,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Maim<>: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>30<>. Basic attacks deal <#a974ffff>15<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
+            "option": "\n<#ff7a3eff>Maim<>: Gain a <#92dc7bff>Feral<> stack for each champion takedown scored and monster killed, up to <#92dc7bff>50<>. Basic attacks deal <#a974ffff>15<> (<#a974ffff>+1<> per <#92dc7bff>Feral<> stack) <#a974ffff>bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>. This effect is <#e8a800ff>150% as effective<> against minions and monsters."
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
@@ -1142,7 +1142,7 @@
         },
         "madreds_razors": {
             "name": "Madred's Razors",
-            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>25 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
+            "option": "\n<#ff7a3eff>Maim<>: Basic attacks against monsters deal <#a974ffff>15 bonus magic damage<> <#ffff99ff>on-hit<> and restore <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> health<>."
         },
         "hunters_machete": {
             "name": "Hunter's Machete",
@@ -1183,6 +1183,22 @@
         "radiant_hexoptics_c44": {
             "name": "Radiant Hexoptics C44",
             "option": "\n<#ff7a3eff>Magnification<>: Basic attacks deal up to <#e8a800ff>15% bonus damage<> based on distance (maximum effect at <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<>).\n\n<#ff7a3eff>Arcane Aim<>: Champion takedowns grant <#ff86c2ff>15 bonus <i#asset/base/ui/banpick/champion_stat_icon:range_0> attack range<> for <#e8a800ff>8 seconds<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Youmuu's Ghostblade",
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>45 second<> cooldown)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Radiant Youmuu's Ghostblade",
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>45 second<> cooldown)."
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>15<> + <#ffdd8eff>10%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker. If the attacker is a champion, also apply <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>reducing their healing by 40%<> for <#e8a800ff>3 seconds<>."
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>25<> + <#ffdd8eff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker. If the attacker is a champion, also apply <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>reducing their healing by 40%<> for <#e8a800ff>3 seconds<>."
         }
     },
     "vi": {
@@ -1295,12 +1311,12 @@
             "option": "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>5%<> sát thương nhận vào từ đòn đánh thường."
         },
         "eternal_iron_plate": {
-            "name": "Giáp Gai",
-            "option": "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
+            "name": "Lá Chắn Đá Dung Nham",
+            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Tăng tổng <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn thêm <#ffdd8eff>20%<>. Ngoài ra, giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
         },
         "impregnable_fortress": {
-            "name": "Giáp Gai Ánh Sáng",
-            "option": "<#ff7a3eff>Giáp Cứng<>: Giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
+            "name": "Lá Chắn Đá Dung Nham Ánh Sáng",
+            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Tăng tổng <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn thêm <#ffdd8eff>20%<>. Ngoài ra, giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
         },
         "mystic_cloak": {
             "name": "Áo Vải",
@@ -1664,11 +1680,11 @@
         },
         "hextech_gunblade": {
             "name": "Súng Kiếm Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Cầu Sét<>: Khi gây sát thương lên tướng địch <#d94c49ff>dưới 50% máu tối đa<>, giật sét gây <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và <#d94c49ff>làm chậm<> mục tiêu đi <#d94c49ff>25%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>40 giây<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Súng Kiếm Hextech Ánh Sáng",
-            "option": ""
+            "option": "\n<#ff7a3eff>Cầu Sét<>: Khi gây sát thương lên tướng địch <#d94c49ff>dưới 50% máu tối đa<>, giật sét gây <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>SMPT<> dưới dạng <#a974ffff>sát thương phép<> và <#d94c49ff>làm chậm<> mục tiêu đi <#d94c49ff>25%<> trong <#e8a800ff>1.5 giây<> (hồi chiêu <#e8a800ff>40 giây<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Quyền Trượng Pha Lê Rylai",
@@ -1924,11 +1940,11 @@
         },
         "feral_flare": {
             "name": "Ngọn Lửa Hoang Dã",
-            "option": "\n<#ff7a3eff>Tàn Phế<>: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>30<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+            "option": "\n<#ff7a3eff>Tàn Phế<>: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>30<>. Đòn đánh thường gây <#a974ffff>15<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
         },
         "radiant_feral_flare": {
             "name": "Ngọn Lửa Hoang Dã Ánh Sáng",
-            "option": "\n<#ff7a3eff>Tàn Phế<>: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>25<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
+            "option": "\n<#ff7a3eff>Tàn Phế<>: Nhận một cộng dồn <#92dc7bff>Hoang Dã<> mỗi khi tham gia hạ gục một tướng địch hoặc hạ gục quái, tối đa <#92dc7bff>50<>. Đòn đánh thường gây <#a974ffff>15<> (<#a974ffff>+1<> mỗi cộng dồn <#92dc7bff>Hoang Dã<>) <#a974ffff>sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>. Hiệu ứng này <#e8a800ff>hiệu quả 150%<> lên lính và quái."
         },
         "forbidden_idol": {
             "name": "Dị Vật Tai Ương",
@@ -2328,7 +2344,7 @@
         },
         "madreds_razors": {
             "name": "Móng Vuốt Madred",
-            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>25 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
+            "option": "\n<#ff7a3eff>Tàn Phế<>: Đòn đánh thường lên quái gây <#a974ffff>15 sát thương phép cộng thêm<> <#ffff99ff>khi đánh trúng<> và hồi <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> máu<>."
         },
         "hunters_machete": {
             "name": "Rựa Thợ Săn",
@@ -2369,6 +2385,22 @@
         "radiant_hexoptics_c44": {
             "name": "Quang Kính Hextech C44 Ánh Sáng",
             "option": "\n<#ff7a3eff>Phóng Đại<>: Đòn đánh thường gây tối đa <#e8a800ff>15% sát thương cộng thêm<> dựa trên khoảng cách (hiệu quả tối đa ở <#ff86c2ff>55<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> ).\n\n<#ff7a3eff>Xạ Pháp Thuật<>: Tham gia hạ gục tướng địch giúp bạn nhận thêm <#ff86c2ff>15 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Tầm Đánh<> trong <#e8a800ff>8 giây<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Kiếm Ma Youmuu",
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Kiếm Ma Youmuu Ánh Sáng",
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
+        },
+        "thornmail": {
+            "name": "Giáp Gai",
+            "option": "\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>15<> + <#ffdd8eff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công. Nếu kẻ tấn công là tướng, đồng thời gây <#ff7a3eff>Vết thương chí mạng<>, <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>3 giây<>."
+        },
+        "radiant_thornmail": {
+            "name": "Giáp Gai Ánh Sáng",
+            "option": "\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>25<> + <#ffdd8eff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công. Nếu kẻ tấn công là tướng, đồng thời gây <#ff7a3eff>Vết thương chí mạng<>, <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>3 giây<>."
         }
     },
     "zh-hans": {
@@ -2481,12 +2513,12 @@
             "option": "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>5%<>。"
         },
         "eternal_iron_plate": {
-            "name": "荆棘之甲",
-            "option": "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
+            "name": "熔石之盾",
+            "option": "<#ff7a3eff>岿然如大地<>：你的总 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>提高 <#ffdd8eff>20%<>。此外，受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
-            "name": "光明版荆棘之甲",
-            "option": "<#ff7a3eff>镀层<>：受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
+            "name": "光明版熔石之盾",
+            "option": "<#ff7a3eff>岿然如大地<>：你的总 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>提高 <#ffdd8eff>20%<>。此外，受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -2850,11 +2882,11 @@
         },
         "hextech_gunblade": {
             "name": "海克斯科技枪刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>闪电弹<>：对<#d94c49ff>生命值低于最大生命值50%<>的敌方英雄造成伤害时，震击目标，造成 <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>，并使其<#d94c49ff>减速<> <#d94c49ff>25%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>40秒<>）。"
         },
         "radiant_hextech_gunblade": {
             "name": "光明版海克斯科技枪刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>闪电弹<>：对<#d94c49ff>生命值低于最大生命值50%<>的敌方英雄造成伤害时，震击目标，造成 <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>法术强度<> 的<#a974ffff>魔法伤害<>，并使其<#d94c49ff>减速<> <#d94c49ff>25%<>，持续 <#e8a800ff>1.5秒<>（冷却 <#e8a800ff>40秒<>）。"
         },
         "rylais_crystal_scepter": {
             "name": "兰蒂尔的冰晶节杖",
@@ -3110,11 +3142,11 @@
         },
         "feral_flare": {
             "name": "野性之炎",
-            "option": "\n<#ff7a3eff>致残<>：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>30<> 层。普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+            "option": "\n<#ff7a3eff>致残<>：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>30<> 层。普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>15<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
         },
         "radiant_feral_flare": {
             "name": "光明版野性之炎",
-            "option": "\n<#ff7a3eff>致残<>：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
+            "option": "\n<#ff7a3eff>致残<>：每次参与击杀敌方英雄或击杀野怪获得一层<#92dc7bff>野性<>，最多 <#92dc7bff>50<> 层。普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>15<>（每层<#92dc7bff>野性<>+<#a974ffff>1<>）<#a974ffff>点魔法伤害<>并回复 <#60e84dff>10 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。该效果对小兵和野怪的<#e8a800ff>效果为 150%<>。"
         },
         "forbidden_idol": {
             "name": "禁忌雕像",
@@ -3514,7 +3546,7 @@
         },
         "madreds_razors": {
             "name": "麦瑞德之爪",
-            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>25 点魔法伤害<>并回复 <#60e84dff>5 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+            "option": "\n<#ff7a3eff>致残<>：对野怪的普通攻击<#ffff99ff>命中时<>额外造成 <#a974ffff>15 点魔法伤害<>并回复 <#60e84dff>5 点<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
         },
         "hunters_machete": {
             "name": "猎人的宽刃刀",
@@ -3555,6 +3587,22 @@
         "radiant_hexoptics_c44": {
             "name": "光明版海克斯镜片 C44",
             "option": "\n<#ff7a3eff>高倍望远镜<>：普通攻击根据距离造成最多 <#e8a800ff>15% 额外伤害<>（在 <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>时效果最大）。\n\n<#ff7a3eff>奥术瞄准<>：参与击杀英雄后，获得 <#ff86c2ff>15 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 额外攻击距离<>，持续 <#e8a800ff>8秒<>。"
+        },
+        "youmuus_ghostblade": {
+            "name": "幽梦之灵",
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>45秒<>）。"
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "光明版幽梦之灵",
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>45秒<>）。"
+        },
+        "thornmail": {
+            "name": "荆棘之甲",
+            "option": "\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>15<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>10%<> 的<#a974ffff>魔法伤害<>。若攻击者为英雄，还会施加<#ff7a3eff>重伤<>，使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>3秒<>。"
+        },
+        "radiant_thornmail": {
+            "name": "光明版荆棘之甲",
+            "option": "\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>25<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>15%<> 的<#a974ffff>魔法伤害<>。若攻击者为英雄，还会施加<#ff7a3eff>重伤<>，使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>3秒<>。"
         }
     },
     "pt-BR": {
@@ -3667,12 +3715,12 @@
             "option": "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Armadura de Espinhos",
-            "option": "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
+            "name": "Escudo de Rocha Fundida",
+            "option": "<#ff7a3eff>Inabalável como a Terra<>: Aumenta sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total em <#ffdd8eff>20%<>. Além disso, reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Armadura de Espinhos Radiante",
-            "option": "<#ff7a3eff>Revestimento<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
+            "name": "Escudo de Rocha Fundida Radiante",
+            "option": "<#ff7a3eff>Inabalável como a Terra<>: Aumenta sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total em <#ffdd8eff>20%<>. Além disso, reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
         },
         "mystic_cloak": {
             "name": "Manto Anula-Magia",
@@ -4036,11 +4084,11 @@
         },
         "hextech_gunblade": {
             "name": "Lâmina Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Disparo Elétrico<>: Causar dano a um campeão inimigo <#d94c49ff>abaixo de 50% da Vida Máxima<> dá um choque nele, causando <#a974ffff>120<> + <#a974ffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<> e aplicando <#d94c49ff>lentidão<> de <#d94c49ff>25%<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>40 segundos<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Lâmina Hextech Radiante",
-            "option": ""
+            "option": "\n<#ff7a3eff>Disparo Elétrico<>: Causar dano a um campeão inimigo <#d94c49ff>abaixo de 50% da Vida Máxima<> dá um choque nele, causando <#a974ffff>180<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Poder de Habilidade<> como <#a974ffff>dano mágico<> e aplicando <#d94c49ff>lentidão<> de <#d94c49ff>25%<> por <#e8a800ff>1.5 segundos<> (recarga de <#e8a800ff>40 segundos<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Cetro de Cristal de Rylai",
@@ -4296,11 +4344,11 @@
         },
         "feral_flare": {
             "name": "Chama Feral",
-            "option": "\n<#ff7a3eff>Mutilar<>: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>30<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+            "option": "\n<#ff7a3eff>Mutilar<>: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>30<>. Ataques básicos causam <#a974ffff>15<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
         },
         "radiant_feral_flare": {
             "name": "Chama Feral Radiante",
-            "option": "\n<#ff7a3eff>Mutilar<>: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>25<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
+            "option": "\n<#ff7a3eff>Mutilar<>: Ganha um acúmulo de <#92dc7bff>Feral<> ao participar do abate de um campeão inimigo ou abater um monstro, até <#92dc7bff>50<>. Ataques básicos causam <#a974ffff>15<> (<#a974ffff>+1<> por acúmulo de <#92dc7bff>Feral<>) de <#a974ffff>dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>. Este efeito é <#e8a800ff>150% efetivo<> contra lacaios e monstros."
         },
         "forbidden_idol": {
             "name": "Ídolo Proibido",
@@ -4700,7 +4748,7 @@
         },
         "madreds_razors": {
             "name": "Navalhas de Madred",
-            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>25 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>5 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
+            "option": "\n<#ff7a3eff>Mutilar<>: Ataques básicos contra monstros causam <#a974ffff>15 de dano mágico bônus<> <#ffff99ff>ao contato<> e restauram <#60e84dff>5 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> vida<>."
         },
         "hunters_machete": {
             "name": "Machete do Caçador",
@@ -4741,6 +4789,22 @@
         "radiant_hexoptics_c44": {
             "name": "Hexótica C44 Radiante",
             "option": "\n<#ff7a3eff>Magnificação<>: Ataques básicos causam até <#e8a800ff>15% de dano bônus<> com base na distância (efeito máximo em <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>).\n\n<#ff7a3eff>Mira Arcana<>: Abates e assistências em Campeões concedem <#ff86c2ff>15 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> Alcance de Ataque<> adicional por <#e8a800ff>8 segundos<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Lâmina Fantasma de Youmuu",
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Lâmina Fantasma de Youmuu Radiante",
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
+        },
+        "thornmail": {
+            "name": "Armadura de Espinhos",
+            "option": "\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>15<> + <#ffdd8eff>10%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante. Se o atacante for um campeão, também aplica <#ff7a3eff>Ferimentos Graves<>, <#d94c49ff>reduzindo a cura dele em 40%<> por <#e8a800ff>3 segundos<>."
+        },
+        "radiant_thornmail": {
+            "name": "Armadura de Espinhos Radiante",
+            "option": "\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>25<> + <#ffdd8eff>15%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante. Se o atacante for um campeão, também aplica <#ff7a3eff>Ferimentos Graves<>, <#d94c49ff>reduzindo a cura dele em 40%<> por <#e8a800ff>3 segundos<>."
         }
     },
     "ru": {
@@ -4853,12 +4917,12 @@
             "option": "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Шипованный Доспех",
-            "option": "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
+            "name": "Щит из расплавленного камня",
+            "option": "<#ff7a3eff>Непоколебимость земли<>: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на <#ffdd8eff>20%<>. Кроме того, уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Лучезарный Шипованный Доспех",
-            "option": "<#ff7a3eff>Обшивка<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
+            "name": "Лучезарный щит из расплавленного камня",
+            "option": "<#ff7a3eff>Непоколебимость земли<>: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на <#ffdd8eff>20%<>. Кроме того, уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
         },
         "mystic_cloak": {
             "name": "Антимагическая Мантия",
@@ -5222,11 +5286,11 @@
         },
         "hextech_gunblade": {
             "name": "Хекстековый пистолет-клинок",
-            "option": ""
+            "option": "\n<#ff7a3eff>Электрический заряд<>: Нанесение урона вражескому чемпиону, чьё <#d94c49ff>здоровье ниже 50% от максимального<>, поражает его, нанося <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>, и <#d94c49ff>замедляет<> его на <#d94c49ff>25%<> на <#e8a800ff>1.5 сек.<> (перезарядка <#e8a800ff>40 секунд<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Лучезарный Хекстековый пистолет-клинок",
-            "option": ""
+            "option": "\n<#ff7a3eff>Электрический заряд<>: Нанесение урона вражескому чемпиону, чьё <#d94c49ff>здоровье ниже 50% от максимального<>, поражает его, нанося <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Силы Умений<> как <#a974ffff>магический урон<>, и <#d94c49ff>замедляет<> его на <#d94c49ff>25%<> на <#e8a800ff>1.5 сек.<> (перезарядка <#e8a800ff>40 секунд<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Кристальный Скипетр Райлая",
@@ -5482,11 +5546,11 @@
         },
         "feral_flare": {
             "name": "Дикое пламя",
-            "option": "\n<#ff7a3eff>Увечье<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>30<>. Автоатаки наносят <#ffff99ff>при попадании<> <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+            "option": "\n<#ff7a3eff>Увечье<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>30<>. Автоатаки наносят <#ffff99ff>при попадании<> <#a974ffff>15<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
         },
         "radiant_feral_flare": {
             "name": "Лучезарное Дикое пламя",
-            "option": "\n<#ff7a3eff>Увечье<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#ffff99ff>при попадании<> <#a974ffff>25<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
+            "option": "\n<#ff7a3eff>Увечье<>: При участии в убийстве вражеского чемпиона или убийстве монстра даёт заряд <#92dc7bff>Дикости<>, до <#92dc7bff>50<>. Автоатаки наносят <#ffff99ff>при попадании<> <#a974ffff>15<> (<#a974ffff>+1<> за заряд <#92dc7bff>Дикости<>) <#a974ffff>дополнительного магического урона<> и восстанавливают <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>. Против миньонов и монстров <#e8a800ff>эффект составляет 150%<>."
         },
         "forbidden_idol": {
             "name": "Запретный идол",
@@ -5886,7 +5950,7 @@
         },
         "madreds_razors": {
             "name": "Когти Мадреда",
-            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>25 дополнительного магического урона<> и восстанавливают <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
+            "option": "\n<#ff7a3eff>Увечье<>: Автоатаки по монстрам наносят <#ffff99ff>при попадании<> <#a974ffff>15 дополнительного магического урона<> и восстанавливают <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> здоровья<>."
         },
         "hunters_machete": {
             "name": "Мачете охотника",
@@ -5927,6 +5991,22 @@
         "radiant_hexoptics_c44": {
             "name": "Лучезарный Хекс-прицел С44",
             "option": "\n<#ff7a3eff>Приближение<>: Базовые атаки наносят до <#e8a800ff>15% дополнительного урона<> в зависимости от расстояния (максимальный эффект на <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<>).\n\n<#ff7a3eff>Магическое прицеливание<>: Участие в убийстве чемпиона даёт <#ff86c2ff>15 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности атаки<> на <#e8a800ff>8 сек.<>"
+        },
+        "youmuus_ghostblade": {
+            "name": "Призрачный клинок Йомуу",
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Лучезарный Призрачный клинок Йомуу",
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
+        },
+        "thornmail": {
+            "name": "Шипованный Доспех",
+            "option": "\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>15<> + <#ffdd8eff>10%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>. Если атакующий — чемпион, также накладывает <#ff7a3eff>Тяжёлые раны<>, <#d94c49ff>снижая его лечение на 40%<> на <#e8a800ff>3 секунды<>."
+        },
+        "radiant_thornmail": {
+            "name": "Лучезарный Шипованный Доспех",
+            "option": "\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>25<> + <#ffdd8eff>15%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>. Если атакующий — чемпион, также накладывает <#ff7a3eff>Тяжёлые раны<>, <#d94c49ff>снижая его лечение на 40%<> на <#e8a800ff>3 секунды<>."
         }
     },
     "ko": {
@@ -6039,12 +6119,12 @@
             "option": "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>5%<> 감소합니다."
         },
         "eternal_iron_plate": {
-            "name": "가시 갑옷",
-            "option": "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
+            "name": "용암의 방패",
+            "option": "<#ff7a3eff>대지 같은 굳건함<>: 총 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#ffdd8eff>20%<> 증가합니다. 또한 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
         },
         "impregnable_fortress": {
-            "name": "찬란한 가시 갑옷",
-            "option": "<#ff7a3eff>장갑<>: 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+            "name": "찬란한 용암의 방패",
+            "option": "<#ff7a3eff>대지 같은 굳건함<>: 총 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#ffdd8eff>20%<> 증가합니다. 또한 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
         },
         "mystic_cloak": {
             "name": "마법무효화의 망토",
@@ -6408,11 +6488,11 @@
         },
         "hextech_gunblade": {
             "name": "마법공학 총검",
-            "option": ""
+            "option": "\n<#ff7a3eff>번개 화살<>: <#d94c49ff>체력이 최대 체력의 50% 아래인<> 적 챔피언에게 피해를 입히면 충격을 줘 <#a974ffff>120<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>20%<>만큼 <#a974ffff>마법 피해<>를 입히고 <#e8a800ff>1.5초<> 동안 <#d94c49ff>25% 둔화<>시킵니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
         },
         "radiant_hextech_gunblade": {
             "name": "찬란한 마법공학 총검",
-            "option": ""
+            "option": "\n<#ff7a3eff>번개 화살<>: <#d94c49ff>체력이 최대 체력의 50% 아래인<> 적 챔피언에게 피해를 입히면 충격을 줘 <#a974ffff>180<> + <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>주문력<>의 <#a974ffff>30%<>만큼 <#a974ffff>마법 피해<>를 입히고 <#e8a800ff>1.5초<> 동안 <#d94c49ff>25% 둔화<>시킵니다. 재사용 대기시간은 <#e8a800ff>40초<>입니다."
         },
         "rylais_crystal_scepter": {
             "name": "라일라이의 수정홀",
@@ -6668,11 +6748,11 @@
         },
         "feral_flare": {
             "name": "야성의 불꽃",
-            "option": "\n<#ff7a3eff>불구<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>30<>중첩까지 쌓입니다. 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+            "option": "\n<#ff7a3eff>불구<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>30<>중첩까지 쌓입니다. 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>15<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
         },
         "radiant_feral_flare": {
             "name": "찬란한 야성의 불꽃",
-            "option": "\n<#ff7a3eff>불구<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
+            "option": "\n<#ff7a3eff>불구<>: 적 챔피언 처치에 관여하거나 몬스터를 처치할 때마다 <#92dc7bff>야성<> 중첩을 1회 얻으며, 최대 <#92dc7bff>50<>중첩까지 쌓입니다. 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>15<> (<#92dc7bff>야성<> 중첩당 <#a974ffff>+1<>)의 <#a974ffff>추가 마법 피해<>를 입히고 <#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다. 이 효과는 미니언과 몬스터에게 <#e8a800ff>150%로 적용됩니다<>."
         },
         "forbidden_idol": {
             "name": "금지된 우상",
@@ -7072,7 +7152,7 @@
         },
         "madreds_razors": {
             "name": "마드레드의 갈퀴손",
-            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>25의 추가 마법 피해<>를 입히고 <#60e84dff>5<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
+            "option": "\n<#ff7a3eff>불구<>: 몬스터에게 기본 공격이 <#ffff99ff>적중 시<> <#a974ffff>15의 추가 마법 피해<>를 입히고 <#60e84dff>5<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 체력<>을 회복합니다."
         },
         "hunters_machete": {
             "name": "사냥꾼의 마체테",
@@ -7113,6 +7193,22 @@
         "radiant_hexoptics_c44": {
             "name": "찬란한 마법광학 장치 C44",
             "option": "\n<#ff7a3eff>확대<>: 적과의 거리에 따라 기본 공격이 최대 <#e8a800ff>15%의 추가 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 55<>에서 효과가 최대가 됩니다.\n\n<#ff7a3eff>비전 조준<>: 챔피언 처치에 관여하면 <#e8a800ff>8초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>공격 사거리가 15<> 증가합니다."
+        },
+        "youmuus_ghostblade": {
+            "name": "요우무의 유령검",
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>10%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "찬란한 요우무의 유령검",
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>15%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+        },
+        "thornmail": {
+            "name": "가시 갑옷",
+            "option": "\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>15<> + <#ffdd8eff>10%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다. 공격자가 챔피언이면 <#ff7a3eff>고통스러운 상처<>를 적용해 <#e8a800ff>3초<> 동안 <#d94c49ff>회복량을 40% 감소<>시킵니다."
+        },
+        "radiant_thornmail": {
+            "name": "찬란한 가시 갑옷",
+            "option": "\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>25<> + <#ffdd8eff>15%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다. 공격자가 챔피언이면 <#ff7a3eff>고통스러운 상처<>를 적용해 <#e8a800ff>3초<> 동안 <#d94c49ff>회복량을 40% 감소<>시킵니다."
         }
     },
     "ja": {
@@ -7225,12 +7321,12 @@
             "option": "<#ff7a3eff>プレート<>: 通常攻撃から受けるダメージを<#e8a800ff>5%<>軽減する。"
         },
         "eternal_iron_plate": {
-            "name": "ソーンメイル",
-            "option": "<#ff7a3eff>プレート<>: 通常攻撃から受けるダメージを<#e8a800ff>8%<>軽減する。"
+            "name": "モルテンストーン シールド",
+            "option": "<#ff7a3eff>不動なること山の如し<>: 自身の合計<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>が<#ffdd8eff>20%<>増加する。さらに、通常攻撃から受けるダメージを<#e8a800ff>8%<>軽減する。"
         },
         "impregnable_fortress": {
-            "name": "レディアント ソーンメイル",
-            "option": "<#ff7a3eff>プレート<>: 通常攻撃から受けるダメージを<#e8a800ff>12%<>軽減する。\n\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>{Flat}<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>{Ratio}%<>の<#a974ffff>魔法ダメージ<>を与える。"
+            "name": "レディアント モルテンストーン シールド",
+            "option": "<#ff7a3eff>不動なること山の如し<>: 自身の合計<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>が<#ffdd8eff>20%<>増加する。さらに、通常攻撃から受けるダメージを<#e8a800ff>12%<>軽減する。\n\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>{Flat}<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>{Ratio}%<>の<#a974ffff>魔法ダメージ<>を与える。"
         },
         "mystic_cloak": {
             "name": "ヌルマジック マント",
@@ -7594,11 +7690,11 @@
         },
         "hextech_gunblade": {
             "name": "ヘクステック ガンブレード",
-            "option": ""
+            "option": "\n<#ff7a3eff>ライトニングボルト<>: <#d94c49ff>最大体力の50%未満<>の敵チャンピオンにダメージを与えると、電撃を浴びせて<#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>の<#a974ffff>魔法ダメージ<>を与え、<#e8a800ff>1.5秒間<><#d94c49ff>25%<>の<#d94c49ff>スロウ効果<>を付与する(クールダウン<#e8a800ff>40秒<>)。"
         },
         "radiant_hextech_gunblade": {
             "name": "レディアント ヘクステック ガンブレード",
-            "option": ""
+            "option": "\n<#ff7a3eff>ライトニングボルト<>: <#d94c49ff>最大体力の50%未満<>の敵チャンピオンにダメージを与えると、電撃を浴びせて<#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法力<>の<#a974ffff>魔法ダメージ<>を与え、<#e8a800ff>1.5秒間<><#d94c49ff>25%<>の<#d94c49ff>スロウ効果<>を付与する(クールダウン<#e8a800ff>40秒<>)。"
         },
         "rylais_crystal_scepter": {
             "name": "リーライ クリスタル セプター",
@@ -7854,11 +7950,11 @@
         },
         "feral_flare": {
             "name": "野獣の灯火",
-            "option": "\n<#ff7a3eff>切り裂き<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#92dc7bff>野性<>スタックを1つ得る(最大<#92dc7bff>30<>)。通常攻撃が<#ffff99ff>通常攻撃時効果<>として<#a974ffff>25<>(<#92dc7bff>野性<>スタックごとに<#a974ffff>+1<>)の<#a974ffff>追加魔法ダメージ<>を与え、<#60e84dff>10の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力<>を回復する。ミニオンとモンスターに対しては<#e8a800ff>150%の効果<>となる。"
+            "option": "\n<#ff7a3eff>切り裂き<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#92dc7bff>野性<>スタックを1つ得る(最大<#92dc7bff>30<>)。通常攻撃が<#ffff99ff>通常攻撃時効果<>として<#a974ffff>15<>(<#92dc7bff>野性<>スタックごとに<#a974ffff>+1<>)の<#a974ffff>追加魔法ダメージ<>を与え、<#60e84dff>10の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力<>を回復する。ミニオンとモンスターに対しては<#e8a800ff>150%の効果<>となる。"
         },
         "radiant_feral_flare": {
             "name": "レディアント 野獣の灯火",
-            "option": "\n<#ff7a3eff>切り裂き<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#92dc7bff>野性<>スタックを1つ得る(最大<#92dc7bff>50<>)。通常攻撃が<#ffff99ff>通常攻撃時効果<>として<#a974ffff>25<>(<#92dc7bff>野性<>スタックごとに<#a974ffff>+1<>)の<#a974ffff>追加魔法ダメージ<>を与え、<#60e84dff>10の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力<>を回復する。ミニオンとモンスターに対しては<#e8a800ff>150%の効果<>となる。"
+            "option": "\n<#ff7a3eff>切り裂き<>: チャンピオンのキルまたはアシスト、モンスターのキルごとに<#92dc7bff>野性<>スタックを1つ得る(最大<#92dc7bff>50<>)。通常攻撃が<#ffff99ff>通常攻撃時効果<>として<#a974ffff>15<>(<#92dc7bff>野性<>スタックごとに<#a974ffff>+1<>)の<#a974ffff>追加魔法ダメージ<>を与え、<#60e84dff>10の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力<>を回復する。ミニオンとモンスターに対しては<#e8a800ff>150%の効果<>となる。"
         },
         "forbidden_idol": {
             "name": "フォビドゥン アイドル",
@@ -8258,7 +8354,7 @@
         },
         "madreds_razors": {
             "name": "マッドレッドの鉤爪",
-            "option": "\n<#ff7a3eff>切り裂き<>: モンスターへの通常攻撃が<#ffff99ff>通常攻撃時効果<>として<#a974ffff>25の追加魔法ダメージ<>を与え、<#60e84dff>5の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力<>を回復する。"
+            "option": "\n<#ff7a3eff>切り裂き<>: モンスターへの通常攻撃が<#ffff99ff>通常攻撃時効果<>として<#a974ffff>15の追加魔法ダメージ<>を与え、<#60e84dff>5の<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 体力<>を回復する。"
         },
         "hunters_machete": {
             "name": "ハンター マチェット",
@@ -8299,6 +8395,22 @@
         "radiant_hexoptics_c44": {
             "name": "レディアント ヘクスオプティックC44",
             "option": "\n<#ff7a3eff>ズーム<>: 距離に応じて通常攻撃が最大<#e8a800ff>15%の追加ダメージ<>を与える(<#ff86c2ff>55の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>で効果最大)。\n\n<#ff7a3eff>アーケインエイム<>: チャンピオンのキルまたはアシストを獲得すると、<#e8a800ff>8秒間<><i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>射程が15<>増加する。"
+        },
+        "youmuus_ghostblade": {
+            "name": "妖夢の霊剣",
+            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>10%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>4秒間<><#ffffffff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "レディアント 妖夢の霊剣",
+            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>15%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>4秒間<><#ffffffff>30%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
+        },
+        "thornmail": {
+            "name": "ソーンメイル",
+            "option": "\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>15<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>10%<>の<#a974ffff>魔法ダメージ<>を与える。攻撃者がチャンピオンの場合、<#ff7a3eff>重傷<>を付与し、<#e8a800ff>3秒間<><#d94c49ff>回復量を40%低下させる<>。"
+        },
+        "radiant_thornmail": {
+            "name": "レディアント ソーンメイル",
+            "option": "\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>25<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>15%<>の<#a974ffff>魔法ダメージ<>を与える。攻撃者がチャンピオンの場合、<#ff7a3eff>重傷<>を付与し、<#e8a800ff>3秒間<><#d94c49ff>回復量を40%低下させる<>。"
         }
     },
     "de": {
@@ -8411,12 +8523,12 @@
             "option": "<#ff7a3eff>Panzerung<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Dornenpanzer",
-            "option": "<#ff7a3eff>Panzerung<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>8%<>."
+            "name": "Schild aus Vulkangestein",
+            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Erhöht deine gesamte <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> um <#ffdd8eff>20%<>. Verringert außerdem den Schaden durch Normalangriffe um <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Lichtversion von Dornenpanzer",
-            "option": "<#ff7a3eff>Panzerung<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>12%<>.\n\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu."
+            "name": "Lichtversion von Schild aus Vulkangestein",
+            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Erhöht deine gesamte <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> um <#ffdd8eff>20%<>. Verringert außerdem den Schaden durch Normalangriffe um <#e8a800ff>12%<>.\n\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu."
         },
         "mystic_cloak": {
             "name": "Nullmagie-Mantel",
@@ -8780,11 +8892,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech-Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Blitzschlag<>: Wenn du einem gegnerischen Champion <#d94c49ff>unter 50% seines maximalen Lebens<> Schaden zufügst, versetzt du ihm einen Schlag, der <#a974ffff>magischen Schaden<> in Höhe von <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> verursacht und ihn <#e8a800ff>1.5 Sekunden<> lang um <#d94c49ff>25%<> <#d94c49ff>verlangsamt<> (<#e8a800ff>40 Sekunden<> Abklingzeit)."
         },
         "radiant_hextech_gunblade": {
             "name": "Lichtversion von Hextech-Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Blitzschlag<>: Wenn du einem gegnerischen Champion <#d94c49ff>unter 50% seines maximalen Lebens<> Schaden zufügst, versetzt du ihm einen Schlag, der <#a974ffff>magischen Schaden<> in Höhe von <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>Zauberkraft<> verursacht und ihn <#e8a800ff>1.5 Sekunden<> lang um <#d94c49ff>25%<> <#d94c49ff>verlangsamt<> (<#e8a800ff>40 Sekunden<> Abklingzeit)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylais Kristallzepter",
@@ -9040,11 +9152,11 @@
         },
         "feral_flare": {
             "name": "Wilde Fackel",
-            "option": "\n<#ff7a3eff>Verstümmeln<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster eine <#92dc7bff>Wild<>-Steigerung, bis zu <#92dc7bff>30<>. Normalangriffe verursachen <#ffff99ff>bei Treffern<> <#a974ffff>25<> (<#a974ffff>+1<> pro <#92dc7bff>Wild<>-Steigerung) <#a974ffff>zusätzlichen magischen Schaden<> und stellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Leben<> wieder her. Gegen Vasallen und Monster wirkt dieser Effekt zu <#e8a800ff>150%<>."
+            "option": "\n<#ff7a3eff>Verstümmeln<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster eine <#92dc7bff>Wild<>-Steigerung, bis zu <#92dc7bff>30<>. Normalangriffe verursachen <#ffff99ff>bei Treffern<> <#a974ffff>15<> (<#a974ffff>+1<> pro <#92dc7bff>Wild<>-Steigerung) <#a974ffff>zusätzlichen magischen Schaden<> und stellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Leben<> wieder her. Gegen Vasallen und Monster wirkt dieser Effekt zu <#e8a800ff>150%<>."
         },
         "radiant_feral_flare": {
             "name": "Lichtversion von Wilde Fackel",
-            "option": "\n<#ff7a3eff>Verstümmeln<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster eine <#92dc7bff>Wild<>-Steigerung, bis zu <#92dc7bff>50<>. Normalangriffe verursachen <#ffff99ff>bei Treffern<> <#a974ffff>25<> (<#a974ffff>+1<> pro <#92dc7bff>Wild<>-Steigerung) <#a974ffff>zusätzlichen magischen Schaden<> und stellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Leben<> wieder her. Gegen Vasallen und Monster wirkt dieser Effekt zu <#e8a800ff>150%<>."
+            "option": "\n<#ff7a3eff>Verstümmeln<>: Erhalte für jede Kill-Beteiligung an Champions und jedes getötete Monster eine <#92dc7bff>Wild<>-Steigerung, bis zu <#92dc7bff>50<>. Normalangriffe verursachen <#ffff99ff>bei Treffern<> <#a974ffff>15<> (<#a974ffff>+1<> pro <#92dc7bff>Wild<>-Steigerung) <#a974ffff>zusätzlichen magischen Schaden<> und stellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Leben<> wieder her. Gegen Vasallen und Monster wirkt dieser Effekt zu <#e8a800ff>150%<>."
         },
         "forbidden_idol": {
             "name": "Verbotener Götze",
@@ -9444,7 +9556,7 @@
         },
         "madreds_razors": {
             "name": "Madreds Schnitter",
-            "option": "\n<#ff7a3eff>Verstümmeln<>: Normalangriffe gegen Monster verursachen <#ffff99ff>bei Treffern<> <#a974ffff>25 zusätzlichen magischen Schaden<> und stellen <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Leben<> wieder her."
+            "option": "\n<#ff7a3eff>Verstümmeln<>: Normalangriffe gegen Monster verursachen <#ffff99ff>bei Treffern<> <#a974ffff>15 zusätzlichen magischen Schaden<> und stellen <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> Leben<> wieder her."
         },
         "hunters_machete": {
             "name": "Machete des Jägers",
@@ -9485,6 +9597,22 @@
         "radiant_hexoptics_c44": {
             "name": "Lichtversion von Hexoptik C44",
             "option": "\n<#ff7a3eff>Vergrößerung<>: Normalangriffe verursachen abhängig von der Entfernung bis zu <#e8a800ff>15% zusätzlichen Schaden<> (maximale Wirkung bei <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<>).\n\n<#ff7a3eff>Arkanes Zielen<>: Championtötungen und Unterstützungen gewähren dir <#e8a800ff>8 Sekunden<> lang <#ff86c2ff>15 zusätzliche <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Youmus Geistklinge",
+            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>4 Sekunden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Lichtversion von Youmus Geistklinge",
+            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>4 Sekunden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
+        },
+        "thornmail": {
+            "name": "Dornenpanzer",
+            "option": "\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>15<> + <#ffdd8eff>10%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu. Ist der Angreifer ein Champion, erleidet er außerdem <#ff7a3eff>Klaffende Wunden<>: Seine Heilung wird <#e8a800ff>3 Sekunden<> lang <#d94c49ff>um 40% verringert<>."
+        },
+        "radiant_thornmail": {
+            "name": "Lichtversion von Dornenpanzer",
+            "option": "\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>25<> + <#ffdd8eff>15%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu. Ist der Angreifer ein Champion, erleidet er außerdem <#ff7a3eff>Klaffende Wunden<>: Seine Heilung wird <#e8a800ff>3 Sekunden<> lang <#d94c49ff>um 40% verringert<>."
         }
     },
     "tr": {
@@ -9597,12 +9725,12 @@
             "option": "<#ff7a3eff>Kaplama<>: Temel saldırılardan alınan hasarı <#e8a800ff>5%<> azaltır."
         },
         "eternal_iron_plate": {
-            "name": "Çivili Zırh",
-            "option": "<#ff7a3eff>Kaplama<>: Temel saldırılardan alınan hasarı <#e8a800ff>8%<> azaltır."
+            "name": "Magma Kalkanı",
+            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Toplam <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhını<> <#ffdd8eff>20%<> artırır. Ayrıca temel saldırılardan alınan hasarı <#e8a800ff>8%<> azaltır."
         },
         "impregnable_fortress": {
-            "name": "Işıltılı Çivili Zırh",
-            "option": "<#ff7a3eff>Kaplama<>: Temel saldırılardan alınan hasarı <#e8a800ff>12%<> azaltır.\n\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>{Flat}<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>{Ratio}%<> kadar <#a974ffff>büyü hasarı<> verirsin."
+            "name": "Işıltılı Magma Kalkanı",
+            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Toplam <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhını<> <#ffdd8eff>20%<> artırır. Ayrıca temel saldırılardan alınan hasarı <#e8a800ff>12%<> azaltır.\n\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>{Flat}<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>{Ratio}%<> kadar <#a974ffff>büyü hasarı<> verirsin."
         },
         "mystic_cloak": {
             "name": "Büyüsavar Pelerin",
@@ -9966,11 +10094,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Silahkılıç",
-            "option": ""
+            "option": "\n<#ff7a3eff>Yıldırım Oku<>: <#d94c49ff>Azami canının 50% altındaki<> bir rakip şampiyona hasar vermek ona yıldırım göndererek <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kadar <#a974ffff>büyü hasarı<> verir ve onu <#e8a800ff>1.5 saniye<> boyunca <#d94c49ff>25%<> <#d94c49ff>yavaşlatır<> (bekleme süresi <#e8a800ff>40 saniye<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Işıltılı Hextech Silahkılıç",
-            "option": ""
+            "option": "\n<#ff7a3eff>Yıldırım Oku<>: <#d94c49ff>Azami canının 50% altındaki<> bir rakip şampiyona hasar vermek ona yıldırım göndererek <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>yetenek gücü<> kadar <#a974ffff>büyü hasarı<> verir ve onu <#e8a800ff>1.5 saniye<> boyunca <#d94c49ff>25%<> <#d94c49ff>yavaşlatır<> (bekleme süresi <#e8a800ff>40 saniye<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai'nin Kristal Asası",
@@ -10226,11 +10354,11 @@
         },
         "feral_flare": {
             "name": "Yaban Alevi",
-            "option": "\n<#ff7a3eff>Sakatla<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için bir <#92dc7bff>Vahşi<> yükü kazanırsın; en fazla <#92dc7bff>30<>. Temel saldırılar <#ffff99ff>isabet halinde<> <#a974ffff>25<> (<#92dc7bff>Vahşi<> yükü başına <#a974ffff>+1<>) <#a974ffff>ilave büyü hasarı<> verir ve <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> can<> yeniler. Bu etki minyonlara ve canavarlara karşı <#e8a800ff>150% etkilidir<>."
+            "option": "\n<#ff7a3eff>Sakatla<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için bir <#92dc7bff>Vahşi<> yükü kazanırsın; en fazla <#92dc7bff>30<>. Temel saldırılar <#ffff99ff>isabet halinde<> <#a974ffff>15<> (<#92dc7bff>Vahşi<> yükü başına <#a974ffff>+1<>) <#a974ffff>ilave büyü hasarı<> verir ve <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> can<> yeniler. Bu etki minyonlara ve canavarlara karşı <#e8a800ff>150% etkilidir<>."
         },
         "radiant_feral_flare": {
             "name": "Işıltılı Yaban Alevi",
-            "option": "\n<#ff7a3eff>Sakatla<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için bir <#92dc7bff>Vahşi<> yükü kazanırsın; en fazla <#92dc7bff>50<>. Temel saldırılar <#ffff99ff>isabet halinde<> <#a974ffff>25<> (<#92dc7bff>Vahşi<> yükü başına <#a974ffff>+1<>) <#a974ffff>ilave büyü hasarı<> verir ve <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> can<> yeniler. Bu etki minyonlara ve canavarlara karşı <#e8a800ff>150% etkilidir<>."
+            "option": "\n<#ff7a3eff>Sakatla<>: Katıldığın her şampiyon skoru ve öldürdüğün her canavar için bir <#92dc7bff>Vahşi<> yükü kazanırsın; en fazla <#92dc7bff>50<>. Temel saldırılar <#ffff99ff>isabet halinde<> <#a974ffff>15<> (<#92dc7bff>Vahşi<> yükü başına <#a974ffff>+1<>) <#a974ffff>ilave büyü hasarı<> verir ve <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> can<> yeniler. Bu etki minyonlara ve canavarlara karşı <#e8a800ff>150% etkilidir<>."
         },
         "forbidden_idol": {
             "name": "Yasak İdol",
@@ -10630,7 +10758,7 @@
         },
         "madreds_razors": {
             "name": "Madred'in Pençeleri",
-            "option": "\n<#ff7a3eff>Sakatla<>: Canavarlara yapılan temel saldırılar <#ffff99ff>isabet halinde<> <#a974ffff>25 ilave büyü hasarı<> verir ve <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> can<> yeniler."
+            "option": "\n<#ff7a3eff>Sakatla<>: Canavarlara yapılan temel saldırılar <#ffff99ff>isabet halinde<> <#a974ffff>15 ilave büyü hasarı<> verir ve <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> can<> yeniler."
         },
         "hunters_machete": {
             "name": "Avcı Palası",
@@ -10671,6 +10799,22 @@
         "radiant_hexoptics_c44": {
             "name": "Işıltılı Hexgörü C44",
             "option": "\n<#ff7a3eff>Yakınlaştırma<>: Temel saldırılar mesafeye bağlı olarak en fazla <#e8a800ff>15% ilave hasar<> verir (azami etki <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzilde<>).\n\n<#ff7a3eff>Sihirli Nişan<>: Şampiyon katılımları <#e8a800ff>8 saniye<> boyunca <#ff86c2ff>15 ilave <i#asset/base/ui/banpick/champion_stat_icon:range_0> saldırı menzili<> kazandırır."
+        },
+        "youmuus_ghostblade": {
+            "name": "Youmuu'nun Hayaletkılıcı",
+            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>4 saniye<> boyunca <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Işıltılı Youmuu'nun Hayaletkılıcı",
+            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>4 saniye<> boyunca <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
+        },
+        "thornmail": {
+            "name": "Çivili Zırh",
+            "option": "\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>15<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>10%<> kadar <#a974ffff>büyü hasarı<> verirsin. Saldıran bir şampiyonsa ona ayrıca <#ff7a3eff>Ağır Yara<> uygulayarak <#e8a800ff>3 saniye<> boyunca <#d94c49ff>iyileşmesini 40% azaltırsın<>."
+        },
+        "radiant_thornmail": {
+            "name": "Işıltılı Çivili Zırh",
+            "option": "\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>25<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>15%<> kadar <#a974ffff>büyü hasarı<> verirsin. Saldıran bir şampiyonsa ona ayrıca <#ff7a3eff>Ağır Yara<> uygulayarak <#e8a800ff>3 saniye<> boyunca <#d94c49ff>iyileşmesini 40% azaltırsın<>."
         }
     },
     "es-ES": {
@@ -10783,12 +10927,12 @@
             "option": "<#ff7a3eff>Placas<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Malla de espinas",
-            "option": "<#ff7a3eff>Placas<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>8%<>."
+            "name": "Escudo de roca fundida",
+            "option": "<#ff7a3eff>Inamovible como la tierra<>: Aumenta tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total un <#ffdd8eff>20%<>. Además, reduce el daño recibido de ataques básicos un <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Malla de espinas radiante",
-            "option": "<#ff7a3eff>Placas<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>."
+            "name": "Escudo de roca fundida radiante",
+            "option": "<#ff7a3eff>Inamovible como la tierra<>: Aumenta tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total un <#ffdd8eff>20%<>. Además, reduce el daño recibido de ataques básicos un <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>."
         },
         "mystic_cloak": {
             "name": "Manto de anulación de magia",
@@ -11152,11 +11296,11 @@
         },
         "hextech_gunblade": {
             "name": "Sable-pistola hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Relámpago<>: Dañar a un campeón enemigo <#d94c49ff>por debajo del 50% de su salud máxima<> lo electrocuta, le inflige <#a974ffff>120<> + <#a974ffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> como <#a974ffff>daño mágico<> y lo <#d94c49ff>ralentiza<> un <#d94c49ff>25%<> durante <#e8a800ff>1.5 segundos<> (<#e8a800ff>40 segundos<> de enfriamiento)."
         },
         "radiant_hextech_gunblade": {
             "name": "Sable-pistola hextech radiante",
-            "option": ""
+            "option": "\n<#ff7a3eff>Relámpago<>: Dañar a un campeón enemigo <#d94c49ff>por debajo del 50% de su salud máxima<> lo electrocuta, le inflige <#a974ffff>180<> + <#a974ffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>poder de habilidad<> como <#a974ffff>daño mágico<> y lo <#d94c49ff>ralentiza<> un <#d94c49ff>25%<> durante <#e8a800ff>1.5 segundos<> (<#e8a800ff>40 segundos<> de enfriamiento)."
         },
         "rylais_crystal_scepter": {
             "name": "Cetro de cristal de Rylai",
@@ -11412,11 +11556,11 @@
         },
         "feral_flare": {
             "name": "Llamarada salvaje",
-            "option": "\n<#ff7a3eff>Mutilar<>: Obtienes una acumulación <#92dc7bff>Salvaje<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta <#92dc7bff>30<>. Los ataques básicos infligen <#ffff99ff>al golpear<> <#a974ffff>25<> (<#a974ffff>+1<> por acumulación <#92dc7bff>Salvaje<>) de <#a974ffff>daño mágico adicional<> y restauran <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salud<>. Este efecto tiene un <#e8a800ff>150% de eficacia<> contra súbditos y monstruos."
+            "option": "\n<#ff7a3eff>Mutilar<>: Obtienes una acumulación <#92dc7bff>Salvaje<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta <#92dc7bff>30<>. Los ataques básicos infligen <#ffff99ff>al golpear<> <#a974ffff>15<> (<#a974ffff>+1<> por acumulación <#92dc7bff>Salvaje<>) de <#a974ffff>daño mágico adicional<> y restauran <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salud<>. Este efecto tiene un <#e8a800ff>150% de eficacia<> contra súbditos y monstruos."
         },
         "radiant_feral_flare": {
             "name": "Llamarada salvaje radiante",
-            "option": "\n<#ff7a3eff>Mutilar<>: Obtienes una acumulación <#92dc7bff>Salvaje<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta <#92dc7bff>50<>. Los ataques básicos infligen <#ffff99ff>al golpear<> <#a974ffff>25<> (<#a974ffff>+1<> por acumulación <#92dc7bff>Salvaje<>) de <#a974ffff>daño mágico adicional<> y restauran <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salud<>. Este efecto tiene un <#e8a800ff>150% de eficacia<> contra súbditos y monstruos."
+            "option": "\n<#ff7a3eff>Mutilar<>: Obtienes una acumulación <#92dc7bff>Salvaje<> por cada participación en asesinatos de campeones y cada monstruo que mates, hasta <#92dc7bff>50<>. Los ataques básicos infligen <#ffff99ff>al golpear<> <#a974ffff>15<> (<#a974ffff>+1<> por acumulación <#92dc7bff>Salvaje<>) de <#a974ffff>daño mágico adicional<> y restauran <#60e84dff>10 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salud<>. Este efecto tiene un <#e8a800ff>150% de eficacia<> contra súbditos y monstruos."
         },
         "forbidden_idol": {
             "name": "Ídolo prohibido",
@@ -11816,7 +11960,7 @@
         },
         "madreds_razors": {
             "name": "Navajas de Madred",
-            "option": "\n<#ff7a3eff>Mutilar<>: Los ataques básicos contra monstruos infligen <#ffff99ff>al golpear<> <#a974ffff>25 de daño mágico adicional<> y restauran <#60e84dff>5 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salud<>."
+            "option": "\n<#ff7a3eff>Mutilar<>: Los ataques básicos contra monstruos infligen <#ffff99ff>al golpear<> <#a974ffff>15 de daño mágico adicional<> y restauran <#60e84dff>5 de <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salud<>."
         },
         "hunters_machete": {
             "name": "Machete del cazador",
@@ -11857,6 +12001,22 @@
         "radiant_hexoptics_c44": {
             "name": "Óptica hextech C44 radiante",
             "option": "\n<#ff7a3eff>Magnificación<>: Los ataques básicos infligen hasta un <#e8a800ff>15% de daño adicional<> según la distancia (efecto máximo a <#ff86c2ff>55 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<>).\n\n<#ff7a3eff>Puntería arcana<>: Los asesinatos y asistencias a campeones otorgan <#ff86c2ff>15 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance de ataque<> adicional durante <#e8a800ff>8 segundos<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Filo fantasmal de Youmuu",
+            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Filo fantasmal de Youmuu radiante",
+            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
+        },
+        "thornmail": {
+            "name": "Malla de espinas",
+            "option": "\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>15<> + <#ffdd8eff>10%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>. Si el atacante es un campeón, también aplica <#ff7a3eff>Heridas graves<>, que <#d94c49ff>reducen su curación un 40%<> durante <#e8a800ff>3 segundos<>."
+        },
+        "radiant_thornmail": {
+            "name": "Malla de espinas radiante",
+            "option": "\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>25<> + <#ffdd8eff>15%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>. Si el atacante es un campeón, también aplica <#ff7a3eff>Heridas graves<>, que <#d94c49ff>reducen su curación un 40%<> durante <#e8a800ff>3 segundos<>."
         }
     },
     "fr": {
@@ -11969,12 +12129,12 @@
             "option": "<#ff7a3eff>Placage<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Cotte épineuse",
-            "option": "<#ff7a3eff>Placage<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>8%<>."
+            "name": "Bouclier de roche en fusion",
+            "option": "<#ff7a3eff>Inamovible<>: Augmente votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> totale de <#ffdd8eff>20%<>. De plus, réduit les dégâts subis des attaques de base de <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Cotte épineuse de la lumière",
-            "option": "<#ff7a3eff>Placage<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>12%<>.\n\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>."
+            "name": "Bouclier de roche en fusion de la lumière",
+            "option": "<#ff7a3eff>Inamovible<>: Augmente votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> totale de <#ffdd8eff>20%<>. De plus, réduit les dégâts subis des attaques de base de <#e8a800ff>12%<>.\n\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>."
         },
         "mystic_cloak": {
             "name": "Cape de néant",
@@ -12338,11 +12498,11 @@
         },
         "hextech_gunblade": {
             "name": "Pistolame Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Orbe de foudre<>: Infliger des dégâts à un champion ennemi <#d94c49ff>sous 50% de ses PV max<> lui envoie une décharge qui inflige <#a974ffff>120<> + <#a974ffff>20%<> de la <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> en <#a974ffff>dégâts magiques<> et le <#d94c49ff>ralentit<> de <#d94c49ff>25%<> pendant <#e8a800ff>1.5 secondes<> (délai de récupération : <#e8a800ff>40 secondes<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Pistolame Hextech de la lumière",
-            "option": ""
+            "option": "\n<#ff7a3eff>Orbe de foudre<>: Infliger des dégâts à un champion ennemi <#d94c49ff>sous 50% de ses PV max<> lui envoie une décharge qui inflige <#a974ffff>180<> + <#a974ffff>30%<> de la <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>puissance<> en <#a974ffff>dégâts magiques<> et le <#d94c49ff>ralentit<> de <#d94c49ff>25%<> pendant <#e8a800ff>1.5 secondes<> (délai de récupération : <#e8a800ff>40 secondes<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Sceptre de Rylai",
@@ -12598,11 +12758,11 @@
         },
         "feral_flare": {
             "name": "Flamme sauvage",
-            "option": "\n<#ff7a3eff>Mutilation<>: Vous gagnez un cumul <#92dc7bff>Sauvage<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#92dc7bff>30<>. Les attaques de base infligent <#ffff99ff>à l'impact<> <#a974ffff>25<> (<#a974ffff>+1<> par cumul <#92dc7bff>Sauvage<>) pts de <#a974ffff>dégâts magiques bonus<> et rendent <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> PV<>. Cet effet est efficace à <#e8a800ff>150%<> contre les sbires et les monstres."
+            "option": "\n<#ff7a3eff>Mutilation<>: Vous gagnez un cumul <#92dc7bff>Sauvage<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#92dc7bff>30<>. Les attaques de base infligent <#ffff99ff>à l'impact<> <#a974ffff>15<> (<#a974ffff>+1<> par cumul <#92dc7bff>Sauvage<>) pts de <#a974ffff>dégâts magiques bonus<> et rendent <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> PV<>. Cet effet est efficace à <#e8a800ff>150%<> contre les sbires et les monstres."
         },
         "radiant_feral_flare": {
             "name": "Flamme sauvage de la lumière",
-            "option": "\n<#ff7a3eff>Mutilation<>: Vous gagnez un cumul <#92dc7bff>Sauvage<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#92dc7bff>50<>. Les attaques de base infligent <#ffff99ff>à l'impact<> <#a974ffff>25<> (<#a974ffff>+1<> par cumul <#92dc7bff>Sauvage<>) pts de <#a974ffff>dégâts magiques bonus<> et rendent <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> PV<>. Cet effet est efficace à <#e8a800ff>150%<> contre les sbires et les monstres."
+            "option": "\n<#ff7a3eff>Mutilation<>: Vous gagnez un cumul <#92dc7bff>Sauvage<> pour chaque élimination de champion à laquelle vous participez et chaque monstre tué, jusqu'à <#92dc7bff>50<>. Les attaques de base infligent <#ffff99ff>à l'impact<> <#a974ffff>15<> (<#a974ffff>+1<> par cumul <#92dc7bff>Sauvage<>) pts de <#a974ffff>dégâts magiques bonus<> et rendent <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> PV<>. Cet effet est efficace à <#e8a800ff>150%<> contre les sbires et les monstres."
         },
         "forbidden_idol": {
             "name": "Idole interdite",
@@ -13002,7 +13162,7 @@
         },
         "madreds_razors": {
             "name": "Rasoir de Madred",
-            "option": "\n<#ff7a3eff>Mutilation<>: Les attaques de base contre les monstres infligent <#ffff99ff>à l'impact<> <#a974ffff>25 pts de dégâts magiques bonus<> et rendent <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> PV<>."
+            "option": "\n<#ff7a3eff>Mutilation<>: Les attaques de base contre les monstres infligent <#ffff99ff>à l'impact<> <#a974ffff>15 pts de dégâts magiques bonus<> et rendent <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> PV<>."
         },
         "hunters_machete": {
             "name": "Machette du chasseur",
@@ -13043,6 +13203,22 @@
         "radiant_hexoptics_c44": {
             "name": "Lunettes Hextech C44 de la lumière",
             "option": "\n<#ff7a3eff>Grossissement<>: Vos attaques de base infligent jusqu'à <#e8a800ff>15% de dégâts supplémentaires<> selon la distance (effet maximal à <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>).\n\n<#ff7a3eff>Visée arcanique<>: Les éliminations de champions vous octroient <#ff86c2ff>15 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> portée d'attaque<> bonus pendant <#e8a800ff>8 secondes<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Lame spectre de Youmuu",
+            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Lame spectre de Youmuu de la lumière",
+            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
+        },
+        "thornmail": {
+            "name": "Cotte épineuse",
+            "option": "\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>15<> + <#ffdd8eff>10%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>. Si l'attaquant est un champion, il subit aussi <#ff7a3eff>Hémorragie<>, qui <#d94c49ff>réduit ses soins de 40%<> pendant <#e8a800ff>3 secondes<>."
+        },
+        "radiant_thornmail": {
+            "name": "Cotte épineuse de la lumière",
+            "option": "\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>25<> + <#ffdd8eff>15%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>. Si l'attaquant est un champion, il subit aussi <#ff7a3eff>Hémorragie<>, qui <#d94c49ff>réduit ses soins de 40%<> pendant <#e8a800ff>3 secondes<>."
         }
     },
     "it": {
@@ -13155,12 +13331,12 @@
             "option": "<#ff7a3eff>Corazza<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Corazza spinata",
-            "option": "<#ff7a3eff>Corazza<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>8%<>."
+            "name": "Scudo di roccia fusa",
+            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Aumenta la tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> totale del <#ffdd8eff>20%<>. Inoltre, riduce i danni subiti dagli attacchi base del <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Corazza spinata Radiosa",
-            "option": "<#ff7a3eff>Corazza<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>12%<>.\n\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>."
+            "name": "Scudo di roccia fusa Radioso",
+            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Aumenta la tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> totale del <#ffdd8eff>20%<>. Inoltre, riduce i danni subiti dagli attacchi base del <#e8a800ff>12%<>.\n\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>."
         },
         "mystic_cloak": {
             "name": "Cappa anti-magia",
@@ -13524,11 +13700,11 @@
         },
         "hextech_gunblade": {
             "name": "Pistola a lame hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Fulmine folgorante<>: Danneggiare un campione nemico <#d94c49ff>sotto il 50% della salute massima<> lo folgora, infliggendo <#a974ffff>120<> + <#a974ffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> come <#a974ffff>danni magici<> e <#d94c49ff>rallentandolo<> del <#d94c49ff>25%<> per <#e8a800ff>1.5 secondi<> (ricarica di <#e8a800ff>40 secondi<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Pistola a lame hextech Radiosa",
-            "option": ""
+            "option": "\n<#ff7a3eff>Fulmine folgorante<>: Danneggiare un campione nemico <#d94c49ff>sotto il 50% della salute massima<> lo folgora, infliggendo <#a974ffff>180<> + <#a974ffff>30%<> di <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>potere magico<> come <#a974ffff>danni magici<> e <#d94c49ff>rallentandolo<> del <#d94c49ff>25%<> per <#e8a800ff>1.5 secondi<> (ricarica di <#e8a800ff>40 secondi<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Scettro di cristallo di Rylai",
@@ -13784,11 +13960,11 @@
         },
         "feral_flare": {
             "name": "Bagliore selvaggio",
-            "option": "\n<#ff7a3eff>Mutilazione<>: Ottieni una carica <#92dc7bff>Selvaggia<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino a <#92dc7bff>30<>. Gli attacchi base infliggono <#ffff99ff>sul colpo<> <#a974ffff>25<> (<#a974ffff>+1<> per carica <#92dc7bff>Selvaggia<>) <#a974ffff>danni magici bonus<> e ripristinano <#60e84dff>10 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salute<>. Contro minion e mostri questo effetto ha un'efficacia del <#e8a800ff>150%<>."
+            "option": "\n<#ff7a3eff>Mutilazione<>: Ottieni una carica <#92dc7bff>Selvaggia<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino a <#92dc7bff>30<>. Gli attacchi base infliggono <#ffff99ff>sul colpo<> <#a974ffff>15<> (<#a974ffff>+1<> per carica <#92dc7bff>Selvaggia<>) <#a974ffff>danni magici bonus<> e ripristinano <#60e84dff>10 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salute<>. Contro minion e mostri questo effetto ha un'efficacia del <#e8a800ff>150%<>."
         },
         "radiant_feral_flare": {
             "name": "Bagliore selvaggio Radioso",
-            "option": "\n<#ff7a3eff>Mutilazione<>: Ottieni una carica <#92dc7bff>Selvaggia<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino a <#92dc7bff>50<>. Gli attacchi base infliggono <#ffff99ff>sul colpo<> <#a974ffff>25<> (<#a974ffff>+1<> per carica <#92dc7bff>Selvaggia<>) <#a974ffff>danni magici bonus<> e ripristinano <#60e84dff>10 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salute<>. Contro minion e mostri questo effetto ha un'efficacia del <#e8a800ff>150%<>."
+            "option": "\n<#ff7a3eff>Mutilazione<>: Ottieni una carica <#92dc7bff>Selvaggia<> per ogni partecipazione all'uccisione di un campione e ogni mostro ucciso, fino a <#92dc7bff>50<>. Gli attacchi base infliggono <#ffff99ff>sul colpo<> <#a974ffff>15<> (<#a974ffff>+1<> per carica <#92dc7bff>Selvaggia<>) <#a974ffff>danni magici bonus<> e ripristinano <#60e84dff>10 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salute<>. Contro minion e mostri questo effetto ha un'efficacia del <#e8a800ff>150%<>."
         },
         "forbidden_idol": {
             "name": "Idolo proibito",
@@ -14188,7 +14364,7 @@
         },
         "madreds_razors": {
             "name": "Artigli di Madred",
-            "option": "\n<#ff7a3eff>Mutilazione<>: Gli attacchi base contro i mostri infliggono <#ffff99ff>sul colpo<> <#a974ffff>25 danni magici bonus<> e ripristinano <#60e84dff>5 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salute<>."
+            "option": "\n<#ff7a3eff>Mutilazione<>: Gli attacchi base contro i mostri infliggono <#ffff99ff>sul colpo<> <#a974ffff>15 danni magici bonus<> e ripristinano <#60e84dff>5 di <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> salute<>."
         },
         "hunters_machete": {
             "name": "Machete del cacciatore",
@@ -14229,6 +14405,22 @@
         "radiant_hexoptics_c44": {
             "name": "Ottica Hextech C44 Radiosa",
             "option": "\n<#ff7a3eff>Ingrandimento<>: Gli attacchi base infliggono fino al <#e8a800ff>15% di danni bonus<> in base alla distanza (effetto massimo a <#ff86c2ff>55 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<>).\n\n<#ff7a3eff>Mira arcana<>: Le uccisioni e gli assist sui campioni conferiscono <#ff86c2ff>15 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata d'attacco<> bonus per <#e8a800ff>8 secondi<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Lama di Youmuu",
+            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>10%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Lama di Youmuu Radiosa",
+            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>15%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>30%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
+        },
+        "thornmail": {
+            "name": "Corazza spinata",
+            "option": "\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>15<> + <#ffdd8eff>10%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>. Se l'attaccante è un campione, applica anche <#ff7a3eff>Ferita grave<>, che <#d94c49ff>ne riduce le cure del 40%<> per <#e8a800ff>3 secondi<>."
+        },
+        "radiant_thornmail": {
+            "name": "Corazza spinata Radiosa",
+            "option": "\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>25<> + <#ffdd8eff>15%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>. Se l'attaccante è un campione, applica anche <#ff7a3eff>Ferita grave<>, che <#d94c49ff>ne riduce le cure del 40%<> per <#e8a800ff>3 secondi<>."
         }
     },
     "zh-hant": {
@@ -14341,12 +14533,12 @@
             "option": "<#ff7a3eff>護甲<>：受到普通攻擊的傷害降低<#e8a800ff>5%<>。"
         },
         "eternal_iron_plate": {
-            "name": "荊棘之甲",
-            "option": "<#ff7a3eff>護甲<>：受到普通攻擊的傷害降低<#e8a800ff>8%<>。"
+            "name": "熔岩護盾",
+            "option": "<#ff7a3eff>不動如山<>：自身總<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<>提高<#ffdd8eff>20%<>。此外，受到普通攻擊的傷害降低<#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
-            "name": "聖光荊棘之甲",
-            "option": "<#ff7a3eff>護甲<>：受到普通攻擊的傷害降低<#e8a800ff>12%<>。\n\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>{Flat}<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>{Ratio}%<>的<#a974ffff>魔法傷害<>。"
+            "name": "聖光熔岩護盾",
+            "option": "<#ff7a3eff>不動如山<>：自身總<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<>提高<#ffdd8eff>20%<>。此外，受到普通攻擊的傷害降低<#e8a800ff>12%<>。\n\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>{Flat}<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>{Ratio}%<>的<#a974ffff>魔法傷害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -14710,11 +14902,11 @@
         },
         "hextech_gunblade": {
             "name": "海克斯科技槍刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>閃電霹靂<>：對<#d94c49ff>生命值低於最大生命值50%<>的敵方英雄造成傷害時，電擊目標，造成<#a974ffff>120<> + <#a974ffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>的<#a974ffff>魔法傷害<>，並使其<#d94c49ff>緩速<><#d94c49ff>25%<>，持續<#e8a800ff>1.5秒<>（冷卻時間<#e8a800ff>40秒<>）。"
         },
         "radiant_hextech_gunblade": {
             "name": "聖光海克斯科技槍刃",
-            "option": ""
+            "option": "\n<#ff7a3eff>閃電霹靂<>：對<#d94c49ff>生命值低於最大生命值50%<>的敵方英雄造成傷害時，電擊目標，造成<#a974ffff>180<> + <#a974ffff>30%<><i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>魔法攻擊<>的<#a974ffff>魔法傷害<>，並使其<#d94c49ff>緩速<><#d94c49ff>25%<>，持續<#e8a800ff>1.5秒<>（冷卻時間<#e8a800ff>40秒<>）。"
         },
         "rylais_crystal_scepter": {
             "name": "瑞萊的冰晶節杖",
@@ -14970,11 +15162,11 @@
         },
         "feral_flare": {
             "name": "野性烈炎",
-            "option": "\n<#ff7a3eff>殘傷<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得一層<#92dc7bff>野性<>，最多<#92dc7bff>30<>層。普通攻擊附帶<#ffff99ff>命中效果<>，造成<#a974ffff>25<>（每層<#92dc7bff>野性<><#a974ffff>+1<>）<#a974ffff>額外魔法傷害<>，並回復<#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。此效果對小兵與野怪的效力為<#e8a800ff>150%<>。"
+            "option": "\n<#ff7a3eff>殘傷<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得一層<#92dc7bff>野性<>，最多<#92dc7bff>30<>層。普通攻擊附帶<#ffff99ff>命中效果<>，造成<#a974ffff>15<>（每層<#92dc7bff>野性<><#a974ffff>+1<>）<#a974ffff>額外魔法傷害<>，並回復<#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。此效果對小兵與野怪的效力為<#e8a800ff>150%<>。"
         },
         "radiant_feral_flare": {
             "name": "聖光野性烈炎",
-            "option": "\n<#ff7a3eff>殘傷<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得一層<#92dc7bff>野性<>，最多<#92dc7bff>50<>層。普通攻擊附帶<#ffff99ff>命中效果<>，造成<#a974ffff>25<>（每層<#92dc7bff>野性<><#a974ffff>+1<>）<#a974ffff>額外魔法傷害<>，並回復<#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。此效果對小兵與野怪的效力為<#e8a800ff>150%<>。"
+            "option": "\n<#ff7a3eff>殘傷<>：每參與擊殺一名英雄或擊殺一隻野怪，獲得一層<#92dc7bff>野性<>，最多<#92dc7bff>50<>層。普通攻擊附帶<#ffff99ff>命中效果<>，造成<#a974ffff>15<>（每層<#92dc7bff>野性<><#a974ffff>+1<>）<#a974ffff>額外魔法傷害<>，並回復<#60e84dff>10<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。此效果對小兵與野怪的效力為<#e8a800ff>150%<>。"
         },
         "forbidden_idol": {
             "name": "禁忌之像",
@@ -15374,7 +15566,7 @@
         },
         "madreds_razors": {
             "name": "麥瑞德之爪",
-            "option": "\n<#ff7a3eff>殘傷<>：對野怪的普通攻擊附帶<#ffff99ff>命中效果<>，造成<#a974ffff>25額外魔法傷害<>，並回復<#60e84dff>5<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
+            "option": "\n<#ff7a3eff>殘傷<>：對野怪的普通攻擊附帶<#ffff99ff>命中效果<>，造成<#a974ffff>15額外魔法傷害<>，並回復<#60e84dff>5<i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> 生命值<>。"
         },
         "hunters_machete": {
             "name": "狩獵者彎刀",
@@ -15415,6 +15607,22 @@
         "radiant_hexoptics_c44": {
             "name": "聖光海克斯光學C44",
             "option": "\n<#ff7a3eff>放大<>：依距離使普通攻擊造成最多<#e8a800ff>15%額外傷害<>（於<#ff86c2ff>55<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>時效果最大）。\n\n<#ff7a3eff>奧術瞄準<>：參與擊殺英雄時，獲得<#ff86c2ff>15<i#asset/base/ui/banpick/champion_stat_icon:range_0> 額外攻擊距離<>，持續<#e8a800ff>8秒<>。"
+        },
+        "youmuus_ghostblade": {
+            "name": "妖夢鬼刀",
+            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>10%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>45秒<>）。"
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "聖光妖夢鬼刀",
+            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>15%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>30%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>45秒<>）。"
+        },
+        "thornmail": {
+            "name": "荊棘之甲",
+            "option": "\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>15<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>10%<>的<#a974ffff>魔法傷害<>。若攻擊者為英雄，還會施加<#ff7a3eff>重創效果<>，<#d94c49ff>使其受到的治療效果降低40%<>，持續<#e8a800ff>3秒<>。"
+        },
+        "radiant_thornmail": {
+            "name": "聖光荊棘之甲",
+            "option": "\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>25<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>15%<>的<#a974ffff>魔法傷害<>。若攻擊者為英雄，還會施加<#ff7a3eff>重創效果<>，<#d94c49ff>使其受到的治療效果降低40%<>，持續<#e8a800ff>3秒<>。"
         }
     },
     "pl": {
@@ -15527,12 +15735,12 @@
             "option": "<#ff7a3eff>Opancerzenie<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Kolczasta Kolczuga",
-            "option": "<#ff7a3eff>Opancerzenie<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>8%<>."
+            "name": "Tarcza Płynnego Kamienia",
+            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zwiększa twój całkowity <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerz<> o <#ffdd8eff>20%<>. Dodatkowo zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Świetlista Kolczasta Kolczuga",
-            "option": "<#ff7a3eff>Opancerzenie<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>12%<>.\n\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>."
+            "name": "Świetlista Tarcza Płynnego Kamienia",
+            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zwiększa twój całkowity <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerz<> o <#ffdd8eff>20%<>. Dodatkowo zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>12%<>.\n\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>."
         },
         "mystic_cloak": {
             "name": "Opończa Antymagiczna",
@@ -15896,11 +16104,11 @@
         },
         "hextech_gunblade": {
             "name": "Miecz-Pistolet Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Piorun<>: Zadanie obrażeń wrogiemu bohaterowi <#d94c49ff>poniżej 50% maksymalnego zdrowia<> razi go, zadając <#a974ffff>obrażenia magiczne<> równe <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> i <#d94c49ff>spowalniając<> go o <#d94c49ff>25%<> na <#e8a800ff>1.5 sek.<> (czas odnowienia: <#e8a800ff>40 sek.<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Świetlisty Miecz-Pistolet Hextech",
-            "option": ""
+            "option": "\n<#ff7a3eff>Piorun<>: Zadanie obrażeń wrogiemu bohaterowi <#d94c49ff>poniżej 50% maksymalnego zdrowia<> razi go, zadając <#a974ffff>obrażenia magiczne<> równe <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mocy umiejętności<> i <#d94c49ff>spowalniając<> go o <#d94c49ff>25%<> na <#e8a800ff>1.5 sek.<> (czas odnowienia: <#e8a800ff>40 sek.<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Kryształowy Kostur Rylai",
@@ -16156,11 +16364,11 @@
         },
         "feral_flare": {
             "name": "Dzika Flara",
-            "option": "\n<#ff7a3eff>Okaleczenie<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz ładunek <#92dc7bff>Dzikości<>, do <#92dc7bff>30<>. Podstawowe ataki zadają <#ffff99ff>przy trafieniu<> <#a974ffff>25<> (<#a974ffff>+1<> za ładunek <#92dc7bff>Dzikości<>) pkt <#a974ffff>dodatkowych obrażeń magicznych<> i przywracają <#60e84dff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zdrowia<>. Przeciwko stworom i potworom ten efekt ma <#e8a800ff>150% skuteczności<>."
+            "option": "\n<#ff7a3eff>Okaleczenie<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz ładunek <#92dc7bff>Dzikości<>, do <#92dc7bff>30<>. Podstawowe ataki zadają <#ffff99ff>przy trafieniu<> <#a974ffff>15<> (<#a974ffff>+1<> za ładunek <#92dc7bff>Dzikości<>) pkt <#a974ffff>dodatkowych obrażeń magicznych<> i przywracają <#60e84dff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zdrowia<>. Przeciwko stworom i potworom ten efekt ma <#e8a800ff>150% skuteczności<>."
         },
         "radiant_feral_flare": {
             "name": "Świetlista Dzika Flara",
-            "option": "\n<#ff7a3eff>Okaleczenie<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz ładunek <#92dc7bff>Dzikości<>, do <#92dc7bff>50<>. Podstawowe ataki zadają <#ffff99ff>przy trafieniu<> <#a974ffff>25<> (<#a974ffff>+1<> za ładunek <#92dc7bff>Dzikości<>) pkt <#a974ffff>dodatkowych obrażeń magicznych<> i przywracają <#60e84dff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zdrowia<>. Przeciwko stworom i potworom ten efekt ma <#e8a800ff>150% skuteczności<>."
+            "option": "\n<#ff7a3eff>Okaleczenie<>: Za każdy udział w zabójstwie bohatera i każdego zabitego potwora zyskujesz ładunek <#92dc7bff>Dzikości<>, do <#92dc7bff>50<>. Podstawowe ataki zadają <#ffff99ff>przy trafieniu<> <#a974ffff>15<> (<#a974ffff>+1<> za ładunek <#92dc7bff>Dzikości<>) pkt <#a974ffff>dodatkowych obrażeń magicznych<> i przywracają <#60e84dff>10 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zdrowia<>. Przeciwko stworom i potworom ten efekt ma <#e8a800ff>150% skuteczności<>."
         },
         "forbidden_idol": {
             "name": "Bluźnierczy Bożek",
@@ -16560,7 +16768,7 @@
         },
         "madreds_razors": {
             "name": "Szpony Madreda",
-            "option": "\n<#ff7a3eff>Okaleczenie<>: Podstawowe ataki przeciwko potworom zadają <#ffff99ff>przy trafieniu<> <#a974ffff>25 pkt dodatkowych obrażeń magicznych<> i przywracają <#60e84dff>5 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zdrowia<>."
+            "option": "\n<#ff7a3eff>Okaleczenie<>: Podstawowe ataki przeciwko potworom zadają <#ffff99ff>przy trafieniu<> <#a974ffff>15 pkt dodatkowych obrażeń magicznych<> i przywracają <#60e84dff>5 pkt <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> zdrowia<>."
         },
         "hunters_machete": {
             "name": "Maczeta Łowcy",
@@ -16601,6 +16809,22 @@
         "radiant_hexoptics_c44": {
             "name": "Świetlista Hexoptyka C44",
             "option": "\n<#ff7a3eff>Powiększenie<>: Podstawowe ataki zadają do <#e8a800ff>15% dodatkowych obrażeń<> w zależności od odległości (maksymalny efekt w <#ff86c2ff>zasięgu 55 <i#asset/base/ui/banpick/champion_stat_icon:range_0><>).\n\n<#ff7a3eff>Celność Arkanów<>: Udział w zabójstwie bohatera zapewnia <#ff86c2ff>15 pkt <i#asset/base/ui/banpick/champion_stat_icon:range_0> zasięgu ataku<> na <#e8a800ff>8 sek.<>"
+        },
+        "youmuus_ghostblade": {
+            "name": "Widmowe Ostrze Youmuu",
+            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Świetliste Widmowe Ostrze Youmuu",
+            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
+        },
+        "thornmail": {
+            "name": "Kolczasta Kolczuga",
+            "option": "\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>15<> + <#ffdd8eff>10%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>. Jeśli atakujący jest bohaterem, nakładasz też <#ff7a3eff>Głębokie Rany<>, które <#d94c49ff>zmniejszają jego leczenie o 40%<> na <#e8a800ff>3 sek.<>"
+        },
+        "radiant_thornmail": {
+            "name": "Świetlista Kolczasta Kolczuga",
+            "option": "\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>25<> + <#ffdd8eff>15%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>. Jeśli atakujący jest bohaterem, nakładasz też <#ff7a3eff>Głębokie Rany<>, które <#d94c49ff>zmniejszają jego leczenie o 40%<> na <#e8a800ff>3 sek.<>"
         }
     },
     "th": {
@@ -16713,12 +16937,12 @@
             "option": "<#ff7a3eff>Plating<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>5%<>"
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>8%<>"
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: เพิ่ม<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>รวมของคุณ <#ffdd8eff>20%<> นอกจากนี้ยังลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>8%<>"
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>12%<>\n\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี"
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: เพิ่ม<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>รวมของคุณ <#ffdd8eff>20%<> นอกจากนี้ยังลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>12%<>\n\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี"
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -17082,11 +17306,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50% ของพลังชีวิตสูงสุด<> จะช็อตเป้าหมาย สร้าง<#a974ffff>ดาเมจเวท<>เท่ากับ <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> และ<#d94c49ff>สโลว์<>เป้าหมาย <#d94c49ff>25%<> เป็นเวลา <#e8a800ff>1.5 วินาที<> (คูลดาวน์ <#e8a800ff>40 วินาที<>)"
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูที่<#d94c49ff>มีพลังชีวิตต่ำกว่า 50% ของพลังชีวิตสูงสุด<> จะช็อตเป้าหมาย สร้าง<#a974ffff>ดาเมจเวท<>เท่ากับ <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>พลังเวท<> และ<#d94c49ff>สโลว์<>เป้าหมาย <#d94c49ff>25%<> เป็นเวลา <#e8a800ff>1.5 วินาที<> (คูลดาวน์ <#e8a800ff>40 วินาที<>)"
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -17342,11 +17566,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: ได้รับสแตค <#92dc7bff>Feral<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#92dc7bff>30<> การโจมตีปกติสร้าง<#a974ffff>25<> (<#a974ffff>+1<> ต่อสแตค <#92dc7bff>Feral<>) <#a974ffff>โบนัสดาเมจเวท<> <#ffff99ff>On-Hit<> และฟื้นฟู<#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> พลังชีวิต<> เอฟเฟกต์นี้มี<#e8a800ff>ประสิทธิภาพ 150%<> ต่อมินเนี่ยนและมอนสเตอร์"
+            "option": "\n<#ff7a3eff>Maim<>: ได้รับสแตค <#92dc7bff>Feral<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#92dc7bff>30<> การโจมตีปกติสร้าง<#a974ffff>15<> (<#a974ffff>+1<> ต่อสแตค <#92dc7bff>Feral<>) <#a974ffff>โบนัสดาเมจเวท<> <#ffff99ff>On-Hit<> และฟื้นฟู<#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> พลังชีวิต<> เอฟเฟกต์นี้มี<#e8a800ff>ประสิทธิภาพ 150%<> ต่อมินเนี่ยนและมอนสเตอร์"
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: ได้รับสแตค <#92dc7bff>Feral<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#92dc7bff>50<> การโจมตีปกติสร้าง<#a974ffff>25<> (<#a974ffff>+1<> ต่อสแตค <#92dc7bff>Feral<>) <#a974ffff>โบนัสดาเมจเวท<> <#ffff99ff>On-Hit<> และฟื้นฟู<#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> พลังชีวิต<> เอฟเฟกต์นี้มี<#e8a800ff>ประสิทธิภาพ 150%<> ต่อมินเนี่ยนและมอนสเตอร์"
+            "option": "\n<#ff7a3eff>Maim<>: ได้รับสแตค <#92dc7bff>Feral<> ทุกครั้งที่สังหารหรือช่วยสังหารแชมเปี้ยน และสังหารมอนสเตอร์ สูงสุด <#92dc7bff>50<> การโจมตีปกติสร้าง<#a974ffff>15<> (<#a974ffff>+1<> ต่อสแตค <#92dc7bff>Feral<>) <#a974ffff>โบนัสดาเมจเวท<> <#ffff99ff>On-Hit<> และฟื้นฟู<#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> พลังชีวิต<> เอฟเฟกต์นี้มี<#e8a800ff>ประสิทธิภาพ 150%<> ต่อมินเนี่ยนและมอนสเตอร์"
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
@@ -17746,7 +17970,7 @@
         },
         "madreds_razors": {
             "name": "Madred's Razors",
-            "option": "\n<#ff7a3eff>Maim<>: การโจมตีปกติใส่มอนสเตอร์จะสร้าง<#a974ffff>โบนัสดาเมจเวท 25<> <#ffff99ff>On-Hit<> และฟื้นฟู<#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> พลังชีวิต<>"
+            "option": "\n<#ff7a3eff>Maim<>: การโจมตีปกติใส่มอนสเตอร์จะสร้าง<#a974ffff>โบนัสดาเมจเวท 15<> <#ffff99ff>On-Hit<> และฟื้นฟู<#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> พลังชีวิต<>"
         },
         "hunters_machete": {
             "name": "Hunter's Machete",
@@ -17787,6 +18011,22 @@
         "radiant_hexoptics_c44": {
             "name": "Radiant Hexoptics C44",
             "option": "\n<#ff7a3eff>Magnification<>: การโจมตีปกติสร้าง<#e8a800ff>ดาเมจเพิ่มเติมสูงสุด 15%<> ตามระยะห่าง (เอฟเฟกต์สูงสุดที่ <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>)\n\n<#ff7a3eff>Arcane Aim<>: เมื่อมีส่วนร่วมในการสังหารแชมเปี้ยน จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>ระยะโจมตี +15<> เป็นเวลา <#e8a800ff>8 วินาที<>"
+        },
+        "youmuus_ghostblade": {
+            "name": "Youmuu's Ghostblade",
+            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>10%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>20%<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Radiant Youmuu's Ghostblade",
+            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>15%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>30%<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>15<> + <#ffdd8eff>10%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี หากผู้โจมตีเป็นแชมเปี้ยน จะติด <#ff7a3eff>Grievous Wounds<> <#d94c49ff>ลดการฟื้นฟูของเป้าหมายลง 40%<> เป็นเวลา <#e8a800ff>3 วินาที<>"
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>25<> + <#ffdd8eff>15%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี หากผู้โจมตีเป็นแชมเปี้ยน จะติด <#ff7a3eff>Grievous Wounds<> <#d94c49ff>ลดการฟื้นฟูของเป้าหมายลง 40%<> เป็นเวลา <#e8a800ff>3 วินาที<>"
         }
     },
     "nl": {
@@ -17899,12 +18139,12 @@
             "option": "<#ff7a3eff>Plating<>: Vermindert de schade van basisaanvallen met <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Vermindert de schade van basisaanvallen met <#e8a800ff>8%<>."
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Verhoogt je totale <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> met <#ffdd8eff>20%<>. Daarnaast vermindert het de schade van basisaanvallen met <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Vermindert de schade van basisaanvallen met <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>."
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Verhoogt je totale <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> met <#ffdd8eff>20%<>. Daarnaast vermindert het de schade van basisaanvallen met <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -18268,11 +18508,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Schade toebrengen aan een vijandelijke kampioen <#d94c49ff>onder 50% van zijn maximale gezondheid<> geeft hem een schok die <#a974ffff>magische schade<> toebrengt gelijk aan <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> en hem <#e8a800ff>1.5 seconden<> lang met <#d94c49ff>25%<> <#d94c49ff>vertraagt<> (<#e8a800ff>40 seconden<> afkoeltijd)."
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Schade toebrengen aan een vijandelijke kampioen <#d94c49ff>onder 50% van zijn maximale gezondheid<> geeft hem een schok die <#a974ffff>magische schade<> toebrengt gelijk aan <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>vaardigheidskracht<> en hem <#e8a800ff>1.5 seconden<> lang met <#d94c49ff>25%<> <#d94c49ff>vertraagt<> (<#e8a800ff>40 seconden<> afkoeltijd)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -18528,11 +18768,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: Krijg een <#92dc7bff>Feral<>-stapel voor elke kill of assist op een kampioen en elk gedood monster, tot <#92dc7bff>30<>. Basisaanvallen brengen <#ffff99ff>bij treffer<> <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<>-stapel) <#a974ffff>extra magische schade<> toe en herstellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> gezondheid<>. Dit effect werkt voor <#e8a800ff>150%<> tegen minions en monsters."
+            "option": "\n<#ff7a3eff>Maim<>: Krijg een <#92dc7bff>Feral<>-stapel voor elke kill of assist op een kampioen en elk gedood monster, tot <#92dc7bff>30<>. Basisaanvallen brengen <#ffff99ff>bij treffer<> <#a974ffff>15<> (<#a974ffff>+1<> per <#92dc7bff>Feral<>-stapel) <#a974ffff>extra magische schade<> toe en herstellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> gezondheid<>. Dit effect werkt voor <#e8a800ff>150%<> tegen minions en monsters."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: Krijg een <#92dc7bff>Feral<>-stapel voor elke kill of assist op een kampioen en elk gedood monster, tot <#92dc7bff>50<>. Basisaanvallen brengen <#ffff99ff>bij treffer<> <#a974ffff>25<> (<#a974ffff>+1<> per <#92dc7bff>Feral<>-stapel) <#a974ffff>extra magische schade<> toe en herstellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> gezondheid<>. Dit effect werkt voor <#e8a800ff>150%<> tegen minions en monsters."
+            "option": "\n<#ff7a3eff>Maim<>: Krijg een <#92dc7bff>Feral<>-stapel voor elke kill of assist op een kampioen en elk gedood monster, tot <#92dc7bff>50<>. Basisaanvallen brengen <#ffff99ff>bij treffer<> <#a974ffff>15<> (<#a974ffff>+1<> per <#92dc7bff>Feral<>-stapel) <#a974ffff>extra magische schade<> toe en herstellen <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> gezondheid<>. Dit effect werkt voor <#e8a800ff>150%<> tegen minions en monsters."
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
@@ -18932,7 +19172,7 @@
         },
         "madreds_razors": {
             "name": "Madred's Razors",
-            "option": "\n<#ff7a3eff>Maim<>: Basisaanvallen tegen monsters brengen <#ffff99ff>bij treffer<> <#a974ffff>25 extra magische schade<> toe en herstellen <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> gezondheid<>."
+            "option": "\n<#ff7a3eff>Maim<>: Basisaanvallen tegen monsters brengen <#ffff99ff>bij treffer<> <#a974ffff>15 extra magische schade<> toe en herstellen <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> gezondheid<>."
         },
         "hunters_machete": {
             "name": "Hunter's Machete",
@@ -18973,6 +19213,22 @@
         "radiant_hexoptics_c44": {
             "name": "Radiant Hexoptics C44",
             "option": "\n<#ff7a3eff>Magnification<>: Basisaanvallen brengen op basis van afstand tot <#e8a800ff>15% extra schade<> toe (maximaal effect op <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<>).\n\n<#ff7a3eff>Arcane Aim<>: Kills en assists op kampioenen geven je <#e8a800ff>8 seconden<> lang <#ff86c2ff>15 extra <i#asset/base/ui/banpick/champion_stat_icon:range_0> aanvalsbereik<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Youmuu's Ghostblade",
+            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>4 seconden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Radiant Youmuu's Ghostblade",
+            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>4 seconden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>15<> + <#ffdd8eff>10%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>. Is de aanvaller een kampioen, dan krijgt die ook <#ff7a3eff>Grievous Wounds<>, wat <#d94c49ff>diens genezing met 40% vermindert<> gedurende <#e8a800ff>3 seconden<>."
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>25<> + <#ffdd8eff>15%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>. Is de aanvaller een kampioen, dan krijgt die ook <#ff7a3eff>Grievous Wounds<>, wat <#d94c49ff>diens genezing met 40% vermindert<> gedurende <#e8a800ff>3 seconden<>."
         }
     },
     "haw": {
@@ -19085,12 +19341,12 @@
             "option": "<#ff7a3eff>Plating<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>5%<>."
         },
         "eternal_iron_plate": {
-            "name": "Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>8%<>."
+            "name": "Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻonui i kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> holoʻokoʻa ma <#ffdd8eff>20%<>. Eia hou, hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
-            "name": "Radiant Thornmail",
-            "option": "<#ff7a3eff>Plating<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka."
+            "name": "Radiant Shield of Molten Stone",
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻonui i kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> holoʻokoʻa ma <#ffdd8eff>20%<>. Eia hou, hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -19454,11 +19710,11 @@
         },
         "hextech_gunblade": {
             "name": "Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi <#d94c49ff>ma lalo o 50% o kona ola kiʻekiʻe<>, hōʻeha ka uila iā ia me ka <#a974ffff>pōʻino kilokilo<> e like me <#a974ffff>120<> + <#a974ffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> a <#d94c49ff>hoʻolohi<> iā ia ma <#d94c49ff>25%<> no <#e8a800ff>1.5 kekona<> (manawa kali hou <#e8a800ff>40 kekona<>)."
         },
         "radiant_hextech_gunblade": {
             "name": "Radiant Hextech Gunblade",
-            "option": ""
+            "option": "\n<#ff7a3eff>Lightning Bolt<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi <#d94c49ff>ma lalo o 50% o kona ola kiʻekiʻe<>, hōʻeha ka uila iā ia me ka <#a974ffff>pōʻino kilokilo<> e like me <#a974ffff>180<> + <#a974ffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ap_0> <#a974ffff>mana kilokilo<> a <#d94c49ff>hoʻolohi<> iā ia ma <#d94c49ff>25%<> no <#e8a800ff>1.5 kekona<> (manawa kali hou <#e8a800ff>40 kekona<>)."
         },
         "rylais_crystal_scepter": {
             "name": "Rylai's Crystal Scepter",
@@ -19714,11 +19970,11 @@
         },
         "feral_flare": {
             "name": "Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: Loaʻa iā ʻoe he papa <#92dc7bff>Feral<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#92dc7bff>30<>. Hana nā hoʻouka kumu i <#a974ffff>25<> (<#a974ffff>+1<> no kēlā me kēia papa <#92dc7bff>Feral<>) <#a974ffff>pōʻino kilokilo hou<> <#ffff99ff>ke pā<> a hoʻōla i <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ola<>. He <#e8a800ff>150%<> ka ikaika o kēia hopena i nā kauā a me nā moʻo."
+            "option": "\n<#ff7a3eff>Maim<>: Loaʻa iā ʻoe he papa <#92dc7bff>Feral<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#92dc7bff>30<>. Hana nā hoʻouka kumu i <#a974ffff>15<> (<#a974ffff>+1<> no kēlā me kēia papa <#92dc7bff>Feral<>) <#a974ffff>pōʻino kilokilo hou<> <#ffff99ff>ke pā<> a hoʻōla i <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ola<>. He <#e8a800ff>150%<> ka ikaika o kēia hopena i nā kauā a me nā moʻo."
         },
         "radiant_feral_flare": {
             "name": "Radiant Feral Flare",
-            "option": "\n<#ff7a3eff>Maim<>: Loaʻa iā ʻoe he papa <#92dc7bff>Feral<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#92dc7bff>50<>. Hana nā hoʻouka kumu i <#a974ffff>25<> (<#a974ffff>+1<> no kēlā me kēia papa <#92dc7bff>Feral<>) <#a974ffff>pōʻino kilokilo hou<> <#ffff99ff>ke pā<> a hoʻōla i <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ola<>. He <#e8a800ff>150%<> ka ikaika o kēia hopena i nā kauā a me nā moʻo."
+            "option": "\n<#ff7a3eff>Maim<>: Loaʻa iā ʻoe he papa <#92dc7bff>Feral<> no kēlā me kēia koa āu i pepehi a kōkua paha a me kēlā me kēia moʻo āu i pepehi ai, a hiki i <#92dc7bff>50<>. Hana nā hoʻouka kumu i <#a974ffff>15<> (<#a974ffff>+1<> no kēlā me kēia papa <#92dc7bff>Feral<>) <#a974ffff>pōʻino kilokilo hou<> <#ffff99ff>ke pā<> a hoʻōla i <#60e84dff>10 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ola<>. He <#e8a800ff>150%<> ka ikaika o kēia hopena i nā kauā a me nā moʻo."
         },
         "forbidden_idol": {
             "name": "Forbidden Idol",
@@ -20118,7 +20374,7 @@
         },
         "madreds_razors": {
             "name": "Madred's Razors",
-            "option": "\n<#ff7a3eff>Maim<>: Hana nā hoʻouka kumu i nā moʻo i <#a974ffff>25 pōʻino kilokilo hou<> <#ffff99ff>ke pā<> a hoʻōla i <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ola<>."
+            "option": "\n<#ff7a3eff>Maim<>: Hana nā hoʻouka kumu i nā moʻo i <#a974ffff>15 pōʻino kilokilo hou<> <#ffff99ff>ke pā<> a hoʻōla i <#60e84dff>5 <i#asset/base/ui/banpick/champion_stat_icon:hp_regen_0> ola<>."
         },
         "hunters_machete": {
             "name": "Hunter's Machete",
@@ -20159,6 +20415,22 @@
         "radiant_hexoptics_c44": {
             "name": "Radiant Hexoptics C44",
             "option": "\n<#ff7a3eff>Magnification<>: Hana nā hoʻouka kumu i ka pōʻino hou a hiki i <#e8a800ff>15% pōʻino hou<> e like me ka mamao (ka hopena nui loa ma <#ff86c2ff>55 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>).\n\n<#ff7a3eff>Arcane Aim<>: Hāʻawi ka lanakila ʻana ma luna o kekahi koa iā ʻoe i <#ff86c2ff>15 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā hoʻouka<> hou no <#e8a800ff>8 kekona<>."
+        },
+        "youmuus_ghostblade": {
+            "name": "Youmuu's Ghostblade",
+            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
+        },
+        "radiant_youmuus_ghostblade": {
+            "name": "Radiant Youmuu's Ghostblade",
+            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
+        },
+        "thornmail": {
+            "name": "Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>15<> + <#ffdd8eff>10%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka. Inā he koa ka mea hoʻouka, hoʻopili pū i ka <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>e hoʻēmi ana i kona hoʻōla ʻia ma 40%<> no <#e8a800ff>3 kekona<>."
+        },
+        "radiant_thornmail": {
+            "name": "Radiant Thornmail",
+            "option": "\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>25<> + <#ffdd8eff>15%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka. Inā he koa ka mea hoʻouka, hoʻopili pū i ka <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>e hoʻēmi ana i kona hoʻōla ʻia ma 40%<> no <#e8a800ff>3 kekona<>."
         }
     }
 }

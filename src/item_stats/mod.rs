@@ -783,19 +783,21 @@ const GAME_PASSIVE_FIELDS: [(&str, &str, &str, i64); 8] = [
     ("radiant_sunfire_cape", "effect_bonus_flat_damage", "flat_aoe_damage", 1),
     ("radiant_sunfire_cape", "effect_caster_hp_percent_damage", "max_hp_aoe_ratio", 1),
     ("radiant_sunfire_cape", "effect_max_distance", "aoe_range", 1000),
-    ("radiant_thornmail", "effect_bonus_flat_damage", "flat_damage", 1),
-    ("radiant_thornmail", "effect_caster_defence_percent_damage", "defence_ratio", 1),
+    ("radiant_shield_of_molten_stone", "effect_bonus_flat_damage", "flat_damage", 1),
+    ("radiant_shield_of_molten_stone", "effect_caster_defence_percent_damage", "defence_ratio", 1),
 ];
 
 // Config fields of those items that are the DLL's to read, not the settings
 // file's: Sunfire Cape's Immolate is mod code, and so is both capes' bonus
-// against minions and monsters.
-const GAME_DLL_FIELDS: [(&str, &str); 5] = [
+// against minions and monsters, and Shield of Molten Stone's % armor buff.
+const GAME_DLL_FIELDS: [(&str, &str); 7] = [
     ("sunfire_cape", "effect_bonus_flat_damage"),
     ("sunfire_cape", "effect_caster_hp_percent_damage"),
     ("sunfire_cape", "effect_max_distance"),
     ("sunfire_cape", "effect_minion_bonus_percent"),
     ("radiant_sunfire_cape", "effect_minion_bonus_percent"),
+    ("shield_of_molten_stone", "effect_defence_mult"),
+    ("radiant_shield_of_molten_stone", "effect_defence_mult"),
 ];
 
 // Writes the config's numbers for the game's thirty items (`config.json` over

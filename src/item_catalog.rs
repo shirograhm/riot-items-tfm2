@@ -52,8 +52,8 @@ const RESKIN_ICON: &[(&str, &str)] = &[
     ("dragons_claw", "t4_3"),
     ("ludens_tempest", "t4_4"),
     ("phantom_dancer", "t4_1"),
+    ("shield_of_molten_stone", "t4_2"),
     ("sunfire_cape", "t4_5"),
-    ("thornmail", "t4_2"),
 ];
 
 pub fn icon_frame(slug: &str, is_mod_item: bool) -> Option<&str> {
@@ -219,8 +219,8 @@ pub const GAME_ITEM_NAMES: [(&str, &str); 30] = [
     ("cloth_armor", "steel_armor"),
     ("chain_vest", "gatekeepers_armor"),
     ("bramble_vest", "black_knights_heavy_plate"),
-    ("thornmail", "eternal_iron_plate"),
-    ("radiant_thornmail", "impregnable_fortress"),
+    ("shield_of_molten_stone", "eternal_iron_plate"),
+    ("radiant_shield_of_molten_stone", "impregnable_fortress"),
     ("null_magic_mantle", "mystic_cloak"),
     ("negatron_cloak", "night_hood"),
     ("spectres_cowl", "dusk_raven"),

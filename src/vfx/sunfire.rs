@@ -140,6 +140,9 @@ fn immolate(sim: &mut StableSim<'_>, sunfire: &Immolate, radiant: &Immolate) {
 pub(crate) struct MatchHooks {
     pub(crate) immolate: Immolate,
     pub(crate) radiant_immolate: Immolate,
+    // Shield of Molten Stone's % armor, both tiers.
+    pub(crate) immovable: crate::utils::molten_stone::Immovable,
+    pub(crate) radiant_immovable: crate::utils::molten_stone::Immovable,
     pub(crate) riches: crate::SharedRiches,
 }
 
@@ -165,6 +168,7 @@ impl StableMatchHook for MatchHooks {
                 immolate(sim, &self.immolate, &self.radiant_immolate)
             });
             perf::time(Section::MatchRiches, || self.riches.pay(sim));
+            crate::utils::molten_stone::on_match_tick(sim, &self.immovable, &self.radiant_immovable);
         }
         perf::time(Section::MatchCapture, || {
             crate::item_stats::sim::EndOfMatchItems.on_match_tick(sim, rng_seed)

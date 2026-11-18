@@ -1461,7 +1461,7 @@ const FIELD_FORMATS: [FieldFormat; 6] = [
     },
 ];
 
-const ROW_FORMATS: [RowFormat; 137] = [
+const ROW_FORMATS: [RowFormat; 142] = [
     row(
         "deaths_dance",
         "effect_delayed_damage_percent",
@@ -1553,6 +1553,11 @@ const ROW_FORMATS: [RowFormat; 137] = [
         label::HEALING_REDUCTION,
     ),
     row(
+        "thornmail",
+        "effect_heal_reduce",
+        label::HEALING_REDUCTION,
+    ),
+    row(
         "bloodsong",
         "effect_damaged_amplify",
         label::DAMAGE_TAKEN_BONUS,
@@ -1599,10 +1604,22 @@ const ROW_FORMATS: [RowFormat; 137] = [
         label::SLOW_DURATION,
     )
     .unit(unit::SECONDS),
+    row(
+        "hextech_gunblade",
+        "effect_slow_seconds",
+        label::SLOW_DURATION,
+    )
+    .unit(unit::SECONDS),
     row("eclipse", "effect_duration_seconds", label::MARK_DURATION).unit(unit::SECONDS),
     row("eclipse", "effect_shield_seconds", label::SHIELD_DURATION).unit(unit::SECONDS),
     row(
         "opportunity",
+        "effect_out_of_combat_seconds",
+        label::OUT_OF_COMBAT_TIMER,
+    )
+    .unit(unit::SECONDS),
+    row(
+        "youmuus_ghostblade",
         "effect_out_of_combat_seconds",
         label::OUT_OF_COMBAT_TIMER,
     )
@@ -2002,6 +2019,16 @@ const ROW_FORMATS: [RowFormat; 137] = [
     .unit(unit::MAX_HP),
     row("phage", "effect_move_speed_mult", label::MOVEMENT_SPEED),
     row(
+        "youmuus_ghostblade",
+        "effect_bonus_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
+        "youmuus_ghostblade",
+        "effect_move_speed_mult",
+        label::MOVEMENT_SPEED,
+    ),
+    row(
         "philosophers_medallion",
         "effect_bonus_hp_regen",
         label::HEALTH_REGENERATION,
@@ -2134,7 +2161,7 @@ struct AmountFormat {
 // The placeholders of an amount's numbers, in the order of its fields.
 const AMOUNT_SLOTS: [&str; 3] = ["{A}", "{B}", "{C}"];
 
-const AMOUNT_FORMATS: [AmountFormat; 26] = [
+const AMOUNT_FORMATS: [AmountFormat; 28] = [
     AmountFormat {
         item: "deaths_dance",
         fields: &["effect_bonus_flat_heal", "effect_kill_heal_missing_percent"],
@@ -2238,6 +2265,12 @@ const AMOUNT_FORMATS: [AmountFormat; 26] = [
         amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
     },
     AmountFormat {
+        item: "hextech_gunblade",
+        fields: &["effect_bonus_flat_damage", "effect_ap_percent_damage"],
+        label: label::DAMAGE,
+        amount: ("amount_flat_ap", "[{A}] + [{B}% AP]"),
+    },
+    AmountFormat {
         item: "serpents_fang",
         fields: &["effect_bonus_flat_damage", "effect_ad_percent_damage"],
         label: label::BONUS_DAMAGE,
@@ -2283,6 +2316,12 @@ const AMOUNT_FORMATS: [AmountFormat; 26] = [
         item: "protectors_vow",
         fields: &["effect_bonus_flat_hp", "effect_caster_defence_percent_hp"],
         label: label::BONUS_HEALTH,
+        amount: ("amount_flat_armor", "[{A}] + [{B}% Armor]"),
+    },
+    AmountFormat {
+        item: "thornmail",
+        fields: &["effect_bonus_flat_damage", "effect_caster_defence_percent_damage"],
+        label: label::DAMAGE,
         amount: ("amount_flat_armor", "[{A}] + [{B}% Armor]"),
     },
     AmountFormat {
