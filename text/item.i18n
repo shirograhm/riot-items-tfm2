@@ -110,11 +110,11 @@
         },
         "eternal_iron_plate": {
             "name": "Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: Reduce damage taken from basic attacks by <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by <#ffdd8eff>20%<>. Additionally, reduce damage taken from basic attacks by <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Radiant Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: Reduce damage taken from basic attacks by <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Increase your total <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> by <#ffdd8eff>20%<>. Additionally, reduce damage taken from basic attacks by <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -1312,11 +1312,11 @@
         },
         "eternal_iron_plate": {
             "name": "Lá Chắn Đá Dung Nham",
-            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
+            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Tăng tổng <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn thêm <#ffdd8eff>20%<>. Ngoài ra, giảm <#e8a800ff>8%<> sát thương nhận vào từ đòn đánh thường."
         },
         "impregnable_fortress": {
             "name": "Lá Chắn Đá Dung Nham Ánh Sáng",
-            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
+            "option": "<#ff7a3eff>Vững Như Bàn Thạch<>: Tăng tổng <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn thêm <#ffdd8eff>20%<>. Ngoài ra, giảm <#e8a800ff>12%<> sát thương nhận vào từ đòn đánh thường.\n\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công."
         },
         "mystic_cloak": {
             "name": "Áo Vải",
@@ -2514,11 +2514,11 @@
         },
         "eternal_iron_plate": {
             "name": "熔石之盾",
-            "option": "<#ff7a3eff>岿然如大地<>：受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
+            "option": "<#ff7a3eff>岿然如大地<>：你的总 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>提高 <#ffdd8eff>20%<>。此外，受到的普通攻击伤害降低 <#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
             "name": "光明版熔石之盾",
-            "option": "<#ff7a3eff>岿然如大地<>：受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
+            "option": "<#ff7a3eff>岿然如大地<>：你的总 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>提高 <#ffdd8eff>20%<>。此外，受到的普通攻击伤害降低 <#e8a800ff>12%<>。\n\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>{Flat}<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>{Ratio}%<> 的<#a974ffff>魔法伤害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -3716,11 +3716,11 @@
         },
         "eternal_iron_plate": {
             "name": "Escudo de Rocha Fundida",
-            "option": "<#ff7a3eff>Inabalável como a Terra<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Inabalável como a Terra<>: Aumenta sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total em <#ffdd8eff>20%<>. Além disso, reduz o dano recebido de ataques básicos em <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Escudo de Rocha Fundida Radiante",
-            "option": "<#ff7a3eff>Inabalável como a Terra<>: Reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
+            "option": "<#ff7a3eff>Inabalável como a Terra<>: Aumenta sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total em <#ffdd8eff>20%<>. Além disso, reduz o dano recebido de ataques básicos em <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante."
         },
         "mystic_cloak": {
             "name": "Manto Anula-Magia",
@@ -4918,11 +4918,11 @@
         },
         "eternal_iron_plate": {
             "name": "Щит из расплавленного камня",
-            "option": "<#ff7a3eff>Непоколебимость земли<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Непоколебимость земли<>: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на <#ffdd8eff>20%<>. Кроме того, уменьшает получаемый от базовых атак урон на <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Лучезарный щит из расплавленного камня",
-            "option": "<#ff7a3eff>Непоколебимость земли<>: Уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
+            "option": "<#ff7a3eff>Непоколебимость земли<>: Увеличивает вашу общую <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>броню<> на <#ffdd8eff>20%<>. Кроме того, уменьшает получаемый от базовых атак урон на <#e8a800ff>12%<>.\n\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>."
         },
         "mystic_cloak": {
             "name": "Антимагическая Мантия",
@@ -6120,11 +6120,11 @@
         },
         "eternal_iron_plate": {
             "name": "용암의 방패",
-            "option": "<#ff7a3eff>대지 같은 굳건함<>: 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
+            "option": "<#ff7a3eff>대지 같은 굳건함<>: 총 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#ffdd8eff>20%<> 증가합니다. 또한 기본 공격으로 받는 피해가 <#e8a800ff>8%<> 감소합니다."
         },
         "impregnable_fortress": {
             "name": "찬란한 용암의 방패",
-            "option": "<#ff7a3eff>대지 같은 굳건함<>: 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
+            "option": "<#ff7a3eff>대지 같은 굳건함<>: 총 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>이 <#ffdd8eff>20%<> 증가합니다. 또한 기본 공격으로 받는 피해가 <#e8a800ff>12%<> 감소합니다.\n\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다."
         },
         "mystic_cloak": {
             "name": "마법무효화의 망토",
@@ -7322,11 +7322,11 @@
         },
         "eternal_iron_plate": {
             "name": "モルテンストーン シールド",
-            "option": "<#ff7a3eff>不動なること山の如し<>: 通常攻撃から受けるダメージを<#e8a800ff>8%<>軽減する。"
+            "option": "<#ff7a3eff>不動なること山の如し<>: 自身の合計<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>が<#ffdd8eff>20%<>増加する。さらに、通常攻撃から受けるダメージを<#e8a800ff>8%<>軽減する。"
         },
         "impregnable_fortress": {
             "name": "レディアント モルテンストーン シールド",
-            "option": "<#ff7a3eff>不動なること山の如し<>: 通常攻撃から受けるダメージを<#e8a800ff>12%<>軽減する。\n\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>{Flat}<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>{Ratio}%<>の<#a974ffff>魔法ダメージ<>を与える。"
+            "option": "<#ff7a3eff>不動なること山の如し<>: 自身の合計<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>が<#ffdd8eff>20%<>増加する。さらに、通常攻撃から受けるダメージを<#e8a800ff>12%<>軽減する。\n\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>{Flat}<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>{Ratio}%<>の<#a974ffff>魔法ダメージ<>を与える。"
         },
         "mystic_cloak": {
             "name": "ヌルマジック マント",
@@ -8524,11 +8524,11 @@
         },
         "eternal_iron_plate": {
             "name": "Schild aus Vulkangestein",
-            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Erhöht deine gesamte <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> um <#ffdd8eff>20%<>. Verringert außerdem den Schaden durch Normalangriffe um <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Lichtversion von Schild aus Vulkangestein",
-            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Verringert den Schaden durch Normalangriffe um <#e8a800ff>12%<>.\n\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu."
+            "option": "<#ff7a3eff>Unbeweglich wie die Erde<>: Erhöht deine gesamte <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> um <#ffdd8eff>20%<>. Verringert außerdem den Schaden durch Normalangriffe um <#e8a800ff>12%<>.\n\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu."
         },
         "mystic_cloak": {
             "name": "Nullmagie-Mantel",
@@ -9726,11 +9726,11 @@
         },
         "eternal_iron_plate": {
             "name": "Magma Kalkanı",
-            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Temel saldırılardan alınan hasarı <#e8a800ff>8%<> azaltır."
+            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Toplam <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhını<> <#ffdd8eff>20%<> artırır. Ayrıca temel saldırılardan alınan hasarı <#e8a800ff>8%<> azaltır."
         },
         "impregnable_fortress": {
             "name": "Işıltılı Magma Kalkanı",
-            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Temel saldırılardan alınan hasarı <#e8a800ff>12%<> azaltır.\n\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>{Flat}<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>{Ratio}%<> kadar <#a974ffff>büyü hasarı<> verirsin."
+            "option": "<#ff7a3eff>Toprak Kadar Çetin<>: Toplam <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhını<> <#ffdd8eff>20%<> artırır. Ayrıca temel saldırılardan alınan hasarı <#e8a800ff>12%<> azaltır.\n\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>{Flat}<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>{Ratio}%<> kadar <#a974ffff>büyü hasarı<> verirsin."
         },
         "mystic_cloak": {
             "name": "Büyüsavar Pelerin",
@@ -10928,11 +10928,11 @@
         },
         "eternal_iron_plate": {
             "name": "Escudo de roca fundida",
-            "option": "<#ff7a3eff>Inamovible como la tierra<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Inamovible como la tierra<>: Aumenta tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total un <#ffdd8eff>20%<>. Además, reduce el daño recibido de ataques básicos un <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Escudo de roca fundida radiante",
-            "option": "<#ff7a3eff>Inamovible como la tierra<>: Reduce el daño recibido de ataques básicos un <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>."
+            "option": "<#ff7a3eff>Inamovible como la tierra<>: Aumenta tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> total un <#ffdd8eff>20%<>. Además, reduce el daño recibido de ataques básicos un <#e8a800ff>12%<>.\n\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>."
         },
         "mystic_cloak": {
             "name": "Manto de anulación de magia",
@@ -12130,11 +12130,11 @@
         },
         "eternal_iron_plate": {
             "name": "Bouclier de roche en fusion",
-            "option": "<#ff7a3eff>Inamovible<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Inamovible<>: Augmente votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> totale de <#ffdd8eff>20%<>. De plus, réduit les dégâts subis des attaques de base de <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Bouclier de roche en fusion de la lumière",
-            "option": "<#ff7a3eff>Inamovible<>: Réduit les dégâts subis des attaques de base de <#e8a800ff>12%<>.\n\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>."
+            "option": "<#ff7a3eff>Inamovible<>: Augmente votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> totale de <#ffdd8eff>20%<>. De plus, réduit les dégâts subis des attaques de base de <#e8a800ff>12%<>.\n\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>."
         },
         "mystic_cloak": {
             "name": "Cape de néant",
@@ -13332,11 +13332,11 @@
         },
         "eternal_iron_plate": {
             "name": "Scudo di roccia fusa",
-            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Aumenta la tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> totale del <#ffdd8eff>20%<>. Inoltre, riduce i danni subiti dagli attacchi base del <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Scudo di roccia fusa Radioso",
-            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Riduce i danni subiti dagli attacchi base del <#e8a800ff>12%<>.\n\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>."
+            "option": "<#ff7a3eff>Inamovibile come la Terra<>: Aumenta la tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> totale del <#ffdd8eff>20%<>. Inoltre, riduce i danni subiti dagli attacchi base del <#e8a800ff>12%<>.\n\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>."
         },
         "mystic_cloak": {
             "name": "Cappa anti-magia",
@@ -14534,11 +14534,11 @@
         },
         "eternal_iron_plate": {
             "name": "熔岩護盾",
-            "option": "<#ff7a3eff>不動如山<>：受到普通攻擊的傷害降低<#e8a800ff>8%<>。"
+            "option": "<#ff7a3eff>不動如山<>：自身總<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<>提高<#ffdd8eff>20%<>。此外，受到普通攻擊的傷害降低<#e8a800ff>8%<>。"
         },
         "impregnable_fortress": {
             "name": "聖光熔岩護盾",
-            "option": "<#ff7a3eff>不動如山<>：受到普通攻擊的傷害降低<#e8a800ff>12%<>。\n\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>{Flat}<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>{Ratio}%<>的<#a974ffff>魔法傷害<>。"
+            "option": "<#ff7a3eff>不動如山<>：自身總<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<>提高<#ffdd8eff>20%<>。此外，受到普通攻擊的傷害降低<#e8a800ff>12%<>。\n\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>{Flat}<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>{Ratio}%<>的<#a974ffff>魔法傷害<>。"
         },
         "mystic_cloak": {
             "name": "抗魔斗篷",
@@ -15736,11 +15736,11 @@
         },
         "eternal_iron_plate": {
             "name": "Tarcza Płynnego Kamienia",
-            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zwiększa twój całkowity <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerz<> o <#ffdd8eff>20%<>. Dodatkowo zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Świetlista Tarcza Płynnego Kamienia",
-            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>12%<>.\n\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>."
+            "option": "<#ff7a3eff>Niewzruszoność Ziemi<>: Zwiększa twój całkowity <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerz<> o <#ffdd8eff>20%<>. Dodatkowo zmniejsza obrażenia otrzymywane od podstawowych ataków o <#e8a800ff>12%<>.\n\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>."
         },
         "mystic_cloak": {
             "name": "Opończa Antymagiczna",
@@ -16938,11 +16938,11 @@
         },
         "eternal_iron_plate": {
             "name": "Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>8%<>"
+            "option": "<#ff7a3eff>Immovable as the Earth<>: เพิ่ม<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>รวมของคุณ <#ffdd8eff>20%<> นอกจากนี้ยังลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>8%<>"
         },
         "impregnable_fortress": {
             "name": "Radiant Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: ลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>12%<>\n\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี"
+            "option": "<#ff7a3eff>Immovable as the Earth<>: เพิ่ม<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>รวมของคุณ <#ffdd8eff>20%<> นอกจากนี้ยังลดดาเมจที่ได้รับจากการโจมตีปกติลง <#e8a800ff>12%<>\n\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี"
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -18140,11 +18140,11 @@
         },
         "eternal_iron_plate": {
             "name": "Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: Vermindert de schade van basisaanvallen met <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Verhoogt je totale <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> met <#ffdd8eff>20%<>. Daarnaast vermindert het de schade van basisaanvallen met <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Radiant Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: Vermindert de schade van basisaanvallen met <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>."
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Verhoogt je totale <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> met <#ffdd8eff>20%<>. Daarnaast vermindert het de schade van basisaanvallen met <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",
@@ -19342,11 +19342,11 @@
         },
         "eternal_iron_plate": {
             "name": "Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>8%<>."
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻonui i kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> holoʻokoʻa ma <#ffdd8eff>20%<>. Eia hou, hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>8%<>."
         },
         "impregnable_fortress": {
             "name": "Radiant Shield of Molten Stone",
-            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka."
+            "option": "<#ff7a3eff>Immovable as the Earth<>: Hoʻonui i kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> holoʻokoʻa ma <#ffdd8eff>20%<>. Eia hou, hoʻēmi i ka pōʻino mai nā hoʻouka kumu ma <#e8a800ff>12%<>.\n\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>{Flat}<> + <#ffdd8eff>{Ratio}%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka."
         },
         "mystic_cloak": {
             "name": "Null-Magic Mantle",

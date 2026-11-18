@@ -11,6 +11,7 @@ pub(crate) mod heal_watch;
 pub(crate) mod immobilize_watch;
 pub(crate) mod item_meta;
 pub(crate) mod match_rules;
+pub(crate) mod molten_stone;
 pub(crate) mod own_team_log;
 pub(crate) mod perf;
 pub(crate) mod proc_queue;

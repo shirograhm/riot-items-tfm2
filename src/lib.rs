@@ -897,9 +897,21 @@ fn init(host: &StableHost) -> StableMod {
     // Both capes' burns, for the strongest-Immolate-wins check.
     immolate.note_as(sunfire::SUNFIRE_KEY);
     radiant_immolate.note_as(sunfire::RADIANT_SUNFIRE_KEY);
+    // Shield of Molten Stone's Immovable as the Earth % armor, a buff on every
+    // holder (the game's item cannot run code).
+    let immovable = configs
+        .get("shield_of_molten_stone")
+        .map(utils::molten_stone::Immovable::with_config)
+        .unwrap_or_default();
+    let radiant_immovable = configs
+        .get("radiant_shield_of_molten_stone")
+        .map(utils::molten_stone::Immovable::with_config)
+        .unwrap_or_default();
     reg.set_match_hook(sunfire::MatchHooks {
         immolate,
         radiant_immolate,
+        immovable,
+        radiant_immovable,
         riches,
     });
     reg.set_server_extension(NativeTapExtension);

@@ -24,6 +24,8 @@ pub(crate) enum Scaling {
 }
 
 // The champion's `category`: what the game groups it under in the draft.
+// `Tank` is new in game 0.7.3 (stable ABI 11); a Tank champion counts as
+// tanking whatever its tags say, and as melee.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Class {
     Melee,
@@ -31,6 +33,7 @@ pub(crate) enum Class {
     Magician,
     Util,
     Assassin,
+    Tank,
 }
 
 impl Class {
@@ -41,6 +44,7 @@ impl Class {
             "Magician" => Some(Class::Magician),
             "Util" => Some(Class::Util),
             "Assassin" => Some(Class::Assassin),
+            "Tank" => Some(Class::Tank),
             _ => None,
         }
     }
@@ -52,6 +56,7 @@ impl Class {
             ChampionCategoryV1::Magician => Class::Magician,
             ChampionCategoryV1::Util => Class::Util,
             ChampionCategoryV1::Assassin => Class::Assassin,
+            ChampionCategoryV1::Tank => Class::Tank,
         }
     }
 }
@@ -75,7 +80,7 @@ pub(crate) struct ChampionTraits {
     pub scaling: Option<Scaling>,
     // `None` when the source did not say.
     pub class: Option<Class>,
-    // Tagged `Tank`.
+    // Tagged `Tank`, or in the `Tank` class.
     pub tank: bool,
     // Tagged `Heal` or `Shield`, for whomever (a Vampire's healing is its own).
     pub sustains: bool,
@@ -109,7 +114,7 @@ impl ChampionTraits {
         Self {
             scaling: scaling_of(flags & AD != 0, flags & AP != 0),
             class,
-            tank: flags & TANK != 0,
+            tank: flags & TANK != 0 || class == Some(Class::Tank),
             sustains: flags & (HEAL | SHIELD) != 0,
             aids,
             cc: flags & CC != 0,
@@ -162,7 +167,7 @@ fn ranged_of(
         (true, false, _) => Some(true),
         (false, true, _) => Some(false),
         (false, false, Some(Class::Range)) => Some(true),
-        (false, false, Some(Class::Melee)) => Some(false),
+        (false, false, Some(Class::Melee | Class::Tank)) => Some(false),
         _ => None,
     }
 }
@@ -267,7 +272,7 @@ const VANILLA: &[(&str, u8, Class, usize)] = &[
     ("soldier", AD, Class::Range, 60),
     ("spellbreaker", AD | AP | CC, Class::Melee, 28),
     ("spirit_caller", AP | HEAL, Class::Util, 60),
-    ("strongman", AD | TANK | SHIELD | CC, Class::Melee, 28),
+    ("strongman", AD | TANK | SHIELD | CC, Class::Tank, 28), // Melee until 0.7.3
     ("swordman", AD, Class::Melee, 25),
     ("taoist", AP | CC, Class::Util, 60),
     ("vampire", AP | HEAL, Class::Magician, 25),
@@ -802,7 +807,7 @@ pub(crate) fn learn(ctx: &StableClient<'_>) {
                 let traits = ChampionTraits {
                     scaling: scaling_of(has(ChampionTagV1::Ad), has(ChampionTagV1::Ap)),
                     class,
-                    tank: has(ChampionTagV1::Tank),
+                    tank: has(ChampionTagV1::Tank) || class == Some(Class::Tank),
                     sustains: has(ChampionTagV1::Heal) || has(ChampionTagV1::Shield),
                     cc: has(ChampionTagV1::Cc),
                     // The brief lacks immobilizes, ally aid and attack reach,

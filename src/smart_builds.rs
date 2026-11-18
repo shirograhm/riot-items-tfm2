@@ -734,7 +734,8 @@ pub(crate) fn boots_for(champion: &str, role: Role, enemies: &[&str]) -> &'stati
     match traits.class {
         Some(Class::Range) => BERSERKERS_GREAVES,
         Some(Class::Assassin) => IONIAN_BOOTS,
-        Some(Class::Melee) => GLUTTONOUS_GREAVES,
+        // A Tank-class champion took the tank branch above; this arm is for completeness.
+        Some(Class::Melee | Class::Tank) => GLUTTONOUS_GREAVES,
         Some(Class::Magician) => SORCERERS_SHOES,
         Some(Class::Util) if traits.sustains => IONIAN_BOOTS,
         Some(Class::Util) | None => BOOTS_OF_SWIFTNESS,
