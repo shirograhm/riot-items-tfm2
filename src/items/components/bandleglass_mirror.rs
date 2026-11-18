@@ -66,6 +66,7 @@ impl StableItem for BandleglassMirror {
             "staff_of_flowing_water".to_string(),
             "imperial_mandate".to_string(),
             "moonstone_renewer".to_string(),
+            "shurelyas_battlesong".to_string(),
         ]
     }
 

@@ -63,17 +63,21 @@ const LETHALITY_BY_KEY: &[(&str, usize)] = &[
     ("edge_of_night", 15),
     ("hubris", 18),
     ("opportunity", 18),
+    ("profane_hydra", 18),
     ("radiant_axiom_arc", 18),
     ("radiant_bastionbreaker", 22),
     ("radiant_collector", 10),
     ("radiant_edge_of_night", 15),
     ("radiant_hubris", 18),
     ("radiant_opportunity", 18),
+    ("radiant_profane_hydra", 18),
     ("radiant_serpents_fang", 15),
     ("radiant_voltaic_cyclosword", 12),
+    ("radiant_youmuus_ghostblade", 18),
     ("serpents_fang", 15),
     ("serrated_dirk", 10),
     ("voltaic_cyclosword", 12),
+    ("youmuus_ghostblade", 18),
 ];
 
 static LETHALITY_TABLE: std::sync::OnceLock<std::collections::HashMap<String, usize>> =
@@ -677,6 +681,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("opportunity" => Opportunity));
     reg.add_item(configured!("overlords_bloodmail" => OverlordsBloodmail));
     reg.add_item(configured!("philosophers_stone" => PhilosophersStone));
+    reg.add_item(configured!("profane_hydra" => ProfaneHydra));
     reg.add_item(configured!("protectors_vow" => ProtectorsVow));
     reg.add_item(configured!("protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured!("rabadons_deathcap" => RabadonsDeathcap));
@@ -691,6 +696,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("serpents_fang" => SerpentsFang));
     reg.add_item(configured!("seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured!("shadowflame" => Shadowflame));
+    reg.add_item(configured!("shurelyas_battlesong" => ShurelyasBattlesong));
     reg.add_item(configured!("solstice_sleigh" => SolsticeSleigh, shared_riches));
     reg.add_item(configured!("spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured!("spirit_visage" => SpiritVisage));
@@ -699,6 +705,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured!("steraks_gage" => SteraksGage));
     reg.add_item(configured!("stormrazor" => Stormrazor));
     reg.add_item(configured!("stormsurge" => Stormsurge));
+    reg.add_item(configured!("stridebreaker" => Stridebreaker));
     reg.add_item(configured!("sundered_sky" => SunderedSky));
     reg.add_item(configured!("sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured!("terminus" => Terminus));
@@ -787,6 +794,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_opportunity" => Opportunity));
     reg.add_item(configured_radiant!("radiant_overlords_bloodmail" => OverlordsBloodmail));
     reg.add_item(configured_radiant!("radiant_philosophers_stone" => PhilosophersStone));
+    reg.add_item(configured_radiant!("radiant_profane_hydra" => ProfaneHydra));
     reg.add_item(configured_radiant!("radiant_protectors_vow" => ProtectorsVow));
     reg.add_item(configured_radiant!("radiant_protoplasm_harness" => ProtoplasmHarness));
     reg.add_item(configured_radiant!("radiant_rabadons_deathcap" => RabadonsDeathcap));
@@ -801,6 +809,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_serpents_fang" => SerpentsFang));
     reg.add_item(configured_radiant!("radiant_seryldas_grudge" => SeryldasGrudge));
     reg.add_item(configured_radiant!("radiant_shadowflame" => Shadowflame));
+    reg.add_item(configured_radiant!("radiant_shurelyas_battlesong" => ShurelyasBattlesong));
     reg.add_item(configured_radiant!("radiant_solstice_sleigh" => SolsticeSleigh, shared_riches));
     reg.add_item(configured_radiant!("radiant_spear_of_shojin" => SpearOfShojin));
     reg.add_item(configured_radiant!("radiant_spirit_visage" => SpiritVisage));
@@ -809,6 +818,7 @@ fn init(host: &StableHost) -> StableMod {
     reg.add_item(configured_radiant!("radiant_steraks_gage" => SteraksGage));
     reg.add_item(configured_radiant!("radiant_stormrazor" => Stormrazor));
     reg.add_item(configured_radiant!("radiant_stormsurge" => Stormsurge));
+    reg.add_item(configured_radiant!("radiant_stridebreaker" => Stridebreaker));
     reg.add_item(configured_radiant!("radiant_sundered_sky" => SunderedSky));
     reg.add_item(configured_radiant!("radiant_sword_of_blossoming_dawn" => SwordOfBlossomingDawn));
     reg.add_item(configured_radiant!("radiant_terminus" => Terminus));

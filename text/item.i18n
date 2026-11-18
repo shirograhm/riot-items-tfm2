@@ -1186,11 +1186,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Youmuu's Ghostblade",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>45 second<> cooldown)."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (<#e8a800ff>45 second<> cooldown)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
-            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>45 second<> cooldown)."
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Haunt<>: After being out of combat with enemy champions for <#e8a800ff>5 seconds<>, gain <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<>.\n\n<#ff7a3eff>Wraith Step<>: Damaging an enemy champion grants <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>movement speed<> for <#e8a800ff>2 seconds<> (<#e8a800ff>45 second<> cooldown)."
         },
         "thornmail": {
             "name": "Thornmail",
@@ -1199,6 +1199,30 @@
         "radiant_thornmail": {
             "name": "Radiant Thornmail",
             "option": "\n<#ff7a3eff>Thorns<>: When struck by a basic attack, retaliate <#ffdd8eff>25<> + <#ffdd8eff>15%<> of your <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armor<> as <#a974ffff>magic damage<> to the attacker. If the attacker is a champion, also apply <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>reducing their healing by 40%<> for <#e8a800ff>3 seconds<>."
+        },
+        "profane_hydra": {
+            "name": "Profane Hydra",
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Radiant Profane Hydra",
+            "option": "\nGain <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Lethality<>.\n\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>40%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "stridebreaker": {
+            "name": "Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: Damaging an enemy champion triggers a shockwave around them, dealing <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD<> <#ff9028ff>physical damage<> and <#d94c49ff>slowing<> all enemies hit by <#d94c49ff>35%<> for <#e8a800ff>3 seconds<> (<#e8a800ff>20 second<> cooldown).\n\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>20%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Radiant Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: Damaging an enemy champion triggers a shockwave around them, dealing <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> AD<> <#ff9028ff>physical damage<> and <#d94c49ff>slowing<> all enemies hit by <#d94c49ff>35%<> for <#e8a800ff>3 seconds<> (<#e8a800ff>20 second<> cooldown).\n\n<#ff7a3eff>Cleave<>: Basic attacks deal <#ff9028ff>30%<> of your <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Attack Damage<> as <#ff9028ff>physical damage<> to nearby enemies. Attacks from further than <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> apply this effect at <#d94c49ff>50% strength<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: Damaging an enemy champion <#d94c49ff>at or under 50% health<> grants you and allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>55 second<> cooldown)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Radiant Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: Damaging an enemy champion <#d94c49ff>at or under 50% health<> grants you and allies within <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> range<> <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bonus movement speed<> for <#e8a800ff>4 seconds<> (<#e8a800ff>55 second<> cooldown)."
         }
     },
     "vi": {
@@ -2388,11 +2412,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Kiếm Ma Youmuu",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Kiếm Ma Youmuu Ánh Sáng",
-            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Ma Ám<>: Sau khi ở ngoài giao tranh với tướng địch trong <#e8a800ff>5 giây<>, nhận <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<>.\n\n<#ff7a3eff>Bước Chân Bóng Ma<>: Khi gây sát thương cho tướng địch, nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển<> trong <#e8a800ff>2 giây<> (hồi chiêu <#e8a800ff>45 giây<>)."
         },
         "thornmail": {
             "name": "Giáp Gai",
@@ -2401,6 +2425,30 @@
         "radiant_thornmail": {
             "name": "Giáp Gai Ánh Sáng",
             "option": "\n<#ff7a3eff>Gai<>: Khi bị đánh thường, gây <#ffdd8eff>25<> + <#ffdd8eff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Giáp<> của bạn dưới dạng <#a974ffff>sát thương phép<> lên kẻ tấn công. Nếu kẻ tấn công là tướng, đồng thời gây <#ff7a3eff>Vết thương chí mạng<>, <#d94c49ff>giảm hồi máu của chúng 40%<> trong <#e8a800ff>3 giây<>."
+        },
+        "profane_hydra": {
+            "name": "Mãng Xà Kích",
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Mãng Xà Kích Ánh Sáng",
+            "option": "\nNhận <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Xuyên Giáp Trắng<>.\n\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>40%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "stridebreaker": {
+            "name": "Chùy Phản Kích",
+            "option": "\n<#ff7a3eff>Sóng Đột Phá<>: Khi gây sát thương lên tướng địch, tạo ra một sóng xung kích quanh mục tiêu, gây <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> và <#d94c49ff>làm chậm<> mọi kẻ địch trúng phải đi <#d94c49ff>35%<> trong <#e8a800ff>3 giây<> (hồi chiêu <#e8a800ff>20 giây<>).\n\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Chùy Phản Kích Ánh Sáng",
+            "option": "\n<#ff7a3eff>Sóng Đột Phá<>: Khi gây sát thương lên tướng địch, tạo ra một sóng xung kích quanh mục tiêu, gây <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> và <#d94c49ff>làm chậm<> mọi kẻ địch trúng phải đi <#d94c49ff>35%<> trong <#e8a800ff>3 giây<> (hồi chiêu <#e8a800ff>20 giây<>).\n\n<#ff7a3eff>Sát Thương Lan<>: Đòn đánh thường gây <#ff9028ff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>SMCK<> dưới dạng <#ff9028ff>sát thương vật lí<> lên kẻ địch xung quanh. Đòn đánh từ xa hơn <#ff86c2ff>35<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> chỉ áp dụng hiệu ứng này ở <#d94c49ff>50% sức mạnh<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Vương Miện Shurelya",
+            "option": "\n<#ff7a3eff>Lời Nói Truyền Lửa<>: Khi gây sát thương cho tướng địch <#d94c49ff>có máu bằng hoặc dưới 50%<>, bạn và các đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>55 giây<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Vương Miện Shurelya Ánh Sáng",
+            "option": "\n<#ff7a3eff>Lời Nói Truyền Lửa<>: Khi gây sát thương cho tướng địch <#d94c49ff>có máu bằng hoặc dưới 50%<>, bạn và các đồng minh trong phạm vi <#ff86c2ff>100<> <i#asset/base/ui/banpick/champion_stat_icon:range_0> nhận <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>tốc độ di chuyển cộng thêm<> trong <#e8a800ff>4 giây<> (hồi chiêu <#e8a800ff>55 giây<>)."
         }
     },
     "zh-hans": {
@@ -3590,11 +3638,11 @@
         },
         "youmuus_ghostblade": {
             "name": "幽梦之灵",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>45秒<>）。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>45秒<>）。"
         },
         "radiant_youmuus_ghostblade": {
             "name": "光明版幽梦之灵",
-            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>45秒<>）。"
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>鬼影萦绕<>：脱离与敌方英雄的战斗达 <#e8a800ff>5秒<> 后，获得 <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>。\n\n<#ff7a3eff>鬼魂步伐<>：对敌方英雄造成伤害时，获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移动速度<>，持续 <#e8a800ff>2秒<>（冷却 <#e8a800ff>45秒<>）。"
         },
         "thornmail": {
             "name": "荆棘之甲",
@@ -3603,6 +3651,30 @@
         "radiant_thornmail": {
             "name": "光明版荆棘之甲",
             "option": "\n<#ff7a3eff>荆棘<>：受到普通攻击时，对攻击者造成相当于 <#ffdd8eff>25<> + 你的 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>护甲<>的 <#ffdd8eff>15%<> 的<#a974ffff>魔法伤害<>。若攻击者为英雄，还会施加<#ff7a3eff>重伤<>，使其<#d94c49ff>治疗效果降低40%<>，持续 <#e8a800ff>3秒<>。"
+        },
+        "profane_hydra": {
+            "name": "亵渎九头蛇",
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>30%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "radiant_profane_hydra": {
+            "name": "光明版亵渎九头蛇",
+            "option": "\n获得 <#ffdd8eff>18 点<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 穿甲<>。\n\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>40%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "stridebreaker": {
+            "name": "挺进破坏者",
+            "option": "\n<#ff7a3eff>破阵冲击波<>：对敌方英雄造成伤害时，会在其周围触发一道冲击波，造成相当于 <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>的<#ff9028ff>物理伤害<>，并使所有被命中的敌人<#d94c49ff>减速<> <#d94c49ff>35%<>，持续 <#e8a800ff>3秒<>（冷却 <#e8a800ff>20秒<>）。\n\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>20%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "radiant_stridebreaker": {
+            "name": "光明版挺进破坏者",
+            "option": "\n<#ff7a3eff>破阵冲击波<>：对敌方英雄造成伤害时，会在其周围触发一道冲击波，造成相当于 <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻击力<>的<#ff9028ff>物理伤害<>，并使所有被命中的敌人<#d94c49ff>减速<> <#d94c49ff>35%<>，持续 <#e8a800ff>3秒<>（冷却 <#e8a800ff>20秒<>）。\n\n<#ff7a3eff>顺劈<>：普通攻击会对附近的敌人造成相当于你 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻击力<>的 <#ff9028ff>30%<> 的<#ff9028ff>物理伤害<>。从超过 <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>外发动的攻击，此效果仅以 <#d94c49ff>50% 强度<>触发。"
+        },
+        "shurelyas_battlesong": {
+            "name": "舒瑞娅的战歌",
+            "option": "\n<#ff7a3eff>鼓舞演讲<>：对<#d94c49ff>生命值不高于50%<>的敌方英雄造成伤害时，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军获得 <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>55秒<>）。"
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "光明版舒瑞娅的战歌",
+            "option": "\n<#ff7a3eff>鼓舞演讲<>：对<#d94c49ff>生命值不高于50%<>的敌方英雄造成伤害时，你和 <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>范围内的友军获得 <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>额外移动速度<>，持续 <#e8a800ff>4秒<>（冷却 <#e8a800ff>55秒<>）。"
         }
     },
     "pt-BR": {
@@ -4792,11 +4864,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Lâmina Fantasma de Youmuu",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Lâmina Fantasma de Youmuu Radiante",
-            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Assombrar<>: Após ficar fora de combate com campeões inimigos por <#e8a800ff>5 segundos<>, ganha <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<>.\n\n<#ff7a3eff>Passo Espectral<>: Causar dano a um campeão inimigo concede <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento<> por <#e8a800ff>2 segundos<> (recarga de <#e8a800ff>45 segundos<>)."
         },
         "thornmail": {
             "name": "Armadura de Espinhos",
@@ -4805,6 +4877,30 @@
         "radiant_thornmail": {
             "name": "Armadura de Espinhos Radiante",
             "option": "\n<#ff7a3eff>Espinhos<>: Ao ser atingido por um ataque básico, causa <#ffdd8eff>25<> + <#ffdd8eff>15%<> da sua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>dano mágico<> ao atacante. Se o atacante for um campeão, também aplica <#ff7a3eff>Ferimentos Graves<>, <#d94c49ff>reduzindo a cura dele em 40%<> por <#e8a800ff>3 segundos<>."
+        },
+        "profane_hydra": {
+            "name": "Hidra Profana",
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Hidra Profana Radiante",
+            "option": "\nGanha <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Letalidade<>.\n\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>40%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "stridebreaker": {
+            "name": "Quebrapassos",
+            "option": "\n<#ff7a3eff>Onda de Choque Estonteante<>: Causar dano a um campeão inimigo gera uma onda de choque ao redor dele, causando <#ff9028ff>80% do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque<> como <#ff9028ff>dano físico<> e aplicando <#d94c49ff>lentidão<> de <#d94c49ff>35%<> a todos os inimigos atingidos por <#e8a800ff>3 segundos<> (recarga de <#e8a800ff>20 segundos<>).\n\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>20%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Quebrapassos Radiante",
+            "option": "\n<#ff7a3eff>Onda de Choque Estonteante<>: Causar dano a um campeão inimigo gera uma onda de choque ao redor dele, causando <#ff9028ff>120% do <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Dano de Ataque<> como <#ff9028ff>dano físico<> e aplicando <#d94c49ff>lentidão<> de <#d94c49ff>35%<> a todos os inimigos atingidos por <#e8a800ff>3 segundos<> (recarga de <#e8a800ff>20 segundos<>).\n\n<#ff7a3eff>Fenda<>: Ataques básicos causam <#ff9028ff>30%<> do seu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Dano de Ataque<> como <#ff9028ff>dano físico<> a inimigos próximos. Ataques de mais de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplicam este efeito com <#d94c49ff>50% de intensidade<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Hino Bélico de Shurelya",
+            "option": "\n<#ff7a3eff>Discurso Inspirador<>: Causar dano a um campeão inimigo <#d94c49ff>com 50% de Vida ou menos<> concede a você e aos aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>55 segundos<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Hino Bélico de Shurelya Radiante",
+            "option": "\n<#ff7a3eff>Discurso Inspirador<>: Causar dano a um campeão inimigo <#d94c49ff>com 50% de Vida ou menos<> concede a você e aos aliados dentro de <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Velocidade de Movimento bônus<> por <#e8a800ff>4 segundos<> (recarga de <#e8a800ff>55 segundos<>)."
         }
     },
     "ru": {
@@ -5994,11 +6090,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Призрачный клинок Йомуу",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Лучезарный Призрачный клинок Йомуу",
-            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Преследование<>: После <#e8a800ff>5 секунд<> вне боя с вражескими чемпионами вы получаете <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<>.\n\n<#ff7a3eff>Поступь призрака<>: Нанесение урона вражескому чемпиону даёт <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>скорости передвижения<> на <#e8a800ff>2 секунды<> (перезарядка <#e8a800ff>45 секунд<>)."
         },
         "thornmail": {
             "name": "Шипованный Доспех",
@@ -6007,6 +6103,30 @@
         "radiant_thornmail": {
             "name": "Лучезарный Шипованный Доспех",
             "option": "\n<#ff7a3eff>Шипы<>: При получении удара базовой атакой наносит атакующему <#ffdd8eff>25<> + <#ffdd8eff>15%<> от вашей <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>брони<> как <#a974ffff>магический урон<>. Если атакующий — чемпион, также накладывает <#ff7a3eff>Тяжёлые раны<>, <#d94c49ff>снижая его лечение на 40%<> на <#e8a800ff>3 секунды<>."
+        },
+        "profane_hydra": {
+            "name": "Нечестивая гидра",
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Лучезарная Нечестивая гидра",
+            "option": "\nДаёт <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> летальности<>.\n\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>40%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "stridebreaker": {
+            "name": "Костолом",
+            "option": "\n<#ff7a3eff>Ранящий удар<>: Нанесение урона вражескому чемпиону вызывает вокруг него ударную волну, которая наносит <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки<> в виде <#ff9028ff>физического урона<> и <#d94c49ff>замедляет<> всех задетых врагов на <#d94c49ff>35%<> на <#e8a800ff>3 сек.<> (перезарядка <#e8a800ff>20 секунд<>).\n\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>20%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Лучезарный Костолом",
+            "option": "\n<#ff7a3eff>Ранящий удар<>: Нанесение урона вражескому чемпиону вызывает вокруг него ударную волну, которая наносит <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> силы атаки<> в виде <#ff9028ff>физического урона<> и <#d94c49ff>замедляет<> всех задетых врагов на <#d94c49ff>35%<> на <#e8a800ff>3 сек.<> (перезарядка <#e8a800ff>20 секунд<>).\n\n<#ff7a3eff>Рассечение<>: Базовые атаки наносят <#ff9028ff>30%<> вашей <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>силы атаки<> в виде <#ff9028ff>физического урона<> ближайшим врагам. Атаки с расстояния больше <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> применяют этот эффект с <#d94c49ff>50% силы<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Боевая песнь Шурелии",
+            "option": "\n<#ff7a3eff>Воодушевляющая речь<>: Нанесение урона вражескому чемпиону, чьё <#d94c49ff>здоровье не выше 50%<>, даёт вам и союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>55 секунд<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Лучезарная Боевая песнь Шурелии",
+            "option": "\n<#ff7a3eff>Воодушевляющая речь<>: Нанесение урона вражескому чемпиону, чьё <#d94c49ff>здоровье не выше 50%<>, даёт вам и союзникам в пределах <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> дальности<> <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>дополнительной скорости передвижения<> на <#e8a800ff>4 секунды<> (перезарядка <#e8a800ff>55 секунд<>)."
         }
     },
     "ko": {
@@ -7196,11 +7316,11 @@
         },
         "youmuus_ghostblade": {
             "name": "요우무의 유령검",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>10%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>10%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
         },
         "radiant_youmuus_ghostblade": {
             "name": "찬란한 요우무의 유령검",
-            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>15%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>4초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>30%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>출몰<>: 적 챔피언과 <#e8a800ff>5초<> 동안 비전투 상태를 유지하면 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>10%<> 증가합니다.\n\n<#ff7a3eff>망령의 발걸음<>: 적 챔피언에게 피해를 입히면 <#e8a800ff>2초<> 동안 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#ffffffff>20%<> 증가합니다. 재사용 대기시간은 <#e8a800ff>45초<>입니다."
         },
         "thornmail": {
             "name": "가시 갑옷",
@@ -7209,6 +7329,30 @@
         "radiant_thornmail": {
             "name": "찬란한 가시 갑옷",
             "option": "\n<#ff7a3eff>가시<>: 기본 공격에 적중당하면 공격자에게 <#ffdd8eff>25<> + <#ffdd8eff>15%<>의 <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>방어력<>만큼 <#a974ffff>마법 피해<>를 되돌려줍니다. 공격자가 챔피언이면 <#ff7a3eff>고통스러운 상처<>를 적용해 <#e8a800ff>3초<> 동안 <#d94c49ff>회복량을 40% 감소<>시킵니다."
+        },
+        "profane_hydra": {
+            "name": "불경한 히드라",
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 30%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "radiant_profane_hydra": {
+            "name": "찬란한 불경한 히드라",
+            "option": "\n<#ffdd8eff>18의 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 물리 관통력<>을 획득합니다.\n\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 40%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "stridebreaker": {
+            "name": "발걸음 분쇄기",
+            "option": "\n<#ff7a3eff>파괴의 충격파<>: 적 챔피언에게 피해를 입히면 대상 주위에 충격파가 발생해 적중한 모든 적에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 80%<>만큼 <#ff9028ff>물리 피해<>를 입히고 <#e8a800ff>3초<> 동안 <#d94c49ff>35% 둔화<>시킵니다. 재사용 대기시간은 <#e8a800ff>20초<>입니다.\n\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 20%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "radiant_stridebreaker": {
+            "name": "찬란한 발걸음 분쇄기",
+            "option": "\n<#ff7a3eff>파괴의 충격파<>: 적 챔피언에게 피해를 입히면 대상 주위에 충격파가 발생해 적중한 모든 적에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 120%<>만큼 <#ff9028ff>물리 피해<>를 입히고 <#e8a800ff>3초<> 동안 <#d94c49ff>35% 둔화<>시킵니다. 재사용 대기시간은 <#e8a800ff>20초<>입니다.\n\n<#ff7a3eff>쪼개기<>: 기본 공격 시 주변 적들에게 <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>공격력의 30%<>만큼 <#ff9028ff>물리 피해<>를 입힙니다. <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 35<>보다 먼 곳에서의 공격은 이 효과가 <#d94c49ff>50% 위력<>으로 적용됩니다."
+        },
+        "shurelyas_battlesong": {
+            "name": "슈렐리아의 군가",
+            "option": "\n<#ff7a3eff>고무적인 연설<>: <#d94c49ff>체력이 50% 이하인<> 적 챔피언에게 피해를 입히면 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#e8a800ff>4초<> 동안 <#ffffffff>20%<> 추가로 증가합니다. 재사용 대기시간은 <#e8a800ff>55초<>입니다."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "찬란한 슈렐리아의 군가",
+            "option": "\n<#ff7a3eff>고무적인 연설<>: <#d94c49ff>체력이 50% 이하인<> 적 챔피언에게 피해를 입히면 자신과 <i#asset/base/ui/banpick/champion_stat_icon:range_0> <#ff86c2ff>사거리 100<> 안의 아군의 <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>이동 속도<>가 <#e8a800ff>4초<> 동안 <#ffffffff>30%<> 추가로 증가합니다. 재사용 대기시간은 <#e8a800ff>55초<>입니다."
         }
     },
     "ja": {
@@ -8398,11 +8542,11 @@
         },
         "youmuus_ghostblade": {
             "name": "妖夢の霊剣",
-            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>10%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>4秒間<><#ffffffff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
+            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>10%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>2秒間<><#ffffffff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
         },
         "radiant_youmuus_ghostblade": {
             "name": "レディアント 妖夢の霊剣",
-            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>15%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>4秒間<><#ffffffff>30%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
+            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>幽鬼<>: 敵チャンピオンとの戦闘から<#e8a800ff>5秒間<>離れると、<#ffffffff>10%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る。\n\n<#ff7a3eff>幽霊の歩み<>: 敵チャンピオンにダメージを与えると、<#e8a800ff>2秒間<><#ffffffff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>を得る(クールダウン<#e8a800ff>45秒<>)。"
         },
         "thornmail": {
             "name": "ソーンメイル",
@@ -8411,6 +8555,30 @@
         "radiant_thornmail": {
             "name": "レディアント ソーンメイル",
             "option": "\n<#ff7a3eff>棘<>: 通常攻撃を受けると、攻撃者に<#ffdd8eff>25<> + 自身の<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>防御力<>の<#ffdd8eff>15%<>の<#a974ffff>魔法ダメージ<>を与える。攻撃者がチャンピオンの場合、<#ff7a3eff>重傷<>を付与し、<#e8a800ff>3秒間<><#d94c49ff>回復量を40%低下させる<>。"
+        },
+        "profane_hydra": {
+            "name": "プロフェイン ハイドラ",
+            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>なぎ払い<>: 通常攻撃で周囲の敵に自身の<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻撃力<>の<#ff9028ff>30%<>の<#ff9028ff>物理ダメージ<>を与える。<#ff86c2ff>35の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>より遠くからの攻撃では、この効果は<#d94c49ff>50%の強さ<>になる。"
+        },
+        "radiant_profane_hydra": {
+            "name": "レディアント プロフェイン ハイドラ",
+            "option": "\n<#ffdd8eff>18の<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 脅威<>を得る。\n\n<#ff7a3eff>なぎ払い<>: 通常攻撃で周囲の敵に自身の<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻撃力<>の<#ff9028ff>40%<>の<#ff9028ff>物理ダメージ<>を与える。<#ff86c2ff>35の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>より遠くからの攻撃では、この効果は<#d94c49ff>50%の強さ<>になる。"
+        },
+        "stridebreaker": {
+            "name": "ストライドブレイカー",
+            "option": "\n<#ff7a3eff>破壊の衝撃波<>: 敵チャンピオンにダメージを与えると、その周囲に衝撃波を発生させ、命中したすべての敵に<#ff9028ff>80%の<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻撃力<>の<#ff9028ff>物理ダメージ<>を与え、<#e8a800ff>3秒間<><#d94c49ff>35%<>の<#d94c49ff>スロウ効果<>を付与する(クールダウン<#e8a800ff>20秒<>)。\n\n<#ff7a3eff>なぎ払い<>: 通常攻撃で周囲の敵に自身の<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻撃力<>の<#ff9028ff>20%<>の<#ff9028ff>物理ダメージ<>を与える。<#ff86c2ff>35の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>より遠くからの攻撃では、この効果は<#d94c49ff>50%の強さ<>になる。"
+        },
+        "radiant_stridebreaker": {
+            "name": "レディアント ストライドブレイカー",
+            "option": "\n<#ff7a3eff>破壊の衝撃波<>: 敵チャンピオンにダメージを与えると、その周囲に衝撃波を発生させ、命中したすべての敵に<#ff9028ff>120%の<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 攻撃力<>の<#ff9028ff>物理ダメージ<>を与え、<#e8a800ff>3秒間<><#d94c49ff>35%<>の<#d94c49ff>スロウ効果<>を付与する(クールダウン<#e8a800ff>20秒<>)。\n\n<#ff7a3eff>なぎ払い<>: 通常攻撃で周囲の敵に自身の<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>攻撃力<>の<#ff9028ff>30%<>の<#ff9028ff>物理ダメージ<>を与える。<#ff86c2ff>35の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>より遠くからの攻撃では、この効果は<#d94c49ff>50%の強さ<>になる。"
+        },
+        "shurelyas_battlesong": {
+            "name": "シュレリアの戦歌",
+            "option": "\n<#ff7a3eff>感動的スピーチ<>: <#d94c49ff>体力が50%以下<>の敵チャンピオンにダメージを与えると、自身と<#ff86c2ff>100の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内の味方が<#e8a800ff>4秒間<><#ffffffff>20%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>増加移動速度<>を得る(クールダウン<#e8a800ff>55秒<>)。"
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "レディアント シュレリアの戦歌",
+            "option": "\n<#ff7a3eff>感動的スピーチ<>: <#d94c49ff>体力が50%以下<>の敵チャンピオンにダメージを与えると、自身と<#ff86c2ff>100の<i#asset/base/ui/banpick/champion_stat_icon:range_0> 射程<>内の味方が<#e8a800ff>4秒間<><#ffffffff>30%<>の<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>増加移動速度<>を得る(クールダウン<#e8a800ff>55秒<>)。"
         }
     },
     "de": {
@@ -9600,11 +9768,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Youmus Geistklinge",
-            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>4 Sekunden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
+            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>2 Sekunden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Lichtversion von Youmus Geistklinge",
-            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>4 Sekunden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
+            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Heimsuchen<>: Nachdem du <#e8a800ff>5 Sekunden<> lang nicht mit gegnerischen Champions gekämpft hast, erhältst du <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<>.\n\n<#ff7a3eff>Geisterschritt<>: Wenn du einem gegnerischen Champion Schaden zufügst, erhältst du <#e8a800ff>2 Sekunden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>Lauftempo<> (<#e8a800ff>45 Sekunden<> Abklingzeit)."
         },
         "thornmail": {
             "name": "Dornenpanzer",
@@ -9613,6 +9781,30 @@
         "radiant_thornmail": {
             "name": "Lichtversion von Dornenpanzer",
             "option": "\n<#ff7a3eff>Dornen<>: Wenn du von einem Normalangriff getroffen wirst, fügst du dem Angreifer <#ffdd8eff>25<> + <#ffdd8eff>15%<> deiner <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>Verteidigung<> als <#a974ffff>magischen Schaden<> zu. Ist der Angreifer ein Champion, erleidet er außerdem <#ff7a3eff>Klaffende Wunden<>: Seine Heilung wird <#e8a800ff>3 Sekunden<> lang <#d94c49ff>um 40% verringert<>."
+        },
+        "profane_hydra": {
+            "name": "Gottlose Hydra",
+            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Durchschlag<>: Normalangriffe fügen Gegnern in der Nähe <#ff9028ff>30%<> deines <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Angriffs<> als <#ff9028ff>physischen Schaden<> zu. Angriffe aus mehr als <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<> wenden diesen Effekt mit <#d94c49ff>50% Stärke<> an."
+        },
+        "radiant_profane_hydra": {
+            "name": "Lichtversion von Gottlose Hydra",
+            "option": "\nErhalte <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Tödlichkeitsfaktor<>.\n\n<#ff7a3eff>Durchschlag<>: Normalangriffe fügen Gegnern in der Nähe <#ff9028ff>40%<> deines <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Angriffs<> als <#ff9028ff>physischen Schaden<> zu. Angriffe aus mehr als <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<> wenden diesen Effekt mit <#d94c49ff>50% Stärke<> an."
+        },
+        "stridebreaker": {
+            "name": "Schikane",
+            "option": "\n<#ff7a3eff>Brechende Schockwelle<>: Wenn du einem gegnerischen Champion Schaden zufügst, löst du um ihn herum eine Schockwelle aus, die allen getroffenen Gegnern <#ff9028ff>physischen Schaden<> in Höhe von <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Angriffsschaden<> zufügt und sie <#e8a800ff>3 Sekunden<> lang um <#d94c49ff>35%<> <#d94c49ff>verlangsamt<> (<#e8a800ff>20 Sekunden<> Abklingzeit).\n\n<#ff7a3eff>Durchschlag<>: Normalangriffe fügen Gegnern in der Nähe <#ff9028ff>20%<> deines <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Angriffs<> als <#ff9028ff>physischen Schaden<> zu. Angriffe aus mehr als <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<> wenden diesen Effekt mit <#d94c49ff>50% Stärke<> an."
+        },
+        "radiant_stridebreaker": {
+            "name": "Lichtversion von Schikane",
+            "option": "\n<#ff7a3eff>Brechende Schockwelle<>: Wenn du einem gegnerischen Champion Schaden zufügst, löst du um ihn herum eine Schockwelle aus, die allen getroffenen Gegnern <#ff9028ff>physischen Schaden<> in Höhe von <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> Angriffsschaden<> zufügt und sie <#e8a800ff>3 Sekunden<> lang um <#d94c49ff>35%<> <#d94c49ff>verlangsamt<> (<#e8a800ff>20 Sekunden<> Abklingzeit).\n\n<#ff7a3eff>Durchschlag<>: Normalangriffe fügen Gegnern in der Nähe <#ff9028ff>30%<> deines <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>Angriffs<> als <#ff9028ff>physischen Schaden<> zu. Angriffe aus mehr als <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<> wenden diesen Effekt mit <#d94c49ff>50% Stärke<> an."
+        },
+        "shurelyas_battlesong": {
+            "name": "Shurelyas Kampfhymne",
+            "option": "\n<#ff7a3eff>Inspirierende Rede<>: Wenn du einem gegnerischen Champion mit <#d94c49ff>höchstens 50% Leben<> Schaden zufügst, erhalten du und Verbündete innerhalb von <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<> <#e8a800ff>4 Sekunden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>zusätzliches Lauftempo<> (<#e8a800ff>55 Sekunden<> Abklingzeit)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Lichtversion von Shurelyas Kampfhymne",
+            "option": "\n<#ff7a3eff>Inspirierende Rede<>: Wenn du einem gegnerischen Champion mit <#d94c49ff>höchstens 50% Leben<> Schaden zufügst, erhalten du und Verbündete innerhalb von <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> Reichweite<> <#e8a800ff>4 Sekunden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>zusätzliches Lauftempo<> (<#e8a800ff>55 Sekunden<> Abklingzeit)."
         }
     },
     "tr": {
@@ -10802,11 +10994,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Youmuu'nun Hayaletkılıcı",
-            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>4 saniye<> boyunca <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
+            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>2 saniye<> boyunca <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Işıltılı Youmuu'nun Hayaletkılıcı",
-            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>4 saniye<> boyunca <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
+            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Musallat<>: Rakip şampiyonlarla <#e8a800ff>5 saniye<> savaş dışında kaldıktan sonra <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazanırsın.\n\n<#ff7a3eff>Tayf Adımı<>: Bir rakip şampiyona hasar vermek <#e8a800ff>2 saniye<> boyunca <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>45 saniye<>)."
         },
         "thornmail": {
             "name": "Çivili Zırh",
@@ -10815,6 +11007,30 @@
         "radiant_thornmail": {
             "name": "Işıltılı Çivili Zırh",
             "option": "\n<#ff7a3eff>Diken<>: Bir temel saldırıyla vurulduğunda, saldırana <#ffdd8eff>25<> + <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>zırhının<> <#ffdd8eff>15%<> kadar <#a974ffff>büyü hasarı<> verirsin. Saldıran bir şampiyonsa ona ayrıca <#ff7a3eff>Ağır Yara<> uygulayarak <#e8a800ff>3 saniye<> boyunca <#d94c49ff>iyileşmesini 40% azaltırsın<>."
+        },
+        "profane_hydra": {
+            "name": "İtikatsız Hydra",
+            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Biç<>: Temel saldırılar yakındaki düşmanlara <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>saldırı gücünün<> <#ff9028ff>30%<> kadar <#ff9028ff>fiziksel hasar<> verir. <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzilden<> uzaktan yapılan saldırılar bu etkiyi <#d94c49ff>50% güçle<> uygular."
+        },
+        "radiant_profane_hydra": {
+            "name": "Işıltılı İtikatsız Hydra",
+            "option": "\n<#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> Zırh Deşme<> kazanırsın.\n\n<#ff7a3eff>Biç<>: Temel saldırılar yakındaki düşmanlara <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>saldırı gücünün<> <#ff9028ff>40%<> kadar <#ff9028ff>fiziksel hasar<> verir. <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzilden<> uzaktan yapılan saldırılar bu etkiyi <#d94c49ff>50% güçle<> uygular."
+        },
+        "stridebreaker": {
+            "name": "Hızkesen",
+            "option": "\n<#ff7a3eff>Çökerten Şok Dalgası<>: Bir rakip şampiyona hasar vermek etrafında bir şok dalgası oluşturur; dalga isabet ettiği tüm düşmanlara <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> saldırı gücü<> kadar <#ff9028ff>fiziksel hasar<> verir ve onları <#e8a800ff>3 saniye<> boyunca <#d94c49ff>35%<> <#d94c49ff>yavaşlatır<> (bekleme süresi <#e8a800ff>20 saniye<>).\n\n<#ff7a3eff>Biç<>: Temel saldırılar yakındaki düşmanlara <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>saldırı gücünün<> <#ff9028ff>20%<> kadar <#ff9028ff>fiziksel hasar<> verir. <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzilden<> uzaktan yapılan saldırılar bu etkiyi <#d94c49ff>50% güçle<> uygular."
+        },
+        "radiant_stridebreaker": {
+            "name": "Işıltılı Hızkesen",
+            "option": "\n<#ff7a3eff>Çökerten Şok Dalgası<>: Bir rakip şampiyona hasar vermek etrafında bir şok dalgası oluşturur; dalga isabet ettiği tüm düşmanlara <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> saldırı gücü<> kadar <#ff9028ff>fiziksel hasar<> verir ve onları <#e8a800ff>3 saniye<> boyunca <#d94c49ff>35%<> <#d94c49ff>yavaşlatır<> (bekleme süresi <#e8a800ff>20 saniye<>).\n\n<#ff7a3eff>Biç<>: Temel saldırılar yakındaki düşmanlara <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>saldırı gücünün<> <#ff9028ff>30%<> kadar <#ff9028ff>fiziksel hasar<> verir. <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzilden<> uzaktan yapılan saldırılar bu etkiyi <#d94c49ff>50% güçle<> uygular."
+        },
+        "shurelyas_battlesong": {
+            "name": "Shurelya'nın Savaş Şarkısı",
+            "option": "\n<#ff7a3eff>İlham Ver<>: <#d94c49ff>Canı 50% veya altında olan<> bir rakip şampiyona hasar vermek sana ve <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzil<> içindeki dostlara <#e8a800ff>4 saniye<> boyunca <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ek hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>55 saniye<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Işıltılı Shurelya'nın Savaş Şarkısı",
+            "option": "\n<#ff7a3eff>İlham Ver<>: <#d94c49ff>Canı 50% veya altında olan<> bir rakip şampiyona hasar vermek sana ve <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> menzil<> içindeki dostlara <#e8a800ff>4 saniye<> boyunca <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ek hareket hızı<> kazandırır (bekleme süresi <#e8a800ff>55 saniye<>)."
         }
     },
     "es-ES": {
@@ -12004,11 +12220,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Filo fantasmal de Youmuu",
-            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
+            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>2 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Filo fantasmal de Youmuu radiante",
-            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
+            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Aparición<>: Tras estar <#e8a800ff>5 segundos<> fuera de combate con campeones enemigos, obtienes un <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<>.\n\n<#ff7a3eff>Pasos de espectro<>: Dañar a un campeón enemigo otorga un <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento<> durante <#e8a800ff>2 segundos<> (<#e8a800ff>45 segundos<> de enfriamiento)."
         },
         "thornmail": {
             "name": "Malla de espinas",
@@ -12017,6 +12233,30 @@
         "radiant_thornmail": {
             "name": "Malla de espinas radiante",
             "option": "\n<#ff7a3eff>Espinas<>: Al recibir un ataque básico, devuelve al atacante <#ffdd8eff>25<> + <#ffdd8eff>15%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armadura<> como <#a974ffff>daño mágico<>. Si el atacante es un campeón, también aplica <#ff7a3eff>Heridas graves<>, que <#d94c49ff>reducen su curación un 40%<> durante <#e8a800ff>3 segundos<>."
+        },
+        "profane_hydra": {
+            "name": "Hidra profana",
+            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Hender<>: Los ataques básicos infligen un <#ff9028ff>30%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>daño de ataque<> como <#ff9028ff>daño físico<> a los enemigos cercanos. Los ataques desde más de <#ff86c2ff>35 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplican este efecto con un <#d94c49ff>50% de potencia<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Hidra profana radiante",
+            "option": "\nObtienes <#ffdd8eff>18 de <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalidad<>.\n\n<#ff7a3eff>Hender<>: Los ataques básicos infligen un <#ff9028ff>40%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>daño de ataque<> como <#ff9028ff>daño físico<> a los enemigos cercanos. Los ataques desde más de <#ff86c2ff>35 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplican este efecto con un <#d94c49ff>50% de potencia<>."
+        },
+        "stridebreaker": {
+            "name": "Cortasendas",
+            "option": "\n<#ff7a3eff>Onda de choque<>: Dañar a un campeón enemigo genera una onda de choque a su alrededor que inflige un <#ff9028ff>80% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> daño de ataque<> como <#ff9028ff>daño físico<> y <#d94c49ff>ralentiza<> un <#d94c49ff>35%<> a todos los enemigos alcanzados durante <#e8a800ff>3 segundos<> (<#e8a800ff>20 segundos<> de enfriamiento).\n\n<#ff7a3eff>Hender<>: Los ataques básicos infligen un <#ff9028ff>20%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>daño de ataque<> como <#ff9028ff>daño físico<> a los enemigos cercanos. Los ataques desde más de <#ff86c2ff>35 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplican este efecto con un <#d94c49ff>50% de potencia<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Cortasendas radiante",
+            "option": "\n<#ff7a3eff>Onda de choque<>: Dañar a un campeón enemigo genera una onda de choque a su alrededor que inflige un <#ff9028ff>120% de <i#asset/base/ui/banpick/champion_stat_icon:ad_0> daño de ataque<> como <#ff9028ff>daño físico<> y <#d94c49ff>ralentiza<> un <#d94c49ff>35%<> a todos los enemigos alcanzados durante <#e8a800ff>3 segundos<> (<#e8a800ff>20 segundos<> de enfriamiento).\n\n<#ff7a3eff>Hender<>: Los ataques básicos infligen un <#ff9028ff>30%<> de tu <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>daño de ataque<> como <#ff9028ff>daño físico<> a los enemigos cercanos. Los ataques desde más de <#ff86c2ff>35 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> aplican este efecto con un <#d94c49ff>50% de potencia<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Canción de batalla de Shurelya",
+            "option": "\n<#ff7a3eff>Discurso inspirador<>: Dañar a un campeón enemigo <#d94c49ff>con un 50% de salud o menos<> te otorga a ti y a los aliados a <#ff86c2ff>100 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> un <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento adicional<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>55 segundos<> de enfriamiento)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Canción de batalla de Shurelya radiante",
+            "option": "\n<#ff7a3eff>Discurso inspirador<>: Dañar a un campeón enemigo <#d94c49ff>con un 50% de salud o menos<> te otorga a ti y a los aliados a <#ff86c2ff>100 de <i#asset/base/ui/banpick/champion_stat_icon:range_0> alcance<> un <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocidad de movimiento adicional<> durante <#e8a800ff>4 segundos<> (<#e8a800ff>55 segundos<> de enfriamiento)."
         }
     },
     "fr": {
@@ -13206,11 +13446,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Lame spectre de Youmuu",
-            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
+            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>2 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Lame spectre de Youmuu de la lumière",
-            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>15%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
+            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Hantise<>: Après <#e8a800ff>5 secondes<> hors combat contre des champions ennemis, vous gagnez <#ffffffff>10%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<>.\n\n<#ff7a3eff>Marche spectrale<>: Infliger des dégâts à un champion ennemi octroie <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement<> pendant <#e8a800ff>2 secondes<> (délai de récupération : <#e8a800ff>45 secondes<>)."
         },
         "thornmail": {
             "name": "Cotte épineuse",
@@ -13219,6 +13459,30 @@
         "radiant_thornmail": {
             "name": "Cotte épineuse de la lumière",
             "option": "\n<#ff7a3eff>Épines<>: Lorsque vous subissez une attaque de base, vous infligez à l'attaquant <#ffdd8eff>25<> + <#ffdd8eff>15%<> de votre <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armure<> sous forme de <#a974ffff>dégâts magiques<>. Si l'attaquant est un champion, il subit aussi <#ff7a3eff>Hémorragie<>, qui <#d94c49ff>réduit ses soins de 40%<> pendant <#e8a800ff>3 secondes<>."
+        },
+        "profane_hydra": {
+            "name": "Hydre profane",
+            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Fendoir<>: Les attaques de base infligent <#ff9028ff>30%<> de vos <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>dégâts d'attaque<> sous forme de <#ff9028ff>dégâts physiques<> aux ennemis proches. Les attaques effectuées à plus de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<> appliquent cet effet à <#d94c49ff>50% de sa puissance<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Hydre profane de la lumière",
+            "option": "\nVous gagnez <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> létalité<>.\n\n<#ff7a3eff>Fendoir<>: Les attaques de base infligent <#ff9028ff>40%<> de vos <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>dégâts d'attaque<> sous forme de <#ff9028ff>dégâts physiques<> aux ennemis proches. Les attaques effectuées à plus de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<> appliquent cet effet à <#d94c49ff>50% de sa puissance<>."
+        },
+        "stridebreaker": {
+            "name": "Estropieur",
+            "option": "\n<#ff7a3eff>Onde de choc entravante<>: Infliger des dégâts à un champion ennemi déclenche une onde de choc autour de lui qui inflige <#ff9028ff>80% des <i#asset/base/ui/banpick/champion_stat_icon:ad_0> dégâts d'attaque<> en <#ff9028ff>dégâts physiques<> et <#d94c49ff>ralentit<> tous les ennemis touchés de <#d94c49ff>35%<> pendant <#e8a800ff>3 secondes<> (délai de récupération : <#e8a800ff>20 secondes<>).\n\n<#ff7a3eff>Fendoir<>: Les attaques de base infligent <#ff9028ff>20%<> de vos <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>dégâts d'attaque<> sous forme de <#ff9028ff>dégâts physiques<> aux ennemis proches. Les attaques effectuées à plus de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<> appliquent cet effet à <#d94c49ff>50% de sa puissance<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Estropieur de la lumière",
+            "option": "\n<#ff7a3eff>Onde de choc entravante<>: Infliger des dégâts à un champion ennemi déclenche une onde de choc autour de lui qui inflige <#ff9028ff>120% des <i#asset/base/ui/banpick/champion_stat_icon:ad_0> dégâts d'attaque<> en <#ff9028ff>dégâts physiques<> et <#d94c49ff>ralentit<> tous les ennemis touchés de <#d94c49ff>35%<> pendant <#e8a800ff>3 secondes<> (délai de récupération : <#e8a800ff>20 secondes<>).\n\n<#ff7a3eff>Fendoir<>: Les attaques de base infligent <#ff9028ff>30%<> de vos <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>dégâts d'attaque<> sous forme de <#ff9028ff>dégâts physiques<> aux ennemis proches. Les attaques effectuées à plus de <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<> appliquent cet effet à <#d94c49ff>50% de sa puissance<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Chant de guerre de Shurelya",
+            "option": "\n<#ff7a3eff>Discours exaltant<>: Infliger des dégâts à un champion ennemi <#d94c49ff>à 50% de ses PV ou moins<> vous octroie, ainsi qu'aux alliés à <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>, <#ffffffff>20%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement supplémentaire<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>55 secondes<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Chant de guerre de Shurelya de la lumière",
+            "option": "\n<#ff7a3eff>Discours exaltant<>: Infliger des dégâts à un champion ennemi <#d94c49ff>à 50% de ses PV ou moins<> vous octroie, ainsi qu'aux alliés à <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> de portée<>, <#ffffffff>30%<> de <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>vitesse de déplacement supplémentaire<> pendant <#e8a800ff>4 secondes<> (délai de récupération : <#e8a800ff>55 secondes<>)."
         }
     },
     "it": {
@@ -14408,11 +14672,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Lama di Youmuu",
-            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>10%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
+            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>10%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>2 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Lama di Youmuu Radiosa",
-            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>15%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>30%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
+            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Persecuzione<>: Dopo <#e8a800ff>5 secondi<> fuori dal combattimento contro i campioni nemici, ottieni il <#ffffffff>10%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<>.\n\n<#ff7a3eff>Passo spettrale<>: Danneggiare un campione nemico conferisce il <#ffffffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento<> per <#e8a800ff>2 secondi<> (ricarica di <#e8a800ff>45 secondi<>)."
         },
         "thornmail": {
             "name": "Corazza spinata",
@@ -14421,6 +14685,30 @@
         "radiant_thornmail": {
             "name": "Corazza spinata Radiosa",
             "option": "\n<#ff7a3eff>Spine<>: Quando vieni colpito da un attacco base, infliggi all'attaccante <#ffdd8eff>25<> + <#ffdd8eff>15%<> della tua <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>armatura<> come <#a974ffff>danni magici<>. Se l'attaccante è un campione, applica anche <#ff7a3eff>Ferita grave<>, che <#d94c49ff>ne riduce le cure del 40%<> per <#e8a800ff>3 secondi<>."
+        },
+        "profane_hydra": {
+            "name": "Idra profana",
+            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Fendente<>: Gli attacchi base infliggono il <#ff9028ff>30%<> del tuo <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attacco<> come <#ff9028ff>danni fisici<> ai nemici vicini. Gli attacchi da oltre <#ff86c2ff>35 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<> applicano questo effetto al <#d94c49ff>50% della potenza<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Idra profana Radiosa",
+            "option": "\nOttieni <#ffdd8eff>18 di <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letalità<>.\n\n<#ff7a3eff>Fendente<>: Gli attacchi base infliggono il <#ff9028ff>40%<> del tuo <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attacco<> come <#ff9028ff>danni fisici<> ai nemici vicini. Gli attacchi da oltre <#ff86c2ff>35 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<> applicano questo effetto al <#d94c49ff>50% della potenza<>."
+        },
+        "stridebreaker": {
+            "name": "Spezzapassi",
+            "option": "\n<#ff7a3eff>Onda dirompente<>: Danneggiare un campione nemico genera un'onda d'urto attorno a lui, che infligge il <#ff9028ff>80% di <i#asset/base/ui/banpick/champion_stat_icon:ad_0> attacco<> come <#ff9028ff>danni fisici<> e <#d94c49ff>rallenta<> del <#d94c49ff>35%<> tutti i nemici colpiti per <#e8a800ff>3 secondi<> (ricarica di <#e8a800ff>20 secondi<>).\n\n<#ff7a3eff>Fendente<>: Gli attacchi base infliggono il <#ff9028ff>20%<> del tuo <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attacco<> come <#ff9028ff>danni fisici<> ai nemici vicini. Gli attacchi da oltre <#ff86c2ff>35 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<> applicano questo effetto al <#d94c49ff>50% della potenza<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Spezzapassi Radioso",
+            "option": "\n<#ff7a3eff>Onda dirompente<>: Danneggiare un campione nemico genera un'onda d'urto attorno a lui, che infligge il <#ff9028ff>120% di <i#asset/base/ui/banpick/champion_stat_icon:ad_0> attacco<> come <#ff9028ff>danni fisici<> e <#d94c49ff>rallenta<> del <#d94c49ff>35%<> tutti i nemici colpiti per <#e8a800ff>3 secondi<> (ricarica di <#e8a800ff>20 secondi<>).\n\n<#ff7a3eff>Fendente<>: Gli attacchi base infliggono il <#ff9028ff>30%<> del tuo <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>attacco<> come <#ff9028ff>danni fisici<> ai nemici vicini. Gli attacchi da oltre <#ff86c2ff>35 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<> applicano questo effetto al <#d94c49ff>50% della potenza<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Canto di guerra di Shurelya",
+            "option": "\n<#ff7a3eff>Discorso esaltante<>: Danneggiare un campione nemico <#d94c49ff>al 50% della salute o meno<> conferisce a te e agli alleati entro <#ff86c2ff>100 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<> il <#ffffffff>20%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento bonus<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>55 secondi<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Canto di guerra di Shurelya Radioso",
+            "option": "\n<#ff7a3eff>Discorso esaltante<>: Danneggiare un campione nemico <#d94c49ff>al 50% della salute o meno<> conferisce a te e agli alleati entro <#ff86c2ff>100 di <i#asset/base/ui/banpick/champion_stat_icon:range_0> gittata<> il <#ffffffff>30%<> di <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>velocità di movimento bonus<> per <#e8a800ff>4 secondi<> (ricarica di <#e8a800ff>55 secondi<>)."
         }
     },
     "zh-hant": {
@@ -15610,11 +15898,11 @@
         },
         "youmuus_ghostblade": {
             "name": "妖夢鬼刀",
-            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>10%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>45秒<>）。"
+            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>10%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>2秒<>（冷卻時間<#e8a800ff>45秒<>）。"
         },
         "radiant_youmuus_ghostblade": {
             "name": "聖光妖夢鬼刀",
-            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>15%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>30%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>45秒<>）。"
+            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>鬼影漫遊<>：脫離與敵方英雄的戰鬥<#e8a800ff>5秒<>後，獲得<#ffffffff>10%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>。\n\n<#ff7a3eff>惡影步伐<>：對敵方英雄造成傷害時，獲得<#ffffffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>移動速度<>，持續<#e8a800ff>2秒<>（冷卻時間<#e8a800ff>45秒<>）。"
         },
         "thornmail": {
             "name": "荊棘之甲",
@@ -15623,6 +15911,30 @@
         "radiant_thornmail": {
             "name": "聖光荊棘之甲",
             "option": "\n<#ff7a3eff>荊棘<>：受到普通攻擊時，對攻擊者造成<#ffdd8eff>25<> + 自身<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>物理防禦<><#ffdd8eff>15%<>的<#a974ffff>魔法傷害<>。若攻擊者為英雄，還會施加<#ff7a3eff>重創效果<>，<#d94c49ff>使其受到的治療效果降低40%<>，持續<#e8a800ff>3秒<>。"
+        },
+        "profane_hydra": {
+            "name": "瀆神九頭蛇",
+            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>劈砍<>：普通攻擊對附近敵人造成自身<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>物理攻擊<><#ff9028ff>30%<>的<#ff9028ff>物理傷害<>。從<#ff86c2ff>35<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>以外發動的攻擊，此效果為<#d94c49ff>50%強度<>。"
+        },
+        "radiant_profane_hydra": {
+            "name": "聖光瀆神九頭蛇",
+            "option": "\n獲得<#ffdd8eff>18<i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> 物理致命<>。\n\n<#ff7a3eff>劈砍<>：普通攻擊對附近敵人造成自身<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>物理攻擊<><#ff9028ff>40%<>的<#ff9028ff>物理傷害<>。從<#ff86c2ff>35<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>以外發動的攻擊，此效果為<#d94c49ff>50%強度<>。"
+        },
+        "stridebreaker": {
+            "name": "步履破壞者",
+            "option": "\n<#ff7a3eff>崩壞震波<>：對敵方英雄造成傷害時，在其周圍觸發震波，對所有命中的敵人造成<#ff9028ff>80%<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 物理攻擊<>的<#ff9028ff>物理傷害<>，並使其<#d94c49ff>緩速<><#d94c49ff>35%<>，持續<#e8a800ff>3秒<>（冷卻時間<#e8a800ff>20秒<>）。\n\n<#ff7a3eff>劈砍<>：普通攻擊對附近敵人造成自身<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>物理攻擊<><#ff9028ff>20%<>的<#ff9028ff>物理傷害<>。從<#ff86c2ff>35<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>以外發動的攻擊，此效果為<#d94c49ff>50%強度<>。"
+        },
+        "radiant_stridebreaker": {
+            "name": "聖光步履破壞者",
+            "option": "\n<#ff7a3eff>崩壞震波<>：對敵方英雄造成傷害時，在其周圍觸發震波，對所有命中的敵人造成<#ff9028ff>120%<i#asset/base/ui/banpick/champion_stat_icon:ad_0> 物理攻擊<>的<#ff9028ff>物理傷害<>，並使其<#d94c49ff>緩速<><#d94c49ff>35%<>，持續<#e8a800ff>3秒<>（冷卻時間<#e8a800ff>20秒<>）。\n\n<#ff7a3eff>劈砍<>：普通攻擊對附近敵人造成自身<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>物理攻擊<><#ff9028ff>30%<>的<#ff9028ff>物理傷害<>。從<#ff86c2ff>35<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>以外發動的攻擊，此效果為<#d94c49ff>50%強度<>。"
+        },
+        "shurelyas_battlesong": {
+            "name": "蘇瑞亞的戰歌",
+            "option": "\n<#ff7a3eff>鼓舞談話<>：對<#d94c49ff>生命值不高於50%<>的敵方英雄造成傷害時，你與<#ff86c2ff>100<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>內的友軍獲得<#ffffffff>20%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>額外移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>55秒<>）。"
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "聖光蘇瑞亞的戰歌",
+            "option": "\n<#ff7a3eff>鼓舞談話<>：對<#d94c49ff>生命值不高於50%<>的敵方英雄造成傷害時，你與<#ff86c2ff>100<i#asset/base/ui/banpick/champion_stat_icon:range_0> 距離<>內的友軍獲得<#ffffffff>30%<><i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>額外移動速度<>，持續<#e8a800ff>4秒<>（冷卻時間<#e8a800ff>55秒<>）。"
         }
     },
     "pl": {
@@ -16812,11 +17124,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Widmowe Ostrze Youmuu",
-            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
+            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>2 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Świetliste Widmowe Ostrze Youmuu",
-            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
+            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Nawiedzenie<>: Po <#e8a800ff>5 sek.<> poza walką z wrogimi bohaterami zyskujesz <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<>.\n\n<#ff7a3eff>Upiorny Krok<>: Zadanie obrażeń wrogiemu bohaterowi zapewnia <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>prędkości ruchu<> na <#e8a800ff>2 sek.<> (czas odnowienia: <#e8a800ff>45 sek.<>)."
         },
         "thornmail": {
             "name": "Kolczasta Kolczuga",
@@ -16825,6 +17137,30 @@
         "radiant_thornmail": {
             "name": "Świetlista Kolczasta Kolczuga",
             "option": "\n<#ff7a3eff>Kolce<>: Gdy trafi cię podstawowy atak, zadajesz atakującemu <#ffdd8eff>25<> + <#ffdd8eff>15%<> swojego <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pancerza<> jako <#a974ffff>obrażenia magiczne<>. Jeśli atakujący jest bohaterem, nakładasz też <#ff7a3eff>Głębokie Rany<>, które <#d94c49ff>zmniejszają jego leczenie o 40%<> na <#e8a800ff>3 sek.<>"
+        },
+        "profane_hydra": {
+            "name": "Bluźniercza Hydra",
+            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Rozpłatanie<>: Podstawowe ataki zadają pobliskim wrogom <#ff9028ff>30%<> twoich <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>obrażeń od ataku<> jako <#ff9028ff>obrażenia fizyczne<>. Ataki z odległości większej niż <#ff86c2ff>zasięg 35 <i#asset/base/ui/banpick/champion_stat_icon:range_0><> nakładają ten efekt z <#d94c49ff>50% siły<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Świetlista Bluźniercza Hydra",
+            "option": "\nZyskujesz <#ffdd8eff>18 pkt <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> destrukcji<>.\n\n<#ff7a3eff>Rozpłatanie<>: Podstawowe ataki zadają pobliskim wrogom <#ff9028ff>40%<> twoich <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>obrażeń od ataku<> jako <#ff9028ff>obrażenia fizyczne<>. Ataki z odległości większej niż <#ff86c2ff>zasięg 35 <i#asset/base/ui/banpick/champion_stat_icon:range_0><> nakładają ten efekt z <#d94c49ff>50% siły<>."
+        },
+        "stridebreaker": {
+            "name": "Łamacz Falangi",
+            "option": "\n<#ff7a3eff>Niszczycielska Fala<>: Zadanie obrażeń wrogiemu bohaterowi wywołuje wokół niego falę uderzeniową, która zadaje wszystkim trafionym wrogom <#ff9028ff>obrażenia fizyczne<> równe <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> obrażeń od ataku<> i <#d94c49ff>spowalnia<> ich o <#d94c49ff>35%<> na <#e8a800ff>3 sek.<> (czas odnowienia: <#e8a800ff>20 sek.<>).\n\n<#ff7a3eff>Rozpłatanie<>: Podstawowe ataki zadają pobliskim wrogom <#ff9028ff>20%<> twoich <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>obrażeń od ataku<> jako <#ff9028ff>obrażenia fizyczne<>. Ataki z odległości większej niż <#ff86c2ff>zasięg 35 <i#asset/base/ui/banpick/champion_stat_icon:range_0><> nakładają ten efekt z <#d94c49ff>50% siły<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Świetlisty Łamacz Falangi",
+            "option": "\n<#ff7a3eff>Niszczycielska Fala<>: Zadanie obrażeń wrogiemu bohaterowi wywołuje wokół niego falę uderzeniową, która zadaje wszystkim trafionym wrogom <#ff9028ff>obrażenia fizyczne<> równe <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> obrażeń od ataku<> i <#d94c49ff>spowalnia<> ich o <#d94c49ff>35%<> na <#e8a800ff>3 sek.<> (czas odnowienia: <#e8a800ff>20 sek.<>).\n\n<#ff7a3eff>Rozpłatanie<>: Podstawowe ataki zadają pobliskim wrogom <#ff9028ff>30%<> twoich <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>obrażeń od ataku<> jako <#ff9028ff>obrażenia fizyczne<>. Ataki z odległości większej niż <#ff86c2ff>zasięg 35 <i#asset/base/ui/banpick/champion_stat_icon:range_0><> nakładają ten efekt z <#d94c49ff>50% siły<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Pieśń Bitewna Shurelyi",
+            "option": "\n<#ff7a3eff>Inspirująca Przemowa<>: Zadanie obrażeń wrogiemu bohaterowi <#d94c49ff>mającemu 50% zdrowia lub mniej<> zapewnia tobie i sojusznikom w <#ff86c2ff>zasięgu 100 <i#asset/base/ui/banpick/champion_stat_icon:range_0><> <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>dodatkowej prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>55 sek.<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Świetlista Pieśń Bitewna Shurelyi",
+            "option": "\n<#ff7a3eff>Inspirująca Przemowa<>: Zadanie obrażeń wrogiemu bohaterowi <#d94c49ff>mającemu 50% zdrowia lub mniej<> zapewnia tobie i sojusznikom w <#ff86c2ff>zasięgu 100 <i#asset/base/ui/banpick/champion_stat_icon:range_0><> <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>dodatkowej prędkości ruchu<> na <#e8a800ff>4 sek.<> (czas odnowienia: <#e8a800ff>55 sek.<>)."
         }
     },
     "th": {
@@ -18014,11 +18350,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Youmuu's Ghostblade",
-            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>10%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>20%<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
+            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>10%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>20%<> เป็นเวลา <#e8a800ff>2 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
         },
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
-            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>15%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>30%<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
+            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Haunt<>: หลังอยู่นอกการต่อสู้กับแชมเปี้ยนศัตรูเป็นเวลา <#e8a800ff>5 วินาที<> จะได้รับ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>10%<>\n\n<#ff7a3eff>Wraith Step<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่<> <#ffffffff>20%<> เป็นเวลา <#e8a800ff>2 วินาที<> (คูลดาวน์ <#e8a800ff>45 วินาที<>)"
         },
         "thornmail": {
             "name": "Thornmail",
@@ -18027,6 +18363,30 @@
         "radiant_thornmail": {
             "name": "Radiant Thornmail",
             "option": "\n<#ff7a3eff>Thorns<>: เมื่อถูกโจมตีปกติ จะสร้างดาเมจ <#ffdd8eff>25<> + <#ffdd8eff>15%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>เกราะ<>ของคุณเป็น<#a974ffff>ดาเมจเวท<>ใส่ผู้โจมตี หากผู้โจมตีเป็นแชมเปี้ยน จะติด <#ff7a3eff>Grievous Wounds<> <#d94c49ff>ลดการฟื้นฟูของเป้าหมายลง 40%<> เป็นเวลา <#e8a800ff>3 วินาที<>"
+        },
+        "profane_hydra": {
+            "name": "Profane Hydra",
+            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Cleave<>: การโจมตีปกติสร้าง <#ff9028ff>30%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>พลังโจมตี<>ของคุณเป็น<#ff9028ff>ดาเมจกายภาพ<>ใส่ศัตรูรอบข้าง การโจมตีจากระยะไกลกว่า <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>จะใช้เอฟเฟกต์นี้ที่<#d94c49ff>ความแรง 50%<>"
+        },
+        "radiant_profane_hydra": {
+            "name": "Radiant Profane Hydra",
+            "option": "\nได้รับ<#ffdd8eff><i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> โจมตีจุดตาย 18<>\n\n<#ff7a3eff>Cleave<>: การโจมตีปกติสร้าง <#ff9028ff>40%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>พลังโจมตี<>ของคุณเป็น<#ff9028ff>ดาเมจกายภาพ<>ใส่ศัตรูรอบข้าง การโจมตีจากระยะไกลกว่า <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>จะใช้เอฟเฟกต์นี้ที่<#d94c49ff>ความแรง 50%<>"
+        },
+        "stridebreaker": {
+            "name": "Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะทำให้เกิดคลื่นกระแทกรอบตัวเป้าหมาย สร้าง<#ff9028ff>ดาเมจกายภาพ<>เท่ากับ <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> พลังโจมตี<> และ<#d94c49ff>สโลว์<>ศัตรูทั้งหมดที่โดน <#d94c49ff>35%<> เป็นเวลา <#e8a800ff>3 วินาที<> (คูลดาวน์ <#e8a800ff>20 วินาที<>)\n\n<#ff7a3eff>Cleave<>: การโจมตีปกติสร้าง <#ff9028ff>20%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>พลังโจมตี<>ของคุณเป็น<#ff9028ff>ดาเมจกายภาพ<>ใส่ศัตรูรอบข้าง การโจมตีจากระยะไกลกว่า <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>จะใช้เอฟเฟกต์นี้ที่<#d94c49ff>ความแรง 50%<>"
+        },
+        "radiant_stridebreaker": {
+            "name": "Radiant Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูจะทำให้เกิดคลื่นกระแทกรอบตัวเป้าหมาย สร้าง<#ff9028ff>ดาเมจกายภาพ<>เท่ากับ <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> พลังโจมตี<> และ<#d94c49ff>สโลว์<>ศัตรูทั้งหมดที่โดน <#d94c49ff>35%<> เป็นเวลา <#e8a800ff>3 วินาที<> (คูลดาวน์ <#e8a800ff>20 วินาที<>)\n\n<#ff7a3eff>Cleave<>: การโจมตีปกติสร้าง <#ff9028ff>30%<> ของ<i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>พลังโจมตี<>ของคุณเป็น<#ff9028ff>ดาเมจกายภาพ<>ใส่ศัตรูรอบข้าง การโจมตีจากระยะไกลกว่า <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<>จะใช้เอฟเฟกต์นี้ที่<#d94c49ff>ความแรง 50%<>"
+        },
+        "shurelyas_battlesong": {
+            "name": "Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูที่<#d94c49ff>มีพลังชีวิตไม่เกิน 50%<> จะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่เพิ่มเติม<> <#ffffffff>20%<> ให้คุณและพันธมิตรในระยะ <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>55 วินาที<>)"
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Radiant Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: การสร้างดาเมจใส่แชมเปี้ยนศัตรูที่<#d94c49ff>มีพลังชีวิตไม่เกิน 50%<> จะมอบ<i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>ความเร็วเคลื่อนที่เพิ่มเติม<> <#ffffffff>30%<> ให้คุณและพันธมิตรในระยะ <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> ระยะ<> เป็นเวลา <#e8a800ff>4 วินาที<> (คูลดาวน์ <#e8a800ff>55 วินาที<>)"
         }
     },
     "nl": {
@@ -19216,11 +19576,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Youmuu's Ghostblade",
-            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>4 seconden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
+            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>2 seconden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
-            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>4 seconden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
+            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Haunt<>: Nadat je <#e8a800ff>5 seconden<> buiten gevecht met vijandelijke kampioenen bent geweest, krijg je <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<>.\n\n<#ff7a3eff>Wraith Step<>: Schade toebrengen aan een vijandelijke kampioen geeft <#e8a800ff>2 seconden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>bewegingssnelheid<> (<#e8a800ff>45 seconden<> afkoeltijd)."
         },
         "thornmail": {
             "name": "Thornmail",
@@ -19229,6 +19589,30 @@
         "radiant_thornmail": {
             "name": "Radiant Thornmail",
             "option": "\n<#ff7a3eff>Thorns<>: Wanneer je door een basisaanval wordt geraakt, breng je de aanvaller <#ffdd8eff>25<> + <#ffdd8eff>15%<> van je <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pantser<> toe als <#a974ffff>magische schade<>. Is de aanvaller een kampioen, dan krijgt die ook <#ff7a3eff>Grievous Wounds<>, wat <#d94c49ff>diens genezing met 40% vermindert<> gedurende <#e8a800ff>3 seconden<>."
+        },
+        "profane_hydra": {
+            "name": "Profane Hydra",
+            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Cleave<>: Basisaanvallen brengen vijanden in de buurt <#ff9028ff>30%<> van je <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>aanvalsschade<> toe als <#ff9028ff>fysieke schade<>. Aanvallen van verder dan <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<> passen dit effect toe met <#d94c49ff>50% sterkte<>."
+        },
+        "radiant_profane_hydra": {
+            "name": "Radiant Profane Hydra",
+            "option": "\nKrijg <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> letaliteit<>.\n\n<#ff7a3eff>Cleave<>: Basisaanvallen brengen vijanden in de buurt <#ff9028ff>40%<> van je <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>aanvalsschade<> toe als <#ff9028ff>fysieke schade<>. Aanvallen van verder dan <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<> passen dit effect toe met <#d94c49ff>50% sterkte<>."
+        },
+        "stridebreaker": {
+            "name": "Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: Schade toebrengen aan een vijandelijke kampioen veroorzaakt een schokgolf om hem heen die <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> aanvalsschade<> als <#ff9028ff>fysieke schade<> toebrengt en alle getroffen vijanden <#e8a800ff>3 seconden<> lang met <#d94c49ff>35%<> <#d94c49ff>vertraagt<> (<#e8a800ff>20 seconden<> afkoeltijd).\n\n<#ff7a3eff>Cleave<>: Basisaanvallen brengen vijanden in de buurt <#ff9028ff>20%<> van je <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>aanvalsschade<> toe als <#ff9028ff>fysieke schade<>. Aanvallen van verder dan <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<> passen dit effect toe met <#d94c49ff>50% sterkte<>."
+        },
+        "radiant_stridebreaker": {
+            "name": "Radiant Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: Schade toebrengen aan een vijandelijke kampioen veroorzaakt een schokgolf om hem heen die <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> aanvalsschade<> als <#ff9028ff>fysieke schade<> toebrengt en alle getroffen vijanden <#e8a800ff>3 seconden<> lang met <#d94c49ff>35%<> <#d94c49ff>vertraagt<> (<#e8a800ff>20 seconden<> afkoeltijd).\n\n<#ff7a3eff>Cleave<>: Basisaanvallen brengen vijanden in de buurt <#ff9028ff>30%<> van je <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>aanvalsschade<> toe als <#ff9028ff>fysieke schade<>. Aanvallen van verder dan <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<> passen dit effect toe met <#d94c49ff>50% sterkte<>."
+        },
+        "shurelyas_battlesong": {
+            "name": "Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: Schade toebrengen aan een vijandelijke kampioen <#d94c49ff>met 50% gezondheid of minder<> geeft jou en bondgenoten binnen <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<> <#e8a800ff>4 seconden<> lang <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>extra bewegingssnelheid<> (<#e8a800ff>55 seconden<> afkoeltijd)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Radiant Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: Schade toebrengen aan een vijandelijke kampioen <#d94c49ff>met 50% gezondheid of minder<> geeft jou en bondgenoten binnen <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> bereik<> <#e8a800ff>4 seconden<> lang <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>extra bewegingssnelheid<> (<#e8a800ff>55 seconden<> afkoeltijd)."
         }
     },
     "haw": {
@@ -20418,11 +20802,11 @@
         },
         "youmuus_ghostblade": {
             "name": "Youmuu's Ghostblade",
-            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
+            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>2 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
         },
         "radiant_youmuus_ghostblade": {
             "name": "Radiant Youmuu's Ghostblade",
-            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>15%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
+            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Haunt<>: Ma hope o <#e8a800ff>5 kekona<> ma waho o ke kaua me nā koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>10%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<>.\n\n<#ff7a3eff>Wraith Step<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, loaʻa iā ʻoe he <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe<> no <#e8a800ff>2 kekona<> (manawa kali hou <#e8a800ff>45 kekona<>)."
         },
         "thornmail": {
             "name": "Thornmail",
@@ -20431,6 +20815,30 @@
         "radiant_thornmail": {
             "name": "Radiant Thornmail",
             "option": "\n<#ff7a3eff>Thorns<>: Ke pā ʻia ʻoe e ka hoʻouka kumu, hana i ka <#a974ffff>pōʻino kilokilo<> he <#ffdd8eff>25<> + <#ffdd8eff>15%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:armor_0> <#ffdd8eff>pale<> i ka mea hoʻouka. Inā he koa ka mea hoʻouka, hoʻopili pū i ka <#ff7a3eff>Grievous Wounds<>, <#d94c49ff>e hoʻēmi ana i kona hoʻōla ʻia ma 40%<> no <#e8a800ff>3 kekona<>."
+        },
+        "profane_hydra": {
+            "name": "Profane Hydra",
+            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Cleave<>: Hana nā hoʻouka kumu i <#ff9028ff>30%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>ikaika hoʻouka<> ma ke ʻano he <#ff9028ff>pōʻino kino<> i nā ʻenemi kokoke. Ma nā hoʻouka mai ʻō aku o <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>, he <#d94c49ff>50% ka ikaika<> o kēia hopena."
+        },
+        "radiant_profane_hydra": {
+            "name": "Radiant Profane Hydra",
+            "option": "\nLoaʻa iā ʻoe he <#ffdd8eff>18 <i#asset/base/ui/banpick/champion_stat_icon:armor_pen_0> ʻoi make<>.\n\n<#ff7a3eff>Cleave<>: Hana nā hoʻouka kumu i <#ff9028ff>40%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>ikaika hoʻouka<> ma ke ʻano he <#ff9028ff>pōʻino kino<> i nā ʻenemi kokoke. Ma nā hoʻouka mai ʻō aku o <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>, he <#d94c49ff>50% ka ikaika<> o kēia hopena."
+        },
+        "stridebreaker": {
+            "name": "Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, hoʻāla ʻia he nalu hoʻoluliluli a puni iā ia, e hana ana i <#ff9028ff>80% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> ikaika hoʻouka<> ma ke ʻano he <#ff9028ff>pōʻino kino<> a <#d94c49ff>hoʻolohi<> i nā ʻenemi a pau i pā ma <#d94c49ff>35%<> no <#e8a800ff>3 kekona<> (manawa kali hou <#e8a800ff>20 kekona<>).\n\n<#ff7a3eff>Cleave<>: Hana nā hoʻouka kumu i <#ff9028ff>20%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>ikaika hoʻouka<> ma ke ʻano he <#ff9028ff>pōʻino kino<> i nā ʻenemi kokoke. Ma nā hoʻouka mai ʻō aku o <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>, he <#d94c49ff>50% ka ikaika<> o kēia hopena."
+        },
+        "radiant_stridebreaker": {
+            "name": "Radiant Stridebreaker",
+            "option": "\n<#ff7a3eff>Breaking Shockwave<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi, hoʻāla ʻia he nalu hoʻoluliluli a puni iā ia, e hana ana i <#ff9028ff>120% <i#asset/base/ui/banpick/champion_stat_icon:ad_0> ikaika hoʻouka<> ma ke ʻano he <#ff9028ff>pōʻino kino<> a <#d94c49ff>hoʻolohi<> i nā ʻenemi a pau i pā ma <#d94c49ff>35%<> no <#e8a800ff>3 kekona<> (manawa kali hou <#e8a800ff>20 kekona<>).\n\n<#ff7a3eff>Cleave<>: Hana nā hoʻouka kumu i <#ff9028ff>30%<> o kou <i#asset/base/ui/banpick/champion_stat_icon:ad_0> <#ff9028ff>ikaika hoʻouka<> ma ke ʻano he <#ff9028ff>pōʻino kino<> i nā ʻenemi kokoke. Ma nā hoʻouka mai ʻō aku o <#ff86c2ff>35 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<>, he <#d94c49ff>50% ka ikaika<> o kēia hopena."
+        },
+        "shurelyas_battlesong": {
+            "name": "Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi <#d94c49ff>ma 50% o kona ola a i ʻole ma lalo<>, loaʻa iā ʻoe a me nā hoa hui ma loko o <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<> he <#ffffffff>20%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe keu<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>55 kekona<>)."
+        },
+        "radiant_shurelyas_battlesong": {
+            "name": "Radiant Shurelya's Battlesong",
+            "option": "\n<#ff7a3eff>Inspiring Speech<>: Ke hana ʻoe i ka pōʻino i kekahi koa ʻenemi <#d94c49ff>ma 50% o kona ola a i ʻole ma lalo<>, loaʻa iā ʻoe a me nā hoa hui ma loko o <#ff86c2ff>100 <i#asset/base/ui/banpick/champion_stat_icon:range_0> laulā<> he <#ffffffff>30%<> <i#asset/base/ui/banpick/champion_stat_icon:speed_0> <#ffffffff>māmā neʻe keu<> no <#e8a800ff>4 kekona<> (manawa kali hou <#e8a800ff>55 kekona<>)."
         }
     }
 }

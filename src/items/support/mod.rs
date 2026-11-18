@@ -14,6 +14,7 @@ items! {
     mikaels_blessing,
     moonstone_renewer,
     protoplasm_harness,
+    shurelyas_battlesong,
     solstice_sleigh,
     staff_of_flowing_water,
     sword_of_blossoming_dawn,

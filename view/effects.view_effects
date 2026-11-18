@@ -186,6 +186,22 @@
         },
         {
             "type": "Animation",
+            "name": "riot_shurelyas_speech",
+            "anim": "asset/riot_items_tfm2/effects/shurelyas_speech",
+            "tag": "speech",
+            "z": -1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
+            "name": "riot_stridebreaker_shockwave",
+            "anim": "asset/riot_items_tfm2/effects/stridebreaker_shockwave",
+            "tag": "shockwave",
+            "z": -1,
+            "is_follow": true
+        },
+        {
+            "type": "Animation",
             "name": "riot_mikaels_purify",
             "anim": "asset/riot_items_tfm2/effects/mikaels_purify",
             "tag": "purify",
@@ -447,6 +463,13 @@
             "anim": "asset/riot_items_tfm2/effects/energized_charge",
             "tag": "charge",
             "z": 1
+        },
+        {
+            "type": "Animated",
+            "name": "shurelyas_battlesong_inspire",
+            "anim": "asset/riot_items_tfm2/effects/shurelyas_inspire",
+            "tag": "inspire",
+            "z": -1
         },
         {
             "type": "Animated",

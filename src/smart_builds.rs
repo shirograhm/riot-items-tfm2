@@ -857,8 +857,10 @@ fn is_philosophers_stone(key: &str) -> bool {
 }
 
 // Rule 11: items whose passive wants the carrier in melee, by base slug.
-const MELEE_ITEMS: [&str; 9] = [
+const MELEE_ITEMS: [&str; 11] = [
     "ravenous_hydra",     // Cleave at half strength from past 35 range
+    "profane_hydra",      // Cleave at half strength from past 35 range
+    "stridebreaker",      // Cleave at half strength from past 35 range
     "titanic_hydra",      // Cleave at half strength from past 35 range
     "hullbreaker",        // Skipper at 70% strength from past 35 range
     "heartsteel",         // Ironheart charges on enemies that stay within 50 range

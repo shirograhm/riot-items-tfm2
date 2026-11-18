@@ -1,4 +1,4 @@
-Adds 6 item slots & 256 new items (150 base + 106 Radiant) to Teamfight Manager 2.  
+Adds 6 item slots & 262 new items (153 base + 109 Radiant) to Teamfight Manager 2.  
 Also re-skins the 30 existing items and adds custom icons for Armor Penetration, Magic Penetration, Ability Haste, Tenacity, Omnivamp, and Skill Damage Reduction.  
 Champions start each match with 250 gold instead of 500.  
 
@@ -30,7 +30,7 @@ If you are only seeing Bloodthirster/Luden's/Sunfire (vanilla items, no modded),
 4. Play as you would normally!
 
 [h1] Known Issues [/h1]
-- Largely experimental in multiplayer.  
+- Somewhat untested in multiplayer.  
 
 [h1] Custom Item Values [/h1]
 This mod works directly out of the box! However, if any of the items feel too strong/weak, this mod supports full customization on all item values. To do so:  
@@ -56,7 +56,7 @@ During a match, you can see both sides' planned builds using the [b]Check Tactic
 [h1] Item Patches [/h1]
 This mod patches its items on its own schedule: strong items are nerfed, weak ones buffed. Changes arrive in your inbox as [b]Item Patch Notes[/b]. Set how often with [b]Patch Frequency[/b] in [b]Item Patcher Settings[/b] (Rare, Moderate or Frequent, like the game's own setting; per save). To set numbers yourself, open [b]Item Patcher Settings[/b] under [b]Options > Competition[/b], type new values, and click [b]Queue Manual Patch[/b].  
 
-To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. Re-run the game after editing it. Without a rename, your numbers could be overwritten on update.  
+To tune the patch system, make a copy of the [b]config-autopatch-default.json[/b] that ships with this mod (same folder as config-default.json), and name it [b]config-autopatch.json[/b]. Re-run the game after editing it. Without a rename, your numbers could be overwritten when the mod updates.  
 
 [h1] Smart Builds [/h1]
 Smart Builds cleans up the AI's picks using the following rules:

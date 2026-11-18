@@ -49,7 +49,7 @@ impl YoumuusGhostblade {
             effect_bonus_move_speed_mult: 10,
             effect_out_of_combat_seconds: 5.0,
             effect_move_speed_mult: 20,
-            effect_duration_seconds: 4.0,
+            effect_duration_seconds: 2.0,
             effect_cooldown_seconds: 45.0,
             // Non-vital stats (internals)
             idle_ticks: 0,
@@ -62,13 +62,13 @@ impl YoumuusGhostblade {
         Self {
             meta: ItemMeta::radiant("radiant_youmuus_ghostblade", &["youmuus_ghostblade"]),
             price: 1000,
-            attack: 60,
-            move_speed_mult: 8,
+            attack: 65,
+            move_speed_mult: 5,
             effect_lethality: 18,
-            effect_bonus_move_speed_mult: 15,
+            effect_bonus_move_speed_mult: 10,
             effect_out_of_combat_seconds: 5.0,
-            effect_move_speed_mult: 30,
-            effect_duration_seconds: 4.0,
+            effect_move_speed_mult: 20,
+            effect_duration_seconds: 2.0,
             effect_cooldown_seconds: 45.0,
             ..Self::base()
         }
